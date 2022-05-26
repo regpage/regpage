@@ -1,0 +1,42 @@
+/* universal */
+.mark-yellow {
+  background-color: yellow;
+}
+
+/*Schendule ftt*/
+/* ACCORDION HEADS */
+
+.card-header {
+  background-color: rgba(0,0,0,.08) !important;
+}
+
+#ftt_schedule_container .btn {
+  color: #0050a7;
+}
+
+#ftt_schedule_container .btn:hover {
+  color: #031d3a;
+}
+
+#accordionExample .card {
+  border-top: none;
+}
+
+#ftt_schedule_container_2 .btn {
+  color: #0050a7;
+  text-decoration: none;
+}
+
+#ftt_schedule_container_2 .btn:hover {
+  color: #031d3a;
+}
+
+.btn.accordion-head {
+  font-weight: bold;
+}
+
+.btn.accordion-head:hover {
+  /*font-weight: bold;*/
+}
+
+/*Schendule ftt STOP*/

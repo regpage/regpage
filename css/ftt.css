@@ -1,0 +1,11 @@
+/* universal */
+.mark-yellow {
+  background-color: yellow;
+}
+
+/* STYLE FOR THE FTT PAGE */
+.request-string {
+  font-size: 14px;
+  margin: 10px;
+  cursor: pointer;
+}

@@ -1,0 +1,289 @@
+/* FTT ATTENDANCE */
+input, select {
+  border-radius: 5px !important;
+}
+.archive_str {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+#col-main-content {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+
+#main_container {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  padding-top: 0px !important;
+}
+
+#extra_help_staff {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+#ftt_sub_container {
+  padding-left: 3px !important;
+  margin-left: 15px !important;
+  margin-right: 15px !important;
+}
+
+#current_extra_help {
+  padding-right: 0px;
+}
+
+#ftt_sub_container .nav-link {
+  border: 1px lightgray solid;
+}
+
+#modalUniTitle {
+  margin-bottom: 0px;
+}
+
+#bar_extra_help .btn, #bar_late .btn {
+  margin-right: 10px;
+}
+
+#modalAddEdit {
+  border-radius: 0.2rem;
+}
+
+#bar_extra_help select, #bar_late select {
+  margin-right: 10px;
+}
+
+#extra_help_staff .nav-link.active {
+  background-color: #dee2e6;
+}
+
+#extra_help_staff ul {
+  margin-left: 15px;
+}
+
+#list_header {
+  margin-left: 0px;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+  /*border-bottom: 1px solid lightgrey;*/
+}
+
+#list_content {
+  padding-left: 15px;
+}
+
+#modalAddEdit label {
+  font-family: 'Google Sans', Roboto, Helvetica, Arial, sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+}
+
+#modalAddEdit h5, #modalAddEditLate h5 {
+  font-family: 'Google Sans', Roboto, Helvetica, Arial, sans-serif !important;
+}
+
+#modalAddEdit select, #modalAddEditLate select {
+  background-color: white;
+  margin-left: -3px !important;
+}
+
+#fio_field {
+  padding-top: 4px;
+}
+
+/* ширина колонок*/
+/*
+#list_content .col_n_1 {
+  max-width: 155px !important;
+}
+
+#list_content .col_n_3 {
+  min-width: 480px !important;
+}
+
+#list_content .col_n_4 {
+  max-width: 100px !important;
+}
+*/
+
+.accordion {
+  width: 100%;
+  margin-left: 14px;
+}
+
+#list_content .card_header {
+  padding: 0px;
+  text-decoration: none;
+  border-bottom: 1px solid lightgray;
+  margin-left: 13px;
+}
+
+.card_header button{
+  text-decoration: none !important;
+  color: #0050a7;
+  width: 250px;
+  text-align: left;
+  padding-left: 2px;
+}
+
+.card_header button:hover {
+  text-decoration: none !important;
+  color: #031d3a;
+  /*font-weight: bold;*/
+}
+
+.period_col {
+  margin-left: 15px;
+  font-size: 12px;
+}
+
+.period_by_click {
+  margin-right: 10px;
+}
+
+.bg_color_pink {
+  background-color: pink !important;
+}
+
+.bg_color_yellow {
+  background-color: lightyellow !important;
+}
+
+.short_number_field {
+  max-width: 70px !important;
+}
+
+.middle_field {
+  max-width: 140px !important;
+}
+
+.short_select_field {
+  max-width: 45px !important;
+  min-width: 45px !important;
+  max-height: 38px !important;
+  min-height: 38px !important;
+  font-size: 1rem;
+  font-weight: 400;
+  /*border-color: #6c757d;*/
+  border: none;
+}
+
+.name_session {
+  max-width: 190px;
+  min-width: 190px;
+  margin-bottom: 0px;
+  padding-right: 5px;
+  line-height: normal;
+}
+
+#modal-block_1 .input-group {
+  justify-content: space-between;
+}
+
+/* Строки */
+.list_string, .ftt_late_string {
+  cursor: pointer;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  border-bottom: 1px lightgray solid;
+}
+
+.list_string:hover, .ftt_late_string:hover {
+  background-color: #eee;
+}
+
+.active_string {
+  background-color: lightgrey;
+}
+
+.green_string {
+  background-color: #b6efb6;
+}
+
+.green_string:hover {
+  background-color: #9deb9d;
+}
+/* Строки в десктопе*/
+.link_day {
+  text-decoration: none !important;
+  border: none !important;
+  color: #0050a7;
+  margin-right: 10px;
+  display: inline-block;
+  width: 70px;
+  text-align: center;
+  /*font-size: 16px !important;*/
+}
+
+.link_day:hover {
+  text-decoration: none !important;
+  /*font-weight: bold;*/
+  color: #031d3a;
+  cursor: pointer;
+}
+
+#bible_field {
+  margin-left: 10px;
+  transform:scale(1.5);
+}
+
+.sunday_back {
+  background-color: #c9c9c9;
+  padding-top: 8px;
+  padding-bottom: 10px;
+}
+
+.period_by_click {
+  width: auto;
+}
+
+.comment_mbl {
+  font-size: 14px;
+  color: #AAA;
+  display: none;
+  min-width: 100px;
+}
+
+input[type='time'] {
+  max-width: 95px !important;
+  font-size: 14px;
+}
+
+#comment_modal {
+  font-size: 14px;
+}
+
+/* Стилизация полей ввода для модального окна */
+.input-google {
+  padding-left: 0px;
+  width: 100%;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: 1px lightgray solid;
+}
+/* form starting stylings -------------------------------*/
+.input-google:focus {
+  outline: none;
+  border-bottom: 2px gray solid;
+}
+ /*LABEL =======================================*/
+.label-google {
+  font-size: 16px;
+  font-family: 'Google Sans', Roboto, Helvetica, Arial, sans-serif;
+  color: #646363;
+}
+
+.dropdown-toggle-split {
+  min-width: 55px;
+  max-height: 35px;
+}
+
+/* ==== Посещаемость ====*/
+
+.input-group-prepend {
+  width: 25px !important;
+}
+
+.hide_element {
+  display: none;
+}
