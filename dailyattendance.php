@@ -74,6 +74,7 @@ function db_newDailyAttendance () {
               $time_start_corr = $value_corr['time'];
               $visit_corr = $value_corr['visit'];
               $end_time_corr = $value_corr['end_time'];
+              $duration_corr = $value_corr['duration'];
               if ($value_corr['cancel_id']) {
                 $canceled_session_tmp = explode(',', $value_corr['cancel_id']);
                 //if (isset($canceled_session_tmp[0])) {
@@ -92,9 +93,8 @@ function db_newDailyAttendance () {
                 //}
               }
               if ($value_corr['attendance'] === '1') {
-                db_query("INSERT INTO ftt_attendance (`sheet_id`, `session_name`, `session_time`, `visit`, `end_time`) VALUES ('$max_id', '$session_name_corr', '$time_start_corr', '$visit_corr', '$end_time_corr')");
+                db_query("INSERT INTO ftt_attendance (`sheet_id`, `session_name`, `session_time`, `visit`, `duration`, `end_time`) VALUES ('$max_id', '$session_name_corr', '$time_start_corr', '$visit_corr', '$duration_corr', '$end_time_corr')");
               }
-
             }
           }
           $correction_stop = 1;
@@ -102,6 +102,7 @@ function db_newDailyAttendance () {
         $visit_field = $value['visit'];
         $end_time = $value['end_time'];
         $comment_extra = '';
+        $duration = $value['duration'];
         if ($value['duration'] && $value['duration'] > 0) {
           $session_name = $session_name.", ".$value['duration']."&nbsp;мин.";
         }
@@ -109,7 +110,7 @@ function db_newDailyAttendance () {
           $session_name = $session_name . ' <i class="fa fa-sticky-note" title="'.$value['comment'].'" data-toggle="tooltip" aria-hidden="true"></i> ';
         }
         if (!in_array($value['id'], $canceled_session)) {
-          db_query("INSERT INTO ftt_attendance (`sheet_id`, `session_name`, `session_time`, `visit`, `end_time`) VALUES ('$max_id', '$session_name', '$time_start', '$visit_field', '$end_time')");
+          db_query("INSERT INTO ftt_attendance (`sheet_id`, `session_name`, `session_time`, `visit`, `duration`, `end_time`) VALUES ('$max_id', '$session_name', '$time_start', '$visit_field', '$duration', '$end_time')");
         }
       }
     }

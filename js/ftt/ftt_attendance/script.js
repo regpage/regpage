@@ -100,8 +100,9 @@ let data_strings = ['id', 'date', 'author', 'gospel_team', 'gospel_group', 'plac
    // валидация значений полей
    let counter_valid = 0, extra_valid = 0;
    $("#modalAddEdit input[data-field='attend_time']").each(function () {
-     if ((!$(this).prev().val() || !$(this).val()) && $(this).next().val() === "С" && $(this).parent().parent().parent().prev().find(".select_reason").val() !== "С" && $(this).parent().parent().parent().prev().find(".name_session").text() !== "Приход в Центр обучения" &&
-     $(this).parent().parent().parent().prev().prev().find(".select_reason").val() !== "С") {
+     if ((!$(this).prev().val() || !$(this).val()) && $(this).next().val() === "С" && $(this).parent().parent().parent().prev().find(".select_reason").val() !== "С") {
+       /* && $(this).parent().parent().parent().prev().find(".name_session").text() !== "Приход в Центр обучения" &&
+       $(this).parent().parent().parent().prev().prev().find(".select_reason").val() !== "С"*/
        $(this).css("border-color", "red");
        $(this).prev().css("border-color", "red");
        counter_valid++;
@@ -128,7 +129,8 @@ let data_strings = ['id', 'date', 'author', 'gospel_team', 'gospel_group', 'plac
          + "&date="+$("#modalAddEdit").attr("data-date")
          +"&session_name="+$(this).parent().parent().find("h6").text()
          +"&member_key="+$("#modalAddEdit").attr("data-member_key")
-         +"&end_time="+$(this).parent().parent().parent().attr("data-end_time"));
+         +"&end_time="+$(this).parent().parent().parent().attr("data-end_time")
+         +"&id_attendance="+$("#modalAddEdit").attr("data-id"));
        } else if ($(this).hasClass("bg_color_pink")) { //&& $(this).next().val() === "О"
          let text_msg = "опоздание";
          if ($(this).parent().parent().parent().attr("data-end_time") === "1") {
@@ -253,6 +255,27 @@ let data_strings = ['id', 'date', 'author', 'gospel_team', 'gospel_group', 'plac
      $("#date_attendance_modal").text(part_text);
      $("#comment_modal").val($(this).attr('data-comment'));
      $("#modalAddEdit").attr("data-list", "");
+     // sorting that
+     commits.result.sort(function (a, b) {
+       let nameA, nameB;
+       if ((a["duration"] === "0" && a["attend_time"]) || (b["duration"] === "0" && b["attend_time"])) {
+         if (b["attend_time"]) {
+           nameA=a["session_time"], nameB=b["attend_time"];
+         } else {
+          nameA=a["attend_time"], nameB=b["session_time"];
+         }
+       } else {
+         nameA=a["session_time"], nameB=b["session_time"];
+       }
+       if (String(nameA) < String(nameB)) { //сортируем строки по возрастанию
+         return -1;
+       }
+       if (String(nameA) > String(nameB)) {
+         return 1;
+       }
+       return 0;
+     });
+
      for (var i = 0; i < commits.result.length; i++) {
        disabled_extra = "disabled";
        bg_light = "bg-light";
@@ -483,7 +506,6 @@ let data_strings = ['id', 'date', 'author', 'gospel_team', 'gospel_group', 'plac
       $('#add_attendance_str').attr("style", "margin-right: 320px;");
     } else {
       if (status_sheet === "1" && !trainee_access) {
-        $('#modalAddEdit input').attr("disabled", false);
         $('#send_blank').hide();
         $("#undo_attendance_str").prop("disabled", false);
       } else {
@@ -1079,6 +1101,27 @@ fetch("ajax/ftt_attendance_ajax.php?type=get_sessions&id=" + $(this).attr('data-
   $("#date_attendance_modal").text(part_text);
   $("#comment_modal").val($(this).attr('data-comment'));
   $("#modalAddEdit").attr("data-list", "");
+  // sorting that
+  //commits.result
+  commits.result.sort(function (a, b) {
+    let nameA, nameB;
+    if ((a["duration"] === "0" && a["attend_time"]) || (b["duration"] === "0" && b["attend_time"])) {
+      if (b["attend_time"]) {
+        nameA=a["session_time"], nameB=b["attend_time"];
+      } else {
+       nameA=a["attend_time"], nameB=b["session_time"];
+      }
+    } else {
+      nameA=a["session_time"], nameB=b["session_time"];
+    }
+    if (String(nameA) < String(nameB)) { //сортируем строки по возрастанию
+      return -1;
+    }
+    if (String(nameA) > String(nameB)) {
+      return 1;
+    }
+    return 0;
+  });
   for (var i = 0; i < commits.result.length; i++) {
     disabled_extra = "disabled";
     bg_light = "bg-light";
@@ -1701,6 +1744,7 @@ $('#author_of').text(text);
     }
 
     // Убираем статус один и удаляем опаздания и прогулы
+
 
     // внести изменения в строку и в бланк или перезагрузить страницу?
   });

@@ -53,7 +53,7 @@ if(isset($_GET['type']) && $_GET['type'] === 'create_extrahelp') {
 }
 
 if(isset($_GET['type']) && $_GET['type'] === 'create_late') {
-    echo set_late_automatic($_GET['member_key'], $_GET['date'], $_GET['delay'], $_GET['session_name'], $_GET['end_time']);
+    echo set_late_automatic($_GET['member_key'], $_GET['date'], $_GET['delay'], $_GET['session_name'], $_GET['end_time'], $_GET['id_attendance']);
     exit();
 }
 

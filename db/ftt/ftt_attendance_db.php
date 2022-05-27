@@ -126,7 +126,7 @@ function get_sessions($id) {
   global $db;
   $id = $db->real_escape_string($id);
   $strings = [];
-  $res = db_query("SELECT `id`, `sheet_id`, `session_name`, `session_time`, `attend_time`, `reason`, `late`, `absence`, `visit`, `end_time`
+  $res = db_query("SELECT `id`, `sheet_id`, `session_name`, `session_time`, `attend_time`, `reason`, `late`, `absence`, `visit`, `end_time`, `duration`
     FROM `ftt_attendance`
     WHERE `sheet_id` = '$id' ORDER BY `session_time`");
     while ($row = $res->fetch_assoc()) $strings[] = $row;
@@ -215,7 +215,7 @@ function set_attendance_archive ($id, $archive) {
   return $result;
 }
 
-function set_late_automatic($member_key, $date, $delay, $session_name, $end_time=0){
+function set_late_automatic($member_key, $date, $delay, $session_name, $end_time=0, $id_attendance) {
   global $db;
   $result = [];
   $member_key = $db->real_escape_string($member_key);
@@ -224,8 +224,8 @@ function set_late_automatic($member_key, $date, $delay, $session_name, $end_time
   $session_name = $db->real_escape_string($session_name);
   $end_time = $db->real_escape_string($end_time);
 
-  $res = db_query("INSERT INTO `ftt_late` (`member_key`, `date`, `delay`, `session_name`, `end_time`, `changed`)
-  VALUES ('$member_key', '$date', '$delay', '$session_name', '$end_time', 1)");
+  $res = db_query("INSERT INTO `ftt_late` (`member_key`, `date`, `delay`, `session_name`, `end_time`, 'id_attendance', `changed`)
+  VALUES ('$member_key', '$date', '$delay', '$session_name', '$id_attendance', '$end_time', 1)");
 
   $res2 = db_query("SELECT fl.id, fl.member_key, fl.date, fl.delay, fl.session_name, fl.end_time, fl.done, fl.author, fl.changed
       FROM ftt_late AS fl
@@ -264,7 +264,7 @@ function set_late_automatic($member_key, $date, $delay, $session_name, $end_time
   return count($result).' '.$count_lates;
 }
 
-function set_extrahelp_automatic($member_key, $date, $reason, $end_time=0){
+function set_extrahelp_automatic($member_key, $date, $reason, $end_time=0) {
   global $db;
   $member_key = $db->real_escape_string($member_key);
   $date = $db->real_escape_string($date);
