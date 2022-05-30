@@ -1,0 +1,203 @@
+label {
+  font-weight: normal;
+  margin-right: 5px;
+}
+
+button {
+  margin-right: 5px !important;
+}
+
+sup {
+  color: red;
+  font-size: 100% !important;
+}
+
+.block-not-visible {
+  /*или блокировать в PHP*/
+  display: none;
+}
+
+.input-request {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+.input-request:focus {
+  outline: none !important;
+  border-color: orange;
+}
+.col, .col-1, .col-2, .col-3, .col-4, .col-5, .col-6 {
+  margin-bottom: 25px;
+}
+
+.span-label-width-80 {
+  display: inline-block;
+  min-width: 80px;
+}
+
+.span-label-width-120 {
+  display: inline-block;
+  min-width: 120px;
+}
+
+.span-label-width-150 {
+  display: inline-block;
+  min-width: 150px;
+}
+
+.span-label-width-180 {
+  display: inline-block;
+  min-width: 180px;
+}
+
+.span-label-width-200 {
+  display: inline-block;
+  min-width: 200px;
+}
+
+.span-label-width-210 {
+  display: inline-block;
+  min-width: 210px;
+}
+
+.span-label-width-275 {
+  display: inline-block;
+  min-width: 275px;
+}
+
+.span-label-width-290 {
+  display: inline-block;
+  min-width: 290px;
+}
+
+.span-label-width-500 {
+  display: inline-block;
+  min-width: 500px;
+}
+
+.m-b-15px {
+  margin-bottom: 15px;
+}
+
+.width-100-px {
+  min-width: 100px;
+  margin-bottom: 15px;
+}
+
+.width-150-px {
+  min-width: 150px;
+  margin-bottom: 15px;
+}
+
+.width-175-px {
+  min-width: 175px;
+  margin-bottom: 15px;
+}
+
+.width-200-px {
+  min-width: 200px;
+  margin-bottom: 15px;
+}
+
+.width-250-px {
+  min-width: 250px;
+  margin-bottom: 15px;
+}
+
+.width-275-px {
+  min-width: 275px;
+  margin-bottom: 15px;
+}
+
+.width-300-px {
+  min-width: 300px;
+  margin-bottom: 15px;
+}
+
+.width-325-px {
+  min-width: 325px;
+  margin-bottom: 15px;
+}
+
+.width-350-px {
+  min-width: 350px;
+  margin-bottom: 15px;
+}
+
+.width-375-px {
+  min-width: 375px;
+  margin-bottom: 15px;
+}
+
+.width-400-px {
+  min-width: 400px;
+  margin-bottom: 15px;
+}
+
+.width-450-px {
+  min-width: 450px;
+  margin-bottom: 15px;
+}
+
+.i-width-long-one {
+  width: 96%;
+}
+
+.i-width-280-px {
+  width: 280px;
+}
+
+.i-width-220-px {
+  width: 220px;
+}
+
+.a-width-50-px {
+  min-width: 50px;
+}
+
+.b-width-50-px {
+  max-width: 50px;
+}
+
+.b-width-100-px {
+  max-width: 100px;
+}
+
+.b-width-125-px {
+  max-width: 125px;
+}
+
+.b-width-150-px {
+  max-width: 150px;
+}
+
+.b-width-200-px {
+  max-width: 200px;
+}
+
+.b-width-250-px {
+  max-width: 250px;
+}
+
+.pic-delete {
+  cursor: pointer;
+  font-size: 20px;
+  color: red;
+}
+
+#tooltip {
+  z-index: 9999;
+	position: absolute;
+	display: none;
+	top:0px;
+	left:0px;
+	background-color: #000;
+	padding: 5px 10px 5px 10px;
+	color: white;
+	opacity: 0.6;
+	border-radius: 5px;
+}
+
+.help-underline {
+	border-bottom: 1px dashed darkgrey;
+}

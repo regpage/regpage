@@ -1,0 +1,172 @@
+/*FTT EXTRA HELP*/
+button {
+  border-radius: 5px !important;
+}
+#col-main-content {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+
+#main_container {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+
+#extra_help_staff {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+#ftt_sub_container {
+  padding-left: 3px !important;
+  margin-left: 15px !important;
+  margin-right: 15px !important;
+}
+
+#ftt_sub_container .nav-link {
+  border: 1px lightgray solid;
+}
+
+#modalUniTitle {
+  margin-bottom: 0px;
+}
+
+#bar_extra_help .btn, #bar_late .btn {
+  margin-right: 10px;
+}
+
+#showModalAddEditExtraHelp, #showModalAddEditLate {
+  border-radius: 0.2rem;
+}
+
+#bar_extra_help select, #bar_late select {
+  margin-right: 10px;
+}
+
+#extra_help_staff .nav-link.active {
+  background-color: #dee2e6;
+}
+
+#extra_help_staff ul {
+  margin-left: 15px;
+}
+
+#list_header, #list_header_late {
+  margin-left: 0px;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+  border-bottom: 1px solid lightgrey;
+}
+
+#list_content, #list_content_late {
+  margin-left: 14px;
+}
+
+#modalAddEditExtraHelp label, #modalAddEditLate label {
+  font-family: 'Google Sans', Roboto, Helvetica, Arial, sans-serif !important;
+  font-size: 15px !important;
+  font-weight: 400 !important;
+}
+
+#modalAddEditExtraHelp h5, #modalAddEditLate h5 {
+  font-family: 'Google Sans', Roboto, Helvetica, Arial, sans-serif !important;
+}
+
+#modalAddEditExtraHelp select, #modalAddEditLate select {
+  background-color: white;
+  margin-left: -3px !important;
+}
+
+#fio_field {
+  padding-top: 4px;
+}
+
+/* ширина колонок*/
+#list_content .date_create_text {
+  max-width: 105px !important;
+}
+
+#list_content .reason_text {
+  min-width: 530px !important;
+}
+
+#list_content .set_to_archive_container {
+  max-width: 100px !important;
+}
+
+.hide_element {
+  display: none;
+}
+
+.text_blue {
+  color: #08c;
+}
+
+/* Строки */
+.text_grey {
+  color: #443e3e;
+}
+
+.light_text_grey {
+  font-size: 12px;
+  color: #AAA;
+}
+
+.ftt_extra_help_string, .ftt_late_string {
+  cursor: pointer;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  border-bottom: 1px lightgray solid;
+}
+
+.ftt_extra_help_string:hover, .ftt_late_string:hover {
+  background-color: #eee;
+}
+
+.active_string {
+  background-color: lightgrey;
+}
+
+.green_string {
+  background-color: #eefbee;
+}
+
+.green_string:hover {
+  background-color: #e0f3e0;
+}
+
+/* Стилизация полей ввода для модального окна */
+.input-google {
+  padding-left: 0px;
+  width: 100%;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: 1px lightgray solid;
+}
+/* form starting stylings -------------------------------*/
+.input-google:focus {
+  outline: none;
+  border-bottom: 2px gray solid;
+}
+ /*LABEL =======================================*/
+.label-google {
+  color: #646363;
+}
+
+/* ==== LATE ==== */
+#list_content_late .reason_text {
+  min-width: 500px !important;
+}
+
+#list_content_late .text_min {
+  min-width: 30px !important;
+}
+
+#list_content_late .date_create_text {
+  max-width: 105px !important;
+}
+
+#list_content_late .set_to_archive_container {
+  max-width: 100px !important;
+}

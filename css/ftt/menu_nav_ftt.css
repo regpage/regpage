@@ -1,0 +1,21 @@
+/*FTT NAV*/
+#ftt_navs .nav-link {
+  padding-left: 6px !important;
+  padding-right: 6px !important;
+  color: #08c;
+}
+
+#ftt_navs a:hover {
+  font-weight: bold;
+}
+
+.mark_menu_item {
+  font-weight: bold;
+  color: white !important;
+  background-color: #403f3f;
+  border-radius: 3px;
+}
+
+.mark_menu_item:hover {
+  color: white;
+}
