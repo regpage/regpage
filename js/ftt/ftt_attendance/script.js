@@ -256,13 +256,21 @@ let data_strings = ['id', 'date', 'author', 'gospel_team', 'gospel_group', 'plac
      $("#comment_modal").val($(this).attr('data-comment'));
      $("#modalAddEdit").attr("data-list", "");
      // sorting that
+
      commits.result.sort(function (a, b) {
-       let nameA, nameB;
-       if ((a["duration"] === "0" && a["attend_time"]) || (b["duration"] === "0" && b["attend_time"])) {
-         if (b["attend_time"]) {
+       let nameA, nameB;       
+       /*
+       полу рабочая прошлая версия
+       a['session_name'][a['session_name'].length-4] !== ":" && b['session_name'][b['session_name'].length-4] !== ":" && ((a["duration"] === "0" && a["attend_time"]) || (b["duration"] === "0" && b["attend_time"]))
+       */
+
+       if ((a["duration"] === "0" && a["attend_time"] && a['session_name'][a['session_name'].length-4] !== ":") || (b["duration"] === "0" && b["attend_time"] && b['session_name'][b['session_name'].length-4] !== ":")) {
+         if ((a["duration"] === "0" && a["attend_time"]) && (b["duration"] === "0" && b["attend_time"])) {
+           nameA=a["attend_time"], nameB=b["attend_time"];
+         } else if (b["duration"] === "0" && b["attend_time"]) {
            nameA=a["session_time"], nameB=b["attend_time"];
          } else {
-          nameA=a["attend_time"], nameB=b["session_time"];
+           nameA=a["attend_time"], nameB=b["session_time"];
          }
        } else {
          nameA=a["session_time"], nameB=b["session_time"];
