@@ -40,7 +40,7 @@ include_once "preheader.php";
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_extrahelp.php') { ?>
     <link href="css/ftt/ftt_extra_help.css?v2" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_gospel.php') { ?>
-    <link href="css/ftt/ftt_gospel.css?v4" rel="stylesheet">
+    <link href="css/ftt/ftt_gospel.css?v5" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_attendance.php') { ?>
     <link href="css/ftt/ftt_attendance.css?v13" rel="stylesheet">
 <?php } ?>

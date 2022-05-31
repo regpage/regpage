@@ -193,7 +193,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 id="modalUniTitle">Фильтры</h5>
+        <h5 id="">Фильтры</h5>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
       </div>
       <div class="modal-body">
@@ -264,7 +264,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 id="modalUniTitle">Порядок</h5>
+        <h5 id="">Порядок</h5>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
       </div>
       <div class="modal-body">
@@ -286,7 +286,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 id="modalUniTitle">Статистика благовестия</h5>
+        <h5 id="">Статистика благовестия</h5>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
       </div>
       <div class="modal-body">
@@ -431,7 +431,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 id="modalUniTitle">Цели</h5>
+        <h5 id="">Цели благовестия</h5>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
       </div>
       <div class="modal-body">
@@ -525,44 +525,44 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
           <hr style="border: 1px solid lightgrey; margin-top: 12px; margin-bottom: 12px;">
           <div class="row mb-2">
             <div class="col-12 mb-1"><b>Сколько листовок в неделю вы хотите раздавать?</b></div>
-            <div class="col-11"><input id="semester_flyers" type="number" class="form-control form-control-sm recom_goal" data-field="flyers"
+            <div class="col-2"><input id="semester_flyers" type="number" class="form-control form-control-sm recom_goal short_number_field" data-field="flyers"
               value="<?php echo $semester_flyers; ?>">
             </div>
-            <div class="col-1 pt-1"> (<?php echo getValueFttParamByName('min_flyers'); ?>)</div>
+            <div class="col-1 pt-1 pl-0"> (<?php echo getValueFttParamByName('min_flyers'); ?>)</div>
           </div>
           <div class="row mb-2">
             <div class="col-12 mb-1"><b>Скольким людям вы хотите благовествовать в течение недели?</b></div>
-            <div class="col-11"><input id="semester_people" type="number" class="form-control form-control-sm recom_goal" data-field="people"
+            <div class="col-2"><input id="semester_people" type="number" class="form-control form-control-sm recom_goal short_number_field" data-field="people"
               value="<?php echo $semester_people; ?>">
             </div>
-            <div class="col-1 pt-1">
+            <div class="col-1 pt-1 pl-0">
               (<?php echo getValueFttParamByName('min_people'); ?>)
             </div>
           </div>
           <div class="row mb-2">
             <div class="col-12 mb-1"><b>Сколько спасенных человек вы хотите обретать каждую неделю?</b></div>
-            <div class="col-11"><input id="semester_prayers" type="number" class="form-control form-control-sm recom_goal" data-field="prayers"
+            <div class="col-2"><input id="semester_prayers" type="number" class="form-control form-control-sm recom_goal short_number_field" data-field="prayers"
               value="<?php echo $semester_prayers; ?>">
             </div>
-            <div class="col-1 pt-1">
+            <div class="col-1 pt-1 pl-0">
                 (<?php echo getValueFttParamByName('min_prayers'); ?>)
             </div>
           </div>
           <div class="row mb-2">
             <div class="col-12 mb-1"><b>Сколько человек вы хотите крестить за семестр?</b></div>
-            <div class="col-11"><input id="semester_baptism" type="number" class="form-control form-control-sm recom_goal" data-field="baptism"
+            <div class="col-2"><input id="semester_baptism" type="number" class="form-control form-control-sm recom_goal short_number_field" data-field="baptism"
               value="<?php echo $semester_baptism; ?>">
             </div>
-            <div class="col-1 pt-1">
+            <div class="col-1 pt-1 pl-0">
                 (<?php echo getValueFttParamByName('min_baptism'); ?>)
             </div>
           </div>
           <div class="row mb-2">
             <div class="col-12 mb-1"><b>Сколько пребывающего плода вы хотите принести за семестр (новые верующие, с которыми вы регулярно проводите встречи и кто участвует в собраниях церкви)?</b></div>
-            <div class="col-11"><input id="semester_fruit" type="number" class="form-control form-control-sm recom_goal" data-field="fruit"
+            <div class="col-2"><input id="semester_fruit" type="number" class="form-control form-control-sm recom_goal short_number_field" data-field="fruit"
               value="<?php echo $semester_fruit; ?>">
             </div>
-            <div class="col-1 pt-1">
+            <div class="col-1 pt-1 pl-0">
               (<?php echo getValueFttParamByName('min_fruit'); ?>)
             </div>
           </div>

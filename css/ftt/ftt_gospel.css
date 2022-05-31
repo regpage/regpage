@@ -201,7 +201,7 @@ button {
   max-width: 100px !important;
 }
 .short_number_field {
-    width: 50px;
+    width: 50px !important;
 }
 
 .hide_element {

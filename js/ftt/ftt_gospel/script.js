@@ -1027,10 +1027,11 @@ $(".recom_goal").change(function () {
   }
 });
 if (!trainee_access) {
-  $(".recom_goal").prop("disabled", true);
+  //$(".recom_goal").prop("disabled", false);
 } else {
    $("#team_goal_select").prop("disabled", true);
    $("#group_goal_select").prop("disabled", true);
+   $(".recom_goal").prop("disabled", true);
 }
 // team
 $("#team_goal_select").change(function () {
