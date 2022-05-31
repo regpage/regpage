@@ -1020,14 +1020,14 @@ $(".sort_date, .sort_team, .sort_group").click(function (e) {
 });
 
 $(".recom_goal").change(function () {
-  if (trainee_access && !ftt_access_trainee) {
+  if ((!trainee_access || ftt_access_trainee) && ($("#team_goal_select").val() !== "_all_" && $("#group_goal_select").val() && $("#group_goal_select").val() !== "_all_")) {
     fetch("ajax/ftt_gospel_ajax.php?type=set_ftt_gospel_goals&gospel_team="+$("#team_goal_select").val()+"&gospel_group="+$("#group_goal_select").val()+"&column="+$(this).attr("data-field")+"&value="+$(this).val())
     .then(response => response.json())
     .then(/*commits => console.log(commits.result)*/);
   }
 });
 if (!trainee_access) {
-  //$(".recom_goal").prop("disabled", false);
+  // $(".recom_goal").prop("disabled", false);
 } else {
    $("#team_goal_select").prop("disabled", true);
    $("#group_goal_select").prop("disabled", true);
