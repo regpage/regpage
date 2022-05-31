@@ -189,6 +189,9 @@ let data_strings = ['id', 'date', 'author', 'gospel_team', 'gospel_group', 'plac
  // клик по строке, загружаем форму
  $(".list_string").click(function () {
    let disabled = "", status;
+   $("#modal-block_staff").hide();
+   $("#modal-block_1").show();
+   $("#modal-block_2").show();
    status_sheet = $(this).attr("data-status");
    // поля бланка для просмотра служащими отображаются в соответствии с семестром обучающегося
    if (!trainee_access) {
@@ -258,7 +261,7 @@ let data_strings = ['id', 'date', 'author', 'gospel_team', 'gospel_group', 'plac
      // sorting that
 
      commits.result.sort(function (a, b) {
-       let nameA, nameB;       
+       let nameA, nameB;
        /*
        полу рабочая прошлая версия
        a['session_name'][a['session_name'].length-4] !== ":" && b['session_name'][b['session_name'].length-4] !== ":" && ((a["duration"] === "0" && a["attend_time"]) || (b["duration"] === "0" && b["attend_time"]))
@@ -405,6 +408,7 @@ let data_strings = ['id', 'date', 'author', 'gospel_team', 'gospel_group', 'plac
      if ($(".extra_label").is(":visible")) {
        $(".extra_label").parent().parent().parent().addClass("mb-2");
      }
+
      // tooltip
      $("#modalAddEdit").find('[data-toggle="tooltip"]').tooltip();
      // customs select
@@ -1034,6 +1038,9 @@ let data_strings = ['id', 'date', 'author', 'gospel_team', 'gospel_group', 'plac
     $("#archive_content").html(html.join(''));
     // клик по строкке, загружаем форму
     $(".list_string_archive").click(function () {
+      $("#modal-block_staff").hide();
+      $("#modal-block_1").show();
+      $("#modal-block_2").show();
       if ($(this).attr("data-id") === "undefined") {
         return;
       }
@@ -1722,14 +1729,32 @@ $('#author_of').text(text);
    });
  });
 
+ $("#bible_reading, #morning_revival, #personal_prayer, #common_prayer, #ministry_reading").click(function () {
+   if ($(this).val() === "0") {
+     $(this).val("");
+   }
+ });
+
  $("#add_attendance_str").click(function() {
+   $("#btn_delete_blank_str").click(function() {
+     if (confirm("В этот день учёт не ведётся?")) {
+       $("#modalAddEdit").modal("hide");
+       $("#spinner").modal("show");
+       fetch('ajax/ftt_attendance_ajax.php?type=dlt_sessions_in_blank&id='+$("#modalAddEdit").attr("data-id"))
+       .then(response => response.json())
+       .then(commits => {
+         $("#spinner").modal("hide");
+         location.reload();
+       });
+     }
+   });
    $("#modal-block_1").hide();
    $("#modal-block_2").hide();
    $("#modal-block_staff").show();
-   fetch('ajax/ftt_attendance_ajax.php?type=get_attendance_session&date='+$("#modalAddEdit").attr("data-date")+'&member_key='+$("#modalAddEdit").attr("data-member_key")+'&id='+$("#modalAddEdit").attr("data-id"))
+   /*fetch('ajax/ftt_attendance_ajax.php?type=get_attendance_session&date='+$("#modalAddEdit").attr("data-date")+'&member_key='+$("#modalAddEdit").attr("data-member_key")+'&id='+$("#modalAddEdit").attr("data-id"))
    .then(response => response.json())
    .then(commits => {
-   });
+   });*/
   });
 
   // ОТКАТ

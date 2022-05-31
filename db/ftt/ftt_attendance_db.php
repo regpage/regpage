@@ -275,6 +275,13 @@ function set_extrahelp_automatic($member_key, $date, $reason, $end_time=0) {
   return $res;
 }
 
+// STAFF FUNCTIONS
+function dlt_sessions_in_blank($sheet_id) {
+  global $db;
+  $sheet_id = $db->real_escape_string($sheet_id);
+  $res = db_query("DELETE FROM `ftt_attendance` WHERE `sheet_id` = $sheet_id");
+}
+// add/delete string session in blank
 function getSessionStaff($value='') {
   /*
   1. Получаем семестр (и др. правила)
@@ -285,6 +292,7 @@ function getSessionStaff($value='') {
   $res_correction = db_query("SELECT * FROM ftt_session_correction WHERE (`date` > (NOW() - INTERVAL 1 DAY)) AND (`date` < (NOW() + INTERVAL 1 DAY)) AND `attendance` = 1");
   while ($row = $res_correction->fetch_assoc()) $correction[] = $row;
   */
+  return 1;
 }
 
 ?>

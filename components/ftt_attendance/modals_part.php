@@ -98,7 +98,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
         </div>
         <?php if ($ftt_access['group'] !== 'trainee'): ?>
         <div id="modal-block_staff" style="display:none;">
-
+          <button type="button" id="btn_delete_blank_str" class="btn btn-sm btn-danger">Учёт в этот день не ведётся</button>
         </div>
         <?php endif; ?>
       </div>
@@ -106,7 +106,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
         <!--<span id="show_error_span_mdl" style="color: red; font-weight: bold; display: none; padding-left:20px;">Заполните выделенные поля или укажите причину.</span>-->
         <?php if (!$serving_trainee && $ftt_access['group'] !== 'trainee'): ?>
           <button id="undo_attendance_str" class="btn btn-sm btn-warning"><i class="fa fa-undo" aria-hidden="true" title="Откат записи"></i></button>
-          <button id="add_attendance_str" class="btn btn-sm btn-danger" style="margin-right: 215px;" disabled><i class="fa fa-list" aria-hidden="true"></i></button>
+          <button id="add_attendance_str" class="btn btn-sm btn-danger" style="margin-right: 215px;"><i class="fa fa-list" aria-hidden="true"></i></button>
         <?php endif; ?>
         <button id="send_blank" class="btn btn-sm btn-success" data-dismiss="modal" aria-hidden="true" style="">Отправить</button>
         <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Закрыть</button>

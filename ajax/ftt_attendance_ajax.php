@@ -57,12 +57,12 @@ if(isset($_GET['type']) && $_GET['type'] === 'create_late') {
     exit();
 }
 
-/*
-if (isset($_GET['type']) && $_GET['type'] === 'update_data_blank') {
-  echo json_encode(["result"=>updateDataBlank($_POST)]);
+
+if (isset($_GET['type']) && $_GET['type'] === 'dlt_sessions_in_blank') {
+  echo json_encode(["result"=>dlt_sessions_in_blank($_GET['id'])]);
   exit();
 }
-
+/*
 if (isset($_GET['type']) && $_GET['type'] === 'delete_blank') {
   echo json_encode(["result"=>deleteBlank($_GET['id'])]);
   exit();
