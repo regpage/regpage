@@ -47,7 +47,10 @@ function db_newDailyAttendance () {
       }
       echo "{$id_member}, ";
       $id_new_string = db_query("INSERT INTO ftt_attendance_sheet (`date`, `member_key`) VALUES (NOW(), '$id_member')");
-
+      // лучшие варианты получения ID
+      // $db->insert_id;
+      // ИЛИ
+      // mysqli_insert_id($db);
       $max_id;
       if ($id_new_string) {
         $max_id_tmp = db_query("SELECT MAX(id) AS last_id FROM ftt_attendance_sheet");

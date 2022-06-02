@@ -626,6 +626,9 @@ filters_list_show();
 
   // Печать
   function statistics_counter() {
+    // автоматизировать и вызывать другой запрос адаптированный для группб если понадобится
+    // можно собирать данные в массив и группы заполнять при рендоринге
+    // render_print_report(headers);  // вызывать из статистики предварительно передав туда хедерс
     $("#team_select_print").val(); //serving_ones_list_full[admin_id_gl]["gospel_team"]
     fetch("ajax/ftt_gospel_ajax.php?type=get_gospel_str&team="+$("#team_select_print").val()+"&period=_all_&from=&to=")
     .then(response => response.json())
@@ -640,7 +643,11 @@ filters_list_show();
       let period_to = new Date($("#period_to_print").val());
       let range_flyers = 0, range_people = 0, range_prayers = 0, range_baptism = 0, range_meets_last = 0, range_meets_current = 0, range_meetings_last = 0;
       let range_meetings_current = 0, range_first_contacts = 0, range_further_contacts = 0, range_homes = 0;
+      let group_stat = [];
       for (let i = 0; i < stat.length; i++) {
+        // При условии что отчёт формируется по всем группам
+        // Добавить массив с элементами по количеству групп. В каждой группе все элементы для боди.
+        // В них записывать статистику и передавать в функцию рендеринга
         if (selected_group === stat[i].gospel_group && selected_group !== "_all_" && selected_group) {
           flyers += Number(stat[i].flyers);
           people += Number(stat[i].people);
@@ -670,6 +677,34 @@ filters_list_show();
           }
         }
         if (selected_group === "_all_" || !selected_group) {
+          if (selected_group === "_all_" && $("#team_select_print").val() !== "_all_") {
+            if (!group_stat[stat[i].gospel_group]) {
+              group_stat[stat[i].gospel_group] = [];
+              group_stat[stat[i].gospel_group]["flyers"] = 0;
+              group_stat[stat[i].gospel_group]["people"] = 0;
+              group_stat[stat[i].gospel_group]["prayers"] = 0;
+              group_stat[stat[i].gospel_group]["baptism"] = 0;
+              group_stat[stat[i].gospel_group]["meets_last"] = 0;
+              group_stat[stat[i].gospel_group]["meets_current"] = 0;
+              group_stat[stat[i].gospel_group]["meetings_last"] = 0;
+              group_stat[stat[i].gospel_group]["meetings_current"] = 0;
+              group_stat[stat[i].gospel_group]["first_contacts"] = 0;
+              group_stat[stat[i].gospel_group]["further_contacts"] = 0;
+              group_stat[stat[i].gospel_group]["homes"] = 0;
+            }
+
+            group_stat[stat[i].gospel_group]["flyers"] += Number(stat[i].flyers);
+            group_stat[stat[i].gospel_group]["people"] += Number(stat[i].people);
+            group_stat[stat[i].gospel_group]["prayers"] += Number(stat[i].prayers);
+            group_stat[stat[i].gospel_group]["baptism"] += Number(stat[i].baptism);
+            group_stat[stat[i].gospel_group]["meets_last"] += Number(stat[i].meets_last);
+            group_stat[stat[i].gospel_group]["meets_current"] += Number(stat[i].meets_current);
+            group_stat[stat[i].gospel_group]["meetings_last"] += Number(stat[i].meetings_last);
+            group_stat[stat[i].gospel_group]["meetings_current"] += Number(stat[i].meetings_current);
+            group_stat[stat[i].gospel_group]["first_contacts"] += Number(stat[i].first_contacts);
+            group_stat[stat[i].gospel_group]["further_contacts"] += Number(stat[i].further_contacts);
+            group_stat[stat[i].gospel_group]["homes"] += Number(stat[i].homes);
+          }
           flyers += Number(stat[i].flyers);
           people += Number(stat[i].people);
           prayers += Number(stat[i].prayers);
@@ -698,7 +733,12 @@ filters_list_show();
           }
         }
       }
-
+      if (selected_group === "_all_") {
+        $(".extra_groups").remove();
+        render_print_report(group_stat);
+      } else {
+        $(".extra_groups").remove();
+      }
       $("#team_name_print").text($("#team_select_print option:selected").text() + ": " + dateStrToddmmyyyyToyyyymmdd($("#period_from_print").val(), true) + " — " + dateStrToddmmyyyyToyyyymmdd($("#period_to_print").val(), true));
 
       $("#flyers_all").text(flyers);
@@ -729,16 +769,56 @@ filters_list_show();
   $("#print_modal_open").click(function () {
     statistics_counter();
   });
+  // рендорим поля для групп в таблице отчёта
+  function render_print_report(groups) {
+    let groups_html, body_html;
+    groups_html = "";
+    let body_flyers = "", body_people = "", body_prayers = "", body_baptism = "", body_meets_last = "", body_meets_current = "", body_meetings_last = "", body_meetings_current = "", body_first_contacts = "", body_further_contacts = "", body_homes = "";
+    for (let group in groups) {
+      groups_html += '<th class="extra_groups" style="text-align: right; min-width: 80px;">Группа '+group+'</th>';
+      body_flyers += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+groups[group]["flyers"]+"</td>";
+      body_people += "<td class='extra_groups' style='text-align: right; min-width: 85px;'>"+groups[group]["people"]+"</td>";
+      body_prayers += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+groups[group]["prayers"]+"</td>";
+      body_baptism += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+groups[group]["baptism"]+"</td>";
+      body_meets_last += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+groups[group]["meets_last"]+"</td>";
+      body_meets_current += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+groups[group]["meets_current"]+"</td>";
+      body_meetings_last += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+groups[group]["meetings_last"]+"</td>";
+      body_meetings_current += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+groups[group]["meetings_current"]+"</td>";
+      body_first_contacts += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+groups[group]["first_contacts"]+"</td>";
+      body_further_contacts += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+groups[group]["further_contacts"]+"</td>";
+      body_homes += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+groups[group]["homes"]+"</td>";
+    }
+    $(groups_html).insertAfter("#th_questions");
+    $(body_flyers).insertAfter("#question_flyers");
+    $(body_people).insertAfter("#question_people");
+    $(body_prayers).insertAfter("#question_prayers");
+    $(body_baptism).insertAfter("#question_baptism");
+    $(body_meets_last).insertAfter("#question_meets_last");
+    $(body_meets_current).insertAfter("#question_meets_current");
+    $(body_meetings_last).insertAfter("#question_meetings_last");
+    $(body_meetings_current).insertAfter("#question_meetings_current");
+    $(body_first_contacts).insertAfter("#question_first_contacts");
+    $(body_further_contacts).insertAfter("#question_further_contacts");
+    $(body_homes).insertAfter("#question_homes");
+  }
+
   $("#period_from_print, #period_to_print, #team_select_print, #group_select_print").change(function(e) {
+    // group condition
+    $("#group_number_print").text("");
+    if (e.target.id === "group_select_print" && $(this).val() && $(this).val() !== "_all_") {
+      $("#group_number_print").text("Группа "+$(this).val());
+    }
     // team condition
     if (e.target.id === "team_select_print") {
       // формируем группы
       fetch("ajax/ftt_gospel_ajax.php?type=get_ftt_gospel_groups&gospel_team="+$(this).val())
       .then(response => response.json())
       .then(commits => {
+        let headers = [];
         let html_options = "<option value='_all_'> Все группы";
-        for (var i = 0; i < commits.result.length; i++) {
+        for (let i = 0; i < commits.result.length; i++) {
           html_options += "<option value='"+commits.result[i].gospel_group+"'>"+commits.result[i].gospel_group;
+          headers.push(commits.result[i].gospel_group);
         }
         $("#group_select_print").html(html_options);
         if ($("#period_from_print").val() && $("#period_to_print").val()) {
@@ -759,7 +839,7 @@ filters_list_show();
     }
 
     function popup(data){
-      let mywindow = window.open('', 'Благовестие', 'height=400,width=700');
+      let mywindow = window.open('', 'Благовестие', 'height=600,width=800');
       mywindow.document.write('<html><head><title>Благовестие. Для отправки на принтер нажмите Ctrl+P.</title>');
       mywindow.document.write('</head><body><style>th {border-bottom: 1px solid black; text-align: center; border-collapse: collapse;} table, td {border-bottom: 1px solid black; text-align: right; border-collapse: collapse;}</style>');
       mywindow.document.write(data);

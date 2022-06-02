@@ -345,55 +345,58 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
             <table class="table"><!-- style="width:760px;" -->
               <thead>
                 <tr class="tbl-statistics-header">
-                  <th style="text-align: left" colspan="3" id="team_name_print"></th>
+                  <th style="text-align: left" colspan="3" >
+                    <span id="team_name_print"></span>
+                    <span style="padding-left: 25px;"  id="group_number_print"></span>
+                  </th>
                 </tr>
                 <tr class="tbl-statistics-header">
-                  <th style="text-align: left">Вопросы</th>
-                  <th style="text-align: right;">За период</th>
-                  <th style="padding-left: 10px; text-align: right;">За семестр</th>
+                  <th  id="th_questions" style="text-align: left;">Вопросы</th>
+                  <th style="text-align: right; min-width: 99px;">За период</th>
+                  <th style="padding-left: 10px; text-align: right; min-width: 104px;">За семестр</th>
                 </tr>
                 <tr>
-                  <td style="text-align: left">Сколько листовок вы раздали?</td>
+                  <td id="question_flyers" style="text-align: left">Сколько листовок вы раздали?</td>
                   <td id="range_flyers" style="text-align: right"></td>
                   <td id="flyers_all" style="text-align: right"></td>
                 </tr>
                 <tr>
-                  <td style="text-align: left">Скольким людям вы благовествовали?</td>
+                  <td id="question_people" style="text-align: left">Скольким людям вы благовествовали?</td>
                   <td id="range_people" style="text-align: right"></td>
                   <td id="people_all" style="text-align: right"></td>
                 </tr>
                 <tr>
-                  <td style="text-align: left">Сколько человек помолилось с вами?</td>
+                  <td id="question_prayers" style="text-align: left">Сколько человек помолилось с вами?</td>
                   <td id="range_prayers" style="text-align: right"></td>
                   <td id="prayers_all" style="text-align: right"></td>
                 </tr>
                 <tr>
-                  <td style="text-align: left">Сколько человек было крещено?</td>
+                  <td id="question_baptism" style="text-align: left">Сколько человек было крещено?</td>
                   <td id="range_baptism" style="text-align: right"></td>
                   <td id="baptism_all" style="text-align: right"></td>
                 </tr>
                 <tr>
-                  <td style="text-align: left">Со сколькими новичками прошлых семестров вы встречались?</td>
+                  <td id="question_meets_last" style="text-align: left">Со сколькими новичками прошлых семестров вы встречались?</td>
                   <td id="range_meets_last" style="text-align: right"></td>
                   <td id="meets_last_all" style="text-align: right"></td>
                 </tr>
                 <tr>
-                  <td style="text-align: left">Со сколькими новичками текущего семестра вы встречались?</td>
+                  <td id="question_meets_current" style="text-align: left">Со сколькими новичками текущего семестра вы встречались?</td>
                   <td id="range_meets_current" style="text-align: right"></td>
                   <td id="meets_current_all" style="text-align: right"></td>
                 </tr>
                 <tr>
-                  <td style="text-align: left">Сколько новичков прошлых семестров было на собрании?</td>
+                  <td id="question_meetings_last" style="text-align: left">Сколько новичков прошлых семестров было на собрании?</td>
                   <td id="range_meetings_last" style="text-align: right"></td>
                   <td id="meetings_last_all" style="text-align: right"></td>
                 </tr>
                 <tr>
-                  <td style="text-align: left">Сколько новичков текущего семестра было на собрании?</td>
+                  <td id="question_meetings_current" style="text-align: left">Сколько новичков текущего семестра было на собрании?</td>
                   <td  id="range_meetings_current" style="text-align: right"></td>
                   <td id="meetings_current_all" style="text-align: right"></td>
                 </tr>
                 <tr>
-                  <td style="text-align: left">Сколько домов святых вы посетили?</td>
+                  <td id="question_homes" style="text-align: left">Сколько домов святых вы посетили?</td>
                   <td id="range_homes" style="text-align: right"></td>
                   <td id="homes_all" style="text-align: right"></td>
                 </tr>
@@ -401,12 +404,12 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
                   <td style="text-align: left" colspan="3"><b>Проект «Библия, открытая для всех»</b></td>
                 </tr>
                 <tr>
-                  <td style="text-align: left">Сколько было первых контактов по телефону или в переписке?</td>
+                  <td id="question_first_contacts" style="text-align: left">Сколько было первых контактов по телефону или в переписке?</td>
                   <td id="range_first_contacts" style="text-align: right"></td>
                   <td  id="first_contacts_all" style="text-align: right"></td>
                 </tr>
                 <tr>
-                  <td style="text-align: left">Сколько было повторных контактов по телефону или в переписке?</td>
+                  <td id="question_further_contacts" style="text-align: left">Сколько было повторных контактов по телефону или в переписке?</td>
                   <td id="range_further_contacts" style="text-align: right"></td>
                   <td id="further_contacts_all" style="text-align: right"></td>
                 </tr>
