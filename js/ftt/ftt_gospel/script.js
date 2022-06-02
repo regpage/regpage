@@ -626,9 +626,6 @@ filters_list_show();
 
   // Печать
   function statistics_counter() {
-    // автоматизировать и вызывать другой запрос адаптированный для группб если понадобится
-    // можно собирать данные в массив и группы заполнять при рендоринге
-    // render_print_report(headers);  // вызывать из статистики предварительно передав туда хедерс
     $("#team_select_print").val(); //serving_ones_list_full[admin_id_gl]["gospel_team"]
     fetch("ajax/ftt_gospel_ajax.php?type=get_gospel_str&team="+$("#team_select_print").val()+"&period=_all_&from=&to=")
     .then(response => response.json())
@@ -735,9 +732,51 @@ filters_list_show();
       }
       if (selected_group === "_all_") {
         $(".extra_groups").remove();
-        render_print_report(group_stat);
+          render_print_report(group_stat);
       } else {
         $(".extra_groups").remove();
+        // Получаем цели для колонки целей (только для групп)
+        if ($("#group_select_print").val() && $("#group_select_print").val() !== "_all_") {
+          fetch("ajax/ftt_gospel_ajax.php?type=get_ftt_gospel_goals&gospel_team=" +$("#team_select_print").val()+"&gospel_group="+$("#group_select_print").val())
+          .then(response => response.json())
+          .then(commits => {            
+            let goals = commits.result;
+            let flyers = goals["flyers"] || 0;
+            let people = goals["people"] || 0;
+            let prayers = goals["prayers"] || 0;
+            let baptism = goals["baptism"] || 0;
+            let fruit = goals["fruit"] || 0;
+            let groups_html = "", body_flyers = "", body_people = "", body_prayers = "", body_baptism = "", body_meets_last = "", body_meets_current = "", body_meetings_last = "", body_meetings_current = "", body_first_contacts = "", body_further_contacts = "", body_homes = "";
+            // Цели
+            if (goals) {
+                groups_html += '<th class="extra_groups" style="text-align: right; min-width: 80px;">Цели</th>';
+                body_flyers += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+flyers+"</td>";
+                body_people += "<td class='extra_groups' style='text-align: right; min-width: 85px;'>"+people+"</td>";
+                body_prayers += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+prayers+"</td>";
+                body_baptism += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+baptism+"</td>";
+                body_meets_last += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+fruit+"</td>";
+                body_meets_current += "<td class='extra_groups' style='text-align: right; min-width: 80px;'></td>";
+                body_meetings_last += "<td class='extra_groups' style='text-align: right; min-width: 80px;'></td>";
+                body_meetings_current += "<td class='extra_groups' style='text-align: right; min-width: 80px;'></td>";
+                body_first_contacts += "<td class='extra_groups' style='text-align: right; min-width: 80px;'></td>";
+                body_further_contacts += "<td class='extra_groups' style='text-align: right; min-width: 80px;'></td>";
+                body_homes += "<td class='extra_groups' style='text-align: right; min-width: 80px;'></td>";
+
+                $(groups_html).insertAfter("#th_questions");
+                $(body_flyers).insertAfter("#question_flyers");
+                $(body_people).insertAfter("#question_people");
+                $(body_prayers).insertAfter("#question_prayers");
+                $(body_baptism).insertAfter("#question_baptism");
+                $(body_meets_last).insertAfter("#question_meets_last");
+                $(body_meets_current).insertAfter("#question_meets_current");
+                $(body_meetings_last).insertAfter("#question_meetings_last");
+                $(body_meetings_current).insertAfter("#question_meetings_current");
+                $(body_first_contacts).insertAfter("#question_first_contacts");
+                $(body_further_contacts).insertAfter("#question_further_contacts");
+                $(body_homes).insertAfter("#question_homes");
+            }
+          });
+        }
       }
       $("#team_name_print").text($("#team_select_print option:selected").text() + ": " + dateStrToddmmyyyyToyyyymmdd($("#period_from_print").val(), true) + " — " + dateStrToddmmyyyyToyyyymmdd($("#period_to_print").val(), true));
 
@@ -774,6 +813,7 @@ filters_list_show();
     let groups_html, body_html;
     groups_html = "";
     let body_flyers = "", body_people = "", body_prayers = "", body_baptism = "", body_meets_last = "", body_meets_current = "", body_meetings_last = "", body_meetings_current = "", body_first_contacts = "", body_further_contacts = "", body_homes = "";
+
     for (let group in groups) {
       groups_html += '<th class="extra_groups" style="text-align: right; min-width: 80px;">Группа '+group+'</th>';
       body_flyers += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+groups[group]["flyers"]+"</td>";

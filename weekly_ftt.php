@@ -1,5 +1,6 @@
 <?php
 //Автоматическое удаление опозданий
+// строку ниже заменить на config.php
 include_once 'db.php';
 //include_once 'logWriter.php';
 

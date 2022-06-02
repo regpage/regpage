@@ -6,32 +6,9 @@ define ('USER_TYPE',"user");
 define ('COLLEGE_TYPE',"college");
 define ('MEMBER_TYPE',"member");
 
-date_default_timezone_set ("Europe/Moscow");
-require_once 'FirePHP.class.php';
 require_once 'config.php';
 include_once 'utils.php';
 include_once 'db2.php';
-//include_once 'logWriter.php';
-
-// establish mySQLi connection
-
-$db->set_charset('utf8');
-if ($db->connect_errno) die('Could not connect: '.$mysqli->connect_error);
-
-// make a query to the database
-function db_query ($query) {
-  global $db;
-  $res=$db->query ($query);
-  if (!$res) throw new Exception ($db->error);
-  return $res;
-}
-
-function db_multiQuery ($query) {
-    global $db;
-    $res=$db->multi_query ($query);
-    if (!$res) throw new Exception ($db->error);
-    return $res;
-}
 
 function db_checkSync () {
     $res=db_query ("SELECT value FROM param WHERE name='sync_started'");

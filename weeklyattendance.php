@@ -1,5 +1,6 @@
 <?php
 //Автоматическое добавление строк для учёта практик (practices) выполняется по заданию (cron)
+// строку ниже заменить на config.php
 include_once 'db.php';
 include_once 'logWriter.php';
 include_once 'db/classes/date_convert.php';

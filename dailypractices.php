@@ -1,5 +1,7 @@
 <?php
 //Автоматическое добавление строк для учёта практик (practices) выполняется по заданию (cron)
+// РАЗДЕЛ БУДЕТ УДАЛЁН
+// строку ниже заменить на config.php
 include_once 'db.php';
 include_once 'logWriter.php';
 
