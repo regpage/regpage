@@ -271,6 +271,12 @@ function save_data_blank() {
     });
   }
 }
+// Убираем ноль в поле при вводе
+$(".recom_goal").click(function () {
+  if ($(this).val() === "0") {
+    $(this).val("");
+  }
+});
 
 $('#date_field').change(function () {
 
@@ -689,18 +695,20 @@ filters_list_show();
               group_stat[stat[i].gospel_group]["further_contacts"] = 0;
               group_stat[stat[i].gospel_group]["homes"] = 0;
             }
-
-            group_stat[stat[i].gospel_group]["flyers"] += Number(stat[i].flyers);
-            group_stat[stat[i].gospel_group]["people"] += Number(stat[i].people);
-            group_stat[stat[i].gospel_group]["prayers"] += Number(stat[i].prayers);
-            group_stat[stat[i].gospel_group]["baptism"] += Number(stat[i].baptism);
-            group_stat[stat[i].gospel_group]["meets_last"] += Number(stat[i].meets_last);
-            group_stat[stat[i].gospel_group]["meets_current"] += Number(stat[i].meets_current);
-            group_stat[stat[i].gospel_group]["meetings_last"] += Number(stat[i].meetings_last);
-            group_stat[stat[i].gospel_group]["meetings_current"] += Number(stat[i].meetings_current);
-            group_stat[stat[i].gospel_group]["first_contacts"] += Number(stat[i].first_contacts);
-            group_stat[stat[i].gospel_group]["further_contacts"] += Number(stat[i].further_contacts);
-            group_stat[stat[i].gospel_group]["homes"] += Number(stat[i].homes);
+            let date_str_group = new Date(stat[i].date);
+            if (date_str_group >= period_from && date_str_group <= period_to) {
+              group_stat[stat[i].gospel_group]["flyers"] += Number(stat[i].flyers);
+              group_stat[stat[i].gospel_group]["people"] += Number(stat[i].people);
+              group_stat[stat[i].gospel_group]["prayers"] += Number(stat[i].prayers);
+              group_stat[stat[i].gospel_group]["baptism"] += Number(stat[i].baptism);
+              group_stat[stat[i].gospel_group]["meets_last"] += Number(stat[i].meets_last);
+              group_stat[stat[i].gospel_group]["meets_current"] += Number(stat[i].meets_current);
+              group_stat[stat[i].gospel_group]["meetings_last"] += Number(stat[i].meetings_last);
+              group_stat[stat[i].gospel_group]["meetings_current"] += Number(stat[i].meetings_current);
+              group_stat[stat[i].gospel_group]["first_contacts"] += Number(stat[i].first_contacts);
+              group_stat[stat[i].gospel_group]["further_contacts"] += Number(stat[i].further_contacts);
+              group_stat[stat[i].gospel_group]["homes"] += Number(stat[i].homes);
+            }
           }
           flyers += Number(stat[i].flyers);
           people += Number(stat[i].people);
@@ -739,7 +747,7 @@ filters_list_show();
         if ($("#group_select_print").val() && $("#group_select_print").val() !== "_all_") {
           fetch("ajax/ftt_gospel_ajax.php?type=get_ftt_gospel_goals&gospel_team=" +$("#team_select_print").val()+"&gospel_group="+$("#group_select_print").val())
           .then(response => response.json())
-          .then(commits => {            
+          .then(commits => {
             let goals = commits.result;
             let flyers = goals["flyers"] || 0;
             let people = goals["people"] || 0;
@@ -751,7 +759,7 @@ filters_list_show();
             if (goals) {
                 groups_html += '<th class="extra_groups" style="text-align: right; min-width: 80px;">Цели</th>';
                 body_flyers += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+flyers+"</td>";
-                body_people += "<td class='extra_groups' style='text-align: right; min-width: 85px;'>"+people+"</td>";
+                body_people += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+people+"</td>";
                 body_prayers += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+prayers+"</td>";
                 body_baptism += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+baptism+"</td>";
                 body_meets_last += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+fruit+"</td>";
@@ -815,18 +823,18 @@ filters_list_show();
     let body_flyers = "", body_people = "", body_prayers = "", body_baptism = "", body_meets_last = "", body_meets_current = "", body_meetings_last = "", body_meetings_current = "", body_first_contacts = "", body_further_contacts = "", body_homes = "";
 
     for (let group in groups) {
-      groups_html += '<th class="extra_groups" style="text-align: right; min-width: 80px;">Группа '+group+'</th>';
-      body_flyers += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+groups[group]["flyers"]+"</td>";
-      body_people += "<td class='extra_groups' style='text-align: right; min-width: 85px;'>"+groups[group]["people"]+"</td>";
-      body_prayers += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+groups[group]["prayers"]+"</td>";
-      body_baptism += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+groups[group]["baptism"]+"</td>";
-      body_meets_last += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+groups[group]["meets_last"]+"</td>";
-      body_meets_current += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+groups[group]["meets_current"]+"</td>";
-      body_meetings_last += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+groups[group]["meetings_last"]+"</td>";
-      body_meetings_current += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+groups[group]["meetings_current"]+"</td>";
-      body_first_contacts += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+groups[group]["first_contacts"]+"</td>";
-      body_further_contacts += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+groups[group]["further_contacts"]+"</td>";
-      body_homes += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+groups[group]["homes"]+"</td>";
+      groups_html += '<th class="extra_groups" style="text-align: right; min-width: 30px;">'+group+'</th>';
+      body_flyers += "<td class='extra_groups' style='text-align: right; min-width: 30px;'>"+groups[group]["flyers"]+"</td>";
+      body_people += "<td class='extra_groups' style='text-align: right; min-width: 30px;'>"+groups[group]["people"]+"</td>";
+      body_prayers += "<td class='extra_groups' style='text-align: right; min-width: 30px;'>"+groups[group]["prayers"]+"</td>";
+      body_baptism += "<td class='extra_groups' style='text-align: right; min-width: 30px;'>"+groups[group]["baptism"]+"</td>";
+      body_meets_last += "<td class='extra_groups' style='text-align: right; min-width: 30px;'>"+groups[group]["meets_last"]+"</td>";
+      body_meets_current += "<td class='extra_groups' style='text-align: right; min-width: 30px;'>"+groups[group]["meets_current"]+"</td>";
+      body_meetings_last += "<td class='extra_groups' style='text-align: right; min-width: 30px;'>"+groups[group]["meetings_last"]+"</td>";
+      body_meetings_current += "<td class='extra_groups' style='text-align: right; min-width: 30px;'>"+groups[group]["meetings_current"]+"</td>";
+      body_first_contacts += "<td class='extra_groups' style='text-align: right; min-width: 30px;'>"+groups[group]["first_contacts"]+"</td>";
+      body_further_contacts += "<td class='extra_groups' style='text-align: right; min-width: 30px;'>"+groups[group]["further_contacts"]+"</td>";
+      body_homes += "<td class='extra_groups' style='text-align: right; min-width: 30px;'>"+groups[group]["homes"]+"</td>";
     }
     $(groups_html).insertAfter("#th_questions");
     $(body_flyers).insertAfter("#question_flyers");

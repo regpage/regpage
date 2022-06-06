@@ -16,6 +16,7 @@
     $mailgunPostmasterPass = 'odfn234PMSD@ash242zxc346';
     $locHost = $_SERVER['HTTP_HOST'];
     $appRootPath = $locHost == 'localhost:8080' ? 'http://localhost:8080/' : (substr($locHost, 4,3) === 'dev' ? 'https://www.dev.reg-page.ru/' : 'https://reg-page.ru/');
+    //$appRootPath = $locHost == 'localhost:8080' ? 'http://localhost:8080/' : (substr($locHost, 4,3) === 'dev' ? 'https://www.test.new-constellation.ru/' : 'https://test.new-constellation.ru/');
 
     // db query settings
     $db->set_charset('utf8');

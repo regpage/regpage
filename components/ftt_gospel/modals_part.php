@@ -345,7 +345,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
             <table class="table"><!-- style="width:760px;" -->
               <thead>
                 <tr class="tbl-statistics-header">
-                  <th style="text-align: left" colspan="3" >
+                  <th style="text-align: left" colspan="8"> <!-- colspan="3"  -->
                     <span id="team_name_print"></span>
                     <span style="padding-left: 25px;"  id="group_number_print"></span>
                   </th>
@@ -525,47 +525,47 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
             }
             ?>
           </div>
-          <hr style="border: 1px solid lightgrey; margin-top: 12px; margin-bottom: 12px;">
+          <!--<hr style="border: 1px solid lightgrey; margin-top: 12px; margin-bottom: 12px;">-->
           <div class="row mb-2">
             <div class="col-12 mb-1"><b>Сколько листовок в неделю вы хотите раздавать?</b></div>
-            <div class="col-2"><input id="semester_flyers" type="number" class="form-control form-control-sm recom_goal short_number_field" data-field="flyers"
+            <div class="col-2"><input id="semester_flyers" type="number" class="form-control form-control-sm recom_goal little_number_field" data-field="flyers"
               value="<?php echo $semester_flyers; ?>">
             </div>
-            <div class="col-1 pt-1 pl-0"> (<?php echo getValueFttParamByName('min_flyers'); ?>)</div>
+            <div class="col-1 pt-1 pl-1"> (<?php echo getValueFttParamByName('min_flyers'); ?>)</div>
           </div>
           <div class="row mb-2">
             <div class="col-12 mb-1"><b>Скольким людям вы хотите благовествовать в течение недели?</b></div>
-            <div class="col-2"><input id="semester_people" type="number" class="form-control form-control-sm recom_goal short_number_field" data-field="people"
+            <div class="col-2"><input id="semester_people" type="number" class="form-control form-control-sm recom_goal little_number_field" data-field="people"
               value="<?php echo $semester_people; ?>">
             </div>
-            <div class="col-1 pt-1 pl-0">
+            <div class="col-1 pt-1 pl-1">
               (<?php echo getValueFttParamByName('min_people'); ?>)
             </div>
           </div>
           <div class="row mb-2">
             <div class="col-12 mb-1"><b>Сколько спасенных человек вы хотите обретать каждую неделю?</b></div>
-            <div class="col-2"><input id="semester_prayers" type="number" class="form-control form-control-sm recom_goal short_number_field" data-field="prayers"
+            <div class="col-2"><input id="semester_prayers" type="number" class="form-control form-control-sm recom_goal little_number_field" data-field="prayers"
               value="<?php echo $semester_prayers; ?>">
             </div>
-            <div class="col-1 pt-1 pl-0">
+            <div class="col-1 pt-1 pl-1">
                 (<?php echo getValueFttParamByName('min_prayers'); ?>)
             </div>
           </div>
           <div class="row mb-2">
             <div class="col-12 mb-1"><b>Сколько человек вы хотите крестить за семестр?</b></div>
-            <div class="col-2"><input id="semester_baptism" type="number" class="form-control form-control-sm recom_goal short_number_field" data-field="baptism"
+            <div class="col-2"><input id="semester_baptism" type="number" class="form-control form-control-sm recom_goal little_number_field" data-field="baptism"
               value="<?php echo $semester_baptism; ?>">
             </div>
-            <div class="col-1 pt-1 pl-0">
+            <div class="col-1 pt-1 pl-1">
                 (<?php echo getValueFttParamByName('min_baptism'); ?>)
             </div>
           </div>
           <div class="row mb-2">
             <div class="col-12 mb-1"><b>Сколько пребывающего плода вы хотите принести за семестр (новые верующие, с которыми вы регулярно проводите встречи и кто участвует в собраниях церкви)?</b></div>
-            <div class="col-2"><input id="semester_fruit" type="number" class="form-control form-control-sm recom_goal short_number_field" data-field="fruit"
+            <div class="col-2"><input id="semester_fruit" type="number" class="form-control form-control-sm recom_goal little_number_field" data-field="fruit"
               value="<?php echo $semester_fruit; ?>">
             </div>
-            <div class="col-1 pt-1 pl-0">
+            <div class="col-1 pt-1 pl-1">
               (<?php echo getValueFttParamByName('min_fruit'); ?>)
             </div>
           </div>

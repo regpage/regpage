@@ -203,6 +203,9 @@ button {
 .short_number_field {
     width: 50px !important;
 }
+.little_number_field {
+    width: 60px !important;
+}
 
 .hide_element {
   display: none;
