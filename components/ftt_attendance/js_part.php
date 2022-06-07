@@ -31,11 +31,11 @@ for (let i = 0; i < trainee_list_tmp.length; i = i + 2) {
   trainee_list[trainee_list_tmp[i]] = trainee_list_tmp[i+1];
 }
 // full
-trainee_list_tmp = "<?php foreach ($trainee_list_full as $id => $value) echo $id.'_'.$value[0].'_'.$value[1].'_'.$value[4].'_'; ?>";
+trainee_list_tmp = "<?php foreach ($trainee_list_full as $id => $value) echo $id.'_'.$value[0].'_'.$value[1].'_'.$value[4].'_'.$value[5].'_'; ?>";
 trainee_list_tmp = trainee_list_tmp ? trainee_list_tmp.split('_') : [];
 let trainee_list_full = [];
-for (let i = 0; i < trainee_list_tmp.length; i = i + 4) {
-  trainee_list_full[trainee_list_tmp[i]] = {'name': trainee_list_tmp[i+1], 'male': trainee_list_tmp[i+2], 'semester': trainee_list_tmp[i+3]};
+for (let i = 0; i < trainee_list_tmp.length; i = i + 5) {
+  trainee_list_full[trainee_list_tmp[i]] = {'name': trainee_list_tmp[i+1], 'male': trainee_list_tmp[i+2], 'semester': trainee_list_tmp[i+3], 'time_zone': trainee_list_tmp[i+4]};
 }
 
 // admin key

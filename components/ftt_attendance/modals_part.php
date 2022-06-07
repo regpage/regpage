@@ -97,8 +97,12 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
           </div>
         </div>
         <?php if ($ftt_access['group'] !== 'trainee'): ?>
-        <div id="modal-block_staff" style="display:none;">
-          <button type="button" id="btn_delete_blank_str" class="btn btn-sm btn-danger">Учёт в этот день не ведётся</button>
+        <div id="modal-block_staff" class="container" style="display:none;">          
+          <div class="row">
+            <div id="modal-block_staff_body" class="col">
+
+            </div>
+          </div>
         </div>
         <?php endif; ?>
       </div>

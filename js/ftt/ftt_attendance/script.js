@@ -1735,19 +1735,9 @@ $('#author_of').text(text);
    }
  });
 
- $("#add_attendance_str").click(function() {
-   $("#btn_delete_blank_str").click(function() {
-     if (confirm("В этот день учёт не ведётся?")) {
-       $("#modalAddEdit").modal("hide");
-       $("#spinner").modal("show");
-       fetch('ajax/ftt_attendance_ajax.php?type=dlt_sessions_in_blank&id='+$("#modalAddEdit").attr("data-id"))
-       .then(response => response.json())
-       .then(commits => {
-         $("#spinner").modal("hide");
-         location.reload();
-       });
-     }
-   });
+ $("#add_attendance_str").click(function() {   
+   get_sessions_for_blank($("#modalAddEdit").attr("data-member_key"), $("#modalAddEdit").attr("data-date"));
+
    $("#modal-block_1").hide();
    $("#modal-block_2").hide();
    $("#modal-block_staff").show();
@@ -1757,7 +1747,88 @@ $('#author_of').text(text);
    });*/
   });
 
+  // Правка мероприятий в бланке
+  // формимуем список мероприятий из расписания
+  function get_sessions_for_blank(member_key, date) {
+    let semester_range;
+    let day_of_date = "day"+getNameDayOfWeekByDayNumber(date, false, false, true);
+    trainee_list_full[member_key]["semester"] > 4 ? semester_range = 2 : semester_range = 1;
+    fetch("ajax/ftt_attendance_ajax.php?type=get_sessions_staff&semester_range="
+    +semester_range+"&time_zone="+trainee_list_full[member_key]["time_zone"]+"&date="+date+"&day="+day_of_date)
+    .then(response => response.json())
+    .then(commits => {
+      // отметка включеных мероприятий
+      let exist_session = [];
+      $("#modal-block_1 .name_session").each(function () {
+        exist_session.push($(this).next().attr("data-val"));
+      });
+      let sessions_staff = commits.result;
+      let checked_str, no_checked;
+      let html_staff_editor= "<div><label class='form-check-label'><input class='select_all_session form-check-input' type='checkbox'>Добавить/Удалить все</label></div><hr>";
+      for (let session_str in sessions_staff) {
+        if (sessions_staff.hasOwnProperty(session_str)) {
+          if (sessions_staff[session_str]["attendance"] === "1" && sessions_staff[session_str][day_of_date]) {
+            if (exist_session.indexOf(sessions_staff[session_str][day_of_date]) === -1) {
+              no_checked = true;
+              checked_str = "";
+            } else {
+              checked_str = "checked";
+            }
+            html_staff_editor += "<div><label class='form-check-label'><input type='checkbox' class='session_staff_str form-check-input' "+checked_str+">"+sessions_staff[session_str]["session_name"]+"</label></div>"
+          }
+        }
+      }
+      $("#modal-block_staff_body").html(html_staff_editor);
+      $(".select_all_session").prop("checked", true);
+      if (no_checked) {
+        $(".select_all_session").prop("checked", false);
+      }
+      // построчное вкл/выкл мероприятий в бланке
+      $(".session_staff_str").change(function () {
+        console.log("I am here!");
+      });
+      // пакетные операции вкл/выкл мероприятий в бланке
+      $(".select_all_session").change(function () {
+
+        // Отслежывать включенные мероприятия и отмечать галочкали присутствующие в бланке, если все присутствуют помечать
+        // "вкл выкл всё" отмеченным.
+        // обычный сценарий это все включены все выключены, учитывать это
+
+        if ($(this).prop("checked")) {
+          if (confirm("Включить учёт в этот день?")) {
+            $(".session_staff_str").prop("checked", $(this).prop("checked"));
+          } else {
+            //$(".session_staff_str").prop("checked", false);
+            $(this).prop("checked", false);
+          }
+        } else {
+          if (confirm("В этот день учёт не ведётся?")) {
+            $(".session_staff_str").prop("checked", $(this).prop("checked"));
+            $("#modalAddEdit").modal("hide");
+            $("#spinner").modal("show");
+            fetch('ajax/ftt_attendance_ajax.php?type=dlt_sessions_in_blank&id='+$("#modalAddEdit").attr("data-id"))
+            .then(response => response.json())
+            .then(commits => {
+              $("#spinner").modal("hide");
+              location.reload();
+            });
+          } else {
+            $(this).prop("checked", true);
+          }
+        }
+      });
+    });
+    // лучше запускать при открытии соответствующего раздела.
+    // Получаем данные из класса PHP аттендансе = 1
+    // рендерим список
+    // сверяем соответствие (наличие) и отмечаем галочками
+    // Вопрос, нужна ли кнопка Применить? думаю ненужна.
+    // при отметке всех галочек применяем функцию удалить всё/добавить всё
+    // при снятии галочки удаляем мероприятие из таблицы аттенданс или добавляем при установки галочки
+    //AJAX schedule_class::get();
+  }
   // ОТКАТ
+  // удаление мероприятий из бланка
   $("#undo_attendance_str").click(function () {
     // Условия
     if ($("#modalAddEdit").attr("data-status") === 0) {

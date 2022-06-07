@@ -102,4 +102,4 @@
     }
     return yyyy + '-' + mm + '-' + dd;
   }
-  date_now_gl = date_now_gl ();
+  //date_now_gl = date_now_gl ();

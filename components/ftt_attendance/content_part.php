@@ -156,9 +156,10 @@
                 $pause_to = '';
                 $pause_stop = '';
               }
-              if ($pause_stop === 'No date') {
+              if ($pause_stop === 'No date.') {
                 $pause_to = '';
                 $pause_stop = '';
+                $pause_start .='.';
               }
             }
             $only_one_time = true;

@@ -2277,7 +2277,7 @@ function checkStopEventRegistration(eventId){
         if ($(".beMate").length){
             var emMateHtml = "<option value='_none_' selected>&nbsp;</option>";
 
-// ????
+// ???? Брать данные из базы fetch()
             $(".tab-pane.active " + (document.documentElement.clientWidth < 751 ? '.show-phone' : '.desctopVisible' ) + " table.reg-list tr[class|='regmem']").each (function (){
                 var id = $(this).attr ('class').replace(/^regmem-/,'');
                 if (id.length>2 && id.substr (0,2)!="99" && id!=memberId){

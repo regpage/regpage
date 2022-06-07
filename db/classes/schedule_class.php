@@ -42,14 +42,24 @@ class schedule_class {
     return $result;
   }
 
-  public static function get($semester_range, $time_zone) {
-    $number_day = date('N');
-    $day_today = 'day'.$number_day;
-    $date_today_tmp = date('d.m.Y', time());
-    $date_today = strtotime($date_today_tmp);
+  public static function get($semester_range, $time_zone, $date='_none_', $day='_none_') {
+    $number_day;
+    $date_today;
+    $day_today;
+    if ($date === '_none_') {
+      $number_day = date('N');
+      $day_today = 'day'.$number_day;
+      $date_today_tmp = date('d.m.Y', time());
+      $date_today = strtotime($date_today_tmp);
+    } else {
+      $number_day = $day[3];
+      $day_today = $day;
+      $date_today = $date;
+    }
+
     // это можно вынести в переменные раздела
-    $ftt_attendance_start_date = getValueFttParamByName('attendance_start');
-    $ftt_attendance_end_date = getValueFttParamByName('attendance_end');
+    $ftt_attendance_start = getValueFttParamByName('attendance_start');
+    $ftt_attendance_end = getValueFttParamByName('attendance_end');
     $ftt_attendance_start = strtotime($ftt_attendance_start);
     $ftt_attendance_end = strtotime($ftt_attendance_end);
 
@@ -104,7 +114,7 @@ class schedule_class {
           if (!$correction_data[$iii]['cancel_id']) {
             $loop_schedule_extra[] = [
               'session_name' => $correction_data[$iii]['session_name'],
-              $day => $correction_data[$iii]['time'],
+              $day_today => $correction_data[$iii]['time'],
               'duration' => $correction_data[$iii]['duration'],
               'attendance' => $correction_data[$iii]['attendance'],
               'comment' => $correction_data[$iii]['comment'],
@@ -135,7 +145,7 @@ class schedule_class {
     // Подготавливаем вспомогательный массив
     $sort_field = [];
     foreach ($loop_schedule as $key => $row) {
-      $sort_field[$key] = $row[$day];
+      $sort_field[$key] = $row[$day_today];
     }
 
     // Сортируем

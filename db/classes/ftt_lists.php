@@ -47,11 +47,11 @@ class ftt_lists {
   static function trainee_full()  {
     $result = [];
 
-    $res = db_query("SELECT ft.member_key, ft.gospel_group, ft.gospel_team, ft.semester, m.key, m.name, m.male
+    $res = db_query("SELECT ft.member_key, ft.gospel_group, ft.gospel_team, ft.semester, m.key, m.name, m.male, ft.time_zone
       FROM ftt_trainee ft
       INNER JOIN member m ON m.key = ft.member_key
       WHERE 1");
-      while ($row = $res->fetch_assoc()) $result[$row['key']]=[short_name::no_middle($row['name']), $row['male'], $row['gospel_group'], $row['gospel_team'], $row['semester']];
+      while ($row = $res->fetch_assoc()) $result[$row['key']]=[short_name::no_middle($row['name']), $row['male'], $row['gospel_group'], $row['gospel_team'], $row['semester'], $row['time_zone']];
 
       return $result;
   }

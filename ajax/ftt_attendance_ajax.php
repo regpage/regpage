@@ -3,6 +3,7 @@
 include_once "ajax.php";
 // подключаем запросы
 include_once "../db/ftt/ftt_attendance_db.php";
+include_once "../db/classes/schedule_class.php";
 // Подключаем ведение лога
 //include_once "../extensions/write_to_log/write_to_log.php";
 
@@ -62,12 +63,12 @@ if (isset($_GET['type']) && $_GET['type'] === 'dlt_sessions_in_blank') {
   echo json_encode(["result"=>dlt_sessions_in_blank($_GET['id'])]);
   exit();
 }
-/*
-if (isset($_GET['type']) && $_GET['type'] === 'delete_blank') {
-  echo json_encode(["result"=>deleteBlank($_GET['id'])]);
+
+if (isset($_GET['type']) && $_GET['type'] === 'get_sessions_staff') {
+  echo json_encode(["result"=>schedule_class::get($_GET['semester_range'], $_GET['time_zone'], $_GET['date'], $_GET['day'])]);
   exit();
 }
-*/
+
 /*
 if (isset($_GET['type']) && $_GET['type'] === 'set_extra_help_done') {
   echo json_encode(["result"=>setExtraHelpDone($_GET['id'], $_GET['archive'], $adminId)]);

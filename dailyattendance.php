@@ -6,6 +6,17 @@ include_once 'logWriter.php';
 include_once 'db/classes/schedule_class.php';
 
 function db_newDailyAttendance () {
+  //  Проверяем даты семестра
+  $ftt_attendance_start = getValueFttParamByName('attendance_start');
+  $ftt_attendance_end = getValueFttParamByName('attendance_end');
+  $ftt_attendance_start = strtotime($ftt_attendance_start);
+  $ftt_attendance_end = strtotime($ftt_attendance_end);
+
+  // Проверяем что расписание не выходит за период обучения
+  if ($date_today < $ftt_attendance_start && $date_today > $ftt_attendance_end) {
+    exit();
+  }
+
   // step 1 получаем правила
   $rules = [];
   $res_rules = db_query("SELECT `member_key`, `pause_start`, `pause_stop`
