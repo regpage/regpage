@@ -2,7 +2,7 @@
 include_once '../db.php';
 include_once '../PHPExcel.php';
 include_once '../PHPExcel/IOFactory.php';
-include_once '../FirePHP.class.php';
+//include_once '../FirePHP.class.php';
 header("Content-Type: application/json; charset=utf-8");
 
 function fileUploader($upfile){

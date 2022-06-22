@@ -2,7 +2,7 @@
 include_once '../db.php';
 include_once '../PHPExcel.php';
 include_once '../PHPExcel/IOFactory.php';
-include_once '../FirePHP.class.php';
+//include_once '../FirePHP.class.php';
 
 if(isset($_GET['file'])) {
     $fileSearch = basename($_GET['file']);

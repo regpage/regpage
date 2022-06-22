@@ -2,7 +2,7 @@
 include_once '../db.php';
 include_once '../PHPExcel.php';
 include_once '../PHPExcel/IOFactory.php';
-include_once '../FirePHP.class.php';
+//include_once '../FirePHP.class.php';
 header("Content-Type: application/json; charset=utf-8");
 
 $myArrForUpload = json_decode($_POST['xlsx_array'], TRUE);
@@ -32,7 +32,7 @@ $newId = db_getNewContactIdPackage();
     $counter = 0;
     if ($i!=0) {
       foreach($arrTemp as $value) {
-        $value = addcslashes($value, "'");        
+        $value = addcslashes($value, "'");
         if ($counter < 17) {
 // value
           if (empty($value)) {
