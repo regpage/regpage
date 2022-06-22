@@ -3,6 +3,19 @@
  * Приводим даты к нужному виду
  */
 class date_convert {
+  //dd.mm.yyyy_to_yyyy-mm-dd
+  static function ddmmyyyy_to_yyyymmdd ($date)  {
+    if (!$date) {
+      return 'No date';
+    }
+    $date = explode('.', $date);
+    if (isset($date[2])) {
+      return $date[2].'-'.$date[1].'-'.$date[0];
+    } else {
+      return 'Date is incorrect.';
+    }
+  }
+
   static function yyyymmdd_to_ddmm ($date)  {
     if (!$date) {
       return 'No date';

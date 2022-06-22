@@ -1,23 +1,7 @@
+/* ==== MAIN & GOSPEL START ==== */
 $(document).ready(function(){
 
-  /* ==== MAIN & EXTRA HELP START ==== */
-
-  // текущая дата, получаем приводим к типу гггг.мм.дд
-// ВЫНЕСТИ В МОДУЛЬ! <<<<< --------------
-  function date_now_gl () {
-    // YYYY-MM-dd
-    let date_now_gl = new Date();
-    let yyyy = date_now_gl.getFullYear();
-    let mm = date_now_gl.getMonth()+1;
-    let dd = date_now_gl.getDate();
-    if (mm < 9) {
-      mm = '0'+mm;
-    }
-    if (dd < 9) {
-      dd = '0'+dd;
-    }
-    return yyyy + '-' + mm + '-' + dd;
-  }
+  // текущая дата гггг.мм.дд
   date_now_gl = date_now_gl ();
 
 let data_strings = ['id', 'date', 'author', 'gospel_team', 'gospel_group', 'place', 'group_members', 'flyers', 'people', 'prayers', 'baptism', 'meets_last', 'meets_current', 'meetings_last', 'meetings_current', 'first_contacts', 'further_contacts', 'homes', 'place_name', 'fgt_place', 'comment'];

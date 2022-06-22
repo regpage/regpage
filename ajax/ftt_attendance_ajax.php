@@ -69,11 +69,11 @@ if (isset($_GET['type']) && $_GET['type'] === 'get_sessions_staff') {
   exit();
 }
 
-/*
-if (isset($_GET['type']) && $_GET['type'] === 'set_extra_help_done') {
-  echo json_encode(["result"=>setExtraHelpDone($_GET['id'], $_GET['archive'], $adminId)]);
+// Добавить мероприятия в ручную
+if (isset($_GET['type']) && $_GET['type'] === 'add_sessions_staff_all') {
+  echo json_encode(["result"=>add_sessions_staff_all($_POST['data'])]);
   exit();
 }
-*/
+
 
 ?>

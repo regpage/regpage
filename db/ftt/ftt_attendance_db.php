@@ -281,7 +281,32 @@ function dlt_sessions_in_blank($sheet_id) {
   $sheet_id = $db->real_escape_string($sheet_id);
   $res = db_query("DELETE FROM `ftt_attendance` WHERE `sheet_id` = $sheet_id");
 }
+
 // add/delete string session in blank
+function add_sessions_staff($session) {
+  global $db;
+  $sheet_id = $db->real_escape_string(trim($session->id_sheet));
+  $session_id = $db->real_escape_string(trim($session->session_id));
+  $session_name = $db->real_escape_string(trim($session->session_name));
+  $session_time = $db->real_escape_string(trim($session->session_time));
+  $duration = $db->real_escape_string(trim($session->duration));
+  $visit = $db->real_escape_string(trim($session->visit));
+  $end_time = $db->real_escape_string(trim($session->end_time));
+
+  $res = db_query("INSERT INTO `ftt_attendance` (`sheet_id`, `session_id`, `session_name`, `session_time`, `visit`, `end_time`, `duration`, `changed`)
+  VALUES ('$sheet_id', '$session_id', '$session_name','$session_time', '$visit', '$end_time', '$duration', 1)");
+  return $res;
+}
+
+function add_sessions_staff_all($sessions) {
+  $res="";
+  $sessions = json_decode($sessions);
+  for ($i=0; $i < count($sessions); $i++) {
+    $res .= add_sessions_staff($sessions[$i]);
+  }
+  return $res;
+}
+
 function getSessionStaff($value='') {
   /*
   1. Получаем семестр (и др. правила)

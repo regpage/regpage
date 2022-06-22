@@ -1,9 +1,7 @@
 
 <!-- ПОСЕЩАЕМОСТЬ -->
 <div id="modalAddEdit" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true"
-data-id="" data-date="" data-author="" data-gospel_team="" data-gospel_group="" data-place="" data-group_members=""
-data-flyers="" data-people="" data-prayers="" data-baptism="" data-meets_last="" data-meets_current="" data-meetings_last=""
-data-meetings_current="" data-first_contacts="" data-further_contacts="" data-homes="" data-place_name="" data-fgt_place="" data-date_send="" data-comment="">
+data-id="" data-date="" data-author="" data-date_send="" data-comment="">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -97,7 +95,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
           </div>
         </div>
         <?php if ($ftt_access['group'] !== 'trainee'): ?>
-        <div id="modal-block_staff" class="container" style="display:none;">          
+        <div id="modal-block_staff" class="container" style="display:none;">
           <div class="row">
             <div id="modal-block_staff_body" class="col">
 

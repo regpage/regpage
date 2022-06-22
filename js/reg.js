@@ -59,7 +59,7 @@
     }
     // events for schoolers
     if ($('.tab-pane.active').attr('data-event_type') === 'SCC' || $('.tab-pane.active').attr('data-event_type') === 'RYC' || $('.tab-pane.active').attr('data-event_type') === 'TSC' || $('.tab-pane.active').attr('data-event_type') === 'RTS') {
-      $('.emAccom').prev().text('Группа');
+      $('.emAccom').prev().text('Размещение'); //Группа
       $('.emMateLbl').text('Служащий');
       /*
       if ($('.tab-pane.active').attr('id') === 'eventTab-20190018') {
