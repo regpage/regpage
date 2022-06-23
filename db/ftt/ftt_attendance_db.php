@@ -44,6 +44,8 @@ function getFttStringsByIdSheet($sheet_id) {
 }
 
 // получаем шапки и строки
+// НЕ РАБОТАЕТ В СТАФ ИЗ-ЗА ТОГО что прошло более недели от окончания обучения.
+// Но архив нужно выводить в любом случае.
 function getFttAttendanceSheetAndStrings($list_access, $condition, $admin_id = '') {
   //fas.id as fas_id, fas.sheet_id, fas.session_name, fas.session_time, fas.attend_time, fas.reason, fas.late
   //INNER JOIN ftt_attendance fa ON fa.sheet_id = fas.id
@@ -52,26 +54,29 @@ function getFttAttendanceSheetAndStrings($list_access, $condition, $admin_id = '
   $list_access = $db->real_escape_string($list_access);
   $condition = $db->real_escape_string($condition);
   $admin_id = $db->real_escape_string($admin_id);
+  $list_access_condition;
+  $order_by = '';
   // доступ обучающийся / служащий
-  if ($list_access === 'all') {
+  if ($list_access === '_all_') {
     $list_access_condition = '';
   } else {
     $list_access_condition = " fas.member_key='$list_access' ";
   }
+
   // period
-  if ($condition === "week") {
+  if ($condition === 'week') {
     if ($list_access_condition) {
-      $condition = $list_access_condition.'AND DATE(fas.date) > (NOW() - INTERVAL 7 DAY) ';
+      $condition = $list_access_condition.' AND DATE(fas.date) > (NOW() - INTERVAL 7 DAY) ';
     } else {
       $condition = ' DATE(fas.date) > (NOW() - INTERVAL 7 DAY) ';
     }
-  } elseif ($condition === "month") {
+  } elseif ($condition === 'month') {
     if ($list_access_condition) {
       $condition = $list_access_condition.' AND DATE(fas.date) > (NOW() - INTERVAL 1 MONTH) ';
     } else {
       $condition = ' DATE(fas.date) > (NOW() - INTERVAL 1 MONTH) ';
     }
-  } elseif ($condition === "_all_") {
+  } elseif ($condition === '_all_') {
     if (!$list_access_condition) {
       $condition = 1;
     } else {
@@ -80,20 +85,19 @@ function getFttAttendanceSheetAndStrings($list_access, $condition, $admin_id = '
   }
 
   if ($admin_id && $admin_id !== '_all_' && $condition === 1) {
-    $condition = " tra.serving_one='{$admin_id}' ";
-  } elseif ($admin_id && $admin_id === '_all_' && $condition === 1) {
+    $condition = " tra.serving_one='$admin_id' ";
+  } elseif ($admin_id === '_all_' && $condition === 1) {
 
   } elseif ($admin_id === '_all_' && $condition !== 1) {
 
   } elseif ($admin_id && $admin_id !== '_all_' && $condition !== 1) {
-    $condition .= " AND tra.serving_one='{$admin_id}' ";
+    $condition .= " AND tra.serving_one='$admin_id' ";
   }
 
-  //echo $condition;
   if ($admin_id) {
-    $order_by = 'm.name ASC, fas.date';
+    $order_by = ' m.name ASC, fas.date ';
   } else {
-    $order_by = 'fas.date ASC, m.name';
+    $order_by = ' fas.date ASC, m.name ';
   }
 
   $header = [];

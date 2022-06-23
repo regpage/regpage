@@ -102,7 +102,7 @@
             $serving_trainee_disabled = 'disabled';
             $list_access = $memberId;
           } else {
-            $list_access = 'all';
+            $list_access = '_all_';
           }
           $current_date_z = date("Y-m-d");
 
