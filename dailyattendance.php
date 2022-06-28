@@ -5,21 +5,14 @@ include_once 'db.php';
 include_once 'logWriter.php';
 include_once 'db/classes/schedule_class.php';
 include_once 'db/classes/date_convert.php';
+include_once 'db/classes/ftt_info.php';
 
 function db_newDailyAttendance () {
   //  Проверяем даты семестра
-  $date_today_tmp = date('Y.m.d', time());
-  $date_today = strtotime($date_today_tmp);
-  $ftt_attendance_start = getValueFttParamByName('attendance_start');
-  $ftt_attendance_end = getValueFttParamByName('attendance_end');
-  //  привести даты к типу YYYY-mm-dd
-  $ftt_attendance_start = strtotime(date_convert::ddmmyyyy_to_yyyymmdd($ftt_attendance_start));
-  $ftt_attendance_end = strtotime(date_convert::ddmmyyyy_to_yyyymmdd($ftt_attendance_end));
-
   // Проверяем что расписание не выходит за период обучения
-  if ($date_today < $ftt_attendance_start && $date_today > $ftt_attendance_end) {
+  if (ftt_info::pause()) {
+    echo "Вне периода проведения обучения";
     exit();
-    // return false; проверить
   }
 
   // step 1 получаем правила
@@ -140,5 +133,5 @@ function db_newDailyAttendance () {
   }
 }
 
-// db_newDailyAttendance ();
+db_newDailyAttendance ();
 ?>

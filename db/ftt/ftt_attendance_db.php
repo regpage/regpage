@@ -1,6 +1,12 @@
 <?php
-// Классы. Конвертация дат Не ПОЖКЛЮЧАЕТСЯ!
-//include "db/classes/date_convert.php";
+// Классы. Конвертация дат Не ПОДКЛЮЧАЕТСЯ!
+if (isset($GLOBALS['global_root_path'])) {
+  include_once $GLOBALS['global_root_path'].'db/classes/ftt_info.php';
+} else {
+  include_once __DIR__.'/../classes/ftt_info.php';
+}
+
+//echo __DIR__ . DIRECTORY_SEPARATOR;
 function yyyymmdd_to_ddmm ($date)  {
   if (!$date) {
     return 'No date';
@@ -50,25 +56,39 @@ function getFttAttendanceSheetAndStrings($list_access, $condition, $admin_id = '
   //fas.id as fas_id, fas.sheet_id, fas.session_name, fas.session_time, fas.attend_time, fas.reason, fas.late
   //INNER JOIN ftt_attendance fa ON fa.sheet_id = fas.id
   // AS fas
+
   global $db;
   $list_access = $db->real_escape_string($list_access);
   $condition = $db->real_escape_string($condition);
   $admin_id = $db->real_escape_string($admin_id);
   $list_access_condition;
   $order_by = '';
-  // доступ обучающийся / служащий
+  $last_date;
+  // Проверяем что расписание не выходит за период обучения
+  if (ftt_info::days_to_end() < -7 && $list_access === '_all_') {
+    $last_date_res = db_query("SELECT MAX(fas.date) AS largest_date FROM ftt_attendance_sheet AS fas");
+    while ($row = $last_date_res->fetch_assoc()) $last_date = $row['largest_date'];
+  }
+
+  // доступ служащий / обучающийся
   if ($list_access === '_all_') {
     $list_access_condition = '';
   } else {
     $list_access_condition = " fas.member_key='$list_access' ";
   }
 
-  // period
+  // периоды (для служащих всегда  week)
   if ($condition === 'week') {
     if ($list_access_condition) {
+      // это работает только для обучающихся
       $condition = $list_access_condition.' AND DATE(fas.date) > (NOW() - INTERVAL 7 DAY) ';
     } else {
-      $condition = ' DATE(fas.date) > (NOW() - INTERVAL 7 DAY) ';
+      // это работает только для сдужащих
+      if ($last_date) {
+        $condition = " fas.date = '$last_date' ";
+      } else {
+        $condition = ' DATE(fas.date) > (NOW() - INTERVAL 7 DAY) ';
+      }
     }
   } elseif ($condition === 'month') {
     if ($list_access_condition) {
@@ -83,7 +103,7 @@ function getFttAttendanceSheetAndStrings($list_access, $condition, $admin_id = '
       $condition = $list_access_condition;
     }
   }
-
+  // выборка по служащему
   if ($admin_id && $admin_id !== '_all_' && $condition === 1) {
     $condition = " tra.serving_one='$admin_id' ";
   } elseif ($admin_id === '_all_' && $condition === 1) {

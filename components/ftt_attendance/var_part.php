@@ -1,10 +1,11 @@
 <?php
 
-  include_once 'db/ftt/ftt_attendance_db.php';
   include_once 'db/classes/trainee_data.php';
   include_once 'db/classes/short_name.php';
   include_once 'db/classes/ftt_lists.php';
-  include_once 'db/classes/date_convert.php';  
+  include_once 'db/classes/date_convert.php';
+  //include_once 'db/classes/ftt_info.php';
+  include_once 'db/ftt/ftt_attendance_db.php';
 
 // ПОСЕЩАЕМОСТЬ
 // access

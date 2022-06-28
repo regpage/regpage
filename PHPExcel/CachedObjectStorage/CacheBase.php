@@ -309,6 +309,7 @@ abstract class PHPExcel_CachedObjectStorage_CacheBase {
 	 * @return string Unique Reference
 	 */
 	protected function _getUniqueID() {
+		// ЗАМЕНИТЬ posix
 		if (function_exists('posix_getpid')) {
 			$baseUnique = posix_getpid();
 		} else {

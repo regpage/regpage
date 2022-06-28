@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_URI'] === '/os') {
 include_once "db.php";
 // переменная из config.php
 global $appRootPath;
+$global_root_path = __DIR__.DIRECTORY_SEPARATOR;
 ini_set('session.cookie_lifetime', 60 * 60 * 24 * 365);  // 365 day cookie lifetime
 session_start ();
 // START COOKIES
