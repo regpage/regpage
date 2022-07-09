@@ -20,7 +20,12 @@
     $allLocalities = db_getLocalities();
     $listMyAdmins = db_getAdminResponsiblesGroup($memberId);
     $contactsAdminData = db_getContactsRoleAdmin($memberId);
-    $contactsRoleAdmin = $contactsAdminData[0];
+    if (isset($contactsAdminData[0])) {
+      $contactsRoleAdmin = $contactsAdminData[0];
+    } else {
+      $contactsRoleAdmin = 0;
+    }
+
     $projectFreeOption;
 
     function shortNameMember ($fullName='')
@@ -1050,7 +1055,7 @@
 
         adminsFromMyLocalities();
 
-        if (data_page.admin_role !== '0') {
+        if (data_page.admin_contacts_role !== '0') {
           var blankCounter = {
             blank_count_their: [],
             blank_count_their_short: [],
@@ -1070,7 +1075,7 @@
           data_page.isDesktop = 0;
         }
     </script>
-    <script src="/js/contacts.js?v76"></script>
+    <script src="/js/contacts.js?v77"></script>
     <script src="/js/contactsupload.js?v5"></script>
 <?php
     include_once "footer2.php";

@@ -1,8 +1,8 @@
 // Contacts JS
 
 $(document).ready(function(){
-  //console.log(data_page);  
-  if (data_page.admin_role === '0') {
+  console.log(data_page);
+  if (data_page.admin_contacts_role === '0') { // 09-06-2022  admin_role
     $('#responsibleContact').html('<option value="'+window.adminId+'">'+fullNameToNoMiddleName(data_page.admin_name)+'');
   } else {
     /*var checkOption;
@@ -61,7 +61,7 @@ function contactsStringsLoad(x, idStr, sort) {
     } else {
       idStrMbl = idStr;
     }
-    if (data_page.admin_role > 0) {
+    if (data_page.admin_contacts_role > 0) {
       !data_page.full_admin_list[x[i].responsible_previous] ? prevAdm = data_page.full_admin_list[x[i].responsible_previous] : prevAdm = data_page.full_admin_list[x[i].responsible_previous][0];
     } else {
       !data_page.full_admin_list[x[i].responsible_previous] ? prevAdm = data_page.full_admin_list[x[i].responsible_previous] : prevAdm = data_page.full_admin_list[x[i].responsible_previous][0];
@@ -304,7 +304,7 @@ function contactsStringsLoad(x, idStr, sort) {
         $('.cd-panel__close-watch').addClass('cd-panel__close-watch-visible');
       }
      } else {
-       if (data_page.admin_role !== '0') {
+       if (data_page.admin_contacts_role !== '0') {
          $('#blankHistory').show();
        }
        $.get('/ajax/contacts.php?get_messages', {id: $(this).attr('data-id')})
@@ -322,7 +322,7 @@ function contactsStringsLoad(x, idStr, sort) {
      }
      var countryName = '';
 
-     if (data_page.admin_role === '0') {
+     if (data_page.admin_contacts_role === '0') {
        var first = '', second = '';
        first = '<option value="'+$(this).attr('data-responsible')+'">'+fullNameToNoMiddleName($(this).attr('data-responsible_name'))+'';
        if ($(this).attr('data-responsible_previous')) {
@@ -424,12 +424,12 @@ function contactsStringsLoad(x, idStr, sort) {
        }
      }
 
-     if (data_page.admin_role === '0' && $('#myBlanks').val() === '0') {
+     if (data_page.admin_contacts_role === '0' && $('#myBlanks').val() === '0') {
        $('#sideBarBlankContact').find('input').attr('disabled', true)
        $('#sideBarBlankContact').find('select').attr('disabled', true)
        $('#sideBarBlankContact').find('textarea').attr('disabled', true)
        $('#cd-panel__close-watch').attr('disabled', false)
-     } else if (data_page.admin_role === '0' && $('#myBlanks').val() === '1' && $('#nameContact').attr('disabled') === 'disabled') {
+     } else if (data_page.admin_contacts_role === '0' && $('#myBlanks').val() === '1' && $('#nameContact').attr('disabled') === 'disabled') {
 
        var dateOrderChkeckEx = dateStrToddmmyyyyToyyyymmdd($(this).attr('data-order_date'), false);
 
@@ -661,7 +661,7 @@ function historyBuilder(data) {
 
   $('.edit_history_msg').click(function (e) {
     e.stopPropagation();
-    if ($('#myBlanks').val() === '0' &&  data_page.admin_role === '0') {
+    if ($('#myBlanks').val() === '0' &&  data_page.admin_contacts_role === '0') {
       return
     }
 
@@ -876,7 +876,7 @@ function historyBuilder(data) {
 
             if ($('#responsibleContact').val()) {
               if ($('#responsibleContact').val() !== window.adminId) {
-                if (data_page.admin_role === '0') {
+                if (data_page.admin_contacts_role === '0') {
                   messageFunction('responsible', data.id, fullNameToShortFirstMiddleNames($('#responsibleContact option:selected').text()));
                 } else {
                   messageFunction('responsible', data.id, fullNameToShortFirstMiddleNames($('#responsibleContact option:selected').text()), true);
@@ -889,7 +889,7 @@ function historyBuilder(data) {
             }
 
             // Page reload & don't update string & form
-            if (data_page.admin_role === '0' && !dlt) {
+            if (data_page.admin_contacts_role === '0' && !dlt) {
                 clearingBlankOfContact();
                 closeSidePanel();
             }
@@ -898,7 +898,7 @@ function historyBuilder(data) {
             if ($('#responsibleContact').val() !== $('#responsibleContact').attr('data-responsible') && $('#responsibleContact').val()) {
               // add message
               // !!!!!! THE PROMISE SOULD BE USE FROM HERE IF ROLE > 0
-              if (data_page.admin_role === '0') {
+              if (data_page.admin_contacts_role === '0') {
                 messageFunction('responsible', $('#saveContact').attr('data-id'), fullNameToShortFirstMiddleNames($('#responsibleContact option:selected').text()));
               } else {
                 messageFunction('responsible', $('#saveContact').attr('data-id'), fullNameToShortFirstMiddleNames($('#responsibleContact option:selected').text()), true);
@@ -909,7 +909,7 @@ function historyBuilder(data) {
               $('#responsibleContact').attr('data-responsible_previous', $('#responsibleContact').attr('data-responsible'));
               $('#responsibleContact').attr('data-responsible', window.adminId);
             }
-            if (data_page.admin_role === '0' && !dlt) {
+            if (data_page.admin_contacts_role === '0' && !dlt) {
                 clearingBlankOfContact();
                 closeSidePanel();
             }
@@ -1003,7 +1003,7 @@ function historyBuilder(data) {
           if ($('#responsibleContact').val()) {
             if ($('#responsibleContact').val() !== window.adminId) {
               addNoticeAboutContact($('#responsibleContact').val(), data.id);
-              if (data_page.admin_role === '0') {
+              if (data_page.admin_contacts_role === '0') {
                 messageFunction('responsible', data.id, fullNameToShortFirstMiddleNames($('#responsibleContact option:selected').text()));
               } else {
                 messageFunction('responsible', data.id, fullNameToShortFirstMiddleNames($('#responsibleContact option:selected').text()), true);
@@ -1016,7 +1016,7 @@ function historyBuilder(data) {
           }
 
           // Page reload & don't update string & form
-          if (data_page.admin_role === '0') {
+          if (data_page.admin_contacts_role === '0') {
               clearingBlankOfContact();
               closeSidePanel();
               contactsListUpdate();
@@ -1031,7 +1031,7 @@ function historyBuilder(data) {
 
             // add message
             // !!!!!! THE PROMISE SOULD BE USE FROM HERE IF ROLE > 0
-            if (data_page.admin_role === '0') {
+            if (data_page.admin_contacts_role === '0') {
               messageFunction('responsible', $('#saveContact').attr('data-id'), fullNameToShortFirstMiddleNames($('#responsibleContact option:selected').text()));
             } else {
               messageFunction('responsible', $('#saveContact').attr('data-id'), fullNameToShortFirstMiddleNames($('#responsibleContact option:selected').text()), true);
@@ -1042,7 +1042,7 @@ function historyBuilder(data) {
             $('#responsibleContact').attr('data-responsible_previous', $('#responsibleContact').attr('data-responsible'));
             $('#responsibleContact').attr('data-responsible', window.adminId);
           }
-          if (data_page.admin_role === '0') {
+          if (data_page.admin_contacts_role === '0') {
               clearingBlankOfContact();
               closeSidePanel();
               contactsListUpdate();
@@ -1062,7 +1062,7 @@ function historyBuilder(data) {
 // !!!!!! THE PROMISE SOULD BE USE FOR THIS IF ROLE > 0
 // Слишком много противоречий
       setTimeout(function () {
-          if ((data_page.admin_role !== '0') && ($('#saveContact').attr('data-id') !== $('.active_string').attr('data-id')) && ($('.active_string').find('.data_name').text().trim() !== $('#nameContact').val().trim())) {
+          if ((data_page.admin_contacts_role !== '0') && ($('#saveContact').attr('data-id') !== $('.active_string').attr('data-id')) && ($('.active_string').find('.data_name').text().trim() !== $('#nameContact').val().trim())) {
             clearingBlankOfContact();
             $('.cd-panel-watch').removeClass('cd-panel--is-visible-watch');
             $('.cd-panel__close-watch').removeClass('cd-panel__close-watch-visible');
@@ -1100,7 +1100,7 @@ function historyBuilder(data) {
       $('#maleContact').css('border-color', 'red');
       return
     }
-    if (data_page.admin_role !== '0') {
+    if (data_page.admin_contacts_role !== '0') {
       $('#blankHistory').show();
     }
 
@@ -1143,7 +1143,7 @@ function historyBuilder(data) {
     var dataStr = [], dataError = [];
     $('.contacts_str').each(function () {
       if ($(this).is(':visible') && $(this).find('.checkboxString').prop('checked')) {
-        if (data_page.admin_role === '0' && $(this).attr('data-responsible_previous')) {
+        if (data_page.admin_contacts_role === '0' && $(this).attr('data-responsible_previous')) {
           dataError.push($(this).find('.data_name').text());
         } else {
           dataStr.push($(this).attr('data-id'));
@@ -1155,7 +1155,7 @@ function historyBuilder(data) {
             closeSidePanel();
           }, 300);
         }
-        if (data_page.admin_role === '0' && $(this).attr('data-responsible_previous')) {
+        if (data_page.admin_contacts_role === '0' && $(this).attr('data-responsible_previous')) {
 
         } else {
           $(this).hide();
@@ -1282,7 +1282,7 @@ function historyBuilder(data) {
 
 // responsible set
   function responsibleSetContact() {
-    if (data_page.admin_role === '0') {
+    if (data_page.admin_contacts_role === '0') {
       // Новый запрос для админа 0 где нужно передать карточки разным предыдущим админам
       var listZero = [];
       $('.contacts_str').each(function () {
@@ -1352,7 +1352,7 @@ function historyBuilder(data) {
 
   $('#appointResponsible , #appointResponsibleAdminZero').click(function(e) {
 
-    if (data_page.admin_role === '0') {
+    if (data_page.admin_contacts_role === '0') {
       responsibleSetContact();
       $('#deleteContactsShowModal').attr('disabled', true);
       $('#appointStatusShow').attr('disabled', true);
@@ -1402,7 +1402,7 @@ function historyBuilder(data) {
       /*var countryName = '';
       $(this).attr('data-country_key') ? countryName = data_page.country_list[$(this).attr('data-country_key')] : '';*/
 
-      if (data_page.admin_role === '0') {
+      if (data_page.admin_contacts_role === '0') {
         var first = '', second = '';
         first = '<option value="'+$('.active_string').attr('data-responsible')+'">'+fullNameToNoMiddleName($('.active_string').attr('data-responsible_name'))+'';
         if ($('.active_string').attr('data-responsible_previous')) {
@@ -1511,7 +1511,7 @@ function historyBuilder(data) {
 
   $('#addContact').click(function() {
     $('.active_string') ? $('.active_string').removeClass('active_string') : '';
-    if (data_page.admin_role === '0') {
+    if (data_page.admin_contacts_role === '0') {
       $('#responsibleContact').html('<option value="'+window.adminId+'">'+fullNameToNoMiddleName(data_page.admin_name)+'');
     } else {
       $('#responsibleContact').val(window.adminId);
@@ -1749,7 +1749,7 @@ function sendTheOrder(ua) {
 
     $('#modalSpinner').show();
     $('#saveSpinner').show();
-    if (data_page.admin_role !== '0') {
+    if (data_page.admin_contacts_role !== '0') {
       $('#blankHistory').show();
     }
     $('#statusContact').val() !== '4' ? $('#statusContact').val('4') : '';
@@ -1827,7 +1827,7 @@ function sendTheOrder(ua) {
   });
 
   $('#appointResponsibleShow').click(function() {
-    if (data_page.admin_role !== '0') {
+    if (data_page.admin_contacts_role !== '0') {
       $('#responsibleList').val('_all_');
       $('#listForSetRespAdminNoZero').html('');
       $('#setResponsibleModal').modal().show();
@@ -1898,14 +1898,14 @@ function sendTheOrder(ua) {
       }
       // STOP Search text
       //Filter currents blanks
-      if (data_page.admin_role === '0') {
+      if (data_page.admin_contacts_role === '0') {
         filterBlank = ($('#myBlanks').val() === '1' && $(this).attr('data-responsible') === window.adminId) || ($('#myBlanks').val() === '0' && $(this).attr('data-responsible_previous') === window.adminId);
       } else {
         filterBlank = ($('#myBlanks').val() === '1' && $(this).attr('data-responsible') === window.adminId) || ($('#myBlanks').val() === '0' && $(this).attr('data-responsible_previous') === window.adminId) || ($('#myBlanks').val() === '_all_');
       }
 
       //Stop Filter currents blanks
-      if ($('#myBlanks').val() === '0' &&  data_page.admin_role === '0') {
+      if ($('#myBlanks').val() === '0' &&  data_page.admin_contacts_role === '0') {
         $('#checkAllStrings').attr('disabled', true);
         $('#addContact').attr('disabled', true);
       } else {
@@ -1916,7 +1916,7 @@ function sendTheOrder(ua) {
       if (($('#periodsCombobox').val() === '_all_' || $('#periodsCombobox').val() === $(this).attr('data-period')) && ($('#maleShow').val() === '_all_' || $('#maleShow').val() === $(this).attr('data-male')) && ($('#statusShow').val() === '_all_' || $('#statusShow').val() === $(this).attr('data-status_key')) && ($('#respShow').val() === '_all_' || ($('#respShow').val() === $(this).attr('data-responsible') || $('#respShow').val() === $(this).attr('data-responsible_previous'))) && ($('#leftPanelCountryFilter').val() === '_all_' || $('#leftPanelCountryFilter').val() === $(this).attr('data-country_key')) && ($('#leftPanelRegionFilter').val() === '_all_' || $('#leftPanelRegionFilter').val() === $(this).attr('data-region_work')) && filterBlank && searchResult) {
         $(this).show();
         counter++;
-        if ($('#myBlanks').val() === '0' &&  data_page.admin_role === '0') {
+        if ($('#myBlanks').val() === '0' &&  data_page.admin_contacts_role === '0') {
           $(this).find('.checkboxString').attr('disabled', true);
         } else {
           $(this).find('.checkboxString').attr('disabled', false);
@@ -1960,7 +1960,7 @@ function sendTheOrder(ua) {
     });
 // change date in the blank
     $('#orderDate').click(function(){
-      if (data_page.admin_role === '0' && $('#myBlanks').val() === '0') {
+      if (data_page.admin_contacts_role === '0' && $('#myBlanks').val() === '0') {
         return
       }
       $('#orderDateEdit').parent().show();
@@ -2053,7 +2053,7 @@ function sendTheOrder(ua) {
 
     $('#deleteContactsShowModal').click(function () {
 
-      if (data_page.admin_role === '0') {
+      if (data_page.admin_contacts_role === '0') {
         $('.helpDeleteContact').hide();
         $('#archiviateContact').attr('disabled', true);
         $('#archiviateContact').hide();
@@ -2109,11 +2109,11 @@ function sendTheOrder(ua) {
 // START blank counter for statistics
 // dinamic update data of statistics
 // ДОбавить свойство при котором будут запускаться запросы и обновления статистики. Проверить связи.
-  if (data_page.admin_role !== '0') {
+  if (data_page.admin_contacts_role !== '0') {
     blankCounter.counter = setTimeout (function () {
       if (!blankCounter.blank_count_their[0]) {
         //console.log(blankCounter.blank_count_their);
-        return
+        return;
       }
       var xex = [], arr = blankCounter.blank_count_their;
         for (var i = 0; i < arr.length; i++) {
@@ -3000,7 +3000,7 @@ function renderGroupList(groups) {
     $('#periodLabel').val($('#fieldEditPeriod').val());
   });
 */
-  if (data_page.admin_role === '0') {
+  if (data_page.admin_contacts_role === '0') {
     $('#blankHistory').hide();
   }
 
@@ -3010,7 +3010,7 @@ function renderGroupList(groups) {
 
   $('#deleteArchiveContactBtn').click(function (e) {
 
-    if (data_page.admin_role === '0') {
+    if (data_page.admin_contacts_role === '0') {
       if ($('#responsibleContact').attr('data-responsible_previous')) {
         e.preventDefault();
         e.stopPropagation();
