@@ -463,19 +463,27 @@ function open_blank(el_this) {
       $('#modalAddEdit select').attr("disabled", true);
       $('#send_blank').hide();
       $('#add_attendance_str').attr("style", "margin-right: 320px;");
+      $('#add_attendance_str').attr("disabled", true);
+      $('#add_attendance_str').hide();
     } else if (status_sheet === "0" && !trainee_access) {
       $('#modalAddEdit input').attr("disabled", true);
       $('#modalAddEdit select').attr("disabled", true);
       $('#send_blank').hide();
       $("#undo_attendance_str").prop("disabled", true);
       $('#add_attendance_str').attr("style", "margin-right: 320px;");
+      $('#add_attendance_str').attr("disabled", false);
+      $('#add_attendance_str').show();
     } else {
      if (status_sheet === "1" && !trainee_access) {
        $('#send_blank').hide();
        $("#undo_attendance_str").prop("disabled", false);
+       $('#add_attendance_str').attr("disabled", true);
+       $('#add_attendance_str').hide();
      } else {
        $('#send_blank').show();
        $("#undo_attendance_str").prop("disabled", true);
+       $('#add_attendance_str').attr("disabled", true);
+       $('#add_attendance_str').hide();
      }
 
      $('#modalAddEdit select').attr("disabled", false);
@@ -978,7 +986,7 @@ function open_blank(el_this) {
     +semester_range+"&time_zone="+trainee_list_full[member_key]["time_zone"]+"&date="+date+"&day="+day_of_date)
     .then(response => response.json())
     .then(commits => {
-      console.log(commits.result);
+      //console.log(commits.result);
       // отметка включеных мероприятий
       let exist_session = [];
       $("#modal-block_1 .name_session").each(function () {
@@ -1011,11 +1019,49 @@ function open_blank(el_this) {
       }
       // построчное вкл/выкл мероприятий в бланке
       $(".session_staff_str").change(function () {
-        console.log("I am here!");
+        if ($("#modalAddEdit").attr("data-status") === 1) {
+          showError("Этот лист посещаемости отправлен. Радактирование невозможено.");
+          return;
+        }
+        let session_staff_str_test = {};
+        let session_staff_str = new FormData();
+        let type = "";
+        if ($(this).prop("checked")) {
+          // проверить есть мероприятие в списке или нет
+          type = "add_session_staff";
+          session_staff_str_test;
+          session_staff_str_test["id_sheet"] = $("#modalAddEdit").attr("data-id");
+          session_staff_str_test["session_id"] =$(this).attr("data-session_id");
+          session_staff_str_test["session_name"] = $(this).attr("data-session_name");
+          session_staff_str_test["session_time"] =$(this).attr("data-day");
+          session_staff_str_test["duration"] = $(this).attr("data-duration");
+          session_staff_str_test["end_time"] = $(this).attr("data-end_time");
+          session_staff_str_test["visit"] = $(this).attr("data-visit");
+        } else {
+          type = "dlt_session_staff";
+          session_staff_str_test["id_sheet"] = $("#modalAddEdit").attr("data-id");
+          session_staff_str_test["session_id"] =$(this).attr("data-session_id");
+          session_staff_str_test["session_time"] =$(this).attr("data-day");
+        }
+        session_staff_str.set("data", JSON.stringify(session_staff_str_test));
+
+        fetch("ajax/ftt_attendance_ajax.php?type="+type, {
+          method: 'POST',
+          body: session_staff_str
+        })
+        .then(response => response.text())
+        .then(commits => {
+          //console.log(commits.result);
+        // location.reload();
+        });
+        //console.log("I am here!");
       });
       // пакетные операции вкл/выкл мероприятий в бланке
       $(".select_all_session").change(function () {
-
+        if ($("#modalAddEdit").attr("data-status") === 1) {
+          showError("Этот лист посещаемости отправлен. Радактирование невозможено.");
+          return;
+        }
         // Отслеживать включенные мероприятия и отмечать галочкали присутствующие в бланке, если все присутствуют помечать
         // "вкл выкл всё" отмеченным.
         // обычный сценарий это все включены все выключены, учитывать это

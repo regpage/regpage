@@ -331,6 +331,40 @@ function add_sessions_staff_all($sessions) {
   return $res;
 }
 
+function dlt_session_staff($sessions)
+{
+  global $db;
+  $session = json_decode($sessions);
+  $sheet_id = $db->real_escape_string(trim($session->id_sheet));
+  $session_id = $db->real_escape_string(trim($session->session_id));
+  $session_time = $db->real_escape_string(trim($session->session_time));
+  if ($sheet_id) {
+    $res = db_query("DELETE FROM `ftt_attendance` WHERE `sheet_id` = $sheet_id AND `session_id`='$session_id'");
+  } else {
+    $res = db_query("DELETE FROM `ftt_attendance` WHERE `sheet_id` = $sheet_id AND `session_time`='$session_time'");
+  }
+
+}
+
+function add_session_staff($sessions)
+{
+  global $db;
+  $session = json_decode($sessions);
+  $sheet_id = $db->real_escape_string(trim($session->id_sheet));
+  $session_id = $db->real_escape_string(trim($session->session_id));
+  $session_time = $db->real_escape_string(trim($session->session_time));
+  if ($sheet_id) {
+    $res = db_query("SELECT `id` FROM ftt_attendance WHERE `sheet_id` = $sheet_id AND `session_id` = '$session_id'");
+  } else {
+    $res = db_query("SELECT `id` FROM ftt_attendance WHERE `sheet_id` = $sheet_id AND `session_time` = '$session_time'");
+  }
+  $row = $res->fetch_assoc();
+
+  if (!isset($row['id'])) {
+      add_sessions_staff($session);
+  }
+}
+
 function getSessionStaff($value='') {
   /*
   1. Получаем семестр (и др. правила)

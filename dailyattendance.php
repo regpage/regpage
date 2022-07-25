@@ -10,6 +10,7 @@ include_once 'db/classes/ftt_info.php';
 function db_newDailyAttendance () {
   //  Проверяем даты семестра
   // Проверяем что расписание не выходит за период обучения
+  
   if (ftt_info::pause()) {
     echo "Вне периода проведения обучения";
     exit();
@@ -116,6 +117,7 @@ function db_newDailyAttendance () {
         $end_time = $value['end_time'];
         $comment_extra = '';
         $duration = $value['duration'];
+        $session_id = $value['id'];
         if ($value['duration'] && $value['duration'] > 0) {
           $session_name = $session_name.", ".$value['duration']."&nbsp;мин.";
         }
@@ -123,7 +125,7 @@ function db_newDailyAttendance () {
           $session_name = $session_name . ' <i class="fa fa-sticky-note" title="'.$value['comment'].'" data-toggle="tooltip" aria-hidden="true"></i> ';
         }
         if (!in_array($value['id'], $canceled_session)) {
-          db_query("INSERT INTO ftt_attendance (`sheet_id`, `session_name`, `session_time`, `visit`, `duration`, `end_time`) VALUES ('$max_id', '$session_name', '$time_start', '$visit_field', '$duration', '$end_time')");
+          db_query("INSERT INTO ftt_attendance (`session_id`,`sheet_id`, `session_name`, `session_time`, `visit`, `duration`, `end_time`) VALUES ('$session_id','$max_id', '$session_name', '$time_start', '$visit_field', '$duration', '$end_time')");
         }
       }
     }

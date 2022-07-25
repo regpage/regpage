@@ -58,22 +58,34 @@ if(isset($_GET['type']) && $_GET['type'] === 'create_late') {
     exit();
 }
 
-
-if (isset($_GET['type']) && $_GET['type'] === 'dlt_sessions_in_blank') {
-  echo json_encode(["result"=>dlt_sessions_in_blank($_GET['id'])]);
-  exit();
-}
-
+// Получаем мероприятия для добавления / удаления в бланке.
 if (isset($_GET['type']) && $_GET['type'] === 'get_sessions_staff') {
   echo json_encode(["result"=>schedule_class::get($_GET['semester_range'], $_GET['time_zone'], $_GET['date'], $_GET['day'])]);
   exit();
 }
 
-// Добавить мероприятия в ручную
+// Удалить мероприятия в ручную.
+if (isset($_GET['type']) && $_GET['type'] === 'dlt_sessions_in_blank') {
+  echo json_encode(["result"=>dlt_sessions_in_blank($_GET['id'])]);
+  exit();
+}
+
+// Добавить мероприятия в ручную.
 if (isset($_GET['type']) && $_GET['type'] === 'add_sessions_staff_all') {
   echo json_encode(["result"=>add_sessions_staff_all($_POST['data'])]);
   exit();
 }
 
+// Добавить одно мероприятие в ручную.
+if (isset($_GET['type']) && $_GET['type'] === 'dlt_session_staff') {
+  echo json_encode(["result"=>dlt_session_staff($_POST['data'])]);
+  exit();
+}
+
+// Добавить одно мероприятие в ручную.
+if (isset($_GET['type']) && $_GET['type'] === 'add_session_staff') {
+  echo json_encode(["result"=>add_session_staff($_POST['data'])]);
+  exit();
+}
 
 ?>
