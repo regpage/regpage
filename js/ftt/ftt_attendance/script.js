@@ -114,13 +114,15 @@ $(document).ready(function(){
          reason = data_ddmm + " " + $(this).parent().parent().find("h6").text() + " – "+text_msg+" на " + $(this).next().next().next().next().val() + " мин.";
          create_extrahelp.push("&id="+$(this).parent().parent().parent().attr("data-id")
          +"&reason="+reason+"&date="+$("#modalAddEdit").attr("data-date")
-         +"&member_key="+$("#modalAddEdit").attr("data-member_key"));
+         +"&member_key="+$("#modalAddEdit").attr("data-member_key")
+         +"&attendance_id="+$("#modalAddEdit").attr("data-id"));
        } else if (!$(this).val() && $(this).next().val() === "О") {
          let data_ddmm = dateStrFromyyyymmddToddmm($("#modalAddEdit").attr("data-date"));
          reason = data_ddmm + " " + $(this).parent().parent().find("h6").text() + " – отсутствие без разрешения.";
          create_extrahelp.push("&id="+$(this).parent().parent().parent().attr("data-id")
          +"&reason="+reason+"&date="+$("#modalAddEdit").attr("data-date")
-         +"&member_key="+$("#modalAddEdit").attr("data-member_key"));
+         +"&member_key="+$("#modalAddEdit").attr("data-member_key")
+         +"&attendance_id="+$("#modalAddEdit").attr("data-id"));
        }
      }
    });
@@ -138,7 +140,8 @@ $(document).ready(function(){
             reason = $("#modalAddEdit").attr("data-date") + " " + $(this).parent().parent().find("h6").text() + " – отсутствие без разрешения.";
             create_extrahelp.push("&id="+$(this).parent().parent().parent().attr("data-id")
             +"&reason="+reason+"&date="+$("#modalAddEdit").attr("data-date")
-            +"&member_key="+$("#modalAddEdit").attr("data-member_key"));
+            +"&member_key="+$("#modalAddEdit").attr("data-member_key")
+            +"&attendance_id="+$("#modalAddEdit").attr("data-id"));
             // save select field
             field = $(this).next().attr("data-field");
             id = $(this).parent().parent().parent().attr("data-id");
@@ -1143,8 +1146,40 @@ function open_blank(el_this) {
     }
 
     // Убираем статус один и удаляем опаздания и прогулы
-
-
+    fetch("ajax/ftt_attendance_ajax.php?type=undo_status&id="+$("#modalAddEdit").attr("data-id"))
+    .then(response => response.text())
+    .then(commits => {
+      console.log(commits.result);
+    });
+    /*
+    fetch("ajax/ftt_attendance_ajax.php?type=undo_lates&id="+$("#modalAddEdit").attr("data-id"))
+    .then(response => response.text())
+    .then(commits => {
+      console.log(commits.result);
+    });
+    */
+/*    let obj_db = {
+        data: function () {
+          let session_staff_str = new FormData();
+          let session_staff_str_test ={};
+          session_staff_str_test["field"] = "";
+          session_staff_str_test["value"] = "";
+          session_staff_str_test["condition_field"] = "";
+          session_staff_str_test["condition_value"] = "";
+          session_staff_str_test["changed"] = "";
+          session_staff_str_test["table"] = "";
+          session_staff_str_test["operation"] = "set";
+          session_staff_str_test["order_by"] = "";
+          return session_staff_str.set("data", JSON.stringify(session_staff_str_test));
+        },
+        undo_status: fetch('ajax/ftt_attendance_ajax.php?type=undo_status&id='+$("#modalAddEdit").attr("data-id"))
+        .then(response => response.json())
+        .then(commits => {
+          return commits;
+        }),
+        undo_late: null
+        };
+*/
     // внести изменения в строку и в бланк или перезагрузить страницу?
   });
 // DOCUMENT READY STOP

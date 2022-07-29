@@ -247,11 +247,12 @@ function set_late_automatic($member_key, $date, $delay, $session_name, $end_time
   $delay = $db->real_escape_string($delay);
   $session_name = $db->real_escape_string($session_name);
   $end_time = $db->real_escape_string($end_time);
+  $id_attendance = $db->real_escape_string($id_attendance);
 
   $res = db_query("INSERT INTO `ftt_late` (`member_key`, `date`, `delay`, `session_name`, `end_time`, 'id_attendance', `changed`)
   VALUES ('$member_key', '$date', '$delay', '$session_name', '$id_attendance', '$end_time', 1)");
 
-  $res2 = db_query("SELECT fl.id, fl.member_key, fl.date, fl.delay, fl.session_name, fl.end_time, fl.done, fl.author, fl.changed
+  $res2 = db_query("SELECT fl.id, fl.member_key, fl.date, fl.delay, fl.session_name, fl.end_time, fl.done, fl.author, fl.id_attendance, fl.changed
       FROM ftt_late AS fl
       WHERE fl.member_key = '$member_key' AND fl.done = 0
       ORDER BY fl.date DESC");
@@ -282,20 +283,24 @@ function set_late_automatic($member_key, $date, $delay, $session_name, $end_time
         $reason_text = yyyymmdd_to_ddmm($result[$i]['date']).' '.$result[$i]['session_name'].' — '.$text_msg.' на '.$result[$i]['delay'].' мин.\r\n';
         $reason_text .= yyyymmdd_to_ddmm($result[$i+1]['date']).' '.$result[$i+1]['session_name'].' — '.$text_msg_1.' на '.$result[$i+1]['delay'].' мин.\r\n';
         $reason_text .= yyyymmdd_to_ddmm($result[$i+2]['date']).' '.$result[$i+2]['session_name'].' — '.$text_msg_2.' на '.$result[$i+2]['delay'].' мин.\r\n';
-        $res4 = db_query("INSERT INTO `ftt_extra_help` (`date`, `member_key`, `reason`, `changed`) VALUES (NOW(), '$member_key', '$reason_text', 1)");
+         $attendance_and_late = $result[$i]['id_attendance'].':'.$result[$i]['id'].',';
+         $attendance_and_late .= $result[$i+1]['id_attendance'].':'.$result[$i]['id'].',';
+         $attendance_and_late .= $result[$i+2]['id_attendance'].':'.$result[$i]['id'];
+        $res4 = db_query("INSERT INTO `ftt_extra_help` (`date`, `member_key`, `reason`, `attendance_and_late` `changed`) VALUES (NOW(), '$member_key', '$reason_text', '$attendance_and_late', 1)");
       }
     }
   return count($result).' '.$count_lates;
 }
 
-function set_extrahelp_automatic($member_key, $date, $reason, $end_time=0) {
+function set_extrahelp_automatic($member_key, $date, $reason, $attendance_id, $end_time=0) {
   global $db;
   $member_key = $db->real_escape_string($member_key);
   $date = $db->real_escape_string($date);
   $reason = $db->real_escape_string($reason);
+  $attendance_id = $db->real_escape_string($attendance_id);
 
-  $res = db_query("INSERT INTO `ftt_extra_help` (`member_key`, `date`, `reason`, `changed`)
-  VALUES ('$member_key', '$date', '$reason', 1)");
+  $res = db_query("INSERT INTO `ftt_extra_help` (`member_key`, `date`, `reason`, `attendance_and_late`, `changed`)
+  VALUES ('$member_key', '$date', '$reason', '$attendance_id', 1)");
   return $res;
 }
 
@@ -339,9 +344,9 @@ function dlt_session_staff($sessions)
   $session_id = $db->real_escape_string(trim($session->session_id));
   $session_time = $db->real_escape_string(trim($session->session_time));
   if ($sheet_id) {
-    $res = db_query("DELETE FROM `ftt_attendance` WHERE `sheet_id` = $sheet_id AND `session_id`='$session_id'");
+    $res = db_query("DELETE FROM `ftt_attendance` WHERE `sheet_id` = '$sheet_id' AND `session_id`='$session_id'");
   } else {
-    $res = db_query("DELETE FROM `ftt_attendance` WHERE `sheet_id` = $sheet_id AND `session_time`='$session_time'");
+    $res = db_query("DELETE FROM `ftt_attendance` WHERE `sheet_id` = '$sheet_id' AND `session_time`='$session_time'");
   }
 
 }
@@ -354,9 +359,9 @@ function add_session_staff($sessions)
   $session_id = $db->real_escape_string(trim($session->session_id));
   $session_time = $db->real_escape_string(trim($session->session_time));
   if ($sheet_id) {
-    $res = db_query("SELECT `id` FROM ftt_attendance WHERE `sheet_id` = $sheet_id AND `session_id` = '$session_id'");
+    $res = db_query("SELECT `id` FROM ftt_attendance WHERE `sheet_id` = '$sheet_id' AND `session_id` = '$session_id'");
   } else {
-    $res = db_query("SELECT `id` FROM ftt_attendance WHERE `sheet_id` = $sheet_id AND `session_time` = '$session_time'");
+    $res = db_query("SELECT `id` FROM ftt_attendance WHERE `sheet_id` = '$sheet_id' AND `session_time` = '$session_time'");
   }
   $row = $res->fetch_assoc();
 
@@ -376,6 +381,28 @@ function getSessionStaff($value='') {
   while ($row = $res_correction->fetch_assoc()) $correction[] = $row;
   */
   return 1;
+}
+
+function undo_extrahelp_lates($id)
+{
+  global $db;
+  $id = $db->real_escape_string($id);
+  $id_search = $id.':';
+  $result=[];
+  $res = db_query("SELECT `id`, `attendance_and_late` FROM ftt_extra_help WHERE `attendance_and_late` LIKE %$id_search%");
+  while ($row = $res->fetch_assoc()) $result[$row['id']] = $row['attendance_and_late'];
+
+  foreach ($result as $key => $value) {
+    $step_1=explode($value, ',');
+    for ($i=0; $i < count($step_1); $i++) {
+      $step_2=explode($step_1[$i], ':');
+      if ($step_2[0] !== $id) {
+        $condition = $step_2[1];
+        db_query("UPDATE `ftt_late` SET `done` = 0, `changed` = 1 WHERE `id`='$condition'");
+      }
+    }
+    db_query("DELETE FROM `ftt_extra_help` WHERE `id` = '$key'");
+  }
 }
 
 ?>

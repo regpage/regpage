@@ -4,6 +4,7 @@ include_once "ajax.php";
 // подключаем запросы
 include_once "../db/ftt/ftt_attendance_db.php";
 include_once "../db/classes/schedule_class.php";
+include_once "../db/classes/db_operations.php";
 // Подключаем ведение лога
 //include_once "../extensions/write_to_log/write_to_log.php";
 
@@ -49,7 +50,7 @@ if(isset($_GET['type']) && $_GET['type'] === 'set_attendance_archive') {
 }
 
 if(isset($_GET['type']) && $_GET['type'] === 'create_extrahelp') {
-    echo set_extrahelp_automatic($_GET['member_key'], $_GET['date'], $_GET['reason']);
+    echo set_extrahelp_automatic($_GET['member_key'], $_GET['date'], $_GET['reason'], $_GET['attendance_id']);
     exit();
 }
 
@@ -85,6 +86,42 @@ if (isset($_GET['type']) && $_GET['type'] === 'dlt_session_staff') {
 // Добавить одно мероприятие в ручную.
 if (isset($_GET['type']) && $_GET['type'] === 'add_session_staff') {
   echo json_encode(["result"=>add_session_staff($_POST['data'])]);
+  exit();
+}
+
+if (isset($_GET['type']) && $_GET['type'] === 'undo_status') {
+  // ОТКАТ ПОСЕЩАЕМОСТИ
+  // STATUS
+  // готовим данные
+  $db_data_stat = new DbData('set', 'ftt_attendance_sheet');
+  $db_data_stat->set('field', 'status');
+  $db_data_stat->set('value', 0);
+  $db_data_stat->set('condition_field', 'id');
+  $db_data_stat->set('condition_value', $_GET['id']);
+  $db_data_stat->set('changed', 1);
+  echo json_encode(["result"=>DbOperation::operation($db_data_stat->get())]);
+  unset($db_data_stat);
+
+  // LATES
+  // готовим данные
+  $db_data_late = new DbData('dlt', 'ftt_late');
+  $db_data_late->set('condition_field', 'id_attendance');
+  $db_data_late->set('condition_value', $_GET['id']);
+  echo json_encode(["result"=>DbOperation::operation($db_data_late->get())]);
+  unset($db_data_late);
+
+  // EXTRAHELP
+  // готовим данные
+  $db_data_extra = new DbData('dlt', 'ftt_extra_help');
+  $db_data_extra->set('condition_field', 'attendance_and_late');
+  $db_data_extra->set('condition_value', $_GET['id']);
+  echo json_encode(["result"=>DbOperation::operation($db_data_extra->get())]);
+  unset($db_data_extra);
+
+  // EXTRAHELP with 3 LATES
+  echo json_encode(["result"=>undo_extrahelp_lates($_GET['id'])]);
+
+  // EXIT
   exit();
 }
 
