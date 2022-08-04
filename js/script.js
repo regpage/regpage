@@ -768,7 +768,7 @@ function handleBirthDateAndCategoryFields(){
 // about age start
 function prepareGetAge(preparingDate) {
   var isDash;
-  preparingDate[4] == '-' ? isDash = true : sDash = false;
+  preparingDate[4] == '-' ? isDash = true : isDash = false;
   if (isDash == true) {
     preparingDate = preparingDate.split('-');
     preparingDate = new Date(preparingDate[0], (preparingDate[1] - 1), preparingDate[2]);
@@ -778,7 +778,6 @@ function prepareGetAge(preparingDate) {
     preparingDate = new Date(preparingDate[2], (preparingDate[1] - 1), preparingDate[0]);
     return  preparingDate;
   }
-
 }
 function getAge(birthDate, notTodayDate) {
   var today;

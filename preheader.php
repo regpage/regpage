@@ -26,7 +26,7 @@ $memberId = db_getMemberIdBySessionId (session_id());
 $memberId ? db_lastVisitTimeUpdate(session_id()) : '';
 $thispage = explode('.', substr($_SERVER['PHP_SELF'], 1))[0];
 // Добавляем запись в лог посещаемости
-$memberId && $thispage != 'archive' ? db_activityLogInsert($memberId, $thispage) : '';
+//$memberId && $thispage != 'archive' ? db_activityLogInsert($memberId, $thispage) : '';
 
 /* ПРАВИЛА ДЛЯ ДОСТУПА К РАЗДЕЛАМ */
 /* ВСЕ ПРАВИЛА ДОСТУПА ДОЛЖНЫ БЫТЬ ПЕРЕНЕСЕНЫ СЮДА */

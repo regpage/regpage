@@ -144,19 +144,18 @@ $sort_type = isset ($_SESSION['sort_type-meetings']) ? $_SESSION['sort_type-meet
 <div class="control-group row-fluid">
     <label style="margin-right: 80px; margin-bottom: 0px">Дата</label>
     <label style="margin-right: 17px; margin-bottom: 0px">Cвятых</label>
-    <label style="margin-right: 18px; margin-bottom: 0px">Гостей</label>
+    <label style="margin-right: 24px; margin-bottom: 0px" class="traineesClass">ПВОМ</label>
+    <label style="margin-right: 22px; margin-bottom: 0px">Гостей</label>
     <label style="margin-bottom: 0px">Всего</label>
-
   <div class="control-group row-fluid" style="margin-right: 100px; margin-top: -5px">
     <input class="datepicker meetingDate span2" type="text" placeholder="ДД.ММ.ГГГГ" valid="required,date" style="margin-top: 5px; margin-right: 10px; width: 100px;">
-    <input type="text" readonly class="span2 meeting-saints-count" style="margin-right: 10px; width: 55px;">
-    <input type="text" class="span2 meeting-count-guest" style="margin-right: 10px; width: 55px;">
-    <input disabled type="text" class="span2 meeting-count" style="width: 55px; margin-right: 10px;">
+    <input type="text" readonly class="span2 meeting-saints-count text-right" style="margin-right: 10px; width: 55px;">
+    <input type="text" style="margin-right: 10px; width: 55px;" class="span2 meeting-count-trainees traineesClass text-right">
+    <input type="text" class="span2 meeting-count-guest text-right" style="margin-right: 10px; width: 55px;">
+    <input disabled type="text" class="span2 meeting-count text-right" style="width: 55px; margin-right: 10px;">
     </div>
     <div class="">
-      <label class="traineesClass">ПВОМ</label>
-      <input type="text" style="width: 55px" class="span2 meeting-count-trainees traineesClass">
-      <span style="padding-left: 10px;" class="show-extra-fields fulltimersClass">Полноврем. служащих — <span class="meeting-count-fulltimers"></span></span>
+      <span style="" class="show-extra-fields fulltimersClass">в том числе полновременных служащих — <span class="meeting-count-fulltimers"></span></span>
     </div>
 </div>
             <!--<div class="show-extra-fields control-group row-fluid fulltimersClass">
@@ -192,18 +191,43 @@ $sort_type = isset ($_SESSION['sort_type-meetings']) ? $_SESSION['sort_type-meet
                     </div>-->
                     <div class="members-available"></div>
                 </div>
-                <table class='table table-hover'>
-                    <thead>
-                        <tr>
-                            <th><input id="selectAllMembers" type="checkbox">&nbsp;&nbsp;&nbsp;<a id='' class="sortingByName sortMembersModal" href='#' title='сортировать'> ФИО</a>&nbsp;</th>
-                            <th><a id='' href='#' title='сортировать' class="sortingByLocality sortMembersModal">Местность</a>&nbsp;</th>
-                            <th><a id='' href='#' title='сортировать' class="sortingByOld sortMembersModal">В</a>&nbsp;</th>
-                            <th><a id='' href='#' title='сортировать' class="sortingByattend sortMembersModal">С</a>&nbsp;</th>
-                            <th>&nbsp;</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+                <div class="">
+                  <ul class="nav nav-tabs">
+                    <li class="active"><a href="#tab_aduls" data-toggle="tab">Святые</a></li>
+                    <li><a href="#tab_children" data-toggle="tab">Дети <span id="children_count_show"></span></a></li>
+                  </ul>
+                </div>
+
+                <div class="tab-content">
+                  <div id="tab_aduls" class="tab-pane fade in active">
+                    <table class='table table-hover'>
+                        <thead>
+                            <tr>
+                                <th><input id="selectAllMembers" type="checkbox">&nbsp;&nbsp;&nbsp;<a id='' class="sortingByName sortMembersModal" href='#' title='сортировать'> ФИО</a>&nbsp;</th>
+                                <th><a id='' href='#' title='сортировать' class="sortingByLocality sortMembersModal">Местность</a>&nbsp;</th>
+                                <th><a id='' href='#' title='сортировать' class="sortingByOld sortMembersModal">В</a>&nbsp;</th>
+                                <th><a id='' href='#' title='сортировать' class="sortingByattend sortMembersModal">С</a>&nbsp;</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                  </div>
+                  <div id="tab_children" class="tab-pane fade">
+                    <table class='table table-hover'>
+                        <thead>
+                            <tr>
+                                <th><input id="selectAllMembers" type="checkbox">&nbsp;&nbsp;&nbsp;<a id='' class="sortingByName sortMembersModal" href='' title='сортировать'> ФИО</a>&nbsp;</th>
+                                <th><a id='' href='' title='сортировать' class="sortingByLocality sortMembersModal">Местность</a>&nbsp;</th>
+                                <th><a id='' href='' title='сортировать' class="sortingByOld sortMembersModal">В</a>&nbsp;</th>
+                                <th><a id='' href='' title='сортировать' class="sortingByattend sortMembersModal">С</a>&nbsp;</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                  </div>
+                </div>
             </div>
         </div>
     </div>
@@ -646,7 +670,7 @@ var gloIsSingleCity = parseInt('<?php echo $isSingleCity; ?>');
 var gloSingleLocality = gloIsSingleCity ? '<?php echo $singleLocality; ?>' : '';
 </script>
 
-<script src="/js/meetings.js?v133"></script>
+<script src="/js/meetings.js?v135"></script>
 <?php
     include_once './footer.php';
 ?>
