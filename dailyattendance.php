@@ -10,7 +10,7 @@ include_once 'db/classes/ftt_info.php';
 function db_newDailyAttendance () {
   //  Проверяем даты семестра
   // Проверяем что расписание не выходит за период обучения
-  
+
   if (ftt_info::pause()) {
     echo "Вне периода проведения обучения";
     exit();

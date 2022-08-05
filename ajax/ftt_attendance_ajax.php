@@ -55,7 +55,7 @@ if(isset($_GET['type']) && $_GET['type'] === 'create_extrahelp') {
 }
 
 if(isset($_GET['type']) && $_GET['type'] === 'create_late') {
-    echo set_late_automatic($_GET['member_key'], $_GET['date'], $_GET['delay'], $_GET['session_name'], $_GET['end_time'], $_GET['id_attendance']);
+    echo  json_encode(["result"=>set_late_automatic($_GET['member_key'], $_GET['date'], $_GET['delay'], $_GET['session_name'], $_GET['end_time'], $_GET['id_attendance'])]);
     exit();
 }
 
@@ -99,27 +99,36 @@ if (isset($_GET['type']) && $_GET['type'] === 'undo_status') {
   $db_data_stat->set('condition_field', 'id');
   $db_data_stat->set('condition_value', $_GET['id']);
   $db_data_stat->set('changed', 1);
-  echo json_encode(["result"=>DbOperation::operation($db_data_stat->get())]);
-  unset($db_data_stat);
+  $echo_stat = DbOperation::operation($db_data_stat->get());
 
   // LATES
   // готовим данные
   $db_data_late = new DbData('dlt', 'ftt_late');
   $db_data_late->set('condition_field', 'id_attendance');
   $db_data_late->set('condition_value', $_GET['id']);
-  echo json_encode(["result"=>DbOperation::operation($db_data_late->get())]);
-  unset($db_data_late);
+  $echo_late = DbOperation::operation($db_data_late->get());
 
   // EXTRAHELP
   // готовим данные
   $db_data_extra = new DbData('dlt', 'ftt_extra_help');
   $db_data_extra->set('condition_field', 'attendance_and_late');
   $db_data_extra->set('condition_value', $_GET['id']);
-  echo json_encode(["result"=>DbOperation::operation($db_data_extra->get())]);
-  unset($db_data_extra);
+  $echo_extrahelp = DbOperation::operation($db_data_extra->get());
 
   // EXTRAHELP with 3 LATES
-  echo json_encode(["result"=>undo_extrahelp_lates($_GET['id'])]);
+  $echo_lates_in_extrahelp = undo_extrahelp_lates($_GET['id']);
+
+  // Echo result
+  echo json_encode([
+    'stat'=>$echo_stat,
+    'late'=>$echo_late,
+    'extrahelp'=>$echo_extrahelp,
+    'lates_in_extrahelp'=>$echo_lates_in_extrahelp,
+  ]);
+
+  unset($db_data_stat);
+  unset($db_data_late);
+  unset($db_data_extra);
 
   // EXIT
   exit();

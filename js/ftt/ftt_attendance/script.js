@@ -22,7 +22,7 @@ $(document).ready(function(){
    $("#spinner").modal("show");
    // set extra help
    if (extrahelp[0]) {
-     for (var i = 0; i < extrahelp.length; i++) {
+     for (let i = 0; i < extrahelp.length; i++) {
        fetch('ajax/ftt_attendance_ajax.php?type=create_extrahelp'+extrahelp[i])
        .then(response => response.text())
        .then(commits => {
@@ -33,12 +33,14 @@ $(document).ready(function(){
 
    // set extra help
    if (late[0]) {
-     for (var i = 0; i < late.length; i++) {
-       fetch('ajax/ftt_attendance_ajax.php?type=create_late'+late[i])
-       .then(response => response.text())
-       .then(commits => {
-         console.log(commits);
-       });
+     for (let i = 0; i < late.length; i++) {
+       setTimeout(function () {
+         fetch('ajax/ftt_attendance_ajax.php?type=create_late'+late[i])
+         .then(response => response.text())
+         .then(commits => {
+           console.log(commits);
+         });
+       }, 10);
      }
    }
 
@@ -1128,59 +1130,43 @@ function open_blank(el_this) {
   // ОТКАТ
   // удаление мероприятий из бланка
   $("#undo_attendance_str").click(function () {
+    if (!confirm("Отменить отправку бланка?")) {
+      return;
+    }
     // Условия
     if ($("#modalAddEdit").attr("data-status") === 0) {
       showError("Этот лист посещаемости не отправлен. Откат невозможен.");
       return;
     }
+    let date_blank_str = $("#modalAddEdit").attr("data-date");
+    let date_blank = new Date(date_blank_str);
+    let day_blank = date_blank.getDay();
     let date_send_str = $("#modalAddEdit").attr("data-date_send");
     let date_send = new Date(date_send_str);
     let day_send = date_send.getDay();
-    let day_current = new Date();
-    let dayNumber_current = day_current.getDay();
+    let date_current = new Date();
+    let day_current = date_current.getDay();
     let result_date = (day_current - date_send) - ((day_send+1)*(24*60*60)*1000);
+    let result_date_blank = (day_current - day_blank) - ((day_blank+1)*(24*60*60)*1000);
+    let days_ago = (date_current - date_blank)/(24*60*60)/1000;
+        
     // Откат возможен с вс по сб недели в который он отправлен
-    if (day_send > day_current && date_send > day_current && Math.floor(result_date) > 1) {
+    if (Math.floor(days_ago) < 8 && day_blank <= day_current) {
       showError("Этот лист посещаемости находится в закрытом периоде. Откат невозможен.");
-      return
+      return;
     }
 
     // Убираем статус один и удаляем опаздания и прогулы
     fetch("ajax/ftt_attendance_ajax.php?type=undo_status&id="+$("#modalAddEdit").attr("data-id"))
     .then(response => response.text())
     .then(commits => {
-      console.log(commits.result);
+      setTimeout(function () {
+        $('#spinner').modal("hide");
+        location.reload();
+      }, 500);
     });
-    /*
-    fetch("ajax/ftt_attendance_ajax.php?type=undo_lates&id="+$("#modalAddEdit").attr("data-id"))
-    .then(response => response.text())
-    .then(commits => {
-      console.log(commits.result);
-    });
-    */
-/*    let obj_db = {
-        data: function () {
-          let session_staff_str = new FormData();
-          let session_staff_str_test ={};
-          session_staff_str_test["field"] = "";
-          session_staff_str_test["value"] = "";
-          session_staff_str_test["condition_field"] = "";
-          session_staff_str_test["condition_value"] = "";
-          session_staff_str_test["changed"] = "";
-          session_staff_str_test["table"] = "";
-          session_staff_str_test["operation"] = "set";
-          session_staff_str_test["order_by"] = "";
-          return session_staff_str.set("data", JSON.stringify(session_staff_str_test));
-        },
-        undo_status: fetch('ajax/ftt_attendance_ajax.php?type=undo_status&id='+$("#modalAddEdit").attr("data-id"))
-        .then(response => response.json())
-        .then(commits => {
-          return commits;
-        }),
-        undo_late: null
-        };
-*/
-    // внести изменения в строку и в бланк или перезагрузить страницу?
+    $("#modalAddEdit").modal("hide");
+    $('#spinner').modal("show");
   });
 // DOCUMENT READY STOP
 });

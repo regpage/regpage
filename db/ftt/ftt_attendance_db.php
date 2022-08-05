@@ -241,16 +241,17 @@ function set_attendance_archive ($id, $archive) {
 
 function set_late_automatic($member_key, $date, $delay, $session_name, $end_time=0, $id_attendance) {
   global $db;
-  $result = [];
   $member_key = $db->real_escape_string($member_key);
   $date = $db->real_escape_string($date);
   $delay = $db->real_escape_string($delay);
   $session_name = $db->real_escape_string($session_name);
   $end_time = $db->real_escape_string($end_time);
   $id_attendance = $db->real_escape_string($id_attendance);
+  $result = [];
+  $count_lates=0;
 
-  $res = db_query("INSERT INTO `ftt_late` (`member_key`, `date`, `delay`, `session_name`, `end_time`, 'id_attendance', `changed`)
-  VALUES ('$member_key', '$date', '$delay', '$session_name', '$id_attendance', '$end_time', 1)");
+  $res = db_query("INSERT INTO `ftt_late` (`member_key`, `date`, `delay`, `session_name`, `end_time`, `id_attendance`, `changed`)
+  VALUES ('$member_key', '$date', '$delay', '$session_name', '$end_time', '$id_attendance', 1)");
 
   $res2 = db_query("SELECT fl.id, fl.member_key, fl.date, fl.delay, fl.session_name, fl.end_time, fl.done, fl.author, fl.id_attendance, fl.changed
       FROM ftt_late AS fl
@@ -284,9 +285,9 @@ function set_late_automatic($member_key, $date, $delay, $session_name, $end_time
         $reason_text .= yyyymmdd_to_ddmm($result[$i+1]['date']).' '.$result[$i+1]['session_name'].' — '.$text_msg_1.' на '.$result[$i+1]['delay'].' мин.\r\n';
         $reason_text .= yyyymmdd_to_ddmm($result[$i+2]['date']).' '.$result[$i+2]['session_name'].' — '.$text_msg_2.' на '.$result[$i+2]['delay'].' мин.\r\n';
          $attendance_and_late = $result[$i]['id_attendance'].':'.$result[$i]['id'].',';
-         $attendance_and_late .= $result[$i+1]['id_attendance'].':'.$result[$i]['id'].',';
-         $attendance_and_late .= $result[$i+2]['id_attendance'].':'.$result[$i]['id'];
-        $res4 = db_query("INSERT INTO `ftt_extra_help` (`date`, `member_key`, `reason`, `attendance_and_late` `changed`) VALUES (NOW(), '$member_key', '$reason_text', '$attendance_and_late', 1)");
+         $attendance_and_late .= $result[$i+1]['id_attendance'].':'.$result[$i+1]['id'].',';
+         $attendance_and_late .= $result[$i+2]['id_attendance'].':'.$result[$i+2]['id'];         
+        $res4 = db_query("INSERT INTO `ftt_extra_help` (`date`, `member_key`, `reason`, `attendance_and_late`, `changed`) VALUES (NOW(), '$member_key', '$reason_text', '$attendance_and_late', 1)");
       }
     }
   return count($result).' '.$count_lates;
@@ -389,7 +390,7 @@ function undo_extrahelp_lates($id)
   $id = $db->real_escape_string($id);
   $id_search = $id.':';
   $result=[];
-  $res = db_query("SELECT `id`, `attendance_and_late` FROM ftt_extra_help WHERE `attendance_and_late` LIKE %$id_search%");
+  $res = db_query("SELECT `id`, `attendance_and_late` FROM ftt_extra_help WHERE `attendance_and_late` LIKE '%$id_search%'");
   while ($row = $res->fetch_assoc()) $result[$row['id']] = $row['attendance_and_late'];
 
   foreach ($result as $key => $value) {
@@ -403,6 +404,8 @@ function undo_extrahelp_lates($id)
     }
     db_query("DELETE FROM `ftt_extra_help` WHERE `id` = '$key'");
   }
+
+  return $result;
 }
 
 ?>
