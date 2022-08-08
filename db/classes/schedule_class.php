@@ -46,15 +46,15 @@ class schedule_class {
     $number_day;
     $date_today;
     $day_today;
+
     if ($date === '_none_') {
       $number_day = date('N');
       $day_today = 'day'.$number_day;
       $date_today_tmp = date('d.m.Y', time());
       $date_today = strtotime($date_today_tmp);
     } else {
-      $number_day = $day[3];
       $day_today = $day;
-      $date_today = $date;
+      $date_today = strtotime($date);      
     }
 
     // это можно вынести в переменные раздела
@@ -77,10 +77,22 @@ class schedule_class {
 
     // Корректировки
     $correction_data = [];
-
     for ($ii=0; $ii < count($correction); $ii++) {
+      $semester_check;
+      $time_zone_check;
+      if ($correction[$ii]['semester_range'] === '0') {
+        $semester_check = true;
+      } else {
+        $semester_check = $correction[$ii]['semester_range'] === $semester_range;
+      }
 
-      if ($correction[$ii]['date'] === $date_today && $correction[$ii]['semester_range'] === $semester_range && $correction[$ii]['time_zone'] === $time_zone) {
+      if ($correction[$ii]['time_zone'] === '0') {
+        $time_zone_check = true;
+      } else {
+        $time_zone_check = $correction[$ii]['time_zone'] === $time_zone;
+      }
+
+      if ($correction[$ii]['date'] === $date_today && $semester_check && $time_zone_check) {
         // проверяем количество изменяемых строк
         $correction_strings = explode(',' ,$correction[$ii]['cancel_id']);
 
@@ -130,6 +142,7 @@ class schedule_class {
             $loop_schedule[$key]['comment'] = $correction_data[$iii]['comment'];
             $loop_schedule[$key]['semester_range'] = $correction_data[$iii]['semester_range'];
             $loop_schedule[$key]['time_zone'] = $correction_data[$iii]['time_zone'];
+            $loop_schedule[$key]['id'] = '';
           }
         }
       }

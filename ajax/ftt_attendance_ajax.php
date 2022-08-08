@@ -5,6 +5,7 @@ include_once "ajax.php";
 include_once "../db/ftt/ftt_attendance_db.php";
 include_once "../db/classes/schedule_class.php";
 include_once "../db/classes/db_operations.php";
+include_once '../db/classes/date_convert.php';
 // Подключаем ведение лога
 //include_once "../extensions/write_to_log/write_to_log.php";
 
@@ -61,7 +62,7 @@ if(isset($_GET['type']) && $_GET['type'] === 'create_late') {
 
 // Получаем мероприятия для добавления / удаления в бланке.
 if (isset($_GET['type']) && $_GET['type'] === 'get_sessions_staff') {
-  echo json_encode(["result"=>schedule_class::get($_GET['semester_range'], $_GET['time_zone'], $_GET['date'], $_GET['day'])]);
+  echo json_encode(["result"=>schedule_class::get($_GET['semester_range'], $_GET['time_zone'], date_convert::yyyymmdd_to_ddmmyyyy($_GET['date']), $_GET['day'])]);  
   exit();
 }
 

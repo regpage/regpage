@@ -36,7 +36,7 @@ include_once "preheader.php";
 <?php } elseif ($_SERVER['PHP_SELF'] === '/application.php') { ?>
     <link href="css/ftt_request.css?v1" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_schedule.php') { ?>
-    <link href="css/ftt/ftt_schedule.css?v2" rel="stylesheet">
+    <link href="css/ftt/ftt_schedule.css?v3" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_extrahelp.php') { ?>
     <link href="css/ftt/ftt_extra_help.css?v2" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_gospel.php') { ?>

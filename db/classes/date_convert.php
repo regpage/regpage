@@ -15,6 +15,18 @@ class date_convert {
       return 'Date is incorrect.';
     }
   }
+  // yyyy-mm-dd_to_dd.mm.yyyy
+  static function yyyymmdd_to_ddmmyyyy ($date)  {
+    if (!$date) {
+      return 'No date';
+    }
+    $date = explode('-', $date);
+    if (isset($date[2])) {
+      return $date[2].'.'.$date[1].'.'.$date[0];
+    } else {
+      return 'Date is incorrect.';
+    }
+  }
 
   static function yyyymmdd_to_ddmm ($date)  {
     if (!$date) {

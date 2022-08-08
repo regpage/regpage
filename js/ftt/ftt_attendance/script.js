@@ -998,7 +998,7 @@ function open_blank(el_this) {
         exist_session.push($(this).next().attr("data-val"));
       });
       let sessions_staff = commits.result;
-      let checked_str, no_checked;
+      let checked_str, no_checked, id_field_extra;
       let html_staff_editor= "<div><label class='form-check-label'><input class='select_all_session form-check-input' type='checkbox'>Добавить/Удалить все</label></div><hr>";
       for (let session_str in sessions_staff) {
         if (sessions_staff.hasOwnProperty(session_str)) {
@@ -1009,8 +1009,14 @@ function open_blank(el_this) {
             } else {
               checked_str = "checked";
             }
+
+            if (!sessions_staff[session_str]["id"]) {
+              id_field_extra = "";
+            } else {
+              id_field_extra = sessions_staff[session_str]["id"];
+            }
             html_staff_editor += "<div><label class='form-check-label'><input type='checkbox' class='session_staff_str form-check-input' data-day='"+sessions_staff[session_str][day_of_date]
-            +"' data-session_name='"+sessions_staff[session_str]["session_name"]+"' data-session_id='"+sessions_staff[session_str]["id"]
+            +"' data-session_name='"+sessions_staff[session_str]["session_name"]+"' data-session_id='"+id_field_extra
             +"' data-visit='"+sessions_staff[session_str]["visit"]+"' data-end_time='"+sessions_staff[session_str]["end_time"]
             +"' data-duration='"+sessions_staff[session_str]["duration"]+"' data-comment='"+sessions_staff[session_str]["comment"]
             +"' "+checked_str+">"+sessions_staff[session_str]["session_name"]+"</label></div>"
@@ -1087,8 +1093,6 @@ function open_blank(el_this) {
               session_staff_str_test[e]["visit"] = $(this).attr("data-visit");
             });
 
-  // УЧИТЫВАТЬ СУЩЕСТВУЮЩИЕ СТРОКИ !!! Пока сделать ПАКЕТНЫЙ
-
               session_staff_str.set("data", JSON.stringify(session_staff_str_test));
 
               fetch("ajax/ftt_attendance_ajax.php?type=add_sessions_staff_all", {
@@ -1118,14 +1122,6 @@ function open_blank(el_this) {
         }
       });
     });
-    // лучше запускать при открытии соответствующего раздела.
-    // Получаем данные из класса PHP аттендансе = 1
-    // рендерим список
-    // сверяем соответствие (наличие) и отмечаем галочками
-    // Вопрос, нужна ли кнопка Применить? думаю ненужна.
-    // при отметке всех галочек применяем функцию удалить всё/добавить всё
-    // при снятии галочки удаляем мероприятие из таблицы аттенданс или добавляем при установки галочки
-    //AJAX schedule_class::get();
   }
   // ОТКАТ
   // удаление мероприятий из бланка
@@ -1149,7 +1145,7 @@ function open_blank(el_this) {
     let result_date = (day_current - date_send) - ((day_send+1)*(24*60*60)*1000);
     let result_date_blank = (day_current - day_blank) - ((day_blank+1)*(24*60*60)*1000);
     let days_ago = (date_current - date_blank)/(24*60*60)/1000;
-        
+
     // Откат возможен с вс по сб недели в который он отправлен
     if (Math.floor(days_ago) < 8 && day_blank <= day_current) {
       showError("Этот лист посещаемости находится в закрытом периоде. Откат невозможен.");
