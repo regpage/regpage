@@ -168,7 +168,11 @@ if ($day === 'day1') {
     $id_head = 'id_head_'.$i;
     $id_collapse = 'id_collapse_'.$i;
     if ($schedule_empty !== 1 && $schedule_filled !== 1) {
-      echo "<p style='margin-left: 20px; margin-top: 15px;'>Расписание доступно с {$ftt_attendance_start}</p>";
+      if ($date_day_stamp > $ftt_attendance_end_mls) {
+        echo "<p style='margin-left: 20px; margin-top: 15px;'>Расписание будет доступно позже.</p>";
+      } else {
+        echo "<p style='margin-left: 20px; margin-top: 15px;'>Расписание доступно с {$ftt_attendance_start}</p>";  
+      }
       $schedule_empty = 1;
     } elseif ($schedule_empty !== 2 && $schedule_filled === 1) {
       echo "<p style='margin-left: 20px; margin-top: 15px;'>Обучение завершилось {$ftt_attendance_end} </p>";
@@ -187,7 +191,8 @@ if ($day === 'day1') {
     $number_day = $i + 1;
     $day = 'day'.$number_day;
     // занятия
-    echo "<p>Расписание доступно с {$ftt_attendance_start}</p>";
+    //echo "<p>Расписание доступно с {$ftt_attendance_start}</p>";
+    echo "<p>Расписание будет доступно позже.</p>";
     echo "</div></div>";
   } else {
     $id_head = 'id_head_'.$i;

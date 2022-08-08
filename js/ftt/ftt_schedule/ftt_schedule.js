@@ -67,3 +67,7 @@ $("#show_my_5_6").click(function () {
     $("#ftt_schedule_container_2").show();
   }
 });
+
+if (!$(".card-header").is(":visible")) {
+  $("#show_my_5_6").hide();
+}

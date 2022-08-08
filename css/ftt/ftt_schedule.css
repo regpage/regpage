@@ -19,7 +19,7 @@
 }
 
 #accordionExample .card {
-  border-top: none;
+  /*border-top: none; ИСПРАВИТЬ после начала обучения*/
 }
 
 #ftt_schedule_container_2 .btn {
