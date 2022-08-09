@@ -25,7 +25,7 @@
       }
       echo "<option value='{$key}' $selected>{$value}</option>";
     endforeach; ?>
-  </select>
+  </select>  
   <select id="tasks_select_late" class="form-control form-control-sm ">
     <option value="_all_">Все опоздания</option>
     <option value="0" selected>Неучтённые</option>
@@ -81,7 +81,7 @@
     if ($serving_trainee) {
       $show_name_service_one = '';
     }
-
+    if ((isset($ftt_access['ftt_service']) && $ftt_access['ftt_service'] === '06') || $ftt_access['group'] === 'staff' || $memberId === $author || $memberId === $trainee_id) {
     echo "<div class='row ftt_late_string {$done_string}' {$show_string} data-service_one_id='{$sevice_one_id}' data-trainee_id='{$trainee_id}' data-archive='{$done}' data-reason='{$session_name}' data-comment='{$comment}' data-author='{$author}' data-delay='{$delay}' data-id='{$extra_help_id}' data-date='{$date}' data-semester='{$semester}' data-toggle='modal' data-target='#modalAddEditLate'>
       <div class='col-2 date_create_text pl-1'>{$date_for_list}</div>
       <div class='col-3'><span class='trainee_name'>{$short_name_trainee}</span><span class='semester_text'> ({$semester})</span><br><span class='serving_one_name light_text_grey' style='{$show_name_service_one}'>{$short_name_service_one}</span></div>
@@ -89,5 +89,6 @@
       <div class='col-1 text_min'>{$delay}</div>
       <div class='col-2 set_to_archive_container'><input type='checkbox' class='set_to_done' {$checked_string} {$serving_trainee_disabled}></div>
     </div>";
+    }
   endforeach; ?>
 </div>

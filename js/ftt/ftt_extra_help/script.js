@@ -2,7 +2,7 @@ $(document).ready(function(){
 
   /* ==== MAIN & EXTRA HELP START ==== */
 
-  // текущая дата гггг.мм.дд  
+  // текущая дата гггг.мм.дд
   date_now_gl = date_now_gl ();
 
 // Очистить форму
@@ -1465,5 +1465,19 @@ $(".sort_date, .sort_trainee").click(function (e) {
     location.reload();
   }, 30);
 });
+
+// Проверка отметки "Учтено" для опозданий.
+$("#done_checkbox_field").click(function (e) {
+  if (ftt_access_trainee || trainee_access) {
+    if (e.target.checked) {
+      $(this).prop("checked", false);
+    } else {
+      $(this).prop("checked", true);
+    }
+    showError("Ошибка. Не достаточно прав.");
+    return;
+  }
+});
+
 // DOCUMENT READY STOP
 });
