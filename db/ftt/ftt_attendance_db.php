@@ -123,7 +123,7 @@ function getFttAttendanceSheetAndStrings($list_access, $condition, $admin_id = '
   $header = [];
   $strings = [];
   $res = db_query("SELECT fas.id, fas.member_key, fas.date, fas.comment, fas.status, fas.date_send, fas.bible,
-     fas.morning_revival, fas.personal_prayer, fas.common_prayer, fas.bible_reading, fas.ministry_reading,
+     fas.morning_revival, fas.personal_prayer, fas.common_prayer, fas.bible_reading, fas.ministry_reading, fas.mark,
      m.name, tra.serving_one, tra.pause_start, tra.pause_stop, tra.pause_comment
     FROM ftt_attendance_sheet AS fas
     INNER JOIN member m ON m.key = fas.member_key

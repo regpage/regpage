@@ -20,14 +20,23 @@ $(document).ready(function(){
  function send_data_blank(id, late, extrahelp) {
    $("#modalAddEdit").modal("hide");
    $("#spinner").modal("show");
+   if (extrahelp.length > 0 || late.length > 0) {
+     fetch("ajax/ftt_attendance_ajax.php?type=updade_mark_blank&id="+id+"&field=mark&value=1&header=1")
+     .then(response => response.text())
+     .then(commits => {
+       console.log(commits);
+     });
+   }
    // set extra help
    if (extrahelp[0]) {
      for (let i = 0; i < extrahelp.length; i++) {
-       fetch('ajax/ftt_attendance_ajax.php?type=create_extrahelp'+extrahelp[i])
-       .then(response => response.text())
-       .then(commits => {
-         console.log(commits);
-       });
+       setTimeout(function () {
+         fetch('ajax/ftt_attendance_ajax.php?type=create_extrahelp'+extrahelp[i])
+         .then(response => response.text())
+         .then(commits => {
+           console.log(commits);
+         });
+       }, 13);
      }
    }
 
@@ -927,11 +936,12 @@ function open_blank(el_this) {
        let sunday_back, done_string;
        day_number === 0 ? sunday_back = "font-weight-bold" : sunday_back = "";
        res[i].status === '1' ? done_string = "green_string" : done_string = "";
+       res[i].mark === '1' ? mark_string = "text-danger" : mark_string = "";
        if (!res[i]) {
          day = "";
          date = "";
        }
-       let html_part_span = "<span class='list_string list_string_archive link_day "+sunday_back+" "+done_string+"' data-id='"+res[i].id+"' data-date='"+date+"' data-member_key='"+res[i].member_key+"' data-status='"+res[i].status+"' data-date_send='"+res[i].date_send+"' data-bible='"+res[i].bible+"' data-morning_revival='"+res[i].morning_revival+"' data-personal_prayer='"+res[i].personal_prayer+"' data-common_prayer='"+res[i].common_prayer+"' data-bible_reading='"+res[i].bible_reading+"' data-ministry_reading='"+res[i].ministry_reading+"' data-serving_one='"+res[i].serving_one+"' data-comment='"+res[i].comment+"'>"+date+" "+day+"</span>";
+       let html_part_span = "<span class='list_string list_string_archive link_day "+sunday_back+" "+done_string+" "+mark_string+"' data-id='"+res[i].id+"' data-date='"+date+"' data-member_key='"+res[i].member_key+"' data-status='"+res[i].status+"' data-date_send='"+res[i].date_send+"' data-bible='"+res[i].bible+"' data-morning_revival='"+res[i].morning_revival+"' data-personal_prayer='"+res[i].personal_prayer+"' data-common_prayer='"+res[i].common_prayer+"' data-bible_reading='"+res[i].bible_reading+"' data-ministry_reading='"+res[i].ministry_reading+"' data-serving_one='"+res[i].serving_one+"' data-comment='"+res[i].comment+"'>"+date+" "+day+"</span>";
        if (i % 7 === 0) {
         html.push("<div class='row archive_str' style='margin-bottom: 2px;' data-member_key='member_key'>"+html_part_span);
       } else {
@@ -1147,7 +1157,10 @@ function open_blank(el_this) {
     let days_ago = (date_current - date_blank)/(24*60*60)/1000;
 
     // Откат возможен с вс по сб недели в который он отправлен
-    if (Math.floor(days_ago) < 8 && day_blank <= day_current) {
+    console.log(Math.floor(days_ago));
+    console.log(day_blank);
+    console.log(day_current);
+    if (Math.floor(days_ago) > 7 || day_blank > day_current) {
       showError("Этот лист посещаемости находится в закрытом периоде. Откат невозможен.");
       return;
     }

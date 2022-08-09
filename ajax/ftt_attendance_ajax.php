@@ -17,13 +17,13 @@ if (!$adminId) {
 }
 
 // Получам строки
-if(isset($_GET['type']) && $_GET['type'] === 'get_sessions') {
+if (isset($_GET['type']) && $_GET['type'] === 'get_sessions') {
     echo json_encode(["result"=>get_sessions($_GET['id'])]);
     exit();
 }
 
 // Обновляем строки
-if(isset($_GET['type']) && $_GET['type'] === 'updade_data_blank') {
+if (isset($_GET['type']) && $_GET['type'] === 'updade_data_blank') {
     if (isset($_GET['value_late'])) {
       echo json_encode(["result"=>set_attendance_time($_GET['id'], $_GET['field'], $_GET['value'], $_GET['value_late'], $_GET['value_absence'])]);
     } else {
@@ -38,31 +38,37 @@ if(isset($_GET['type']) && $_GET['type'] === 'updade_data_blank') {
     }
     exit();
 }
+
+if (isset($_GET['type']) && $_GET['type'] === 'updade_mark_blank') {
+    echo json_encode(["result"=>set_attendance($_GET['id'], $_GET['field'], $_GET['value'], $_GET['header'])]);
+    exit();
+}
+
 // получаем архивные строки
-if(isset($_GET['type']) && $_GET['type'] === 'get_attendance_archive') {
+if (isset($_GET['type']) && $_GET['type'] === 'get_attendance_archive') {
     echo json_encode(["result"=>getFttAttendanceSheetAndStrings($_GET['member_key'], $_GET['period'])]);
     exit();
 }
 
 // Обновляем строки
-if(isset($_GET['type']) && $_GET['type'] === 'set_attendance_archive') {
+if (isset($_GET['type']) && $_GET['type'] === 'set_attendance_archive') {
     echo json_encode(["result"=>set_attendance_archive($_GET['id'], $_GET['archive'])]);
     exit();
 }
 
-if(isset($_GET['type']) && $_GET['type'] === 'create_extrahelp') {
+if (isset($_GET['type']) && $_GET['type'] === 'create_extrahelp') {
     echo set_extrahelp_automatic($_GET['member_key'], $_GET['date'], $_GET['reason'], $_GET['attendance_id']);
     exit();
 }
 
-if(isset($_GET['type']) && $_GET['type'] === 'create_late') {
+if (isset($_GET['type']) && $_GET['type'] === 'create_late') {
     echo  json_encode(["result"=>set_late_automatic($_GET['member_key'], $_GET['date'], $_GET['delay'], $_GET['session_name'], $_GET['end_time'], $_GET['id_attendance'])]);
     exit();
 }
 
 // Получаем мероприятия для добавления / удаления в бланке.
 if (isset($_GET['type']) && $_GET['type'] === 'get_sessions_staff') {
-  echo json_encode(["result"=>schedule_class::get($_GET['semester_range'], $_GET['time_zone'], date_convert::yyyymmdd_to_ddmmyyyy($_GET['date']), $_GET['day'])]);  
+  echo json_encode(["result"=>schedule_class::get($_GET['semester_range'], $_GET['time_zone'], date_convert::yyyymmdd_to_ddmmyyyy($_GET['date']), $_GET['day'])]);
   exit();
 }
 
@@ -101,6 +107,15 @@ if (isset($_GET['type']) && $_GET['type'] === 'undo_status') {
   $db_data_stat->set('condition_value', $_GET['id']);
   $db_data_stat->set('changed', 1);
   $echo_stat = DbOperation::operation($db_data_stat->get());
+
+  // MARK
+  // готовим данные
+  $db_data_mark = new DbData('set', 'ftt_attendance_sheet');
+  $db_data_mark->set('field', 'mark');
+  $db_data_mark->set('value', 0);
+  $db_data_mark->set('condition_field', 'id');
+  $db_data_mark->set('condition_value', $_GET['id']);
+  $echo_mark = DbOperation::operation($db_data_mark->get());
 
   // LATES
   // готовим данные

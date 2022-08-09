@@ -146,6 +146,7 @@
           $bible_reading = $value['bible_reading'];
           $ministry_reading = $value['ministry_reading'];
           $serving_one = $value['serving_one'];
+          $mark_string = $value['mark'];
           $comment = $value['comment'];
           $name_trainee = short_name::no_middle($value['name']);
           $bible_reading_text = '';
@@ -154,6 +155,13 @@
           } else {
             $bible_reading_text = 'Нет';
           }
+
+          if ($mark_string === '1') {
+            $mark_string = 'text-danger';
+          } else {
+            $mark_string = '';
+          }
+
           $semester_number = $trainee_list_full[$value['member_key']][4];
           if ($trainee_list_full[$value['member_key']][4] < 5) {
             $total = "Чтение библии — {$bible_reading_text}";
@@ -236,7 +244,7 @@
               <div class='row card-body' data-toggle='modal' data-target='#modalAddEdit' {$show_string}>
               <span class='list_string link_day {$sunday_class}' data-id='{$id}' data-date='{$date}' data-member_key='{$member_key}' data-status='{$status}' data-date_send='{$date_send}' data-bible='{$bible}' data-morning_revival='{$morning_revival}' data-personal_prayer='{$personal_prayer}' data-common_prayer='{$common_prayer}' data-bible_reading='{$bible_reading}' data-ministry_reading='{$ministry_reading}' data-serving_one='{$serving_one}' data-comment='{$comment}' data-toggle='modal' data-target='#modalAddEdit'> {$short_date} {$short_day_of_week} </span>";
             } else {*/
-              echo "<span class='list_string link_day {$sunday_class} {$done_string}' data-id='{$id}' data-date='{$date}' data-member_key='{$member_key}' data-status='{$status}' data-date_send='{$date_send}' data-bible='{$bible}' data-morning_revival='{$morning_revival}' data-personal_prayer='{$personal_prayer}' data-common_prayer='{$common_prayer}' data-bible_reading='{$bible_reading}' data-ministry_reading='{$ministry_reading}' data-serving_one='{$serving_one}' data-comment='{$comment}' data-toggle='modal' data-target='#modalAddEdit'> {$short_date} {$short_day_of_week}</span>";
+              echo "<span class='list_string link_day {$sunday_class} {$done_string} {$mark_string}' data-id='{$id}' data-date='{$date}' data-member_key='{$member_key}' data-status='{$status}' data-date_send='{$date_send}' data-bible='{$bible}' data-morning_revival='{$morning_revival}' data-personal_prayer='{$personal_prayer}' data-common_prayer='{$common_prayer}' data-bible_reading='{$bible_reading}' data-ministry_reading='{$ministry_reading}' data-serving_one='{$serving_one}' data-comment='{$comment}' data-toggle='modal' data-target='#modalAddEdit'> {$short_date} {$short_day_of_week}</span>";
             /*}*/
           }
           $prev_member_key = $value['member_key'];
