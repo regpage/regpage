@@ -1,7 +1,6 @@
 // Contacts JS
 
 $(document).ready(function(){
-  console.log(data_page);
   if (data_page.admin_contacts_role === '0') { // 09-06-2022  admin_role
     $('#responsibleContact').html('<option value="'+window.adminId+'">'+fullNameToNoMiddleName(data_page.admin_name)+'');
   } else {
@@ -2213,6 +2212,16 @@ function sendTheOrder(ua) {
       if (!data || Object.keys(data).length < 1) {
         return
       }
+      $("#responsibleList option").each(function () {
+        if ($(this).val() in data) {
+
+        } else {
+          if ($(this).val() !== "_all_") {
+            data[$(this).val()] = [$(this).text(),'Х'];
+          }
+        }
+      });
+      // ДОБАВИТЬ СОРТИРОВКУ МАССИВА ПО ФАМИЛИЯМ
       if (update === true) {
         var html = [];
         for (var key in data) {

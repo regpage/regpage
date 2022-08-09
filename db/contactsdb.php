@@ -673,7 +673,10 @@ function getShortStatResp($adminId) {
   $resp_arr = explode(',', $resp);
   if ($adminId == '000005944') {
     array_push($resp_arr, '000001679');
-  }
+  }/* else if (!in_array('000005944', $resp_arr)) {
+    array_push($resp_arr, '000005944');
+  }*/
+
   $resp3 = [];
   for ($x = 0; $x < count($resp_arr); $x++) {
     $key = $resp_arr[$x];
