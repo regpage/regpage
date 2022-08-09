@@ -151,7 +151,7 @@ if (window.location.pathname === '/contacts') {
 		}
   } else {
 		$("#contactsBtnsBar").css("border-bottom", "1px solid lightgrey");
-		$("body").attr("style", "font-size: 16px !important");
+		$("body").attr("style", "font-size: 18px !important");
 		$('.bell-alarm').hide();
 		$('.show-name-list').show();
     $('#listContactsMbl').show();

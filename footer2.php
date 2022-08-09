@@ -4,6 +4,6 @@ echo '<div id="footer_info" style="text-align: center; margin-top:50px; padding-
 //include_once 'extensions/needhelp/allinone.php';
 ?>
       <!-- ФАЙЛ ДИЗАЙНА ДЛЯ РАЗДЕЛОВ-->
-      <script src="/js/design.js?v26"></script>
+      <script src="/js/design.js?v27"></script>
     </body>
 </html>
