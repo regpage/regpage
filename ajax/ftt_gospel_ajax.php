@@ -59,4 +59,10 @@ if (isset($_GET['type']) && $_GET['type'] === 'get_ftt_gospel_goals') {
   exit();
 }
 
+// get group members
+if (isset($_GET['type']) && $_GET['type'] === 'get_ftt_group_members') {
+  echo json_encode(["result"=>get_ftt_group_members($_GET['gospel_team'], $_GET['gospel_group'])]);
+  exit();
+}
+
 ?>

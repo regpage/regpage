@@ -341,12 +341,12 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
         </div>
         <div id="gospel_body_print" class="row">
           <div class="col">
-          <div id="tableStatPrint" class="row" style="max-height:400px; overflow-y: auto; padding-left: 7px;">
+          <div id="tableStatPrint" class="row" style="max-height:450px; overflow-y: auto; padding-left: 7px;">
             <table class="table"><!-- style="width:760px;" -->
               <thead>
                 <tr class="tbl-statistics-header">
                   <th style="text-align: left" colspan="8"> <!-- colspan="3"  -->
-                    <span id="team_name_print"></span>
+                    <span id="team_name_print"></span><br>
                     <span style="padding-left: 25px;"  id="group_number_print"></span>
                   </th>
                 </tr>
@@ -401,7 +401,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
                   <td id="homes_all" style="text-align: right"></td>
                 </tr>
                 <tr>
-                  <td style="text-align: left" colspan="3"><b>Проект «Библия, открытая для всех»</b></td>
+                  <td style="text-align: left" colspan="8"><b>Проект «Библия, открытая для всех»</b></td>
                 </tr>
                 <tr>
                   <td id="question_first_contacts" style="text-align: left">Сколько было первых контактов по телефону или в переписке?</td>
@@ -410,12 +410,17 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
                 </tr>
                 <tr>
                   <td id="question_further_contacts" style="text-align: left">Сколько было повторных контактов по телефону или в переписке?</td>
-                  <td id="range_further_contacts" style="text-align: right"></td>
-                  <td id="further_contacts_all" style="text-align: right"></td>
+                  <td id="range_further_contacts" style="text-align: right; vertical-align: top;"></td>
+                  <td id="further_contacts_all" style="text-align: right; vertical-align: top;"></td>
                 </tr>
               </thead>
               <tbody id="listGospelPrint"></tbody>
             </table>
+          </div>
+          <div id="groups_members_show">
+            <br>
+            <b style="padding-left: 5px;">Состав групп</b>
+            <span id="members_groups_print"></span>
           </div>
           </div>
         </div>

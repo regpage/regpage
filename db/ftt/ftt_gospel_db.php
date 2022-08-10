@@ -291,4 +291,32 @@ function getGospelGroupNumber() {
   while ($row = $res->fetch_assoc()) $result[] = $row['gospel_group'];
   return $result;
 }
+
+function get_ftt_group_members($team_id, $goup_id = '_none_')
+{
+  global $db;
+  $team_id = $db->real_escape_string($team_id);
+  $goup_id = $db->real_escape_string($goup_id);
+  $result = [];
+  $condition_extra = '';
+
+  if ($goup_id !== "null" && $goup_id !== "_all_" && $goup_id !== "_none_" && $goup_id >= 0) {
+    $condition_extra = " AND ft.gospel_group = '$goup_id' ";
+  }
+
+  // group members
+  $res = db_query("SELECT ft.member_key, ft.gospel_group, m.name
+    FROM ftt_trainee AS ft
+    INNER JOIN member m ON m.key = ft.member_key
+    WHERE ft.gospel_team = '$team_id' {$condition_extra}
+    ORDER BY ft.gospel_group");
+  while ($row = $res->fetch_assoc()) {
+    if (empty($result[$row['gospel_group']])) {
+      $result[$row['gospel_group']] = [$row];
+    } else {
+      array_push($result[$row['gospel_group']],$row);
+    }
+  }
+  return $result;
+}
 ?>

@@ -147,10 +147,10 @@ function showHelp(html, autohide, time) {
 		var shortName;
 		fullName ? fullName = fullName.split(' ') : '';
 		if (fullName) {
-			shortName = fullName[0] + ' ' + fullName[1][0] + '. ';
+			shortName = fullName[0] + ' ' + fullName[1][0] + '.';
 		}
 		if (fullName[2] && !nameOnly && fullName[2] !== '-') {
-			shortName = shortName + fullName[2][0] + '. ';
+			shortName = shortName +" "+fullName[2][0] + '. ';
 		}
 		return shortName;
 	}

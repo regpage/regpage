@@ -40,7 +40,7 @@ for (let i = 0; i < trainee_list_tmp.length; i = i + 5) {
   trainee_list_full[trainee_list_tmp[i]] = {'name': trainee_list_tmp[i+1], 'male': trainee_list_tmp[i+2], 'gospel_group': trainee_list_tmp[i+3], 'gospel_team': trainee_list_tmp[i+4]};
 }
 
-gospel_groups_tmp = "<?php foreach ($gospel_groups as $id => $value) echo $value['gospel_team'].'_'.$value['gospel_group'].'_'.$value['member_key'].'_'; ?>";
+gospel_groups_tmp = "<?php if (is_array($gospel_groups)) foreach ($gospel_groups as $id => $value) echo $value['gospel_team'].'_'.$value['gospel_group'].'_'.$value['member_key'].'_'; ?>";
 gospel_groups_tmp = gospel_groups_tmp ? gospel_groups_tmp.split('_') : [];
 let gospel_groups = [];
 for (let i = 0; i < gospel_groups_tmp.length; i = i + 3) {

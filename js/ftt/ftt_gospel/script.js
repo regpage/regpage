@@ -698,7 +698,7 @@ filters_list_show();
           people += Number(stat[i].people);
           prayers += Number(stat[i].prayers);
           baptism += Number(stat[i].baptism);
-          meets_last += Number(stat[i].meets_last);
+          meets_last += Number(stat[i].meetings_last);
           meets_current += Number(stat[i].meets_current);
           meetings_last += Number(stat[i].meetings_last);
           meetings_current += Number(stat[i].meetings_current);
@@ -741,18 +741,18 @@ filters_list_show();
             let groups_html = "", body_flyers = "", body_people = "", body_prayers = "", body_baptism = "", body_meets_last = "", body_meets_current = "", body_meetings_last = "", body_meetings_current = "", body_first_contacts = "", body_further_contacts = "", body_homes = "";
             // Цели
             if (goals) {
-                groups_html += '<th class="extra_groups" style="text-align: right; min-width: 80px;">Цели</th>';
-                body_flyers += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+flyers+"</td>";
-                body_people += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+people+"</td>";
-                body_prayers += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+prayers+"</td>";
-                body_baptism += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+baptism+"</td>";
-                body_meets_last += "<td class='extra_groups' style='text-align: right; min-width: 80px;'>"+fruit+"</td>";
-                body_meets_current += "<td class='extra_groups' style='text-align: right; min-width: 80px;'></td>";
-                body_meetings_last += "<td class='extra_groups' style='text-align: right; min-width: 80px;'></td>";
-                body_meetings_current += "<td class='extra_groups' style='text-align: right; min-width: 80px;'></td>";
-                body_first_contacts += "<td class='extra_groups' style='text-align: right; min-width: 80px;'></td>";
-                body_further_contacts += "<td class='extra_groups' style='text-align: right; min-width: 80px;'></td>";
-                body_homes += "<td class='extra_groups' style='text-align: right; min-width: 80px;'></td>";
+                groups_html += '<th class="extra_groups" style="text-align: right; vertical-align: top; min-width: 80px;">Цели</th>';
+                body_flyers += "<td class='extra_groups' style='text-align: right; vertical-align: top; min-width: 80px;'>"+flyers+"</td>";
+                body_people += "<td class='extra_groups' style='text-align: right; vertical-align: top; min-width: 80px;'>"+people+"</td>";
+                body_prayers += "<td class='extra_groups' style='text-align: right; vertical-align: top; min-width: 80px;'>"+prayers+"</td>";
+                body_baptism += "<td class='extra_groups' style='text-align: right; vertical-align: top; min-width: 80px;'>"+baptism+"</td>";
+                body_meets_last += "<td class='extra_groups' style='text-align: right; vertical-align: top; min-width: 80px;'>"+fruit+"</td>";
+                body_meets_current += "<td class='extra_groups' style='text-align: right; vertical-align: top; min-width: 80px;'></td>";
+                body_meetings_last += "<td class='extra_groups' style='text-align: right; vertical-align: top; min-width: 80px;'></td>";
+                body_meetings_current += "<td class='extra_groups' style='text-align: right; vertical-align: top; min-width: 80px;'></td>";
+                body_first_contacts += "<td class='extra_groups' style='text-align: right; vertical-align: top; min-width: 80px;'></td>";
+                body_further_contacts += "<td class='extra_groups' style='text-align: right; vertical-align: top; min-width: 80px;'></td>";
+                body_homes += "<td class='extra_groups' style='text-align: right; vertical-align: top; min-width: 80px;'></td>";
 
                 $(groups_html).insertAfter("#th_questions");
                 $(body_flyers).insertAfter("#question_flyers");
@@ -808,17 +808,17 @@ filters_list_show();
 
     for (let group in groups) {
       groups_html += '<th class="extra_groups" style="text-align: right; min-width: 30px;">'+group+'</th>';
-      body_flyers += "<td class='extra_groups' style='text-align: right; min-width: 30px;'>"+groups[group]["flyers"]+"</td>";
-      body_people += "<td class='extra_groups' style='text-align: right; min-width: 30px;'>"+groups[group]["people"]+"</td>";
-      body_prayers += "<td class='extra_groups' style='text-align: right; min-width: 30px;'>"+groups[group]["prayers"]+"</td>";
-      body_baptism += "<td class='extra_groups' style='text-align: right; min-width: 30px;'>"+groups[group]["baptism"]+"</td>";
-      body_meets_last += "<td class='extra_groups' style='text-align: right; min-width: 30px;'>"+groups[group]["meets_last"]+"</td>";
-      body_meets_current += "<td class='extra_groups' style='text-align: right; min-width: 30px;'>"+groups[group]["meets_current"]+"</td>";
-      body_meetings_last += "<td class='extra_groups' style='text-align: right; min-width: 30px;'>"+groups[group]["meetings_last"]+"</td>";
-      body_meetings_current += "<td class='extra_groups' style='text-align: right; min-width: 30px;'>"+groups[group]["meetings_current"]+"</td>";
-      body_first_contacts += "<td class='extra_groups' style='text-align: right; min-width: 30px;'>"+groups[group]["first_contacts"]+"</td>";
-      body_further_contacts += "<td class='extra_groups' style='text-align: right; min-width: 30px;'>"+groups[group]["further_contacts"]+"</td>";
-      body_homes += "<td class='extra_groups' style='text-align: right; min-width: 30px;'>"+groups[group]["homes"]+"</td>";
+      body_flyers += "<td class='extra_groups' style='text-align: right;  vertical-align: top; min-width: 30px;'>"+groups[group]["flyers"]+"</td>";
+      body_people += "<td class='extra_groups' style='text-align: right; vertical-align: top; min-width: 30px;'>"+groups[group]["people"]+"</td>";
+      body_prayers += "<td class='extra_groups' style='text-align: right; vertical-align: top; min-width: 30px;'>"+groups[group]["prayers"]+"</td>";
+      body_baptism += "<td class='extra_groups' style='text-align: right; vertical-align: top; min-width: 30px;'>"+groups[group]["baptism"]+"</td>";
+      body_meets_last += "<td class='extra_groups' style='text-align: right; vertical-align: top; min-width: 30px;'>"+groups[group]["meets_last"]+"</td>";
+      body_meets_current += "<td class='extra_groups' style='text-align: right; vertical-align: top; min-width: 30px;'>"+groups[group]["meets_current"]+"</td>";
+      body_meetings_last += "<td class='extra_groups' style='text-align: right; vertical-align: top; min-width: 30px;'>"+groups[group]["meetings_last"]+"</td>";
+      body_meetings_current += "<td class='extra_groups' style='text-align: right; vertical-align: top; min-width: 30px;'>"+groups[group]["meetings_current"]+"</td>";
+      body_first_contacts += "<td class='extra_groups' style='text-align: right; vertical-align: top; min-width: 30px;'>"+groups[group]["first_contacts"]+"</td>";
+      body_further_contacts += "<td class='extra_groups' style='text-align: right; vertical-align: top; min-width: 30px;'>"+groups[group]["further_contacts"]+"</td>";
+      body_homes += "<td class='extra_groups' style='text-align: right; vertical-align: top; min-width: 30px;'>"+groups[group]["homes"]+"</td>";
     }
     $(groups_html).insertAfter("#th_questions");
     $(body_flyers).insertAfter("#question_flyers");
@@ -840,6 +840,7 @@ filters_list_show();
     if (e.target.id === "group_select_print" && $(this).val() && $(this).val() !== "_all_") {
       $("#group_number_print").text("Группа "+$(this).val());
     }
+
     // team condition
     if (e.target.id === "team_select_print") {
       // формируем группы
@@ -857,9 +858,58 @@ filters_list_show();
           statistics_counter();
         }
       });
+
+      // получаем состав группы
+      fetch("ajax/ftt_gospel_ajax.php?type=get_ftt_group_members&gospel_team="+$(this).val()
+      +"&gospel_group=_all_")
+      .then(response => response.json())
+      .then(commits => {
+        let html_list = "";
+        let rere = commits.result;
+        for (let something in rere) {
+          if (rere.hasOwnProperty(something)) {
+            for (let i = 0; i < rere[something].length; i++) {
+              if (i === 0) {
+                html_list += "<br><span>"+rere[something][i]["gospel_group"]+ ": "+
+                fullNameToShortFirstMiddleNames(rere[something][i]["name"], true) +"</span>";
+              } else {
+                html_list += "<span>, "+
+                fullNameToShortFirstMiddleNames(rere[something][i]["name"], true) +"</span>";
+              }
+            }
+          }
+        }
+        $("#members_groups_print").html(html_list);
+      });
     } else {
-      if ($("#period_from_print").val() && $("#period_to_print").val()) {
+      if ($("#period_from_print").val() && $("#period_to_print").val()) {        
         statistics_counter();
+
+        if (e.target.id === "group_select_print" && $(this).val()) {
+          $("#group_number_print").text("Группа "+$(this).val());
+          // получаем состав группы
+          fetch("ajax/ftt_gospel_ajax.php?type=get_ftt_group_members&gospel_team="+$("#team_select_print").val()
+          +"&gospel_group="+$(this).val())
+          .then(response => response.json())
+          .then(commits => {
+            let html_list = "";
+            let rere = commits.result;
+            for (let something in rere) {
+              if (rere.hasOwnProperty(something)) {
+                for (let i = 0; i < rere[something].length; i++) {
+                  if (i === 0) {
+                    html_list += "<br><span>"+rere[something][i]["gospel_group"]+ ": "+
+                    fullNameToShortFirstMiddleNames(rere[something][i]["name"], true) +"</span>";
+                  } else {
+                    html_list += "<span>, "+
+                    fullNameToShortFirstMiddleNames(rere[something][i]["name"], true) +"</span>";
+                  }
+                }
+              }
+            }
+            $("#members_groups_print").html(html_list);
+          });
+        }
       }
     }
   });
