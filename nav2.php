@@ -86,6 +86,9 @@ switch ($h) {
     case '/ftt_extrahelp.php':
         $res = 'Полновременное обучение';
         break;
+    case '/ftt_list.php':
+        $res = 'ПВОМ';
+        break;
     default:
       $res = '';
       break;
@@ -148,6 +151,12 @@ switch ($h) {
                 if (strpos ($s,"/reg")!==FALSE || strpos ($s,"/admin")!==FALSE) {echo " class='active'";}
                 echo"><a class='nav-link' href='/reg'>Регистрация</a></li>";
               }
+            }
+
+            if (!isset($isGuest) && $ftt_access['group'] === 'staff') {
+                echo '<li class="nav-item ';
+                if (strpos($s,"/ftt_list")!==FALSE) {echo ' active"';} else {echo ' "';}
+                echo'><a class="nav-link" href="/ftt_list">ПВОМ</a></li>';
             }
 
             if(!isset($isGuest) && db_isAdmin($memberId)) {

@@ -56,6 +56,8 @@
               // Добавить условие для служащих обучающихся продумать систему распилить строку и проверить в массиве ответствености
               include_once 'components/ftt_extra_help/content_part.php';
             }
+          } elseif ($_SERVER['REQUEST_URI'] === '/ftt_list') {
+              include_once 'components/ftt_list/content_part.php';
           }
           ?>
         </div>

@@ -58,6 +58,9 @@ switch ($h) {
     case '/application.php':
       $res = 'Заявление на ПВОМ';
       break;
+    case '/ftt_list.php':
+      $res = 'ПВОМ';
+      break;
     default:
         $res = '';
         break;
@@ -124,6 +127,12 @@ switch ($h) {
                 echo '<li';
                 if (strpos ($s,"/reg")!==FALSE || strpos ($s,"/admin")!==FALSE) {echo " class='active'";}
                 echo"><a href='/reg'>Регистрация</a></li>";
+            }
+
+            if (!isset($isGuest) && $ftt_access['group'] === 'staff') {
+                echo '<li ';
+                if (strpos($s,"/ftt_list")!==FALSE) {echo "class='active'";}
+                echo'><a href="/ftt_list">ПВОМ</a></li>';
             }
 
             if(!isset($isGuest) && db_isAdmin($memberId) && $ftt_access['group'] !== 'trainee') {

@@ -68,7 +68,7 @@ if(strlen($_SERVER['REQUEST_URI']) == 3){?>
     header("Location: ".$appRootPath."login?returl=".urlencode ($_SERVER["REQUEST_URI"]));
   	exit;
 // Если пользователь админ, а страница не существует или её нет в списке в условии
-} else if($memberId && count(db_getAdminEventsRespForReg($memberId)) == 0 && !db_isAdmin($memberId) && preg_match("/(index.php)|(signup.php)|(passrec.php)|(login.php)|(ftt_application.php)|(ftt_schedule.php)|(ftt_absence.php)|(ftt_announcement.php)|(ftt_extrahelp.php)|(ftt_attendance.php)|(ftt_gospel.php)|(ftt_service.php)|(application.php)|(practices.php)|(contacts.php)|(profile.php)|(settings.php)|(meetings.php)|(links.php)|(opros.php)/", $_SERVER["SCRIPT_NAME"])==0){
+} else if($memberId && count(db_getAdminEventsRespForReg($memberId)) == 0 && !db_isAdmin($memberId) && preg_match("/(index.php)|(signup.php)|(passrec.php)|(login.php)|(ftt_application.php)|(ftt_list.php)|(ftt_schedule.php)|(ftt_absence.php)|(ftt_announcement.php)|(ftt_extrahelp.php)|(ftt_attendance.php)|(ftt_gospel.php)|(ftt_service.php)|(application.php)|(practices.php)|(contacts.php)|(profile.php)|(settings.php)|(meetings.php)|(links.php)|(opros.php)/", $_SERVER["SCRIPT_NAME"])==0){
     header("Location: ".$appRootPath);
   	exit;
 }
