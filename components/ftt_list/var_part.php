@@ -1,14 +1,18 @@
 <?php
-
+  // СПИСОК ПВОМ
   include_once 'db/classes/trainee_data.php';
   include_once 'db/classes/short_name.php';
   include_once 'db/classes/ftt_lists.php';
   include_once 'db/classes/date_convert.php';
+  include_once 'db/classes/extra_lists.php';
   //include_once 'db/classes/ftt_info.php';
   include_once 'db/ftt/ftt_list_db.php';
 
-// ПОСЕЩАЕМОСТЬ
 // access
+if ($ftt_access['group'] !== 'staff') {
+  exit();
+}
+
 // данные обучающегося
 $trainee_data = trainee_data::get_data($memberId);
 $serving_trainee = '';
@@ -22,33 +26,27 @@ if (isset($trainee_data['coordinator']) && $trainee_data['coordinator'] === '1' 
   $serving_trainee = 1;
 }
 
-//Это МОЖНО ВЫНЕСТИ В ОБЩИЙ СКРИПТ ДЛЯ ВСЕХ РАЗДЕЛОВ
-if ($ftt_access['group'] === 'staff' || $serving_trainee) {
-  $serving_ones_list_full = ftt_lists::serving_ones_full();
-  $trainee_list_full = ftt_lists::trainee_full();
-  $serving_ones_list = ftt_lists::serving_ones();
-  $trainee_list = ftt_lists::trainee();
 
-} elseif ($ftt_access['group'] === 'trainee') {
-  // СЛУЖАЩИЕ
-  $serving_ones_list = ftt_lists::serving_ones();
-  $trainee_list = ftt_lists::trainee();
-  $serving_ones_list_full = ftt_lists::serving_ones_full();
-  $trainee_list_full = ftt_lists::trainee_full();  
-  // ОБУЧАЮЩИЕСЯ
+$serving_ones_list = ftt_lists::serving_ones();
+// $serving_ones_list_full = ftt_lists::serving_ones_full();
+$serving_ones_list_list = ftt_lists::serving_ones_list();
+
+$trainee_list = ftt_lists::trainee();
+// $trainee_list_full = ftt_lists::trainee_full();
+$trainee_list_list = ftt_lists::trainee_list();
+
+$localities = [];
+$localities_staff = [];
+
+foreach ($trainee_list_list as $key => $value) {
+  $localities[$value['locality_key']] = $value['locality_name'];
 }
 
-$serving_trainee_disabled = '';
-$serving_trainee_hide = '';
-$serving_trainee_selected = '';
-if ($serving_trainee) {
-  $serving_trainee_disabled = 'disabled';
-  $serving_trainee_checked = 'checked';
-  $serving_trainee_selected = 'selected';
+foreach ($serving_ones_list_list as $key => $value) {
+  $localities_staff[$value['locality_key']] = $value['locality_name'];
 }
-// корректировки
 
-//$days = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
+asort($localities);
+asort($localities_staff);
 
-// ПОСЕЩАЕМОСТЬ СТОП
 ?>

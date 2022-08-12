@@ -182,7 +182,7 @@ switch ($h) {
                 echo"><a class='nav-link' href='/practices'>Практики</a></li>";
               }
             }*/
-            if(isset($memberId) && ((in_array('14', db_getUserSettings($memberId))) || db_getAnyActiveContactStr($memberId)) && !isset($isGuest) && $ftt_access['group'] !== 'trainee') {
+            if(isset($memberId) && ((in_array('14', db_getUserSettings($memberId))) || db_getAnyActiveContactStr($memberId)) && !isset($isGuest) && $ftt_access['group'] !== 'trainee' && $ftt_access['group'] !== 'staff') {
                 echo '<li ';
                 if ($res === 'Контакты') {echo " class='nav-item active'";}else{echo " class='nav-item'";}
                 echo"><a class='nav-link' href='/contacts'>Контакты</a></li>";

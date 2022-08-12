@@ -1,7 +1,7 @@
 <?php
 /**
  * It's trainee's data
- * Получать все данные об обучающимся из таблицы ftt_trainee
+ * Получать все данные об обучающемся из таблицы ftt_trainee
  * Дополнительно
  **/
 class trainee_data {

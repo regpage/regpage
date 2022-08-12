@@ -2,7 +2,7 @@
 if ($(window).width()<=769) {
   // containers
   $("#main_row").attr('style', 'width: 100% !important;');
-  
+
   // headers
 
   // columns
@@ -18,4 +18,9 @@ if ($(window).width()<=769) {
 */
 } else if ($(window).width()<=991 && $(window).width()>769) {
 
+} else {
+  $("#main_container").css("padding-top", "0");
 }
+
+$("#main_container").css("margin-top", "60px");
+$("#menu_nav_ftt").hide();
