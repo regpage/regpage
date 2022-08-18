@@ -138,9 +138,9 @@ $(document).ready(function(){
         <?php if (!$isLink) { ?>
             $(this).parents ('div.modal').modal('hide');
         <?php } else { ?>
-        var locHost = location.host, host;
-        host = locHost.substr(4,3) !== 'dev'? 'https://test.new-constellation.ru/' : 'https://test.new-constellation.ru/';
-        window.location = host ;
+        //var locHost = location.host, host;
+        //host = locHost.substr(4,3) !== 'dev'? 'https://reg-page.ru/' : 'https://dev.reg-page.ru/';
+        window.location = 'https://reg-page.ru/';
         <?php } ?>
     });
 
