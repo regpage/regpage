@@ -68,6 +68,17 @@ class date_convert {
 	  }
 	  return $weekday[$day];
 	}
+
+  static function get_age($birthDate){
+      $date = strtotime ($birthDate);
+      $age =  (int)date("Y") - (int)strftime("%Y",$date);
+      $m = (int)date("m") - (int)strftime("%m",$date);
+
+      if ($m < 0 || ($m === 0 && (int)date("e") - (int)strftime("%e",$date))) {
+          $age--;
+      }
+      return $age;
+  }
 }
 
  ?>

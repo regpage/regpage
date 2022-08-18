@@ -1,4 +1,4 @@
-  <!-- Nav tabs -->
+  <!-- Nav tabs
   <ul class="nav nav-tabs" role="tablist" style="display: none;">
     <li class="nav-item">
       <a class="nav-link active" data-toggle="tab" href="#tab_trainee">Обучающиеся</a>
@@ -6,18 +6,18 @@
     <li class="nav-item">
       <a class="nav-link" data-toggle="tab" href="#tab_service_one">Служащие</a>
     </li>
-  </ul>
+  </ul> -->
   <!-- Tab panes -->
-  <div class="row">
-    <select id="change_tab" class="col-2 form-control form-control-sm">
-      <option value="tab_trainee">Обучающиеся</option>
-      <option value="tab_service_one">Служащие</option>
+  <div class="row" style="padding-left: 15px; padding-top: 20px; padding-bottom: 20px;">
+    <select id="change_tab" class="col-2 form-control form-control-sm select_bold" style="max-width: 189px;">
+      <option value="tab_trainee" <?php if ($tab_active === 'tab_trainee') echo 'selected'; ?>>Обучающиеся</option>
+      <option value="tab_service_one" <?php if ($tab_active === 'tab_service_one') echo 'selected'; ?>>Служащие</option>
     </select>
   </div>
   <div id="tab_content" class="tab-content">
-    <div id="tab_trainee" class="tab-pane active"><br>
+    <div id="tab_trainee" class="tab-pane <?php if ($tab_active === 'tab_trainee') echo 'active'; ?>">
       <div class="container">
-        <div id="bar_extra_help" class="row mb-2">
+        <div id="" class="row" style="padding-bottom: 15px;">
           <select id="semester_select" class="col-2 form-control form-control-sm mr-2">
             <option value="_all_">Все семестры</option>
             <option value="1">1</option>
@@ -50,7 +50,7 @@
               echo "<option value='{$key}' $selected>{$value}</option>";
             endforeach; ?>
           </select>
-          <select id="sevice_one_select" class="col-2 form-control form-control-sm">
+          <select id="sevice_one_select" class="col-2 form-control form-control-sm mr-2">
             <option value="_all_">Все служащие</option>
             <?php foreach ($serving_ones_list as $key => $value):
               $selected = '';
@@ -60,17 +60,23 @@
               echo "<option value='{$key}' $selected>{$value}</option>";
             endforeach; ?>
           </select>
+          <input id="search_field" class="col-2 form-control form-control-sm" type="text" placeholder="Поиск">
         </div>
 
-        <div id="list_header" class="row border-bottom">
-            <div class="col-2 pl-1"><b>Фамиля Имя</b></div>
-            <div class="col-1"><b>Поле</b></div>
-            <div class="col-1"><b>Поле</b></div>
-            <div class="col-1"><b>Поле</b></div>
-            <div class="col-1"><b>Поле</b></div>
-            <div class="col-1"><b>Поле</b></div>
-            <div class="col-3"><b>Поле</b></div>
-            <div class="col-2"><b>Поле</b></div>
+        <div id="list_header" class="row border-bottom pb-2">
+            <div class="col-2 pl-1 cursor-pointer text-info" style="min-width: 200px;">
+              <b class="sorting" data-field="name">Фамиля Имя </b><?php if ($sort_field === 'name') echo $sort_icon; ?>
+            </div>
+            <div class="col-2 cursor-pointer text-info">
+              <b class="sorting" data-field="locality_name">Город </b> <?php if ($sort_field === 'locality_name') echo $sort_icon; ?>
+            </div>
+            <div class="col-2" style="max-width: 140px;"><b>Телефон</b></div>
+            <div class="col-3"><b>Емайл</b></div>
+            <div class="col-1 cursor-pointer text-info" style="min-width: 105px;">
+              <b class="sorting" data-field="birth_date">Возраст </b><?php if ($sort_field === 'birth_date') echo $sort_icon; ?>
+            </div>
+            <div class="col-1" style="max-width: 50px;"><b>С</b></div>
+            <div class="col-1" style="max-width: 40px;"><b></b></div>
         </div>
       </div>
       <div id="list_content" class="container mb-2">
@@ -88,6 +94,14 @@
             $locality_key = $value['locality_key'];
             $serving_one = $value['serving_one'];
             $coordinator = $value['coordinator'];
+            $locality_name = $value['locality_name'];
+            $birth_date = $value['birth_date'];
+            $age = date_convert::get_age($birth_date);
+            $phone = $value['cell_phone'];
+            $email = $value['email'];
+            $attend_meeting = $value['attend_meeting'];
+            $changed = $value['changed'];
+
 /*
           $serving_one = $value['serving_one'];
           $date_born = $value['date_born'];
@@ -105,22 +119,23 @@
           }
 */
           $show_string = '';
-
-          echo "<div class='row list_string cursor-pointer' data-id='' data-date='' data-member_key='{$trainee_id}' data-semester='{$semester}' data-date_name='{$name}' data-time_zone='{$time_zone}' data-male='{$male}' data-locality='' data-locality_key='{$locality_key}' data-serving_one='{$serving_one}' data-coordinator='{$coordinator}'
+// сестёр выделить цветом $time_zone
+          echo "<div class='row list_string' data-id='' data-date='' data-member_key='{$trainee_id}' data-semester='{$semester}' data-date_name='{$name}' data-time_zone='{$time_zone}' data-male='{$male}' data-locality='' data-locality_key='{$locality_key}' data-serving_one='{$serving_one}' data-coordinator='{$coordinator}'
           data-age='' data-comment='' data-toggle='modal' $show_string>
-          <div class='col-7 pl-1'><span class=''>{$short_name}</span><span>({$semester})</span></div>
-          <div class='col-1'><span class='trainee_name'>{$time_zone}</span></div>
-          <div class='col-1'><span class='trainee_name'>{$male}</span></div>
-          <div class='col-1'><span class='trainee_name'></span></div>
-          <div class='col-1'><span class='trainee_name'></span></div>
-          <div class='col-1'><span class='trainee_name'></span></div>
+          <div class='col-2 pl-1' style='min-width: 200px;'><span>{$short_name} </span><span>({$semester})</span></div>
+          <div class='col-2'><span>{$locality_name} </span><span class='d-none'>{$age} лет.</span></div>
+          <div class='col-2' style='max-width: 140px;'><span>{$phone}</span></div>
+          <div class='col-3'><span class=''>{$email}</span></div>
+          <div class='col-1' style='min-width: 105px;'><span>{$age}</span></div>
+          <div class='col-1' style='max-width: 50px;'><span>{$attend_meeting}</span></div>
+          <div class='col-1' style='max-width: 40px;'><span>{$changed}</span></div>
           </div>";
         endforeach; ?>
       </div>
     </div>
-    <div id="tab_service_one" class="container tab-pane"><br>
-        <div id="" class="row mb-2">
-          <select class="col-2 form-control form-control-sm mr-2" name="">
+    <div id="tab_service_one" class="container tab-pane <?php if ($tab_active === 'tab_service_one') echo 'active'; ?>">
+        <div class="row" style="padding-bottom: 15px;">
+          <select id="time_zones_staff" class="col-2 form-control form-control-sm mr-2">
             <?php foreach (extra_lists::get_time_zones() as $key => $value):
               $selected = '';
               /*if ($key === $serving_one_selected) {
@@ -129,8 +144,8 @@
               echo "<option value='{$key}' $selected>{$value['name']} ({$value['utc']})";
             endforeach; ?>
           </select>
-          <select class="col-2 form-control form-control-sm" name="">
-            <option value="">Все местности</option>
+          <select id="localities_staff" class="col-2 form-control form-control-sm mr-2">
+            <option value="_all_">Все местности</option>
             <?php foreach ($localities_staff as $key => $value):
               $selected = '';
               /*if ($key === $serving_one_selected) {
@@ -139,16 +154,27 @@
               echo "<option value='{$key}' $selected>{$value}</option>";
             endforeach; ?>
           </select>
+          <input id="search_field_staff" class="col-2 form-control form-control-sm" type="text" placeholder="Поиск">
         </div>
-        <div id="" class="row border-bottom">
-            <div class="col-5 pl-1"><b>Фамиля Имя</b></div>
-            <div class="col-3"><b>Поле</b></div>
-            <div class="col-1"><b>Поле</b></div>
-            <div class="col-1"><b>Поле</b></div>
-            <div class="col-1"><b>Поле</b></div>
-            <div class="col-1"><b>Поле</b></div>
+        <div id="" class="row border-bottom pb-2">
+          <div class="col-2 pl-1 cursor-pointer text-info" style="min-width: 200px;">
+            <b class="sorting_staff" data-field="name">Фамиля Имя</b>
+            <?php if ($sort_field_staff === 'name') echo $sort_icon_staff; ?>
+          </div>
+          <div class="col-2 cursor-pointer text-info">
+            <b class="sorting_staff" data-field="locality_name">Город</b>
+            <?php if ($sort_field_staff === 'locality_name') echo $sort_icon_staff; ?>
+          </div>
+          <div class="col-2" style="max-width: 140px;"><b>Телефон</b></div>
+          <div class="col-3"><b>Емайл</b></div>
+          <div class="col-1 cursor-pointer text-info" style="min-width: 105px;">
+            <b class="sorting_staff" data-field="birth_date">Возраст</b>
+            <?php if ($sort_field_staff === 'birth_date') echo $sort_icon_staff; ?>
+          </div>
+          <div class="col-1" style="max-width: 50px;"><b>С</b></div>
+          <div class="col-1" style="max-width: 40px;"><b></b></div>
         </div>
-        <div id="" class="mb-2">
+        <div id="list_content_staff" class="mb-2">
           <?php
           foreach ($serving_ones_list_list as $key => $value):
             $show_string_staff = '';
@@ -158,14 +184,22 @@
             $time_zone_staff = $value['time_zone'];
             $gospel_team_staff = $value['gospel_team'];
             $locality_key_staff = $value['locality_key'];
-            echo "<div class='row list_string_staff cursor-pointer' data-id='' data-date='' data-member_key='{$service_one_id}' data-semester='' data-date_name='{$name_staff}' data-time_zone='{$time_zone_staff}'
+            $locality_name_staff = $value['locality_name'];
+            $birth_date_staff = $value['birth_date'];
+            $age_staff = date_convert::get_age($birth_date_staff);
+            $phone_staff = $value['cell_phone'];
+            $email_staff = $value['email'];
+            $attend_meeting_staff = $value['attend_meeting'];
+            $changed_staff = $value['changed'];
+            echo "<div class='row list_string' data-id='' data-date='' data-member_key='{$service_one_id}' data-semester='' data-date_name='{$name_staff}' data-time_zone='{$time_zone_staff}'
             data-gospel_team='$gospel_team_staff' data-locality='' data-locality_key='{$locality_key_staff}' data-age='' data-comment='' data-toggle='modal' $show_string>
-            <div class='col-7 pl-1'><span class=''>{$short_name_staff}</span></div>
-            <div class='col-1'><span class=''>{$time_zone_staff}</span></div>
-            <div class='col-1'><span class=''>{$gospel_team_staff}</span></div>
-            <div class='col-1'><span class=''></span></div>
-            <div class='col-1'><span class=''></span></div>
-            <div class='col-1'><span class=''></span></div>
+            <div class='col-2 pl-1' style='min-width: 200px;'><span>{$short_name_staff}</span></div>
+            <div class='col-2'><span>{$locality_name_staff}</span></div>
+            <div class='col-2' style='max-width: 140px;'><span>{$phone_staff}</span></div>
+            <div class='col-3'><span>{$email_staff}</span></div>
+            <div class='col-1' style='min-width: 105px;'><span>{$age_staff}</span></div>
+            <div class='col-1' style='max-width: 50px;'><span>{$attend_meeting_staff}</span></div>
+            <div class='col-1' style='max-width: 40px;'><span>{$changed_staff}</span></div>
             </div>";
           endforeach;
           ?>

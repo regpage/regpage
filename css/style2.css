@@ -155,3 +155,15 @@ label.required-for-label:after
 #main_container .tab-content button {
   font-size: 14px;
 }
+
+.select_bold {
+    font-weight: bold !important;
+    border: 1px solid blue !important;
+}
+
+/* TEXT STYLE*/
+.example {  
+	color: #AAA;
+	font-weight: normal;
+  font-size: 12px;
+}

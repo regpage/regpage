@@ -1,12 +1,7 @@
 <!-- Меню разделов ПВОМ-->
 <?php include_once 'components/ftt_main/menu_nav_ftt.php'; ?>
 <!-- Основная страница разделов ПВОМ -->
-<div id="main_container" class="container-xl" style="margin-top: 10px; padding-top: 20px; padding-bottom: 25px; background-color: white; max-width: 1170px;">
-  <div id="main_row" class="row">
-    <!-- Сделать одинаковый контент на всех страницах, в расписании сейчас иначе исполнено -->
-    <div id="col-main-content" class="col" style="min-width: 350px;">
-      <!-- Блоки разделов  -->
-        <div id="ftt_sub_container" class="container tab-pane active" style="background-color: white; min-width: 350px; padding-left: 5px; padding-right: 5px;">
+<div id="main_container" class="container-xl" style="margin-top: 10px; padding-left: 20px; padding-bottom: 25px; background-color: white; max-width: 1170px;">
           <?php
           if ($_SERVER['REQUEST_URI'] === '/ftt_schedule') {
             if ($ftt_access['staff_time_zone'] === '03') {
@@ -56,10 +51,9 @@
               // Добавить условие для служащих обучающихся продумать систему распилить строку и проверить в массиве ответствености
               include_once 'components/ftt_extra_help/content_part.php';
             }
+          } elseif ($_SERVER['REQUEST_URI'] === '/ftt_list') {
+              include_once 'components/ftt_list/content_part.php';
           }
           ?>
-        </div>
-    </div>
-  </div>
 </div>
 <?php include_once 'components/ftt_main/modal_part.php'; ?>
