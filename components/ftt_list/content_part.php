@@ -85,7 +85,7 @@
 
           foreach ($trainee_list_list as $key => $value):
 /* Получать минимум необходимый для сортировки и поиска */
-            $trainee_id = $key;
+            $trainee_id = $value['member_key'];
             $semester = $value['semester'];
             $name = $value['name'];
             $short_name = short_name::no_middle($value['name']);
@@ -120,15 +120,15 @@
 */
           $show_string = '';
 // сестёр выделить цветом $time_zone
-          echo "<div class='row list_string' data-id='' data-date='' data-member_key='{$trainee_id}' data-semester='{$semester}' data-date_name='{$name}' data-time_zone='{$time_zone}' data-male='{$male}' data-locality='' data-locality_key='{$locality_key}' data-serving_one='{$serving_one}' data-coordinator='{$coordinator}'
-          data-age='' data-comment='' data-toggle='modal' $show_string>
-          <div class='col-2 pl-1' style='min-width: 200px;'><span>{$short_name} </span><span>({$semester})</span></div>
-          <div class='col-2'><span>{$locality_name} </span><span class='d-none'>{$age} лет.</span></div>
-          <div class='col-2' style='max-width: 140px;'><span>{$phone}</span></div>
-          <div class='col-3'><span class=''>{$email}</span></div>
-          <div class='col-1' style='min-width: 105px;'><span>{$age}</span></div>
+          echo "<div class='row list_string' data-member_key='{$trainee_id}' data-semester='{$semester}' data-name='{$name}' data-time_zone='{$time_zone}' data-male='{$male}' data-locality_key='{$locality_key}' data-serving_one='{$serving_one}' data-coordinator='{$coordinator}'
+          data-birth_date='$birth_date' data-comment='' data-toggle='modal' $show_string>
+          <div class='col-2 pl-1' style='min-width: 200px;'><span class='m_name'>{$short_name} </span><span class='m_semester'>({$semester})</span></div>
+          <div class='col-2'><span class='m_locality'>{$locality_name} </span><span class='d-none m_age'>{$age}</span><span class='d-none'> лет.</span></div>
+          <div class='col-2' style='max-width: 140px;'><span class='m_phone'>{$phone}</span></div>
+          <div class='col-3'><span class='m_email'>{$email}</span></div>
+          <div class='col-1' style='min-width: 105px;'><span class='m_age'>{$age}</span></div>
           <div class='col-1' style='max-width: 50px;'><span>{$attend_meeting}</span></div>
-          <div class='col-1' style='max-width: 40px;'><span>{$changed}</span></div>
+          <div class='col-1' style='max-width: 40px;'><span m_changed>{$changed}</span></div>
           </div>";
         endforeach; ?>
       </div>

@@ -80,6 +80,21 @@ class localities
       return $countries;
   }
 
+  // Получаем страну по местности
+  static function db_getCountryByLocality($localityKey){
+      //global $db;
+      //$localityKey = $db->real_escape_string($localityKey);
+      $country;
+
+      $res=db_query ("SELECT r.country_key AS country_key
+                      FROM locality l
+                      INNER JOIN region r ON r.key = l.region_key
+                      WHERE l.key='$localityKey'");
+
+      while ($row = $res->fetch_assoc()) $country=$row['country_key'];
+      return $country;
+  }
+
   static function db_getRegionsList()
   {
       $res=db_query ("SELECT `key`, `name` FROM region WHERE COALESCE(`name`,0)!='--'");

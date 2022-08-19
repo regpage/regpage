@@ -9,9 +9,9 @@
     //$db = new mysqli('localhost', "u0654_admin", "K9z?n0c1", "u0654376_regpage");
 
     // host selection
-    $appRootPath = substr($host, 0,3) === 'dev' ? 'https://dev.reg-page.ru/' : 'https://reg-page.ru/';
+     $appRootPath = substr($host, 0,3) === 'dev' ? 'https://dev.reg-page.ru/' : 'https://reg-page.ru/';
     // Ниже хостинг разработчика
-    //$appRootPath = 'https://www.test.new-constellation.ru/';
+    //$appRootPath = 'https://test.new-constellation.ru/';
 
     // db query settings
     $db->set_charset('utf8');

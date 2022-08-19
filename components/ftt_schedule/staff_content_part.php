@@ -10,8 +10,8 @@ $correction_data_tmp;
 $today_day = date('N');
 $today_day_NEW = ($today_day - 1) * 86400;
 $date_start_day = date('d.m', time()-$today_day_NEW); //NEW
-$ftt_attendance_start_mls = strtotime($ftt_attendance_start);
-$ftt_attendance_end_mls = strtotime($ftt_attendance_end);
+$ftt_schedule_start_mls = strtotime($ftt_schedule_start);
+$ftt_schedule_end_mls = strtotime($ftt_schedule_end);
 // даты корректировок приводим к нужному типу
 for ($i=0; $i < count($correction); $i++) {
   $correction_data_tmp = strtotime($correction[$i]['date']);
@@ -164,18 +164,18 @@ if ($day === 'day1') {
 }
 }
   // Проверяем что расписание не выходит за период обучения
-  if (($date_day_stamp < $ftt_attendance_start_mls) || ($date_day_stamp > $ftt_attendance_end_mls)) {
+  if (($date_day_stamp < $ftt_schedule_start_mls) || ($date_day_stamp > $ftt_schedule_end_mls)) {
     $id_head = 'id_head_'.$i;
     $id_collapse = 'id_collapse_'.$i;
     if ($schedule_empty !== 1 && $schedule_filled !== 1) {
-      if ($date_day_stamp > $ftt_attendance_end_mls) {
+      if ($date_day_stamp > $ftt_schedule_end_mls) {
         echo "<p style='margin-left: 20px; margin-top: 15px;'>Расписание будет доступно позже.</p>";
       } else {
-        echo "<p style='margin-left: 20px; margin-top: 15px;'>Расписание доступно с {$ftt_attendance_start}</p>";  
+        // echo "<p style='margin-left: 20px; margin-top: 15px;'>Расписание доступно с {$ftt_schedule_start}</p>";
       }
       $schedule_empty = 1;
     } elseif ($schedule_empty !== 2 && $schedule_filled === 1) {
-      echo "<p style='margin-left: 20px; margin-top: 15px;'>Обучение завершилось {$ftt_attendance_end} </p>";
+      echo "<p style='margin-left: 20px; margin-top: 15px;'>Обучение завершилось {$ftt_schedule_end} </p>";
       $schedule_empty = 2;
     }
 
@@ -191,7 +191,7 @@ if ($day === 'day1') {
     $number_day = $i + 1;
     $day = 'day'.$number_day;
     // занятия
-    //echo "<p>Расписание доступно с {$ftt_attendance_start}</p>";
+    //echo "<p>Расписание доступно с {$ftt_schedule_start}</p>";
     echo "<p>Расписание будет доступно позже.</p>";
     echo "</div></div>";
   } else {

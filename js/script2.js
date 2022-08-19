@@ -137,10 +137,17 @@ function showHelp(html, autohide, time) {
 // ФИО SHORT NAMES
 // Lastname Firstname (without Middle name)
   function fullNameToNoMiddleName(fullName) {
-    var shortName;
-    fullName ? fullName = fullName.split(' ') : '';
-    if (fullName) shortName = fullName[0] + ' ' + fullName[1];
-    return shortName;
+    let names_parts;
+    if (fullName) {
+      names_parts = fullName.split(' ');
+      if (names_parts[2]) {
+        return names_parts[0] + ' ' + names_parts[1];
+      } else {
+        return fullName;
+      }
+    } else {
+      return fullName;
+    }
   }
 // Lastname F.M. OR Lastname F.
 	function fullNameToShortFirstMiddleNames(fullName, nameOnly) {
@@ -259,6 +266,12 @@ function getNameDayOfWeekByDayNumber(date, short, no_capital, number) {
 
     return date
   }
+
+  // ПОЛУЧИТЬ ВОЗРАСТ ПО ДАТЕ рождения
+  function get_current_age(date) {
+    return ((new Date().getTime() - new Date(date)) / (24 * 3600 * 365.25 * 1000)) | 0;
+  }
+
 // STOP DATES
 
 function modalInfoUniversal(text) {

@@ -142,10 +142,6 @@ if (isset($_GET['type']) && $_GET['type'] === 'undo_status') {
     'lates_in_extrahelp'=>$echo_lates_in_extrahelp,
   ]);
 
-  unset($db_data_stat);
-  unset($db_data_late);
-  unset($db_data_extra);
-
   // EXIT
   exit();
 }

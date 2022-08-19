@@ -1,7 +1,7 @@
 
 <!-- SIDE PANEL -->
 <!-- cd-panel -->
-<div class="cd-panel cd-panel--from-right js-cd-panel-main">
+<div class="cd-panel cd-panel--from-right js-cd-panel-main" data-id="">
   <!--<header class="cd-panel__header">
 
   </header>-->
@@ -27,14 +27,14 @@
         <div class="row">
           <div class="col-6">
               <label class="">Дата рождения</label>
-              <input type="date" id="birth_date" class="form-control form-control-sm" maxlength="10">
+              <input type="date" id="birth_date" class="form-control form-control-sm" maxlength="10" data-field="birth_date" data-table="member">
           </div>
           <div class="col-6">
               <label class="required-for-label">Пол</label>
               <select id="gender" class="form-control form-control-sm">
                   <option value="_none_" selected></option>
-                  <option value="male">MУЖ</option>
-                  <option value="female">ЖЕН</option>
+                  <option value="1">MУЖ</option>
+                  <option value="0">ЖЕН</option>
               </select>
           </div>
         </div>
@@ -63,12 +63,12 @@
         <div class="row">
           <div class="col-6">
             <label class="required-for-label">Населенный пункт</label>
-            <select id="locality" class="form-control form-control-sm">
+            <select id="locality" class="form-control form-control-sm" data-table="member" data-field="locality_key">
               <option value="_none_" selected>
                 <?php foreach (localities::get_localities(true) as $id => $name){
                   if ($id) {
                     echo "<option value='$id'>".htmlspecialchars ($name)."</option>";
-                  } 
+                  }
                 } ?>
             </select>
           </div>
@@ -94,7 +94,7 @@
           </div>
           <div class="col-6">
               <label>Моб. телефон</label>
-              <input type="text" id="cell_phone" class="form-control form-control-sm" maxlength="50" placeholder="+XXXXXXXXXX" tooltip="tooltipCellphone">
+              <input type="text" id="phone" class="form-control form-control-sm" data-field="cell_phone" maxlength="50" placeholder="+XXXXXXXXXX">
           </div>
         </div>
         <div class="row">
@@ -159,11 +159,25 @@
         </div>
         <div class="row">
           <div class="col-12">
-                  <label>Комментарий администратора</label>
-                  <br>
-                  <span class="example">(виден только администраторам)</span>
-                  <input type="text" id="comment" class="form-control form-control-sm">
-              </div>
+            <label>Семестр</label>
+            <select id="semester" class="form-control form-control-sm">
+              <option value="_none_" selected></option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <label>Комментарий администратора</label>
+            <br>
+            <span class="example">(виден только администраторам)</span>
+            <input type="text" id="comment" class="form-control form-control-sm">
+          </div>
         </div>
       </div>
     </div> <!-- cd-panel__content -->

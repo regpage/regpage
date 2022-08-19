@@ -42,6 +42,8 @@ if ($ftt_access['group'] === 'trainee') {
 // корректировки
 $correction = getCorrectionSchedule();
 $days = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
+$ftt_schedule_start = getValueFttParamByName('schedule_start');
+$ftt_schedule_end = getValueFttParamByName('schedule_end');
 $ftt_attendance_start = getValueFttParamByName('attendance_start');
 $ftt_attendance_end = getValueFttParamByName('attendance_end');
 // РАСПИСАНИЕ СТОП
