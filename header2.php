@@ -1,7 +1,5 @@
 <?php
-
 include_once "preheader.php";
-
 ?>
 
 <!DOCTYPE html>
@@ -17,7 +15,13 @@ include_once "preheader.php";
   gtag('config', 'UA-144838221-1');
 </script>
     <meta charset="utf-8">
-    <title>Страница регистрации</title>
+    <title>
+    <?php if ($ftt_access['group'] === 'trainee'): ?>
+      ПВОМ
+    <?php else: ?>
+      Страница регистрации
+    <?php endif; ?>
+    </title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -26,7 +30,7 @@ include_once "preheader.php";
     <meta name="mailru-domain" content="z83V20hFDKLekMbc" />
     <link href="favicon.ico" rel="shortcut icon" />
     <link href="css/font-awesome.min.css" rel="stylesheet" />
-    <link href="css/style2.css?v8" rel="stylesheet" />
+    <link href="css/style2.css?v9" rel="stylesheet" />
      <?php $_SERVER['REQUEST_URI'] ?>
   <!--  <link href="css/style_slide.css?v2" rel="stylesheet" />-->
 <?php if ($_SERVER['PHP_SELF'] === '/contacts.php') { ?>

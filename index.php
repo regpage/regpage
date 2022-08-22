@@ -161,7 +161,7 @@ else if (isset ($_SESSION["logged-in"])){
             <div style="font-weight: bold;" class='empty-meeting-list-info'>Сейчас нет мероприятий, открытых для самостоятельной регистрации.</div>
         </div>
 
-        <?php if ($admin_data['locality_key'] !== '001192'): ?>
+        <?php if ($ftt_access['group'] !== 'trainee'): ?>
         <!-- Desktop Заявление на ПВОМ -->
         <div class="tab-content" style="margin-top:10px; <?php echo $not_for_show_application; ?>">
           <div class="desctopVisible">
@@ -264,7 +264,7 @@ else if (isset ($_SESSION["logged-in"])){
         </div>
       </div>
       <?php endif; ?>
-      <?php if ($admin_data['locality_key'] !== '001192'): ?>
+      <?php if ($ftt_access['group'] !== 'trainee'): ?>
         <?php
             $sortField = isset ($_SESSION['sort_field_reference']) ? $_SESSION['sort_field_reference'] : 'name';
             $sortType = isset ($_SESSION['sort_type_reference']) ? $_SESSION['sort_type_reference'] : 'asc';
@@ -689,7 +689,11 @@ $(document).ready(function(){
     var isAuthorSomeEvents = '<?php echo $isAuthorEvents; ?>';
     var isAuthorArchiveSomeEvents = '<?php echo $isAuthorArchiveEvents; ?>';
     var isAdminArchiveSomeEvents = '<?php echo $isAdminArchiveEvents; ?>';
+    let gl_group = '<?php echo $ftt_access['group']; ?>';
     isEventAdminArc || hasEventAdmin.length > 0 || isAuthorSomeEvents || isAuthorArchiveSomeEvents || isAdminArchiveSomeEvents ? $('#frameArchive').show() : $('#frameArchive').hide();
+    if (gl_group === 'trainee') {
+      $("title").text("ПВОМ");
+    }
     // Frame for FTT
     //$('#ftt_trainee_block').after('<iframe id="frameFtt" style="width:900px; height: 0px; border: none;"src="/ftt_schedule.php"></iframe>');
     $('#frameArchive').click(function() {

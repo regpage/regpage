@@ -10,8 +10,11 @@ if ($ftt_access['group'] === 'trainee'):
 endif;
 
 $ftt_devisions = array('ftt_schedule' => 'Расписание', 'ftt_announcement' => 'Объявления', 'ftt_attendance' => 'Посещаемость', 'ftt_service' => 'Служение','ftt_gospel' => 'Благовестие', 'contacts' => 'Контакты', 'ftt_extrahelp' => $extra_help_text,'ftt_application' => 'Заявления'); //'ftt_absence' => 'Отсутствие',
+if ($ftt_access['group'] === 'staff') { //
+
+}
 //$_SERVER['PHP_SELF'];
-if ($admin_data['locality_key'] === '001192') {
+if ($ftt_access['group'] === 'trainee') {
   unset($ftt_devisions['ftt_application']);
 }
 ?>

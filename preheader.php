@@ -97,7 +97,7 @@ if ($ftt_access !== 'denied') {
 
 
 /*
-if ($memberId && $admin_data['locality_key'] === '001192' && preg_match("/(index.php)|(signup.php)|(passrec.php)|(login.php)|(ftt.php)|(practices.php)|(contacts.php)|(profile.php)|(settings.php)|(links.php)/", $_SERVER["SCRIPT_NAME"])==0) {
+if ($memberId && $ftt_access['group'] === 'trainee' && preg_match("/(index.php)|(signup.php)|(passrec.php)|(login.php)|(ftt.php)|(practices.php)|(contacts.php)|(profile.php)|(settings.php)|(links.php)/", $_SERVER["SCRIPT_NAME"])==0) {
   header("Location: ".$appRootPath);
   exit;
 }

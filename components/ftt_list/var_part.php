@@ -39,6 +39,8 @@ $trainee_list = ftt_lists::trainee();
 // $trainee_list_full = ftt_lists::trainee_full();
 $trainee_list_list = ftt_lists::trainee_list();
 
+$categories_list = MemberProperties::get_categories();
+
 $localities = [];
 $localities_staff = [];
 

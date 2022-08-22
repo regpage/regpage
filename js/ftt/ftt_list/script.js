@@ -38,6 +38,7 @@ $(document).ready(function(){
       && ($(this).attr("data-semester") === $('#semester_select').val() || $('#semester_select').val() === "_all_")
       && ($(this).attr("data-time_zone") === $('#time_zone_selected').val() || $('#time_zone_selected').val() === "01")
       && ($(this).attr("data-locality_key") === $('#localities_select').val() || $('#localities_select').val() === "_all_")
+      && ($(this).attr("data-category_key") === $('#category_select').val() || $('#category_select').val() === "_all_")
       && search_result) {
        $(this).show();
      } else {
@@ -45,9 +46,8 @@ $(document).ready(function(){
      }
     });
   }
-  $("#sevice_one_select, #semester_select, #time_zone_selected, #localities_select").change(function() {
+  $("#sevice_one_select, #semester_select, #time_zone_selected, #localities_select, #category_select").change(function() {
     //setCookie('filter_serving_one', $(this).val(), 1);
-
     filter_trainee();
   });
 
@@ -133,43 +133,59 @@ $(document).ready(function(){
   });
 
   // BLANK
+  // получаем данные пользователя
   function get_member_data(member_key) {
-    fetch("ajax/ftt_list_ajax.php?type=get_member_data&id="+member_key)
+    let type = "get_member_data";
+    if ($("#tab_service_one").hasClass("active")) {
+      type = "get_member_data_staff";
+      $("#semester").parent().hide();
+    } else {
+      if (!$("#semester").is(":visible")) {
+        $("#semester").parent().show();
+      }
+    }
+    fetch("ajax/ftt_list_ajax.php?type="+type+"&id="+member_key)
     .then(response => response.json())
     .then(commits => {
-      console.log(commits);
       $("#citizenship").val(commits.result["citizenship_key"]);
       $("#address").val(commits.result["address"]);
       $("#baptized").val(commits.result["baptized"]);
       $("#category").val(commits.result["category_key"]);
       $("#semester").val(commits.result["semester"]);
       $("#comment").val(commits.result["comment"]);
-      /*$("#citizenship").val(commits.result["citizenship_key"]);
-      $("#citizenship").val(commits.result["citizenship_key"]);
-      $("#citizenship").val(commits.result["citizenship_key"]);
-      $("#citizenship").val(commits.result["citizenship_key"]);*/
+      $("#russianLanguage").val(commits.result["russian_lg"]);
+      $("#document_type").val(commits.result["document_key"]);
+      $("#document_num").val(commits.result["document_num"]);
+      $("#document_date").val(commits.result["document_date"]);
+      $("#document_auth").val(commits.result["document_auth"]);
+      $("#document_num_tp").val(commits.result["tp_num"]);
+      $("#document_auth_tp").val(commits.result["tp_auth"]);
+      $("#document_date_tp").val(commits.result["tp_date"]);
+      $("#document_name_tp").val(commits.result["tp_name"]);
       $("#spinner").modal("hide");
     });
   }
-
+  // заполнение бланка
   function fill_blank() {
     $("#spinner").modal("show");
-    $(".cd-panel").attr("data-id", $(".list_string.active_str").attr("data-member_key"));
-    $("#name").val($(".list_string.active_str").attr("data-name"));
-    $("#locality").val($(".list_string.active_str").attr("data-locality_key"));
-    $("#gender").val($(".list_string.active_str").attr("data-male"));
-    $("#birth_date").val($(".list_string.active_str").attr("data-birth_date"));
-    $("#email").val($(".list_string.active_str").find(".m_email").text());
-    $("#phone").val($(".list_string.active_str").find(".m_phone").text());
+    $(".cd-panel").attr("data-member_key", $("#tab_content .active_str").attr("data-member_key"));
+    $("#name").val($("#tab_content .active_str").attr("data-name"));
+    $("#locality").val($("#tab_content .active_str").attr("data-locality_key"));
+    $("#gender").val($("#tab_content .active_str").attr("data-male"));
+    $("#birth_date").val($("#tab_content .active_str").attr("data-birth_date"));
+    $("#email").val($("#tab_content .active_str").find(".m_email").text());
+    $("#phone").val($("#tab_content .active_str").find(".m_cell_phone").text());
     get_member_data($("#tab_content .active_str").attr("data-member_key"));
   }
+  // очистка бланка
   function clear_blank() {
     $(".cd-panel__content input").val("");
     $(".cd-panel__content select").val("_none_");
-    $(".cd-panel").attr("data-id", "");
+    $(".cd-panel").attr("data-member_key", "");
   }
   // close blank by the CLOSE button
-  $(".cd-panel__close").click(function() {
+  $(".cd-panel__close").click(function(e) {    
+    e.preventDefault();
     $(".js-cd-panel-main").removeClass("cd-panel--is-visible");
     clear_blank();
     $("#tab_content .active_str").removeClass("active_str");
@@ -193,9 +209,23 @@ $(document).ready(function(){
     }
   });
 
-  $(".js-cd-close").click(function() {
-    $(".js-cd-panel-main").removeClass("cd-panel--is-visible");
-  });
+  // мгновенное динамическое обновление при успешном сохранении
+   function dinamic_list_updater(field, value) {
+      if (field === "locality_key") {
+        $(".active_str").attr("data-"+field, value);
+        $(".active_str").find(".m_locality").text($("#locality option:selected").text());
+      } else if (field === "name") {
+        $(".active_str").attr("data-"+field, value);
+        $(".active_str").find(".m_name").text(fullNameToNoMiddleName(value));
+      } else if (field === "birth_date" ) {
+        $(".active_str").attr("data-"+field, value);
+        $(".active_str").find(".m_age").text(get_current_age(value));
+      } else {
+        // semester ect
+       $(".active_str").attr("data-"+field, value);
+       $(".active_str").find(".m_"+field).text(value);
+      }
+   }
 
   // save field
   function save_field(table, field, value, condition) {
@@ -203,7 +233,14 @@ $(document).ready(function(){
     if (table === "member") {
       condition_field = "key";
       changed = 1;
+    } else if (table === "ftt_trainee") {
+      condition_field = "member_key";
+      changed = 0;
+    } else {
+      condition_field = "member_key";
+      changed = 0;
     }
+    // save field
     fetch("ajax/ftt_list_ajax.php?type=change_field&table="
     + table
     + "&field=" + field
@@ -213,35 +250,21 @@ $(document).ready(function(){
     + "&changed=" + changed)
     .then(response => response.json())
     .then(commits => {
-      // добавить краткие классы спанам что бы динамически обновлять те данные которые есть в списке
-
-       if (field === "locality_key") {
-         $(".active_str").attr("data-"+field, value);
-         $(".active_str").find(".m_locality").text($("#locality option:selected").text());
-       } else if (field === "name") {
-         $(".active_str").attr("data-"+field, value);
-         $(".active_str").find(".m_name").text(fullNameToNoMiddleName(value));
-       } else if (field === "birth_date" ) {
-         $(".active_str").attr("data-"+field, value);
-         $(".active_str").find(".m_age").text(get_current_age(value));
-       } else {
-         // semester ect
-        $(".active_str").find(".m_"+field).text(value);
-       }
+      // динамическое обновление строк
+      dinamic_list_updater(field, value);
     });
-    // мгновенное динамическое обновление при успешном сохранении
   }
 
   // save input field
   // добавить уcловие на сохранение вставка (changed)
   $(".cd-panel__content input").change(function() {
     //return;
-    save_field($(this).attr("data-table"), $(this).attr("data-field"), $(this).val(), $(".cd-panel").attr("data-id"));
+    save_field($(this).attr("data-table"), $(this).attr("data-field"), $(this).val(), $(".cd-panel").attr("data-member_key"));
   });
   // save select field
   $(".cd-panel__content select").change(function() {
     //return;
-    save_field($(this).attr("data-table"), $(this).attr("data-field"), $(this).val(), $(".cd-panel").attr("data-id"));
+    save_field($(this).attr("data-table"), $(this).attr("data-field"), $(this).val(), $(".cd-panel").attr("data-member_key"));
   });
 
 // DOCUMENT READY STOP

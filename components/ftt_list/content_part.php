@@ -60,7 +60,12 @@
               echo "<option value='{$key}' $selected>{$value}</option>";
             endforeach; ?>
           </select>
-          <input id="search_field" class="col-2 form-control form-control-sm" type="text" placeholder="Поиск">
+          <select id="category_select" class="col-2 form-control form-control-sm mr-2">
+              <option value="_all_" selected>Все категории</option>
+              <?php foreach ($categories_list as $id => $name) echo "<option value='$id'>".htmlspecialchars ($name)."</option>"; ?>
+          </select>
+
+          <input id="search_field" class="col-1 form-control form-control-sm" type="text" placeholder="Поиск">
         </div>
 
         <div id="list_header" class="row border-bottom pb-2">
@@ -99,13 +104,12 @@
             $age = date_convert::get_age($birth_date);
             $phone = $value['cell_phone'];
             $email = $value['email'];
+            $category_key = $value['category_key'];
             $attend_meeting = $value['attend_meeting'];
             $changed = $value['changed'];
 
 /*
           $serving_one = $value['serving_one'];
-          $date_born = $value['date_born'];
-          $age = 0;
 
           $comment = $value['comment'];
           $comment_short;
@@ -119,12 +123,16 @@
           }
 */
           $show_string = '';
-// сестёр выделить цветом $time_zone
-          echo "<div class='row list_string' data-member_key='{$trainee_id}' data-semester='{$semester}' data-name='{$name}' data-time_zone='{$time_zone}' data-male='{$male}' data-locality_key='{$locality_key}' data-serving_one='{$serving_one}' data-coordinator='{$coordinator}'
+
+          echo "<div class='row list_string' data-member_key='{$trainee_id}'
+          data-semester='{$semester}' data-name='{$name}'
+          data-time_zone='{$time_zone}' data-male='{$male}'
+          data-locality_key='{$locality_key}' data-serving_one='{$serving_one}'
+          data-coordinator='{$coordinator}' data-category_key='{$category_key}'
           data-birth_date='$birth_date' data-comment='' data-toggle='modal' $show_string>
-          <div class='col-2 pl-1' style='min-width: 200px;'><span class='m_name'>{$short_name} </span><span class='m_semester'>({$semester})</span></div>
+          <div class='col-2 pl-1' style='min-width: 200px;'><span class='m_name'>{$short_name} </span>(<span class='m_semester'>{$semester}</span>)</div>
           <div class='col-2'><span class='m_locality'>{$locality_name} </span><span class='d-none m_age'>{$age}</span><span class='d-none'> лет.</span></div>
-          <div class='col-2' style='max-width: 140px;'><span class='m_phone'>{$phone}</span></div>
+          <div class='col-2' style='max-width: 140px;'><span class='m_cell_phone'>{$phone}</span></div>
           <div class='col-3'><span class='m_email'>{$email}</span></div>
           <div class='col-1' style='min-width: 105px;'><span class='m_age'>{$age}</span></div>
           <div class='col-1' style='max-width: 50px;'><span>{$attend_meeting}</span></div>
@@ -178,7 +186,8 @@
           <?php
           foreach ($serving_ones_list_list as $key => $value):
             $show_string_staff = '';
-            $service_one_id = $key;
+            //$service_one_id = $key; // выдаёт порядковый номер ходя должен быть member_key
+            $service_one_id = $value['member_key'];
             $name_staff = $value['name'];
             $short_name_staff = short_name::no_middle($value['name']);
             $time_zone_staff = $value['time_zone'];
@@ -190,14 +199,18 @@
             $phone_staff = $value['cell_phone'];
             $email_staff = $value['email'];
             $attend_meeting_staff = $value['attend_meeting'];
+            $comment_staff = $value['comment'];
             $changed_staff = $value['changed'];
-            echo "<div class='row list_string' data-id='' data-date='' data-member_key='{$service_one_id}' data-semester='' data-date_name='{$name_staff}' data-time_zone='{$time_zone_staff}'
-            data-gospel_team='$gospel_team_staff' data-locality='' data-locality_key='{$locality_key_staff}' data-age='' data-comment='' data-toggle='modal' $show_string>
-            <div class='col-2 pl-1' style='min-width: 200px;'><span>{$short_name_staff}</span></div>
-            <div class='col-2'><span>{$locality_name_staff}</span></div>
-            <div class='col-2' style='max-width: 140px;'><span>{$phone_staff}</span></div>
-            <div class='col-3'><span>{$email_staff}</span></div>
-            <div class='col-1' style='min-width: 105px;'><span>{$age_staff}</span></div>
+            echo "<div class='row list_string'
+            data-member_key='{$service_one_id}' data-name='{$name_staff}'
+            data-time_zone='{$time_zone_staff}' data-gospel_team='$gospel_team_staff'
+            data-locality_key='{$locality_key_staff}' data-birth_date='{$birth_date_staff}'
+            data-comment='{$comment_staff}' data-toggle='modal' $show_string_staff>
+            <div class='col-2 pl-1' style='min-width: 200px;'><span class='m_name'>{$short_name_staff}</span></div>
+            <div class='col-2'><span class='m_locality'>{$locality_name_staff}</span><span class='d-none m_age'>{$age}</span><span class='d-none'> лет.</span></div>
+            <div class='col-2' style='max-width: 140px;'><span class='m_cell_phone'>{$phone_staff}</span></div>
+            <div class='col-3'><span class='m_email'>{$email_staff}</span></div>
+            <div class='col-1' style='min-width: 105px;' class='m_age'><span>{$age_staff}</span></div>
             <div class='col-1' style='max-width: 50px;'><span>{$attend_meeting_staff}</span></div>
             <div class='col-1' style='max-width: 40px;'><span>{$changed_staff}</span></div>
             </div>";

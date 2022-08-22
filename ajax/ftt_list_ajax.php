@@ -22,6 +22,11 @@ if (isset($_GET['type']) && $_GET['type'] === 'get_member_data') {
   exit();
 }
 
+if (isset($_GET['type']) && $_GET['type'] === 'get_member_data_staff') {
+  echo json_encode(["result"=>Member::get_data_staff($_GET['id'])]);
+  exit();
+}
+
 if (isset($_GET['type']) && $_GET['type'] === 'change_field') {
   // Сохранение изменений в полях бланка
   // готовим данные
@@ -31,7 +36,7 @@ if (isset($_GET['type']) && $_GET['type'] === 'change_field') {
   $db_data->set('condition_field', $_GET['condition_field']);
   $db_data->set('condition_value', $_GET['condition']);
   if ($_GET['changed'] === "1") {
-    $db_data->set('changed', 1);  
+    $db_data->set('changed', 1);
   }
   // запрос
   echo json_encode(['result'=>DbOperation::operation($db_data->get())]);

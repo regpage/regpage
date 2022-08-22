@@ -15,7 +15,7 @@
             <span class="">Карточка участника</span>
           </div>
           <div class="col-3">
-            <a href="#0" class="cd-panel__close js-cd-close">Закрыть</a>
+            <a href="" class="cd-panel__close">Закрыть</a>
           </div>
         </div>
         <div class="row">
@@ -31,8 +31,7 @@
           </div>
           <div class="col-6">
               <label class="required-for-label">Пол</label>
-              <select id="gender" class="form-control form-control-sm">
-                  <option value="_none_" selected></option>
+              <select id="gender" class="form-control form-control-sm" data-field="gender" data-table="member">
                   <option value="1">MУЖ</option>
                   <option value="0">ЖЕН</option>
               </select>
@@ -41,7 +40,7 @@
         <div class="row">
           <div class="col-6">
               <label class="required-for-label">Гражданство</label>
-              <select id="citizenship" class="form-control form-control-sm">
+              <select id="citizenship" class="form-control form-control-sm" data-field="citizenship_key" data-table="member">
                   <option value='_none_' selected></option>
                   <?php foreach (localities::get_countries(true) as $id => $name) echo "<option value='$id'>".htmlspecialchars ($name)."</option>"; ?>
                   <option disabled="disabled">---------------------------</option>
@@ -54,7 +53,7 @@
           </div>
           <div class="col-6">
               <label>Русскоязычный</label>
-              <select id="russianLanguage" class="form-control form-control-sm">
+              <select id="russianLanguage" class="form-control form-control-sm" data-field="russian_lg" data-table="member">
                   <option value="0">НЕТ</option>
                   <option value="1" selected="">ДА</option>
               </select>
@@ -74,33 +73,33 @@
           </div>
           <div class="col-6">
             <label>Категория</label>
-            <select id="category" class="form-control form-control-sm">
+            <select id="category" class="form-control form-control-sm" data-field="category_key" data-table="member">
                 <option value="_none_" selected=""></option>
-                <?php foreach (MemberProperties::get_categories() as $id => $name) echo "<option value='$id'>".htmlspecialchars ($name)."</option>"; ?>
+                <?php foreach ($categories_list as $id => $name) echo "<option value='$id'>".htmlspecialchars ($name)."</option>"; ?>
             </select>
           </div>
         </div>
         <div class="row">
           <div class="col-12">
             <label>Почтовый адрес</label>
-            <input type="text" id="address" class="form-control form-control-sm" maxlength="150">
+            <input type="text" id="address" class="form-control form-control-sm" maxlength="150" data-field="address" data-table="member">
             <span class="example">Пример: Россия, 180000, Псковская обл., г. Псков, ул. Труда 5, кв. 6</span>
           </div>
         </div>
         <div class="row">
           <div class="col-6">
             <label>Email</label>
-            <input type="email" id="email" class="form-control form-control-sm" maxlength="50">
+            <input type="email" id="email" class="form-control form-control-sm" maxlength="50" data-field="email" data-table="member">
           </div>
           <div class="col-6">
               <label>Моб. телефон</label>
-              <input type="text" id="phone" class="form-control form-control-sm" data-field="cell_phone" maxlength="50" placeholder="+XXXXXXXXXX">
+              <input type="text" id="phone" class="form-control form-control-sm" maxlength="50" placeholder="+XXXXXXXXXX" data-field="cell_phone" data-table="member">
           </div>
         </div>
         <div class="row">
           <div class="col-12">
               <label>Дата крещения</label>
-              <input type="date" id="baptized" class="form-control form-control-sm">
+              <input type="date" id="baptized" class="form-control form-control-sm" data-field="baptized" data-table="member">
           </div>
         </div>
         <!-- PASSPORT -->
@@ -115,44 +114,40 @@
             <div class="row controls passport-info">
               <div class="col-12 passport-info">
                 <label>Тип документа</label>
-                <select id="document_type" class="form-control form-control-sm">
-                  <option value="_none_" selected="">&nbsp;</option>
-                  <option value="04">Военный билет</option>
-                  <option value="03">Заграничный паспорт</option>
-                  <option value="02">Иностранный документ</option>
-                  <option value="01">Национальный паспорт</option>
-                  <option value="05">Свидетельство о рождении</option>
+                <select id="document_type" class="form-control form-control-sm" data-field="document_key" data-table="member">
+                  <option value="_none_" selected></option>
+                  <?php foreach (MemberProperties::get_documents() as $id => $name) echo "<option value='$id'>".htmlspecialchars ($name)."</option>"; ?>
                 </select>
               </div>
               <div class="col-6 passport-info">
                 <label>Номер документа</label>
-                <input type="text" id="document_num" class="form-control form-control-sm" maxlength="20">
+                <input type="text" id="document_num" class="form-control form-control-sm" maxlength="20" data-field="document_num" data-table="member">
               </div>
               <div class="col-6 passport-info">
                 <label>Дата выдачи</label>
-                <input id="document_date" class="form-control form-control-sm" type="date">
+                <input type="date" id="document_date" class="form-control form-control-sm" data-field="document_date" data-table="member">
               </div>
               <div class="col-12 passport-info">
                 <label>Кем выдан</label>
-                <input type="text" id="document_auth" class="form-control form-control-sm" maxlength="150">
+                <input type="text" id="document_auth" class="form-control form-control-sm" maxlength="150" data-field="document_auth" data-table="member">
               </div>
           </div>
           <div class="row controls tp-passport-info">
               <div class="col-12">
                 <label>Номер загранпаспорта</label>
-                  <input type="text" id="document_num_tp" class="form-control form-control-sm" maxlength="20">
+                  <input type="text" id="document_num_tp" class="form-control form-control-sm" maxlength="20" data-field="tp_num" data-table="member">
               </div>
               <div class="col-12">
                 <label>Страна, которой выдан паспорт. Укажите название страны по-английски</label>
-                <input type="text" id="document_auth_tp" class="form-control form-control-sm" maxlength="20">
+                <input type="text" id="document_auth_tp" class="form-control form-control-sm" maxlength="20" data-field="tp_auth" data-table="member">
               </div>
               <div class="col-12">
                 <label>Дата окончания действия загранпаспорта</label>
-                  <input type="date" id="document_date_tp" class="form-control form-control-sm" maxlength="10">
+                  <input type="date" id="document_date_tp" class="form-control form-control-sm" maxlength="10" data-field="tp_date" data-table="member">
               </div>
               <div class="col-12">
                 <label>Фамилия и имя латинскими буквами (как указано в загранпаспорте)</label>
-                  <input type="text" id="document_name_tp" class="form-control form-control-sm" maxlength="150">
+                  <input type="text" id="document_name_tp" class="form-control form-control-sm" maxlength="150" data-field="tp_name" data-table="member">
               </div>
             </div>
           </div>
@@ -160,7 +155,7 @@
         <div class="row">
           <div class="col-12">
             <label>Семестр</label>
-            <select id="semester" class="form-control form-control-sm">
+            <select id="semester" class="form-control form-control-sm" data-field="semester" data-table="ftt_trainee">
               <option value="_none_" selected></option>
               <option value="1">1</option>
               <option value="2">2</option>
@@ -176,7 +171,7 @@
             <label>Комментарий администратора</label>
             <br>
             <span class="example">(виден только администраторам)</span>
-            <input type="text" id="comment" class="form-control form-control-sm">
+            <input type="text" id="comment" class="form-control form-control-sm" data-field="comment" data-table="member">
           </div>
         </div>
       </div>

@@ -162,8 +162,17 @@ label.required-for-label:after
 }
 
 /* TEXT STYLE*/
-.example {  
+.example {
 	color: #AAA;
 	font-weight: normal;
   font-size: 12px;
+}
+
+.modal-reference {
+  width: 300px;
+  padding: 3px 20px;
+}
+
+.dropdown-menu.pull-right {
+  margin-left: -205px;
 }
