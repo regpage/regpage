@@ -10,6 +10,7 @@
   include_once 'db/classes/extra_lists.php';
   include_once 'db/classes/localities.php';
   include_once 'db/classes/member_properties.php';
+  include_once 'db/classes/members.php';
   //include_once 'db/classes/ftt_info.php';
 
 // access
@@ -40,7 +41,9 @@ $trainee_list = ftt_lists::trainee();
 $trainee_list_list = ftt_lists::trainee_list();
 
 $categories_list = MemberProperties::get_categories();
-
+// список из зоны ответственности админа
+// Ислючить при запросе тех кто в списке обучающихся
+// Members::db_get_members_by_admin('000001679');
 $localities = [];
 $localities_staff = [];
 

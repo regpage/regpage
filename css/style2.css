@@ -168,11 +168,29 @@ label.required-for-label:after
   font-size: 12px;
 }
 
-.modal-reference {
+/*Справка*/
+li.modal-reference {
   width: 300px;
-  padding: 3px 20px;
+  padding: 0px 0px;
+}
+
+.modal-reference a {
+  display: block;
+  text-decoration: none !important;
+  color: black;
+  font-size: 14px;
+  padding: 2px 15px;
+}
+
+.modal-reference a:hover {
+  background-color: #08c;
+  color: white;
 }
 
 .dropdown-menu.pull-right {
   margin-left: -205px;
+}
+
+.dropdown-toggle::after {
+  display: none !important;
 }
