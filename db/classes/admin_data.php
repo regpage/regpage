@@ -10,7 +10,7 @@ class get_admin_data {
 
   static public function data($admin_id) {
     $result = [];
-    $res = db_query("SELECT m.key, m.name AS admin_name, m.locality_key, m.email, l.name AS locality_name
+    $res = db_query("SELECT m.key, m.name AS admin_name, m.locality_key, m.email, l.name AS locality_name, m.category_key, m.male
       FROM member AS m
       INNER JOIN locality l ON l.key = m.locality_key
       WHERE m.key = '$admin_id'");

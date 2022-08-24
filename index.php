@@ -26,6 +26,8 @@
     $isAdminArchiveEvents = db_isAdminArciveEvents($memberId);
     $countries1 = db_getCountries(true);
     $countries2 = db_getCountries(false);
+    $admin_category = $admin_data['category_key'];
+    $admin_male = $admin_data['male'];
 
     include_once "nav.php";
     include_once 'modals.php';
@@ -876,6 +878,8 @@ $(document).ready(function(){
     }
 
     function buildEventsList(events){
+      let admin_category = "<?php echo $admin_category; ?>";
+      let admin_male = "<?php echo $admin_male; ?>";
       // if member is the admin of event then RIGHT = true ELSE false
         if(events && events.length > 0){
             var eventRows = [], eventRowsTablet = [], hiddenEventsDesctop = [], hiddenEventsTablet = [],
@@ -906,7 +910,7 @@ $(document).ready(function(){
                 eventAttrs = ' class="event-row" data-name="'+event.name+'" data-locality_name="'+event.locality_name+'" '+
                         'data-start_date="'+event.start_date+'" data-end_date="'+event.end_date+'" data-private="'+event.private+'" '+
                         'data-is_active="'+event.is_active+'" data-id="'+event.id+'" data-author="'+event.author+'" '+
-                        'data-archived="'+event.archived+'" data-regstate_key="'+event.regstate_key+'" data-max_age="'+event.max_age+'" data-min_age="'+event.min_age+'" data-online_event="'+event.online+'" ';
+                        'data-archived="'+event.archived+'" data-regstate_key="'+event.regstate_key+'" data-max_age="'+event.max_age+'" data-min_age="'+event.min_age+'" data-event_type="'+event.event_type+'" data-online_event="'+event.online+'" ';
 
                 var regstateText='', regstateClass = '';
                 if(event.member_key !== null){
@@ -932,8 +936,10 @@ $(document).ready(function(){
                             '<div class="event-name"><strong>'+ event.name + ' , '+ event.locality_name +'</strong><span class="event-name"></div>'+
                             '<div><span style="margin-top:5px; margin-right:5px;" class="label label-'+regstateClass+'">'+ regstateText + '</span>' + icons+ '</div>'+
                         '</div>';
-
-                if((!parseInt(isUserWithRights) && parseInt(event.private)>0 && !in_array(event.id, evArr) && event.regstate_key === null) || ((memberId !== event.author || memberId === '000005716') && !isEventActive)){
+                /* Сейчас для private мероприятий действует одно правило, на мероприятие саморегистрация открыта
+                только для ответственных и полновременно служащих братьев.
+                нужно добавить правила для всех мероприятий */
+                if(((!parseInt(isUserWithRights) && admin_category !== "RB" && admin_category !== "FS") && parseInt(event.private)>0 && !in_array(event.id, evArr) && event.regstate_key === null) || ((memberId !== event.author || memberId === '000005716') && !isEventActive)){
                     continue;
                 }
                 else if(in_array(event.id, hidenEvents)){
@@ -941,8 +947,13 @@ $(document).ready(function(){
                     hiddenEventsTablet.push(tabletEvent);
                 }
                 else{
+                  if (event.event_type === "RBT" && admin_male === "1") {
+                      eventRows.push(desctopEvent);
+                      eventRowsTablet.push(tabletEvent);
+                  } else if (event.event_type !== "RBT" && parseInt(isUserWithRights)) {
                     eventRows.push(desctopEvent);
                     eventRowsTablet.push(tabletEvent);
+                  }
                 }
             }
 

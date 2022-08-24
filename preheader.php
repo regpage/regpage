@@ -1,6 +1,7 @@
 <?php
+/* настройки */
 header('Content-Type: text/html; charset=utf-8');
-
+/* переадресации */
 if ($_SERVER['REQUEST_URI'] === '/os') {
   header("Location: https://slovozaboty.ru/os/"); // redirect to
 } elseif ($_SERVER['REQUEST_URI'] === '/mc') {
@@ -8,23 +9,29 @@ if ($_SERVER['REQUEST_URI'] === '/os') {
 }
 //Redirect to service page like SORRY THE WEBSIE NOT AVAILABLE........
 //header("Location: /attention.html"); // redirect to service page
-// Подключаем основной файл с запросами к бд
 // нет необходимости подключать библиотеки майлера и некоторые утилиты подключаемые в db.php в новых разделах
+/* подключение необходимых функций и конфигов */
+// Подключаем основной файл с запросами к бд
 include_once "db.php";
-// переменная из config.php
-global $appRootPath;
-$global_root_path = __DIR__.DIRECTORY_SEPARATOR;
-ini_set('session.cookie_lifetime', 60 * 60 * 24 * 365);  // 365 day cookie lifetime
-session_start ();
-// START COOKIES
 
+// START COOKIES
+ini_set('session.cookie_lifetime', 60 * 60 * 24 * 365);  // 365 day cookie lifetime
 // STOP COOKIES
+session_start();
+
 // if (!isset($isGuest)) { // лишнее условие, эта переменная выше не объявляется.
+/* авторизация на сайте */
 // получаем админа по сессии
 $memberId = db_getMemberIdBySessionId (session_id());
 // можно записать сессию в кукки и если сессия была сегодня то пропускать обращение к бд для записи даты последнего визита
 $memberId ? db_lastVisitTimeUpdate(session_id()) : '';
+
+/* пути */
+// переменная из config.php
+global $appRootPath;
+$global_root_path = __DIR__.DIRECTORY_SEPARATOR;
 $thispage = explode('.', substr($_SERVER['PHP_SELF'], 1))[0];
+
 // Добавляем запись в лог посещаемости
 //$memberId && $thispage != 'archive' ? db_activityLogInsert($memberId, $thispage) : '';
 
@@ -34,8 +41,8 @@ $thispage = explode('.', substr($_SERVER['PHP_SELF'], 1))[0];
 /* if ((!$memberId && isset ($_GET["link"])) || (!$memberId && isset ($_GET["invited"]))){
 } else*/
 // Custom page. Если название страницы состоит из двух символов типа '/bt'
-if(strlen($_SERVER['REQUEST_URI']) == 3){?>
-    <?php
+/* разбор адресов */
+if(strlen($_SERVER['REQUEST_URI']) == 3){
     // Названия разделов из двух символов не допустимы, так как два символа используются для специальных страниц
       // determine a special page
       $specPage = NULL;

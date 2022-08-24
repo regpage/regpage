@@ -2938,7 +2938,7 @@ function db_getEventsForEventsPage($adminId, $sort_type, $sort_field){
 
     $res=db_query ("SELECT DISTINCT * FROM (
                     SELECT e.key as id, e.name as name, e.need_passport, e.need_transport, e.close_registration,
-                    e.participants_count, e.online,
+                    e.participants_count, e.online, e.event_type,
                     e.need_prepayment, e.start_date, e.end_date, e.min_age, e.max_age, e.need_flight, e.need_tp, e.regend_date, e.info, e.private,
                     e.locality_key, e.author, l.name as locality_name, e.is_active, e.archived, re.regstate_key, re.member_key
                     FROM event e
@@ -2954,7 +2954,7 @@ function db_getEventsForEventsPage($adminId, $sort_type, $sort_field){
                     UNION
 
                     SELECT e.key as id, e.name as name, e.need_passport, e.need_transport, e.close_registration,
-                    e.participants_count, e.online,
+                    e.participants_count, e.online, e.event_type,
                     e.need_prepayment, e.start_date, e.end_date, e.min_age, e.max_age, e.need_flight, e.need_tp, e.regend_date, e.info, e.private,
                     e.locality_key, e.author, l.name as locality_name, e.is_active, e.archived, re.regstate_key, re.member_key
                     FROM event e
@@ -2970,7 +2970,7 @@ function db_getEventsForEventsPage($adminId, $sort_type, $sort_field){
                     UNION
 
                     SELECT DISTINCT e.key as id, e.name as name, e.need_passport, e.need_transport, e.close_registration,
-                    e.participants_count, e.online,
+                    e.participants_count, e.online, e.event_type,
                     e.need_prepayment, e.start_date, e.end_date, e.min_age, e.max_age, e.need_flight, e.need_tp, e.regend_date, e.info, e.private,
                     e.locality_key, e.author, l.name as locality_name, e.is_active, e.archived, re.regstate_key, re.member_key
                     FROM event e
@@ -2986,7 +2986,7 @@ function db_getEventsForEventsPage($adminId, $sort_type, $sort_field){
                     UNION
 
                     SELECT e.key as id, e.name as name, e.need_passport, e.need_transport, e.close_registration,
-                    e.participants_count, e.online,
+                    e.participants_count, e.online, e.event_type,
                     e.need_prepayment, e.start_date, e.end_date, e.min_age, e.max_age, e.need_flight, e.need_tp, e.regend_date, e.info, e.private,
                     e.locality_key, e.author, l.name as locality_name, e.is_active, e.archived, re.regstate_key, re.member_key
                     FROM event e
