@@ -107,8 +107,8 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
       <div class="modal-footer">
         <!--<span id="show_error_span_mdl" style="color: red; font-weight: bold; display: none; padding-left:20px;">Заполните выделенные поля или укажите причину.</span>-->
         <?php if (!$serving_trainee && $ftt_access['group'] !== 'trainee'): ?>
-          <button id="undo_attendance_str" class="btn btn-sm btn-warning"><i class="fa fa-undo" aria-hidden="true" title="Откат записи"></i></button>
-          <button id="add_attendance_str" class="btn btn-sm btn-danger" style="margin-right: 215px;"><i class="fa fa-list" aria-hidden="true"></i></button>
+          <button id="undo_attendance_str" class="btn btn-sm btn-warning" title="Откат записи"><i class="fa fa-undo" aria-hidden="true"></i></button>
+          <button id="add_attendance_str" class="btn btn-sm btn-danger" title="Добавить или удалить мероприятия" style="margin-right: 210px;"><i class="fa fa-list" aria-hidden="true"></i></button>
         <?php endif; ?>
         <button id="send_blank" class="btn btn-sm btn-success" data-dismiss="modal" aria-hidden="true" style="">Отправить</button>
         <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Закрыть</button>

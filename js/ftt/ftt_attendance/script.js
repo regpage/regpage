@@ -108,7 +108,7 @@ $(document).ready(function(){
        } else if ($(this).next().css("border-color") === "red") {
 
        }
-       if ($(this).hasClass("bg_color_yellow")) { // && $(this).next().val() === "О"
+       if ($(this).hasClass("bg_color_yellow") && $(this).next().val() !== "Р") { // && $(this).next().val() === "О"
          create_late.push("&id="+$(this).parent().parent().parent().attr("data-id")
          +"&delay="+$(this).next().next().next().next().val()
          + "&date="+$("#modalAddEdit").attr("data-date")
@@ -116,7 +116,7 @@ $(document).ready(function(){
          +"&member_key="+$("#modalAddEdit").attr("data-member_key")
          +"&end_time="+$(this).parent().parent().parent().attr("data-end_time")
          +"&id_attendance="+$("#modalAddEdit").attr("data-id"));
-       } else if ($(this).hasClass("bg_color_pink")) { //&& $(this).next().val() === "О"
+       } else if ($(this).hasClass("bg_color_pink") && $(this).next().val() !== "Р") { //&& $(this).next().val() === "О"
          let text_msg = "опоздание";
          if ($(this).parent().parent().parent().attr("data-end_time") === "1") {
            text_msg = "приход раньше";
@@ -160,7 +160,7 @@ $(document).ready(function(){
             fetch('ajax/ftt_attendance_ajax.php?type=updade_data_blank' + data)
             .then(response => response.json())
             .then(commits => {
-              console.log(commits.result);
+              //console.log(commits.result);
             });
           }
         });
@@ -315,9 +315,9 @@ function open_blank(el_this) {
        deff_rend = 0;
      }
 
-      if ((deff_rend > 0 && deff_rend < 20) && (btn_text === "..." || btn_text === "О")) {
+      if ((deff_rend > 0 && deff_rend < 20) && (btn_text === "..." || btn_text === "О" || btn_text === "Р")) {
         bg_color_time = "bg_color_yellow";
-      } else if ((deff_rend >= 20 && (btn_text === "..." || btn_text === "О")) || (deff_rend === 0 && btn_text === "О")) {
+      } else if ((deff_rend >= 20 && (btn_text === "..." || btn_text === "О" || btn_text === "Р")) || (deff_rend === 0 && btn_text === "О")) {
         bg_color_time = "bg_color_pink";
       } else {
         bg_color_time = "";
@@ -464,9 +464,15 @@ function open_blank(el_this) {
           $(this).parent().prev().prev().prev().prev().prev().text($(this).parent().prev().prev().prev().prev().prev().attr("data-text"));
           $(this).parent().parent().prev().prev().text($(this).parent().prev().prev().prev().prev().prev().attr("data-text"));
           $(this).parent().parent().prev().addClass("hide_element");
+
           // сбрасываем и сохраняем время прихода
-          $(this).parent().prev().prev().prev().val("");
-          save_select_field($(this).parent().prev().prev().prev(), "");
+          if ($(this).attr("data-val") !== "Р") {
+            // очищаем поле времени прихода/ухода
+            $(this).parent().prev().prev().prev().val("");
+            $(this).parent().prev().prev().prev().removeClass("bg_color_pink");
+            $(this).parent().prev().prev().prev().removeClass("bg_color_yellow");
+            save_select_field($(this).parent().prev().prev().prev(), "");
+          }
         }
         $(this).parent().prev().html($(this).attr("data-val"));
       }
@@ -563,7 +569,8 @@ function open_blank(el_this) {
                $(this).removeClass("bg_color_pink");
              }
            }
-        } else if ($(this).attr("type") === "time" && $(this).attr("data-field") === "attend_time" && $(this).next().val() !== "С" && $(this).next().val() !== "Р" && $(this).next().val() !== "П" && $(this).parent().parent().parent().attr("data-end_time") !== "1") {
+        } else if ($(this).attr("type") === "time" && $(this).attr("data-field") === "attend_time" && $(this).next().val() !== "С" && $(this).next().val() !== "П" && $(this).parent().parent().parent().attr("data-end_time") !== "1") {
+          // && $(this).next().val() !== "Р"
           minutes = $(this).prev().val().split(":");
           minutes_my = value.split(":");
           // приход раньше
@@ -573,8 +580,10 @@ function open_blank(el_this) {
             $(this).css("background-color", "white");
             $(this).removeClass("bg_color_yellow");
             $(this).removeClass("bg_color_pink");
-            $(this).next().val("");
-            $(this).next().next().html('...');
+            if ($(this).next().val() !== "Р") {
+              $(this).next().val("");
+              $(this).next().next().html('...');
+            }
           } else if ($(this).next().next().next().next().val() > 0 && $(this).next().next().next().next().val() < 20) {
             if (!$(this).hasClass("bg_color_yellow")) {
              $(this).removeClass("bg_color_pink");
@@ -586,7 +595,8 @@ function open_blank(el_this) {
              $(this).addClass("bg_color_pink");
             }
           }
-        } else if ($(this).attr("type") === "time" && $(this).attr("data-field") === "attend_time" && $(this).next().val() !== "С" && $(this).next().val() !== "Р" && $(this).next().val() !== "П" && $(this).parent().parent().parent().attr("data-end_time") === "1") {
+        } else if ($(this).attr("type") === "time" && $(this).attr("data-field") === "attend_time" && $(this).next().val() !== "С" && $(this).next().val() !== "П" && $(this).parent().parent().parent().attr("data-end_time") === "1") {
+          //&& $(this).next().val() !== "Р"
           minutes = $(this).prev().val().split(":");
           minutes_my = value.split(":");
           // приход раньше
@@ -596,8 +606,10 @@ function open_blank(el_this) {
             $(this).css("background-color", "white");
             $(this).removeClass("bg_color_yellow");
             $(this).removeClass("bg_color_pink");
-            $(this).next().val("");
-            $(this).next().next().html('...');
+            if ($(this).next().val() !== "Р") {
+              $(this).next().val("");
+              $(this).next().next().html('...');
+            }
           } else if ($(this).next().next().next().next().val() > 0 && $(this).next().next().next().next().val() < 20) {
             if (!$(this).hasClass("bg_color_yellow")) {
              $(this).removeClass("bg_color_pink");
@@ -814,7 +826,7 @@ function open_blank(el_this) {
   }
   // конец открытия бланка
   // клик по строке, загружаем форму
-  $(".list_string").click(function () {
+  $("#list_content .list_string").click(function () {
     open_blank($(this));
   });
 
@@ -1157,9 +1169,9 @@ function open_blank(el_this) {
     let days_ago = (date_current - date_blank)/(24*60*60)/1000;
 
     // Откат возможен с вс по сб недели в который он отправлен
-    console.log(Math.floor(days_ago));
-    console.log(day_blank);
-    console.log(day_current);
+    //console.log(Math.floor(days_ago));
+    //console.log(day_blank);
+    //console.log(day_current);
     if (Math.floor(days_ago) > 7 || day_blank > day_current) {
       showError("Этот лист посещаемости находится в закрытом периоде. Откат невозможен.");
       return;
@@ -1176,6 +1188,19 @@ function open_blank(el_this) {
     });
     $("#modalAddEdit").modal("hide");
     $('#spinner').modal("show");
+  });
+
+  /*** ПОДРАЗДЕЛ РАЗРЕШЕНИЯ ***/
+
+  // Фильтры
+  $('#permission_active').change(function () {
+    $("#list_permission .list_string").each(function () {
+      if ($('#permission_active').val() === "_all_" || $('#permission_active').val() === $(this).attr("data-status")) {
+        $(this).show();
+      } else {
+        $(this).hide();
+      }
+    });
   });
 // DOCUMENT READY STOP
 });
