@@ -147,6 +147,7 @@ $(document).ready(function(){
     fetch("ajax/ftt_list_ajax.php?type="+type+"&id="+member_key)
     .then(response => response.json())
     .then(commits => {
+      $("#modalAddEdit").modal("show");
       $("#citizenship").val(commits.result["citizenship_key"]);
       $("#address").val(commits.result["address"]);
       $("#baptized").val(commits.result["baptized"]);
@@ -162,13 +163,13 @@ $(document).ready(function(){
       $("#document_auth_tp").val(commits.result["tp_auth"]);
       $("#document_date_tp").val(commits.result["tp_date"]);
       $("#document_name_tp").val(commits.result["tp_name"]);
-      $("#spinner").modal("hide");
+      //$("#spinner").modal("hide");
     });
   }
   // заполнение бланка
   function fill_blank() {
-    $("#spinner").modal("show");
-    $(".cd-panel").attr("data-member_key", $("#tab_content .active_str").attr("data-member_key"));
+    //$("#spinner").modal("show");
+    $("#modalAddEdit").attr("data-member_key", $("#tab_content .active_str").attr("data-member_key"));
     $("#name").val($("#tab_content .active_str").attr("data-name"));
     $("#locality").val($("#tab_content .active_str").attr("data-locality_key"));
     $("#gender").val($("#tab_content .active_str").attr("data-male"));
@@ -179,12 +180,12 @@ $(document).ready(function(){
   }
   // очистка бланка
   function clear_blank() {
-    $(".cd-panel__content input").val("");
-    $(".cd-panel__content select").val("_none_");
-    $(".cd-panel").attr("data-member_key", "");
+    $("#modalAddEdit input").val("");
+    $("#modalAddEdit").val("_none_");
+    $("#modalAddEdit").attr("data-member_key", "");
   }
   // close blank by the CLOSE button
-  $(".cd-panel__close").click(function(e) {    
+  $(".cd-panel__close").click(function(e) {
     e.preventDefault();
     $(".js-cd-panel-main").removeClass("cd-panel--is-visible");
     clear_blank();
@@ -193,6 +194,12 @@ $(document).ready(function(){
   // strings
   //side panel
   $(".list_string").click(function() {
+    $(".active_str").removeClass("active_str");
+    $(this).addClass("active_str");
+    clear_blank();
+    fill_blank();
+
+    /*
     if ($(".js-cd-panel-main").hasClass("cd-panel--is-visible") && $(this).hasClass("active_str")) {
       $(".js-cd-panel-main").removeClass("cd-panel--is-visible");
       $(this).removeClass("active_str");
@@ -207,6 +214,7 @@ $(document).ready(function(){
       $(this).addClass("active_str");
       fill_blank();
     }
+    */
   });
 
   // мгновенное динамическое обновление при успешном сохранении
@@ -255,15 +263,46 @@ $(document).ready(function(){
     });
   }
 
+  function get_data_blank() {
+    let data = {};
+    data["member_key"] = $("#modalAddEdit").attr("data-member_key");
+    $("#modalAddEdit input").each(function () {
+      data[$(this).attr("data-field")] = $(this).val();
+    });
+    $("#modalAddEdit select").each(function () {
+      data[$(this).attr("data-field")] = $(this).val();
+    });
+    return data;
+  }
+
+  function save_blank(data) {
+    let data_post = new FormData();
+    data_post.set("data", JSON.stringify(data));
+    fetch("ajax/ftt_list_ajax.php?type=save_blank", {
+      method: 'POST',
+      body: data_post
+    })
+    .then(response => response.text())
+    .then(commits => {
+      $("#spinner").modal("hide");
+      //location.reload();
+    });
+  }
+
+  $("#save_blank").click(function() {
+    $("#modalAddEdit").modal("hide");
+    $("#spinner").modal("show");
+    save_blank(get_data_blank());
+  });
   // save input field
   // добавить уcловие на сохранение вставка (changed)
   $(".cd-panel__content input").change(function() {
-    //return;
+    return;
     save_field($(this).attr("data-table"), $(this).attr("data-field"), $(this).val(), $(".cd-panel").attr("data-member_key"));
   });
   // save select field
   $(".cd-panel__content select").change(function() {
-    //return;
+    return;
     save_field($(this).attr("data-table"), $(this).attr("data-field"), $(this).val(), $(".cd-panel").attr("data-member_key"));
   });
 

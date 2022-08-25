@@ -10,7 +10,7 @@
   include_once 'db/classes/extra_lists.php';
   include_once 'db/classes/localities.php';
   include_once 'db/classes/member_properties.php';
-  include_once 'db/classes/members.php';
+  //include_once 'db/classes/members.php';
   //include_once 'db/classes/ftt_info.php';
 
 // access

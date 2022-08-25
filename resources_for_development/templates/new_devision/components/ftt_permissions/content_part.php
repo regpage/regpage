@@ -1,21 +1,18 @@
 
-  <!-- Tab panes -->
-  <div id="" class="">
-    <div id="" class="">
-      <div class="container">
-        <div id="" class="row" style="padding-bottom: 15px;">
-          <select id="semester_select" class="col-2 form-control form-control-sm mr-2">
-            <option value="_all_">Все семестры</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-          </select>
-          <select id="time_zone_selected" class="col-2 form-control form-control-sm mr-2">
-            <?php foreach (extra_lists::get_time_zones() as $key => $value):
-              $selected = '';
+  <div class="container">
+    <div id="" class="row" style="padding-bottom: 15px;">
+      <select id="semester_select" class="col-2 form-control form-control-sm mr-2">
+        <option value="_all_">Все семестры</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+      </select>
+      <select id="time_zone_selected" class="col-2 form-control form-control-sm mr-2">
+        <?php foreach (extra_lists::get_time_zones() as $key => $value):
+          $selected = '';
               /*if ($key === $serving_one_selected) {
                 $selected = 'selected';
               }*/
@@ -24,28 +21,28 @@
               } else {*/
                 echo "<option value='{$key}' $selected>{$value['name']} ({$value['utc']})";
               /*}*/
-            endforeach; ?>
-          </select>
-          <select id="localities_select" class="col-2 form-control form-control-sm mr-2" name="">
-            <option value="_all_">Все местности</option>
-            <?php foreach ($localities as $key => $value):
-              $selected = '';
+        endforeach; ?>
+      </select>
+      <select id="localities_select" class="col-2 form-control form-control-sm mr-2" name="">
+        <option value="_all_">Все местности</option>
+        <?php foreach ($localities as $key => $value):
+          $selected = '';
               /*if ($key === $serving_one_selected) {
                 $selected = 'selected';
               }*/
-              echo "<option value='{$key}' $selected>{$value}</option>";
-            endforeach; ?>
-          </select>
-          <select id="sevice_one_select" class="col-2 form-control form-control-sm mr-2">
-            <option value="_all_">Все служащие</option>
-            <?php foreach ($serving_ones_list as $key => $value):
-              $selected = '';
+          echo "<option value='{$key}' $selected>{$value}</option>";
+        endforeach; ?>
+      </select>
+      <select id="sevice_one_select" class="col-2 form-control form-control-sm mr-2">
+        <option value="_all_">Все служащие</option>
+        <?php foreach ($serving_ones_list as $key => $value):
+          $selected = '';
               /*if ($key === $serving_one_selected) {
                 $selected = 'selected';
               }*/
-              echo "<option value='{$key}' $selected>{$value}</option>";
-            endforeach; ?>
-          </select>
+          echo "<option value='{$key}' $selected>{$value}</option>";
+        endforeach; ?>
+      </select>
           <select id="category_select" class="col-2 form-control form-control-sm mr-2">
               <option value="_all_" selected>Все категории</option>
               <?php foreach ($categories_list as $id => $name) echo "<option value='$id'>".htmlspecialchars ($name)."</option>"; ?>
@@ -111,5 +108,3 @@
           </div>";
         endforeach; ?>
       </div>
-    </div>
-  </div>

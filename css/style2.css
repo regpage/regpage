@@ -194,3 +194,7 @@ li.modal-reference {
 .dropdown-toggle::after {
   display: none !important;
 }
+
+.bg_pink {
+  background-color: #FCF4F4;
+}

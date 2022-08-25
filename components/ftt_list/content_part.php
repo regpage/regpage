@@ -90,6 +90,7 @@
 
           foreach ($trainee_list_list as $key => $value):
 /* Получать минимум необходимый для сортировки и поиска */
+// ДАННЫЕ
             $trainee_id = $value['member_key'];
             $semester = $value['semester'];
             $name = $value['name'];
@@ -122,9 +123,24 @@
             $comment_short = $comment;
           }
 */
-          $show_string = '';
+// ОТМЕТКИ И ОТОБРАЖЕНИЕ
 
-          echo "<div class='row list_string' data-member_key='{$trainee_id}'
+          $show_string = '';
+          $mark_string = '';
+          if ($category_key !== "FT") {
+            $mark_string = 'bg_pink';
+          }
+          $change_pencil = '';
+          if ($changed === '1') {
+            $change_pencil = '<i class="fa fa-pencil" title="Изменения еще не обработаны"></i>';
+          }
+
+          $attend_cheched = '';
+          if ($attend_meeting === '1') {
+            $attend_cheched = 'checked';
+          }
+
+          echo "<div class='row list_string {$mark_string}' data-member_key='{$trainee_id}'
           data-semester='{$semester}' data-name='{$name}'
           data-time_zone='{$time_zone}' data-male='{$male}'
           data-locality_key='{$locality_key}' data-serving_one='{$serving_one}'
@@ -135,8 +151,8 @@
           <div class='col-2' style='max-width: 140px;'><span class='m_cell_phone'>{$phone}</span></div>
           <div class='col-3'><span class='m_email'>{$email}</span></div>
           <div class='col-1' style='min-width: 105px;'><span class='m_age'>{$age}</span></div>
-          <div class='col-1' style='max-width: 50px;'><span>{$attend_meeting}</span></div>
-          <div class='col-1' style='max-width: 40px;'><span m_changed>{$changed}</span></div>
+          <div class='col-1' style='max-width: 50px;'><input type='checkbox' {$attend_cheched} disabled></div>
+          <div class='col-1' style='max-width: 40px;'>{$change_pencil}</div>
           </div>";
         endforeach; ?>
       </div>
@@ -201,6 +217,15 @@
             $attend_meeting_staff = $value['attend_meeting'];
             $comment_staff = $value['comment'];
             $changed_staff = $value['changed'];
+            $change_pencil_staff = '';
+            if ($changed_staff === '1') {
+              $change_pencil_staff = '<i class="fa fa-pencil" title="Изменения еще не обработаны"></i>';
+            }
+            $attend_cheched_staff = '';
+            if ($attend_meeting_staff === '1') {
+              $attend_cheched_staff = 'checked';
+            }
+
             echo "<div class='row list_string'
             data-member_key='{$service_one_id}' data-name='{$name_staff}'
             data-time_zone='{$time_zone_staff}' data-gospel_team='$gospel_team_staff'
@@ -211,11 +236,11 @@
             <div class='col-2' style='max-width: 140px;'><span class='m_cell_phone'>{$phone_staff}</span></div>
             <div class='col-3'><span class='m_email'>{$email_staff}</span></div>
             <div class='col-1' style='min-width: 105px;' class='m_age'><span>{$age_staff}</span></div>
-            <div class='col-1' style='max-width: 50px;'><span>{$attend_meeting_staff}</span></div>
-            <div class='col-1' style='max-width: 40px;'><span>{$changed_staff}</span></div>
+            <div class='col-1' style='max-width: 50px;'><input type='checkbox' {$attend_cheched_staff} disabled></div>
+            <div class='col-1' style='max-width: 40px;'>{$change_pencil_staff}</div>
             </div>";
           endforeach;
           ?>
         </div>
     </div>
-  </div>  
+  </div>

@@ -4,7 +4,7 @@ include_once "ajax.php";
 // подключаем запросы
 include_once "../db/classes/db_operations.php";
 include_once "../db/classes/member.php";
-//include_once '../db/classes/date_convert.php';
+include_once '../db/ftt/ftt_list_db.php';
 // Подключаем ведение лога
 //include_once "../extensions/write_to_log/write_to_log.php";
 
@@ -24,6 +24,12 @@ if (isset($_GET['type']) && $_GET['type'] === 'get_member_data') {
 
 if (isset($_GET['type']) && $_GET['type'] === 'get_member_data_staff') {
   echo json_encode(["result"=>Member::get_data_staff($_GET['id'])]);
+  exit();
+}
+
+// save blank
+if (isset($_GET['type']) && $_GET['type'] === 'save_blank') {
+  echo json_encode(["result"=>save_blank($_POST['data'])]);
   exit();
 }
 
