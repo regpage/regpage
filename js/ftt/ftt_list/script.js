@@ -136,25 +136,25 @@ $(document).ready(function(){
   // получаем данные пользователя
   function get_member_data(member_key) {
     let type = "get_member_data";
-    if ($("#tab_service_one").hasClass("active")) {
+
+    /*if ($("#tab_service_one").hasClass("active")) {
       type = "get_member_data_staff";
       $("#semester").parent().hide();
     } else {
       if (!$("#semester").is(":visible")) {
         $("#semester").parent().show();
       }
-    }
+    }*/
     fetch("ajax/ftt_list_ajax.php?type="+type+"&id="+member_key)
     .then(response => response.json())
     .then(commits => {
       $("#modalAddEdit").modal("show");
       $("#citizenship").val(commits.result["citizenship_key"]);
       $("#address").val(commits.result["address"]);
-      $("#baptized").val(commits.result["baptized"]);
       $("#category").val(commits.result["category_key"]);
-      $("#semester").val(commits.result["semester"]);
-      $("#comment").val(commits.result["comment"]);
       $("#russianLanguage").val(commits.result["russian_lg"]);
+      $("#comment").val(commits.result["comment"]);
+      /*$("#baptized").val(commits.result["baptized"]);
       $("#document_type").val(commits.result["document_key"]);
       $("#document_num").val(commits.result["document_num"]);
       $("#document_date").val(commits.result["document_date"]);
@@ -163,6 +163,8 @@ $(document).ready(function(){
       $("#document_auth_tp").val(commits.result["tp_auth"]);
       $("#document_date_tp").val(commits.result["tp_date"]);
       $("#document_name_tp").val(commits.result["tp_name"]);
+      */
+      //$("#semester").val(commits.result["semester"]);
       //$("#spinner").modal("hide");
     });
   }
@@ -218,6 +220,7 @@ $(document).ready(function(){
   });
 
   // мгновенное динамическое обновление при успешном сохранении
+  /*
    function dinamic_list_updater(field, value) {
       if (field === "locality_key") {
         $(".active_str").attr("data-"+field, value);
@@ -234,7 +237,7 @@ $(document).ready(function(){
        $(".active_str").find(".m_"+field).text(value);
       }
    }
-
+*/
   // save field
   function save_field(table, field, value, condition) {
     let condition_field, changed;
@@ -259,7 +262,7 @@ $(document).ready(function(){
     .then(response => response.json())
     .then(commits => {
       // динамическое обновление строк
-      dinamic_list_updater(field, value);
+      // dinamic_list_updater(field, value);
     });
   }
 

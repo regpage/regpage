@@ -87,13 +87,15 @@ data-member_key="">
               <input type="text" id="phone" class="form-control form-control-sm" maxlength="50" placeholder="+XXXXXXXXXX" data-field="cell_phone" data-table="member">
           </div>
         </div>
+        <!-- BAPTIZED
         <div class="row">
           <div class="col-12">
               <label>Дата крещения</label>
               <input type="date" id="baptized" class="form-control form-control-sm" data-field="baptized" data-table="member">
           </div>
         </div>
-        <!-- PASSPORT -->
+      -->
+        <!-- PASSPORT
         <div class="row">
           <div class="col-12 handle-passport-info" style="margin-bottom: 10px; margin-top: 15px;">
               <a href="#block-passport-info" data-toggle="collapse" style="text-decoration: none; color: cadetblue;"> Паспортные данные
@@ -143,6 +145,9 @@ data-member_key="">
             </div>
           </div>
         </div>
+        -->
+
+        <!-- SEMESTER
         <div class="row">
           <div class="col-12">
             <label>Семестр</label>
@@ -157,6 +162,7 @@ data-member_key="">
             </select>
           </div>
         </div>
+      -->
         <div class="row">
           <div class="col-12">
             <label>Комментарий администратора</label>

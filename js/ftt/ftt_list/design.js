@@ -4,10 +4,14 @@ if ($(window).width()<=769) {
   $("#main_row").attr('style', 'width: 100% !important;');
 
   // headers
+  $("#tab_content select").css("min-width", "110px");
+  $("#sevice_one_select").addClass("mt-2");
+  $("#category_select").addClass("mt-2");
 
   // columns
 
   //strings
+  $("#tab_content").css("font-size", "16px");
   $("#change_tab").removeClass("col-2").addClass("col-5");
   $("#list_header").hide();
   $(".list_string div").css("min-width", "");
@@ -23,6 +27,9 @@ if ($(window).width()<=769) {
   $(".list_string .col-3").removeClass("col-3").addClass("col-8");
   //$(".list_string .col-2").first().removeClass("col-2").addClass("col-6");
   $(".list_string .col-1").hide();
+  $(".list_string .m_email").hide();
+  $(".list_string .m_cell_phone").hide();
+
   //$(".list_string .col-2").removeClass("col-2").addClass("col-6");
   //$(".list_string .col-1").removeClass("col-1").addClass("col");
   // Bootstrap tooltip
@@ -38,6 +45,9 @@ if ($(window).width()<=769) {
 
 } else {
   $("#main_container").css("padding-top", "0");
+  $("#search_field").removeClass("w-50");
+  $("#search_field").addClass("col-2");
+  $("#search_field").css("max-width", "189px");  
 }
 
 $("#main_container").css("margin-top", "60px");

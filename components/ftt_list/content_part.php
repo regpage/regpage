@@ -9,10 +9,11 @@
   </ul> -->
   <!-- Tab panes -->
   <div class="row" style="padding-left: 15px; padding-top: 20px; padding-bottom: 20px;">
-    <select id="change_tab" class="col-2 form-control form-control-sm select_bold" style="max-width: 189px;">
+    <select id="change_tab" class="col-2 form-control form-control-sm select_bold mr-2" style="max-width: 189px;">
       <option value="tab_trainee" <?php if ($tab_active === 'tab_trainee') echo 'selected'; ?>>Обучающиеся</option>
       <option value="tab_service_one" <?php if ($tab_active === 'tab_service_one') echo 'selected'; ?>>Служащие</option>
     </select>
+    <input id="search_field" class="w-50 form-control form-control-sm" type="text" placeholder="Поиск">
   </div>
   <div id="tab_content" class="tab-content">
     <div id="tab_trainee" class="tab-pane <?php if ($tab_active === 'tab_trainee') echo 'active'; ?>">
@@ -36,7 +37,7 @@
               /*if ($value['utc'] === "0") {
                 echo "<option value='{$key}' $selected>Все часовые пояса";
               } else {*/
-                echo "<option value='{$key}' $selected>{$value['name']} ({$value['utc']})";
+                echo "<option value='{$key}' $selected>{$value['name']}";
               /*}*/
             endforeach; ?>
           </select>
@@ -64,8 +65,6 @@
               <option value="_all_" selected>Все категории</option>
               <?php foreach ($categories_list as $id => $name) echo "<option value='$id'>".htmlspecialchars ($name)."</option>"; ?>
           </select>
-
-          <input id="search_field" class="col-1 form-control form-control-sm" type="text" placeholder="Поиск">
         </div>
 
         <div id="list_header" class="row border-bottom pb-2">
@@ -147,7 +146,7 @@
           data-coordinator='{$coordinator}' data-category_key='{$category_key}'
           data-birth_date='$birth_date' data-comment='' data-toggle='modal' $show_string>
           <div class='col-2 pl-1' style='min-width: 200px;'><span class='m_name'>{$short_name} </span>(<span class='m_semester'>{$semester}</span>)</div>
-          <div class='col-2'><span class='m_locality'>{$locality_name} </span><span class='d-none m_age'>{$age}</span><span class='d-none'> лет.</span></div>
+          <div class='col-2'><span class='m_locality'>{$locality_name}</span>, <span class='d-none m_age'>{$age}</span><span class='d-none'> лет, {$phone}</span></div>
           <div class='col-2' style='max-width: 140px;'><span class='m_cell_phone'>{$phone}</span></div>
           <div class='col-3'><span class='m_email'>{$email}</span></div>
           <div class='col-1' style='min-width: 105px;'><span class='m_age'>{$age}</span></div>

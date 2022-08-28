@@ -4,12 +4,13 @@ function save_blank($data)
   global $db;
   $data = json_decode($data);
   $member_key = $db->real_escape_string($data->member_key);
-  $semester = $db->real_escape_string($data->semester);
+  // убрано из запроса
+  //$semester = $db->real_escape_string($data->semester);
   $query_set = '';
   $result;
 
   foreach ($data as $key => $value) {
-    if ($key !== 'member_key' && $key !== 'semester') {
+    if ($key !== 'member_key') { // && $key !== 'semester'
       /*if ($query_set) {
         $query_set .= ', ';
       }*/

@@ -129,16 +129,16 @@ switch ($h) {
                 echo"><a href='/reg'>Регистрация</a></li>";
             }
 
-            if (!isset($isGuest) && $ftt_access['group'] === 'staff') {
-                echo '<li ';
-                if (strpos($s,"/ftt_list")!==FALSE) {echo "class='active'";}
-                echo'><a href="/ftt_list">ПВОМ</a></li>';
-            }
-
             if(!isset($isGuest) && db_isAdmin($memberId) && $ftt_access['group'] !== 'trainee') {
                 echo '<li';
                 if (strpos ($s,"/members")!==FALSE || strpos($s,"/youth")!==FALSE || strpos($s,"/list")!==FALSE) {echo " class='active'";}
                 echo"><a href='/members'>Списки</a></li>";
+            }
+
+            if (!isset($isGuest) && $ftt_access['group'] === 'staff') {
+                echo '<li ';
+                if (strpos($s,"/ftt_list")!==FALSE) {echo "class='active'";}
+                echo'><a href="/ftt_list">ПВОМ</a></li>';
             }
 
             /*if(!isset($isGuest) && db_isAdmin($memberId) || db_hasAdminFullAccess($memberId)) {
