@@ -882,7 +882,7 @@ filters_list_show();
         $("#members_groups_print").html(html_list);
       });
     } else {
-      if ($("#period_from_print").val() && $("#period_to_print").val()) {        
+      if ($("#period_from_print").val() && $("#period_to_print").val()) {
         statistics_counter();
 
         if (e.target.id === "group_select_print" && $(this).val()) {
@@ -1181,8 +1181,8 @@ $(".sort_date, .sort_team, .sort_group").click(function (e) {
   }, 30);
 });
 
-$(".recom_goal").change(function () {
-  if ((!trainee_access || ftt_access_trainee) && ($("#team_goal_select").val() !== "_all_" && $("#group_goal_select").val() && $("#group_goal_select").val() !== "_all_")) {
+$(".recom_goal").change(function () { //(!trainee_access || ftt_access_trainee) &&
+  if (($("#team_goal_select").val() !== "_all_" && $("#group_goal_select").val() !== "_all_")) {
     fetch("ajax/ftt_gospel_ajax.php?type=set_ftt_gospel_goals&gospel_team="+$("#team_goal_select").val()+"&gospel_group="+$("#group_goal_select").val()+"&column="+$(this).attr("data-field")+"&value="+$(this).val())
     .then(response => response.json())
     .then(/*commits => console.log(commits.result)*/);
@@ -1193,7 +1193,7 @@ if (!trainee_access) {
 } else {
    $("#team_goal_select").prop("disabled", true);
    $("#group_goal_select").prop("disabled", true);
-   $(".recom_goal").prop("disabled", true);
+   //$(".recom_goal").prop("disabled", true);
 }
 // team
 $("#team_goal_select").change(function () {
