@@ -288,7 +288,7 @@ $(document).ready(function(){
     .then(response => response.text())
     .then(commits => {
       $("#spinner").modal("hide");
-      //location.reload();
+      location.reload();
     });
   }
 

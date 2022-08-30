@@ -43,13 +43,13 @@ include_once "preheader.php";
     <script src="js/jquery.mockjax.js" type="text/javascript"></script>
     <script src="js/jquery.autocomplete.js" type="text/javascript"></script> <!-- https://github.com/devbridge/jQuery-Autocomplete -->
     <script src="js/jquery.maskedinput.min.js" type="text/javascript"></script>
-    <script src="js/script.js?v197" type="text/javascript"></script>
+    <script src="js/script.js?v198" type="text/javascript"></script>
     <script src="js/jquery-textrange.js" type="text/javascript"></script>
     <script src="js/bootstrap-datepicker.min.js" type="text/javascript"></script>
     <script src="js/bootstrap-datepicker.ru.js" type="text/javascript"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-    <?php if ($_SERVER['PHP_SELF'] === '/index.php' || $_SERVER['PHP_SELF'] === '/members.php') { ?>
+    <?php if ($_SERVER['PHP_SELF'] === '/index.php' || $_SERVER['PHP_SELF'] === '/members.php' || $_SERVER['PHP_SELF'] === '/reg.php' || $_SERVER['PHP_SELF'] === '/meetings.php' || $_SERVER['PHP_SELF'] === '/profile.php' || $_SERVER['PHP_SELF'] === '/youth.php') { ?>
   <!--  <link rel="stylesheet" href="https://cdn.envybox.io/widget/cbk.css">
     <script type="text/javascript" src="https://cdn.envybox.io/widget/cbk.js?wcb_code=27de0b86fa9a7c4373ae996711b6f549" charset="UTF-8" async></script>-->
     <!-- Begin Verbox {literal} -->

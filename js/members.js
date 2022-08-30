@@ -1,5 +1,7 @@
 renewComboLists('.members-lists-combo');
 $('#modalEditMember').on('show', function() {
+  // ЧАТ
+  $("#supportTrigger").hide();
   setTimeout(function () {
       // error block for locality
       if (!$("#inputEmLocalityId").val() && !$("#emNewLocality").val() && !$("#inputEmLocalityId").parent(".control-group").hasClass("error")) {
@@ -39,6 +41,8 @@ $('#modalEditMember').on('show', function() {
   $('.modalListInput').hide();
 });
 $('#modalEditMember').on('hide', function() {
+  // ЧАТ
+  $("#supportTrigger").show();
   $('#modalEditMember').find('.emLocality').attr('data-value','');
   $('#modalEditMember').find('.emLocality').attr('data-text','');
   $('#modalEditMember').find('#inputEmLocalityId').attr('data-value_input','');

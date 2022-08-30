@@ -692,5 +692,5 @@ include_once "modals.php";
 var globalSingleCity = "<?php echo $singleCity; ?>";
 
 </script>
-<script src="/js/youth.js?v7"></script>
+<script src="/js/youth.js?v8"></script>
 <?php include_once "footer.php"; ?>

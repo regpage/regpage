@@ -2717,7 +2717,7 @@ function checkStopEventRegistration(eventId){
   });
     // END Romans Code
 </script>
-<script src="/js/reg.js?v72"></script>
+<script src="/js/reg.js?v73"></script>
 <script src="/js/regupload.js?v5"></script>
 <?php
     include_once "footer.php";

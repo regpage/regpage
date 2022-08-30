@@ -36,6 +36,8 @@
 
 // check date fields
   $('#modalEditMember').on('show', function() {
+    // ЧАТ
+    $("#supportTrigger").hide();
     // if the event is online for fields dates
     if ($('.tab-pane.active').attr('data-online_event') === '1') {
       let thisParent = $('.tab-pane.active');
@@ -167,6 +169,8 @@
   });
 
 $('#modalEditMember').on('hide', function() {
+  // ЧАТ
+  $("#supportTrigger").show();
   $('#btnDoSaveMember').hasClass('locality_all') ? $('#btnDoSaveMember').removeClass('locality_all') : '';
   $('#modalEditMember').find('.emLocality').attr('data-value','');
   $('#modalEditMember').find('.emLocality').attr('data-text','');

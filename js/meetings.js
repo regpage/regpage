@@ -1695,11 +1695,15 @@ var isFillTemplate = 0;
           });
 
         $('#addEditMeetingModal').on('hide', function (){
+          // ЧАТ
+          $("#supportTrigger").show();
             if ($('.addEditMode').length > 0) $('#addEditMeetingModal').removeClass('addEditMode');
               $('#addEditMeetingModal').attr('data-id', '');
           });
 
         $('#addEditMeetingModal').on('show', function (){
+          // ЧАТ
+          $("#supportTrigger").hide();
           setTimeout(function () {
             if (!$('#meetingLocalityModal').val() && !$('#meetingLocalityModal').parent().hasClass('error')) {
               $('#meetingLocalityModal').parent().addClass('error');

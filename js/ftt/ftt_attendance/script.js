@@ -482,7 +482,6 @@ function open_blank(el_this) {
       $('#modalAddEdit input').attr("disabled", true);
       $('#modalAddEdit select').attr("disabled", true);
       $('#send_blank').hide();
-      $('#add_attendance_str').attr("style", "margin-right: 320px;");
       $('#add_attendance_str').attr("disabled", true);
       $('#add_attendance_str').hide();
     } else if (status_sheet === "0" && !trainee_access) {
@@ -490,26 +489,48 @@ function open_blank(el_this) {
       $('#modalAddEdit select').attr("disabled", true);
       $('#send_blank').hide();
       $("#undo_attendance_str").prop("disabled", true);
-      $('#add_attendance_str').attr("style", "margin-right: 320px;");
+      $("#undo_attendance_str").hide();
+      if ($(window).width()<=769) {
+        $('#add_attendance_str').attr("style", "margin-right: 225px;");
+      } else {
+        $('#add_attendance_str').attr("style", "margin-right: 355px;");
+      }
+
       $('#add_attendance_str').attr("disabled", false);
       $('#add_attendance_str').show();
     } else {
      if (status_sheet === "1" && !trainee_access) {
        $('#send_blank').hide();
        $("#undo_attendance_str").prop("disabled", false);
+       $("#undo_attendance_str").show();
        $('#add_attendance_str').attr("disabled", true);
        $('#add_attendance_str').hide();
      } else {
        $('#send_blank').show();
        $("#undo_attendance_str").prop("disabled", true);
+       $("#undo_attendance_str").hide();
        $('#add_attendance_str').attr("disabled", true);
        $('#add_attendance_str').hide();
      }
 
      $('#modalAddEdit select').attr("disabled", false);
      $('#comment_modal').attr("disabled", false);
-     $('#add_attendance_str').attr("style", "margin-right: 300px;");
+     $(".practice_field").attr("disabled", false);
+     if ($(window).width()<=769) {
+       $('#undo_attendance_str').attr("style", "margin-right: 225px;");
+     } else {
+       $('#undo_attendance_str').attr("style", "margin-right: 355px;");
+     }
+     $('#add_attendance_str').hide();
    }
+/* Авто подстановка времени мероприятия в поле прихода
+   $('#modalAddEdit input').click(function (e) {
+     if (e.target.type === "time" && !$(this).val()) {
+       $(this).val($(this).prev().val());
+       save_select_field($(this), $(this).val());
+     }
+   });
+*/
     // change fields
     $('#modalAddEdit input').change(function () { //, #modalAddEdit select
       let element, field, value, id, data;

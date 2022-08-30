@@ -146,7 +146,7 @@
           data-coordinator='{$coordinator}' data-category_key='{$category_key}'
           data-birth_date='$birth_date' data-comment='' data-toggle='modal' $show_string>
           <div class='col-2 pl-1' style='min-width: 200px;'><span class='m_name'>{$short_name} </span>(<span class='m_semester'>{$semester}</span>)</div>
-          <div class='col-2'><span class='m_locality'>{$locality_name}</span>, <span class='d-none m_age'>{$age}</span><span class='d-none'> лет, {$phone}</span></div>
+          <div class='col-2'><span class='m_locality'>{$locality_name}</span><span class='d-none m_age'>, {$age}</span><span class='d-none'> лет, {$phone}</span></div>
           <div class='col-2' style='max-width: 140px;'><span class='m_cell_phone'>{$phone}</span></div>
           <div class='col-3'><span class='m_email'>{$email}</span></div>
           <div class='col-1' style='min-width: 105px;'><span class='m_age'>{$age}</span></div>

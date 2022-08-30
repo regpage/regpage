@@ -83,6 +83,8 @@ function secondCheckfields() {
 }
 
 $('#modalEditMember').on('show',  function() {
+  // ЧАТ
+  $("#supportTrigger").hide();
   // if online
   if ($(".theActiveEvent").attr('data-online_event') === "1") {
     let thisParent = $(".theActiveEvent");
@@ -131,6 +133,8 @@ $('#modalEditMember').on('show',  function() {
 
 // hide the blank
 $('#modalEditMember').on('hide',  function() {
+  // ЧАТ
+  $("#supportTrigger").show();
   setTimeout(function () {
     if (!($('#modalEditMember').find('.parking').is(':visible'))) {
       $('#modalEditMember').find('.emAvtomobileNumber').val() ? $('#modalEditMember').find('.emAvtomobileNumber').val(''):'';

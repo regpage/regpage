@@ -1177,7 +1177,7 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
 
 // STOP check dublicate
 </script>
-<script src="/js/members.js?v8"></script>
+<script src="/js/members.js?v9"></script>
 <?php
 include_once "footer.php";
 ?>

@@ -48,6 +48,11 @@ if ($(window).width()<=769) {
     $(this).attr("data-trigger", "click");
     $(this).tooltip();
   });
+  // Blank
+  $("#status_of_blank").css("padding-left", "0px");
+  $("#name_of_trainee").parent().parent().css("padding-right", "5px");
+  $("#name_of_trainee").parent().parent().css("max-width", "200px");
+
 } else if ($(window).width()<=991 && $(window).width()>769) {
   $("#current_extra_help").css("min-width", $(window).width()+"px");
   $(".card_header button").css("width", "180px");
