@@ -1,6 +1,15 @@
 $(document).ready(function(){
   // Мобильная версия
   if ($(window).width()<=769) {
+    // bar
+    $("#time_zone_select").removeClass("col-3").addClass("col-4");
+    $("#label_5_6").show();
+
+    $("#ftt_schedule_list").removeClass("col-6");
+    $("#ftt_schedule_list").addClass("col-12");
+    $("#ftt_schedule_list").css("padding", "0");
+    $("#ftt_schedule_container_2").removeClass("col-6");
+    $("#ftt_schedule_container_2").addClass("col-12");
     // меню разделов в мобильной версии ПВОМ
     $("#ftt_schedule_container .container").css("padding", "0px");
     //$("#ftt_navs a").css("padding-left", "8px");
@@ -16,21 +25,21 @@ $(document).ready(function(){
     // разделы
     // Строки расписания
     if ($(window).width()<=386) {
-      $("#accordionExample .col-6").removeClass("col-6").addClass("no-col").hide();
-      $("#accordionExample .col-4").removeClass("col-4").addClass("col-8");
-      $("#accordionExample .col-2").removeClass("col-2").addClass("col-4").attr('style', 'padding: 0px !important; min-width: 95px');
+      $("#accordionExample .comment_col").removeClass("col-3").addClass("no-col").hide();
+      $("#accordionExample .col-6").removeClass("col-6").addClass("col-8");
+      $("#accordionExample .col-3").removeClass("col-3").addClass("col-4").attr('style', 'padding: 0px !important; min-width: 95px');
       // 5-6
-      $("#accordionExample_2 .col-6").removeClass("col-6").addClass("no-col").hide();
-      $("#accordionExample_2 .col-4").removeClass("col-4").addClass("col-8");
-      $("#accordionExample_2 .col-2").removeClass("col-2").addClass("col-4").attr('style', 'padding: 0px !important; min-width: 95px');
+      $("#accordionExample_2 .comment_col").removeClass("col-3").addClass("no-col").hide();
+      $("#accordionExample_2 .col-6").removeClass("col-6").addClass("col-8");
+      $("#accordionExample_2 .col-3").removeClass("col-3").addClass("col-4").attr('style', 'padding: 0px !important; min-width: 95px');
     } else {
-      $("#accordionExample .col-6").removeClass("col-6").addClass("no-col").hide();
-      $("#accordionExample .col-4").removeClass("col-4").addClass("col-8");
-      $("#accordionExample .col-2").removeClass("col-2").addClass("col-4").attr('style', 'padding-left: 0px !important; padding-right: 10px !important; min-width: 100px');
+      $("#accordionExample .comment_col").removeClass("col-3").addClass("no-col").hide();
+      $("#accordionExample .col-6").removeClass("col-6").addClass("col-8");
+      $("#accordionExample .col-3").removeClass("col-3").addClass("col-4").attr('style', 'padding-left: 0px !important; padding-right: 10px !important; min-width: 100px');
       // 5-6
-      $("#accordionExample_2 .col-6").removeClass("col-6").addClass("no-col").hide();
-      $("#accordionExample_2 .col-4").removeClass("col-4").addClass("col-8");
-      $("#accordionExample_2 .col-2").removeClass("col-2").addClass("col-4").attr('style', 'padding-left: 0px !important; padding-right: 10px !important; min-width: 100px');
+      $("#accordionExample_2 .comment_col").removeClass("col-3").addClass("no-col").hide();
+      $("#accordionExample_2 .col-6").removeClass("col-6").addClass("col-8");
+      $("#accordionExample_2 .col-3").removeClass("col-3").addClass("col-4").attr('style', 'padding-left: 0px !important; padding-right: 10px !important; min-width: 100px');
     }
     $("#accordionExample .no-col").each(function () {
       if ($(this).text()) {
@@ -62,6 +71,7 @@ $(document).ready(function(){
     //5-6
     $("#accordionExample_2 .card-header").css("padding-top", "0px");
     $("#accordionExample_2 .card-header").css("padding-bottom", "0px");
+    $("#label_5_6").hide();
     /*$("#ftt_navs .nav-link").each(function () {
       if (!$(this).hasClass('active')) {
         $(this).css("padding-left", "8px");

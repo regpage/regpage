@@ -1,5 +1,19 @@
 <div id="ftt_schedule_container" class="container" style="background-color: white; padding: 0px;">
-  <div id="ftt_schedule_list" class="">
+  <div class="row">
+  <div id="ftt_schedule_list" class="col-6">
+    <select id="time_zone_select" class="col-3 form-control form-control-sm mb-2">
+      <?php foreach (extra_lists::get_time_zones() as $key => $value):
+        $selected = '';
+        if ($key === $time_zone_list) {
+          $selected = 'selected';
+        }
+        if ($value['utc'] === "0") {
+          // echo "<option value='{$key}' $selected>Все часовые пояса";
+        } else {
+          echo "<option value='{$key}' $selected>{$value['name']}";
+        }
+      endforeach; ?>
+    </select>
     <div class="accordion" id="accordionExample">
       <div class="card">
 <?php
@@ -181,12 +195,12 @@ if ($day === 'day1') {
 
     echo "<div class='card-header' id='{$id_head}' style='display: none;'>
         <h2 class='mb-0'>
-          <button class='btn btn-link btn-block pl-0 text-left {$btn_bold}' type='button' data-toggle='collapse' data-target='#{$id_collapse}' aria-expanded='true' aria-controls='{$id_collapse}'>
+          <button class='btn btn-link btn-block pl-0 text-left {$btn_bold}' type='button' data-toggle='collapse' data-target='.{$id_collapse}' aria-expanded='true' aria-controls='{$id_collapse}'>
             {$days[$i]}, {$date_week_day}
           </button>
         </h2>
       </div>
-      <div id='{$id_collapse}' class='collapse {$open_day}' aria-labelledby='{$id_head}' data-parent='#accordionExample'>
+      <div id='{$id_collapse}' class='collapse {$open_day} {$id_collapse}' aria-labelledby='{$id_head}' data-parent='#accordionExample'>
         <div class='card-body' style='display: none;'>";
     $number_day = $i + 1;
     $day = 'day'.$number_day;
@@ -200,12 +214,12 @@ if ($day === 'day1') {
     $schedule_filled = 1;
     echo "<div class='card-header border-top-gray' id='{$id_head}'>
         <h2 class='mb-0'>
-          <button class='btn btn-link btn-block pl-0 text-left {$btn_bold}' type='button' data-toggle='collapse' data-target='#{$id_collapse}' aria-expanded='true' aria-controls='{$id_collapse}'>
+          <button class='btn btn-link btn-block pl-0 text-left {$btn_bold}' type='button' data-toggle='collapse' data-target='.{$id_collapse}' aria-expanded='true' aria-controls='{$id_collapse}'>
             {$days[$i]}, {$date_week_day} {$correction_info}
           </button>
         </h2>
       </div>
-      <div id='{$id_collapse}' class='collapse {$open_day}' aria-labelledby='{$id_head}' data-parent='#accordionExample'>
+      <div id='{$id_collapse}' class='collapse {$open_day} {$id_collapse}' aria-labelledby='{$id_head}' data-parent='#accordionExample'>
         <div class='card-body'>";
 
     $number_day = $i + 1;
@@ -314,9 +328,9 @@ if ($day === 'day1') {
 
 
         if ($time_to) {
-          echo "<div class='row {$color}'><div class='col-4'>{$value['session_name']}</div><div class='col-2'>{$value[$day]}–{$time_to} </div><div class='col-6'>{$value['comment']}</div></div><hr class='hr-slim'>";
+          echo "<div class='row {$color}'><div class='col-6'>{$value['session_name']}</div><div class='col-3'>{$value[$day]}–{$time_to} </div><div class='col-3 comment_col'>{$value['comment']}</div></div><hr class='hr-slim'>";
         } else {
-          echo "<div class='row {$color}'><div class='col-4'>{$value['session_name']}</div><div class='col-2'></span>{$value[$day]}</span></div><div class='col-6'>{$value['comment']}</div></div><hr class='hr-slim'>";
+          echo "<div class='row {$color}'><div class='col-6'>{$value['session_name']}</div><div class='col-3'></span>{$value[$day]}</span></div><div class='col-3  comment_col'>{$value['comment']}</div></div><hr class='hr-slim'>";
         }
       }
     }
@@ -327,5 +341,7 @@ if ($day === 'day1') {
 ?>
       </div>
     </div>
+  </div>
+    <?php include 'components/ftt_schedule/staff_content_part_2.php'; ?>
   </div>
 </div>

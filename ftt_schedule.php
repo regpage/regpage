@@ -9,7 +9,7 @@
     include_once "components/ftt_schedule/var_part.php";
 
     // HTML код основной страницы
-    include_once "components/ftt_main/html_part.php";
+    include_once "components/ftt_main/html_part_refactoring.php";
 
     // HTML модальные окна основной страницы
     include_once "components/ftt_schedule/modals_part.php";

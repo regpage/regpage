@@ -43,16 +43,13 @@ include_once "preheader.php";
     <script src="js/jquery.mockjax.js" type="text/javascript"></script>
     <script src="js/jquery.autocomplete.js" type="text/javascript"></script> <!-- https://github.com/devbridge/jQuery-Autocomplete -->
     <script src="js/jquery.maskedinput.min.js" type="text/javascript"></script>
-    <script src="js/script.js?v196" type="text/javascript"></script>
+    <script src="js/script.js?v197" type="text/javascript"></script>
     <script src="js/jquery-textrange.js" type="text/javascript"></script>
     <script src="js/bootstrap-datepicker.min.js" type="text/javascript"></script>
     <script src="js/bootstrap-datepicker.ru.js" type="text/javascript"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <?php if ($_SERVER['PHP_SELF'] === '/index.php' || $_SERVER['PHP_SELF'] === '/members.php') { ?>
   <!--  <link rel="stylesheet" href="https://cdn.envybox.io/widget/cbk.css">
     <script type="text/javascript" src="https://cdn.envybox.io/widget/cbk.js?wcb_code=27de0b86fa9a7c4373ae996711b6f549" charset="UTF-8" async></script>-->
     <!-- Begin Verbox {literal} -->
@@ -71,6 +68,7 @@ include_once "preheader.php";
       })(document, window, 'Verbox');
     </script>
     <!-- {/literal} End Verbox -->
+  <?php } ?>
 </head>
 
 <body style="padding-left: 5px; padding-right: 5px;">

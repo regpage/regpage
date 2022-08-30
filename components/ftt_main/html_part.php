@@ -20,9 +20,9 @@
             } elseif ($ftt_access['group'] === 'staff') {
               include_once 'components/ftt_schedule/staff_content_part.php';
               ?>
-              <br><br><a id="show_my_5_6" href="#show_my_5_6" style="margin-left: 20px;" title='Кликните по ссылке, что бы увидеть расписание.'>Расписание семестров 5-6</a>
+              <!--<br><br><a id="show_my_5_6" href="#show_my_5_6" style="margin-left: 20px;" title='Кликните по ссылке, что бы увидеть расписание.'>Расписание семестров 5-6</a>-->
               <?php
-              include_once 'components/ftt_schedule/staff_content_part_2.php';
+              //include_once 'components/ftt_schedule/staff_content_part_2.php';
             }
           } elseif ($_SERVER['REQUEST_URI'] === '/ftt_announcement') {
             echo "В разработке.";

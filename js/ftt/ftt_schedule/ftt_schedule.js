@@ -19,13 +19,13 @@ $("#ftt_schedule_container .btn").click(function () {
   // прокрутка в мобильной версии
   let to_hash = $(this).parent().parent().attr('id');
   setTimeout(function () {
-  if ($(window).width()<=769) {
-    document.querySelector('#'+to_hash).scrollIntoView({
-      behavior: 'smooth',
-      block: 'nearest'
-    });
-  }
-}, 300);
+    if ($(window).width()<=769) {
+      document.querySelector('#'+to_hash).scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest'
+      });
+    }
+  }, 300);
   if ($(this).hasClass('accordion-head')) {
     $(this).removeClass('accordion-head');
   } else {
@@ -60,6 +60,7 @@ $("#ftt_schedule_container_2 .btn").click(function () {
 });
 // Служащие
 // отобразить 5 и 6 семестры
+/*
 $("#show_my_5_6").click(function () {
   if ($("#ftt_schedule_container_2").is(":visible")) {
     $("#ftt_schedule_container_2").hide();
@@ -71,3 +72,10 @@ $("#show_my_5_6").click(function () {
 if (!$(".card-header").is(":visible")) {
   $("#show_my_5_6").hide();
 }
+*/
+$("#time_zone_select").change(function(e) {
+  setCookie(e.target.id, $(this).val(), 1);
+    setTimeout(function () {
+      location.reload();
+    }, 30);
+});

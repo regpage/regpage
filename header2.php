@@ -55,8 +55,9 @@ include_once "preheader.php";
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <!--<script src="js/script.js?v182" type="text/javascript"></script>-->
-    <script src="js/script2.js?v10" type="text/javascript"></script>
+    <script src="js/script2.js?v11" type="text/javascript"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <?php if ($_SERVER['PHP_SELF'] === '/index.php' || $_SERVER['PHP_SELF'] === '/members.php') { ?>
 
     <!-- ЧАТ -->
     <!--<link rel="stylesheet" href="https://cdn.envybox.io/widget/cbk.css">
@@ -77,7 +78,7 @@ include_once "preheader.php";
       })(document, window, 'Verbox');
     </script>
     <!-- {/literal} End Verbox -->
-
+  <?php } ?>
 </head>
 
 <body>

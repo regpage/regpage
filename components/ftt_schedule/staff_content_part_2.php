@@ -1,5 +1,6 @@
-<div id="ftt_schedule_container_2" class="container" style="background-color: white; padding: 0px; margin-top: 30px; display: none;">
-  <div id="ftt_schedule_list_2" class="">
+<div id="ftt_schedule_container_2" class="col-6" style="background-color: white; padding: 0px; margin-top: 39px;">
+  <span id="label_5_6" style="margin-left: 20px; display: none;">Расписание семестров 5-6</span>
+  <div id="ftt_schedule_list_2" class="container">
     <div class="accordion" id="accordionExample_2">
       <div class="card">
 <?php
@@ -177,12 +178,12 @@ if ($day === 'day1') {
 
     echo "<div class='card-header' id='{$id_head}_2' style='display: none;'>
         <h2 class='mb-0'>
-          <button class='btn btn-link btn-block pl-0 text-left {$btn_bold}' type='button' data-toggle='collapse' data-target='#{$id_collapse}_2' aria-expanded='true' aria-controls='{$id_collapse}_2'>
+          <button class='btn btn-link btn-block pl-0 text-left {$btn_bold}' type='button' data-toggle='collapse' data-target='.{$id_collapse}' aria-expanded='true' aria-controls='{$id_collapse}'>
             {$days[$i]}, {$date_week_day}
           </button>
         </h2>
       </div>
-      <div id='{$id_collapse}_2' class='collapse {$open_day}' aria-labelledby='{$id_head}_2' data-parent='#accordionExample_2'>
+      <div id='{$id_collapse}_2' class='collapse {$open_day} {$id_collapse}' aria-labelledby='{$id_head}_2' data-parent='#accordionExample_2'>
         <div class='card-body' style='display: none;'>";
     $number_day = $i + 1;
     $day = 'day'.$number_day;
@@ -195,12 +196,12 @@ if ($day === 'day1') {
     $schedule_filled = 1;
     echo "<div class='card-header border-top-gray' id='{$id_head}_2'>
         <h2 class='mb-0'>
-          <button class='btn btn-link btn-block pl-0 text-left {$btn_bold}' type='button' data-toggle='collapse' data-target='#{$id_collapse}_2' aria-expanded='true' aria-controls='{$id_collapse}_2'>
+          <button class='btn btn-link btn-block pl-0 text-left {$btn_bold}' type='button' data-toggle='collapse' data-target='.{$id_collapse}' aria-expanded='true' aria-controls='{$id_collapse}_2'>
             {$days[$i]}, {$date_week_day} {$correction_info}
           </button>
         </h2>
       </div>
-      <div id='{$id_collapse}_2' class='collapse {$open_day}' aria-labelledby='{$id_head}_2' data-parent='#accordionExample_2'>
+      <div id='{$id_collapse}_2' class='collapse {$open_day} {$id_collapse}' aria-labelledby='{$id_head}_2' data-parent='#accordionExample_2'>
         <div class='card-body'>";
 
     $number_day = $i + 1;
@@ -309,9 +310,9 @@ if ($day === 'day1') {
 
 
         if ($time_to) {
-          echo "<div class='row {$color}'><div class='col-4'>{$value['session_name']}</div><div class='col-2'>{$value[$day]}–{$time_to} </div><div class='col-6'>{$value['comment']}</div></div><hr class='hr-slim'>";
+          echo "<div class='row {$color}'><div class='col-6'>{$value['session_name']}</div><div class='col-3'>{$value[$day]}–{$time_to} </div><div class='col-3 comment_col'>{$value['comment']}</div></div><hr class='hr-slim'>";
         } else {
-          echo "<div class='row {$color}'><div class='col-4'>{$value['session_name']}</div><div class='col-2'></span>{$value[$day]}</span></div><div class='col-6'>{$value['comment']}</div></div><hr class='hr-slim'>";
+          echo "<div class='row {$color}'><div class='col-6'>{$value['session_name']}</div><div class='col-3'></span>{$value[$day]}</span></div><div class='col-3 comment_col'>{$value['comment']}</div></div><hr class='hr-slim'>";
         }
       }
     }
