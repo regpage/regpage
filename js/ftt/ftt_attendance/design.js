@@ -6,6 +6,8 @@ if ($(window).width()<=769) {
   $("#list_header").hide();
   $("#extra_help_staff .nav-link").css("font-size","16px");
   $("#hight_line").css("margin-right", "0px");
+  $(".nav-tabs a").css("padding-right", "8px");
+  $(".nav-tabs a").css("padding-left", "8px");
   // columns
   //$(".col_n_3").attr('style', 'min-width: 0px !important;');
   $(".col_n_3").hide();
@@ -13,10 +15,13 @@ if ($(window).width()<=769) {
   $("#list_content .col-2").attr('style', 'min-width: 0px !important;');
   //strings
   $('.period_col').css("padding-left", "5px");
-  $(".list_string").css("margin-right", "0px");
-  $(".card_header button").css("width", "205px");
-  $(".card_header button").css("padding-right", "10px");
-  $(".card_header button").css("padding-left", "10px");
+  $(".list_string").addClass("mr-1");
+  $(".list_string").addClass("mb-1");
+  $(".card_header button").css("width", "300px");
+  $(".list_string.font-weight-bold").removeClass("font-weight-bold").addClass("border").addClass("border-secondary");
+
+  $(".card_header button").css("padding-right", "5px");
+  $(".card_header button").css("padding-left", "0px");
   if (trainee_access) {
     $("#filters_list").hide();
   }
@@ -52,7 +57,7 @@ if ($(window).width()<=769) {
   $("#status_of_blank").css("padding-left", "0px");
   $("#name_of_trainee").parent().parent().css("padding-right", "5px");
   $("#name_of_trainee").parent().parent().css("max-width", "200px");
-
+  $("#modalAddEdit .btn-sm").removeClass("btn-sm");
 } else if ($(window).width()<=991 && $(window).width()>769) {
   $("#current_extra_help").css("min-width", $(window).width()+"px");
   $(".card_header button").css("width", "180px");

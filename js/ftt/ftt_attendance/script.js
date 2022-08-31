@@ -491,7 +491,7 @@ function open_blank(el_this) {
       $("#undo_attendance_str").prop("disabled", true);
       $("#undo_attendance_str").hide();
       if ($(window).width()<=769) {
-        $('#add_attendance_str').attr("style", "margin-right: 225px;");
+        $('#add_attendance_str').attr("style", "margin-right: 195px;");
       } else {
         $('#add_attendance_str').attr("style", "margin-right: 355px;");
       }
@@ -517,7 +517,7 @@ function open_blank(el_this) {
      $('#comment_modal').attr("disabled", false);
      $(".practice_field").attr("disabled", false);
      if ($(window).width()<=769) {
-       $('#undo_attendance_str').attr("style", "margin-right: 225px;");
+       $('#undo_attendance_str').attr("style", "margin-right: 195px;");
      } else {
        $('#undo_attendance_str').attr("style", "margin-right: 355px;");
      }

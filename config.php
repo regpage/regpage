@@ -3,7 +3,10 @@
     //include_once 'logWriter.php';
 
     // establish mySQLi connection & database selection
-    
+    $host = $_SERVER['HTTP_HOST'];
+    $db = new mysqli('localhost', "regpager_admin", "inChrist365", (substr($host, 0,3) === 'dev' ? "regpager_dev" : "regpager_main"));
+    // Ниже хостинг разработчика
+    //$db = new mysqli('localhost', "u0654_admin", "K9z?n0c1", "u0654376_regpage");
 
     // host selection
      $appRootPath = substr($host, 0,3) === 'dev' ? 'https://dev.reg-page.ru/' : 'https://reg-page.ru/';

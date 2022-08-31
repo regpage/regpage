@@ -40,7 +40,8 @@ $(document).ready(function(){
       $("#accordionExample_2 .col-6").removeClass("col-6").addClass("col-8");
       $("#accordionExample_2 .col-3").removeClass("col-3").addClass("col-4").attr('style', 'padding-left: 0px !important; padding-right: 10px !important; min-width: 100px');
     }
-    $("#accordionExample .no-col").each(function () {
+    // подсказки
+    $("#ftt_schedule_container .comment_col").each(function () {
       if ($(this).attr("title")) {
         // OFF
         //$(this).parent().find("col-4").css('padding', '0px;')
@@ -52,30 +53,26 @@ $(document).ready(function(){
         $(this).parent().tooltip();
       }
     });
-    $("#accordionExample_2 .no-col").each(function () {
-      if ($(this).text()) {
-        // OFF
-        //$(this).parent().find("col-4").css('padding', '0px;')
-        //$(this).html('<i class="fa fa-sticky-note" aria-hidden="true"></i>');
-        // Bootstrap tooltip
-        $(this).parent().attr('title',$(this).text());
-        $(this).parent().attr('data-trigger', 'click');
-        $(this).prev().prev().html($(this).prev().prev().text() + ' <i class="fa fa-sticky-note" aria-hidden="true"></i>');
-        $(this).parent().tooltip();
-      }
-    });
   } else { // desktop version
     $("#accordionExample .card-header").css("padding-top", "0px");
     $("#accordionExample .card-header").css("padding-bottom", "0px");
     //5-6
     $("#accordionExample_2 .card-header").css("padding-top", "0px");
     $("#accordionExample_2 .card-header").css("padding-bottom", "0px");
-    /*$("#ftt_navs .nav-link").each(function () {
-      if (!$(this).hasClass('active')) {
-        $(this).css("padding-left", "8px");
-        $(this).css("padding-left", "8px");
+    // подсказки
+    $("#ftt_schedule_container .comment_col").each(function () {
+      if ($(this).attr("title")) {
+        // OFF
+        //$(this).parent().find("col-4").css('padding', '0px;')
+        //$(this).html('<i class="fa fa-sticky-note" aria-hidden="true"></i>');
+        // Bootstrap tooltip
+        $(this).find("i").attr('title',$(this).attr("title"));
+        $(this).find("i").attr("data-trigger", "click");
+        //$(this).prev().prev().html($(this).prev().prev().text() + ' <i class="fa fa-sticky-note" aria-hidden="true"></i>');
+        $(this).find("i").tooltip();
+        $(this).find("i").attr('title',$(this).attr("title"));
       }
-    });*/
+    });
   }
 
   $(window).resize(function(){
