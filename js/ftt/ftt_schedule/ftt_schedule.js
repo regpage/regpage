@@ -15,7 +15,7 @@ $("#ftt_navs a").click(function () {
 // стиль кнопок аккордиона
 $('#ftt_schedule_container .btn').css('text-decoration', 'none');
 
-$("#ftt_schedule_container .btn").click(function () {
+$("#ftt_schedule_list .btn").click(function () {
   // прокрутка в мобильной версии
   let to_hash = $(this).parent().parent().attr('id');
   setTimeout(function () {
@@ -26,33 +26,40 @@ $("#ftt_schedule_container .btn").click(function () {
       });
     }
   }, 300);
-  if ($(this).hasClass('accordion-head')) {
-    $(this).removeClass('accordion-head');
+
+  // стиль кнопки
+  if ($(this).hasClass("accordion-head")) {
+    $(this).removeClass("accordion-head");
+    $("#ftt_schedule_list_2 button[data-target='"+ $(this).attr("data-target") +"']").removeClass("accordion-head");
   } else {
-    $('#ftt_schedule_container .accordion-head').removeClass('accordion-head');
+    $("#ftt_schedule_container .accordion-head").removeClass("accordion-head");
+    $("#ftt_schedule_list_2 .accordion-head").removeClass("accordion-head");
     $(this).addClass('accordion-head');
+    $("#ftt_schedule_list_2 button[data-target='"+ $(this).attr("data-target") +"']").addClass("accordion-head");
     $(this).hover(function(){
     }, function(){
     });
   }
 });
 
-$("#ftt_schedule_container_2 .btn").click(function () {
+$("#ftt_schedule_list_2 .btn").click(function () {
   // прокрутка в мобильной версии
   let to_hash = $(this).parent().parent().attr('id');
   setTimeout(function () {
-  if ($(window).width()<=769) {
-    document.querySelector('#'+to_hash).scrollIntoView({
-      behavior: 'smooth',
-      block: 'nearest'
-    });
-  }
-}, 300);
-  if ($(this).hasClass('accordion-head')) {
+    if ($(window).width()<=769) {
+      document.querySelector('#'+to_hash).scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest'
+      });
+    }
+  }, 300);
+
+  if ($(this).hasClass("accordion-head")) {
     $(this).removeClass('accordion-head');
   } else {
-    $('#ftt_schedule_container_2 .accordion-head').removeClass('accordion-head');
+    $("#ftt_schedule_container .accordion-head").removeClass("accordion-head");
     $(this).addClass('accordion-head');
+    $("#ftt_schedule_list button[data-target='"+ $(this).attr("data-target") +"']").addClass("accordion-head");
     $(this).hover(function(){
     }, function(){
     });

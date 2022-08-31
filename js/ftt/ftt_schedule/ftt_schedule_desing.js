@@ -3,7 +3,6 @@ $(document).ready(function(){
   if ($(window).width()<=769) {
     // bar
     $("#time_zone_select").removeClass("col-3").addClass("col-4");
-    $("#label_5_6").show();
 
     $("#ftt_schedule_list").removeClass("col-6");
     $("#ftt_schedule_list").addClass("col-12");
@@ -42,12 +41,12 @@ $(document).ready(function(){
       $("#accordionExample_2 .col-3").removeClass("col-3").addClass("col-4").attr('style', 'padding-left: 0px !important; padding-right: 10px !important; min-width: 100px');
     }
     $("#accordionExample .no-col").each(function () {
-      if ($(this).text()) {
+      if ($(this).attr("title")) {
         // OFF
         //$(this).parent().find("col-4").css('padding', '0px;')
         //$(this).html('<i class="fa fa-sticky-note" aria-hidden="true"></i>');
         // Bootstrap tooltip
-        $(this).parent().attr('title',$(this).text());
+        $(this).parent().attr('title',$(this).attr("title"));
         $(this).parent().attr('data-trigger', 'click');
         $(this).prev().prev().html($(this).prev().prev().text() + ' <i class="fa fa-sticky-note" aria-hidden="true"></i>');
         $(this).parent().tooltip();
@@ -71,7 +70,6 @@ $(document).ready(function(){
     //5-6
     $("#accordionExample_2 .card-header").css("padding-top", "0px");
     $("#accordionExample_2 .card-header").css("padding-bottom", "0px");
-    $("#label_5_6").hide();
     /*$("#ftt_navs .nav-link").each(function () {
       if (!$(this).hasClass('active')) {
         $(this).css("padding-left", "8px");

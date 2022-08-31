@@ -1,6 +1,6 @@
-<div id="ftt_schedule_container_2" class="col-6" style="background-color: white; padding: 0px; margin-top: 39px;">
-  <span id="label_5_6" style="margin-left: 20px; display: none;">Расписание семестров 5-6</span>
-  <div id="ftt_schedule_list_2" class="container">
+<div id="ftt_schedule_container_2" class="col-6" style="background-color: white; padding: 0px; margin-top: 13px;">
+  <span id="label_5_6" style="margin-left: 20px;">Семестры 5-6</span>
+  <div id="ftt_schedule_list_2" class="container" style="margin-top: 5px;">
     <div class="accordion" id="accordionExample_2">
       <div class="card">
 <?php
@@ -193,8 +193,8 @@ if ($day === 'day1') {
   } else {
     $id_head = 'id_head_'.$i;
     $id_collapse = 'id_collapse_'.$i;
-    $schedule_filled = 1;
-    echo "<div class='card-header border-top-gray' id='{$id_head}_2'>
+    $schedule_filled = 1;  // border-top-gray класс из card-header
+    echo "<div class='card-header' id='{$id_head}_2'>
         <h2 class='mb-0'>
           <button class='btn btn-link btn-block pl-0 text-left {$btn_bold}' type='button' data-toggle='collapse' data-target='.{$id_collapse}' aria-expanded='true' aria-controls='{$id_collapse}_2'>
             {$days[$i]}, {$date_week_day} {$correction_info}
@@ -308,11 +308,16 @@ if ($day === 'day1') {
           $color = '';
         }
 
+        $comment_icon = '';
+        if ($value['comment']) {
+          $comment_icon = '<i class="fa fa-sticky-note" aria-hidden="true"></i>';
+        }
+
 
         if ($time_to) {
-          echo "<div class='row {$color}'><div class='col-6'>{$value['session_name']}</div><div class='col-3'>{$value[$day]}–{$time_to} </div><div class='col-3 comment_col'>{$value['comment']}</div></div><hr class='hr-slim'>";
+          echo "<div class='row {$color}'><div class='col-8'>{$value['session_name']}</div><div class='col-3'>{$value[$day]}–{$time_to} </div><div class='col-1 comment_col' title='{$value['comment']}'>{$comment_icon}</div></div><hr class='hr-slim'>";
         } else {
-          echo "<div class='row {$color}'><div class='col-6'>{$value['session_name']}</div><div class='col-3'></span>{$value[$day]}</span></div><div class='col-3 comment_col'>{$value['comment']}</div></div><hr class='hr-slim'>";
+          echo "<div class='row {$color}'><div class='col-8'>{$value['session_name']}</div><div class='col-3'></span>{$value[$day]}</span></div><div class='col-1 comment_col' title='{$value['comment']}'>{$comment_icon}</div></div><hr class='hr-slim'>";
         }
       }
     }

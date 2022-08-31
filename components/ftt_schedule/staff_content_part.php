@@ -2,7 +2,7 @@
   <div class="row">
   <div id="ftt_schedule_list" class="col-6">
     <select id="time_zone_select" class="col-3 form-control form-control-sm mb-2">
-      <?php foreach (extra_lists::get_time_zones() as $key => $value):
+      <?php foreach (extra_lists::get_schedule_zones() as $key => $value):
         $selected = '';
         if ($key === $time_zone_list) {
           $selected = 'selected';
@@ -211,8 +211,8 @@ if ($day === 'day1') {
   } else {
     $id_head = 'id_head_'.$i;
     $id_collapse = 'id_collapse_'.$i;
-    $schedule_filled = 1;
-    echo "<div class='card-header border-top-gray' id='{$id_head}'>
+    $schedule_filled = 1;  // border-top-gray
+    echo "<div class='card-header' id='{$id_head}'>
         <h2 class='mb-0'>
           <button class='btn btn-link btn-block pl-0 text-left {$btn_bold}' type='button' data-toggle='collapse' data-target='.{$id_collapse}' aria-expanded='true' aria-controls='{$id_collapse}'>
             {$days[$i]}, {$date_week_day} {$correction_info}
@@ -326,11 +326,17 @@ if ($day === 'day1') {
           $color = '';
         }
 
+        $comment_icon = '';
+        if ($value['comment']) {
+          $comment_icon = '<i class="fa fa-sticky-note" aria-hidden="true"></i>';
+        }
+
 
         if ($time_to) {
-          echo "<div class='row {$color}'><div class='col-6'>{$value['session_name']}</div><div class='col-3'>{$value[$day]}–{$time_to} </div><div class='col-3 comment_col'>{$value['comment']}</div></div><hr class='hr-slim'>";
+          echo "<div class='row {$color}'><div class='col-8'>{$value['session_name']}</div><div class='col-3'>{$value[$day]}–{$time_to} </div><div class='col-1 comment_col' title='{$value['comment']}'>{$comment_icon}</div></div><hr class='hr-slim'>";
         } else {
-          echo "<div class='row {$color}'><div class='col-6'>{$value['session_name']}</div><div class='col-3'></span>{$value[$day]}</span></div><div class='col-3  comment_col'>{$value['comment']}</div></div><hr class='hr-slim'>";
+          echo "<div class='row {$color}'><div class='col-8'>{$value['session_name']}</div><div class='col-3'></span>{$value[$day]}</span></div><div class='col-1 comment_col' title='{$value['comment']}'>{$comment_icon}</div></div><hr class='hr-slim'>";
+          //{$value['comment']}
         }
       }
     }
