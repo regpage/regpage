@@ -6,7 +6,7 @@ if ($(window).width()<=769) {
   if ($('#periods').val() === 'range') {
     $("#modalFilrets .filter_range").show();
   }
-  
+
   $('#filters_list').attr("style", "margin-bottom: 0px !important");
   $('#filters_list').css("padding-bottom", "8px");
 
@@ -43,10 +43,15 @@ if ($(window).width()<=769) {
   $(".col_n_2").removeClass("col-2").addClass("col-4");
   $(".col_n_2").attr("style", "max-width: 100px");
 
+  // бланк
+  $("#modalFilrets .btn-sm").removeClass("btn-sm");
+  $("#modalRecommended .btn-sm").removeClass("btn-sm");
+  $("#modalAddEdit .btn-sm").removeClass("btn-sm");
+  $("#modalRecommended .recom_goal").parent().addClass("mr-4");  
   if ($(window).width()<=390) {
-    $("#delete_extra_help").attr('style', 'margin-right: 120px;');
+    $("#delete_extra_help").attr('style', 'margin-right: 80px;');
   } else {
-    $("#delete_extra_help").attr('style', 'margin-right: 140px;');
+    $("#delete_extra_help").attr('style', 'margin-right: 100px;');
   }
   // select
   $("#gospel_group_field").attr('style', 'width: 170px;');

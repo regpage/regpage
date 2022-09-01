@@ -296,3 +296,7 @@ input[type='time'] {
 .hide_element {
   display: none;
 }
+.border_width_2 {
+  border-bottom: 2px solid #6c757d !important;
+  padding-bottom: 3px !important;
+}

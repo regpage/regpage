@@ -1223,5 +1223,14 @@ function open_blank(el_this) {
       }
     });
   });
+
+  // Bootstrap tooltip
+  $("#list_content i").each(function () {
+    let tooltip;
+    tooltip = $(this).attr("title");
+    $(this).attr("data-trigger", "click");
+    $(this).tooltip();
+    $(this).attr("title", tooltip);
+  });
 // DOCUMENT READY STOP
 });

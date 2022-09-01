@@ -133,7 +133,7 @@
           $short_day_of_week = date_convert::week_days($date, true);
           $sunday_class = '';
           if ($short_day_of_week === 'вс' ) {
-            $sunday_class = 'font-weight-bold';
+            $sunday_class = 'border_width_2';
           }
           $short_date = date_convert::yyyymmdd_to_ddmm($value['date']);
           $member_key = $value['member_key'];
@@ -199,6 +199,11 @@
           $btn_bold = 'accordion-head';
 
           if ($value['member_key'] !== $prev_member_key && !$start) {
+            $date_start_str = $value['pause_start'];
+            $date_stop_str = $value['pause_stop'];
+            $comment_ico_str = $value['pause_comment'];
+            $date_start_ico = date_convert::yyyymmdd_to_ddmm($date_start_str);
+            $date_stop_ico = date_convert::yyyymmdd_to_ddmm($date_stop_str);
             $pause_from = '';
             $pause_start = '';
             $pause_to = '';
@@ -221,7 +226,7 @@
             }
 
             if ($comment_ico_str) {
-              $comment_ico_str = "<i class='fa fa-sticky-note' aria-hidden='true' title='{$comment_ico_str}'></i>";
+              $comment_ico_str = "<i class='fa fa-sticky-note' aria-hidden='true' title='{$comment_ico_str} с {$date_start_ico} по {$date_stop_ico}'></i>";
             } else {
               $comment_ico_str = '';
             }
@@ -230,9 +235,6 @@
             $start = true;
           }
           if ($value['member_key'] !== $prev_member_key && $start) {
-            $date_start_str = $value['pause_start'];
-            $date_stop_str = $value['pause_stop'];
-            $comment_ico_str = $value['pause_comment'];
             $id_head_start = $id_head;
             $start = false;
             echo "<div data-member_key='{$member_key}' style='margin-top: 2px;'>

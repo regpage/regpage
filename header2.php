@@ -44,9 +44,9 @@ include_once "preheader.php";
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_extrahelp.php') { ?>
     <link href="css/ftt/ftt_extra_help.css?v2" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_gospel.php') { ?>
-    <link href="css/ftt/ftt_gospel.css?v6" rel="stylesheet">
+    <link href="css/ftt/ftt_gospel.css?v7" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_attendance.php') { ?>
-    <link href="css/ftt/ftt_attendance.css?v13" rel="stylesheet">
+    <link href="css/ftt/ftt_attendance.css?v14" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_list.php') { ?>
     <link href="css/ftt/ftt_list.css?v3" rel="stylesheet">
 <?php } ?>

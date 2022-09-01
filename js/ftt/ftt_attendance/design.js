@@ -17,8 +17,7 @@ if ($(window).width()<=769) {
   $('.period_col').css("padding-left", "5px");
   $(".list_string").addClass("mr-1");
   $(".list_string").addClass("mb-1");
-  $(".card_header button").css("width", "300px");
-  $(".list_string.font-weight-bold").removeClass("font-weight-bold").addClass("border").addClass("border-secondary");
+  $(".card_header button").css("width", "300px");  
 
   $(".card_header button").css("padding-right", "5px");
   $(".card_header button").css("padding-left", "0px");
@@ -48,11 +47,7 @@ if ($(window).width()<=769) {
   $("#modal-block_2 .name_session").addClass("hide_element");
   $("#modal-block_2 h6").removeClass("hide_element");
   $("#modal-block_2 input").removeClass("ml-1");
-  // Bootstrap tooltip
-  $("#list_content i").each(function () {
-    $(this).attr("data-trigger", "click");
-    $(this).tooltip();
-  });
+
   // Blank
   $("#status_of_blank").css("padding-left", "0px");
   $("#name_of_trainee").parent().parent().css("padding-right", "5px");

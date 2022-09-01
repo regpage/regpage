@@ -10,10 +10,14 @@ if ($(window).width()<=769) {
   $("#list_header .sort_trainee").parent().show();
 
   // buttons
+  $("#modalFilrets .btn-sm").removeClass("btn-sm");
+  $("#modalFilrets_late .btn-sm").removeClass("btn-sm");
+  $("#modalAddEditExtraHelp .btn-sm").removeClass("btn-sm");
+  $("#modalAddEditLate .btn-sm").removeClass("btn-sm");
   if ($(window).width()<=390) {
-    $("#delete_extra_help").attr('style', 'margin-right: 120px;');
+    $("#delete_extra_help").attr('style', 'margin-right: 95px;');
   } else {
-    $("#delete_extra_help").attr('style', 'margin-right: 140px;');
+    $("#delete_extra_help").attr('style', 'margin-right: 115px;');
   }
   //$("#sort_button").show();
   // columns
