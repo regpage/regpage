@@ -55,12 +55,15 @@ data-member_key="">
             <label class="required-for-label">Населенный пункт</label>
             <select id="locality" class="form-control form-control-sm" data-table="member" data-field="locality_key">
               <option value="_none_" selected>
-                <?php foreach (localities::get_localities(true) as $id => $name){
+                <?php foreach ($localities_select as $id => $name){
                   if ($id) {
                     echo "<option value='$id'>".htmlspecialchars ($name)."</option>";
                   }
                 } ?>
             </select>
+            <div style="margin-bottom: 5px; color: cadetblue;">
+                <span id="new_locality" class="cursor-pointer">Местность отсутствует в списке?</span>
+            </div>
           </div>
           <div class="col-6">
             <label>Категория</label>
@@ -69,6 +72,23 @@ data-member_key="">
                 <?php foreach ($categories_list as $id => $name) echo "<option value='$id'>".htmlspecialchars ($name)."</option>"; ?>
             </select>
           </div>
+        </div>
+        <div style="margin-bottom: 10px; display: none;" class="row">
+          <div class="col-12">
+            <label class="required-for-label">Населенный пункт</label>
+            <div id="localityControlGroup">
+                <input id="emNewLocality" class="form-control form-control-sm" style="margin-bottom: 0;" type="text" maxlength="50" valid="required" list="localities_list" data-field="new_locality" data-table="member">
+                <span style="margin-left: 0" class="example">Введите название. Если нужный населённый пункт появится в списке, выберите его</span>
+            </div>
+          </div>
+          <datalist id="localities_list">
+            <option value="">
+            <?php foreach ($localities_select as $id => $name){
+              if ($id) {
+                echo "<option value='$name' data-id='$id'>";
+              }
+            } ?>
+				  </datalist>
         </div>
         <div class="row">
           <div class="col-12">

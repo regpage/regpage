@@ -100,6 +100,7 @@
             $serving_one = $value['serving_one'];
             $coordinator = $value['coordinator'];
             $locality_name = $value['locality_name'];
+            $new_locality = $value['new_locality'];
             $birth_date = $value['birth_date'];
             $age = date_convert::get_age($birth_date);
             $phone = $value['cell_phone'];
@@ -108,6 +109,10 @@
             $attend_meeting = $value['attend_meeting'];
             $changed = $value['changed'];
 
+            $locality_name_for_list = $locality_name;
+            if (empty($locality_name_for_list)) {
+              $locality_name_for_list = $new_locality;
+            }
 /*
           $serving_one = $value['serving_one'];
 
@@ -134,9 +139,9 @@
             $change_pencil = '<i class="fa fa-pencil" title="Изменения еще не обработаны"></i>';
           }
 
-          $attend_cheched = '';
+          $attend_checked = '';
           if ($attend_meeting === '1') {
-            $attend_cheched = 'checked';
+            $attend_checked = 'checked';
           }
 
           echo "<div class='row list_string {$mark_string}' data-member_key='{$trainee_id}'
@@ -146,11 +151,11 @@
           data-coordinator='{$coordinator}' data-category_key='{$category_key}'
           data-birth_date='$birth_date' data-comment='' data-toggle='modal' $show_string>
           <div class='col-2 pl-1' style='min-width: 200px;'><span class='m_name'>{$short_name} </span>(<span class='m_semester'>{$semester}</span>)</div>
-          <div class='col-2'><span class='m_locality'>{$locality_name}</span><span class='d-none m_age'>, {$age}</span><span class='d-none'> лет, {$phone}</span></div>
+          <div class='col-2'><span class='m_locality'>{$locality_name_for_list}</span><span class='d-none m_age'>, {$age}</span><span class='d-none'> лет, {$phone}</span></div>
           <div class='col-2' style='max-width: 140px;'><span class='m_cell_phone'>{$phone}</span></div>
           <div class='col-3'><span class='m_email'>{$email}</span></div>
           <div class='col-1' style='min-width: 105px;'><span class='m_age'>{$age}</span></div>
-          <div class='col-1' style='max-width: 50px;'><input type='checkbox' {$attend_cheched} disabled></div>
+          <div class='col-1' style='max-width: 50px;'><input type='checkbox' class='attend_chbox' data-field='attend_meeting' {$attend_checked} ></div>
           <div class='col-1' style='max-width: 40px;'>{$change_pencil}</div>
           </div>";
         endforeach; ?>
@@ -177,9 +182,9 @@
               echo "<option value='{$key}' $selected>{$value}</option>";
             endforeach; ?>
           </select>
-          <input id="search_field_staff" class="col-2 form-control form-control-sm" type="text" placeholder="Поиск">
+          <!--<input id="search_field_staff" class="col-2 form-control form-control-sm" type="text" placeholder="Поиск">-->
         </div>
-        <div id="" class="row border-bottom pb-2">
+        <div id="list_header_staff" class="row border-bottom pb-2">
           <div class="col-2 pl-1 cursor-pointer text-info" style="min-width: 200px;">
             <b class="sorting_staff" data-field="name">Фамиля Имя</b>
             <?php if ($sort_field_staff === 'name') echo $sort_icon_staff; ?>
@@ -205,10 +210,12 @@
             $service_one_id = $value['member_key'];
             $name_staff = $value['name'];
             $short_name_staff = short_name::no_middle($value['name']);
+            $male = $value['male'];
             $time_zone_staff = $value['time_zone'];
             $gospel_team_staff = $value['gospel_team'];
             $locality_key_staff = $value['locality_key'];
             $locality_name_staff = $value['locality_name'];
+            $new_locality_staff = $value['new_locality'];
             $birth_date_staff = $value['birth_date'];
             $age_staff = date_convert::get_age($birth_date_staff);
             $phone_staff = $value['cell_phone'];
@@ -220,25 +227,37 @@
             if ($changed_staff === '1') {
               $change_pencil_staff = '<i class="fa fa-pencil" title="Изменения еще не обработаны"></i>';
             }
-            $attend_cheched_staff = '';
+
+            $locality_name_for_list = $locality_name_staff;
+            if (empty($locality_name_for_list)) {
+              $locality_name_for_list = $new_locality_staff;
+            }
+            $attend_checked_staff = '';
             if ($attend_meeting_staff === '1') {
-              $attend_cheched_staff = 'checked';
+              $attend_checked_staff = 'checked';
             }
 
             echo "<div class='row list_string'
             data-member_key='{$service_one_id}' data-name='{$name_staff}'
             data-time_zone='{$time_zone_staff}' data-gospel_team='$gospel_team_staff'
             data-locality_key='{$locality_key_staff}' data-birth_date='{$birth_date_staff}'
+            data-male ='{$male}'
             data-comment='{$comment_staff}' data-toggle='modal' $show_string_staff>
             <div class='col-2 pl-1' style='min-width: 200px;'><span class='m_name'>{$short_name_staff}</span></div>
-            <div class='col-2'><span class='m_locality'>{$locality_name_staff}</span><span class='d-none m_age'>{$age}</span><span class='d-none'> лет.</span></div>
+            <div class='col-2'><span class='m_locality'>{$locality_name_for_list}</span><span class='d-none m_age'>, {$age_staff}</span><span class='d-none'> лет, {$phone_staff}</span></div>
             <div class='col-2' style='max-width: 140px;'><span class='m_cell_phone'>{$phone_staff}</span></div>
             <div class='col-3'><span class='m_email'>{$email_staff}</span></div>
-            <div class='col-1' style='min-width: 105px;' class='m_age'><span>{$age_staff}</span></div>
-            <div class='col-1' style='max-width: 50px;'><input type='checkbox' {$attend_cheched_staff} disabled></div>
+            <div class='col-1' style='min-width: 105px;'><span class='m_age'>{$age_staff}</span></div>
+            <div class='col-1' style='max-width: 50px;'><input type='checkbox' class='attend_chbox' data-field='attend_meeting' {$attend_checked_staff} ></div>
             <div class='col-1' style='max-width: 40px;'>{$change_pencil_staff}</div>
             </div>";
           endforeach;
+          /*<div class='col-2'><span class='m_locality'>{$locality_name_for_list}</span><span class='d-none m_age'>{$age}</span><span class='d-none'> лет.</span></div>
+          <div class='col-2' style='max-width: 140px;'><span class='m_cell_phone'>{$phone_staff}</span></div>
+          <div class='col-3'><span class='m_email'>{$phone_staff}</span></div>
+          <div class='col-1' style='min-width: 105px;' class='m_age'><span>{$age_staff}</span></div>
+          <div class='col-1' style='max-width: 50px;'><input type='checkbox' class='attend_chbox_staff' data-field='attend_meeting' {$attend_checked_staff}></div>
+          <div class='col-1' style='max-width: 40px;'>{$change_pencil_staff}</div>*/
           ?>
         </div>
     </div>

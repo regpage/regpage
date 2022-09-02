@@ -29,7 +29,7 @@ if (isset($_GET['type']) && $_GET['type'] === 'get_member_data_staff') {
 
 // save blank
 if (isset($_GET['type']) && $_GET['type'] === 'save_blank') {
-  echo json_encode(["result"=>save_blank($_POST['data'])]);
+  echo json_encode(["result"=>DbOperation::update_multi($_POST['data'])]);
   exit();
 }
 

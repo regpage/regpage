@@ -4,6 +4,8 @@
  * удаляем
  * обновляем
  * получаем
+ * Обновляем данные в таблице принимая объект с данными типа имя_столбца->значение и имя таблицы
+ * сохранение работает для одной таблицы
  */
 class DbOperation {
   // добавить добавление обновление changed = 1 как авто опцию
@@ -46,6 +48,31 @@ class DbOperation {
     }
 
     return $res;
+  }
+
+  static function update_multi($data)
+  {
+    global $db;
+    $data = json_decode($data);
+    $table = $db->real_escape_string($data->table);
+    $condition_field = $db->real_escape_string($data->condition->field);
+    $condition_value = $db->real_escape_string($data->condition->value);
+    $result;
+    $query_set = '';
+    foreach ($data as $key => $value) {
+      if ($key !== 'table' && $key !== 'condition') {
+        if ($query_set) {
+          $query_set .= ', ';
+        }
+        $key = $db->real_escape_string($key);
+        $value = $db->real_escape_string($value);
+        $query_set .= ' `'.$key."`='$value'";
+      }
+    }
+        
+    $result = db_query("UPDATE `{$table}` SET {$query_set} WHERE `{$condition_field}` = '{$condition_value}'");
+
+    return $result;
   }
 }
 

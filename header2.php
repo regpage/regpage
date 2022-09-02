@@ -48,7 +48,7 @@ include_once "preheader.php";
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_attendance.php') { ?>
     <link href="css/ftt/ftt_attendance.css?v14" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_list.php') { ?>
-    <link href="css/ftt/ftt_list.css?v3" rel="stylesheet">
+    <link href="css/ftt/ftt_list.css?v4" rel="stylesheet">
 <?php } ?>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

@@ -1,7 +1,7 @@
 <?php
   // СПИСОК ПВОМ
   // DB
-  include_once 'db/ftt/ftt_list_db.php';
+  include_once 'db/ftt/ftt_list_db.php';  
   // Classes
   include_once 'db/classes/trainee_data.php';
   include_once 'db/classes/short_name.php';
@@ -10,6 +10,7 @@
   include_once 'db/classes/extra_lists.php';
   include_once 'db/classes/localities.php';
   include_once 'db/classes/member_properties.php';
+
   //include_once 'db/classes/members.php';
   //include_once 'db/classes/ftt_info.php';
 
@@ -44,6 +45,7 @@ $categories_list = MemberProperties::get_categories();
 // список из зоны ответственности админа
 // Ислючить при запросе тех кто в списке обучающихся
 // Members::db_get_members_by_admin('000001679');
+$localities_select = localities::get_localities(true);
 $localities = [];
 $localities_staff = [];
 

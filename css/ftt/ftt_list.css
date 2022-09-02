@@ -1,7 +1,7 @@
 .list_string {
   cursor: pointer;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-top: 12px;
+  padding-bottom: 12px;
   border-bottom: 1px solid #dee2e6;
 }
 

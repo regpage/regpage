@@ -35,7 +35,7 @@ class ftt_lists {
   static function serving_ones_list()  {
     $result = [];
 
-    $res = db_query("SELECT fso.member_key, fso.time_zone, fso.gospel_team,
+    $res = db_query("SELECT fso.member_key, fso.time_zone, fso.gospel_team, m.new_locality,
       m.name, m.male, m.locality_key, m.birth_date, m.cell_phone, m.email, m.attend_meeting, m.changed,
       l.name AS locality_name
       FROM ftt_serving_one fso
@@ -74,8 +74,10 @@ class ftt_lists {
   static function trainee_list()  {
     $result = [];
     //  left & right join LOCALITY NAME ect
-    $res = db_query("SELECT ft.member_key, ft.gospel_group, ft.gospel_team, ft.semester, ft.serving_one, ft.coordinator, ft.time_zone,
-      m.name, m.male, m.locality_key, m.birth_date, m.cell_phone, m.email, m.attend_meeting, m.category_key, m.changed,
+    $res = db_query("SELECT ft.member_key, ft.gospel_group, ft.gospel_team,
+      ft.semester, ft.serving_one, ft.coordinator, ft.time_zone,
+      m.name, m.male, m.locality_key, m.birth_date, m.cell_phone, m.email,
+      m.attend_meeting, m.category_key, m.changed, m.new_locality,
       l.name AS locality_name
       FROM ftt_trainee ft
       INNER JOIN member m ON m.key = ft.member_key

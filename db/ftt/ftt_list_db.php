@@ -1,4 +1,5 @@
 <?php
+/* Заменено универсальным классом DbOperation
 function save_blank($data)
 {
   global $db;
@@ -11,9 +12,9 @@ function save_blank($data)
 
   foreach ($data as $key => $value) {
     if ($key !== 'member_key') { // && $key !== 'semester'
-      /*if ($query_set) {
+      *//*if ($query_set) {
         $query_set .= ', ';
-      }*/
+      }*//*
       $key = $db->real_escape_string($key);
       $value = $db->real_escape_string($value);
       $query_set .= ' `'.$key."`='$value', ";
@@ -22,10 +23,11 @@ function save_blank($data)
 
   $result = db_query("UPDATE `member` SET {$query_set} `changed` = 1  WHERE `key` = '$member_key'");
 
-  /*if ($result) { //, `changed` = 1
+  *//*if ($result) { //, `changed` = 1
     $result = db_query("UPDATE `ftt_trainee` SET `semester` = '$semester'  WHERE `member_key` = '$member_key'");
-  } */
+  } *//*
 
   $result;
 }
+*/
 ?>

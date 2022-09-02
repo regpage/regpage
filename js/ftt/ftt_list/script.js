@@ -4,21 +4,7 @@ $(document).ready(function(){
   // текущая дата гггг.мм.дд
   date_now_gl = date_now_gl ();
 
-  // save select field
-  /*
-  function save_select_field(element, value) {
-    field = element.attr("data-field");
-    id = element.parent().parent().parent().attr("data-id");
-    data = "&field="+field+"&value="+value+"&id="+id;
-    fetch('ajax/ftt_list_ajax.php?type=updade_data_blank' + data)
-    .then(response => response.json())
-    .then(commits => {
-      console.log(commits.result);
-    });
- }
-*/
-
-// фильтры trainee
+  // фильтры trainee
   function filter_trainee() {
     // Search
     let search = $("#search_field").val();
@@ -52,13 +38,17 @@ $(document).ready(function(){
   });
 
   $("#search_field").keyup(function(e) {
-    filter_trainee();
+    if ($("#tab_trainee").hasClass("active")) {
+      filter_trainee();
+    } else {
+      filter_staff();
+    }
   });
 
   // фильтры staff
   function filter_staff() {
     // Search
-    let search = $("#search_field_staff").val();
+    let search = $("#search_field").val();
     let string;
     let search_result = true;
 
@@ -91,7 +81,9 @@ $(document).ready(function(){
   });
 
   $("#change_tab").change(function() {
-
+    $("#search_field").val("");
+    filter_trainee();
+    filter_staff();
   });
 
   // Sorting
@@ -137,14 +129,10 @@ $(document).ready(function(){
   function get_member_data(member_key) {
     let type = "get_member_data";
 
-    /*if ($("#tab_service_one").hasClass("active")) {
+    if ($("#tab_service_one").hasClass("active")) {
       type = "get_member_data_staff";
-      $("#semester").parent().hide();
-    } else {
-      if (!$("#semester").is(":visible")) {
-        $("#semester").parent().show();
-      }
-    }*/
+    }
+
     fetch("ajax/ftt_list_ajax.php?type="+type+"&id="+member_key)
     .then(response => response.json())
     .then(commits => {
@@ -154,16 +142,8 @@ $(document).ready(function(){
       $("#category").val(commits.result["category_key"]);
       $("#russianLanguage").val(commits.result["russian_lg"]);
       $("#comment").val(commits.result["comment"]);
-      /*$("#baptized").val(commits.result["baptized"]);
-      $("#document_type").val(commits.result["document_key"]);
-      $("#document_num").val(commits.result["document_num"]);
-      $("#document_date").val(commits.result["document_date"]);
-      $("#document_auth").val(commits.result["document_auth"]);
-      $("#document_num_tp").val(commits.result["tp_num"]);
-      $("#document_auth_tp").val(commits.result["tp_auth"]);
-      $("#document_date_tp").val(commits.result["tp_date"]);
-      $("#document_name_tp").val(commits.result["tp_name"]);
-      */
+      $("#emNewLocality").val(commits.result["new_locality"]);
+
       //$("#semester").val(commits.result["semester"]);
       //$("#spinner").modal("hide");
     });
@@ -185,6 +165,7 @@ $(document).ready(function(){
     $("#modalAddEdit input").val("");
     $("#modalAddEdit").val("_none_");
     $("#modalAddEdit").attr("data-member_key", "");
+    $("#localityControlGroup").parent().parent().hide();
   }
   // close blank by the CLOSE button
   $(".cd-panel__close").click(function(e) {
@@ -268,7 +249,11 @@ $(document).ready(function(){
 
   function get_data_blank() {
     let data = {};
-    data["member_key"] = $("#modalAddEdit").attr("data-member_key");
+    data["condition"] = {};
+    data["condition"]["field"] = "key";
+    data["condition"]["value"] = $("#modalAddEdit").attr("data-member_key");
+    data["table"] = "member";
+    data["changed"] = 1;
     $("#modalAddEdit input").each(function () {
       data[$(this).attr("data-field")] = $(this).val();
     });
@@ -309,5 +294,42 @@ $(document).ready(function(){
     save_field($(this).attr("data-table"), $(this).attr("data-field"), $(this).val(), $(".cd-panel").attr("data-member_key"));
   });
 
+  // отметка "Посещает собрания" в списке
+  $(".attend_chbox, .attend_chbox_staff").click(function (e) {
+    e.stopPropagation();
+  });
+
+  $(".attend_chbox, .attend_chbox_staff").change(function (e) {
+    let checked;
+    $(this).prop("checked") ? checked = 1 : checked = 0;
+    save_field("member", $(this).attr("data-field"), checked, $(this).parent().parent().attr("data-member_key"));
+  });
+
+// new locality
+  $("#new_locality").click(function () {
+    if ($("#localityControlGroup").is(":visible")) {
+      $("#localityControlGroup").parent().parent().hide();
+    } else {
+      $("#localityControlGroup").parent().parent().show();
+    }
+  });
+
+  $("#emNewLocality").keydown(function () {
+    $("#locality").val("_none_");
+  });
+
+  $("#emNewLocality").change(function () {
+    $("#locality").val("_none_");
+  });
+
+  $("#locality").change(function () {
+    $("#emNewLocality").val("");
+  });
+
+/*
+  localities_list
+  $("#new_locality").click(function () {
+    $("#localityControlGroup").parent().parent().show();
+  });*/
 // DOCUMENT READY STOP
 });

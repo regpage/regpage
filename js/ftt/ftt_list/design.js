@@ -3,17 +3,21 @@ if ($(window).width()<=769) {
   // containers
   $("#main_row").attr('style', 'width: 100% !important;');
 
+  // Filters and buttons
+  $("#tab_service_one select").removeClass("col-2").addClass("col-5")
+
   // headers
   $("#tab_content select").css("min-width", "110px");
   $("#sevice_one_select").addClass("mt-2");
   $("#category_select").addClass("mt-2");
-
+  $("#list_header").hide();
+  $("#list_header_staff").hide();
   // columns
 
   //strings
   $("#tab_content").css("font-size", "16px");
   $("#change_tab").removeClass("col-2").addClass("col-5");
-  $("#list_header").hide();
+
   $(".list_string div").css("min-width", "");
   $(".list_string div").css("max-width", "");
 
@@ -40,6 +44,7 @@ if ($(window).width()<=769) {
   });
 */
 // Blank
+  $("#modalAddEdit .btn-sm").removeClass("btn-sm");
   $(".cd-panel__container").css("width", "100%");
 } else if ($(window).width()<=991 && $(window).width()>769) {
 
@@ -47,7 +52,7 @@ if ($(window).width()<=769) {
   $("#main_container").css("padding-top", "0");
   $("#search_field").removeClass("w-50");
   $("#search_field").addClass("col-2");
-  $("#search_field").css("max-width", "189px");  
+  $("#search_field").css("max-width", "189px");
 }
 
 $("#main_container").css("margin-top", "60px");
