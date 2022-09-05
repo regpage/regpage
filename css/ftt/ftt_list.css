@@ -60,3 +60,16 @@
   /* smooth scrolling on touch devices */
   -webkit-overflow-scrolling: touch;
 }
+
+/* locality - new locality */
+#emNewLocality::-webkit-calendar-picker-indicator {
+  display: none !important;
+}
+
+.close_x {
+  position:absolute;
+  display: none;
+  padding:0 5px;
+  right: 13px;
+  top: 23px;
+}

@@ -1116,10 +1116,27 @@ function open_blank(el_this) {
           showError("Этот лист посещаемости отправлен. Радактирование невозможено.");
           return;
         }
+
+        let a, b;
+        let buttons = document.querySelectorAll('.session_staff_str');
+
+        buttons.forEach(el => {
+          if (el.checked) {
+            a = 1;
+          } else {
+            b = 1;
+          }
+        });
+
+        if (a && b) {
+          $(this).prop("checked", !$(this).prop("checked"));
+          showError("Выберете мероприятия в списке построчно.");
+          return;
+        }
+
         // Отслеживать включенные мероприятия и отмечать галочкали присутствующие в бланке, если все присутствуют помечать
         // "вкл выкл всё" отмеченным.
         // обычный сценарий это все включены все выключены, учитывать это
-
         if ($(this).prop("checked")) {
           if (confirm("Включить учёт в этот день?")) {
             let session_staff_str = new FormData();

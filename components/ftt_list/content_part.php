@@ -18,7 +18,7 @@
   <div id="tab_content" class="tab-content">
     <div id="tab_trainee" class="tab-pane <?php if ($tab_active === 'tab_trainee') echo 'active'; ?>">
       <div class="container">
-        <div id="" class="row" style="padding-bottom: 15px;">
+        <div id="filters_bar" class="row" style="padding-bottom: 15px;">
           <select id="semester_select" class="col-2 form-control form-control-sm mr-2">
             <option value="_all_">Все семестры</option>
             <option value="1">1</option>

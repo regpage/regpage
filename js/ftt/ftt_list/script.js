@@ -71,8 +71,6 @@ $(document).ready(function(){
     });
   }
   $("#time_zones_staff, #localities_staff").change(function(e) {
-    //setCookie('filter_serving_one', $(this).val(), 1);
-    //$("#spinner").modal();
     filter_staff();
   });
 
@@ -143,6 +141,15 @@ $(document).ready(function(){
       $("#russianLanguage").val(commits.result["russian_lg"]);
       $("#comment").val(commits.result["comment"]);
       $("#emNewLocality").val(commits.result["new_locality"]);
+      if (commits.result["new_locality"]) {
+        $("#locality").hide();
+        $("#emNewLocality").show();
+        $("#reset_locality").show();
+      } else {
+        $("#locality").show();
+        $("#emNewLocality").hide();
+        $("#reset_locality").hide();
+      }
 
       //$("#semester").val(commits.result["semester"]);
       //$("#spinner").modal("hide");
@@ -167,13 +174,7 @@ $(document).ready(function(){
     $("#modalAddEdit").attr("data-member_key", "");
     $("#localityControlGroup").parent().parent().hide();
   }
-  // close blank by the CLOSE button
-  $(".cd-panel__close").click(function(e) {
-    e.preventDefault();
-    $(".js-cd-panel-main").removeClass("cd-panel--is-visible");
-    clear_blank();
-    $("#tab_content .active_str").removeClass("active_str");
-  });
+
   // strings
   //side panel
   $(".list_string").click(function() {
@@ -182,22 +183,7 @@ $(document).ready(function(){
     clear_blank();
     fill_blank();
 
-    /*
-    if ($(".js-cd-panel-main").hasClass("cd-panel--is-visible") && $(this).hasClass("active_str")) {
-      $(".js-cd-panel-main").removeClass("cd-panel--is-visible");
-      $(this).removeClass("active_str");
-      clear_blank();
-    } else if ($(".js-cd-panel-main").hasClass("cd-panel--is-visible") && !$(this).hasClass("active_str")) {
-      $("#tab_content .active_str").removeClass("active_str");
-      clear_blank();
-      $(this).addClass("active_str");
-      fill_blank();
-    } else {
-      $(".js-cd-panel-main").addClass("cd-panel--is-visible");
-      $(this).addClass("active_str");
-      fill_blank();
-    }
-    */
+
   });
 
   // мгновенное динамическое обновление при успешном сохранении
@@ -277,21 +263,32 @@ $(document).ready(function(){
     });
   }
 
+  function valid_fields() {
+    let required_fields = document.querySelectorAll(".required_field");
+    let empty = 0, error;
+    required_fields.forEach(el => {
+      if ((el.id === "locality" && el.value === "_none_") || (el.id === "emNewLocality" && !el.value)) {
+        empty++;
+      } else if (!el.value || el.value === "_none_") {
+        error = 1;
+      }
+    });
+    if (empty === 2 || error) {
+      return 1;
+    } else {
+      return false;
+    }
+  }
+
   $("#save_blank").click(function() {
-    $("#modalAddEdit").modal("hide");
-    $("#spinner").modal("show");
-    save_blank(get_data_blank());
-  });
-  // save input field
-  // добавить уcловие на сохранение вставка (changed)
-  $(".cd-panel__content input").change(function() {
-    return;
-    save_field($(this).attr("data-table"), $(this).attr("data-field"), $(this).val(), $(".cd-panel").attr("data-member_key"));
-  });
-  // save select field
-  $(".cd-panel__content select").change(function() {
-    return;
-    save_field($(this).attr("data-table"), $(this).attr("data-field"), $(this).val(), $(".cd-panel").attr("data-member_key"));
+      if (valid_fields()) {
+        showError('Заполните обязательные поля.');
+        return;
+      } else {
+        $("#modalAddEdit").modal("hide");
+        $("#spinner").modal("show");
+        save_blank(get_data_blank());
+      }
   });
 
   // отметка "Посещает собрания" в списке
@@ -324,12 +321,23 @@ $(document).ready(function(){
 
   $("#locality").change(function () {
     $("#emNewLocality").val("");
+    if ($(this).val() === "_new_") {
+      $(this).val("_none_");
+      $(this).hide();
+      $("#emNewLocality").show();
+      $("#reset_locality").show();
+    }
   });
 
-/*
-  localities_list
-  $("#new_locality").click(function () {
-    $("#localityControlGroup").parent().parent().show();
-  });*/
+  $("#reset_locality").click(function () {
+    if ($("#emNewLocality").val()) {
+      $("#emNewLocality").val("");
+    } else {
+      $(this).hide();
+      $("#emNewLocality").hide();
+      $("#locality").show();
+    }
+  });
+
 // DOCUMENT READY STOP
 });

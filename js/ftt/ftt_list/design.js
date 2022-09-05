@@ -3,16 +3,19 @@ if ($(window).width()<=769) {
   // containers
   $("#main_row").attr('style', 'width: 100% !important;');
 
-  // Filters and buttons
-  $("#tab_service_one select").removeClass("col-2").addClass("col-5")
-
   // headers
+  $("#tab_service_one select").removeClass("col-2").addClass("col-5")
   $("#tab_content select").css("min-width", "110px");
+
+  // Filters and buttons
+
+  $("#filters_bar select").removeClass("mr-2").addClass("mr-1")
   $("#sevice_one_select").addClass("mt-2");
   $("#category_select").addClass("mt-2");
+
+  // columns
   $("#list_header").hide();
   $("#list_header_staff").hide();
-  // columns
 
   //strings
   $("#tab_content").css("font-size", "16px");
