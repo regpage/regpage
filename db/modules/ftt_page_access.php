@@ -1,11 +1,12 @@
 <?php
 // Доступ до раздела ПВОМ
-foreach (db_getServiceonesPvomZone() as $key => $value) {
+// НУЖНА ФУНКЦИЯ ДЛЯ ПОЛУЧЕНИЕ СЛУЖАЩИХ БРАТЬЕВ НА ПВОМ
+/*foreach ( SOME_VAR as $key => $value) {
   if ($memberId === $key) {
     //$Serviceones_pvom = $key;
     $accessToPage = 3;
   }
-}
+}*/
 
 // Проверка рекомендатора
 if ($accessToPage === 0 && db_getRecommender($memberId)) {

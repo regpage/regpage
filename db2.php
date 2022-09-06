@@ -317,18 +317,6 @@ function isExistrRequest($adminId) {
   }
 }
 
-// Получаем служащих, братьев ПВОМ по местности (по зоне? не то что нужно)
-function db_getServiceonesPvomZone() {
-  $serviceones = [];
-
-  $res = db_query("SELECT a.member_key, m.name FROM access a
-    INNER JOIN member m ON m.key = a.member_key
-    WHERE a.locality_key = '001214'");
-    while ($row = $res->fetch_assoc()) $serviceones[$row['member_key']] = $row['name'];
-
-  return $serviceones;
-}
-
 // FTT PARAM GET
 function getValueFttParamByName($name) {
     global $db;

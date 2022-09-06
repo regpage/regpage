@@ -555,11 +555,9 @@ function fillEditMember (memberId, info, localities, newMemberBlank) {
         $("#service_ones_pvom").val (info["serving"] ? info["serving"] : "");
         $("#semestrPvom").val (info["home_phone"] ? info["home_phone"] : "");
 
-        if (info["locality_key"] === '001192' && $('#selMemberLocality').find('option[value="001214"]').val()) {
-          $("#service_ones_pvom").parent('div').show();
-        } else {
-          $("#service_ones_pvom").parent('div').hide();
-        }
+
+        $("#service_ones_pvom").parent('div').hide();
+
 
         $(".emUserComment").val (info["comment"] ? info["comment"] : "").attr('disabled','disabled');
     }
@@ -1762,12 +1760,10 @@ renewComboLists('.members-lists-combo');
 $('#modalEditMember').on('show', function() {
   setTimeout(function () {
     showBlankEvents();
-    if ($('#inputEmLocalityId').val() === 'ПВОМ' && $('#selMemberLocality').find('option[value="001214"]').val()) {
-      $('#semestrPvom').parent().show();
-    } else {
-      $('#semestrPvom').parent().hide();
-      $('#semestrPvom').val('_none_');
-    }
+        
+    $('#semestrPvom').parent().hide();
+    $('#semestrPvom').val('_none_');
+
   }, 50);
   setTimeout(function () {
     $('.emLocality').hide();

@@ -8,7 +8,7 @@ function db_newDailyPracticesPac($b){
 
 
   $result = array();
-  $res=db_query ("SELECT `key` FROM member WHERE `locality_key` = '001192'");
+  $res=db_query ("SELECT `key` FROM member WHERE `locality_key` = ''");
   while ($row = $res->fetch_assoc()) $result[]=$row['key'];
 
   $resultat = array();

@@ -420,13 +420,12 @@ $(document).ready(function(){
   function practicesListServiceones(x) {
 // ВОзможно местности и служащих лучше брать мз объектов JS чем из базы если есть смысл и какая то экономия в этом
 // Создать массив ключ местности название местности, и в качестве ключа подставлять переданные данные и так же со служащими ибо их ограниченное количество. Данные можно обновлять после загрузки страници или после определённых операций.
-    console.log(x);
     var tableDataser=[], tableDataMblser=[], m_revivalser, p_prayser, co_prayser, r_bibleser, r_ministryser, evangelser, flyersser, contactsser, savedser, meetingsser, dayOfWeekser, hangupTimeser, wakeupTimeser, serving_one, statisticLine = [], statisticLineObj ={};
     for (var i = 0; i < x.length; i++) {
-      if (data_page.admin_locality !== '001214') {
-        if (window.adminId !== '000005716' && window.adminId !== '000001679') {
-          return
-        }
+      // Отображение раздела для служащих ДОСТУПНО ТОЛЬКО ДЛЯ РАЗРАБОТЧИКОВ
+      // ИЗ-ЗА СМЕНЫ МЕСТНОСТИ СОЛУЖАЩИХ ПВОМ
+      if (window.adminId !== '000005716' && window.adminId !== '000001679') {
+        return;
       }
       var shortNameMem = twoNames2(x[i].name);
       x[i].m_revival != 0 ? m_revivalser = x[i].m_revival : m_revivalser = '-';
@@ -720,10 +719,7 @@ if (statisticLine[x[i].member_id] === undefined) {
       if (!adminLocalitiiesForSQL) {
         return
       }
-      if (data_page.admin_locality === '001214') {
-        adminLocalitiiesForSQL = adminLocalitiiesForSQL + ' OR m.locality_key = 001192';
-      }
-// var localityAdmin = data_page.admin_locality === '001214' ? adminLocalitiiesForSQL + " OR m.locality_key = 001192": adminLocalitiiesForSQL;
+
     sorting ? '': sorting = 'name_down';
     var dataObj = {};
     dataObj.localities = adminLocalitiiesForSQL;

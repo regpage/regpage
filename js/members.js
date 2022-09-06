@@ -11,21 +11,9 @@ $('#modalEditMember').on('show', function() {
   }, 60);
   setTimeout(function () {
     showBlankEvents();
-    // проверить условия
-    if ($('#inputEmLocalityId').val() === 'ПВОМ' && $('#selMemberLocality').find('option[value="001214"]').val() && $(".emCategory").val() === "FT") {
-      $(".ftt_block").show();
-      console.log(window.currentEditMemberId);
-      fetch('ajax/members.php?trainee_data=1&id='+window.currentEditMemberId)
-      .then(response => response.json())
-      .then(result => {
-        // Вставить данные в поля
-        console.log(result.trainee);
-      });
-    } else {
-      $(".ftt_block").hide();
-      $(".ftt_block").find('input').val("");
-      $(".ftt_block").find('select').val("_none_");
-    }
+    $(".ftt_block").hide();
+    $(".ftt_block").find('input').val("");
+    $(".ftt_block").find('select').val("_none_");
   }, 50);
   setTimeout(function () {
     $('.emLocality').hide();

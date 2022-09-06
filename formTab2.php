@@ -444,16 +444,3 @@ if(!$isGuest && !$indexPage){
 <?php } ?>
 </div>
 <div style="clear: both;"></div>
-<script>
-//ver 5.0.8
-$(document).ready(function(){
-  $(".emLocality").change(function() {
-      if ($(".emLocality").val() == '001192') {
-        $(".emCategory").val('FT');
-      } else if ($(".emCategory").val() == 'FT' && $(".emLocality").val() != '001192') {
-        $(".emCategory").val('');
-      }
-  });
-});
-//end
-</script>

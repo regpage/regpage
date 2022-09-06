@@ -37,12 +37,13 @@ if (isset($_GET['member_key']) && $_GET['member_key'] !== $memberId) { // Есл
     $serviceone_role = 2;
   } else {
     // Получаем служащих по зоне ПВОМ
-    foreach (db_getServiceonesPvomZone() as $key => $value) {
+    // НУЖНА ФУНКЦИЯ ДЛЯ ПОЛУЧЕНИЕ СЛУЖАЩИХ БРАТЬЕВ НА ПВОМ
+    /*foreach ( SOME_VAR as $key => $value) {
       if ($memberId === $key) {
         $serviceones_pvom[$key] = $value;
         $serviceone_role = 3;
-      }// code...
-    }
+      }
+    }*/
   }
 } else { // Если не указан ключ участника // Если заявитель
   $applicant = 1;

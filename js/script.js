@@ -1369,11 +1369,7 @@ function fillEditMember (memberId, info, localities, newMemberBlank) {
         //$("#service_ones_pvom").val (info["serving"] ? info["serving"] : "");
         //$("#").val (info["home_phone"] ? info["home_phone"] : "");
         // НОВОЕ УСЛОВИЕ ОТОБРАЖЕНИЯ ftt-trainee
-        if (info["locality_key"] === '001192' && $('#selMemberLocality').find('option[value="001214"]').val()) {
-          $("#service_ones_pvom").parent('div').show();
-        } else {
-          $("#service_ones_pvom").parent('div').hide();
-        }
+        $("#service_ones_pvom").parent('div').hide();
 
         $(".emUserComment").val (info["comment"] ? info["comment"] : "").attr('disabled','disabled');
 

@@ -39,7 +39,7 @@ function db_setPracticesForStudentsPVOM() {
   $currentDate = date("Y-m-d");
   $resultFoUser = ':';
   $students = array();
-  $queryStudents=db_query ("SELECT `key` FROM member WHERE `locality_key` = '001192'");
+  $queryStudents=db_query ("SELECT `key` FROM member WHERE `locality_key` = ''");
   while ($rowOfStudents = $queryStudents->fetch_assoc()) $students[]=$rowOfStudents['key'];
 
   $checkSettingOn = '';
