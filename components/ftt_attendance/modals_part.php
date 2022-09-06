@@ -1,4 +1,3 @@
-
 <!-- ПОСЕЩАЕМОСТЬ -->
 <div id="modalAddEdit" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true"
 data-id="" data-date="" data-author="" data-date_send="" data-comment="">
@@ -139,3 +138,5 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
     </div>
   </div>
 </div>
+
+<?php include 'components/ftt_attendance/modal_permission.php'; ?>

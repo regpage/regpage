@@ -146,7 +146,7 @@ function getLateStrings() {
     INNER JOIN ftt_trainee ft ON ft.member_key = fl.member_key
     INNER JOIN member m ON m.key = fl.member_key
     WHERE 1
-    ORDER BY m.name, fl.date");
+    ORDER BY fl.date DESC, m.name ASC");
   while ($row = $res->fetch_assoc()) $result[] = $row;
   return $result;
 }

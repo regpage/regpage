@@ -146,4 +146,11 @@ if (isset($_GET['type']) && $_GET['type'] === 'undo_status') {
   exit();
 }
 
+// PERMISSIONS
+// save permission.
+if (isset($_GET['type']) && $_GET['type'] === 'set_permission') {
+  echo json_encode(["result"=>set_permission($_POST['data'])]);
+  exit();
+}
+
 ?>

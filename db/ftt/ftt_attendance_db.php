@@ -407,4 +407,30 @@ function undo_extrahelp_lates($id)
   return $result;
 }
 
+// PERMISSIONS
+function set_permission($sessions)
+{
+  global $db;
+  $sessions = json_decode($sessions);
+  $sheet_id = $db->real_escape_string($sessions->sheet->id);
+  $member_key = $db->real_escape_string($sessions->sheet->member_key);
+  $absence_date = $db->real_escape_string($sessions->sheet->absence_date);
+  $date = $db->real_escape_string($sessions->sheet->date);
+  $comment = $db->real_escape_string($sessions->sheet->comment);
+  $status = $db->real_escape_string($sessions->sheet->status);
+
+  if (empty($sessions->sheet->id)) {
+    $res = db_query("INSERT INTO `ftt_permission_sheet` (`member_key`, `absence_date`, `date`, `comment`, `status`, `changed`)
+    VALUES ('$member_key', '$absence_date', NOW(),'$comment', '$status', 1)");
+    $sheet_id = $db->insert_id;
+    return $sheet_id;
+  } else {
+    $res = db_query("UPDATE `ftt_permission_sheet` SET
+      `absence_date` = '$absence_date', `date` = NOW(), `comment` = '$comment', `status` = '$status', `changed` = 1
+      WHERE `id` = '$sheet_id'");
+    db_query("DELETE FROM `ftt_permission` WHERE `sheet_id` = '$sheet_id'");
+  }
+
+}
+
 ?>
