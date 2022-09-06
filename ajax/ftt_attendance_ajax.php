@@ -153,4 +153,10 @@ if (isset($_GET['type']) && $_GET['type'] === 'set_permission') {
   exit();
 }
 
+if (isset($_GET['type']) && $_GET['type'] === 'get_permission') {
+  echo json_encode(["result"=>get_permission($_GET['sheet_id'])]);
+  exit();
+}
+
+
 ?>

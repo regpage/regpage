@@ -16,17 +16,22 @@
   <?php
   foreach (FttPermissions::get_by_trainee($memberId) as $key => $value):
 
-    $id = $value['id'];
-    $date = $value['absence_date'];
+    $permission_id = $value['id'];
+    $permission_member_key = $value['member_key'];
+    $permission_absence_date = $value['absence_date'];
+    $permission_date = $value['date'];
+    $permission_date_send = $value['date_send'];
     $permission_status = $value['status'];
+    $permission_serving_one = $value['serving_one'];
     $permission_comment = $value['comment'];
-    $short_date = date_convert::yyyymmdd_to_ddmm($date);
+    $short_absence_date = date_convert::yyyymmdd_to_ddmm($permission_absence_date);
 
     $checked_string = "<span class='badge badge-secondary'>Не отправлен</span>";
     $done_string = '';
     if ($archive = $value['status'] === '1') {
       $checked_string = "<span class='badge badge-success'>Отправлен</span>";
       $done_string = 'green_string';
+      //{$done_string}
     }
 
     $permission_comment_short;
@@ -39,8 +44,12 @@
       $permission_comment_short = $permission_comment;
     }
 
-    echo "<div class='row list_string' data-id='{$permission_id}' data-date='{$permission_date}' data-member_key='{$permission_member_key}' data-status='{$permission_status}' data-date_send='{$permission_date_send}' data-absence_date='{$absence_date}' data-comment='{$permission_comment}' data-toggle='modal' data-target='#' $show_string>
-    <div class='col-2 pl-1'>{$short_date}</div>
+    echo "<div class='row list_string' data-id='{$permission_id}' data-date='{$permission_date}'
+    data-member_key='{$permission_member_key}' data-status='{$permission_status}'
+    data-date_send='{$permission_date_send}' data-absence_date='{$permission_absence_date}'
+    data-comment='{$permission_comment}' data-serving_one='$permission_serving_one'
+    data-toggle='modal' data-target='#edit_permission_blank' $show_string>
+    <div class='col-2 pl-1'>{$short_absence_date}</div>
     <div class='col-8'>{$permission_comment_short}</div>
     <div class='col-2'>{$checked_string}</div>
     </div>";

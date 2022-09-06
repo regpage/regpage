@@ -1013,7 +1013,7 @@ function open_blank(el_this) {
       open_blank($("#accordion_attendance [data-id='"+$("#modalAddEdit").attr("data-id")+"']"));
      //}
    } else {
-     get_sessions_for_blank($("#modalAddEdit").attr("data-member_key"), $("#modalAddEdit").attr("data-date"));
+     get_sessions_for_blank($("#modalAddEdit").attr("data-member_key"), $("#modalAddEdit").attr("data-date"), false);
 
      $("#modal-block_1").hide();
      $("#modal-block_2").hide();
@@ -1023,7 +1023,7 @@ function open_blank(el_this) {
 
   // Правка мероприятий в бланке
   // формимуем список мероприятий из расписания
-  function get_sessions_for_blank(member_key, date, permission) {
+  function get_sessions_for_blank(member_key, date, permission, permission_sheet_id) {
     let semester_range;
     let day_of_date = "day"+getNameDayOfWeekByDayNumber(date, false, false, true);
     if (day_of_date === "day0") {
@@ -1079,14 +1079,24 @@ function open_blank(el_this) {
           });
         });
         // save permission
-        $("#send_permission_blank").click(function () {
+        $("#save_permission_blank").click(function () {
           if (valid_field()) {
-            showError("Заполните поля отмеченные красной звёздочкой!");
             return;
           }
           save_permissions(prepare_data());
           $("#edit_permission_blank").modal("hide");
         });
+        // send permission
+        $("#send_permission_blank").click(function () {
+          if (valid_field()) {
+            return;
+          }
+          save_permissions(prepare_data(1));
+          $("#edit_permission_blank").modal("hide");
+        });
+        if (permission_sheet_id) {
+          permission_session_cheched(permission_sheet_id);
+        }
         return;
       } else {
         $("#modal-block_staff_body").html(html_staff_editor);
@@ -1278,7 +1288,10 @@ function open_blank(el_this) {
   // ПОДРАЗДЕЛ ЛИСТЫ ОТСУТСТВИЯ
   // FUNCTION
   // PERMISSIONS
-  function prepare_data() {
+  function prepare_data(status) {
+    if (status !== 0 && status !== 1) {
+      status = $("#edit_permission_blank").attr("data-status");
+    }
     // prepare
     let session_str = new FormData();
     let type = "";
@@ -1289,7 +1302,7 @@ function open_blank(el_this) {
         date: $("#edit_permission_blank").attr("data-date"),
         date_send: $("#edit_permission_blank").attr("data-date_send"),
         absence_date: $("#permission_modal_date").val(),
-        status: $("#edit_permission_blank").attr("data-status"),
+        status: status,
         serving_one: "",
         comment: $("#permission_modal_comment").val()
       }
@@ -1326,16 +1339,15 @@ function open_blank(el_this) {
     session_str.set("data", JSON.stringify(session_str_test));
     return session_str;
   }
-  function save_permissions(data) {
+  function save_permissions(data, status) {
     // fetch
-    fetch("ajax/ftt_attendance_ajax.php?type=set_permission", {
+    fetch("ajax/ftt_attendance_ajax.php?type=set_permission&status="+status, {
       method: 'POST',
       body: data
     })
     .then(response => response.text())
     .then(commits => {
-      console.log(commits.result);
-    // location.reload();
+      location.reload();
     });
   }
 
@@ -1348,16 +1360,51 @@ function open_blank(el_this) {
     $(selector).attr("data-date_send", "");
     $(selector).attr("data-serving_one", "");
     $(selector).attr("data-status", "");
+    $("#modal_permission_block").html("");
   }
 
   function valid_field() {
     if (!$("#permission_modal_date").val()) {
+      showError("Заполните поля отмеченные красной звёздочкой.");
+      return 1;
+    }
+
+    if ($("#modal_permission_block .session_staff_str:checked").length === 0) {
+      showError("Отметьте хотя бы одно мероприятие.");
       return 1;
     }
   }
 
-  function fill_blank() {
+  function fill_blank(element) {
+    // field
+    $("#permission_modal_date").val(element.attr("data-absence_date"));
+    $("#permission_modal_comment").val(element.attr("data-comment"));
+    // attr
+    $("#edit_permission_blank").attr("data-id", element.attr("data-id"));
+    $("#edit_permission_blank").attr("data-member_key", element.attr("data-member_key"));
+    $("#edit_permission_blank").attr("data-date", element.attr("data-date"));
+    $("#edit_permission_blank").attr("data-send_date", element.attr("data-send_date"));
+    $("#edit_permission_blank").attr("data-absence_date", element.attr("data-absence_date"));
+    $("#edit_permission_blank").attr("data-status", element.attr("data-status"));
+    $("#edit_permission_blank").attr("data-serving_one", element.attr("data-serving_one"));
+    $("#edit_permission_blank").attr("data-comment", element.attr("data-comment"));
+  }
 
+  function permission_session_cheched(sheet_id) {
+    fetch("ajax/ftt_attendance_ajax.php?type=get_permission&sheet_id="+sheet_id)
+    .then(response => response.json())
+    .then(commits => {
+      let data = commits.result;
+      for (let variable in data) {
+        if (data.hasOwnProperty(variable)) {
+          $("#modal_permission_block .session_staff_str").each(function () {
+            if ($(this).attr("data-session_id") === data[variable]['session_id']) {
+              $(this).prop("checked", "checked");
+            }
+          });
+        }
+      }
+    });
   }
 
   $("#permission_add").click(function () {
@@ -1365,8 +1412,23 @@ function open_blank(el_this) {
     // for trainee
     $("#edit_permission_blank").attr("data-member_key", admin_id_gl);
     get_sessions_for_blank(admin_id_gl, date_now_gl, true);
+    $("#permission_modal_date").val(date_now_gl);
   });
 
+  $("#list_permission .list_string").click(function () {
+    clear_blank("#edit_permission_blank");
+    fill_blank($(this));
+    get_sessions_for_blank($(this).attr("data-member_key"), $(this).attr("data-absence_date"), true, $(this).attr("data-id"));
+  });
+
+  $("#permission_modal_date").change(function () {
+    if ($("#edit_permission_blank").attr("data-absence_date") === $(this).val()) {
+      get_sessions_for_blank($("#edit_permission_blank").attr("data-member_key"), $("#edit_permission_blank").attr("data-absence_date"), true, $("#edit_permission_blank").attr("data-id"));
+    } else {
+      // ПРОДУМАТЬ У СЛУЖАЩИХ
+      get_sessions_for_blank($("#edit_permission_blank").attr("data-member_key"), $(this).val(), true);
+    }
+  });
 
 // DOCUMENT READY STOP
 });

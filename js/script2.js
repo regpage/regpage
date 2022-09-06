@@ -171,10 +171,10 @@ function date_now_gl () {
   let yyyy = date_now_gl.getFullYear();
   let mm = date_now_gl.getMonth()+1;
   let dd = date_now_gl.getDate();
-  if (mm < 9) {
+  if (mm <= 9) {
     mm = '0'+mm;
   }
-  if (dd < 9) {
+  if (dd <= 9) {
     dd = '0'+dd;
   }
   return yyyy + '-' + mm + '-' + dd;

@@ -423,14 +423,39 @@ function set_permission($sessions)
     $res = db_query("INSERT INTO `ftt_permission_sheet` (`member_key`, `absence_date`, `date`, `comment`, `status`, `changed`)
     VALUES ('$member_key', '$absence_date', NOW(),'$comment', '$status', 1)");
     $sheet_id = $db->insert_id;
-    return $sheet_id;
   } else {
     $res = db_query("UPDATE `ftt_permission_sheet` SET
       `absence_date` = '$absence_date', `date` = NOW(), `comment` = '$comment', `status` = '$status', `changed` = 1
       WHERE `id` = '$sheet_id'");
     db_query("DELETE FROM `ftt_permission` WHERE `sheet_id` = '$sheet_id'");
   }
+  foreach ($sessions as $key => $value) {
+    if ($key !== 'sheet') {
+      if (empty($value->sheet_id)) {
+        $sheet_id_sub = $sheet_id;
+      } else {
+        $sheet_id_sub = $value->sheet_id;
+      }
+      $session_id = $value->session_id;
+      $session_correction_id = $value->session_correction_id;
+      $session_name = $value->session_name;
+      $session_time = $value->session_time;
+      $duration = $value->duration;
+      $res = db_query("INSERT INTO `ftt_permission` (`sheet_id`, `session_id`, `session_correction_id`, `session_name`, `session_time`, `duration`, `changed`)
+      VALUES ('$sheet_id_sub', '$session_id', '$session_correction_id', '$session_name', '$session_time', '$duration', 1)");
+    }
+  }
+  return $res;
+}
 
+function get_permission($sheet_id)
+{
+  global $db;
+  $sheet_id = json_decode($sheet_id);
+  $result = [];
+  $res = db_query("SELECT * FROM `ftt_permission` WHERE `sheet_id` = '$sheet_id'");
+  while ($row = $res->fetch_assoc()) $result[] = $row;
+  return $result;
 }
 
 ?>
