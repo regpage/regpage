@@ -4,6 +4,15 @@ $(document).ready(function(){
   // текущая дата гггг-мм-дд
   date_now_gl = date_now_gl ();
 
+  // get cookie
+  if (getCookie("tab_active") === "permission") {
+    $("#current_extra_help").removeClass("active");
+    $("#permission_tab").addClass("active");
+    $("#extra_help_staff .nav-tabs").find(".nav-link").removeClass("active");
+    $("#extra_help_staff .nav-tabs").find(".nav-link:last").addClass("active");
+    setCookie("tab_active", "");
+  }
+
   // save select field
   function save_select_field(element, value) {
     field = element.attr("data-field");
@@ -1078,22 +1087,7 @@ function open_blank(el_this) {
             }
           });
         });
-        // save permission
-        $("#save_permission_blank").click(function () {
-          if (valid_field()) {
-            return;
-          }
-          save_permissions(prepare_data());
-          $("#edit_permission_blank").modal("hide");
-        });
-        // send permission
-        $("#send_permission_blank").click(function () {
-          if (valid_field()) {
-            return;
-          }
-          save_permissions(prepare_data(1));
-          $("#edit_permission_blank").modal("hide");
-        });
+
         if (permission_sheet_id) {
           permission_session_cheched(permission_sheet_id);
         }
@@ -1339,9 +1333,11 @@ function open_blank(el_this) {
     session_str.set("data", JSON.stringify(session_str_test));
     return session_str;
   }
-  function save_permissions(data, status) {
+  function save_permissions(data) {
+    // cookie
+    setCookie("tab_active", "permission");
     // fetch
-    fetch("ajax/ftt_attendance_ajax.php?type=set_permission&status="+status, {
+    fetch("ajax/ftt_attendance_ajax.php?type=set_permission", {
       method: 'POST',
       body: data
     })
@@ -1352,7 +1348,7 @@ function open_blank(el_this) {
   }
 
   function clear_blank(selector) {
-    $(selector + " input").val();
+    $(selector + " input").val("");
     $(selector).attr("data-id", "");
     $(selector).attr("data-member_key", "");
     $(selector).attr("data-date", "");
@@ -1376,6 +1372,17 @@ function open_blank(el_this) {
   }
 
   function fill_blank(element) {
+    // behavior
+    if (element.attr("data-status") === "1") {
+      $("#send_permission_blank").prop("disabled", true).hide();
+      $("#save_permission_blank").prop("disabled", true).hide();
+      $("#save_permission_blank").prop("disabled", true).hide();
+      $("#edit_permission_blank input").attr("disabled", true);
+    } else {
+      $("#send_permission_blank").prop("disabled", false).show();
+      $("#save_permission_blank").prop("disabled", false).show();
+      $("#edit_permission_blank input").attr("disabled", false);
+    }
     // field
     $("#permission_modal_date").val(element.attr("data-absence_date"));
     $("#permission_modal_comment").val(element.attr("data-comment"));
@@ -1395,6 +1402,11 @@ function open_blank(el_this) {
     .then(response => response.json())
     .then(commits => {
       let data = commits.result;
+      if ($("#edit_permission_blank").attr("data-status") === "1") {
+        $("#modal_permission_block input").prop("disabled", true);
+      } else {
+        $("#modal_permission_block input").prop("disabled", false);
+      }
       for (let variable in data) {
         if (data.hasOwnProperty(variable)) {
           $("#modal_permission_block .session_staff_str").each(function () {
@@ -1409,6 +1421,11 @@ function open_blank(el_this) {
 
   $("#permission_add").click(function () {
     clear_blank("#edit_permission_blank");
+    // behavior
+    $("#send_permission_blank").prop("disabled", false).show();
+    $("#save_permission_blank").prop("disabled", false).show();
+    $("#edit_permission_blank input").attr("disabled", false);
+
     // for trainee
     $("#edit_permission_blank").attr("data-member_key", admin_id_gl);
     get_sessions_for_blank(admin_id_gl, date_now_gl, true);
@@ -1429,6 +1446,21 @@ function open_blank(el_this) {
       get_sessions_for_blank($("#edit_permission_blank").attr("data-member_key"), $(this).val(), true);
     }
   });
-
+  // save permission
+  $("#save_permission_blank").click(function () {
+    if (valid_field()) {
+      return;
+    }
+    save_permissions(prepare_data());
+    $("#edit_permission_blank").modal("hide");
+  });
+  // send permission
+  $("#send_permission_blank").click(function () {
+    if (valid_field()) {
+      return;
+    }
+    save_permissions(prepare_data(1));
+    $("#edit_permission_blank").modal("hide");
+  });
 // DOCUMENT READY STOP
 });
