@@ -70,9 +70,9 @@ function contactsStringsLoad(x, idStr, sort) {
     if (!data_page.members_responsibles[x[i].responsible_previous] && x[i].responsible_previous) {
       if (!data_page.full_admin_list[x[i].responsible]) {
         console.log('Error. Responsible is undefined');
-        data_page.members_responsibles[x[i].responsible_previous] = data_page.full_admin_list[x[i].responsible_previous];
+        //data_page.members_responsibles[x[i].responsible_previous] = data_page.full_admin_list[x[i].responsible_previous];
       } else {
-        data_page.members_responsibles[x[i].responsible_previous] = data_page.full_admin_list[x[i].responsible_previous][0];
+        //data_page.members_responsibles[x[i].responsible_previous] = data_page.full_admin_list[x[i].responsible_previous][0];
         respChange = true;
       }
     }
@@ -1345,7 +1345,9 @@ function historyBuilder(data) {
     if (data_page.admin_contacts_role === "1" || data_page.admin_contacts_role === "2") {
       fetch('/ajax/contacts.php?get_short_statistics_for_comboboxes')
       .then(response => response.json())
-      .then(commits => addNumberToComboboxes(commits, true));
+      .then(commits => {
+        addNumberToComboboxes(commits, true);
+      });
     }
   }
 
@@ -2210,8 +2212,9 @@ function sendTheOrder(ua) {
 */
     function addNumberToComboboxes(data, update) {
       if (!data || Object.keys(data).length < 1) {
-        return
+        return;
       }
+
       $("#responsibleList option").each(function () {
         if ($(this).val() in data) {
 
