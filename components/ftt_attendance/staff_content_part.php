@@ -230,10 +230,10 @@
             } else {
               $comment_ico_str = '';
             }
-
-            echo "<span class='period_col'>{$pause_from} {$pause_start} {$pause_to} {$pause_stop}</span>{$comment_ico_str}</div></div>";
+            echo "</div></div>";
             $start = true;
           }
+
           if ($value['member_key'] !== $prev_member_key && $start) {
             $id_head_start = $id_head;
             $start = false;
@@ -248,6 +248,9 @@
             } else {*/
               echo "<span class='list_string link_day {$sunday_class} {$done_string} {$mark_string}' data-id='{$id}' data-date='{$date}' data-member_key='{$member_key}' data-status='{$status}' data-date_send='{$date_send}' data-bible='{$bible}' data-morning_revival='{$morning_revival}' data-personal_prayer='{$personal_prayer}' data-common_prayer='{$common_prayer}' data-bible_reading='{$bible_reading}' data-ministry_reading='{$ministry_reading}' data-serving_one='{$serving_one}' data-comment='{$comment}' data-toggle='modal' data-target='#modalAddEdit'> {$short_date} {$short_day_of_week}</span>";
             /*}*/
+          }
+          if ($counter % 7 === 0) {
+            echo "<span class='period_col'>{$pause_from} {$pause_start} {$pause_to} {$pause_stop}</span>{$comment_ico_str}";
           }
           $prev_member_key = $value['member_key'];
         endforeach;
