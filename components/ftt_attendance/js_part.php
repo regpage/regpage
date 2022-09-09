@@ -42,4 +42,4 @@ for (let i = 0; i < trainee_list_tmp.length; i = i + 5) {
 let admin_id_gl = "<?php echo $memberId;?>";
 </script>
 <script src="/js/ftt/ftt_attendance/script.js?v74"></script>
-<script src="/js/ftt/ftt_attendance/design.js?v15"></script>
+<script src="/js/ftt/ftt_attendance/design.js?v16"></script>

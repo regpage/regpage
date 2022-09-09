@@ -39,6 +39,11 @@ if ($(window).width()<=769) {
   $("#ftt_trainee_block span").css("font-size", "16px");
   $("#ftt_trainee_block").attr("style", "margin-bottom: 10px; padding: 10px 11px 2px 10px;");
 } else {
+  if ($("body").height() < $(window).height()) {
+    //console.log($(window).height());
+		//console.log($("#eventTabs").height());
+    $("#eventTabs").height($(window).height() - ($("#eventTabs").height() - 190));
+	}
   $("#ftt_trainee_block span").each(function () {
     $(this).css("display", "inline-block");
     $(this).css("text-align", "center");

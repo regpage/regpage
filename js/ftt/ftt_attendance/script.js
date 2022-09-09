@@ -500,9 +500,9 @@ function open_blank(el_this) {
       $("#undo_attendance_str").prop("disabled", true);
       $("#undo_attendance_str").hide();
       if ($(window).width()<=769) {
-        $('#add_attendance_str').attr("style", "margin-right: 195px;");
+        $('#add_attendance_str').attr("style", "margin-right: 196px;");
       } else {
-        $('#add_attendance_str').attr("style", "margin-right: 355px;");
+        $('#add_attendance_str').attr("style", "margin-right: 358px;");
       }
 
       $('#add_attendance_str').attr("disabled", false);
@@ -526,9 +526,9 @@ function open_blank(el_this) {
      $('#comment_modal').attr("disabled", false);
      $(".practice_field").attr("disabled", false);
      if ($(window).width()<=769) {
-       $('#undo_attendance_str').attr("style", "margin-right: 195px;");
+       $('#undo_attendance_str').attr("style", "margin-right: 198px;");
      } else {
-       $('#undo_attendance_str').attr("style", "margin-right: 355px;");
+       $('#undo_attendance_str').attr("style", "margin-right: 360px;");
      }
      $('#add_attendance_str').hide();
    }
