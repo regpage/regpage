@@ -201,6 +201,7 @@
           if ($value['member_key'] !== $prev_member_key && !$start) {
             $date_start_str = $value['pause_start'];
             $date_stop_str = $value['pause_stop'];
+            $comment_str = $value['pause_comment'];
             $comment_ico_str = $value['pause_comment'];
             $date_start_ico = date_convert::yyyymmdd_to_ddmm($date_start_str);
             $date_stop_ico = date_convert::yyyymmdd_to_ddmm($date_stop_str);
@@ -226,7 +227,10 @@
             }
 
             if ($comment_ico_str) {
-              $comment_ico_str = "<i class='fa fa-sticky-note' aria-hidden='true' title='{$comment_ico_str} с {$date_start_ico} по {$date_stop_ico}'></i>";
+              if (!$pause_from) {
+                $comment_str = "<span class='desk_show'>{$comment_str} с {$date_start_ico} по {$date_stop_ico}</span>";
+              }
+              $comment_ico_str = "<i class='fa fa-sticky-note mbl_show hide_element' aria-hidden='true' title='{$comment_ico_str} с {$date_start_ico} по {$date_stop_ico}'></i>";
             } else {
               $comment_ico_str = '';
             }
@@ -250,7 +254,7 @@
             /*}*/
           }
           if ($counter % 7 === 0) {
-            echo "<span class='period_col'>{$pause_from} {$pause_start} {$pause_to} {$pause_stop}</span>{$comment_ico_str}";
+            echo "<span class='period_col'><span class='desk_show'>{$pause_from} {$pause_start} {$pause_to} {$pause_stop} {$comment_str}</span></span>{$comment_ico_str}";
           }
           $prev_member_key = $value['member_key'];
         endforeach;

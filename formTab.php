@@ -250,7 +250,7 @@
 <div class="controls grpTransport">
     <div class="control-group row-fluid grpTransport">
         <label class="span12" id="lblTransport"><span class="transportText"></span><sup>*</sup>
-            <span class="example"></span></label>
+            <a href="#" rel="tooltip" data-placement="right" data-toggle="tooltip" title="" tabindex="-1"><i class="icon-question-sign"></i></a>
         <select class="span12 emTransport" valid="required">
             <option value='_none_' selected>&nbsp;</option>
             <option value="1">ТРЕБУЕТСЯ</option>

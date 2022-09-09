@@ -11,13 +11,16 @@ if ($(window).width()<=769) {
   // columns
   //$(".col_n_3").attr('style', 'min-width: 0px !important;');
   $(".col_n_3").hide();
+  $(".desk_show").hide();
+  $(".mbl_show").removeClass("hide_element");
+  $(".mbl_show").show();
   //$("#list_content .col-5").hide();
   $("#list_content .col-2").attr('style', 'min-width: 0px !important;');
   //strings
   $('.period_col').css("padding-left", "5px");
   $(".list_string").addClass("mr-1");
   $(".list_string").addClass("mb-1");
-  $(".card_header button").css("width", "300px");  
+  $(".card_header button").css("width", "300px");
 
   $(".card_header button").css("padding-right", "5px");
   $(".card_header button").css("padding-left", "0px");

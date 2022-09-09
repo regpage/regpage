@@ -1273,13 +1273,13 @@ function fillEditMember (memberId, info, localities, newMemberBlank) {
     if (info["need_transport"]>0){
         $(".transportText").text( info["need_flight"]>0 ? "Транспорт" : "Транспорт");
         // $(".transportText").text( info["need_flight"]>0 ? "Поездка" : "Транспорт");
-        $("#lblTransport .example").text(info["need_flight"]>0 ? "До места проведения мероприятия" : "До места проведения мероприятия");
+        $("#lblTransport a").attr("title", info["need_flight"]>0 ? "До места проведения мероприятия" : "До места проведения мероприятия");
         //$(".transportHint").attr("title", info["need_flight"]>0 ? "Групповая поездка до или после мероприятия" : "Для проезда от места проживания к залу собраний");
-        $("#lblTransport, .grpTransport").css ("display", "block");
+        $("#lblTransport, .grpTransport").css("display", "block");
     }
     else{
         //if(windowWidth){
-            $("#lblTransport, .grpTransport").css ("display", "none");
+            $("#lblTransport, .grpTransport").css("display", "none");
         //}
         /*else{
             $("#lblTransport").css("display", "block").css("visibility", "hidden");
