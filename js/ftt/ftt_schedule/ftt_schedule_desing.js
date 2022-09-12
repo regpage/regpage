@@ -25,6 +25,10 @@ $(document).ready(function(){
     // Строки расписания
     if ($(window).width()<=386) {
       $("#accordionExample .comment_col").removeClass("col-3").addClass("no-col").hide();
+      // trainee
+      $("#accordionExample .col-4").removeClass("col-4").addClass("col-8");
+      $("#accordionExample .col-2").removeClass("col-2").addClass("col-4").attr('style', 'padding-left: 0px !important; padding-right: 10px !important; min-width: 100px');
+      // staff
       $("#accordionExample .col-6").removeClass("col-6").addClass("col-8");
       $("#accordionExample .col-3").removeClass("col-3").addClass("col-4").attr('style', 'padding: 0px !important; min-width: 95px');
       // 5-6
@@ -33,6 +37,10 @@ $(document).ready(function(){
       $("#accordionExample_2 .col-3").removeClass("col-3").addClass("col-4").attr('style', 'padding: 0px !important; min-width: 95px');
     } else {
       $("#accordionExample .comment_col").removeClass("col-3").addClass("no-col").hide();
+      // trainee
+      $("#accordionExample .col-4").removeClass("col-4").addClass("col-8");
+      $("#accordionExample .col-2").removeClass("col-2").addClass("col-4").attr('style', 'padding-left: 0px !important; padding-right: 10px !important; min-width: 100px');
+      // staff
       $("#accordionExample .col-6").removeClass("col-6").addClass("col-8");
       $("#accordionExample .col-3").removeClass("col-3").addClass("col-4").attr('style', 'padding-left: 0px !important; padding-right: 10px !important; min-width: 100px');
       // 5-6

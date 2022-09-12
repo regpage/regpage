@@ -452,7 +452,7 @@ if ($(window).width()<=769) {
 	console.log($(window).height());
 	console.log($("#main_container").height());
 	if (($("#main_container").height() + 117+91)< $(window).height()) {
-		$("#main_container").height(($(window).height() - $("#main_container").height() - 160-125) + $("#main_container").height());
+		$("#footer_info").css("padding-top",($(window).height() - $("#main_container").height() - 160-125) + $("#main_container").height());
 		console.log($(window).height());
 		console.log($("#main_container").height());
 	}

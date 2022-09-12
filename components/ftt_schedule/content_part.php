@@ -318,9 +318,9 @@ if ($day === 'day1') {
 
 
         if ($time_to) {
-          echo "<div class='row {$color}'><div class='col-4'>{$value['session_name']}</div><div class='col-2'>{$value[$day]}–{$time_to} </div><div class='col-6'>{$value['comment']}</div></div><hr class='hr-slim'>";
+          echo "<div class='row {$color}'><div class='col-4'>{$value['session_name']}</div><div class='col-2'>{$value[$day]}–{$time_to} </div><div class='col-6 comment_col' title='{$value['comment']}'>{$value['comment']}</div></div><hr class='hr-slim'>";
         } else {
-          echo "<div class='row {$color}'><div class='col-4'>{$value['session_name']}</div><div class='col-2'></span>{$value[$day]}</span></div><div class='col-6'>{$value['comment']}</div></div><hr class='hr-slim'>";
+          echo "<div class='row {$color}'><div class='col-4'>{$value['session_name']}</div><div class='col-2'></span>{$value[$day]}</span></div><div class='col-6 comment_col' title='{$value['comment']}'>{$value['comment']}</div></div><hr class='hr-slim'>";
         }
       }
     }
