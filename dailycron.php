@@ -33,7 +33,7 @@ function db_stopDailyPractices(){
   }
 }
 
-db_stopDailyPractices();
+// db_stopDailyPractices();
 
 function db_deleteOldDailyPractices() {
   $counter = 0;
@@ -48,7 +48,7 @@ function db_deleteOldDailyPractices() {
   }
 }
 
-db_deleteOldDailyPractices();
+// db_deleteOldDailyPractices();
 
 // ADMINS SESSIONS
 

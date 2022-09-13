@@ -41,5 +41,30 @@ class FttPermissions
     global $db;
     $member_id = $db->real_escape_string($member_id);
   }
+
+  static function get_by_date($date)
+  {
+    global $db;
+    $date = $db->real_escape_string($date);
+    $sheets = [];
+    $result = [];
+
+    $res = db_query("SELECT `id`, `member_key`, `absence_date`, `comment`, `status`
+      FROM ftt_permission_sheet
+      WHERE  `absence_date` = '$date' AND `status` = 1");
+    while ($row = $res->fetch_assoc()) $sheets[]=$row;
+
+    for ($i=0; $i < count($sheets); $i++) {
+      $condition = $sheets[$i]['id'];
+      $res = db_query("SELECT `id`, `sheet_id`, `session_id`, `session_correction_id`
+        FROM ftt_permission
+        WHERE  `sheet_id` = '$condition'");
+      while ($row = $res->fetch_assoc()) {
+        $result[$sheets[$i]['member_key']]['sessions'][]=$row;
+      }
+      $result[$sheets[$i]['member_key']]['sheet']=$sheets[$i];
+    }
+    return $result;
+  }
 }
  ?>
