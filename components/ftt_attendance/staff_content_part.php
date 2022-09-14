@@ -38,12 +38,12 @@
             }
             echo "<option value='{$key}' $selected>{$value}</option>";
           endforeach; ?>
-        </select>
+        </select>        
         <!--<button id="showModalAddEditExtraHelp" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAddEdit">Добавить</button>-->
         <!--<select id="author_select" class="form-control form-control-sm" style="width: 200px;">-->
           <!--<option value="_all_">Все обучающиеся</option>-->
           <!--<option value="my" selected>Моя группа</option>-->
-          <?php /* foreach (getMyTrainee($memberId) as $key => $value):
+          <?php /* foreach (ftt_lists::get_trainees_by_staff($memberId) as $key => $value):
             $selected = '';*/
             /*if ($key === $memberId) {
               $selected = 'selected';

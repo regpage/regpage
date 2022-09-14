@@ -1426,9 +1426,14 @@ function open_blank(el_this) {
     $("#save_permission_blank").prop("disabled", false).show();
     $("#edit_permission_blank input").attr("disabled", false);
 
-    // for trainee
-    $("#edit_permission_blank").attr("data-member_key", admin_id_gl);
-    get_sessions_for_blank(admin_id_gl, date_now_gl, true);
+    if (trainee_access) { // for trainee
+      $("#edit_permission_blank").attr("data-member_key", admin_id_gl);
+      get_sessions_for_blank(admin_id_gl, date_now_gl, true);
+    } else { // for staff
+      get_sessions_for_blank($("#trainee_select_permission").val(), date_now_gl, true);
+      $("#edit_permission_blank").attr("data-member_key", $("#trainee_select_permission").val());
+    }
+
     $("#permission_modal_date").val(date_now_gl);
   });
 

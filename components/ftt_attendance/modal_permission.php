@@ -9,6 +9,17 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
       </div>
       <div class="modal-body">
         <h6>Отметьте мероприятия на которые требуется разрешение на отсутствие.</h6>
+        <?php if ($ftt_access['group'] === 'staff') { ?>
+          <select id="trainee_select_permission" class="form-control form-control-sm">
+            <?php foreach ($trainee_list as $key => $value):
+              $selected = '';
+              if (empty($selected)) {
+                $selected = 'selected';
+              }
+              echo "<option value='{$key}' {$selected}>{$value}</option>";
+            endforeach; ?>
+          </select>
+        <?php } ?>
         <div class="">
           <label class="required-for-label">Дата отсутствия</label>
           <input type="date" id="permission_modal_date" class="form-control form-control-sm" value="">

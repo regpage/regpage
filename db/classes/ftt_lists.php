@@ -1,9 +1,9 @@
 <?php
 /**
  * Списки
- * Служащие
- * Обучающиеся
- *
+ * Все Служащие
+ * Все обучающиеся
+ * Обучающиеся по служащему
  */
 
 class ftt_lists {
@@ -87,6 +87,19 @@ class ftt_lists {
       while ($row = $res->fetch_assoc()) $result[$row['member_key']]=$row;
 
       return $result;
+  }
+
+  // получаем обучающихся по админу
+  function get_trainees_by_staff($serving_one_id) {
+    global $db;
+    $serving_one_id = $db->real_escape_string($serving_one_id);
+    $result = [];
+    $res = db_query("SELECT tra.member_key, m.name
+      FROM ftt_trainee AS tra
+      INNER JOIN member m ON m.key = tra.member_key
+      WHERE tra.serving_one='$serving_one_id' ORDER BY m.name");
+    while ($row = $res->fetch_assoc()) $result[$row['member_key']] = short_name::no_middle($row['name']);
+    return $result;
   }
 }
 

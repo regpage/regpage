@@ -19,18 +19,6 @@ function yyyymmdd_to_ddmm ($date)  {
   }
 }
 // ПОСЕЩАЕМОСТЬ
-// получаем "своих" обучающихся
-function getMyTrainee($admin_id) {
-  global $db;
-  $admin_id = $db->real_escape_string($admin_id);
-  $result = [];
-  $res = db_query("SELECT tra.member_key, m.name
-    FROM ftt_trainee AS tra
-    INNER JOIN member m ON m.key = tra.member_key
-    WHERE tra.serving_one='$admin_id' ORDER BY m.name");
-  while ($row = $res->fetch_assoc()) $result[$row['member_key']] = short_name::no_middle($row['name']);
-  return $result;
-}
 // получаем шапки
 function getFttAttendanceSheet() {
   $result = [];

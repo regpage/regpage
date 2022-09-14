@@ -35,11 +35,31 @@ class FttPermissions
 
     return $result;
   }
-
-  static function get_by_staff($member_id)
+  // получаем разрешения по списку обучающихся
+  static function get_by_staff($trainee_list)
   {
     global $db;
     $member_id = $db->real_escape_string($member_id);
+    $condition='1';
+    $result;
+    if (count($trainee_list) > 0) {
+      foreach ($trainee_list as $key => $value) {
+        $key = $db->real_escape_string($key);
+        if (!empty($condition)) {
+          $condition .= " OR ";
+        }
+        $condition .= " `member_key`='$key' ";
+      }
+    }
+
+    $res = db_query("SELECT `id`, `member_key`, `absence_date`, `date`, `comment`, `status`, `date_send`
+      FROM ftt_permission_sheet
+      WHERE {$condition}
+      ORDER BY `date`");
+    while ($row = $res->fetch_assoc()) $result[]=$row;
+
+    return $result;
+
   }
 
   static function get_by_date($date)

@@ -1,8 +1,29 @@
 <br>
 <div id="permission_list_header" class="btn-group mb-2">
-  <select id="permission_active" class="form-control form-control-sm">
+  <button type="button" id="permission_add" class="btn btn-success btn-sm rounded mr-2" data-toggle="modal" data-target="#edit_permission_blank">Добавить</button>
+  <select id="permission_active" class="form-control form-control-sm mr-2">
     <option value="_all_">Все</option>
     <option value="0">На рассмотрении</option>
+  </select>
+  <select id="sevice_one_select" class="form-control form-control-sm mr-2">
+    <option value="_all_">Все служащие</option>
+    <?php foreach ($serving_ones_list as $key => $value):
+      $selected = '';
+      if ($key === $serving_one_selected) {
+        $selected = 'selected';
+      }
+      echo "<option value='{$key}' $selected>{$value}</option>";
+    endforeach; ?>
+  </select>
+  <select id="author_select_desk" class="form-control form-control-sm mr-2">
+    <option value="_all_">Все обучающиеся</option>
+    <?php foreach ($trainee_list as $key => $value):
+      $selected = '';
+      if ($key === $memberId) {
+        $selected = 'selected';
+      }
+      echo "<option value='{$key}' {$selected}>{$value}</option>";
+    endforeach; ?>
   </select>
 </div>
 <div class="row row_corr">
@@ -13,7 +34,7 @@
 <hr id="hight_line" style="margin-left: 0px; margin-right: -15px; margin-top: 0px; margin-bottom: 0px; border-color: lightgray;">
 <div id="list_permission" class="">
   <?php
-  foreach (FttPermissions::get_by_trainee($memberId) as $key => $value):
+  foreach (FttPermissions::get_by_staff(ftt_lists::get_trainees_by_staff($memberId)) as $key => $value):
 
     $id = $value['id'];
     $date = $value['absence_date'];
