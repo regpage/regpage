@@ -150,7 +150,7 @@ $sort_type = isset ($_SESSION['sort_type-meetings']) ? $_SESSION['sort_type-meet
   <div class="control-group row-fluid" style="margin-right: 100px; margin-top: -5px">
     <input class="datepicker meetingDate span2" type="text" placeholder="ДД.ММ.ГГГГ" valid="required,date" style="margin-top: 5px; margin-right: 10px; width: 100px;">
     <input type="text" readonly class="span2 meeting-saints-count text-right" style="margin-right: 10px; width: 55px;">
-    <input type="text" style="margin-right: 10px; width: 55px;" class="span2 meeting-count-trainees traineesClass text-right">
+    <input type="text" style="margin-right: 10px; width: 55px;" class="span2 meeting-count-trainees traineesClass text-right" disabled>
     <input type="text" class="span2 meeting-count-guest text-right" style="margin-right: 10px; width: 55px;">
     <input disabled type="text" class="span2 meeting-count text-right" style="width: 55px; margin-right: 10px;">
     </div>
@@ -166,7 +166,7 @@ $sort_type = isset ($_SESSION['sort_type-meetings']) ? $_SESSION['sort_type-meet
             </div> -->
             <div class="control-group row-fluid" style="margin-top: 5px">
                 <!--<label class="span12 meeting-label-note note-field">Комментарий:</label> -->
-                <textarea class="span12 meeting-note note-field"></textarea>
+                <textarea class="span12 meeting-note note-field" style="padding: 6px"></textarea>
             </div>
             <div class="control-group row-fluid">
                 <!--<div>
@@ -406,7 +406,7 @@ $sort_type = isset ($_SESSION['sort_type-meetings']) ? $_SESSION['sort_type-meet
 </div>
 
 <!-- TEMPLATE Modal -->
-<div id="modalHandleTemplate" data-width="500" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="modalHandleTemplate" data-width="500" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" >
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
         <h3></h3>

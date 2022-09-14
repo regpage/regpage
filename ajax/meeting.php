@@ -124,10 +124,12 @@ elseif(isset ($_GET['get_available_members'])){
     exit;
 }
 elseif(isset ($_GET['add_participants'])){
+  /* НЕ ДОРАБОТАНО ПРОВЕРИТЬ ПЕРЕДЕЛАТЬ В ПОСТ*/
     db_addTemplateParticipant($_POST['mode'], $_POST['participantId'], $_POST['templateId']);
+    //db_addTemplateParticipant($_GET['mode'], $_GET['participantId'], $_GET['templateId']);
 
-    echo json_encode(["participants"=> db_getMeetingTemplateParticipantList($_POST['templateId'], $_POST['mode']),
-                      "templates" => db_getMeetingTemplates($adminId)]);
+    //echo json_encode(["participants"=> db_getMeetingTemplateParticipantList($_POST['templateId'], $_POST['mode']),
+    //                "templates" => db_getMeetingTemplates($adminId)]);
     exit;
 }
 elseif(isset($_GET['get_locality_members'])){
@@ -139,6 +141,6 @@ elseif(isset ($_GET['get_member'])){
     exit;
 }
 elseif(isset ($_GET['set_admins_to_template'])){
-    echo json_encode(["result" => db_setAdminsToTemplate($_GET['templateId'], $_GET['admins'])]);
+    echo json_encode(["result" => db_setAdminsToTemplate($_POST['templateId'], $_POST['admins'])]);
     exit;
 }

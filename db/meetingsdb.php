@@ -628,6 +628,24 @@ function db_setAdminsToTemplate($templateId, $admins){
   return 1;
 }
 
+
+function db_getAvailableMembersForMeeting($text){
+    global $db;
+    $text = $db->real_escape_string($text);
+
+    if($text == ''){
+        return false;
+    }
+
+    $res = db_query("SELECT DISTINCT m.name, m.key as id, l.name as locality FROM member m
+                    INNER JOIN locality l ON m.locality_key = l.key
+                    WHERE m.name LIKE '%$text%' LIMIT 0, 3");
+
+    $members = array();
+    while ($row = $res->fetch_assoc()) $members[]=$row;
+    return $members;
+}
+
 /*
 function db_getDetailsOfAllMembersAdmin ($adminId)
 {
