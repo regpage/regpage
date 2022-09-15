@@ -403,6 +403,7 @@ function db_deleteTemplateParticipant($memberId, $mode, $templateId){
     $_memberId = $db->real_escape_string($memberId);
     $_mode = $db->real_escape_string($mode);
     $_templateId = $db->real_escape_string($templateId);
+    $items = [];
 
     $res = db_query("SELECT * FROM meeting_template WHERE id='$_templateId'");
     $row = $res->fetch_assoc();
@@ -412,14 +413,16 @@ function db_deleteTemplateParticipant($memberId, $mode, $templateId){
 
     if (($key = array_search($_memberId, $items)) !== false) {
         unset($items[$key]);
+    } else {
+      return false;
     }
 
-    if(count($items) > 0){
+    if (count($items) > 0){
         db_query("UPDATE meeting_template SET $field ='". implode(',', $items) ."' WHERE id = '$_templateId' ");
+    } else {
+        // db_query("DELETE FROM meeting_template WHERE id = '$_templateId' ");
     }
-    else{
-         db_query("DELETE FROM meeting_template WHERE id = '$_templateId' ");
-    }
+    return true;
 }
 
 function db_getMeetingTemplateParticipantList($templateId, $mode){

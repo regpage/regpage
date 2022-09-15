@@ -670,7 +670,7 @@ var gloIsSingleCity = parseInt('<?php echo $isSingleCity; ?>');
 var gloSingleLocality = gloIsSingleCity ? '<?php echo $singleLocality; ?>' : '';
 </script>
 
-<script src="/js/meetings.js?v136"></script>
+<script src="/js/meetings.js?v138"></script>
 <?php
     include_once './footer.php';
 ?>

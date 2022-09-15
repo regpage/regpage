@@ -133,18 +133,31 @@ var isFillTemplate = 0;
                   $(".empty-template-participants-list").hide();
                   $(".empty-template-participants-list").prev().show();
                 }
+
                 let isEditors;
                 $("#modalParticipantsList").attr("data-mode") === "admins" ? isEditors = true : isEditors = false;
-                var element = $(this).parents('div'), id = element.attr('data-id'), isNewId = !in_array(id, window.meetingTemplateAdmins), locality = element.attr('data-locality');
-                var admin = buildTableTemplateAdminsList([{id : id, name : element.attr('data-name'), field : 'm', locality: locality}], isEditors);
+                let element = $(this).parents('div');
+                let id = element.attr('data-id');
+                let isNewId;
+                if (isEditors) {
+                  isNewId = !in_array(id, window.meetingTemplateAdmins);
+                } else {
+                  isNewId = !in_array(id, window.meetingTemplateParticipantsList);
+                }
 
-                if(isNewId){
+                let locality = element.attr('data-locality');
+                let admin = buildTableTemplateAdminsList([{id : id, name : element.attr('data-name'), field : 'm', locality: locality}], isEditors);
+
+                if(isNewId) {
                     $('#modalParticipantsList tbody').append(admin);
                     $('.participants-available').html('');
                     $('.search-meeting-available-participants').val('').focus();
-                }
-                else{
-                    showError('Эти редакторы уже добавлены', true);
+                } else {
+                  if (isEditors) {
+                    showError('Эти редакторы уже добавлены.', true);
+                  } else {
+                    showError('Этот участник уже добавлены в список.', true);
+                  }
                 }
 
                 bindHandlerToRemoveAdminsFromTable();
@@ -172,8 +185,7 @@ var isFillTemplate = 0;
                     $('.template-admins-added').append(admin);
                     $('.template-admins-available').html('');
                     $('.search-template-admins').val('').focus();
-                }
-                else{
+                } else {
                     showError('Эти редакторы уже добавлены', true);
                 }
 
@@ -215,7 +227,6 @@ var isFillTemplate = 0;
         function buildTableTemplateAdminsList (admins, isEditMode){
 
             var adminRows = [];
-            console.log(admins);
             for(var m in admins){
                 var admin = admins[m];
 
@@ -269,10 +280,9 @@ var isFillTemplate = 0;
           var admins='';
           $('#modalParticipantsList tbody').find('tr').each(function () {
             if (admins) {
-              admins = admins+ ',' + $(this).attr('data-id');
-            } else {
-              admins = admins + $(this).attr('data-id');
+              admins += ',';
             }
+            admins += $(this).attr('data-id');
           });
           let isEditors;
           $("#modalParticipantsList").attr("data-mode") === "admins" ? isEditors = true : isEditors = false;
@@ -301,8 +311,9 @@ var isFillTemplate = 0;
             modalWindow.modal('show');
         });
 
-        $(".btn-add-template").click(function(){
+        $(".btn-add-template").click(function() {
             var template = {
+                id : '',
                 type : '_none_',
                 name : '',
                 localityKey : '_none_',
@@ -502,7 +513,7 @@ var isFillTemplate = 0;
 
             window.meetingTemplateParticipantsList = [];
             window.meetingTemplateAdminsList = [];
-            console.log(list);
+
             if (list) {
                 let listArr = list.split(',');
 
@@ -543,6 +554,7 @@ var isFillTemplate = 0;
                 });
             } else{
                 modalWindow.find('table').hide();
+                modalWindow.find('table tbody').html("");
                 modalWindow.find('.modal-body .empty-template-participants-list').remove();
                 modalWindow.find('.modal-body').append('<div class="empty-template-participants-list" style="text-align:center; padding-top: 20px;padding-bottom: 20px;"><strong>'+ ( mode === "participants" ? "Список участников пуст" : "Список редакторов пуст" )+ '</strong></div>');
             }
@@ -551,36 +563,29 @@ var isFillTemplate = 0;
             modalWindow.modal('show');
         }
 
-        $(".doDeleteParticipant").click(function(){
+        $(".doDeleteParticipant").click(function() {
             let memberId = $(this).attr('data-id');
             let mode = $(this).attr('data-mode');
             let templateId =  $(this).attr('data-template');
-// УДАЛЯЕТ ЧЕРЕЗ РАЗ!!!
+            let participants_in_modal = "";
+
+            $("#modalParticipantsList tbody").find("tr").each(function () {
+              if ($(this).attr("data-id") !== memberId) {
+                if (participants_in_modal) {
+                   participants_in_modal += ",";
+                }
+                participants_in_modal += $(this).attr("data-id") + ":" + $(this).attr("data-name") + ":" + $(this).attr("data-locality");
+              }
+            });
+
             $.post('/ajax/meeting.php?delete_participants', {memberId : memberId, mode : mode, templateId : templateId})
             .done(function(data){
-                var modalWindow = $("#addEditMeetingModal").data('modal');
-                // ПЕРЕБИРАТЬ И СРАВНИВАТЬ СОХРАНЁННЫЕ И НЕ СОХРАНЁННЫЕ СТРОКИ
-                // ИЛИ ЖЕ ПОМЕЧАТЬ НЕ СОХРАНЁННЫЕ СТРОКИ И УДАЛЯТЬ ИХ БЕЗ ОБРАЩЕНИЯ БАЗЕ
-                console.log(data.participants);
-                if (data.participants) {
-                  buildAdminsList(mode, data.participants, templateId);
+                let modalWindow = $("#addEditMeetingModal").data('modal');
+                if (true) {
+                  buildAdminsList(mode, participants_in_modal, templateId);
                 } else {
-                  let participants_in_modal = "";
-                  $("#modalParticipantsList tbody").find("tr").each(function () {
-                    if ($(this).attr("data-id") !== memberId) {
-                      if (participants_in_modal) {
-                         participants_in_modal += ",";
-                      }
-                      participants_in_modal += $(this).attr("data-id") + ":" + $(this).attr("data-name") + ":" + $(this).attr("data-locality");
-                    }
-                  });
-                  if (participants_in_modal) {
-                    buildAdminsList(mode, participants_in_modal, templateId);
-                  } else {
-                    buildAdminsList(mode, data.participants, templateId);
-                  }
+                  //buildAdminsList(mode, data.participants, templateId);
                 }
-
                 buildTemplatesList(data.templates, modalWindow && modalWindow.isShown);
             });
         });
@@ -614,9 +619,9 @@ var isFillTemplate = 0;
         });
 
         function handleTemplate(mode, template){
-            var modalWindow = $("#modalHandleTemplate");
-            var localityTmp = gloSingleLocality ? gloSingleLocality : template.localityKey;
-            $("#modalHandleTemplate").attr('data-id', template.id);
+            let modalWindow = $("#modalHandleTemplate");
+            let localityTmp = gloSingleLocality ? gloSingleLocality : template.localityKey;
+            modalWindow.attr('data-id', template.id);
             modalWindow.find('.modal-header h3').html( mode === 'add' ? 'Шаблон собрания' : 'Шаблон собрания' );
 
             modalWindow.find('.template-meeting-type').val(template.type).change();
@@ -677,7 +682,7 @@ var isFillTemplate = 0;
             });
 
             $.post("/ajax/meeting.php?handle_template", {id: id, type: type, name : name, locality : locality, participants : participants.join(','), admins : window.meetingTemplateAdmins.join(',')})
-                .done(function(data){
+                .done(function(data) {
                     var modal = $("#addEditMeetingModal").data('modal');
                     buildTemplatesList(data.templates, modal && modal.isShown);
 
@@ -1544,7 +1549,7 @@ var isFillTemplate = 0;
                 traineesCount = parseInt(item.trainees_count.split(',').reduce(add, 0));
             }
 
-            countMembers = saintsCount + guestCount + traineesCount;
+            countMembers = saintsCount + guestCount; // + traineesCount
 
             return{
                 traineesCount : traineesCount, fulltimersCount:fulltimersCount, guestCount:guestCount, childrenCount: childrenCount,
@@ -1893,10 +1898,11 @@ var isFillTemplate = 0;
 
   function membersCounterMeeting(template) {
 //TEMPLATE
+    let traineeCountDinamic = 0;
     if ($('#modalHandleTemplate').is(':visible')) {
       var  attendMembersCountDinamicTemp = [], fSMembersCountDinamicTemp = [];
       var modalWindowCountTemplate = $("#modalHandleTemplate");
-      let traineeCountDinamic = 0;
+
       modalWindowCountTemplate.find("tbody tr").each(function(){
         attendMembersCountDinamicTemp.push($(this).attr('data-id'));
         if ($(this).attr('data-category_key') == 'FS') {
