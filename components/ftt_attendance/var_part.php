@@ -51,4 +51,20 @@ if ($serving_trainee) {
 //$days = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
 
 // ПОСЕЩАЕМОСТЬ СТОП
+
+// ЛИСТЫ ОТСУТСТВИЯ СТАРТ
+$serving_one_permissions = $memberId;
+if (isset($_COOKIE['flt_serving_one_permissions']) && !empty($_COOKIE['flt_serving_one_permissions'])) {
+  $serving_one_permissions = $_COOKIE['flt_serving_one_permissions'];
+}
+$trainee_permissions = $memberId;
+
+if (isset($_COOKIE['flt_trainee']) && !empty($_COOKIE['flt_trainee'])) {
+  $trainee_permissions = $_COOKIE['flt_trainee'];
+}
+
+$flt_permission_active = "_all_";
+if (isset($_COOKIE['flt_permission_active']) && (!empty($_COOKIE['flt_permission_active']) || $_COOKIE['flt_permission_active'] === '0')) {
+  $flt_permission_active = $_COOKIE['flt_permission_active'];
+}
 ?>

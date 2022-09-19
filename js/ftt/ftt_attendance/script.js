@@ -11,7 +11,12 @@ $(document).ready(function(){
     $("#extra_help_staff .nav-tabs").find(".nav-link").removeClass("active");
     $("#extra_help_staff .nav-tabs").find(".nav-link:last").addClass("active");
     setCookie("tab_active", "");
+    if (getCookie("flt_trainee") !== "") {
+      setCookie("flt_trainee", "");
+      filters_permissions();
+    }
   }
+
 
   // save select field
   function save_select_field(element, value) {
@@ -1258,18 +1263,6 @@ function open_blank(el_this) {
   });
 
   /*** ПОДРАЗДЕЛ РАЗРЕШЕНИЯ ***/
-
-  // Фильтры
-  $('#permission_active').change(function () {
-    $("#list_permission .list_string").each(function () {
-      if ($('#permission_active').val() === "_all_" || $('#permission_active').val() === $(this).attr("data-status")) {
-        $(this).show();
-      } else {
-        $(this).hide();
-      }
-    });
-  });
-
   // Bootstrap tooltip
   $("#list_content i").each(function () {
     let tooltip;
@@ -1466,6 +1459,55 @@ function open_blank(el_this) {
     }
     save_permissions(prepare_data(1));
     $("#edit_permission_blank").modal("hide");
+  });
+
+  // фильтры
+  function filters_permissions() {
+    $("#list_permission .list_string").each(function () {
+      //
+      if ($('#flt_sevice_one_permissions').val() === "_all_" && $('#ftr_trainee_permissions').val() === $(this).attr("data-member_key") && ($("#flt_permission_active").val() === $(this).attr("data-status") || $("#flt_permission_active").val() === "_all_")) {
+        $(this).show();
+      } else {
+        $(this).hide();
+      }
+    });
+  }
+  $('#ftr_trainee_permissions').change(function () {
+    if ($(this).val() === "_all_") {
+      $('#flt_sevice_one_permissions').val("_all_");
+      setCookie('flt_serving_one_permissions', $('#flt_sevice_one_permissions').val(), 1);
+      setCookie("tab_active", "permission");
+      setCookie("flt_trainee", "");
+      location.reload();
+    } else {
+      $('#flt_sevice_one_permissions').val("_all_");
+      setCookie('flt_serving_one_permissions', $('#flt_sevice_one_permissions').val(), 1);
+      setCookie("tab_active", "permission");
+      setCookie("flt_trainee", $(this).val());
+      setTimeout(function () {
+        location.reload();
+      }, 30);
+    }
+  });
+
+  $('#flt_sevice_one_permissions').change(function () {
+    setCookie('flt_serving_one_permissions', $(this).val(), 1);
+    setCookie("tab_active", "permission");
+    setTimeout(function () {
+      location.reload();
+    }, 30);
+  });
+
+  // Фильтры
+  $('#flt_permission_active').change(function () {
+    setCookie('flt_permission_active', $(this).val(), 1);
+    $("#list_permission .list_string").each(function () {
+      if ($('#flt_permission_active').val() === "_all_" || $('#flt_permission_active').val() === $(this).attr("data-status")) {
+        $(this).show();
+      } else {
+        $(this).hide();
+      }
+    });
   });
 // DOCUMENT READY STOP
 });

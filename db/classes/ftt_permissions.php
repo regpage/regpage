@@ -39,9 +39,8 @@ class FttPermissions
   static function get_by_staff($trainee_list)
   {
     global $db;
-    $member_id = $db->real_escape_string($member_id);
-    $condition='1';
-    $result;
+    $condition='';
+    $result=[];
     if (count($trainee_list) > 0) {
       foreach ($trainee_list as $key => $value) {
         $key = $db->real_escape_string($key);
@@ -50,6 +49,8 @@ class FttPermissions
         }
         $condition .= " `member_key`='$key' ";
       }
+    } else {
+      $condition=0;
     }
 
     $res = db_query("SELECT `id`, `member_key`, `absence_date`, `date`, `comment`, `status`, `date_send`

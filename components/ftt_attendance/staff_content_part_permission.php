@@ -1,25 +1,25 @@
 <br>
 <div id="permission_list_header" class="btn-group mb-2">
   <button type="button" id="permission_add" class="btn btn-success btn-sm rounded mr-2" data-toggle="modal" data-target="#edit_permission_blank">Добавить</button>
-  <select id="permission_active" class="form-control form-control-sm mr-2">
-    <option value="_all_">Все</option>
-    <option value="0">На рассмотрении</option>
+  <select id="flt_permission_active" class="form-control form-control-sm mr-2" <?php echo $flt_permission_active; ?>>
+    <option value="_all_" <?php if ($flt_permission_active === '_all_') echo 'selected'; ?>>Все</option>
+    <option value="0" <?php if ($flt_permission_active === '0') echo 'selected'; ?>>На рассмотрении</option>
   </select>
-  <select id="sevice_one_select" class="form-control form-control-sm mr-2">
+  <select id="flt_sevice_one_permissions" class="form-control form-control-sm mr-2">
     <option value="_all_">Все служащие</option>
     <?php foreach ($serving_ones_list as $key => $value):
       $selected = '';
-      if ($key === $serving_one_selected) {
+      if ($key === $serving_one_permissions) {
         $selected = 'selected';
       }
       echo "<option value='{$key}' $selected>{$value}</option>";
     endforeach; ?>
   </select>
-  <select id="author_select_desk" class="form-control form-control-sm mr-2">
+  <select id="ftr_trainee_permissions" class="form-control form-control-sm mr-2">
     <option value="_all_">Все обучающиеся</option>
     <?php foreach ($trainee_list as $key => $value):
       $selected = '';
-      if ($key === $memberId) {
+      if ($key === $trainee_permissions) {
         $selected = 'selected';
       }
       echo "<option value='{$key}' {$selected}>{$value}</option>";
@@ -34,12 +34,13 @@
 <hr id="hight_line" style="margin-left: 0px; margin-right: -15px; margin-top: 0px; margin-bottom: 0px; border-color: lightgray;">
 <div id="list_permission" class="">
   <?php
-  foreach (FttPermissions::get_by_staff(ftt_lists::get_trainees_by_staff($memberId)) as $key => $value):
+  foreach (FttPermissions::get_by_staff(ftt_lists::get_trainees_by_staff($serving_one_permissions)) as $key => $value):
 
     $id = $value['id'];
     $date = $value['absence_date'];
     $permission_status = $value['status'];
     $permission_comment = $value['comment'];
+    $permission_member_key = $value['member_key'];
     $short_date = date_convert::yyyymmdd_to_ddmm($date);
 
     $checked_string = "<span class='badge badge-secondary'>Не отправлен</span>";
