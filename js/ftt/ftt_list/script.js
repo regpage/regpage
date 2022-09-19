@@ -16,7 +16,7 @@ $(document).ready(function(){
       // search
       string = $(this).find("span").first().text() + " " + $(this).find("div").first().next().find("span").text();
       string = string.toLowerCase();
-      if (search.length > 3) {
+      if (search.length >= 3) {
         search_result = string.indexOf(search.toLowerCase()) !== -1;
       }
       // Filter
@@ -45,6 +45,18 @@ $(document).ready(function(){
     }
   });
 
+  // reset search field
+    $("#search_field").next().click(function () {
+      if ($("#search_field").val()) {
+        $("#search_field").val("");
+        if ($("#tab_trainee").hasClass("active")) {
+          filter_trainee();
+        } else {
+          filter_staff();
+        }
+      }
+    });
+
   // фильтры staff
   function filter_staff() {
     // Search
@@ -57,7 +69,7 @@ $(document).ready(function(){
       // search
       string = $(this).find("span").first().text() + " " + $(this).find("div").first().next().find("span").text();
       string = string.toLowerCase();
-      if (search.length > 3) {
+      if (search.length >= 3) {
         search_result = string.indexOf(search.toLowerCase()) !== -1;
       }
       // Filter

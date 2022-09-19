@@ -365,7 +365,11 @@ function handleAditionalMenu(){
 
     $('.clear-search').click(function(){
         $(this).siblings('.search-text').val('');
-        loadDashboard();
+        if (location.pathname.split('.')[0] === '/youth') {
+          loadYouthList();
+        } else {
+          loadDashboard();
+        }
     });
 
     $('.emDepDate, .emArrDate').change(function(){
@@ -2624,8 +2628,3 @@ $('.bell-alarm, .bell-alarm-mbl').click(function () {
 		window.location = '/contacts';
 	}
 });
-
-// menu
-if ($(window).width()<=769) {
-  $(".navbarmain .nav-link").css('font-weight', 'bold');
-}

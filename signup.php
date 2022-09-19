@@ -243,7 +243,7 @@ $(document).ready(function(){
         </div>
         <div style="margin-top: 10px">
             <input style="margin-top: 0" type="checkbox" id="btn-terms-use" class="terms-use" valid="required">
-            <label style="display: inline; font-size: 12px" for="btn-terms-use">я принимаю условия<a href="https://drive.google.com/open?id=1krSycWkozm2Y-UNwHwG1OuMU81LgzbB76EVVfszgMYU" target="_blank"> Пользовательского соглашения</a> и даю <a href="https://drive.google.com/open?id=1-6shNo_9D-nrssOVo9SyLTEnjh0aql2pU7USypcdCj0" target="_blank">согласие</a> на обработку моих персональных данных</label>
+            <label style="display: inline; font-size: 12px" for="btn-terms-use">я принимаю условия<a href="https://drive.google.com/open?id=1krSycWkozm2Y-UNwHwG1OuMU81LgzbB76EVVfszgMYU" target="_blank"> Пользовательского соглашения</a> и подтверждаю <a href="https://drive.google.com/open?id=1-6shNo_9D-nrssOVo9SyLTEnjh0aql2pU7USypcdCj0" target="_blank">согласие</a> на обработку моих персональных данных</label>
         </div>
         <button style="margin-top: 10px;" id="loginFormBtn" class="btn btn-large btn-primary">Создать</button>
         <div style="margin-left: 50px; margin-top: 20px;"><a href="/login" >У меня уже есть аккаунт <i class="fa fa-sign-in" aria-hidden="true"></i> Войти.</a></div>

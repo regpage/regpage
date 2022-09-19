@@ -39,7 +39,7 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
 ?>
 <div id="eventTabs" class="members-list">
     <div class="tab-content">
-      <select class="controls span4 members-lists-combo" tooltip="Выберите нужный вам список здесь">
+      <select class="controls span5 members-lists-combo" tooltip="Выберите нужный вам список здесь" style="margin-right: 7px;">
           <option selected value="members">Общий список</option>
           <option value="youth">Молодые люди</option>
           <option value="list">Ответственные за регистрацию</option>
@@ -47,6 +47,8 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
             <option value="activity" selected>Активность ответственных</option>
           <?php } ?>
       </select>
+      <input type="text" class="controls search-text span5" placeholder="Поиск по фамилии" style="margin-bottom: 10px;">
+      <i class="icon-remove admin-list clear-search-members"></i>
         <div class="btn-toolbar">
             <div class="btn-group">
                 <a class="btn btn-success add-member" data-locality="<?php echo $adminLocality; ?>" type="button"><i class="fa fa-plus icon-white"></i> <span class="hide-name">Добавить</span></a>
@@ -85,13 +87,13 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
                     <i class="fa fa-bar-chart"></i> <span class="hide-name">Статистика</span>
                 </a>
             </div>
-            <div class="btn-group">
+            <!--<div class="btn-group">
                 <a type="button" class="btn btn-default search"><i class="icon-search" title="Поле поиска"></i></a>
                 <div class="not-display" data-toggle="1">
                     <input type="text"  class="controls search-text" placeholder="Введите текст">
                     <i class="icon-remove admin-list clear-search-members" style="margin-left: -20px; margin-top: -6px;"></i>
                 </div>
-            </div>
+            </div>-->
             <?php if(isset($memberId) && ($memberId == '000008601')){ ?>
             <div class="btn-group">
                 <a type="button" data-toggle='modal' class="btn btn-default upload_excel_file"><i class="fa fa-file" title="Загрузить файл Excel"></i></a>

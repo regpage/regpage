@@ -73,3 +73,11 @@
   right: 13px;
   top: 23px;
 }
+
+.clear-search {
+    margin-left: -18px;
+    margin-top: 7px;
+    color: #8c8787;
+    z-index: 1000;
+    font-size: 15px;
+}

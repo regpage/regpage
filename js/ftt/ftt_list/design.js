@@ -54,8 +54,11 @@ if ($(window).width()<=769) {
 } else {
   $("#main_container").css("padding-top", "0");
   $("#search_field").removeClass("w-50");
-  $("#search_field").addClass("col-2");
-  $("#search_field").css("max-width", "189px");
+  $("#search_field").addClass("col-5");
+  //$("#search_field").css("max-width", "189px");
+  $("#change_tab").removeClass("w-50");
+  $("#change_tab").removeClass("col-2").addClass("col-5");
+  $("#change_tab").css("max-width", "");
 }
 
 $("#main_container").css("margin-top", "60px");

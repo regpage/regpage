@@ -93,11 +93,17 @@ class ftt_lists {
   function get_trainees_by_staff($serving_one_id) {
     global $db;
     $serving_one_id = $db->real_escape_string($serving_one_id);
+    $condition;
+    if ($serving_one_id === "_all_") {
+      $condition = "1";
+    } else {
+      $condition = "tra.serving_one='$serving_one_id'";
+    }
     $result = [];
-    $res = db_query("SELECT tra.member_key, m.name
+    $res = db_query("SELECT tra.member_key, tra.serving_one, m.name
       FROM ftt_trainee AS tra
       INNER JOIN member m ON m.key = tra.member_key
-      WHERE tra.serving_one='$serving_one_id' ORDER BY m.name");
+      WHERE {$condition} ORDER BY m.name");
     while ($row = $res->fetch_assoc()) $result[$row['member_key']] = short_name::no_middle($row['name']);
     return $result;
   }

@@ -533,11 +533,18 @@ input.error, .control-group.error select, textarea.error {
     text-align: center;
 }
 .clear-search {
-    margin-left: -20px;
-    margin-top: -6px;
+    margin-left: -22px;
+    margin-top: -3px;
     color: #CCC;
+    opacity: 0.6;
 }
-.admin-list.clear-search{
+.clear-search-members {
+  margin-left: -22px;
+  margin-top: -3px;  
+  opacity: 0.6;
+}
+
+.admin-list.clear-search {
     color: #CCC;
 }
 

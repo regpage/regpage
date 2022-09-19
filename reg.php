@@ -65,16 +65,19 @@
 
 <div class="tabbable hide-phone registration-list" id="eventTabs">
     <div class="tab-content">
-        <select class="controls span5" id="events-list">
-            <?php
-            $activeIsSet = false;
-            foreach($events as $index => $event){
-                $isEventActive = (!$selectedEventId && !$activeIsSet) || ($selectedEventId == $event->id);
-                echo "<option value='".$event->id."' data-id='".$event->id."' ". ($isEventActive ? 'selected' : '').">". htmlspecialchars($event->name)."</option>";
-                $activeIsSet=true;
-            }
-            ?>
-        </select><!--<i id="tblPresents" class="fa fa-table cursor-pointer" aria-hidden="true" style="font-size: 20px; margin-left: 20px;"></i>-->
+        <select class="controls span5" id="events-list" style="margin-right: 7px;">
+          <?php
+          $activeIsSet = false;
+          foreach($events as $index => $event){
+              $isEventActive = (!$selectedEventId && !$activeIsSet) || ($selectedEventId == $event->id);
+              echo "<option value='".$event->id."' data-name='".$event->name."' data-id='".$event->id."' ". ($isEventActive ? 'selected' : '').">". htmlspecialchars($event->name)."</option>";
+              $activeIsSet=true;
+          }
+          ?>
+          </select><!--<i id="tblPresents" class="fa fa-table cursor-pointer" aria-hidden="true" style="font-size: 20px; margin-left: 20px;"></i>-->
+
+          <input type="text" class="controls search-text span5" placeholder="Поиск по фамилии" style="margin-bottom: 10px;">
+          <i class="icon-remove clear-search"></i>
     <?php
     $activeIsSet = false;
 
@@ -166,12 +169,12 @@
                 <i class="btn fa fa fa-wrench fa-lg filter-service" data-attended="2" title="Служащие" aria-hidden="true"></i>
             </div> -->
             <?php } ?>
-            <!-- show this button only if user is admin with full responcebility -->
+            <!-- show this button only if user is admin with full responsibility
             <a type="button" class="btn btn-default search"><i class="icon-search" title="Поле поиска"></i></a>
             <div class="not-display" data-toggle="1">
                 <input type="text"  class="controls search-text" placeholder="Введите текст">
                 <i class="icon-remove clear-search"></i>
-            </div>
+            </div>-->
             </div>
         </div>
         <div class="counterForResponseble" style="text-align: left; color: red; font-weight: bold; padding-top: 15px;">
@@ -1106,7 +1109,7 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
     $('.search-text').bind("paste keyup", function(event){
         event.stopPropagation();
         var eventId = $("#events-list").val();
-        var text = $('#eventTab-'+eventId).find('.search-text').val();
+        var text = $(".tab-content").find('.search-text').val(); // '#eventTab-'+eventId
         if(text.length>=3 || text.length==0) loadDashboard();
     });
 
@@ -1127,7 +1130,7 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
             }
         });
 
-        var searchText = el.find('.search-text').val() ? el.find('.search-text').val().trim() : '',
+        var searchText = $('.search-text').val() ? $('.search-text').val().trim() : '',
             regstate = [],
             attended = '';
 
@@ -2008,7 +2011,9 @@ function checkStopEventRegistration(eventId){
               text = "<span class='label label-important registration-closed'><a style='color:white;' data-toggle='modal' >Регистрация закрыта</a></span>";
           }
         }
-        $(".close-event-registration").html(text);
+        $("#events-list option[value='"+eventId+"']").html($("#events-list option[value='"+eventId+"']").attr("data-name")
+        + " " + '<span style="margin-left:10px;" class="close-event-registration">'+text+'</span>');
+        //$(".close-event-registration").html(text);
         $('#labelExtraInfo').click(function () {
           var a = $(this).attr('data-max-participants');
           var b = 'Максимальное количество участников для этого мероприятия — ' + a + ' чел.';

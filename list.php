@@ -16,7 +16,7 @@ $countries = db_getCountriesList();
         ?>
         <div id="eventTabs" class="admins-list">
             <div class="tab-content">
-              <select class="controls span4 members-lists-combo" tooltip="Выберите нужный вам список здесь">
+              <select class="controls span5 members-lists-combo" tooltip="Выберите нужный вам список здесь" style="margin-right: 7px;">
                   <option value="members">Общий список</option>
                   <option value="youth">Молодые люди</option>
                   <option selected value="list">Ответственные за регистрацию</option>
@@ -24,6 +24,8 @@ $countries = db_getCountriesList();
                     <option value="activity" selected>Активность ответственных</option>
                   <?php } ?>
               </select>
+              <input type="text" class="controls search-text span5" placeholder="Поиск по фамилии" style="margin-bottom: 10px;">
+              <i class="icon-remove admin-list clear-search"></i>
                 <div class="btn-toolbar">
                     <select class="span3" id="selCountry">
                         <?php
@@ -44,11 +46,11 @@ $countries = db_getCountriesList();
 
                     <select class="span3" id="selRegion"></select>
                     <select class="span3" id="selLocality"></select>
-                    <a type="button" class="btn btn-default search"><i class="icon-search" title="Поле поиска"></i></a>
+                    <!--<a type="button" class="btn btn-default search"><i class="icon-search" title="Поле поиска"></i></a>
                     <div class="not-display" data-toggle="1">
                         <input type="text"  class="controls search-text" placeholder="Введите текст">
                         <i class="icon-remove admin-list clear-search"></i>
-                    </div>
+                    </div>-->
                 </div>
                 <div class="desctopVisible">
                     <table id="members" class="table table-hover">

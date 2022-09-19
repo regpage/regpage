@@ -14,6 +14,7 @@
       <option value="tab_service_one" <?php if ($tab_active === 'tab_service_one') echo 'selected'; ?>>Служащие</option>
     </select>
     <input id="search_field" class="w-50 form-control form-control-sm" type="text" placeholder="Поиск">
+    <i class="fa fa-remove clear-search"></i>
   </div>
   <div id="tab_content" class="tab-content">
     <div id="tab_trainee" class="tab-pane <?php if ($tab_active === 'tab_trainee') echo 'active'; ?>">
