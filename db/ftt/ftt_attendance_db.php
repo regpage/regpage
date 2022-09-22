@@ -404,16 +404,25 @@ function set_permission($sessions)
   $member_key = $db->real_escape_string($sessions->sheet->member_key);
   $absence_date = $db->real_escape_string($sessions->sheet->absence_date);
   $date = $db->real_escape_string($sessions->sheet->date);
-  $comment = $db->real_escape_string($sessions->sheet->comment);
   $status = $db->real_escape_string($sessions->sheet->status);
+  $date_send = $db->real_escape_string($sessions->sheet->date_send);
+  $comment = $db->real_escape_string($sessions->sheet->comment);
+  $serving_one = $db->real_escape_string($sessions->sheet->serving_one);
+
+
+  if ($status === '1') {
+    $date_send = 'NOW()';
+  } else {
+    $date_send = "'$date_send'";
+  }
 
   if (empty($sessions->sheet->id)) {
-    $res = db_query("INSERT INTO `ftt_permission_sheet` (`member_key`, `absence_date`, `date`, `comment`, `status`, `changed`)
-    VALUES ('$member_key', '$absence_date', NOW(),'$comment', '$status', 1)");
+    $res = db_query("INSERT INTO `ftt_permission_sheet` (`member_key`, `absence_date`, `date`, `comment`, `status`, `date_send`,  `serving_one`, `changed`)
+    VALUES ('$member_key', '$absence_date', NOW(),'$comment', '$status', $date_send, '$serving_one', 1)");
     $sheet_id = $db->insert_id;
   } else {
     $res = db_query("UPDATE `ftt_permission_sheet` SET
-      `absence_date` = '$absence_date', `date` = NOW(), `comment` = '$comment', `status` = '$status', `changed` = 1
+      `member_key` = '$member_key', `absence_date` = '$absence_date', `date_send` = $date_send, `comment` = '$comment', `status` = '$status', `serving_one` = '$serving_one', `changed` = 1
       WHERE `id` = '$sheet_id'");
     db_query("DELETE FROM `ftt_permission` WHERE `sheet_id` = '$sheet_id'");
   }

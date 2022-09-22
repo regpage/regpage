@@ -449,11 +449,11 @@ if ($(window).width()<=769) {
 	$('.show-name-list').css('font-size', '17px');
 	$('#main_container .tab-content .btn').css('font-size', '17px');
 } else {
-	console.log($(window).height());
+	/*console.log($(window).height());
 	console.log($("#main_container").height());
 	if (($("#main_container").height() + 117+91)< $(window).height()) {
 		$("#footer_info").css("padding-top",($(window).height() - $("#main_container").height() - 160-125) + $("#main_container").height());
 		console.log($(window).height());
 		console.log($("#main_container").height());
-	}
+	}*/
 }

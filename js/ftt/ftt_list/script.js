@@ -13,8 +13,8 @@ $(document).ready(function(){
 
     // Filter
     $("#list_content .list_string").each(function() {
-      // search
-      string = $(this).find("span").first().text() + " " + $(this).find("div").first().next().find("span").text();
+      // search // поиск по местности + " " + $(this).find("div").first().next().find("span").text()
+      string = $(this).find("span").first().text();
       string = string.toLowerCase();
       if (search.length >= 3) {
         search_result = string.indexOf(search.toLowerCase()) !== -1;
@@ -66,8 +66,8 @@ $(document).ready(function(){
 
     // Filter
     $("#list_content_staff .list_string").each(function() {
-      // search
-      string = $(this).find("span").first().text() + " " + $(this).find("div").first().next().find("span").text();
+      // search // поиск по местности  + " " + $(this).find("div").first().next().find("span").text()
+      string = $(this).find("span").first().text();
       string = string.toLowerCase();
       if (search.length >= 3) {
         search_result = string.indexOf(search.toLowerCase()) !== -1;

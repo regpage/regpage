@@ -53,14 +53,13 @@ class FttPermissions
       $condition=0;
     }
 
-    $res = db_query("SELECT `id`, `member_key`, `absence_date`, `date`, `comment`, `status`, `date_send`
+    $res = db_query("SELECT `id`, `member_key`, `absence_date`, `date`, `comment`, `status`, `date_send`, `serving_one`
       FROM ftt_permission_sheet
       WHERE {$condition}
-      ORDER BY `date`");
+      ORDER BY `absence_date`");
     while ($row = $res->fetch_assoc()) $result[]=$row;
 
     return $result;
-
   }
 
   static function get_by_date($date)

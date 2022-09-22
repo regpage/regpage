@@ -13,15 +13,17 @@
   <br>
   <ul class="nav nav-tabs" role="tablist">
     <li class="nav-item">
-      <a class="nav-link active" data-toggle="tab" href="#current_extra_help">Листы посещаемости</a>
+      <a class="nav-link <?php echo $tab_attendance_active; ?>" data-toggle="tab" href="#current_extra_help">Листы посещаемости</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#permission_tab">Листы отсутствия</a>
+      <a class="nav-link <?php echo $tab_permission_active; ?>" data-toggle="tab" href="#permission_tab">
+        Листы отсутствия <?php echo $permission_statistics; ?>
+      </a>
     </li>
   </ul>
   <!-- Tab panes -->
   <div id="tab_content_extra_help" class="tab-content">
-    <div id="current_extra_help" class="container tab-pane active"><br>
+    <div id="current_extra_help" class="container tab-pane <?php echo $tab_attendance_active; ?>"><br>
       <div id="bar_extra_help" class="btn-group mb-2">
         <?php
         $serving_one_selected = $memberId;
@@ -38,7 +40,7 @@
             }
             echo "<option value='{$key}' $selected>{$value}</option>";
           endforeach; ?>
-        </select>        
+        </select>
         <!--<button id="showModalAddEditExtraHelp" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAddEdit">Добавить</button>-->
         <!--<select id="author_select" class="form-control form-control-sm" style="width: 200px;">-->
           <!--<option value="_all_">Все обучающиеся</option>-->
@@ -105,8 +107,17 @@
             $list_access = '_all_';
           }
           $current_date_z = date("Y-m-d");
+          $data_for_list = getFttAttendanceSheetAndStrings($list_access, $filter_period_att, $serving_one_selected);
+          $counter_days = [];
+          for ($i=0; $i < count($data_for_list); $i++) {
+            if (isset($counter_days[$data_for_list[$i]['member_key']])) {
+              $counter_days[$data_for_list[$i]['member_key']]++;
+            } else {
+              $counter_days[$data_for_list[$i]['member_key']] = 1;
+            }
+          }
 
-          foreach (getFttAttendanceSheetAndStrings($list_access, $filter_period_att, $serving_one_selected) as $key => $value):
+          foreach ($data_for_list as $key => $value):
             $counter++;
           /*$short_name_trainee = short_name::no_middle($trainee_list[$value['feh_member_key']]);
           $short_name_service_one = short_name::no_middle($serving_ones_list[$value['serving_one']]);
@@ -252,20 +263,21 @@
             } else {*/
               echo "<span class='list_string link_day {$sunday_class} {$done_string} {$mark_string}' data-id='{$id}' data-date='{$date}' data-member_key='{$member_key}' data-status='{$status}' data-date_send='{$date_send}' data-bible='{$bible}' data-morning_revival='{$morning_revival}' data-personal_prayer='{$personal_prayer}' data-common_prayer='{$common_prayer}' data-bible_reading='{$bible_reading}' data-ministry_reading='{$ministry_reading}' data-serving_one='{$serving_one}' data-comment='{$comment}' data-toggle='modal' data-target='#modalAddEdit'> {$short_date} {$short_day_of_week}</span>";
             /*}*/
-          }
-          if ($counter % 7 === 0) {
+          } // || $counter % $counter_days[$member_key] === 0
+          if ($counter % $counter_days[$member_key] === 0 || $counter_days[$member_key] === 1) {
+            $counter = 0;
             echo "<span class='period_col'><span class='desk_show'>{$pause_from} {$pause_start} {$pause_to} {$pause_stop} {$comment_str}</span></span>{$comment_ico_str}";
           }
           $prev_member_key = $value['member_key'];
         endforeach;
-        if ($counter > 0) {
+        //if ($counter > 0) {
             echo "</div></div>";
-        }
+        //}
         ?>
         </div>
       </div>
     </div>
-    <div id="permission_tab" class="tab-pane container">
+    <div id="permission_tab" class="tab-pane container <?php echo $tab_permission_active; ?>">
       <?php include 'components/ftt_attendance/staff_content_part_permission.php'; ?>
     </div>
   </div>

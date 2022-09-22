@@ -31,9 +31,22 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
         <div class="">
           <input type="text" id="permission_modal_comment" class="form-control form-control-sm" value="" placeholder="Комментарий">
         </div>
+        <?php if ($ftt_access['group'] === 'staff') { ?>
+        <div class="">
+          <label class="">
+          <span id="info_of_permission" class="cursor-pointer" style="border-bottom: 1px dashed lightgrey; font-size: 12px; margin-left: 420px;">Инфо</span>
+          <div class="text-right" style="font-size: 12px; display: none;">
+            <span id="author_of_permission">Одобрено </span>
+            <span id="allow_of_permission"></span>
+            <span id="date_of_permission"></span>
+          </div>
+        </div>
+        <?php } ?>
       </div>
       <div class="modal-footer">
+        <?php if ($ftt_access['group'] === 'staff') { ?>
         <button id="send_permission_blank" class="btn btn-sm btn-success">Отправить</button>
+        <?php } ?>
         <button id="save_permission_blank" class="btn btn-sm btn-primary">Сохранить</button>
         <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Закрыть</button>
       </div>

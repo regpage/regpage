@@ -1,9 +1,9 @@
 <br>
 <div id="permission_list_header" class="btn-group mb-2">
   <button type="button" id="permission_add" class="btn btn-success btn-sm rounded mr-2" data-toggle="modal" data-target="#edit_permission_blank">Добавить</button>
-  <select id="permission_active" class="form-control form-control-sm">
-    <option value="_all_">Все</option>
-    <option value="0">На рассмотрении</option>
+  <select id="flt_permission_active" class="form-control form-control-sm">
+    <option value="_all_" <?php if ($flt_permission_active === '_all_') echo 'selected'; ?>>Все</option>
+    <option value="0" <?php if ($flt_permission_active === '0') echo 'selected'; ?>>На рассмотрении</option>
   </select>
 </div>
 <div class="row row_corr">
@@ -27,11 +27,12 @@
     $short_absence_date = date_convert::yyyymmdd_to_ddmm($permission_absence_date);
 
     $checked_string = "<span class='badge badge-secondary'>Не отправлен</span>";
-    $done_string = '';
-    if ($archive = $value['status'] === '1') {
+    $show_string = '';
+    if ($value['status'] === '1') {
       $checked_string = "<span class='badge badge-success'>Отправлен</span>";
-      $done_string = 'green_string';
-      //{$done_string}
+      if ($flt_permission_active === '0') {
+        $show_string = 'style="display:none;"';
+      }
     }
 
     $permission_comment_short;

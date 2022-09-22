@@ -6,10 +6,6 @@ $(document).ready(function(){
 
   // get cookie
   if (getCookie("tab_active") === "permission") {
-    $("#current_extra_help").removeClass("active");
-    $("#permission_tab").addClass("active");
-    $("#extra_help_staff .nav-tabs").find(".nav-link").removeClass("active");
-    $("#extra_help_staff .nav-tabs").find(".nav-link:last").addClass("active");
     setCookie("tab_active", "");
     if (getCookie("flt_trainee") !== "") {
       setCookie("flt_trainee", "");
@@ -1279,6 +1275,11 @@ function open_blank(el_this) {
     if (status !== 0 && status !== 1) {
       status = $("#edit_permission_blank").attr("data-status");
     }
+    let serving_one = "";
+    if (status === 1) {
+      serving_one = admin_id_gl;
+    }
+
     // prepare
     let session_str = new FormData();
     let type = "";
@@ -1290,15 +1291,12 @@ function open_blank(el_this) {
         date_send: $("#edit_permission_blank").attr("data-date_send"),
         absence_date: $("#permission_modal_date").val(),
         status: status,
-        serving_one: "",
+        serving_one: serving_one,
         comment: $("#permission_modal_comment").val()
       }
     };
     if ($("#edit_permission_blank").attr("data-id")) {
       session_str_test["sheet"]["id"] = $("#edit_permission_blank").attr("data-id");
-    }
-    if (admin_id_gl !== $("#edit_permission_blank").attr("data-member_key")) {
-      session_str_test["sheet"]["serving_one"] = admin_id_gl;
     }
 
     $("#modal_permission_block input[type='checkbox']").each(function (i) {
@@ -1350,6 +1348,10 @@ function open_blank(el_this) {
     $(selector).attr("data-serving_one", "");
     $(selector).attr("data-status", "");
     $("#modal_permission_block").html("");
+    $('#author_of_permission').parent().hide();
+    $('#author_of_permission').text("");
+    $("#date_of_permission").text("");
+    $("#allow_of_permission").text("");
   }
 
   function valid_field() {
@@ -1369,25 +1371,50 @@ function open_blank(el_this) {
     if (element.attr("data-status") === "1") {
       $("#send_permission_blank").prop("disabled", true).hide();
       $("#save_permission_blank").prop("disabled", true).hide();
-      $("#save_permission_blank").prop("disabled", true).hide();
       $("#edit_permission_blank input").attr("disabled", true);
+      $("#edit_permission_blank select").attr("disabled", true);
     } else {
       $("#send_permission_blank").prop("disabled", false).show();
       $("#save_permission_blank").prop("disabled", false).show();
       $("#edit_permission_blank input").attr("disabled", false);
+      $("#edit_permission_blank select").attr("disabled", false);
     }
-    // field
-    $("#permission_modal_date").val(element.attr("data-absence_date"));
-    $("#permission_modal_comment").val(element.attr("data-comment"));
-    // attr
-    $("#edit_permission_blank").attr("data-id", element.attr("data-id"));
-    $("#edit_permission_blank").attr("data-member_key", element.attr("data-member_key"));
-    $("#edit_permission_blank").attr("data-date", element.attr("data-date"));
-    $("#edit_permission_blank").attr("data-send_date", element.attr("data-send_date"));
-    $("#edit_permission_blank").attr("data-absence_date", element.attr("data-absence_date"));
-    $("#edit_permission_blank").attr("data-status", element.attr("data-status"));
-    $("#edit_permission_blank").attr("data-serving_one", element.attr("data-serving_one"));
-    $("#edit_permission_blank").attr("data-comment", element.attr("data-comment"));
+    // NEW
+    if (element.attr("id") === "permission_add") {
+      if (trainee_access) { // for trainee
+        $("#edit_permission_blank").attr("data-member_key", admin_id_gl);
+        get_sessions_for_blank(admin_id_gl, date_now_gl, true);
+      } else { // for staff
+        get_sessions_for_blank($("#trainee_select_permission").val(), date_now_gl, true);
+        $("#edit_permission_blank").attr("data-member_key", $("#trainee_select_permission").val());
+      }
+      $("#permission_modal_date").val(date_now_gl);
+    } else { // EDIT
+      // field
+      $("#trainee_select_permission").val(element.attr("data-member_key"));
+      $("#permission_modal_date").val(element.attr("data-absence_date"));
+      $("#permission_modal_comment").val(element.attr("data-comment"));
+      // attr
+      $("#edit_permission_blank").attr("data-id", element.attr("data-id"));
+      $("#edit_permission_blank").attr("data-member_key", element.attr("data-member_key"));
+      $("#edit_permission_blank").attr("data-date", element.attr("data-date"));
+      $("#edit_permission_blank").attr("data-send_date", element.attr("data-date_send"));
+      $("#edit_permission_blank").attr("data-absence_date", element.attr("data-absence_date"));
+      $("#edit_permission_blank").attr("data-status", element.attr("data-status"));
+      $("#edit_permission_blank").attr("data-serving_one", element.attr("data-serving_one"));
+      $("#edit_permission_blank").attr("data-comment", element.attr("data-comment"));
+
+      let text_permission_status = "В ожидании";
+      if (element.attr("data-status") === "1") {
+        text_permission_status = "Одобрено";
+        $("#date_of_permission").text(element.attr("data-date_send"));
+        $("#allow_of_permission").text(serving_ones_list[element.attr("data-serving_one")]);
+      } else {
+        $("#date_of_permission").text("");
+        $("#allow_of_permission").text("");
+      }
+      $("#author_of_permission").text(text_permission_status);
+    }
   }
 
   function permission_session_cheched(sheet_id) {
@@ -1411,25 +1438,12 @@ function open_blank(el_this) {
       }
     });
   }
-
+  // New permission
   $("#permission_add").click(function () {
     clear_blank("#edit_permission_blank");
-    // behavior
-    $("#send_permission_blank").prop("disabled", false).show();
-    $("#save_permission_blank").prop("disabled", false).show();
-    $("#edit_permission_blank input").attr("disabled", false);
-
-    if (trainee_access) { // for trainee
-      $("#edit_permission_blank").attr("data-member_key", admin_id_gl);
-      get_sessions_for_blank(admin_id_gl, date_now_gl, true);
-    } else { // for staff
-      get_sessions_for_blank($("#trainee_select_permission").val(), date_now_gl, true);
-      $("#edit_permission_blank").attr("data-member_key", $("#trainee_select_permission").val());
-    }
-
-    $("#permission_modal_date").val(date_now_gl);
+    fill_blank($(this));
   });
-
+  // open permission
   $("#list_permission .list_string").click(function () {
     clear_blank("#edit_permission_blank");
     fill_blank($(this));
@@ -1509,5 +1523,19 @@ function open_blank(el_this) {
       }
     });
   });
+  $('#trainee_select_permission').change(function () {
+    $("#edit_permission_blank").attr("data-member_key", $(this).val());
+    get_sessions_for_blank($("#edit_permission_blank").attr("data-member_key"), $("#edit_permission_blank").attr("data-absence_date"), true);
+  });
+
+  $('#info_of_permission').click(function () {
+    if ($('#author_of_permission').is(":visible")) {
+      $('#author_of_permission').parent().hide();
+    } else {
+      $('#author_of_permission').parent().show();
+    }
+  });
+
+
 // DOCUMENT READY STOP
 });

@@ -5,6 +5,7 @@
   include_once 'db/classes/ftt_lists.php';
   include_once 'db/classes/date_convert.php';
   include_once 'db/classes/ftt_permissions.php';
+  include_once 'db/classes/statistics.php';
   include_once 'db/ftt/ftt_attendance_db.php';
 
 // ПОСЕЩАЕМОСТЬ
@@ -67,4 +68,24 @@ $flt_permission_active = "_all_";
 if (isset($_COOKIE['flt_permission_active']) && (!empty($_COOKIE['flt_permission_active']) || $_COOKIE['flt_permission_active'] === '0')) {
   $flt_permission_active = $_COOKIE['flt_permission_active'];
 }
+
+$tab_attendance_active = 'active';
+$tab_permission_active = '';
+if (isset($_COOKIE['tab_active']) && (!empty($_COOKIE['tab_active']) || $_COOKIE['tab_active'] === 'permission')) {
+  $tab_attendance_active = '';
+  $tab_permission_active = 'active';
+}
+
+// statistics
+$permission_stat_count;
+$permission_statistics = '';
+if ($ftt_access['group'] === 'staff') {
+  $permission_stat_count = statistics::permission_count(ftt_lists::get_trainees_by_staff($serving_one_permissions));
+} else {
+  $permission_stat_count = statistics::permission_count($memberId);
+}
+if ($permission_stat_count > 0) {
+  $permission_statistics = "<sup style='color: red;'> <b> {$permission_stat_count}</b></sup>";
+}
+
 ?>

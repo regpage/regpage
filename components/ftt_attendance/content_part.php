@@ -3,16 +3,18 @@
   <br>
   <ul class="nav nav-tabs" role="tablist">
     <li class="nav-item">
-      <a class="nav-link active" data-toggle="tab" href="#current_extra_help">Листы посещаемости</a>
+      <a class="nav-link <?php echo $tab_attendance_active; ?>" data-toggle="tab" href="#current_extra_help">Листы посещаемости</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#permission_tab">Листы отсутствия</a>
+      <a class="nav-link <?php echo $tab_permission_active; ?>" data-toggle="tab" href="#permission_tab">
+        Листы отсутствия <?php echo $permission_statistics; ?>
+      </a>
     </li>
   </ul>
   <!-- Tab panes -->
   <div id="tab_content_extra_help" class="tab-content">
     <!-- ATTENDANCE TAB -->
-    <div id="current_extra_help" class="container tab-pane active"><br>
+    <div id="current_extra_help" class="container tab-pane <?php echo $tab_attendance_active; ?>"><br>
       <div id="bar_extra_help" class="btn-group mb-2">
         <!--<button id="showModalAddEditExtraHelp" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAddEdit">Добавить</button>-->
         <?php
@@ -194,7 +196,7 @@
       <?php echo "<strong class='period_col'>{$pause_from} {$pause_start}{$pause_to}{$pause_stop}</strong>"; ?>
     </div>
     <!-- PERMISSION TAB -->
-    <div id="permission_tab" class="tab-pane container">
+    <div id="permission_tab" class="tab-pane container <?php echo $tab_permission_active; ?>">
       <?php include 'components/ftt_attendance/content_part_permission.php'; ?>
     </div>
   </div>
