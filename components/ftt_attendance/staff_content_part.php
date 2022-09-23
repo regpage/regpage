@@ -95,8 +95,13 @@
           $filter_period_att = 'week';
           $prev_member_key = '';
           $start = true;
+          $first_str = true;
           $counter = 0;
           $id_head_start = '';
+          $date_strt_str;
+          $date_stp_str;
+          $comm_str;
+          $comm_ico_str;
           /*if (isset($_COOKIE['filter_period_att'])) {
             $filter_period_att = $_COOKIE['filter_period_att'];
           }*/
@@ -209,13 +214,27 @@
           $open_day = '';
           $btn_bold = 'accordion-head';
 
+          if ($first_str && $counter === 2) {
+            $date_strt_str = $value['pause_start'];
+            $date_stp_str = $value['pause_stop'];;
+            $comm_str = $value['pause_comment'];
+            $comm_ico_str = $value['pause_comment'];
+          }
+
           if ($value['member_key'] !== $prev_member_key && !$start) {
+            // REGULAR
             $date_start_str = $value['pause_start'];
             $date_stop_str = $value['pause_stop'];
             $comment_str = $value['pause_comment'];
             $comment_ico_str = $value['pause_comment'];
             $date_start_ico = date_convert::yyyymmdd_to_ddmm($date_start_str);
             $date_stop_ico = date_convert::yyyymmdd_to_ddmm($date_stop_str);
+            if ($date_start_ico === 'No date') {
+              $date_start_ico = 'нет даты';
+            }
+            if ($date_stop_ico === 'No date') {
+              $date_stop_ico = 'нет даты';
+            }
             $pause_from = '';
             $pause_start = '';
             $pause_to = '';
@@ -245,6 +264,48 @@
             } else {
               $comment_ico_str = '';
             }
+
+            // FIRST
+            if ($first_str) {
+              $date_strt_str = $date_strt_str;
+              $date_stp_str = $date_stp_str;
+              $comm_str = $comm_str;
+              $comm_ico_str = $comm_ico_str;
+              $date_strt_ico = date_convert::yyyymmdd_to_ddmm($date_strt_str);
+              $date_stp_ico = date_convert::yyyymmdd_to_ddmm($date_stp_str);
+              $f_pause_from = '';
+              $f_pause_start = '';
+              $f_pause_to = '';
+              $f_pause_stop = '';
+              if ((date($current_date_z) >= date($date_strt_str) && !$date_stp_str) || (date($current_date_z) >= date($date_strt_str) && date($current_date_z) <= date($date_stp_str))) {
+                $f_pause_from = 'Перерыв с ';
+                $f_pause_start = date_convert::yyyymmdd_to_ddmm($date_strt_str);
+                $f_pause_stop = date_convert::yyyymmdd_to_ddmm($date_stp_str);
+                $f_pause_to = 'по';
+                if ($f_pause_start === 'No date') {
+                  $f_pause_from = '';
+                  $f_pause_start = '';
+                  $f_pause_to = '';
+                  $f_pause_stop = '';
+                }
+                if ($f_pause_stop === 'No date') {
+                  $f_pause_to = '';
+                  $f_pause_stop = '';
+                }
+              }
+
+              if ($comm_ico_str) {
+                if (!$f_pause_from) {
+                  $comm_str = "<span class='desk_show'>{$comm_str} с {$date_strt_ico} по {$date_stp_ico}</span>";
+                }
+                $comm_ico_str = "<i class='fa fa-sticky-note mbl_show hide_element' aria-hidden='true' title='{$comm_ico_str} с {$date_strt_ico} по {$date_stp_ico}'></i>";
+              } else {
+                $comm_ico_str = '';
+              }
+
+              $first_str = false;
+              echo "<span class='period_col'><span class='desk_show'>{$f_pause_from} {$f_pause_start} {$f_pause_to} {$f_pause_stop} {$comm_str}</span></span>{$comm_ico_str}";
+            }
             echo "</div></div>";
             $start = true;
           }
@@ -266,13 +327,15 @@
           } // || $counter % $counter_days[$member_key] === 0
           if ($counter % $counter_days[$member_key] === 0 || $counter_days[$member_key] === 1) {
             $counter = 0;
-            echo "<span class='period_col'><span class='desk_show'>{$pause_from} {$pause_start} {$pause_to} {$pause_stop} {$comment_str}</span></span>{$comment_ico_str}";
+            if (!$first_str) {
+              echo "<span class='period_col'><span class='desk_show'>{$pause_from} {$pause_start} {$pause_to} {$pause_stop} {$comment_str}</span></span>{$comment_ico_str}";
+            }
           }
           $prev_member_key = $value['member_key'];
         endforeach;
-        //if ($counter > 0) {
+        if (count($data_for_list) > 0) {
             echo "</div></div>";
-        //}
+        }
         ?>
         </div>
       </div>
