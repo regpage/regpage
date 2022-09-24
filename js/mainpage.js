@@ -42,7 +42,7 @@ if ($(window).width()<=769) {
   if ($("body").height() < $(window).height()) {
     //console.log($(window).height());
 		//console.log($("#eventTabs").height());
-    $("#eventTabs").height($(window).height() - ($("#eventTabs").height() - 190));
+    //$("#eventTabs").height($(window).height() - ($("#eventTabs").height() - 190));
 	}
   $("#ftt_trainee_block span").each(function () {
     $(this).css("display", "inline-block");

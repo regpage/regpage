@@ -2,6 +2,11 @@
 input, select {
   border-radius: 5px !important;
 }
+
+label {
+  font-weight: normal;
+}
+
 .archive_str {
   padding-top: 0px;
   padding-bottom: 0px;

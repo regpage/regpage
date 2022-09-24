@@ -448,6 +448,7 @@ if ($(window).width()<=769) {
 	$(".nav-sub-container .divider-vertical").hide();
 	$('.show-name-list').css('font-size', '17px');
 	$('#main_container .tab-content .btn').css('font-size', '17px');
+	//$('#main_container .tab-content select').css('font-size', '17px');
 } else {
 	/*console.log($(window).height());
 	console.log($("#main_container").height());

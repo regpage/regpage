@@ -36,7 +36,7 @@ if ($(window).width()<=769) {
   $(".card_header").css("margin-left", "0px");
   $("#tab_content_extra_help").attr("style", "font-size: 16px !important");
   $("#sevice_one_select").attr("style", "font-size: 16px !important");
-  $("#period_select").attr("style", "font-size: 16px !important");
+  $("#period_select").attr("style", "font-size: 17px !important");
   $(".col_n_1").removeClass("col-2").addClass("col-8");
   $(".trainee_name").parent().hide();
   $("#period_select").addClass("mb-2");
@@ -56,6 +56,38 @@ if ($(window).width()<=769) {
   $("#name_of_trainee").parent().parent().css("padding-right", "5px");
   $("#name_of_trainee").parent().parent().css("max-width", "200px");
   $("#modalAddEdit .btn-sm").removeClass("btn-sm");
+
+  // РАЗРЕШЕНИЯ
+  // container
+  // header
+  $("#permission_list_header").removeClass("mb-2").addClass("mb-3");
+  $("#permission_tab .row_corr").hide();
+  $("#permission_flt_modal_o").show();
+  $("#permission_list_header select").hide();
+  $("#permission_ftr_modal select").css("font-size","17px");
+  // columns
+  $("#permission_tab .col-8").removeClass("col-8").addClass("col-7");
+  //strings
+  $("#list_permission .list_string div:first-child").addClass("pr-0");
+  $("#list_permission .list_string div:first-child").css("max-width", "45px");
+  $("#list_permission .list_string div:first-child").next().addClass("pl-2");
+  if (!trainee_access) {
+    $("#list_permission .list_string div:first-child").next().addClass("pr-2");
+    $("#list_permission .list_string div:first-child").next().next().addClass("pl-2");
+    $("#list_permission .list_string div:first-child").next().next().addClass("pr-2");
+    $("#list_permission .list_string div:first-child").next().next().next().addClass("pl-0");
+  } else {
+    $("#list_permission .list_string div:first-child").next().next().css("padding-left", "10px");
+  }
+
+  // blank
+  $("#info_of_permission").css("margin-left", "300px");
+  $("#edit_permission_blank input").css("font-size","16px");
+  $("#edit_permission_blank select").css("font-size","16px");
+
+  // footer
+  $("#edit_permission_blank .modal-footer .btn").css("font-size", "17px");
+
 } else if ($(window).width()<=991 && $(window).width()>769) {
   $("#current_extra_help").css("min-width", $(window).width()+"px");
   $(".card_header button").css("width", "180px");

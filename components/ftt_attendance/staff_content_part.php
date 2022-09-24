@@ -214,7 +214,7 @@
           $open_day = '';
           $btn_bold = 'accordion-head';
 
-          if ($first_str && $counter === 2) {
+          if ($first_str && ($counter === 2 || ($counter_days[$member_key] === 1 && $counter === 1))) {
             $date_strt_str = $value['pause_start'];
             $date_stp_str = $value['pause_stop'];;
             $comm_str = $value['pause_comment'];

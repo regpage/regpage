@@ -1068,11 +1068,19 @@ function open_blank(el_this) {
             } else {
               id_field_extra = sessions_staff[session_str]["id"];
             }
+
+            let end_time_session = "";
+            if (sessions_staff[session_str]["duration"] && sessions_staff[session_str]["duration"] !== "0") {
+              end_time_session = " – " + time_plus_minutes(sessions_staff[session_str][day_of_date], sessions_staff[session_str]["duration"]);
+            }
+
+
             html_staff_editor += "<div><label class='form-check-label'><input type='checkbox' class='session_staff_str form-check-input' data-day='"+sessions_staff[session_str][day_of_date]
             +"' data-session_name='"+sessions_staff[session_str]["session_name"]+"' data-session_id='"+id_field_extra
             +"' data-visit='"+sessions_staff[session_str]["visit"]+"' data-end_time='"+sessions_staff[session_str]["end_time"]
             +"' data-duration='"+sessions_staff[session_str]["duration"]+"' data-comment='"+sessions_staff[session_str]["comment"]
-            +"' "+checked_str+">"+sessions_staff[session_str]["session_name"]+"</label></div>"
+            +"' "+checked_str+">"+sessions_staff[session_str]["session_name"]+ " ("
+            +sessions_staff[session_str][day_of_date]+""+end_time_session+")</label></div>"
           }
         }
       }
@@ -1523,19 +1531,56 @@ function open_blank(el_this) {
       }
     });
   });
+  // blank
   $('#trainee_select_permission').change(function () {
     $("#edit_permission_blank").attr("data-member_key", $(this).val());
     get_sessions_for_blank($("#edit_permission_blank").attr("data-member_key"), $("#edit_permission_blank").attr("data-absence_date"), true);
   });
 
-  $('#info_of_permission').click(function () {
-    if ($('#author_of_permission').is(":visible")) {
-      $('#author_of_permission').parent().hide();
+  $("#info_of_permission").click(function () {
+    if ($("#author_of_permission").is(":visible")) {
+      $("#author_of_permission").parent().hide();
     } else {
-      $('#author_of_permission').parent().show();
+      $("#author_of_permission").parent().show();
     }
   });
 
+  // filters mobile
+  $("#permission_ftr_modal_apply").click(function () {
+    if ($("#modal_flt_permission_active").val() !== $("#flt_permission_active").val()
+    && $("#modal_ftr_trainee_permissions").val() === $("#ftr_trainee_permissions").val()
+    && $("#modal_flt_sevice_one_permissions").val() === $("#flt_sevice_one_permissions").val()) {
+      $("#flt_permission_active").val($("#modal_flt_permission_active").val());
+      setCookie('flt_permission_active', $("#modal_flt_permission_active").val(), 1);
+      filters_permissions();
+    } else if ($("#modal_flt_permission_active").val() === $("#flt_permission_active").val()
+    && $("#modal_ftr_trainee_permissions").val() === $("#ftr_trainee_permissions").val()
+    && $("#modal_flt_sevice_one_permissions").val() === $("#flt_sevice_one_permissions").val()) {
+      console.log("I am here");
+    } else {
+      setCookie('flt_permission_active', $("#modal_flt_permission_active").val(), 1);
+      setCookie('flt_serving_one_permissions', $("#modal_flt_sevice_one_permissions").val(), 1);
+      if ($("#modal_ftr_trainee_permissions").val() === "_all_") {
+        setCookie("flt_trainee","", 1);
+      } else {
+        setCookie("flt_trainee",$("#modal_ftr_trainee_permissions").val(), 1);
+      }
+      setCookie("tab_active", "permission");
+      setTimeout(function () {
+        location.reload();
+      }, 30);
+    }
+  });
+
+  $("#modal_flt_permission_active, #modal_flt_sevice_one_permissions, #modal_ftr_trainee_permissions").change(function (e) {
+    let fltr_id = e.target.id;
+    if (fltr_id === "modal_ftr_trainee_permissions" && $(this).val() !== "_all_") {
+      $('#modal_flt_sevice_one_permissions').val("_all_");
+    }
+    if (fltr_id === "modal_flt_sevice_one_permissions" && $(this).val() !== "_all_") {
+      $('#modal_ftr_trainee_permissions').val("_all_");
+    }
+  });
 
 // DOCUMENT READY STOP
 });
