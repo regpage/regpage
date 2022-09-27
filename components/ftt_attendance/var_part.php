@@ -55,8 +55,8 @@ if ($serving_trainee) {
 
 // ЛИСТЫ ОТСУТСТВИЯ СТАРТ
 $serving_one_permissions = $memberId;
-if (isset($_COOKIE['flt_serving_one_permissions']) && !empty($_COOKIE['flt_serving_one_permissions'])) {
-  $serving_one_permissions = $_COOKIE['flt_serving_one_permissions'];
+if (isset($_COOKIE['flt_sevice_one_permissions']) && !empty($_COOKIE['flt_sevice_one_permissions'])) {
+  $serving_one_permissions = $_COOKIE['flt_sevice_one_permissions'];
 }
 $trainee_permissions = $memberId;
 
@@ -88,4 +88,5 @@ if ($permission_stat_count > 0) {
   $permission_statistics = "<sup style='color: red;'> <b> {$permission_stat_count}</b></sup>";
 }
 
+$status_list = array(0 => ['secondary','не отправлен'], 1 => ['warning','на рассмотрении'], 2 => ['success','одобрен'], 3 => ['danger','отклонён']);
 ?>

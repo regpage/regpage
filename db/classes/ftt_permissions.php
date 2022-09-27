@@ -13,7 +13,7 @@ class FttPermissions
     $res = db_query("SELECT fps.id, fps.member_key, fps.absence_date, fps.date, fps.comment, fps.status, fps.date_send
       FROM ftt_permission_sheet AS fps
       WHERE  fps.member_key = '$member_id'
-      ORDER BY fps.date");
+      ORDER BY fps.absence_date");
     while ($row = $res->fetch_assoc()) $result[]=$row;
 
     return $result;
@@ -30,7 +30,7 @@ class FttPermissions
       FROM ftt_permission_sheet AS fps
       INNER JOIN ftt_permission fp ON fp.sheet_id = fps.id
       WHERE  fps.member_key = '$member_id'
-      ORDER BY fps.date");
+      ORDER BY fps.absence_date");
     while ($row = $res->fetch_assoc()) $result[]=$row;
 
     return $result;
@@ -71,7 +71,7 @@ class FttPermissions
 
     $res = db_query("SELECT `id`, `member_key`, `absence_date`, `comment`, `status`
       FROM ftt_permission_sheet
-      WHERE  `absence_date` = '$date' AND `status` = 1");
+      WHERE  `absence_date` = '$date' AND `status` = 2");
     while ($row = $res->fetch_assoc()) $sheets[]=$row;
 
     for ($i=0; $i < count($sheets); $i++) {

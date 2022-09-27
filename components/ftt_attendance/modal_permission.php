@@ -4,13 +4,10 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5>Лист отсутствия</h5>
+        <h5 class="mb-0">Лист отсутствия</h5>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
       </div>
       <div class="modal-body">
-        <div class="row pb-2 mb-3" style="border-bottom: 1px solid #dee2e6">
-          <h6 class="col-12 font-weight-bold">Отметьте мероприятия, для которых требуется разрешение на отсутствие.</h6>
-        </div>
         <?php if ($ftt_access['group'] === 'staff') { ?>
           <select id="trainee_select_permission" class="form-control form-control-sm mt-2 mb-2">
             <?php foreach ($trainee_list as $key => $value):
@@ -22,33 +19,54 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
             endforeach; ?>
           </select>
         <?php } ?>
-        <div class="">
-          <label class="required-for-label">Дата отсутствия</label>
-          <input type="date" id="permission_modal_date" class="form-control form-control-sm mb-2" value="">
+        <div class="row">
+          <div class="col-5">
+            <label class="required-for-label">Дата отсутствия</label>
+            <input type="date" id="permission_modal_date" class="form-control form-control-sm mb-2 " value="" style="width: 120px;">
+          </div>
+          <div class="col-3 mt-4">
+            <span class=""><strong id="show_day_in_blank"></strong></span>
+          </div>
+          <div class="col-4 mt-4">
+            <span id="show_status_in_blank" class="float-right badge badge-secondary">не отправлен</span>
+          </div>
         </div>
-        <!-- ПОДСТОВЛЯЕМ РАСПИСАНИЕ -->
-        <div id="modal_permission_block" class="container mt-2 mb-2">
+        <div class="row pt-2 mb-2 mt-1" style="border-top: 1px solid #dee2e6">
+          <h6 id="show_notice_permission_modal" class="col-12 mb-0 font-weight-bold text-danger">Отметьте мероприятия, для которых требуется разрешение на отсутствие.</h6>
+        </div>
+        <!-- ПОДСТАВЛЯЕМ РАСПИСАНИЕ -->
+        <div id="modal_permission_block" class="container mb-2">
+
+        </div>
+        <div id="history_permission_block" class="container mt-2 mb-2">
 
         </div>
         <div class="">
-          <input type="text" id="permission_modal_comment" class="form-control form-control-sm mt-2" value="" placeholder="Комментарий">
+          <input type="text" id="permission_modal_comment" class="form-control form-control-sm mt-2" value="" placeholder="Причина отсутствия*">
         </div>
         <?php if ($ftt_access['group'] === 'staff') { ?>
         <div class="">
           <label class="">
           <span id="info_of_permission" class="cursor-pointer" style="border-bottom: 1px dashed lightgrey; font-size: 12px; margin-left: 420px;">Инфо</span>
           <div class="text-right" style="font-size: 12px; display: none;">
-            <span id="author_of_permission">Одобрено </span>
-            <span id="allow_of_permission"></span>
-            <span id="date_of_permission"></span>
+            <span id="author_of_permission">Отправлено </span>
+            <span id="send_date_of_permission"></span>
+            <span id="sevice_one_of_permission">Одобрено/Отклонено </span>
+            <span id="allow_date_of_permission"></span>
+            <span id=""></span>
+
+
+            <span id="date_allow_of_permission"></span>
           </div>
         </div>
         <?php } ?>
       </div>
       <div class="modal-footer">
         <?php if ($ftt_access['group'] === 'staff') { ?>
-        <button id="send_permission_blank" class="btn btn-sm btn-success">Отправить</button>
+          <button id="apply_permission_blank" class="btn btn-sm btn-success">Одобрить</button>
+          <button id="deny_permission_blank" class="btn btn-sm btn-danger">Отклонить</button>
         <?php } ?>
+        <button id="send_permission_blank" class="btn btn-sm btn-warning">Отправить</button>
         <button id="save_permission_blank" class="btn btn-sm btn-primary">Сохранить</button>
         <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Закрыть</button>
       </div>

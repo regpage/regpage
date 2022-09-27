@@ -4,7 +4,7 @@
   <button type="button" id="permission_flt_modal_o" class="btn btn-primary btn-sm rounded mr-2" data-toggle="modal" data-target="#permission_ftr_modal" style="display: none;">Фильтры</button>
   <select id="flt_permission_active" class="form-control form-control-sm mr-2">
     <option value="_all_" <?php if ($flt_permission_active === '_all_') echo 'selected'; ?>>Все</option>
-    <option value="0" <?php if ($flt_permission_active === '0') echo 'selected'; ?>>На рассмотрении</option>
+    <option value="1" <?php if ($flt_permission_active === '1') echo 'selected'; ?>>На рассмотрении</option>
   </select>
   <select id="flt_sevice_one_permissions" class="form-control form-control-sm mr-2">
     <option value="_all_">Все служащие</option>
@@ -30,7 +30,7 @@
 <div class="row row_corr">
   <div class="col-2 pl-1"><b>Дата</b></div>
   <div class="col-4"><b>Обучающийся</b></div>
-  <div class="col-4"><b>Комментарий</b></div>
+  <div class="col-4"><b>Причина</b></div>
   <div class="col-2"><b>Статус</b></div>
 </div>
 <hr id="hight_line" style="margin-left: 0px; margin-right: -15px; margin-top: 0px; margin-bottom: 0px; border-color: lightgray;">
@@ -49,11 +49,12 @@
     $permission_date_send = $value['date_send'];
     $permission_serving_one = $value['serving_one'];
 
-    $checked_string = "<span class='badge badge-secondary'>Не отправлен</span>";
-    $done_string = '';
-    if ($archive = $value['status'] === '1') {
-      $checked_string = "<span class='badge badge-success'>Отправлен</span>";
-      $done_string = 'green_string';
+    $checked_string = "<span class='badge badge-".$status_list[$permission_status][0]."'>".$status_list[$permission_status][1]."</span>";
+    $show_string = '';
+    if ($permission_status === '0' || $permission_status === '2' || $permission_status === '3') {
+      if ($flt_permission_active === '1') {
+        $show_string = 'style="display:none;"';
+      }
     }
 
     $permission_comment_short;

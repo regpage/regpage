@@ -2568,7 +2568,6 @@ function sendTheOrder(ua) {
   function addOptionsToCommboRole2() {
     $.get('/ajax/contacts.php?get_localities_by_admin', {id: $('#fullAdminsListCombo').val()})
       .done (function(data) {
-        //console.log(data.result);
         var localitiesOptions = [];
         localitiesOptions[0] = '<option class="extra-option" value="_line_" disabled>---- Местность администратора ---- <option class="extra-option" value="'+$('#allLocalitisesListCombo').val()+'">'+data_page.locality[$('#allLocalitisesListCombo').val()]+'<option class="extra-option" value="_line_" disabled>-----------------------------------';
 

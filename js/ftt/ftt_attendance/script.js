@@ -256,7 +256,6 @@ function open_blank(el_this) {
     $("#comment_modal").val(el_this.attr('data-comment'));
     $("#modalAddEdit").attr("data-list", "");
     // sorting that
-
     commits.result.sort(function (a, b) {
       let nameA, nameB;
 
@@ -279,7 +278,6 @@ function open_blank(el_this) {
       }
       return 0;
     });
-
     for (var i = 0; i < commits.result.length; i++) {
       disabled_extra = "disabled";
       bg_light = "bg-light";
@@ -359,15 +357,30 @@ function open_blank(el_this) {
         option_visit = "<option value='П' "+v+">П</option>";
         drop_visit = "<span class='dropdown-item cursor-pointer' data-val='П'>Посещение (П)</span>"
       }
+      let  text_success = "";
+      let  text_success_btn = "btn-secondary";
+      if (commits.result[i]['permission_sheet_id'] > 0) {
+        text_success = "btn-success";
+      }
+      if (commits.result[i]['permission_sheet_id'] > 0 && commits.result[i]['reason'] === "Р") {
+        text_success_btn = "btn-success";
+      }
 
       srings.push("<div class='row' data-id='"+commits.result[i]['id']+"' data-visit='"+visit_field+"' data-end_time='"+commits.result[i]['end_time']+"' data-correction_id='"+commits.result[i]['session_correction_id']+"' data-absence='"+
-      commits.result[i]['absence']+"' data-late='"+commits.result[i]['late']+"' style='"+mb_2+"'><div class='col-12'><h6 class='"+hide_element+"'>"+ commits.result[i]['session_name']
+      commits.result[i]['absence']+"' data-late='"+commits.result[i]['late']+"' data-permission_id='"+
+      commits.result[i]['permission_sheet_id']+"' style='"+mb_2+"'><div class='col-12'><h6 class='"+hide_element+"'>"+ commits.result[i]['session_name']
       +"</h6>"+extra_label+"<div class='input-group "+mb_3+"'><span data-text='"+render_session_name
       +"' data-field='session_name' class='align-self-center name_session "+hide_element_mbl+"'>"+ commits.result[i]['session_name']
       +"</span><input type='time' data-val='"+time_val+"' value='"+commits.result[i]['session_time']
       +"' class='form-control "+bg_light+" mr-3 ' required data-field='session_time' "+disabled_extra+" "+disabled_service+"><input type='time' class='form-control mr-3  "+bg_color_time+"' data-field='attend_time' value='"+commits.result[i]['attend_time']
       +"' "+disabled+" "+disabled_service+"><select data-field='reason' class='select_reason bg-secondary text-light short_select_field hide_element'"
-      +disabled+"><option value=''>...</option>"+option_visit+"<option value='Р' "+p+">Р</option><option value='С' "+c+">С</option><option value='О' "+o+">О</option></select><button type='button' class='btn btn-secondary dropdown-toggle-split' data-toggle='dropdown'>"+btn_text+"</button><div class='dropdown-menu'><span class='dropdown-item cursor-pointer' data-val='...'>...</span>"+drop_visit+"<span class='dropdown-item cursor-pointer' style='display: none;' data-val='П'>Посещение</span><span data-val='Р' class='dropdown-item cursor-pointer'>Разрешение (Р)</span><span class='dropdown-item cursor-pointer' data-val='С'>Служение (С)</span><span class='dropdown-item cursor-pointer' data-val='О'>Отстутствие (О)</span></div><input type='number' class='hide_element' value='"
+      +disabled+"><option value=''>...</option>"+option_visit+"<option value='Р' "+p
+      +">Р</option><option value='С' "+c+">С</option><option value='О' "+o
+      +">О</option></select><button type='button' class='btn dropdown-toggle-split "+
+      text_success_btn+"' data-toggle='dropdown'>"+btn_text
+      +"</button><div class='dropdown-menu'><span class='dropdown-item cursor-pointer' data-val='...'>...</span>"+drop_visit
+      +"<span class='dropdown-item cursor-pointer' style='display: none;' data-val='П'>Посещение</span><span data-val='Р' class='dropdown-item cursor-pointer "+text_success+
+      "'>Разрешение (Р)</span><span class='dropdown-item cursor-pointer' data-val='С'>Служение (С)</span><span class='dropdown-item cursor-pointer' data-val='О'>Отстутствие (О)</span></div><input type='number' class='hide_element' value='"
       +deff_rend+"' data-field='late' disabled></div></div></div>");
     }
     if (commits.result[0]) {
@@ -396,8 +409,18 @@ function open_blank(el_this) {
       }
     });
     $(".dropdown-item").click(function () {
-      if (($(this).attr("data-val") === "С" && $(this).parent().prev().text() === "С") || ($(this).attr("data-val") === "Р" && $(this).parent().prev().text() === "Р") || ($(this).attr("data-val") === "О" && $(this).parent().prev().text() === "О") || ($(this).attr("data-val") === "..." && $(this).parent().prev().text() === "...") || ($(this).attr("data-val") === "П" && $(this).parent().prev().text() === "П")) {
+      if (($(this).attr("data-val") === "С" && $(this).parent().prev().text() === "С")
+      || ($(this).attr("data-val") === "Р" && $(this).parent().prev().text() === "Р")
+      || ($(this).attr("data-val") === "О" && $(this).parent().prev().text() === "О")
+      || ($(this).attr("data-val") === "..." && $(this).parent().prev().text() === "...")
+      || ($(this).attr("data-val") === "П" && $(this).parent().prev().text() === "П")) {
         return;
+      }
+
+      if ($(this).attr("data-val") === "Р" && $(this).parent().parent().parent().parent().attr("data-permission_id") !== "0") {
+        $(this).parent().prev().removeClass("btn-secondary").addClass("btn-success");
+      } else if ($(this).parent().prev().hasClass("btn-success")) {
+        $(this).parent().prev().removeClass("btn-success").addClass("btn-secondary");
       }
 
       if (!$(this).parent().prev().prev().prop("disabled")) {
@@ -1074,7 +1097,6 @@ function open_blank(el_this) {
               end_time_session = " – " + time_plus_minutes(sessions_staff[session_str][day_of_date], sessions_staff[session_str]["duration"]);
             }
 
-
             html_staff_editor += "<div><label class='form-check-label'><input type='checkbox' class='session_staff_str form-check-input' data-day='"+sessions_staff[session_str][day_of_date]
             +"' data-session_name='"+sessions_staff[session_str]["session_name"]+"' data-session_id='"+id_field_extra
             +"' data-visit='"+sessions_staff[session_str]["visit"]+"' data-end_time='"+sessions_staff[session_str]["end_time"]
@@ -1088,7 +1110,7 @@ function open_blank(el_this) {
       if (permission) {
         // rendering
         $("#modal_permission_block").html(html_staff_editor);
-        // cheched all
+        // checked all
         $(".select_all_session").click(function () {
           $("#modal_permission_block input[type='checkbox']").each(function () {
             if (!$(this).hasClass("select_all_session")) {
@@ -1098,7 +1120,7 @@ function open_blank(el_this) {
         });
 
         if (permission_sheet_id) {
-          permission_session_cheched(permission_sheet_id);
+          permission_session_checked(permission_sheet_id);
         }
         return;
       } else {
@@ -1279,13 +1301,31 @@ function open_blank(el_this) {
   // ПОДРАЗДЕЛ ЛИСТЫ ОТСУТСТВИЯ
   // FUNCTION
   // PERMISSIONS
+  function prepare_archive() {
+    let archive_sessions = "", checked;
+    $("#modal_permission_block label").each(function () {
+      if (!$(this).find("input").hasClass("select_all_session")) {
+        checked = "<b>+ </b>";
+        if ($(this).find("input").prop("checked")) {
+          checked =  "<b>- </b>";
+        }
+        archive_sessions = archive_sessions + checked + $(this).text() + "<br>";
+      }
+    });
+    return archive_sessions;
+  }
   function prepare_data(status) {
-    if (status !== 0 && status !== 1) {
+    let archive_sessions = "";
+    if (status !== 0 && status !== 1 && status !== 2 && status !== 3) {
       status = $("#edit_permission_blank").attr("data-status");
     }
     let serving_one = "";
-    if (status === 1) {
+    if (status === 1 || status === 2 || status === 3) {
       serving_one = admin_id_gl;
+    }
+
+    if (status === 1) {
+      archive_sessions = prepare_archive();
     }
 
     // prepare
@@ -1300,6 +1340,7 @@ function open_blank(el_this) {
         absence_date: $("#permission_modal_date").val(),
         status: status,
         serving_one: serving_one,
+        archive_sessions: archive_sessions,
         comment: $("#permission_modal_comment").val()
       }
     };
@@ -1358,13 +1399,21 @@ function open_blank(el_this) {
     $("#modal_permission_block").html("");
     $('#author_of_permission').parent().hide();
     $('#author_of_permission').text("");
-    $("#date_of_permission").text("");
-    $("#allow_of_permission").text("");
+    $("#send_date_of_permission").text("");
+    $("#sevice_one_of_permission").text("");
+    $("#history_permission_block").html("");
   }
 
   function valid_field() {
     if (!$("#permission_modal_date").val()) {
-      showError("Заполните поля отмеченные красной звёздочкой.");
+      $("#permission_modal_date").css("border-color", "red");
+      showError("Заполните обязательные поля.");
+      return 1;
+    }
+
+    if (!$("#permission_modal_comment").val()) {
+      $("#permission_modal_comment").css("border-color", "red");
+      showError("Заполните обязательные поля.");
       return 1;
     }
 
@@ -1374,29 +1423,104 @@ function open_blank(el_this) {
     }
   }
 
+  function get_sessions_archive(sheet_id) {
+    fetch("ajax/ftt_attendance_ajax.php?type=get_permission_archive&sheet_id="+sheet_id)
+    .then(response => response.json())
+    .then(commits => {
+      if (commits.result) {
+        $("#history_permission_block").html(commits.result);
+      }
+    });
+  }
+
+  function status_choisen(element, status) {
+
+    if (isNaN(status) || status > 3) {
+      status = 0;
+    }
+
+    status_array = {0: ["badge-secondary", "не отправлен"], 1: ["badge-warning","на рассмотрении"],
+    2: ["badge-success", "одобрено"], 3: ["badge-danger","отклонено"]};
+    element.removeClass("badge-secondary").removeClass("badge-warning").removeClass("badge-danger").removeClass("badge-success");
+    element.addClass(status_array[status][0]).text(status_array[status][1]);
+  }
+
   function fill_blank(element) {
     // behavior
+    // buttons
+    $("#send_permission_blank").prop("disabled", true).hide();
+    $("#save_permission_blank").prop("disabled", true).hide();
+    $("#deny_permission_blank").prop("disabled", true).hide();
+    $("#apply_permission_blank").prop("disabled", true).hide();
+    // fields
+    $("#edit_permission_blank input").attr("disabled", true);
+    $("#edit_permission_blank select").attr("disabled", true);
+
+    $("#permission_modal_date").css("border-color", "#ced4da");
+    $("#permission_modal_comment").css("border-color", "#ced4da");
+
+    // Text
+    $("#show_notice_permission_modal").hide();
+
     if (element.attr("data-status") === "1") {
-      $("#send_permission_blank").prop("disabled", true).hide();
-      $("#save_permission_blank").prop("disabled", true).hide();
-      $("#edit_permission_blank input").attr("disabled", true);
-      $("#edit_permission_blank select").attr("disabled", true);
+      if (!trainee_access) {
+        // buttons
+        $("#deny_permission_blank").prop("disabled", false).show();
+        $("#apply_permission_blank").prop("disabled", false).show();
+      }
+    } else if (element.attr("data-status") === "2" && !trainee_access) {
+      // buttons
+      $("#deny_permission_blank").prop("disabled", false).show();
+    } else if (element.attr("data-status") === "3" && !trainee_access) {
+
     } else {
+      // buttons
       $("#send_permission_blank").prop("disabled", false).show();
       $("#save_permission_blank").prop("disabled", false).show();
+      // fields
       $("#edit_permission_blank input").attr("disabled", false);
       $("#edit_permission_blank select").attr("disabled", false);
+      // Text
+      $("#show_notice_permission_modal").show();
     }
+    // get archive
+    $("#history_permission_block").hide();
+    let d1 = new Date(date_now_gl);
+    let d2 = new Date(element.attr("data-absence_date"));
+    let dm = d1 - d2;
+    let historic = false;
+
+    if (dm > 0) {
+      setTimeout(function () {
+        get_sessions_archive(element.attr("data-id"));
+      }, 10);
+      $("#history_permission_block").show();
+      $("#modal_permission_block").hide();
+      historic = true;
+    } else {
+      $("#history_permission_block").hide();
+      $("#modal_permission_block").show();
+    }
+
+    // select the status
+    status_choisen($("#show_status_in_blank"), element.attr("data-status"));
+
     // NEW
     if (element.attr("id") === "permission_add") {
       if (trainee_access) { // for trainee
         $("#edit_permission_blank").attr("data-member_key", admin_id_gl);
-        get_sessions_for_blank(admin_id_gl, date_now_gl, true);
+        if (!historic) {
+          get_sessions_for_blank(admin_id_gl, date_now_gl, true);
+        }
       } else { // for staff
-        get_sessions_for_blank($("#trainee_select_permission").val(), date_now_gl, true);
+        if (!historic) {
+          get_sessions_for_blank($("#trainee_select_permission").val(), date_now_gl, true);
+        }
         $("#edit_permission_blank").attr("data-member_key", $("#trainee_select_permission").val());
       }
       $("#permission_modal_date").val(date_now_gl);
+      // day of the week
+      $("#show_day_in_blank").text(getNameDayOfWeekByDayNumber(date_now_gl, true));
     } else { // EDIT
       // field
       $("#trainee_select_permission").val(element.attr("data-member_key"));
@@ -1412,25 +1536,41 @@ function open_blank(el_this) {
       $("#edit_permission_blank").attr("data-serving_one", element.attr("data-serving_one"));
       $("#edit_permission_blank").attr("data-comment", element.attr("data-comment"));
 
-      let text_permission_status = "В ожидании";
+      // day of the week
+      $("#show_day_in_blank").text(getNameDayOfWeekByDayNumber(element.attr("data-absence_date"), true));
+
+      let text_permission_status = "не отправлен ";
       if (element.attr("data-status") === "1") {
-        text_permission_status = "Одобрено";
-        $("#date_of_permission").text(element.attr("data-date_send"));
-        $("#allow_of_permission").text(serving_ones_list[element.attr("data-serving_one")]);
+        text_permission_status = "Отправлен ";
+        $("#send_date_of_permission").text(element.attr("data-date_send"));
+         if (element.attr("data-serving_one")) {
+           $("#sevice_one_of_permission").text(serving_ones_list[element.attr("data-serving_one")]);
+         } else {
+           $("#sevice_one_of_permission").text(trainee_list[element.attr("data-member_key")]);
+         }
+
+      } else if (element.attr("data-status") === "2") {
+        text_permission_status = "Одобрен ";
+        $("#sevice_one_of_permission").text(serving_ones_list[element.attr("data-serving_one")]);
+      } else if (element.attr("data-status") === "3") {
+        text_permission_status = "Отклонён ";
+        $("#sevice_one_of_permission").text(serving_ones_list[element.attr("data-serving_one")]);
       } else {
-        $("#date_of_permission").text("");
-        $("#allow_of_permission").text("");
+        $("#send_date_of_permission").text("");
+        $("#sevice_one_of_permission").text("");
       }
       $("#author_of_permission").text(text_permission_status);
     }
   }
 
-  function permission_session_cheched(sheet_id) {
+  function permission_session_checked(sheet_id) {
     fetch("ajax/ftt_attendance_ajax.php?type=get_permission&sheet_id="+sheet_id)
     .then(response => response.json())
     .then(commits => {
       let data = commits.result;
-      if ($("#edit_permission_blank").attr("data-status") === "1") {
+      if ($("#edit_permission_blank").attr("data-status") === "1"
+      || $("#edit_permission_blank").attr("data-status") === "2"
+      || $("#edit_permission_blank").attr("data-status") === "3") {
         $("#modal_permission_block input").prop("disabled", true);
       } else {
         $("#modal_permission_block input").prop("disabled", false);
@@ -1458,7 +1598,27 @@ function open_blank(el_this) {
     get_sessions_for_blank($(this).attr("data-member_key"), $(this).attr("data-absence_date"), true, $(this).attr("data-id"));
   });
 
+  $("#permission_modal_comment").keyup(function () {
+    if ($(this).val()) {
+        $(this).css("border-color", "#ced4da");
+    }
+  });
+  $("#permission_modal_comment").change(function () {
+    if ($(this).val()) {
+        $(this).css("border-color", "#ced4da");
+    }
+  });
   $("#permission_modal_date").change(function () {
+
+    if ($(this).val()) {
+        $(this).css("border-color", "#ced4da");
+        // day of the week
+        $("#show_day_in_blank").text(getNameDayOfWeekByDayNumber($(this).val(), true));
+    } else {
+      // day of the week
+      $("#show_day_in_blank").text("");
+    }
+
     if ($("#edit_permission_blank").attr("data-absence_date") === $(this).val()) {
       get_sessions_for_blank($("#edit_permission_blank").attr("data-member_key"), $("#edit_permission_blank").attr("data-absence_date"), true, $("#edit_permission_blank").attr("data-id"));
     } else {
@@ -1483,6 +1643,15 @@ function open_blank(el_this) {
     $("#edit_permission_blank").modal("hide");
   });
 
+  $("#apply_permission_blank, #deny_permission_blank").click(function (e) {
+    if (e.target.id === "apply_permission_blank") {
+      save_permissions(prepare_data(2));
+    } else {
+      save_permissions(prepare_data(3));
+    }
+    $("#edit_permission_blank").modal("hide");
+  });
+
   // фильтры
   function filters_permissions() {
     $("#list_permission .list_string").each(function () {
@@ -1497,13 +1666,15 @@ function open_blank(el_this) {
   $('#ftr_trainee_permissions').change(function () {
     if ($(this).val() === "_all_") {
       $('#flt_sevice_one_permissions').val("_all_");
-      setCookie('flt_serving_one_permissions', $('#flt_sevice_one_permissions').val(), 1);
+      setCookie('flt_sevice_one_permissions', $('#flt_sevice_one_permissions').val(), 1);
       setCookie("tab_active", "permission");
       setCookie("flt_trainee", "");
-      location.reload();
+      setTimeout(function () {
+        location.reload();
+      }, 30);
     } else {
       $('#flt_sevice_one_permissions').val("_all_");
-      setCookie('flt_serving_one_permissions', $('#flt_sevice_one_permissions').val(), 1);
+      setCookie('flt_sevice_one_permissions', $('#flt_sevice_one_permissions').val(), 1);
       setCookie("tab_active", "permission");
       setCookie("flt_trainee", $(this).val());
       setTimeout(function () {
@@ -1513,12 +1684,33 @@ function open_blank(el_this) {
   });
 
   $('#flt_sevice_one_permissions').change(function () {
-    setCookie('flt_serving_one_permissions', $(this).val(), 1);
+    if ($(this).val() === "_all_") {
+      $('#ftr_trainee_permissions').val("_all_");
+      setCookie('ftr_trainee_permissions', $('#ftr_trainee_permissions').val(), 1);
+      setCookie("tab_active", "permission");
+      setCookie("flt_sevice_one_permissions", "_all_");
+      setTimeout(function () {
+        location.reload();
+      }, 30);
+    } else {
+      $('#ftr_trainee_permissions').val("_all_");
+      setCookie('ftr_trainee_permissions', $('#ftr_trainee_permissions').val(), 1);
+      setCookie("tab_active", "permission");
+      setCookie("flt_sevice_one_permissions", $(this).val());
+      setTimeout(function () {
+        location.reload();
+      }, 30);
+    }
+  });
+/*
+  $('#flt_sevice_one_permissions').change(function () {
+    setCookie('flt_sevice_one_permissions', $(this).val(), 1);
     setCookie("tab_active", "permission");
     setTimeout(function () {
       location.reload();
     }, 30);
   });
+*/
 
   // Фильтры
   $('#flt_permission_active').change(function () {
@@ -1559,7 +1751,7 @@ function open_blank(el_this) {
       console.log("I am here");
     } else {
       setCookie('flt_permission_active', $("#modal_flt_permission_active").val(), 1);
-      setCookie('flt_serving_one_permissions', $("#modal_flt_sevice_one_permissions").val(), 1);
+      setCookie('flt_sevice_one_permissions', $("#modal_flt_sevice_one_permissions").val(), 1);
       if ($("#modal_ftr_trainee_permissions").val() === "_all_") {
         setCookie("flt_trainee","", 1);
       } else {

@@ -7,7 +7,7 @@ include_once "../db/classes/schedule_class.php";
 include_once "../db/classes/db_operations.php";
 include_once '../db/classes/date_convert.php';
 // Подключаем ведение лога
-//include_once "../extensions/write_to_log/write_to_log.php";
+include_once "../extensions/write_to_log/write_to_log.php";
 
 $adminId = db_getMemberIdBySessionId (session_id());
 
@@ -149,7 +149,7 @@ if (isset($_GET['type']) && $_GET['type'] === 'undo_status') {
 // PERMISSIONS
 // save permission.
 if (isset($_GET['type']) && $_GET['type'] === 'set_permission') {
-  echo json_encode(["result"=>set_permission($_POST['data'])]);
+  echo json_encode(["result"=>set_permission($_POST['data'], $adminId)]);
   exit();
 }
 
@@ -158,5 +158,9 @@ if (isset($_GET['type']) && $_GET['type'] === 'get_permission') {
   exit();
 }
 
+if (isset($_GET['type']) && $_GET['type'] === 'get_permission_archive') {
+  echo json_encode(["result"=>get_permission_archive($_GET['sheet_id'])]);
+  exit();
+}
 
 ?>

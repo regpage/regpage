@@ -86,12 +86,14 @@ function db_newDailyAttendance () {
     foreach ($schedule_001 as $keys => $value) {
 
       $reason ='';
+      $permission_sheet_id = '';
       // Проставляем Р в строки с разрешением (permissions)
       if (count($permissions) > 0 && $has_permissions) {
         for ($iii=0; $iii < count($permissions_val); $iii++) {
           // ЕСЛИ КОЛ-ВО МЕРОПРИЯТИЙ РАВНО КОЛВО РАЗРЕШЕНИЙ в бланке то можно ставить статус 1!
           if ($permissions_val[$iii]['session_id'] === $value['id']) {
             $reason = 'Р';
+            $permission_sheet_id = $permissions_val[$iii]['sheet_id'];
           }
         }
       }
@@ -116,11 +118,13 @@ function db_newDailyAttendance () {
 
               // разрешения для корректируемых строк
               $reason ='';
+              $permission_sheet_id ='';
               if (count($permissions) > 0 && $has_permissions) {
                 for ($iiii=0; $iiii < count($permissions_val); $iiii++) {
                   // ЕСЛИ КОЛ-ВО МЕРОПРИЯТИЙ РАВНО КОЛВО РАЗРЕШЕНИЙ в бланке то можно ставить статус 1!
                   if ($permissions_val[$iiii]['session_correction_id'] === $time_start_corr) {
                     $reason = 'Р';
+                    $permission_sheet_id = $permissions_val[$iii]['sheet_id'];
                   }
                 }
               }
@@ -144,7 +148,8 @@ function db_newDailyAttendance () {
                 //}
                 }
                 if ($value_corr['attendance'] === '1') {
-                  db_query("INSERT INTO ftt_attendance (`sheet_id`, `session_name`, `session_time`, `reason`, `visit`, `duration`, `end_time`) VALUES ('$max_id', '$session_name_corr', '$time_start_corr', '$reason', '$visit_corr', '$duration_corr', '$end_time_corr')");
+                  db_query("INSERT INTO ftt_attendance (`sheet_id`, `session_name`, `session_time`, `reason`, `permission_sheet_id`, `visit`, `duration`, `end_time`)
+                  VALUES ('$max_id', '$session_name_corr', '$time_start_corr', '$reason', '$permission_sheet_id', '$visit_corr', '$duration_corr', '$end_time_corr')");
               }
             }
           }
@@ -163,7 +168,7 @@ function db_newDailyAttendance () {
           $session_name = $session_name . ' <i class="fa fa-sticky-note" title="'.$value['comment'].'" data-toggle="tooltip" aria-hidden="true"></i> ';
         }
         if (!in_array($value['id'], $canceled_session)) {
-          db_query("INSERT INTO ftt_attendance (`session_id`,`sheet_id`, `session_name`, `session_time`, `reason`, `visit`, `duration`, `end_time`) VALUES ('$session_id','$max_id', '$session_name', '$time_start', '$reason', '$visit_field', '$duration', '$end_time')");
+          db_query("INSERT INTO ftt_attendance (`session_id`,`sheet_id`, `session_name`, `session_time`, `reason`, `permission_sheet_id`, `visit`, `duration`, `end_time`) VALUES ('$session_id','$max_id', '$session_name', '$time_start', '$reason', '$permission_sheet_id', '$visit_field', '$duration', '$end_time')");
         }
       }
     }

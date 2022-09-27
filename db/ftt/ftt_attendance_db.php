@@ -138,7 +138,7 @@ function get_sessions($id) {
   global $db;
   $id = $db->real_escape_string($id);
   $strings = [];
-  $res = db_query("SELECT `id`, `sheet_id`, `session_name`, `session_time`, `attend_time`, `reason`, `late`, `absence`, `visit`, `end_time`, `duration`
+  $res = db_query("SELECT `id`, `sheet_id`, `session_name`, `session_time`, `attend_time`, `reason`, `permission_sheet_id`, `late`, `absence`, `visit`, `end_time`, `duration`
     FROM `ftt_attendance`
     WHERE `sheet_id` = '$id' ORDER BY `session_time`");
     while ($row = $res->fetch_assoc()) $strings[] = $row;
@@ -396,7 +396,7 @@ function undo_extrahelp_lates($id)
 }
 
 // PERMISSIONS
-function set_permission($sessions)
+function set_permission($sessions, $adminId)
 {
   global $db;
   $sessions = json_decode($sessions);
@@ -408,21 +408,37 @@ function set_permission($sessions)
   $date_send = $db->real_escape_string($sessions->sheet->date_send);
   $comment = $db->real_escape_string($sessions->sheet->comment);
   $serving_one = $db->real_escape_string($sessions->sheet->serving_one);
+  $archive_sessions = $db->real_escape_string($sessions->sheet->archive_sessions);
+  // condition
+  $archive_sessions_field = "";
+  $archive_sessions_value = "";
+  $archive_sessions_update = "";
 
+  $log_serving_one = '';
+  $serving_one ? $log_serving_one = "Ответственный: {$serving_one}": '';
+  $operation_name = "создан";
+  $sheet_id ? $operation_name = 'обновлён': '';
+  $log_text = "Для пользователя {$member_key} {$operation_name} бланк разрешения. {$log_serving_one}";
+
+  write_to_log::debug($adminId, $log_text);
 
   if ($status === '1') {
     $date_send = 'NOW()';
+    // condition
+    $archive_sessions_field = "`archive_sessions`, ";
+    $archive_sessions_value = "'$archive_sessions', ";
+    $archive_sessions_update = "`archive_sessions` = '$archive_sessions',";
   } else {
     $date_send = "'$date_send'";
   }
 
   if (empty($sessions->sheet->id)) {
-    $res = db_query("INSERT INTO `ftt_permission_sheet` (`member_key`, `absence_date`, `date`, `comment`, `status`, `date_send`,  `serving_one`, `changed`)
-    VALUES ('$member_key', '$absence_date', NOW(),'$comment', '$status', $date_send, '$serving_one', 1)");
+    $res = db_query("INSERT INTO `ftt_permission_sheet` (`member_key`, `absence_date`, `date`, `comment`, `status`, `date_send`,  `serving_one`, $archive_sessions_field `changed`)
+    VALUES ('$member_key', '$absence_date', NOW(),'$comment', '$status', $date_send, '$serving_one', $archive_sessions_value 1)");
     $sheet_id = $db->insert_id;
   } else {
     $res = db_query("UPDATE `ftt_permission_sheet` SET
-      `member_key` = '$member_key', `absence_date` = '$absence_date', `date_send` = $date_send, `comment` = '$comment', `status` = '$status', `serving_one` = '$serving_one', `changed` = 1
+      `member_key` = '$member_key', `absence_date` = '$absence_date', `date_send` = $date_send, `comment` = '$comment', `status` = '$status', `serving_one` = '$serving_one', $archive_sessions_update `changed` = 1
       WHERE `id` = '$sheet_id'");
     db_query("DELETE FROM `ftt_permission` WHERE `sheet_id` = '$sheet_id'");
   }
@@ -452,6 +468,16 @@ function get_permission($sheet_id)
   $result = [];
   $res = db_query("SELECT * FROM `ftt_permission` WHERE `sheet_id` = '$sheet_id'");
   while ($row = $res->fetch_assoc()) $result[] = $row;
+  return $result;
+}
+
+function get_permission_archive($sheet_id)
+{
+  global $db;
+  $sheet_id = $db->real_escape_string($sheet_id);
+  $result = "";
+  $res = db_query("SELECT `archive_sessions` FROM `ftt_permission_sheet` WHERE `id` = '$sheet_id'");
+  while ($row = $res->fetch_assoc()) $result = $row['archive_sessions'];
   return $result;
 }
 

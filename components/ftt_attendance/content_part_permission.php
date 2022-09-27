@@ -1,14 +1,14 @@
 <br>
 <div id="permission_list_header" class="btn-group mb-2">
-  <button type="button" id="permission_add" class="btn btn-success btn-sm rounded mr-2" data-toggle="modal" data-target="#edit_permission_blank">Добавить</button>  
+  <button type="button" id="permission_add" class="btn btn-success btn-sm rounded mr-2" data-toggle="modal" data-target="#edit_permission_blank">Добавить</button>
   <select id="flt_permission_active" class="form-control form-control-sm">
     <option value="_all_" <?php if ($flt_permission_active === '_all_') echo 'selected'; ?>>Все</option>
-    <option value="0" <?php if ($flt_permission_active === '0') echo 'selected'; ?>>На рассмотрении</option>
+    <option value="1" <?php if ($flt_permission_active === '1') echo 'selected'; ?>>На рассмотрении</option>
   </select>
 </div>
 <div class="row row_corr">
   <div class="col-2 pl-1"><b>Дата</b></div>
-  <div class="col-8"><b>Комментарий</b></div>
+  <div class="col-8"><b>Причина</b></div>
   <div class="col-2"><b>Статус</b></div>
 </div>
 <hr id="hight_line" style="margin-left: 0px; margin-right: -15px; margin-top: 0px; margin-bottom: 0px; border-color: lightgray;">
@@ -26,11 +26,10 @@
     $permission_comment = $value['comment'];
     $short_absence_date = date_convert::yyyymmdd_to_ddmm($permission_absence_date);
 
-    $checked_string = "<span class='badge badge-secondary'>Не отправлен</span>";
+    $checked_string = "<span class='badge badge-".$status_list[$permission_status][0]."'>".$status_list[$permission_status][1]."</span>";
     $show_string = '';
-    if ($value['status'] === '1') {
-      $checked_string = "<span class='badge badge-success'>Отправлен</span>";
-      if ($flt_permission_active === '0') {
+    if ($permission_status === '0' || $permission_status === '2' || $permission_status === '3') {
+      if ($flt_permission_active === '1') {
         $show_string = 'style="display:none;"';
       }
     }
