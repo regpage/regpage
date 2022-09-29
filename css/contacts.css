@@ -240,10 +240,6 @@
 /*CHAT*/
 
 /*NOTICE*/
-.bg-notice-string {
-  background-color: #a1e4ef;
-}
-/*NOTICE*/
 /* Modal statistic of statuses*/
 .tbl-statistics-header > th {
   position: sticky; top: 0;

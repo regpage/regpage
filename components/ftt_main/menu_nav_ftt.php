@@ -2,14 +2,26 @@
 $extra_help_text = 'Доп. задания';
 if ($ftt_access['group'] === 'trainee'):
   include_once 'db/classes/statistics.php';
+  include_once 'db/classes/ftt_lists.php';
   $extra_help_count = statistics::extra_help_count($memberId);
   if ($extra_help_count == 0) {
     $extra_help_count = '';
   }
   $extra_help_text .= "<sup style='color: red;'> <b> {$extra_help_count}</b></sup>";
 endif;
+$permission_stat_count_main_text = 'Посещаемость';
+if ($ftt_access['group'] === 'staff') {
+  $permission_stat_count_main = statistics::permission_count(ftt_lists::get_trainees_by_staff($memberId));
+} else {
+  $permission_stat_count_main = statistics::permission_count($memberId);
+}
+if ($permission_stat_count_main == 0) {
+  $permission_stat_count_main = '';
+}
+$permission_stat_count_main_text .= "<sup style='color: red;'> <b> {$permission_stat_count_main}</b></sup>";
 
-$ftt_devisions = array('ftt_schedule' => 'Расписание', 'ftt_announcement' => 'Объявления', 'ftt_attendance' => 'Посещаемость', 'ftt_service' => 'Служение','ftt_gospel' => 'Благовестие', 'contacts' => 'Контакты', 'ftt_extrahelp' => $extra_help_text,'ftt_application' => 'Заявления'); //'ftt_absence' => 'Отсутствие',
+$ftt_devisions = array('ftt_schedule' => 'Расписание', 'ftt_announcement' => 'Объявления',
+'ftt_attendance' => $permission_stat_count_main_text, 'ftt_service' => 'Служение','ftt_gospel' => 'Благовестие', 'contacts' => 'Контакты', 'ftt_extrahelp' => $extra_help_text,'ftt_application' => 'Заявления'); //'ftt_absence' => 'Отсутствие',
 if ($ftt_access['group'] === 'staff') { //
 
 }

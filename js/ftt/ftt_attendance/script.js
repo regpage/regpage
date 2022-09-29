@@ -1348,8 +1348,9 @@ function open_blank(el_this) {
         status: status,
         serving_one: serving_one,
         archive_sessions: archive_sessions,
-        comment_extra: $("#permission_modal_comment_extra").val(),
-        comment: $("#permission_modal_comment").val()
+        comment_extra: $("#permission_modal_comment_extra").val() || "",
+        comment: $("#permission_modal_comment").val(),
+        trainee: trainee_access  || ""
       }
     };
     if ($("#edit_permission_blank").attr("data-id")) {
@@ -1620,6 +1621,10 @@ function open_blank(el_this) {
   });
   // open permission
   $("#list_permission .list_string").click(function () {
+    if ($(this).attr("data-notice") === "1") {
+      fetch("ajax/ftt_attendance_ajax.php?type=notice&id="+$(this).attr("data-id")+"&data=0");
+      $(this).removeClass("bg-notice-string");
+    }
     clear_blank("#edit_permission_blank");
     fill_blank($(this));
     get_sessions_for_blank($(this).attr("data-member_key"), $(this).attr("data-absence_date"), true, $(this).attr("data-id"));

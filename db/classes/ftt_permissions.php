@@ -11,7 +11,7 @@ class FttPermissions
     $result = [];
 
     $res = db_query("SELECT fps.id, fps.member_key, fps.absence_date, fps.date,
-      fps.comment, fps.status, fps.date_send, fps.decision_date, fps.comment_extra
+      fps.comment, fps.status, fps.date_send, fps.decision_date, fps.comment_extra, fps.notice
       FROM ftt_permission_sheet AS fps
       WHERE  fps.member_key = '$member_id'
       ORDER BY fps.absence_date");
@@ -27,7 +27,7 @@ class FttPermissions
     $result = [];
 
     $res = db_query("SELECT fps.id, fps.member_key, fps.absence_date, fps.date, fps.comment,
-      fps.status, fps.date_send, fps.decision_date, fps.comment_extra,
+      fps.status, fps.date_send, fps.decision_date, fps.comment_extra, fps.notice,
       fp.id AS fp_id, fp.sheet_id, fp.session_id, fp.session_correction_id,
       fp.session_name, fp.session_time, fp.duration
       FROM ftt_permission_sheet AS fps
@@ -57,7 +57,7 @@ class FttPermissions
     }
 
     $res = db_query("SELECT `id`, `member_key`, `absence_date`, `date`, `comment`,
-      `status`, `date_send`, `serving_one`, `decision_date`, `comment_extra`
+      `status`, `date_send`, `serving_one`, `decision_date`, `comment_extra`, `notice`
       FROM ftt_permission_sheet
       WHERE {$condition}
       ORDER BY `absence_date`");

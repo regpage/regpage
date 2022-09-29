@@ -163,4 +163,15 @@ if (isset($_GET['type']) && $_GET['type'] === 'get_permission_archive') {
   exit();
 }
 
+if (isset($_GET['type']) && $_GET['type'] === 'notice') {
+  // готовим данные
+  $db_data_notice = new DbData('set', 'ftt_permission_sheet');
+  $db_data_notice->set('field', 'notice');
+  $db_data_notice->set('value', $_GET['data']);
+  $db_data_notice->set('condition_field', 'id');
+  $db_data_notice->set('condition_value', $_GET['id']);
+  echo DbOperation::operation($db_data_notice->get());
+  exit();
+}
+
 ?>

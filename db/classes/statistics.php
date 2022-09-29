@@ -37,7 +37,7 @@ class statistics {
 
     $result = '';
     if ($trainee) {
-      $res = db_query("SELECT COUNT(`id`) AS total FROM ftt_permission_sheet WHERE `member_key`= '$memberId' AND `status`=0");
+      $res = db_query("SELECT COUNT(`id`) AS total FROM ftt_permission_sheet WHERE `member_key`= '$memberId' AND `notice`=1");
       while ($row = $res->fetch_assoc()) $result = $row['total'];
 
     } else {

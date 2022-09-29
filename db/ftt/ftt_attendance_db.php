@@ -410,6 +410,21 @@ function set_permission($sessions, $adminId)
   $serving_one = $db->real_escape_string($sessions->sheet->serving_one);
   $archive_sessions = $db->real_escape_string($sessions->sheet->archive_sessions);
   $comment_extra = $db->real_escape_string($sessions->sheet->comment_extra);
+  $is_trainee = $db->real_escape_string($sessions->sheet->trainee);
+  $notice = 0;
+  $comment_extra_condition = '';
+  $comment_extra_field = '';
+  $comment_extra_value = '';
+  if (!$is_trainee) {
+    $comment_extra_condition = " `comment_extra` = '$comment_extra', ";
+    $comment_extra_field = "`comment_extra`,";
+    $comment_extra_value = "'$comment_extra',";
+  }
+
+  if ($status === '2' || $status === '3') {
+    $notice = 1;
+  }
+
   // condition
   $archive_sessions_field = '';
   $archive_sessions_value = '';
@@ -442,12 +457,14 @@ function set_permission($sessions, $adminId)
   }
 
   if (empty($sessions->sheet->id)) {
-    $res = db_query("INSERT INTO `ftt_permission_sheet` (`member_key`, `absence_date`, `date`, `comment`, `status`, `date_send`, `serving_one`, `comment_extra`, `decision_date`, $archive_sessions_field `changed`)
-    VALUES ('$member_key', '$absence_date', NOW(),'$comment', '$status', $date_send, '$serving_one', '$comment_extra', '$date_decision', $archive_sessions_value 1)");
+    $res = db_query("INSERT INTO `ftt_permission_sheet` (`member_key`, `absence_date`, `date`, `comment`, `status`, `date_send`, `serving_one`, comment_extra_field `decision_date`, `notice`, $archive_sessions_field `changed`)
+    VALUES ('$member_key', '$absence_date', NOW(),'$comment', '$status', $date_send, '$serving_one', $comment_extra_value '$date_decision', '$notice', $archive_sessions_value 1)");
     $sheet_id = $db->insert_id;
   } else { //
     $res = db_query("UPDATE `ftt_permission_sheet` SET
-      `member_key` = '$member_key', `absence_date` = '$absence_date', {$date_send_update}  `comment` = '$comment', `status` = '$status', {$date_decision_update} `serving_one` = '$serving_one', `comment_extra` = '$comment_extra', {$archive_sessions_update} `changed` = 1
+      `member_key` = '$member_key', `absence_date` = '$absence_date', {$date_send_update}
+      `comment` = '$comment', `status` = '$status', {$date_decision_update} `serving_one` = '$serving_one',
+      {$comment_extra_condition} `notice`='$notice', {$archive_sessions_update} `changed` = 1
       WHERE `id` = '$sheet_id'");
     db_query("DELETE FROM `ftt_permission` WHERE `sheet_id` = '$sheet_id'");
   }
