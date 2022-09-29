@@ -1392,8 +1392,8 @@ function open_blank(el_this) {
     })
     .then(response => response.text())
     .then(commits => {
-      console.log(commits);
-      //location.reload();
+      location.reload();
+      //console.log(commits);
     });
   }
 
@@ -1562,30 +1562,42 @@ function open_blank(el_this) {
       }
 
 
-      let text_permission_status = "не отправлен ";
-      if (element.attr("data-status") === "1") {
+      let text_permission_status = "Отправлен ";
+      if (element.attr("data-status") === "2" || element.attr("data-status") === "3") {
         text_permission_status = "Отправлен ";
         $("#send_date_of_permission").text(element.attr("data-date_send"));
-         if (element.attr("data-serving_one")) {
-           $("#author_of_permission").text(text_permission_status + " " + serving_ones_list[element.attr("data-serving_one")]);
-         } else {
-           $("#author_of_permission").text(text_permission_status + " " + trainee_list[element.attr("data-member_key")]);
-         }
-      } else if (element.attr("data-status") === "2") {
-        $("#author_of_permission").text("Отправлен ");
-        $("#send_date_of_permission").text(element.attr("data-date_send") + ' ');
+        if (element.attr("data-serving_one")) {
+          if (serving_ones_list[element.attr("data-serving_one")]) {
+            $("#author_of_permission").text(text_permission_status + " " + serving_ones_list[element.attr("data-serving_one")]);
+          } else {
+            $("#author_of_permission").text(text_permission_status + " " + trainee_list[element.attr("data-member_key")]);
+          }
+        }
+      } else if (element.attr("data-status") === "1") {
+        $("#author_of_permission").text("Создан ");
+        $("#send_date_of_permission").text(element.attr("data-date"));
+        if (element.attr("data-serving_one")) {
+          if (serving_ones_list[element.attr("data-serving_one")]) {
+            $("#sevice_one_of_permission").text(text_permission_status + " " + serving_ones_list[element.attr("data-serving_one")]);
+          } else {
+            $("#sevice_one_of_permission").text(text_permission_status + " " + trainee_list[element.attr("data-serving_one")]);
+          }
+
+          $("#allow_date_of_permission").text(element.attr("data-date_send"));
+        }
+      }
+
+      if (element.attr("data-status") === "2") {
         text_permission_status = "Одобрен ";
         $("#sevice_one_of_permission").text(text_permission_status + " " + serving_ones_list[element.attr("data-serving_one")]);
-        $("#allow_date_of_permission").text(element.attr("data-date_send"));
+        $("#allow_date_of_permission").text(element.attr("data-date_decision"));
       } else if (element.attr("data-status") === "3") {
-        $("#author_of_permission").text("Отправлен ");
-        $("#send_date_of_permission").text(element.attr("data-date_send") + ' ');
         text_permission_status = "Отклонён ";
         $("#sevice_one_of_permission").text(text_permission_status + " " + serving_ones_list[element.attr("data-serving_one")]);
-        $("#allow_date_of_permission").text(element.attr("data-date_send"));
-      } else {
-        $("#author_of_permission").text("");
-        $("#send_date_of_permission").text("");
+        $("#allow_date_of_permission").text(element.attr("data-date_decision"));
+      } else if (element.attr("data-status") === "0") {
+        $("#author_of_permission").text("Создан ");
+        $("#send_date_of_permission").text(element.attr("data-date"));
         $("#sevice_one_of_permission").text("");
         $("#allow_date_of_permission").text("");
       }

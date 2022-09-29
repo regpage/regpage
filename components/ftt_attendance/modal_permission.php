@@ -54,6 +54,7 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
           <div class="text-right" style="font-size: 12px; display: none;">
             <span id="author_of_permission">Отправлено </span>
             <span id="send_date_of_permission"></span>
+            <br>
             <span id="sevice_one_of_permission">Одобрено/Отклонено </span>
             <span id="allow_date_of_permission"></span>
           </div>

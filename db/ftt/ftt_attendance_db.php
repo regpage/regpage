@@ -457,7 +457,7 @@ function set_permission($sessions, $adminId)
   }
 
   if (empty($sessions->sheet->id)) {
-    $res = db_query("INSERT INTO `ftt_permission_sheet` (`member_key`, `absence_date`, `date`, `comment`, `status`, `date_send`, `serving_one`, comment_extra_field `decision_date`, `notice`, $archive_sessions_field `changed`)
+    $res = db_query("INSERT INTO `ftt_permission_sheet` (`member_key`, `absence_date`, `date`, `comment`, `status`, `date_send`, `serving_one`, $comment_extra_field `decision_date`, `notice`, $archive_sessions_field `changed`)
     VALUES ('$member_key', '$absence_date', NOW(),'$comment', '$status', $date_send, '$serving_one', $comment_extra_value '$date_decision', '$notice', $archive_sessions_value 1)");
     $sheet_id = $db->insert_id;
   } else { //
