@@ -452,6 +452,20 @@ function set_permission($sessions, $adminId)
     db_query("DELETE FROM `ftt_permission` WHERE `sheet_id` = '$sheet_id'");
   }
 
+  // получаем attendance sheet id для бланков одобренных "Сегодня"
+  $today = false;
+  $result_attendance_sheet = '';
+  $curent_date = date("Y-m-d");
+  if ($absence_date === $curent_date && ($status === '2' || $status === '3')) {
+    $today = true;
+  }
+
+  if ($today) {
+    $attendance_sheet = db_query("SELECT `id`
+      FROM `ftt_attendance_sheet`
+      WHERE `date` = '$curent_date' AND `member_key`='$member_key'");
+    while ($row = $attendance_sheet->fetch_assoc()) $result_attendance_sheet = $row['id'];
+  }
   foreach ($sessions as $key => $value) {
     if ($key !== 'sheet') {
       if (empty($value->sheet_id)) {
@@ -467,15 +481,12 @@ function set_permission($sessions, $adminId)
       $res2 = db_query("INSERT INTO `ftt_permission` (`sheet_id`, `session_id`, `session_correction_id`, `session_name`, `session_time`, `duration`, `changed`)
       VALUES ('$sheet_id_sub', '$session_id', '$session_correction_id', '$session_name', '$session_time', '$duration', 1)");
 
-      $today = false;
       // Если бланк передан сегодня
       if ($today) {
-        $attendance_strings = db_query("SELECT `id` FROM `ftt_attendance` WHERE `member_key`='$member_key'");
-        while ($row = $attendance_strings->fetch_assoc()) $result[$row['id']] = $row;
         // обновляем соответствующие строки attendance зававая в permission_sheet_id    id $sheet_id_sub
         $res = db_query("UPDATE `ftt_attendance` SET
-          `permission_sheet_id` = '$sheet_id_sub', `changed` = 1
-          WHERE `id` = '$attendance_id_today'");
+          `permission_sheet_id` = '$sheet_id_sub', `reason` = 'Р', `changed` = 1
+          WHERE `sheet_id`='$result_attendance_sheet' AND (`session_id` = '$session_id' OR `session_time` = '$session_time')");
       }
     }
   }

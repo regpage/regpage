@@ -1392,7 +1392,7 @@ function open_blank(el_this) {
     .then(response => response.text())
     .then(commits => {
       console.log(commits);
-      location.reload();
+      //location.reload();
     });
   }
 
