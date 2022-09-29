@@ -105,15 +105,17 @@
   //date_now_gl = date_now_gl ();
 
 function compare_date(d1, d2) {
-	let current = new Date();
-	let d1 = new Date(d1);
-	let d2 = new Date(d2);
-	let dm = d1 - d2;
-
-	// Вчера и раньше
-	if ((current - d1) > 0) {
-
+	let d1, d2, current, dm;
+	if (!d2) {
+		current = new Date();
+		d1 = new Date(d1);
+		// Вчера и раньше от текущей даты
+		return (current - d1) > 0;
+	} else {
+		d1 = new Date(d1);
+		d2 = new Date(d2);
+		// Разница между двумя датами в милисекундах
+		return d1 - d2;
 	}
 	// добавить вычесление количества дней если нет стандартной функции
-
 }

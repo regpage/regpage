@@ -20,14 +20,14 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
           </select>
         <?php } ?>
         <div class="row">
-          <div class="col-5">
-            <label class="required-for-label">Дата отсутствия</label>
-            <input type="date" id="permission_modal_date" class="form-control form-control-sm mb-2 " value="" style="width: 120px;">
+          <div class="col-4" style="max-width: 150px;">
+            <label class="required-for-label" style="min-width: 130px;">Дата отсутствия</label>
+            <input type="date" id="permission_modal_date" class="form-control form-control-sm mb-2" value="" min="<?php echo date("Y-m-d");?>">
           </div>
-          <div class="col-3 mt-4">
+          <div class="col-3 pl-0" style="margin-top:28px;">
             <span class=""><strong id="show_day_in_blank"></strong></span>
           </div>
-          <div class="col-4 mt-4">
+          <div class="col-5 pr-1" style="margin-top:30px;">
             <span id="show_status_in_blank" class="float-right badge badge-secondary">не отправлен</span>
           </div>
         </div>
@@ -45,6 +45,9 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
           <input type="text" id="permission_modal_comment" class="form-control form-control-sm mt-2" value="" placeholder="Причина отсутствия*">
         </div>
         <?php if ($ftt_access['group'] === 'staff') { ?>
+        <div class="mb-2">
+          <input type="text" id="permission_modal_comment_extra" class="form-control form-control-sm mt-2" value="" placeholder="Комментарий служащего">
+        </div>
         <div class="">
           <label class="">
           <span id="info_of_permission" class="cursor-pointer" style="border-bottom: 1px dashed lightgrey; font-size: 12px; margin-left: 420px;">Инфо</span>
@@ -53,10 +56,6 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
             <span id="send_date_of_permission"></span>
             <span id="sevice_one_of_permission">Одобрено/Отклонено </span>
             <span id="allow_date_of_permission"></span>
-            <span id=""></span>
-
-
-            <span id="date_allow_of_permission"></span>
           </div>
         </div>
         <?php } ?>

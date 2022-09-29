@@ -23,6 +23,7 @@
     $permission_date_send = $value['date_send'];
     $permission_status = $value['status'];
     $permission_serving_one = $value['serving_one'];
+    $permission_date_decision = $value['decision_date'];
     $permission_comment = $value['comment'];
     $short_absence_date = date_convert::yyyymmdd_to_ddmm($permission_absence_date);
 
@@ -48,6 +49,7 @@
     data-member_key='{$permission_member_key}' data-status='{$permission_status}'
     data-date_send='{$permission_date_send}' data-absence_date='{$permission_absence_date}'
     data-comment='{$permission_comment}' data-serving_one='$permission_serving_one'
+    data-date_decision='{$permission_date_decision}'
     data-toggle='modal' data-target='#edit_permission_blank' $show_string>
     <div class='col-2 pl-1'>{$short_absence_date}</div>
     <div class='col-8'>{$permission_comment_short}</div>

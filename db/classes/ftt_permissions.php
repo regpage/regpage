@@ -10,7 +10,8 @@ class FttPermissions
     $member_id = $db->real_escape_string($member_id);
     $result = [];
 
-    $res = db_query("SELECT fps.id, fps.member_key, fps.absence_date, fps.date, fps.comment, fps.status, fps.date_send
+    $res = db_query("SELECT fps.id, fps.member_key, fps.absence_date, fps.date,
+      fps.comment, fps.status, fps.date_send, fps.decision_date, fps.comment_extra
       FROM ftt_permission_sheet AS fps
       WHERE  fps.member_key = '$member_id'
       ORDER BY fps.absence_date");
@@ -25,8 +26,10 @@ class FttPermissions
     $member_id = $db->real_escape_string($member_id);
     $result = [];
 
-    $res = db_query("SELECT fps.id, fps.member_key, fps.absence_date, fps.date, fps.comment, fps.status, fps.date_send,
-      fp.id AS fp_id, fp.sheet_id, fp.session_id, fp.session_correction_id, fp.session_name, fp.session_time, fp.duration
+    $res = db_query("SELECT fps.id, fps.member_key, fps.absence_date, fps.date, fps.comment,
+      fps.status, fps.date_send, fps.decision_date, fps.comment_extra,
+      fp.id AS fp_id, fp.sheet_id, fp.session_id, fp.session_correction_id,
+      fp.session_name, fp.session_time, fp.duration
       FROM ftt_permission_sheet AS fps
       INNER JOIN ftt_permission fp ON fp.sheet_id = fps.id
       WHERE  fps.member_key = '$member_id'
@@ -53,7 +56,8 @@ class FttPermissions
       $condition=0;
     }
 
-    $res = db_query("SELECT `id`, `member_key`, `absence_date`, `date`, `comment`, `status`, `date_send`, `serving_one`
+    $res = db_query("SELECT `id`, `member_key`, `absence_date`, `date`, `comment`,
+      `status`, `date_send`, `serving_one`, `decision_date`, `comment_extra`
       FROM ftt_permission_sheet
       WHERE {$condition}
       ORDER BY `absence_date`");

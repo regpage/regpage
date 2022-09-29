@@ -28,9 +28,10 @@
   </select>
 </div>
 <div class="row row_corr">
-  <div class="col-2 pl-1"><b>Дата</b></div>
-  <div class="col-4"><b>Обучающийся</b></div>
-  <div class="col-4"><b>Причина</b></div>
+  <div class="col-1 pl-1"><b>Дата</b></div>
+  <div class="col-3"><b>Обучающийся</b></div>
+  <div class="col-3"><b>Причина отсутствия</b></div>
+  <div class="col-3"><b>Комментарий служащего</b></div>
   <div class="col-2"><b>Статус</b></div>
 </div>
 <hr id="hight_line" style="margin-left: 0px; margin-right: -15px; margin-top: 0px; margin-bottom: 0px; border-color: lightgray;">
@@ -48,6 +49,8 @@
     $short_date = date_convert::yyyymmdd_to_ddmm($permission_absence_date);
     $permission_date_send = $value['date_send'];
     $permission_serving_one = $value['serving_one'];
+    $permission_date_decision = $value['decision_date'];
+    $permission_comment_extra = $value['comment_extra'];
 
     $checked_string = "<span class='badge badge-".$status_list[$permission_status][0]."'>".$status_list[$permission_status][1]."</span>";
     $show_string = '';
@@ -67,11 +70,29 @@
       $permission_comment_short = $permission_comment;
     }
 
-    echo "<div class='row list_string' data-id='{$permission_id}' data-date='{$permission_date}' data-member_key='{$permission_member_key}' data-status='{$permission_status}' data-serving_one='{$permission_serving_one}' data-date_send='{$permission_date_send}' data-absence_date='{$permission_absence_date}' data-comment='{$permission_comment}' data-toggle='modal' data-target='#edit_permission_blank' $show_string>
-    <div class='col-2 pl-1'>{$short_date}</div>
-    <div class='col-4'>{$permission_name}</div>
-    <div class='col-4'>{$permission_comment_short}</div>
+    $permission_comment_extra_short;
+    if (strlen($permission_comment_extra) > 30) {
+      $permission_comment_extra_short = iconv_substr($permission_comment_extra, 0, 70, 'UTF-8');
+      if (strlen($permission_comment_extra) >= 70) {
+        $permission_comment_extra_short .= '...';
+      }
+    } else {
+      $permission_comment_extra_short = $permission_comment_extra;
+    }
+
+    echo "<div class='row list_string' data-id='{$permission_id}' data-date='{$permission_date}'
+     data-member_key='{$permission_member_key}' data-status='{$permission_status}'
+     data-serving_one='{$permission_serving_one}' data-date_send='{$permission_date_send}'
+     data-absence_date='{$permission_absence_date}' data-comment='{$permission_comment}'
+     data-date_decision='{$permission_date_decision}' data-comment_extra='{$permission_comment_extra}'
+     data-toggle='modal' data-target='#edit_permission_blank' $show_string>
+    <div class='col-1 pl-1'>{$short_date}</div>
+    <div class='col-3'>{$permission_name}</div>
+    <div class='col-3'>{$permission_comment_short}</div>
+    <div class='col-3'>{$permission_comment_extra}</div>
     <div class='col-2'>{$checked_string}</div>
+    <div class='col-12 pl-1 pr-1' style='display: none;'>{$permission_comment_short}</div>
+    <div class='col-12 pl-1 pr-1' style='display: none;'>{$permission_comment_extra}</div>
     </div>";
   endforeach; ?>
 </div>

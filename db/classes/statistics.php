@@ -25,7 +25,7 @@ class statistics {
           if (!empty($condition)) {
             $condition .= " OR ";
           }
-          $condition .= " (`member_key`='$key' AND `status`=0) ";
+          $condition .= " (`member_key`='$key' AND `status`=1) ";
         }
       } else {
         $condition=0;

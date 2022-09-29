@@ -64,7 +64,7 @@ if (isset($_COOKIE['flt_trainee']) && !empty($_COOKIE['flt_trainee'])) {
   $trainee_permissions = $_COOKIE['flt_trainee'];
 }
 
-$flt_permission_active = "_all_";
+$flt_permission_active = "1";
 if (isset($_COOKIE['flt_permission_active']) && (!empty($_COOKIE['flt_permission_active']) || $_COOKIE['flt_permission_active'] === '0')) {
   $flt_permission_active = $_COOKIE['flt_permission_active'];
 }

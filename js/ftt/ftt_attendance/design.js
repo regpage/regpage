@@ -66,16 +66,22 @@ if ($(window).width()<=769) {
   $("#permission_list_header select").hide();
   $("#permission_ftr_modal select").css("font-size","17px");
   // columns
-  $("#permission_tab .col-8").removeClass("col-8").addClass("col-7");
+  $("#permission_tab .col-8").removeClass("col-8").addClass("col-6");
   //strings
   $("#list_permission .list_string div:first-child").addClass("pr-0");
   $("#list_permission .list_string div:first-child").css("max-width", "45px");
   $("#list_permission .list_string div:first-child").next().addClass("pl-2");
+
   if (!trainee_access) {
     $("#list_permission .list_string div:first-child").next().addClass("pr-2");
     $("#list_permission .list_string div:first-child").next().next().addClass("pl-2");
     $("#list_permission .list_string div:first-child").next().next().addClass("pr-2");
-    $("#list_permission .list_string div:first-child").next().next().next().addClass("pl-0");
+    $("#list_permission .list_string div:first-child").next().next().next().next().addClass("pl-0");
+    $("#list_permission .list_string div:first-child").next().removeClass("col-4").addClass("col-7");
+    $("#list_permission .list_string div:first-child").next().next().hide();
+    $("#list_permission .list_string div:first-child").next().next().next().hide();
+    $("#list_permission .list_string div:first-child").next().next().next().next().next().show();
+    $("#list_permission .list_string div:first-child").next().next().next().next().next().next().show();
   } else {
     $("#list_permission .list_string div:first-child").next().next().css("padding-left", "10px");
   }
@@ -84,6 +90,10 @@ if ($(window).width()<=769) {
   $("#info_of_permission").css("margin-left", "300px");
   $("#edit_permission_blank input").css("font-size","16px");
   $("#edit_permission_blank select").css("font-size","16px");
+  $("#show_day_in_blank").parent().parent().removeClass("col-3").addClass("col-1");
+  $("#show_day_in_blank").parent().parent().prev().removeClass("col-4").addClass("col-5");
+  $("#show_day_in_blank").parent().parent().next().removeClass("col-4").addClass("col-6");
+
 
   // footer
   $("#edit_permission_blank .modal-footer .btn").css("font-size", "17px");

@@ -296,3 +296,20 @@ function modalInfoUniversal(text) {
   $('#modalUniversalInfo').modal().show();
   $('#universalInfoText').html(text);
 }
+
+function compare_date(d1, d2) {
+	let current, dm;
+	if (!d2) {
+		current = new Date();
+    current.setDate(current.getDate() - 1);
+		d1 = new Date(d1);
+		// Вчера и раньше от текущей даты    
+		return (current - d1) > 0;
+	} else {
+		d1 = new Date(d1);
+		d2 = new Date(d2);
+		// Разница между двумя датами в милисекундах
+		return d1 - d2;
+	}
+	// добавить вычесление количества дней если нет стандартной функции
+}

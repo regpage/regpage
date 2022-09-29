@@ -309,3 +309,12 @@ input[type='time'] {
 #modal_permission_block div {
   margin-left: 5px;
 }
+
+.badge {
+    font-size: 85% !important;
+}
+
+#permission_modal_date {
+    min-width: 125px;
+    max-width: 125px;
+}

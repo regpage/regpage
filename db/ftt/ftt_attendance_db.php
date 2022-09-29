@@ -409,39 +409,49 @@ function set_permission($sessions, $adminId)
   $comment = $db->real_escape_string($sessions->sheet->comment);
   $serving_one = $db->real_escape_string($sessions->sheet->serving_one);
   $archive_sessions = $db->real_escape_string($sessions->sheet->archive_sessions);
+  $comment_extra = $db->real_escape_string($sessions->sheet->comment_extra);
   // condition
-  $archive_sessions_field = "";
-  $archive_sessions_value = "";
-  $archive_sessions_update = "";
+  $archive_sessions_field = '';
+  $archive_sessions_value = '';
+  $archive_sessions_update = '';
 
   $log_serving_one = '';
+  $date_decision = '';
+  $date_decision_update = '';
   $serving_one ? $log_serving_one = "Ответственный: {$serving_one}": '';
   $operation_name = "создан";
   $sheet_id ? $operation_name = 'обновлён': '';
   $log_text = "Для пользователя {$member_key} {$operation_name} бланк разрешения. {$log_serving_one}";
-
+  $date_send_update = '';
   write_to_log::debug($adminId, $log_text);
 
   if ($status === '1') {
     $date_send = 'NOW()';
+    $date_send_update = ' `date_send`= NOW(), ';
+    $date_decision = "''";
     // condition
     $archive_sessions_field = "`archive_sessions`, ";
     $archive_sessions_value = "'$archive_sessions', ";
-    $archive_sessions_update = "`archive_sessions` = '$archive_sessions',";
+    $archive_sessions_update = " `archive_sessions` = '$archive_sessions', ";
+  } elseif ($status === '2' || $status === '3') {
+    $date_decision_update = ' `decision_date`= NOW(), ';
+    $date_decision = 'NOW()';
   } else {
-    $date_send = "'$date_send'";
+    $date_send = "''";
+    $date_decision = "''";
   }
 
   if (empty($sessions->sheet->id)) {
-    $res = db_query("INSERT INTO `ftt_permission_sheet` (`member_key`, `absence_date`, `date`, `comment`, `status`, `date_send`,  `serving_one`, $archive_sessions_field `changed`)
-    VALUES ('$member_key', '$absence_date', NOW(),'$comment', '$status', $date_send, '$serving_one', $archive_sessions_value 1)");
+    $res = db_query("INSERT INTO `ftt_permission_sheet` (`member_key`, `absence_date`, `date`, `comment`, `status`, `date_send`, `serving_one`, `comment_extra`, `decision_date`, $archive_sessions_field `changed`)
+    VALUES ('$member_key', '$absence_date', NOW(),'$comment', '$status', $date_send, '$serving_one', '$comment_extra', '$date_decision', $archive_sessions_value 1)");
     $sheet_id = $db->insert_id;
-  } else {
+  } else { //
     $res = db_query("UPDATE `ftt_permission_sheet` SET
-      `member_key` = '$member_key', `absence_date` = '$absence_date', `date_send` = $date_send, `comment` = '$comment', `status` = '$status', `serving_one` = '$serving_one', $archive_sessions_update `changed` = 1
+      `member_key` = '$member_key', `absence_date` = '$absence_date', {$date_send_update}  `comment` = '$comment', `status` = '$status', {$date_decision_update} `serving_one` = '$serving_one', `comment_extra` = '$comment_extra', {$archive_sessions_update} `changed` = 1
       WHERE `id` = '$sheet_id'");
     db_query("DELETE FROM `ftt_permission` WHERE `sheet_id` = '$sheet_id'");
   }
+
   foreach ($sessions as $key => $value) {
     if ($key !== 'sheet') {
       if (empty($value->sheet_id)) {
@@ -454,8 +464,19 @@ function set_permission($sessions, $adminId)
       $session_name = $value->session_name;
       $session_time = $value->session_time;
       $duration = $value->duration;
-      $res = db_query("INSERT INTO `ftt_permission` (`sheet_id`, `session_id`, `session_correction_id`, `session_name`, `session_time`, `duration`, `changed`)
+      $res2 = db_query("INSERT INTO `ftt_permission` (`sheet_id`, `session_id`, `session_correction_id`, `session_name`, `session_time`, `duration`, `changed`)
       VALUES ('$sheet_id_sub', '$session_id', '$session_correction_id', '$session_name', '$session_time', '$duration', 1)");
+
+      $today = false;
+      // Если бланк передан сегодня
+      if ($today) {
+        $attendance_strings = db_query("SELECT `id` FROM `ftt_attendance` WHERE `member_key`='$member_key'");
+        while ($row = $attendance_strings->fetch_assoc()) $result[$row['id']] = $row;
+        // обновляем соответствующие строки attendance зававая в permission_sheet_id    id $sheet_id_sub
+        $res = db_query("UPDATE `ftt_attendance` SET
+          `permission_sheet_id` = '$sheet_id_sub', `changed` = 1
+          WHERE `id` = '$attendance_id_today'");
+      }
     }
   }
   return $res;
