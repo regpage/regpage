@@ -499,10 +499,15 @@ function set_permission($sessions, $adminId)
       VALUES ('$sheet_id_sub', '$session_id', '$session_correction_id', '$session_name', '$session_time', '$duration', 1)");
 
       // Если бланк передан сегодня
-      if ($today) {
-        // обновляем соответствующие строки attendance зававая в permission_sheet_id    id $sheet_id_sub
+      if ($today && $status === '2') {
+        // обновляем соответствующие строки attendance задавая в permission_sheet_id    id $sheet_id_sub
         $res = db_query("UPDATE `ftt_attendance` SET
           `permission_sheet_id` = '$sheet_id_sub', `reason` = 'Р', `changed` = 1
+          WHERE `sheet_id`='$result_attendance_sheet' AND (`session_id` = '$session_id' OR `session_time` = '$session_time')");
+      } elseif ($today && $status === '3') {
+        // обновляем соответствующие строки attendance удаля из permission_sheet_id    id $sheet_id_sub
+        $res = db_query("UPDATE `ftt_attendance` SET
+          `permission_sheet_id` = '', `reason` = '', `changed` = 1
           WHERE `sheet_id`='$result_attendance_sheet' AND (`session_id` = '$session_id' OR `session_time` = '$session_time')");
       }
     }

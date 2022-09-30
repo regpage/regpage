@@ -1,8 +1,8 @@
 <?php
 $extra_help_text = 'Доп. задания';
+include_once 'db/classes/statistics.php';
+include_once 'db/classes/ftt_lists.php';
 if ($ftt_access['group'] === 'trainee'):
-  include_once 'db/classes/statistics.php';
-  include_once 'db/classes/ftt_lists.php';
   $extra_help_count = statistics::extra_help_count($memberId);
   if ($extra_help_count == 0) {
     $extra_help_count = '';

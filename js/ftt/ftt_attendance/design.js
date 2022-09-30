@@ -51,12 +51,6 @@ if ($(window).width()<=769) {
   $("#modal-block_2 h6").removeClass("hide_element");
   $("#modal-block_2 input").removeClass("ml-1");
 
-  // Blank
-  $("#status_of_blank").css("padding-left", "0px");
-  $("#name_of_trainee").parent().parent().css("padding-right", "5px");
-  $("#name_of_trainee").parent().parent().css("max-width", "200px");
-  $("#modalAddEdit .btn-sm").removeClass("btn-sm");
-
   // РАЗРЕШЕНИЯ
   // container
   // header
@@ -86,7 +80,13 @@ if ($(window).width()<=769) {
     $("#list_permission .list_string div:first-child").next().next().css("padding-left", "10px");
   }
 
-  // blank
+  // Blank
+  $("#delete_permission_blank").css("margin-right", "5px");
+  $("#status_of_blank").css("padding-left", "0px");
+  $("#name_of_trainee").parent().parent().css("padding-right", "5px");
+  $("#name_of_trainee").parent().parent().css("max-width", "200px");
+  $("#modalAddEdit .btn-sm").removeClass("btn-sm");
+
   $("#info_of_permission").css("margin-left", "300px");
   $("#edit_permission_blank input").css("font-size","16px");
   $("#edit_permission_blank select").css("font-size","16px");

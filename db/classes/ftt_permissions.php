@@ -14,7 +14,7 @@ class FttPermissions
       fps.comment, fps.status, fps.date_send, fps.decision_date, fps.comment_extra, fps.notice
       FROM ftt_permission_sheet AS fps
       WHERE  fps.member_key = '$member_id'
-      ORDER BY fps.absence_date");
+      ORDER BY fps.absence_date DESC");
     while ($row = $res->fetch_assoc()) $result[]=$row;
 
     return $result;
@@ -33,7 +33,7 @@ class FttPermissions
       FROM ftt_permission_sheet AS fps
       INNER JOIN ftt_permission fp ON fp.sheet_id = fps.id
       WHERE  fps.member_key = '$member_id'
-      ORDER BY fps.absence_date");
+      ORDER BY fps.absence_date DESC");
     while ($row = $res->fetch_assoc()) $result[]=$row;
 
     return $result;
@@ -60,7 +60,7 @@ class FttPermissions
       `status`, `date_send`, `serving_one`, `decision_date`, `comment_extra`, `notice`
       FROM ftt_permission_sheet
       WHERE {$condition}
-      ORDER BY `absence_date`");
+      ORDER BY `absence_date` DESC");
     while ($row = $res->fetch_assoc()) $result[]=$row;
 
     return $result;

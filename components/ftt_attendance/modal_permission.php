@@ -35,10 +35,10 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
           <h6 id="show_notice_permission_modal" class="col-12 mb-0 font-weight-bold text-danger">Отметьте мероприятия, для которых требуется разрешение на отсутствие.</h6>
         </div>
         <!-- ПОДСТАВЛЯЕМ РАСПИСАНИЕ -->
-        <div id="modal_permission_block" class="container mb-2">
+        <div id="modal_permission_block" class="container pl-3 mb-2">
 
         </div>
-        <div id="history_permission_block" class="container mt-2 mb-2">
+        <div id="history_permission_block" class="container pl-3 mt-2 mb-2">
 
         </div>
         <div class="">
@@ -62,6 +62,7 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
         <?php } ?>
       </div>
       <div class="modal-footer">
+          <button id="delete_permission_blank" class="btn btn-sm btn-dark" style="margin-right: 170px;"><i class="fa fa-trash"></i></button>
         <?php if ($ftt_access['group'] === 'staff') { ?>
           <button id="apply_permission_blank" class="btn btn-sm btn-success">Одобрить</button>
           <button id="deny_permission_blank" class="btn btn-sm btn-danger">Отклонить</button>

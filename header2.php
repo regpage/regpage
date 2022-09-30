@@ -30,7 +30,7 @@ include_once "preheader.php";
     <meta name="mailru-domain" content="z83V20hFDKLekMbc" />
     <link href="favicon.ico" rel="shortcut icon" />
     <link href="css/font-awesome.min.css" rel="stylesheet" />
-    <link href="css/style2.css?v10" rel="stylesheet" />
+    <link href="css/style2.css?v11" rel="stylesheet" />
      <?php $_SERVER['REQUEST_URI'] ?>
   <!--  <link href="css/style_slide.css?v2" rel="stylesheet" />-->
 <?php if ($_SERVER['PHP_SELF'] === '/contacts.php') { ?>
@@ -46,7 +46,7 @@ include_once "preheader.php";
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_gospel.php') { ?>
     <link href="css/ftt/ftt_gospel.css?v7" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_attendance.php') { ?>
-    <link href="css/ftt/ftt_attendance.css?v15" rel="stylesheet">
+    <link href="css/ftt/ftt_attendance.css?v16" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_list.php') { ?>
     <link href="css/ftt/ftt_list.css?v5" rel="stylesheet">
 <?php } ?>

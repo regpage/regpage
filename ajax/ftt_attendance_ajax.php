@@ -174,4 +174,17 @@ if (isset($_GET['type']) && $_GET['type'] === 'notice') {
   exit();
 }
 
+if (isset($_GET['type']) && $_GET['type'] === 'delete_permission_blank') {
+  // готовим данные
+  $db_data = new DbData('dlt', 'ftt_permission_sheet');
+  $db_data->set('condition_field', 'id');
+  $db_data->set('condition_value', $_GET['id']);
+  DbOperation::operation($db_data->get());
+
+  $db_data_str = new DbData('dlt', 'ftt_permission');
+  $db_data_str->set('condition_field', 'sheet_id');
+  $db_data_str->set('condition_value', $_GET['id']);
+  echo DbOperation::operation($db_data_str->get());
+  exit();
+}
 ?>

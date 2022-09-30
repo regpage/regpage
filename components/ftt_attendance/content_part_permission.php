@@ -3,7 +3,7 @@
   <button type="button" id="permission_add" class="btn btn-success btn-sm rounded mr-2" data-toggle="modal" data-target="#edit_permission_blank">Добавить</button>
   <select id="flt_permission_active" class="form-control form-control-sm">
     <option value="_all_" <?php if ($flt_permission_active === '_all_') echo 'selected'; ?>>Все</option>
-    <option value="1" <?php if ($flt_permission_active === '1') echo 'selected'; ?>>На рассмотрении</option>
+    <option value="1" <?php if ($flt_permission_active === '1') echo 'selected'; ?>>Текущие</option>
   </select>
 </div>
 <div class="row row_corr">
@@ -30,7 +30,7 @@
 
     $checked_string = "<span class='badge badge-".$status_list[$permission_status][0]."'>".$status_list[$permission_status][1]."</span>";
     $show_string = '';
-    if ($permission_status === '0' || $permission_status === '2' || $permission_status === '3') {
+    if (($permission_status === '0' || $permission_status === '2' || $permission_status === '3') && !$permission_notice) {
       if ($flt_permission_active === '1') {
         $show_string = 'style="display:none;"';
       }
