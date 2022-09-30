@@ -22,7 +22,7 @@ $(document).ready(function(){
       setCookie("tab_active", "");
       setTimeout(function () {
         location.reload();
-      }, 30);      
+      }, 30);
     }
   });
 
@@ -1879,6 +1879,46 @@ function open_blank(el_this) {
         }
       });
     }
+  });
+
+  // сортировка
+  $(".sort_date, .sort_trainee").click(function (e) {
+    if (e.target.id === "sort_date" || e.target.id === "sort_trainee") {
+      setCookie('sorting', e.target.id + "-asc", 356);
+      if (e.target.id === "sort_date") {
+        $("#sort_trainee").prop("checked", false)
+      } else {
+        $("#sort_date").prop("checked", false);
+      }
+    } else {
+      let sorting_name = e.target.className;
+      $(".sort_date i, .sort_trainee i").addClass("hide_element");
+      if ($(this).hasClass("sort_date")) {
+        $(".sort_trainee i").removeClass("fa");
+        $(".sort_trainee i").removeClass("fa-sort-desc");
+        $(".sort_trainee i").removeClass("fa-sort-asc");
+      } else if ($(this).hasClass("sort_traine")) {
+        $(".sort_date i").removeClass("fa");
+        $(".sort_date i").removeClass("fa-sort-desc");
+        $(".sort_date i").removeClass("fa-sort-asc");
+      }
+
+      $(this).find("i").removeClass("hide_element");
+      if ($(this).find("i").hasClass("fa-sort-desc")) {
+        $(this).find("i").removeClass("fa-sort-desc").addClass("fa-sort-asc");
+        setCookie('sorting', sorting_name + "-desc", 356);
+      } else if ($(this).find("i").hasClass("fa-sort-asc")) {
+        $(this).find("i").removeClass("fa-sort-asc").addClass("fa-sort-desc");
+        setCookie('sorting', sorting_name + "-asc", 356);
+      } else {
+        $(this).find("i").addClass("fa");
+        $(this).find("i").addClass("fa-sort-asc");
+        setCookie('sorting', sorting_name + "-desc", 356);
+      }
+    }
+    setTimeout(function () {
+      location.reload();
+    }, 30);
   });
 
 // DOCUMENT READY STOP

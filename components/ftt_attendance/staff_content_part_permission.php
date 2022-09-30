@@ -1,3 +1,26 @@
+<?php
+$sort_date_ico = 'hide_element';
+$sort_trainee_ico = 'hide_element';
+$curent_sorting = 'sort_date-desc';
+if (isset($_COOKIE['sorting'])) {
+$curent_sorting = $_COOKIE['sorting'];
+}
+if (isset($_COOKIE['sorting'])) {
+  if ($_COOKIE['sorting'] === 'sort_date-desc') {
+    $sort_date_ico = 'fa fa-sort-asc';
+  } elseif ($_COOKIE['sorting'] === 'sort_date-asc') {
+    $sort_date_ico = 'fa fa-sort-desc';
+  } elseif ($_COOKIE['sorting'] === 'sort_trainee-desc') {
+    $sort_trainee_ico = 'fa fa-sort-asc';
+  } elseif ($_COOKIE['sorting'] === 'sort_trainee-asc') {
+    $sort_trainee_ico = 'fa fa-sort-desc';
+  } else {
+    $sort_date_ico = 'fa fa-sort-asc';
+  }
+} else {
+  $sort_date_ico = 'fa fa-sort-asc';
+}
+?>
 <br>
 <div id="permission_list_header" class="btn-group mb-2">
   <button type="button" id="permission_add" class="btn btn-success btn-sm rounded mr-2" data-toggle="modal" data-target="#edit_permission_blank">Добавить</button>
@@ -28,8 +51,8 @@
   </select>
 </div>
 <div class="row row_corr">
-  <div class="col-1 pl-1"><b>Дата</b></div>
-  <div class="col-3"><b>Обучающийся</b></div>
+  <div class="col-1 pl-1 cursor-pointer text_blue"><b class="sort_date">Дата<i class="<?php echo $sort_date_ico; ?>"></i></b></div>
+  <div class="col-3 cursor-pointer text_blue"><b class="sort_trainee">Обучающийся<i class="<?php echo $sort_trainee_ico; ?>"></i></b></div>
   <div class="col-3"><b>Причина отсутствия</b></div>
   <div class="col-3"><b>Комментарий служащего</b></div>
   <div class="col-2"><b>Статус</b></div>
@@ -37,7 +60,7 @@
 <hr id="hight_line" style="margin-left: 0px; margin-right: -15px; margin-top: 0px; margin-bottom: 0px; border-color: lightgray;">
 <div id="list_permission" class="">
   <?php
-  foreach (FttPermissions::get_by_staff(ftt_lists::get_trainees_by_staff($serving_one_permissions)) as $key => $value):
+  foreach (FttPermissions::get_by_staff(ftt_lists::get_trainees_by_staff($serving_one_permissions), $curent_sorting) as $key => $value):
 
     $permission_id = $value['id'];
     $permission_date = $value['date'];

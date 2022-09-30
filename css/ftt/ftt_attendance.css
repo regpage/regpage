@@ -318,3 +318,7 @@ input[type='time'] {
     min-width: 125px;
     max-width: 125px;
 }
+
+.text_blue {
+  color: #08c;
+}

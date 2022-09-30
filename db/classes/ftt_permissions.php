@@ -39,10 +39,26 @@ class FttPermissions
     return $result;
   }
   // получаем разрешения по списку обучающихся
-  static function get_by_staff($trainee_list)
+  static function get_by_staff($trainee_list, $sorting)
   {
     global $db;
     $condition='';
+    if ($sorting) {
+      if ($sorting === 'sort_date-asc') {
+        $sorting = ' fps.absence_date ASC, m.name ASC ';
+      } elseif ($sorting === 'sort_date-desc') {
+        $sorting = ' fps.absence_date DESC, m.name ASC ';
+      } elseif ($sorting === 'sort_trainee-asc') {
+        $sorting = ' m.name ASC, fps.absence_date DESC ';
+      } elseif ($sorting === 'sort_trainee-desc') {
+        $sorting = ' m.name DESC, fps.absence_date DESC ';
+      } else {
+        $sorting = ' fps.absence_date DESC, m.name DESC ';
+      }
+    } else {
+      $sorting = ' fps.absence_date DESC, m.name DESC ';
+    }
+
     $result=[];
     if (count($trainee_list) > 0) {
       foreach ($trainee_list as $key => $value) {
@@ -50,17 +66,19 @@ class FttPermissions
         if (!empty($condition)) {
           $condition .= " OR ";
         }
-        $condition .= " `member_key`='$key' ";
+        $condition .= " fps.member_key='$key' ";
       }
     } else {
       $condition=0;
     }
 
-    $res = db_query("SELECT `id`, `member_key`, `absence_date`, `date`, `comment`,
-      `status`, `date_send`, `serving_one`, `decision_date`, `comment_extra`, `notice`
-      FROM ftt_permission_sheet
+    $res = db_query("SELECT fps.id, fps.member_key, fps.absence_date, fps.date, fps.comment,
+      fps.status, fps.date_send, fps.serving_one, fps.decision_date, fps.comment_extra, fps.notice,
+      m.name
+      FROM ftt_permission_sheet AS fps
+      INNER JOIN member m ON m.key = fps.member_key
       WHERE {$condition}
-      ORDER BY `absence_date` DESC");
+      ORDER BY {$sorting}");
     while ($row = $res->fetch_assoc()) $result[]=$row;
 
     return $result;
