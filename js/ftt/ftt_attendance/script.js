@@ -539,7 +539,7 @@ function open_blank(el_this) {
       if ($(window).width()<=769) {
         $('#add_attendance_str').attr("style", "margin-right: 196px;");
       } else {
-        $('#add_attendance_str').attr("style", "margin-right: 358px;");
+        $('#add_attendance_str').attr("style", "margin-right: 355px;");
       }
 
       $('#add_attendance_str').attr("disabled", false);
@@ -565,7 +565,7 @@ function open_blank(el_this) {
      if ($(window).width()<=769) {
        $('#undo_attendance_str').attr("style", "margin-right: 198px;");
      } else {
-       $('#undo_attendance_str').attr("style", "margin-right: 360px;");
+       $('#undo_attendance_str').attr("style", "margin-right: 355px;");
      }
      $('#add_attendance_str').hide();
    }
@@ -1603,9 +1603,9 @@ function open_blank(el_this) {
         $("#send_date_of_permission").text(element.attr("data-date_send"));
         if (element.attr("data-serving_one")) {
           if (serving_ones_list[element.attr("data-serving_one")]) {
-            $("#author_of_permission").text(text_permission_status + " " + serving_ones_list[element.attr("data-serving_one")]);
+            $("#author_of_permission").text(text_permission_status); // + " " + serving_ones_list[element.attr("data-serving_one")]
           } else {
-            $("#author_of_permission").text(text_permission_status + " " + trainee_list[element.attr("data-member_key")]);
+            $("#author_of_permission").text(text_permission_status); // + " " + trainee_list[element.attr("data-member_key")]
           }
         }
       } else if (element.attr("data-status") === "1") {

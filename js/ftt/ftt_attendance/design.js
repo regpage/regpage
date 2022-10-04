@@ -77,7 +77,12 @@ if ($(window).width()<=769) {
     $("#list_permission .list_string div:first-child").next().next().next().next().next().show();
     $("#list_permission .list_string div:first-child").next().next().next().next().next().next().show();
   } else {
-    $("#list_permission .list_string div:first-child").next().next().css("padding-left", "10px");
+    $("#flt_permission_active").css("font-size","17px").show();
+    $("#list_permission .list_string div:first-child").next().removeClass("col-6").addClass("col-7");
+    $("#list_permission .list_string div:first-child").next().addClass("pr-1");
+    $("#list_permission .list_string div:first-child").next().next().removeClass("col-2").addClass("col-3");
+    $("#list_permission .list_string div:first-child").next().next().addClass("pl-1").addClass("pr-1");
+    $("#list_permission .list_string div:first-child").next().next().find("span").addClass("float-right");
   }
 
   // Blank
