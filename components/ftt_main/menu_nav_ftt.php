@@ -1,17 +1,29 @@
 <?php
-$extra_help_text = 'Доп. задания';
 include_once 'db/classes/statistics.php';
 include_once 'db/classes/ftt_lists.php';
-if ($ftt_access['group'] === 'trainee'):
+
+// получаем обучающихся служащего
+$gl_trainees_by_staff = [];
+if ($ftt_access['group'] === 'staff') {
+  $gl_trainees_by_staff = ftt_lists::get_trainees_by_staff($memberId);
+}
+
+// счётчик доп заданий в меню
+$extra_help_text = 'Доп. задания';
+if ($ftt_access['group'] === 'trainee'){
   $extra_help_count = statistics::extra_help_count($memberId);
-  if ($extra_help_count == 0) {
-    $extra_help_count = '';
-  }
-  $extra_help_text .= "<sup style='color: red;'> <b> {$extra_help_count}</b></sup>";
-endif;
+} elseif ($ftt_access['group'] === 'staff'){
+  $extra_help_count = statistics::extra_help_count($gl_trainees_by_staff);
+}
+if ($extra_help_count == 0) {
+  $extra_help_count = '';
+}
+$extra_help_text .= "<sup style='color: red;'> <b> {$extra_help_count}</b></sup>";
+
+// счётчик разрешений в меню
 $permission_stat_count_main_text = 'Посещаемость';
 if ($ftt_access['group'] === 'staff') {
-  $permission_stat_count_main = statistics::permission_count(ftt_lists::get_trainees_by_staff($memberId));
+  $permission_stat_count_main = statistics::permission_count($gl_trainees_by_staff);
 } else {
   $permission_stat_count_main = statistics::permission_count($memberId);
 }
