@@ -10,11 +10,12 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
       <div class="modal-body">
         <?php if ($ftt_access['group'] === 'staff') { ?>
           <select id="trainee_select_permission" class="form-control form-control-sm mt-2 mb-2">
+            <option value="_none_" selected></option>
             <?php foreach ($trainee_list as $key => $value):
-              $selected = '';
+              /*$selected = '';
               if (empty($selected)) {
                 $selected = 'selected';
-              }
+              }*/
               echo "<option value='{$key}' {$selected}>{$value}</option>";
             endforeach; ?>
           </select>
@@ -62,7 +63,7 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
         <?php } ?>
       </div>
       <div class="modal-footer">
-          <button id="delete_permission_blank" class="btn btn-sm btn-dark" style="margin-right: 170px;"><i class="fa fa-trash"></i></button>
+          <button id="delete_permission_blank" class="btn btn-sm btn-secondary" style="margin-right: 167px;"><i class="fa fa-trash"></i></button>
         <?php if ($ftt_access['group'] === 'staff') { ?>
           <button id="apply_permission_blank" class="btn btn-sm btn-success">Одобрить</button>
           <button id="deny_permission_blank" class="btn btn-sm btn-danger">Отклонить</button>

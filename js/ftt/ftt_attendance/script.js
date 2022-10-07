@@ -1125,14 +1125,26 @@ function open_blank(el_this) {
         $("#modal_permission_block").html(html_staff_editor);
         // checked all
         $(".select_all_session").click(function () {
+          if ($(this).prop("checked")) {
+            valid_modal_permission_field();
+          } else {
+            valid_modal_permission_field(1);
+          }
           $("#modal_permission_block input[type='checkbox']").each(function () {
             if (!$(this).hasClass("select_all_session")) {
               $(this).prop("checked", $(".select_all_session").prop("checked"));
             }
           });
         });
-
+        $("#modal_permission_block .session_staff_str").click(function () {
+          if ($("#modal_permission_block .session_staff_str:checked").length === 0) {
+            valid_modal_permission_field(1);
+          } else {
+            valid_modal_permission_field();
+          }
+        });
         if (permission_sheet_id) {
+          valid_modal_permission_field();
           permission_session_checked(permission_sheet_id);
         }
         return;
@@ -1145,7 +1157,7 @@ function open_blank(el_this) {
         $(".select_all_session").prop("checked", false);
       }
       // построчное вкл/выкл мероприятий в бланке
-      $(".session_staff_str").change(function () {
+      $("#modal-block_staff_body .session_staff_str").change(function () {
         if ($("#modalAddEdit").attr("data-status") === 1) {
           showError("Этот лист посещаемости отправлен. Радактирование невозможено.");
           return;
@@ -1346,9 +1358,9 @@ function open_blank(el_this) {
       serving_one = admin_id_gl;
     }
 
-    if (status === 1) {
-      archive_sessions = prepare_archive();
-    }
+
+    archive_sessions = prepare_archive();
+
 
     // prepare
     let session_str = new FormData();
@@ -1431,6 +1443,12 @@ function open_blank(el_this) {
   }
 
   function valid_field() {
+    if (!$("#trainee_select_permission").val() && !trainee_access) {
+      $("#trainee_select_permission").css("border-color", "red");
+      showError("Заполните обязательные поля.");
+      return 1;
+    }
+
     if (!$("#permission_modal_date").val()) {
       $("#permission_modal_date").css("border-color", "red");
       showError("Заполните обязательные поля.");
@@ -1482,11 +1500,9 @@ function open_blank(el_this) {
     $("#edit_permission_blank input").attr("disabled", true);
     $("#edit_permission_blank select").attr("disabled", true);
 
+    $("#trainee_select_permission").css("border-color", "#ced4da");
     $("#permission_modal_date").css("border-color", "#ced4da");
     $("#permission_modal_comment").css("border-color", "#ced4da");
-
-    // Text
-    $("#show_notice_permission_modal").hide();
 
     if (element.attr("data-status") === "1") {
       $("#delete_permission_blank").prop("disabled", false).show();
@@ -1498,9 +1514,9 @@ function open_blank(el_this) {
         $("#edit_permission_blank select").attr("disabled", false);
       } else {
         if ($(window).width()<=769) {
-          $("#delete_permission_blank").css("margin-right", "220px");
+          $("#delete_permission_blank").css("margin-right", "217px");
         } else {
-          $("#delete_permission_blank").css("margin-right", "360px");
+          $("#delete_permission_blank").css("margin-right", "357px");
         }
       }
     } else if (element.attr("data-status") === "2") {
@@ -1518,7 +1534,7 @@ function open_blank(el_this) {
         if ($(window).width()<=769) {
           $("#delete_permission_blank").css("margin-right", "0px");
         } else {
-          $("#delete_permission_blank").css("margin-right", "170px");
+          $("#delete_permission_blank").css("margin-right", "167px");
         }
       }
       // buttons
@@ -1528,8 +1544,6 @@ function open_blank(el_this) {
       // fields
       $("#edit_permission_blank input").attr("disabled", false);
       $("#edit_permission_blank select").attr("disabled", false);
-      // Text
-      $("#show_notice_permission_modal").show();
     }
     // get archive
     $("#history_permission_block").hide();
@@ -1555,16 +1569,13 @@ function open_blank(el_this) {
 
     // NEW
     if (element.attr("id") === "permission_add") {
+
+      $("#delete_permission_blank").hide();
       if (trainee_access) { // for trainee
         $("#edit_permission_blank").attr("data-member_key", admin_id_gl);
-        if (!historic) {
-          //get_sessions_for_blank(admin_id_gl, date_now_gl, true);
-        }
       } else { // for staff
-        if (!historic) {
-          //get_sessions_for_blank($("#trainee_select_permission").val(), date_now_gl, true);
-        }
-        $("#edit_permission_blank").attr("data-member_key", $("#trainee_select_permission").val());
+        $("#edit_permission_blank").attr("data-member_key", "");
+        $("#trainee_select_permission").val("_none_");
       }
       $("#permission_modal_date").val("");
       // day of the week
@@ -1573,6 +1584,7 @@ function open_blank(el_this) {
       } else {
         $("#show_day_in_blank").text("");
       }
+      valid_modal_permission_field();
     } else { // EDIT
       // field
       $("#trainee_select_permission").val(element.attr("data-member_key"));
@@ -1595,7 +1607,6 @@ function open_blank(el_this) {
       } else {
         $("#show_day_in_blank").text(getNameDayOfWeekByDayNumber(element.attr("data-absence_date"), false));
       }
-
 
       let text_permission_status = "Отправлен ";
       if (element.attr("data-status") === "2" || element.attr("data-status") === "3") {
@@ -1637,6 +1648,7 @@ function open_blank(el_this) {
         $("#allow_date_of_permission").text("");
       }
     }
+    valid_modal_permission_field();
   }
 
   function permission_session_checked(sheet_id) {
@@ -1680,37 +1692,40 @@ function open_blank(el_this) {
   });
 
   $("#permission_modal_comment").keyup(function () {
-    if ($(this).val()) {
-        $(this).css("border-color", "#ced4da");
-    }
+    valid_modal_permission_field();
   });
   $("#permission_modal_comment").change(function () {
-    if ($(this).val()) {
-        $(this).css("border-color", "#ced4da");
-    }
+    valid_modal_permission_field();
   });
   $("#permission_modal_date").change(function () {
-    if (compare_date($(this).val()) || $(this).val().length > 10 || $(this).val().length === 0) {
+    if (!$(this).val() || $(this).val() === "") {
+      $("#modal_permission_block").html("");
+    } else if (compare_date($(this).val()) || $(this).val().length > 10 || $(this).val().length === 0) {
       $(this).val("");
       showError("Нельзя создать бланк за прошедшую дату.");
+      $("#modal_permission_block").html("");
+    } else if ($("#trainee_select_permission").val() === "_none_" && !$("#trainee_select_permission").val()) {
+
+    } else {
+      valid_modal_permission_field();
     }
+    valid_modal_permission_field();
     if ($(this).val()) {
-        $(this).css("border-color", "#ced4da");
         // day of the week
         if ($(window).width()<=769) {
           $("#show_day_in_blank").text(getNameDayOfWeekByDayNumber($(this).val(), true));
         } else {
           $("#show_day_in_blank").text(getNameDayOfWeekByDayNumber($(this).val(), false));
         }
-
     } else {
       // day of the week
       $("#show_day_in_blank").text("");
     }
 
-    if ($("#edit_permission_blank").attr("data-absence_date") === $(this).val()) {
+    if ($(this).val() && $("#edit_permission_blank").attr("data-absence_date") === $(this).val()
+    && $("#trainee_select_permission").val() !== "_none_") {
       get_sessions_for_blank($("#edit_permission_blank").attr("data-member_key"), $("#edit_permission_blank").attr("data-absence_date"), true, $("#edit_permission_blank").attr("data-id"));
-    } else if ($(this).val()) {
+    } else if ($(this).val() && $("#trainee_select_permission").val() !== "_none_") {
       // ПРОДУМАТЬ У СЛУЖАЩИХ
       get_sessions_for_blank($("#edit_permission_blank").attr("data-member_key"), $(this).val(), true);
     }
@@ -1733,6 +1748,9 @@ function open_blank(el_this) {
   });
 
   $("#apply_permission_blank, #deny_permission_blank").click(function (e) {
+    if (valid_field()) {
+      return;
+    }
     if (e.target.id === "apply_permission_blank") {
       save_permissions(prepare_data(2));
     } else {
@@ -1819,10 +1837,50 @@ function open_blank(el_this) {
       }
     });
   });
+
+  function valid_modal_permission_field(check_list) {
+    let text_notice = "";
+    if (!trainee_access) {
+      if ($("#trainee_select_permission").val() === "_none_" || !$("#trainee_select_permission").val()) {
+        $("#trainee_select_permission").css("border-color", "red");
+        text_notice += "Выберите обучающегося";
+      } else {
+        $("#trainee_select_permission").css("border-color", "#ced4da");
+      }
+    }
+    if ($("#permission_modal_date").val()) {
+      $("#permission_modal_date").css("border-color", "#ced4da");
+    } else {
+      $("#permission_modal_date").css("border-color", "red");
+      text_notice ? text_notice += ", укажите дату отсутствия" : text_notice = "Укажите дату отсутствия";
+    }
+
+    if (check_list) {
+      text_notice ? text_notice += ", отметьте мероприятия, для которых требуется разрешение на отсутствие" : text_notice = "Отметьте мероприятия, для которых требуется разрешение на отсутствие";
+    }
+
+    if ($("#permission_modal_comment").val()) {
+      $("#permission_modal_comment").css("border-color", "#ced4da");
+    } else {
+      $("#permission_modal_comment").css("border-color", "red");
+      text_notice ? text_notice += " и укажите причину отсутствия" : text_notice = "Укажите причину отсутствия";
+    }
+    if ($("#trainee_select_permission").val() === "_none_" || !$("#permission_modal_date").val() || !$("#permission_modal_comment").val() || check_list) {      
+      $("#show_notice_permission_modal").text(text_notice+".");
+      $("#show_notice_permission_modal:hidden").show();
+    } else {
+      $("#show_notice_permission_modal").hide();
+    }
+  }
   // blank
   $('#trainee_select_permission').change(function () {
+    valid_modal_permission_field();
     $("#edit_permission_blank").attr("data-member_key", $(this).val());
-    get_sessions_for_blank($("#edit_permission_blank").attr("data-member_key"), $("#edit_permission_blank").attr("data-absence_date"), true);
+    if ($(this).val() && $(this).val() !== "_none_" && $("#permission_modal_date").val()) {
+      get_sessions_for_blank($("#edit_permission_blank").attr("data-member_key"), $("#edit_permission_blank").attr("data-absence_date"), true);
+    } else {
+      $("#modal_permission_block").html("");
+    }
   });
 
   $("#info_of_permission").click(function () {
@@ -1844,7 +1902,7 @@ function open_blank(el_this) {
     } else if ($("#modal_flt_permission_active").val() === $("#flt_permission_active").val()
     && $("#modal_ftr_trainee_permissions").val() === $("#ftr_trainee_permissions").val()
     && $("#modal_flt_sevice_one_permissions").val() === $("#flt_sevice_one_permissions").val()) {
-      console.log("I am here");
+
     } else {
       setCookie('flt_permission_active', $("#modal_flt_permission_active").val(), 1);
       setCookie('flt_sevice_one_permissions', $("#modal_flt_sevice_one_permissions").val(), 1);

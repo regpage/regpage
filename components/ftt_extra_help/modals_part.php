@@ -93,7 +93,7 @@
       </div>
       <div class="modal-footer" style="">
         <?php if (!$serving_trainee && $ftt_access['group'] !== 'trainee'): ?>
-          <button id="delete_extra_help" class="btn btn-sm btn-danger" data-dismiss="modal" aria-hidden="true" style="margin-right: 260px;"><i class="fa fa-trash" aria-hidden="true"></i></button>
+          <button id="delete_extra_help" class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="margin-right: 260px;"><i class="fa fa-trash" aria-hidden="true"></i></button>
         <?php endif; ?>
         <button id="save_extra_help" class="btn btn-sm btn-success" data-dismiss="modal" aria-hidden="true" style="">Сохранить</button>
         <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Закрыть</button>

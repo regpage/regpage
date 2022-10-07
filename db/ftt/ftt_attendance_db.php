@@ -425,11 +425,6 @@ function set_permission($sessions, $adminId)
     $notice = 1;
   }
 
-  // condition
-  $archive_sessions_field = '';
-  $archive_sessions_value = '';
-  $archive_sessions_update = '';
-
   $log_serving_one = '';
   $date_decision = '';
   $date_decision_update = '';
@@ -439,15 +434,15 @@ function set_permission($sessions, $adminId)
   $log_text = "Для пользователя {$member_key} {$operation_name} бланк разрешения. {$log_serving_one}";
   $date_send_update = '';
   write_to_log::debug($adminId, $log_text);
+  // condition
+  $archive_sessions_field = "`archive_sessions`, ";
+  $archive_sessions_value = "'$archive_sessions', ";
+  $archive_sessions_update = " `archive_sessions` = '$archive_sessions', ";
 
   if ($status === '1') {
     $date_send = 'NOW()';
     $date_send_update = ' `date_send`= NOW(), ';
     $date_decision = "''";
-    // condition
-    $archive_sessions_field = "`archive_sessions`, ";
-    $archive_sessions_value = "'$archive_sessions', ";
-    $archive_sessions_update = " `archive_sessions` = '$archive_sessions', ";
   } elseif ($status === '2' || $status === '3') {
     $date_decision_update = ' `decision_date`= NOW(), ';
     $date_decision = 'NOW()';

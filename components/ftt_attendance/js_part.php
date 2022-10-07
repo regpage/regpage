@@ -41,5 +41,5 @@ for (let i = 0; i < trainee_list_tmp.length; i = i + 5) {
 // admin key
 let admin_id_gl = "<?php echo $memberId;?>";
 </script>
-<script src="/js/ftt/ftt_attendance/script.js?v89"></script>
+<script src="/js/ftt/ftt_attendance/script.js?v97"></script>
 <script src="/js/ftt/ftt_attendance/design.js?v20"></script>
