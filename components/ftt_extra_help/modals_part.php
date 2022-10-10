@@ -325,6 +325,34 @@
   </div>
 </div>
 
+<!-- Фильтры -->
+<div id="modalShortStatistics" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 id="">Статистика</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+      </div>
+      <div class="modal-body">
+        <select id="sevice_one_select_late_mbl" class="form-control form-control-sm mb-2">
+          <option value="_all_" <?php echo $serving_trainee_selected; ?>>Все служащие</option>
+          <?php foreach ($serving_ones_list as $key => $value):
+            $selected = '';
+            if ($key === $memberId && !$serving_trainee) {
+              $selected = 'selected';
+            }
+            echo "<option value='{$key}' $selected>{$value}</option>";
+          endforeach; ?>
+        </select>        
+      </div>
+      <div class="modal-footer" style="">
+        <button class="btn btn-sm btn-info" data-dismiss="modal" aria-hidden="true" style="">Печать</button>
+        <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Сортировка
 <div id="modalSort" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
