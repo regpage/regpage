@@ -1,11 +1,12 @@
 <?php
 /**  Статистики
 *  statistics::extra_help_count($memberId) - Количество активных допзаданий
-*
+*  statistics::extra_help_count($memberId, true) - поимённый список активных допзаданий
+*  Разрешения колво активных
 **/
 class statistics {
-  //Количество активных допзаданий
-  static function extra_help_count ($memberId)
+  // Количество активных допзаданий
+  static function extra_help_count ($memberId, $statistic = false)
   {
     global $db;
     $result = '';
@@ -18,7 +19,11 @@ class statistics {
           if (!empty($condition)) {
             $condition .= " OR ";
           }
-          $condition .= " (`member_key`='$key' AND `archive`=0) ";
+          if ($statistic) {
+            $condition .= " (feh.member_key='$key' AND feh.archive=0) ";
+          } else {
+            $condition .= " (`member_key`='$key' AND `archive`=0) ";
+          }
         }
       } else {
         $condition=0;
@@ -32,13 +37,29 @@ class statistics {
       $res = db_query("SELECT COUNT(`id`) AS total FROM ftt_extra_help WHERE `member_key`= '$memberId' AND `archive`=0");
       while ($row = $res->fetch_assoc()) $result = $row['total'];
     } else {
-      $res = db_query("SELECT COUNT(`id`) AS total FROM ftt_extra_help WHERE {$condition}");
-      while ($row = $res->fetch_assoc()) $result = $row['total'];
+      if ($statistic) {
+        $result = ['count' => 0];
+        $res = db_query("SELECT feh.id, feh.member_key, m.name
+          FROM ftt_extra_help AS feh
+          INNER JOIN member m ON m.key = feh.member_key
+          WHERE {$condition} ORDER BY m.name");
+        while ($row = $res->fetch_assoc()) {
+          if (isset($result[$row['member_key']])) {
+            $result[$row['member_key']]++;
+          } else {
+            $result[$row['member_key']] = 1;
+          }
+          $result['count']++;
+        }
+      } else {
+        $res = db_query("SELECT COUNT(`id`) AS total FROM ftt_extra_help WHERE {$condition}");
+        while ($row = $res->fetch_assoc()) $result = $row['total'];
+      }
     }
-
     return $result;
   }
 
+  // Разрешения
   static function permission_count ($memberId)
   {
     global $db;

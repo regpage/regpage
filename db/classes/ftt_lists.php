@@ -1,4 +1,10 @@
 <?php
+if (isset($GLOBALS['global_root_path'])) {
+  include_once $GLOBALS['global_root_path'].'db/classes/short_name.php';
+} else {
+  include_once __DIR__.'/../classes/short_name.php';
+}
+
 /**
  * Списки
  * Все Служащие
@@ -90,7 +96,7 @@ class ftt_lists {
   }
 
   // получаем обучающихся по админу
-  function get_trainees_by_staff($serving_one_id) {
+  static function get_trainees_by_staff($serving_one_id) {
     global $db;
     $serving_one_id = $db->real_escape_string($serving_one_id);
     $condition;

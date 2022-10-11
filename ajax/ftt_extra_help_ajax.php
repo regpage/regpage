@@ -1,8 +1,10 @@
 <?php
 // Ajax
-include_once "ajax.php";
+include_once 'ajax.php';
 // подключаем запросы
-include_once "../db/ftt/ftt_extra_help_db.php";
+include_once '../db/ftt/ftt_extra_help_db.php';
+include_once '../db/classes/statistics.php';
+include_once '../db/classes/ftt_lists.php';
 // Подключаем ведение лога
 //include_once "../extensions/write_to_log/write_to_log.php";
 
@@ -56,6 +58,12 @@ if (isset($_GET['type']) && $_GET['type'] === 'update_late') {
 // удаляем строку
 if (isset($_GET['type']) && $_GET['type'] === 'delete_late') {
   echo json_encode(["result"=>deleteLateString($_GET['id'])]);
+  exit();
+}
+
+// получаем отчёт для печати
+if (isset($_GET['type']) && $_GET['type'] === 'get_print_report') {
+  echo json_encode(["result"=>statistics::extra_help_count(ftt_lists::get_trainees_by_staff($_GET['service_one_key']), true)]);
   exit();
 }
 

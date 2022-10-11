@@ -866,6 +866,55 @@ $("#info_of_extrahelp").click(function () {
     }
   });
 
+  function rendering_report_extra_help() {
+    fetch("ajax/ftt_extra_help_ajax.php?type=get_print_report&service_one_key="+$("#sevice_one_print_report").val())
+    .then(response => response.json())
+    .then(commits => {
+      let result = commits.result;
+      let html = "<h3 class='hide_element'>Статистика доп. заданий</h3><p class='hide_element'> Служащий: "+$("#sevice_one_print_report option:selected").text()
+      +"</p><table class='table'><thead><tr><th style='text-align: left;'><b>Обучающийся</b></th><th style='text-align: right;'><b>Доп. заданий</b></th></tr><thead><tbody>";
+      for (let variable in result) {
+        if (result.hasOwnProperty(variable) && variable !== "count") {
+          let count_e_h = "";
+          if (result[variable] > 0) {
+            count_e_h = result[variable];
+          }
+          html = html + "<tr><td style='width: 250px; text-align: left;'>"+ trainee_list[variable] +"</td><td style='text-align: right;'>"+ count_e_h +"</td></tr>";
+        }
+      }
+      html += "<tr><td style='width: 250px; text-align: left;'>Всего</td><td style='text-align: right;'>"+ result["count"] +"</td></tr></tbody></table>";
+      $("#modalShortStatisticsTbl").html(html);
+    });
+  }
+
+  $("#showModalShortStatistics").click(function () {
+    $("#sevice_one_print_report").val($("#sevice_one_select").val());
+    rendering_report_extra_help();
+  });
+
+  $("#sevice_one_print_report").change(function () {
+    rendering_report_extra_help();
+  });
+
+  $("#btn_print_report").click(function () {
+
+    function printElem(elem){
+      popup($(elem).html());
+    }
+//th {border-bottom: 1px solid black; text-align: center; border-collapse: separate;}
+    function popup(data){
+      let mywindow = window.open('', 'Благовестие', 'height=600,width=800');
+      mywindow.document.write('<html><head><title>Доп. задания. Для отправки на принтер нажмите Ctrl+P.</title>');
+      mywindow.document.write('</head><body><style> td {border-bottom: 1px solid black; text-align: right;} th {border-bottom: 1px solid black; text-align: center;}</style>');
+      mywindow.document.write(data);
+      mywindow.document.write('</body></html>');
+      //mywindow.print();
+      //mywindow.close();
+      //return true;
+    }
+    printElem("#modalShortStatisticsTbl");
+  });
+
 /* ==== MAIN & EXTRA HELP STOP ==== */
 /* ==== LATE START ==== */
 

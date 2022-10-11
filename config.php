@@ -17,7 +17,7 @@
       } elseif (dirname($_SERVER['SCRIPT_FILENAME']) === '/home/regpager/domains/reg-page.ru/public_html/dev') {
         $gl_db_name = 'regpager_dev';
       }
-    } else { // вызов из браузера      
+    } else { // вызов из браузера
       if (substr($host, 0,3) === 'dev') {
         $gl_db_name = 'regpager_dev';
         $appRootPath = 'https://dev.reg-page.ru/';
@@ -29,11 +29,6 @@
       }
     }
     $db = new mysqli('localhost', $gl_db_user, $gl_db_pass, $gl_db_name);
-    // Ниже хостинг разработчика
-    //$db = new mysqli('localhost', "u0654_admin", "K9z?n0c1", "u0654376_regpage");
-
-    // Ниже хостинг разработчика
-    //$appRootPath = 'https://test.new-constellation.ru/';
 
     // db query settings
     $db->set_charset('utf8');
