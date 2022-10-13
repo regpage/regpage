@@ -1,20 +1,9 @@
 <?php
-  // СПИСОК ПВОМ
-  // DB
-  include_once 'db/ftt/ftt_list_db.php';
+  // ОБЪЯВЛЕНИЯ ПВОМ
   // Classes
-  include_once 'db/classes/trainee_data.php';
-  include_once 'db/classes/short_name.php';
-  include_once 'db/classes/ftt_lists.php';
-  include_once 'db/classes/date_convert.php';
-  include_once 'db/classes/extra_lists.php';
-  include_once 'db/classes/localities.php';
   include_once 'db/classes/member_properties.php';
-  include_once 'db/classes/members.php';
-  //include_once 'db/classes/ftt_info.php';
-
 // access
-if ($ftt_access['group'] !== 'staff') {
+if ($ftt_access['group'] !== 'staff' && $ftt_access['group'] !== 'trainee') {
   exit();
 }
 

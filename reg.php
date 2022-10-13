@@ -65,7 +65,7 @@
 
 <div class="tabbable hide-phone registration-list" id="eventTabs">
     <div class="tab-content">
-        <select class="controls span5" id="events-list" style="margin-right: 7px;">
+        <select class="controls span6" id="events-list" style="margin-right: 7px;">
           <?php
           $activeIsSet = false;
           foreach($events as $index => $event){
@@ -104,6 +104,7 @@
             <a class="btn btn-primary disabled chk-dep chk-bulkedit role-edit" type="button"><i class="fa fa-list icon-white"></i> <span class="hide-name">Изменить</span></a>
             <a class="btn btn-danger disabled chk-dep chk-remove role-edit" type="button"><i class="fa fa-ban icon-white"></i> <span class="hide-name">Отменить</span></a>
             <a class="btn btn-success chk-invite role-edit" type="button"><i class="fa fa-user icon-white" title="Пригласить пользователя"></i> <span class="hide-name">Пригласить</span></a>
+            <a class="btn role-admin brothers_p_v" type="button"><i class="fa fa-users icon-white" title="Братья призывного возраста или без указаной даты рождения"></i> <span class="hide-name">Братья П/В</span></a>
             <!--<span class="btn send-message-regteam" tabindex="-1" style="margin-right: 10px; font-family: Arial;" title="Отправить сообщение команде регистрации" data-toggle="modal" data-target="#modalEventSendMsg"><i class="fa fa-envelope"></i>  <b>Написать команде регистрации</b></span>-->
             <?php if($event->web == 1){ ?>
             <a class="btn btn-warning disabled chk-dep filter-icons bulkedit-prove" type="button"><i class="fa fa-asterisk" aria-hidden="true"></i> <span class="hide-name">Подтвердить</span></a>
@@ -794,6 +795,7 @@
 </div>
 
 <script>
+let gl_members_brothers_p_v, gl_localities_brothers_p_v, gl_events_brothers_p_v;
 var globalSingleCity = "<?php echo $singleCity; ?>";
     $(document).ready (function (){
         window.user_settings = "<?php echo $userSettings; ?>".split(',');
@@ -1215,6 +1217,24 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
             filterMembers();
           }
         });
+        // братья п/в
+        $('.tab-pane.active').find('.brothers_p_v').click(function() {
+          if ($(this).attr("data-on") === "1") {
+            location.reload();
+          }
+          $(this).attr("data-on", "1");
+          let filter_result = [];
+          for (let variable in gl_members_brothers_p_v) {
+            if (gl_members_brothers_p_v.hasOwnProperty(variable)) {
+              if (!gl_members_brothers_p_v[variable]["birth_date"] && gl_members_brothers_p_v[variable]["male"] === "1") {
+                filter_result[variable] = gl_members_brothers_p_v[variable];
+              } else if (get_current_age(gl_members_brothers_p_v[variable]["birth_date"]) > 17 &&  get_current_age(gl_members_brothers_p_v[variable]["birth_date"]) < 51 && gl_members_brothers_p_v[variable]["male"] === "1") {
+                filter_result.push(gl_members_brothers_p_v[variable]);
+              }
+            }
+          }
+          refreshEventMembers(gl_events_brothers_p_v, filter_result, gl_localities_brothers_p_v);
+        });
     }
 
     function loadDashboard (eventId){
@@ -1224,6 +1244,11 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
         $.getJSON('/ajax/dashboard.php?event='+eventId+request)
         .done (function(data) {
             refreshEventMembers (eventId, data.members, data.localities);
+            if (eventId !== "20210010") {
+              $(".brothers_p_v").hide();
+            } else {
+              $(".brothers_p_v").show();
+            }
         });
     }
 
@@ -1326,6 +1351,11 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
 
         var showLocalityField = $("#eventTab-"+eventId).attr("data-show-locality-field") ===  '1';
         let counter_not_sent = 0;
+        if (!gl_members_brothers_p_v) {
+          gl_members_brothers_p_v = members;
+          gl_localities_brothers_p_v = localities;
+          gl_events_brothers_p_v = eventId;
+        }
         for (var i in members){
             var m = members[i];
 
@@ -1409,7 +1439,7 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
                 '<span class="departure" data-date="' + he(m.dep_date) + '" data-time="' + he(m.dep_time) + '">'+ formatDDMM(m.dep_date) + '</span><br>'+htmlPlace + ' ' +htmlPlaceFlag+'</td>'+
                 '<td>' + htmlLabelByRegState(m.regstate, m.web) +
                 (!isOnline ? '<ul class="regstate-list-handle">'+ htmlListItemsByRegstate(m.regstate, m.attended) + '</ul>' : "")+
-                "<div class='regmem-icons'>"+ htmlEmail + htmlChanged + htmlEditor + '<span style="font-size: 16px;">'+(m.admin_comment ? '<i class="fa fa-commenting" aria-hidden="true" title="'+m.admin_comment+'"></i>' : "" )+'</span></div></td>'
+                "<div class='regmem-icons'>"+ htmlEmail + htmlChanged + htmlEditor + '<span style="font-size: 16px;">'+(m.admin_comment ? '<i class="fa fa-commenting" aria-hidden="true" title="'+m.admin_comment+'"></i>' : "" ) + '<span class="user_setting_span"> (' + get_current_age(m.birth_date) + ')</span>' + '</span></div></td>'
                 + '</tr>'
             );
 

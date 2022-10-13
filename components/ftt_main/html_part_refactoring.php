@@ -7,14 +7,15 @@
             if ($ftt_access['group'] === 'trainee') {
               include_once 'components/ftt_schedule/content_part.php';
             } elseif ($ftt_access['group'] === 'staff') {
-              include_once 'components/ftt_schedule/staff_content_part.php';              
+              include_once 'components/ftt_schedule/staff_content_part.php';
             }
           } elseif ($_SERVER['REQUEST_URI'] === '/ftt_announcement') {
-            echo "В разработке.";
-            //include_once 'components/ftt_announcement/content_part.php';
-            // code...
+            if ($ftt_access['group'] === 'staff') {
+              include_once 'components/ftt_announcement/staff_content_part.php';
+            } elseif ($ftt_access['group'] === 'trainee') {
+              include_once 'components/ftt_announcement/content_part.php';
+            }
           } elseif ($_SERVER['REQUEST_URI'] === '/ftt_attendance') {
-
             if ($ftt_access['group'] === 'trainee') {
               include_once 'components/ftt_attendance/content_part.php';
             } elseif ($ftt_access['group'] === 'staff') {
@@ -42,7 +43,7 @@
               include_once 'components/ftt_extra_help/content_part.php';
             }
           } elseif ($_SERVER['REQUEST_URI'] === '/ftt_list') {
-              include_once 'components/ftt_list/content_part.php';
+            include_once 'components/ftt_list/content_part.php';
           }
           ?>
 </div>
