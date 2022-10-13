@@ -104,7 +104,7 @@
             <a class="btn btn-primary disabled chk-dep chk-bulkedit role-edit" type="button"><i class="fa fa-list icon-white"></i> <span class="hide-name">Изменить</span></a>
             <a class="btn btn-danger disabled chk-dep chk-remove role-edit" type="button"><i class="fa fa-ban icon-white"></i> <span class="hide-name">Отменить</span></a>
             <a class="btn btn-success chk-invite role-edit" type="button"><i class="fa fa-user icon-white" title="Пригласить пользователя"></i> <span class="hide-name">Пригласить</span></a>
-            <a class="btn role-admin brothers_p_v" type="button"><i class="fa fa-users icon-white" title="Братья призывного возраста или без указаной даты рождения"></i> <span class="hide-name">Братья П/В</span></a>
+            <a class="btn role-admin brothers_p_v" type="button"><i class="fa fa-users icon-white" title="Братья призывного возраста или без указаной даты рождения"></i> <span class="hide-name">Братья до 50</span></a>
             <!--<span class="btn send-message-regteam" tabindex="-1" style="margin-right: 10px; font-family: Arial;" title="Отправить сообщение команде регистрации" data-toggle="modal" data-target="#modalEventSendMsg"><i class="fa fa-envelope"></i>  <b>Написать команде регистрации</b></span>-->
             <?php if($event->web == 1){ ?>
             <a class="btn btn-warning disabled chk-dep filter-icons bulkedit-prove" type="button"><i class="fa fa-asterisk" aria-hidden="true"></i> <span class="hide-name">Подтвердить</span></a>
@@ -1433,13 +1433,17 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
                 (in_array(3, window.user_settings) ? '<br/>'+ '<span class="user_setting_span">'+m.email+'</span>' : '') +
                 '</td>' +
 
-               '<td class="style-serv hide-tablet"><div>'+ (m.status ? he(m.status) : '') +'<br>'+'<span class="user_setting_span">'+(m.service ? he(m.service) : '')+ '</span>' + '</div>' + ( m.coord == '1' ? '<div>Координатор</div>' : '') + '</td>' +
-
-                (!isOnline ? '<td class="style-date"><span class="arrival" data-date="' + he(m.arr_date) + '" data-time="' + he(m.arr_time) + '">' : "") + formatDDMM( m.arr_date) + '</span> - '+
+               '<td class="style-serv hide-tablet"><div>'+ (m.status ? he(m.status) : '') +'<br>'+
+               '<span class="user_setting_span">' + getAgeWithSuffix(parseInt(get_current_age(m.birth_date)),get_current_age(m.birth_date)) + '</span>'
+               // + '<span class="user_setting_span">'+(m.service ? he(m.service) : '')+ '</span>'
+               + '</div>'
+               // + ( m.coord == '1' ? '<div>Координатор</div>' : '')
+               + '</td>'
+               + (!isOnline ? '<td class="style-date"><span class="arrival" data-date="' + he(m.arr_date) + '" data-time="' + he(m.arr_time) + '">' : "") + formatDDMM( m.arr_date) + '</span> - '+
                 '<span class="departure" data-date="' + he(m.dep_date) + '" data-time="' + he(m.dep_time) + '">'+ formatDDMM(m.dep_date) + '</span><br>'+htmlPlace + ' ' +htmlPlaceFlag+'</td>'+
                 '<td>' + htmlLabelByRegState(m.regstate, m.web) +
                 (!isOnline ? '<ul class="regstate-list-handle">'+ htmlListItemsByRegstate(m.regstate, m.attended) + '</ul>' : "")+
-                "<div class='regmem-icons'>"+ htmlEmail + htmlChanged + htmlEditor + '<span style="font-size: 16px;">'+(m.admin_comment ? '<i class="fa fa-commenting" aria-hidden="true" title="'+m.admin_comment+'"></i>' : "" ) + '<span class="user_setting_span"> (' + get_current_age(m.birth_date) + ')</span>' + '</span></div></td>'
+                "<div class='regmem-icons'>"+ htmlEmail + htmlChanged + htmlEditor + '<span style="font-size: 16px;">'+(m.admin_comment ? '<i class="fa fa-commenting" aria-hidden="true" title="'+m.admin_comment+'"></i>' : "" ) + '</span></div></td>'
                 + '</tr>'
             );
 
@@ -1453,7 +1457,10 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
                 '<div><span>'+ he(m.cell_phone) + '</span>'+ (m.cell_phone && m.email ? ', ' :' ' )+
                 (in_array(3, window.user_settings) ? '<br/>'+ '<span class="user_setting_span">'+m.email+'</span>' : '') +
                 '</div>'+
-                '<div><span>' + (m.status ? he(m.status) : '') + '<br>'+ (m.service ? he(m.service) : '') + '</span></div>' +
+                '<div><span>' + (m.status ? he(m.status) : '')
+                + '<span>, '
+                + getAgeWithSuffix(parseInt(get_current_age(m.birth_date)),get_current_age(m.birth_date)) + '</span>'
+                + '<br>'+ (m.service ? he(m.service) : '') + '</span></div>' +
                  '<div>' + (!isOnline ? '<span class="arrival" data-date="' + he(m.arr_date) + '" data-time="' + he(m.arr_time) + '">' +
                 formatDDMM(m.arr_date) + '</span>'+
                 '<span class="departure" data-date="' + he(m.dep_date) + '" data-time="' + he(m.dep_time) + '">'+ ' - '+formatDDMM(
@@ -1554,7 +1561,7 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
               });
             }
 
-            var item = $('.downloadExl').data('download'),
+            var item = $('.downloadExl').attr('data-download'),
                 eventIdReal = $("#events-list").val(),
                 eventType = $("#eventTab-"+eventIdReal).attr("data-event_type"),
                 needTranslate = $("#modalDownloadItems #download-translate").prop('checked');
@@ -2122,7 +2129,7 @@ function checkStopEventRegistration(eventId){
     });
 
     function checkForRegEnd (action){
-        var regend = $(".tab-pane.active").data ("regend");
+        var regend = $(".tab-pane.active").attr("data-regend");
         if (regend) {
             regend = new Date (regend);
             if (isValidDate(regend)) {
@@ -2232,26 +2239,26 @@ function checkStopEventRegistration(eventId){
             attended = null, place = null, aidneed=null, aidpaid=null, prepaid=null, paid = null, currency = null, status_key = null;
 
         $("div.tab-pane.active tr[class|='regmem'] input[type='checkbox']:checked").parents ("tr").each (function(){
-            if (arr_date===null) arr_date=$(this).find(".arrival").data('date');
-            else if (arr_date!=$(this).find(".arrival").data('date')) arr_date="";
+            if (arr_date===null) arr_date=$(this).find(".arrival").attr('data-date');
+            else if (arr_date!=$(this).find(".arrival").attr('data-date')) arr_date="";
 
-            if (arr_time===null) arr_time=$(this).find(".arrival").data('time');
-            else if (arr_time!=$(this).find(".arrival").data('time')) arr_time="";
+            if (arr_time===null) arr_time=$(this).find(".arrival").attr('data-time');
+            else if (arr_time!=$(this).find(".arrival").attr('data-time')) arr_time="";
 
-            if (dep_date===null) dep_date=$(this).find(".departure").data('date');
-            else if (dep_date!=$(this).find(".departure").data('date')) dep_date="";
+            if (dep_date===null) dep_date=$(this).find(".departure").attr('data-date');
+            else if (dep_date!=$(this).find(".departure").attr('data-date')) dep_date="";
 
-            if (dep_time===null) dep_time=$(this).find(".departure").data('time');
-            else if (dep_time!=$(this).find(".departure").data('time')) dep_time="";
+            if (dep_time===null) dep_time=$(this).find(".departure").attr('data-time');
+            else if (dep_time!=$(this).find(".departure").attr('data-time')) dep_time="";
 
-            if (accom===null) accom=$(this).data('accom');
-            else if (accom!=$(this).data('accom')) accom="_none_";
+            if (accom===null) accom=$(this).attr('data-accom');
+            else if (accom!=$(this).attr('data-accom')) accom="_none_";
 
-            if (trans===null) trans=$(this).data('transport');
-            else if (trans!=$(this).data('transport')) trans="_none_";
+            if (trans===null) trans=$(this).attr('data-transport');
+            else if (trans!=$(this).attr('data-transport')) trans="_none_";
 
             if (status_key===null) status_key=$(this).attr('data-status');
-            else if (status_key!=$(this).data('data-status')) status_key="_none_";
+            else if (status_key!=$(this).attr('data-status')) status_key="_none_";
 
             if (service_key===null) service_key=$(this).attr('data-service');
             else if (service_key !== $(this).attr('data-service')) service_key="_none_";
@@ -2259,11 +2266,11 @@ function checkStopEventRegistration(eventId){
             if (coord===null) coord=$(this).attr('data-coord');
             else if (coord !== $(this).attr('data-coord')) coord= "0";
 
-            if (mate===null) mate=$(this).data('mate');
-            else if (mate!=$(this).data('mate')) mate="_none_";
+            if (mate===null) mate=$(this).attr('data-mate');
+            else if (mate!=$(this).attr('data-mate')) mate="_none_";
 
-            if (mate===null) memberId=$(this).attr ('class').replace(/^regmem-/,'');
-            else if (memberId!=$(this).attr ('class').replace(/^regmem-/,'')) memberId="_none_";
+            if (mate===null) memberId=$(this).attr('class').replace(/^regmem-/,'');
+            else if (memberId!=$(this).attr('class').replace(/^regmem-/,'')) memberId="_none_";
 
             if (attended===null) attended=$(this).attr('data-attended');
             else if (attended !== $(this).attr('data-attended')) attended= "_none_";
@@ -2287,9 +2294,9 @@ function checkStopEventRegistration(eventId){
             else if (paid !== $(this).attr('data-paid')) paid= "";
         });
 
-        if ($("div.tab-pane.active").data ("transport")=='1') {
-            var needFlight = $("div.tab-pane.active").data ("need_flight")=='1';
-            var needTp = $("div.tab-pane.active").data ("need_tp")=='1';
+        if ($("div.tab-pane.active").attr("data-transport")=='1') {
+            var needFlight = $("div.tab-pane.active").attr("data-need_flight")=='1';
+            var needTp = $("div.tab-pane.active").attr("data-need_tp")=='1';
 
             $(".transportText").text( needFlight ? "Поездка" : "Транспорт");
             $(".transportHint").attr("title", needFlight ? "Групповая поездка до или после мероприятия" : "Для проезда от места проживания к залу собраний");
@@ -2331,8 +2338,8 @@ function checkStopEventRegistration(eventId){
         $(".emAttended").val(attended);
 
         var el = $(".tab-pane.active");
-        $(".beTooltipArrDate").attr('title', "Начало "+formatDDMM (el.data ("start"))).tooltip('fixTitle');
-        $(".beTooltipDepDate").attr('title', "Конец "+formatDDMM (el.data ("end"))).tooltip('fixTitle');
+        $(".beTooltipArrDate").attr('title', "Начало "+formatDDMM (el.attr("data-start"))).tooltip('fixTitle');
+        $(".beTooltipDepDate").attr('title', "Конец "+formatDDMM (el.attr("data-end"))).tooltip('fixTitle');
         var eventId = $("#events-list").val();
 
         $.post('/ajax/get.php?check_event', {event: eventId})

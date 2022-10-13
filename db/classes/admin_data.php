@@ -26,9 +26,9 @@ class get_admin_data {
       while ($row = $res->fetch_assoc()) $result[]=$row;
 
       if (isset($result[0]['member_key'])) {
-        return ['group' => 'staff', 'ftt_service' => [], 'staff_time_zone' => $result[0]['time_zone'], 'attendance' => ''];
+        return ['group' => 'staff', 'ftt_service' => [], 'staff_time_zone' => $result[0]['time_zone'], 'attendance' => '', 'coordinator'=>''];
       } else {
-        $res_2 = db_query("SELECT `member_key`, `service` FROM ftt_trainee WHERE `member_key` = '$admin_id'");
+        $res_2 = db_query("SELECT `member_key`, `service`, `coordinator` FROM ftt_trainee WHERE `member_key` = '$admin_id'");
           while ($row = $res_2->fetch_assoc()) $result_2[]=$row;
 
           if ($result_2[0]['member_key']) {
@@ -39,9 +39,9 @@ class get_admin_data {
             if (in_array($service_param, $ftt_services)) {
               $service_access_param = $service_param;
             }
-            return ['group' => 'trainee', 'ftt_service' => $service_access_param, 'staff_time_zone' => '', 'attendance' => '1'];
+            return ['group' => 'trainee', 'ftt_service' => $service_access_param, 'staff_time_zone' => '', 'attendance' => '1', 'coordinator'=>$result_2[0]['coordinator']];
           } else {
-            return ['group' => '', 'ftt_service' => '', 'staff_time_zone' => '', 'attendance' => ''];
+            return ['group' => '', 'ftt_service' => '', 'staff_time_zone' => '', 'attendance' => '', 'coordinator'=>''];
           }
       }
   }
