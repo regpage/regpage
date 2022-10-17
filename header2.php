@@ -30,7 +30,7 @@ include_once "preheader.php";
     <meta name="mailru-domain" content="z83V20hFDKLekMbc" />
     <link href="favicon.ico" rel="shortcut icon" />
     <link href="css/font-awesome.min.css" rel="stylesheet" />
-    <link href="css/style2.css?v11" rel="stylesheet" />
+    <link href="css/style2.css?v11" rel="stylesheet" />    
      <?php $_SERVER['REQUEST_URI'] ?>
   <!--  <link href="css/style_slide.css?v2" rel="stylesheet" />-->
 <?php if ($_SERVER['PHP_SELF'] === '/contacts.php') { ?>

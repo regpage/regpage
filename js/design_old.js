@@ -8,5 +8,5 @@ if ($(window).width()<=769) {
   $(".search-text").css("margin-top", "5px");
   $(".members-lists-combo").css("max-width", "auto");
   $(".members-lists-combo").css("width", "97%");
-
+  $(".close-event-registration").css("display", "block");
 }

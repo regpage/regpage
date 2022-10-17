@@ -178,9 +178,9 @@
             </div>-->
             </div>
         </div>
-        <div class="counterForResponseble" style="text-align: left; color: red; font-weight: bold; padding-top: 15px;">
+        <span class="counterForResponseble" style="text-align: left; color: red; font-weight: bold; padding-top: 15px; display: inline-block;">
 
-        </div>
+        </span>
         <div class="desctopVisible">
             <div id="statReg">
                 <table class="table table-hover reg-list">
@@ -984,7 +984,7 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
     }
 
     $(".chk-invite").click(function(){
-        if($('.registration-closed').children().length > 0){
+        if($('.tab-pane.active .registration-closed').children().length > 0){
             showModalHintWindow("<strong>Онлайн-регистрация на это мероприятие закрыта.<br>По всем вопросам обращайтесь к команде регистрации, через кнопку в правом нижнем углу экрана. </strong>");
         }
         else{
@@ -1177,6 +1177,7 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
     }
 
     function filterMembers(){
+        $('.tab-pane.active').find('.counterForResponseble').hide();
         var eventId = $("#events-list").val();
         var mode = $(document).width() < 768 ? " .show-phone" : " .desctopVisible";
 
@@ -1199,21 +1200,26 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
             if (regstateFilter === '_all_' && memberRegstate === 'null') {
               counterForAdmin += 1;
               $('.tab-pane.active').find('.counterForResponseble').html('Команде регистрации не отправлены данные ' + counterForAdmin + ' участников (<span style="text-decoration: underline; cursor: pointer;" title="Кликните, что бы отобразить этих участников.">показать</span>)');
+              $('.tab-pane.active').find('.counterForResponseble').show();
             } else if (regstateFilter === '01' && memberRegstate === 'null') {
               counterForAdmin += 1;
               $('.tab-pane.active').find('.counterForResponseble').html('<span style="text-decoration: underline; cursor: pointer;" title="Кликните, что бы отобразить всех участников.">Показать всех участников</span>');
+              $('.tab-pane.active').find('.counterForResponseble').show();
             } else if (counterForAdmin === 0 && $('.filter-regstate').val() === "01") {
               $('.tab-pane.active').find('.counterForResponseble').html('<span style="text-decoration: underline; cursor: pointer;" title="Кликните, что бы отобразить всех участников.">Показать всех участников</span>');
+              $('.tab-pane.active').find('.counterForResponseble').show();
             }
         });
         $('.tab-pane.active').find('.counterForResponseble span').click(function() {
           if ($('.filter-regstate').val() === "01") {
             $('.filter-regstate').val('_all_');
             $('.tab-pane.active').find('.counterForResponseble').html('');
+            $('.tab-pane.active').find('.counterForResponseble').hide();
             filterMembers();
           } else {
             $('.filter-regstate').val('01');
             $('.tab-pane.active').find('.counterForResponseble').html('<span style="text-decoration: underline; cursor: pointer;" title="Кликните, что бы отобразить всех участников.">Показать всех участников</span>');
+            $('.tab-pane.active').find('.counterForResponseble').show();
             filterMembers();
           }
         });
@@ -2038,19 +2044,21 @@ function checkStopEventRegistration(eventId){
         var text = '';
         if (parseInt(data.res.participants_count) > 0){
             if(data.res.close_registration === '1' || parseInt(data.res.count_members) >= parseInt(data.res.participants_count)){
-                text = "<span class='label label-important registration-closed'><a style='color:white;' data-toggle='modal'>Регистрация закрыта</a></span>";
+                text = "<span class='registration-closed'><a style='color:red; font-weight: bold; padding-right: 8px;' data-toggle='modal'>Регистрация закрыта.</a></span>";
             }
             else{
-                text = "<span class='label label-info' id='labelExtraInfo' data-max-participants='"+ (parseInt(data.res.participants_count))+"'><span style='color:white; cursor: pointer' data-toggle='modal' >Осталось мест — "+ (parseInt(data.res.participants_count) - parseInt(data.res.count_members))+"</span></span>";
+                text = "<span class='label label-info' id='labelExtraInfo' data-max-participants='"+ (parseInt(data.res.participants_count))+"'><span style='color:white; cursor: pointer; padding-right: 8px;' data-toggle='modal' >Осталось мест — "+ (parseInt(data.res.participants_count) - parseInt(data.res.count_members))+"</span></span>";
             }
         } else if (parseInt(data.res.participants_count) === 0) {
           if(data.res.close_registration === '1'){
-              text = "<span class='label label-important registration-closed'><a style='color:white;' data-toggle='modal' >Регистрация закрыта</a></span>";
+              text = "<span class='registration-closed'><a style='color:red; font-weight: bold; padding-right: 8px;' data-toggle='modal' >Регистрация закрыта.</a></span>";
           }
         }
-        $("#events-list option[value='"+eventId+"']").html($("#events-list option[value='"+eventId+"']").attr("data-name")
-        + " " + '<span style="margin-left:10px;" class="close-event-registration">'+text+'</span>');
-        //$(".close-event-registration").html(text);
+        if (text) {
+          $('<span style="margin-top: 15px; display: inline-block;" class="close-event-registration">'+text+'</span>').insertBefore(".counterForResponseble");
+        } else {
+          $(".close-event-registration").remove();
+        }
         $('#labelExtraInfo').click(function () {
           var a = $(this).attr('data-max-participants');
           var b = 'Максимальное количество участников для этого мероприятия — ' + a + ' чел.';
@@ -2149,7 +2157,7 @@ function checkStopEventRegistration(eventId){
 
     $(".event-add-member").click (function (){
 
-        if($('.registration-closed').children().length > 0){
+        if($('.tab-pane.active .registration-closed').children().length > 0){
             var access = $(this).parents('.tab-pane.active').attr('data-access');
 
             if(access === '1'){

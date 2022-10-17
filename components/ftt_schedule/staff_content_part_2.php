@@ -42,7 +42,8 @@ $correction_data = [];
 for ($ii=0; $ii < count($correction_2); $ii++) {
   // СДЕЛАТЬ РАЗДЕЛЕНИЕ ЗАПЯТЫМИ И ЗАМЕНУ НЕСКОЛЬКИХ МЕРОПРИЯТИЙ
   if ($correction_2[$ii]['date'] === $date_day_stamp && ($correction_2[$ii]['semester_range'] === '2' || $correction[$ii]['semester_range'] === '0')
-  && ($correction_2[$ii]['time_zone'] === $ftt_access['staff_time_zone']  || $correction[$ii]['time_zone'] === '01')) {
+  && ($correction[$ii]['time_zone'] === $time_zone_list)) {
+    //$correction_2[$ii]['time_zone'] === $ftt_access['staff_time_zone']  ||
     $correction_info = ' (есть изменения)';
     // проверяем количество изменяемых строк
     $correction_strings = explode(',' ,$correction_2[$ii]['cancel_id']);
@@ -95,10 +96,13 @@ if (count($correction_data) > 0 ) {
 // Добавляем корректировки
   $loop_schedule_extra = [];
   $correction_color = [];
+  //$correction_cancel_check = [];
+  // Глюк если дважды отменяются мероприятия с одним id в один день
+  // убрать дубль не получится ибо id может быть один у разных часовых поясов и семестров - 0,1,2 
   foreach ($loop_schedule as $key => $value) {
     if ($value[$day]) {
     for ($iii=0; $iii < count($correction_data); $iii++) {
-      if (!$correction_data[$iii]['cancel_id']) {
+      if (!$correction_data[$iii]['cancel_id']) { // && in_array ($correction_data[$iii]['cancel_id'], $correction_cancel_check)
         $loop_schedule_extra[] = [
           'session_name' => $correction_data[$iii]['session_name'],
           $day => $correction_data[$iii]['time'],
@@ -109,7 +113,8 @@ if (count($correction_data) > 0 ) {
         ];
         $correction_data[$iii]['cancel_id'] = 'break';
       }
-      if ($value['id'] === $correction_data[$iii]['cancel_id']) {
+      if ($value['id'] === $correction_data[$iii]['cancel_id']) { //&& !in_array ($correction_data[$iii]['cancel_id'], $correction_cancel_check)
+        $correction_cancel_check[] = $correction_data[$iii]['cancel_id'];
         //$correction_color[] = $value['id'];
         //if ($correction_data[$iii]['session_name']) {
           $loop_schedule[$key]['session_name'] = $correction_data[$iii]['session_name'];

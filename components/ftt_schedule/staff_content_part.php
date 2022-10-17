@@ -55,7 +55,8 @@ $correction_data = [];
 for ($ii=0; $ii < count($correction); $ii++) {
   // СДЕЛАТЬ РАЗДЕЛЕНИЕ ЗАПЯТЫМИ И ЗАМЕНУ НЕСКОЛЬКИХ МЕРОПРИЯТИЙ
   if ($correction[$ii]['date'] === $date_day_stamp && ($correction[$ii]['semester_range'] === '1' || $correction[$ii]['semester_range'] === '0')
-  && ($correction[$ii]['time_zone'] === $ftt_access['staff_time_zone'] || $correction[$ii]['time_zone'] === '01')) {
+  && ($correction[$ii]['time_zone'] === $time_zone_list)) {
+    //$correction[$ii]['time_zone'] === $ftt_access['staff_time_zone'] || 
     $correction_info = ' (есть изменения)';
     // проверяем количество изменяемых строк
     $correction_strings = explode(',' ,$correction[$ii]['cancel_id']);
