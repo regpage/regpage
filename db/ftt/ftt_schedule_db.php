@@ -27,7 +27,7 @@ function getScheduleByDay($semester_range, $day, $time_zone){
 
 function getCorrectionSchedule() {
   $result = [];
-  $res = db_query("SELECT * FROM ftt_session_correction");
+  $res = db_query("SELECT * FROM ftt_session_correction ORDER BY `semester_range`");
   while ($row = $res->fetch_assoc()) $result[] = $row;
   return $result;
 }

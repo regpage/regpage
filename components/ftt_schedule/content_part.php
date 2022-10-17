@@ -38,6 +38,7 @@ for ($i=0; $i < count($days); $i++) {
 // Корректировки
 $correction_info = '';
 $correction_data = [];
+$correction_check = [];
 for ($ii=0; $ii < count($correction); $ii++) {
 // $correction[$ii]['semester_range'] === '1'
   if ($correction[$ii]['date'] === $date_day_stamp && ($correction[$ii]['semester_range'] === $trainee_data['semester_range'] || $correction[$ii]['semester_range'] === '0')
@@ -48,13 +49,30 @@ for ($ii=0; $ii < count($correction); $ii++) {
 
     if (count($correction_strings) > 0) {
       for ($i2=0; $i2 < count($correction_strings); $i2++) {
+        $one_corretion = $correction[$ii];
         if ($i2 === 0) {
-          $one_corretion = $correction[$ii];
-          $one_corretion['cancel_id'] = trim($correction_strings[$i2]);
+          if (isset($correction_check[$correction_strings[$i2]]) && $correction_check[$correction[$ii]['cancel_id']] === '0') {
+              $one_corretion['cancel_id'] = '';
+          } else {
+            if (isset($correction_check[$correction_strings[$i2]]) && $correction_check[$correction[$ii]['cancel_id']] === '1') {
+              $one_corretion['cancel_id'] = '';
+            } else {
+              $correction_check[$correction_strings[$i2]] = $correction[$ii]['semester_range'];
+              $one_corretion['cancel_id'] = trim($correction_strings[$i2]);
+            }
+          }
           $correction_data[] = $one_corretion;
         } else {
-          $one_corretion = $correction[$ii];
-          $one_corretion['cancel_id'] = trim($correction_strings[$i2]);
+          if (isset($correction_check[$correction_strings[$i2]]) && $correction_check[$correction[$ii]['cancel_id']] === '0') {
+              $one_corretion['cancel_id'] = '';
+          } else {
+            if (isset($correction_check[$correction_strings[$i2]]) && $correction_check[$correction[$ii]['cancel_id']] === '1') {
+              $one_corretion['cancel_id'] = '';
+            } else {
+              $correction_check[$correction_strings[$i2]] = $correction[$ii]['semester_range'];
+              $one_corretion['cancel_id'] = trim($correction_strings[$i2]);
+            }
+          }
           $one_corretion['time'] = '';
           $correction_data[] = $one_corretion;
         }

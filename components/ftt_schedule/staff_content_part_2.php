@@ -39,6 +39,7 @@ for ($i=0; $i < count($days); $i++) {
 // Корректировки
 $correction_info = '';
 $correction_data = [];
+$correction_check_2 = [];
 for ($ii=0; $ii < count($correction_2); $ii++) {
   // СДЕЛАТЬ РАЗДЕЛЕНИЕ ЗАПЯТЫМИ И ЗАМЕНУ НЕСКОЛЬКИХ МЕРОПРИЯТИЙ
   if ($correction_2[$ii]['date'] === $date_day_stamp && ($correction_2[$ii]['semester_range'] === '2' || $correction[$ii]['semester_range'] === '0')
@@ -52,11 +53,29 @@ for ($ii=0; $ii < count($correction_2); $ii++) {
       for ($i2=0; $i2 < count($correction_strings); $i2++) {
         if ($i2 === 0) {
           $one_corretion = $correction_2[$ii];
-          $one_corretion['cancel_id'] = trim($correction_strings[$i2]);
+          if (isset($correction_check_2[$correction_strings[$i2]]) && $correction_check_2[$correction_2[$ii]['cancel_id']] === '0') {
+            $one_corretion['cancel_id'] = '';
+          } else {
+            if (isset($correction_check_2[$correction_strings[$i2]]) && $correction_check_2[$correction_2[$ii]['cancel_id']] === '2') {
+              $one_corretion['cancel_id'] = '';
+            } else {
+              $correction_check_2[$correction_strings[$i2]] = $correction_2[$ii]['semester_range'];
+              $one_corretion['cancel_id'] = trim($correction_strings[$i2]);
+            }
+          }
           $correction_data[] = $one_corretion;
         } else {
           $one_corretion = $correction_2[$ii];
-          $one_corretion['cancel_id'] = trim($correction_strings[$i2]);
+          if (isset($correction_check_2[$correction_strings[$i2]]) && $correction_check_2[$correction_2[$ii]['cancel_id']] === '0') {
+            $one_corretion['cancel_id'] = '';
+          } else {
+            if (isset($correction_check_2[$correction_strings[$i2]]) && $correction_check_2[$correction_2[$ii]['cancel_id']] === '2') {
+              $one_corretion['cancel_id'] = '';
+            } else {
+              $correction_check_2[$correction_strings[$i2]] = $correction_2[$ii]['semester_range'];
+              $one_corretion['cancel_id'] = trim($correction_strings[$i2]);
+            }
+          }
           $one_corretion['time'] = '';
           $correction_data[] = $one_corretion;
         }
@@ -96,13 +115,11 @@ if (count($correction_data) > 0 ) {
 // Добавляем корректировки
   $loop_schedule_extra = [];
   $correction_color = [];
-  //$correction_cancel_check = [];
-  // Глюк если дважды отменяются мероприятия с одним id в один день
-  // убрать дубль не получится ибо id может быть один у разных часовых поясов и семестров - 0,1,2 
+
   foreach ($loop_schedule as $key => $value) {
     if ($value[$day]) {
     for ($iii=0; $iii < count($correction_data); $iii++) {
-      if (!$correction_data[$iii]['cancel_id']) { // && in_array ($correction_data[$iii]['cancel_id'], $correction_cancel_check)
+      if (!$correction_data[$iii]['cancel_id']) {
         $loop_schedule_extra[] = [
           'session_name' => $correction_data[$iii]['session_name'],
           $day => $correction_data[$iii]['time'],
