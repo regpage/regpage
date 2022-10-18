@@ -80,7 +80,6 @@ for ($ii=0; $ii < count($correction); $ii++) {
     } else {
       $correction_data[] = $correction[$ii];
     }
-
   }
 }
 
@@ -112,6 +111,7 @@ if (count($correction_data) > 0 ) {
 // Добавляем корректировки
   $loop_schedule_extra = [];
   $correction_color = [];
+  $prev = '';
   foreach ($loop_schedule as $key => $value) {
     if ($value[$day]) {
     for ($iii=0; $iii < count($correction_data); $iii++) {
@@ -125,29 +125,19 @@ if (count($correction_data) > 0 ) {
           'color' => 1
         ];
         $correction_data[$iii]['cancel_id'] = 'break';
+      } else if ($value['id'] === $correction_data[$iii]['cancel_id'] && !$correction_data[$iii]['time']) {
+        $loop_schedule[$key][$day] = $correction_data[$iii]['time'];
       }
-      if ($value['id'] === $correction_data[$iii]['cancel_id']) {
-        //$correction_color[] = $value['id'];
-        //if ($correction_data[$iii]['session_name']) {
-          $loop_schedule[$key]['session_name'] = $correction_data[$iii]['session_name'];
-        //}
-        //if ($correction_data[$iii]['time']) {
-          $loop_schedule[$key][$day] = $correction_data[$iii]['time'];
-        //}
-        //if ($correction_data[$iii]['duration']) {
-          $loop_schedule[$key]['duration'] = $correction_data[$iii]['duration'];
-        //}
-        //if ($correction_data[$iii]['attendance']) {
-          $loop_schedule[$key]['attendance'] = $correction_data[$iii]['attendance'];
-        //}
-        //if ($correction_data[$iii]['comment']) {
-          $loop_schedule[$key]['comment'] = $correction_data[$iii]['comment'];
-
-          $loop_schedule[$key]['semester_range'] = $correction_data[$iii]['semester_range'];
-
-          $loop_schedule[$key]['time_zone'] = $correction_data[$iii]['time_zone'];
-        //}
-        $loop_schedule[$key]['color'] = 1;
+      if ($correction_data[$iii]['cancel_id'] && $correction_data[$iii]['cancel_id'] !== 'break' && $correction_data[$iii]['time']) {
+        $loop_schedule_extra[] = [
+          'session_name' => $correction_data[$iii]['session_name'],
+          $day => $correction_data[$iii]['time'],
+          'duration' => $correction_data[$iii]['duration'],
+          'attendance' => $correction_data[$iii]['attendance'],
+          'comment' => $correction_data[$iii]['comment'],
+          'color' => 1
+        ];
+        $correction_data[$iii]['time']  = '';
       }
     }
   }
