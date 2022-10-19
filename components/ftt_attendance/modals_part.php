@@ -122,7 +122,7 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
     <div class="modal-content" style="width: 600px;">
       <!-- Modal Header -->
       <div class="modal-header">
-        <h4 class="modal-title">Архив посещаемости</h4>
+        <h5 class="modal-title">Архив посещаемости</h5>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <!-- Modal body -->

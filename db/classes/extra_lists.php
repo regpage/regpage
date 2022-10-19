@@ -28,6 +28,13 @@ class extra_lists {
     }
     return $result;
   }
+  // Часовые пояса для которых есть расписание для комбобоксов
+  static function get_time_zones_list () {
+    $result = [];
+    $res = db_query("SELECT * FROM time_zone WHERE `archive` = 0 ORDER BY `utc`");
+    while ($row = $res->fetch_assoc()) $result[$row['id']] = $row['name'];
+    return $result;
+  }
 }
 
 

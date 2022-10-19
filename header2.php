@@ -27,16 +27,23 @@ include_once "preheader.php";
     <meta name="author" content="">
     <meta http-equiv="Expires" content="Wed, 06 Sep 2017 16:35:12 GMT">
     <meta http-equiv="Pragma" content="no-cache">
-    <meta name="mailru-domain" content="z83V20hFDKLekMbc" />
-    <link href="favicon.ico" rel="shortcut icon" />
-    <link href="css/font-awesome.min.css" rel="stylesheet" />
-    <link href="css/style2.css?v11" rel="stylesheet" />    
-     <?php $_SERVER['REQUEST_URI'] ?>
-  <!--  <link href="css/style_slide.css?v2" rel="stylesheet" />-->
+    <meta name="mailru-domain" content="z83V20hFDKLekMbc">
+    <link href="favicon.ico" rel="shortcut icon">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/style2.css?v11" rel="stylesheet">
+    <!--  <link href="css/style_slide.css?v2" rel="stylesheet" />-->
+
+
+<?php if (IS_FTT) { ?>
+    <!-- Основные стили ПВОМ -->
+    <link href="css/ftt/ftt.css?v1" rel="stylesheet">
+<?php } ?>
+
+
 <?php if ($_SERVER['PHP_SELF'] === '/contacts.php') { ?>
     <link href="css/contacts.css?v10" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_application.php') { ?>
-    <link href="css/ftt.css?v1" rel="stylesheet">
+    <link href="css/ftt/ftt_application.css?v1" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/application.php') { ?>
     <link href="css/ftt_request.css?v1" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_schedule.php') { ?>
@@ -49,6 +56,8 @@ include_once "preheader.php";
     <link href="css/ftt/ftt_attendance.css?v16" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_list.php') { ?>
     <link href="css/ftt/ftt_list.css?v5" rel="stylesheet">
+<?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_announcement.php') { ?>
+    <link href="css/ftt/ftt_announcement.css?v1" rel="stylesheet">
 <?php } ?>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

@@ -1,9 +1,9 @@
 <?php
   // ОБЪЯВЛЕНИЯ ПВОМ
   // Classes
-  //include_once 'components/ftt_blocks/FTT_Select_fields.php';
+  include_once 'db/classes/extra_lists.php';
   // Cookie
-  // Sorting
+  // Sorting  
   // Tabs
 
 ?>

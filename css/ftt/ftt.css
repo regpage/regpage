@@ -1,0 +1,11 @@
+/* Общие стили для раздела ПВОМ */
+/* Стиль верхней панели кнопок и списков выбора */
+.ftt_buttons_bar {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.input_date_width {
+  max-width: 125px;
+  min-width: 125px;
+}

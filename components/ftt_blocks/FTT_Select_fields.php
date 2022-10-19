@@ -4,7 +4,7 @@
    */
   class FTT_Select_fields
   {
-    static function rendering ($list, $seleted_option = '', $extra_first_option = '')
+    static function rendering ($list, $seleted_option = 'missing', $extra_first_option = '')
     {
       if ($extra_first_option) {
         echo "<option value='_all_'>{$extra_first_option}</option>";

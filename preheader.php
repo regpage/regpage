@@ -37,6 +37,14 @@ $thispage = explode('.', substr($_SERVER['PHP_SELF'], 1))[0];
 
 /* ПРАВИЛА ДЛЯ ДОСТУПА К РАЗДЕЛАМ */
 /* ВСЕ ПРАВИЛА ДОСТУПА ДОЛЖНЫ БЫТЬ ПЕРЕНЕСЕНЫ СЮДА */
+// это раздел ПВОМ?
+$isFttPage = explode('_', $_SERVER['PHP_SELF'])[0];
+if ($isFttPage === '/ftt') {
+  $isFttPage = true;
+} else {
+  $isFttPage = false;
+}
+define("IS_FTT", $isFttPage);
 // Бланки по ссылке. Эта проверка перенесена в index.php
 /* if ((!$memberId && isset ($_GET["link"])) || (!$memberId && isset ($_GET["invited"]))){
 } else*/
