@@ -1,6 +1,26 @@
 /* ==== ANNOUNCEMENT START ==== */
 $(document).ready(function(){
   /* ==== DOCUMENT READY START ==== */
+  // BLANK
+  function blank_reset() {
+    $("#announcement_modal_edit input[type='checkbox']").prop("checked", false);
+    $("#announcement_modal_list input[type='checkbox']").prop("checked", false);
+    $("#announcement_modal_list input[type='text']").val("");
+    $("#announcement_modal_list input[type='date']").val(0);
+    $("#announcement_modal_list select").val("01");
+  }
+
+  function blank_fill() {
+
+  }
+
+  function blank_save() {
+
+  }
+
+  $("#announcement_add").click(function () {
+    blank_reset();
+  });
 
   // BLANK FIELDS BEHAVIORS
   $("#public_time_field").keyup(function () {
@@ -27,6 +47,7 @@ $(document).ready(function(){
     } else {
       $("#announcement_list_editor").hide();
     }
+
   });
 
   // Правка списка получателей объявления, опция "настроить".

@@ -12,8 +12,8 @@ if ($_SERVER['REQUEST_URI'] === '/os') {
 // нет необходимости подключать библиотеки майлера и некоторые утилиты подключаемые в db.php в новых разделах
 /* подключение необходимых функций и конфигов */
 // Подключаем основной файл с запросами к бд
-include_once "db.php";
 
+include_once "db.php";
 // START COOKIES
 ini_set('session.cookie_lifetime', 60 * 60 * 24 * 365);  // 365 day cookie lifetime
 // STOP COOKIES

@@ -31,8 +31,7 @@ include_once "preheader.php";
     <link href="favicon.ico" rel="shortcut icon">
     <link href="css/font-awesome.min.css" rel="stylesheet">
     <link href="css/style2.css?v11" rel="stylesheet">
-    <!--  <link href="css/style_slide.css?v2" rel="stylesheet" />-->
-
+    <!--  <link href="css/style_slide.css?v2" rel="stylesheet">-->
 
 <?php if (IS_FTT) { ?>
     <!-- Основные стили ПВОМ -->

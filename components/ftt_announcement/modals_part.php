@@ -80,7 +80,7 @@
           </div>
           <div class="row mb-3">
             <div class="col">
-                <script type="text/javascript" src="//js.nicedit.com/nicEdit-latest.js"></script>
+                <script type="text/javascript" src="extensions/nicedit/nicEdit.js"></script>
                 <script type="text/javascript">
                   bkLib.onDomLoaded(function() {
                     new nicEditor({fullPanel : true}).panelInstance("announcement_text_editor");

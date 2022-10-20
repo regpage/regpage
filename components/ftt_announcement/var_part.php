@@ -3,7 +3,5 @@
   // Classes
   include_once 'db/classes/extra_lists.php';
   // Cookie
-  // Sorting  
+  // Sorting
   // Tabs
-
-?>
