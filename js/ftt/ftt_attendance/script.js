@@ -47,7 +47,7 @@ $(document).ready(function(){
      fetch("ajax/ftt_attendance_ajax.php?type=updade_mark_blank&id="+id+"&field=mark&value=1&header=1")
      .then(response => response.text())
      .then(commits => {
-       console.log(commits);
+       //console.log(commits);
      });
    }
    // set extra help
@@ -57,7 +57,7 @@ $(document).ready(function(){
          fetch('ajax/ftt_attendance_ajax.php?type=create_extrahelp'+extrahelp[i])
          .then(response => response.text())
          .then(commits => {
-           console.log(commits);
+           //console.log(commits);
          });
        }, 13);
      }
@@ -70,7 +70,7 @@ $(document).ready(function(){
          fetch('ajax/ftt_attendance_ajax.php?type=create_late'+late[i])
          .then(response => response.text())
          .then(commits => {
-           console.log(commits);
+           //console.log(commits);
          });
        }, 10);
      }
@@ -1865,7 +1865,7 @@ function open_blank(el_this) {
       $("#permission_modal_comment").css("border-color", "red");
       text_notice ? text_notice += " и укажите причину отсутствия" : text_notice = "Укажите причину отсутствия";
     }
-    if ($("#trainee_select_permission").val() === "_none_" || !$("#permission_modal_date").val() || !$("#permission_modal_comment").val() || check_list) {      
+    if ($("#trainee_select_permission").val() === "_none_" || !$("#permission_modal_date").val() || !$("#permission_modal_comment").val() || check_list) {
       $("#show_notice_permission_modal").text(text_notice+".");
       $("#show_notice_permission_modal:hidden").show();
     } else {

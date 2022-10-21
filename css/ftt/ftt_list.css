@@ -5,10 +5,6 @@
   border-bottom: 1px solid #dee2e6;
 }
 
-.list_string:hover {
-  background-color: #eee;
-}
-
 .active_str {
   background-color: #f5f5f5;
 }

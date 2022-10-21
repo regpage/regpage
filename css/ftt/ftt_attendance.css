@@ -201,7 +201,7 @@ label {
   border-bottom: 1px lightgray solid;
 }
 
-.list_string:hover, .ftt_late_string:hover {
+.ftt_late_string:hover {
   background-color: #eee;
 }
 

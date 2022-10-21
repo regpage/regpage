@@ -1,3 +1,8 @@
 #announcement_modal_list .col label {
   font-weight: normal !important;
 }
+
+.list_string {
+  border-bottom: 1px solid #dee2e6;
+  cursor: pointer;
+}

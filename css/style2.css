@@ -82,6 +82,10 @@ label.required-for-label:after
 .active_string {
   background-color: lightyellow;
 }
+
+.list_string:hover {
+  background-color: #eee;
+}
 /*STOP LISTS*/
 
 /*NAVBARS START*/

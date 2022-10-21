@@ -1,5 +1,5 @@
 <!-- Новое объявление -->
-<div class="modal fade" id="announcement_modal_edit" data-id="" data-publication="" data-archive="">
+<div class="modal fade" id="announcement_modal_edit" data-id="" data-publication="" data-recipients="" data-author="">
   <div class="modal-dialog">
     <div class="modal-content">
       <!-- Modal Header -->
@@ -13,13 +13,13 @@
           <div class="row">
             <div class="col">
               <label class="form-check-label">
-                <input id="" type="checkbox" class="">
+                <input id="announcement_to_14" type="checkbox" class="">
                 Семестрам 1-4
               </label>
             </div>
             <div class="col">
               <label class="form-check-label">
-                <input id="" type="checkbox" class="">
+                <input id="announcement_to_coordinators" type="checkbox" class="">
                 Координаторам
               </label>
             </div>
@@ -27,7 +27,7 @@
           <div class="row">
             <div class="col">
               <label class="form-check-label">
-                <input id="" type="checkbox" class="">
+                <input id="announcement_to_56" type="checkbox" class="">
                 Семестрам 5-6
               </label>
             </div>
@@ -41,13 +41,13 @@
           <div class="row mb-2">
             <div class="col">
               <label class="form-check-label">
-                <input id="" type="checkbox" class="">
+                <input id="announcement_to_servingones" type="checkbox" class="">
                 Служащим
               </label>
             </div>
             <div class="col">
               <select id="announcement_modal_time_zone" class="form-control form-control-sm mr-2">
-                <?php FTT_Select_fields::rendering(extra_lists::get_time_zones_list(), '01'); ?>
+                <?php FTT_Select_fields::rendering($gl_time_zones, '01'); ?>
               </select>
             </div>
           </div>
@@ -70,7 +70,7 @@
               <input id="announcement_date_archivation" type="date" class="form-control form-control-sm">
             </div>
             <div class="col-1 pl-0">
-              <button type="button" class="btn btn-secondary btn-sm" name="button"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+              <button type="button" id="announcement_to_archive" class="btn btn-secondary btn-sm" name="button"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
             </div>
           </div>
           <div class="row mb-3">

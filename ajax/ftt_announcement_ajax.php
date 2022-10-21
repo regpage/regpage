@@ -15,12 +15,16 @@ if (!$adminId) {
     exit;
 }
 
-// Получам строки
-/*
-if (isset($_GET['type']) && $_GET['type'] === 'get_sessions') {
-    echo json_encode(["result"=>get_sessions($_GET['id'])]);
+// Сохранение бланка
+if (isset($_GET['type']) && $_GET['type'] === 'save_announcement') {
+    echo json_encode(["result"=>saveAnnouncement($_POST['data'])]);
     exit();
 }
-*/
+
+// Сохранение бланка
+if (isset($_GET['type']) && $_GET['type'] === 'get_announcement') {
+    echo json_encode(["result"=>getAnnouncement($_GET['id'])]);
+    exit();
+}
 
 ?>
