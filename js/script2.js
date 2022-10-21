@@ -163,7 +163,7 @@ function showHelp(html, autohide, time) {
 	}
 // STOP SHORT NAMES
 
-// DATES
+// ==== DATE ===
 // текущая дата, получаем приводим к типу гггг.мм.дд
 function date_now_gl () {
   // YYYY-MM-dd
@@ -224,7 +224,7 @@ function getNameDayOfWeekByDayNumber(date, short, no_capital, number) {
   }
   return weekday[dayNumber];
 }
-  // ==== ДАТЫ ===
+
 	// date convert mmyyyy to yyyymmdd & yyyymmdd to mmyyyy
 	function dateStrToddmmyyyyToyyyymmdd(date, toRus, separator) {
 		var yyyy, mm, dd;
@@ -272,6 +272,24 @@ function getNameDayOfWeekByDayNumber(date, short, no_capital, number) {
     return ((new Date().getTime() - new Date(date)) / (24 * 3600 * 365.25 * 1000)) | 0;
   }
 
+
+  function compare_date(d1, d2) {
+  	let current, dm;
+  	if (!d2) {
+  		current = new Date();
+      current.setDate(current.getDate() - 1);
+  		d1 = new Date(d1);
+  		// Вчера и раньше от текущей даты
+  		return (current - d1) > 0;
+  	} else {
+  		d1 = new Date(d1);
+  		d2 = new Date(d2);
+  		// Разница между двумя датами в милисекундах
+  		return d1 - d2;
+  	}
+  	// добавить вычесление количества дней если нет стандартной функции
+  }
+
 // STOP DATES
 // TIME
   function time_plus_minutes(time, minutes) {
@@ -295,21 +313,4 @@ function getNameDayOfWeekByDayNumber(date, short, no_capital, number) {
 function modalInfoUniversal(text) {
   $('#modalUniversalInfo').modal().show();
   $('#universalInfoText').html(text);
-}
-
-function compare_date(d1, d2) {
-	let current, dm;
-	if (!d2) {
-		current = new Date();
-    current.setDate(current.getDate() - 1);
-		d1 = new Date(d1);
-		// Вчера и раньше от текущей даты    
-		return (current - d1) > 0;
-	} else {
-		d1 = new Date(d1);
-		d2 = new Date(d2);
-		// Разница между двумя датами в милисекундах
-		return d1 - d2;
-	}
-	// добавить вычесление количества дней если нет стандартной функции
 }

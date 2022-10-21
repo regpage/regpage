@@ -1,5 +1,5 @@
 <!-- Новое объявление -->
-<div class="modal fade" id="announcement_modal_edit">
+<div class="modal fade" id="announcement_modal_edit" data-id="" data-publication="" data-archive="">
   <div class="modal-dialog">
     <div class="modal-content">
       <!-- Modal Header -->
@@ -46,7 +46,7 @@
               </label>
             </div>
             <div class="col">
-              <select id="" class="form-control form-control-sm mr-2">
+              <select id="announcement_modal_time_zone" class="form-control form-control-sm mr-2">
                 <?php FTT_Select_fields::rendering(extra_lists::get_time_zones_list(), '01'); ?>
               </select>
             </div>
@@ -61,13 +61,13 @@
           </div>
           <div class="row mb-3">
             <div class="col-4 input_date_width">
-              <input id="" type="date" class="form-control form-control-sm">
+              <input id="announcement_date_publication" type="date" class="form-control form-control-sm">
             </div>
             <div class="col-2 pl-0">
-              <input id="public_time_field" type="text" class="form-control form-control-sm" maxlength="5">
+              <input id="announcement_time_publication" type="text" class="form-control form-control-sm" maxlength="5">
             </div>
             <div class="col-4 input_date_width">
-              <input id="" type="date" class="form-control form-control-sm">
+              <input id="announcement_date_archivation" type="date" class="form-control form-control-sm">
             </div>
             <div class="col-1 pl-0">
               <button type="button" class="btn btn-secondary btn-sm" name="button"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
@@ -75,25 +75,19 @@
           </div>
           <div class="row mb-3">
             <div class="col">
-              <input type="text" name="" class="form-control form-control-sm" placeholder="Введите заголовок...">
+              <input id="announcement_text_header" type="text" name="" class="form-control form-control-sm" placeholder="Введите заголовок...">
             </div>
           </div>
           <div class="row mb-3">
             <div class="col">
-                <script type="text/javascript" src="extensions/nicedit/nicEdit.js"></script>
-                <script type="text/javascript">
-                  bkLib.onDomLoaded(function() {
-                    new nicEditor({fullPanel : true}).panelInstance("announcement_text_editor");
-                  });
-                </script>
                 <textarea id="announcement_text_editor" name="announcement_editor" style="width: 466px; height: 300px;">
-                  <span class="text-secondary">Текст объявления...</span>
+
                 </textarea>
             </div>
           </div>
           <div class="row mb-3">
             <div class="col">
-              <input type="text" name="" class="form-control form-control-sm" placeholder="Комментарий служащих">
+              <input type="text" id="announcement_staff_comment" name="" class="form-control form-control-sm" placeholder="Комментарий служащих">
             </div>
           </div>
         </div>
@@ -102,7 +96,7 @@
       <div class="modal-footer">
         <button id="announcement_blank_delete" class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="margin-right: 165px;"><i class="fa fa-trash" aria-hidden="true"></i></button>
         <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">Отправить</button>
-        <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Сохранить</button>
+        <button type="button" id="announcement_btn_save" class="btn btn-primary btn-sm" data-dismiss="modal">Сохранить</button>
         <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Закрыть</button>
       </div>
     </div>

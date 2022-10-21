@@ -2,9 +2,6 @@
 $(document).ready(function(){
 /*** DOCUMENT READY START ***/
 
-  // текущая дата гггг.мм.дд
-  date_now_gl = date_now_gl ();
-
   // strings
 
   // фильтры
@@ -16,7 +13,16 @@ $(document).ready(function(){
   // заполнение бланка
 
   // очистка бланка
-
+  function blank_reset(selector) {
+    // fields
+    $(selector + " input[type='checkbox']").prop("checked", false);
+    $(selector + " input[type='checkbox']").val("");
+    $(selector + " input[type='checkbox']").val("");
+    $(selector + " select").val("_none_");
+    // attr data-
+    $(selector).attr("data-id","");
+    $(selector).attr("data-date","");
+  }
   // мгновенное динамическое обновление при успешном сохранении
 
   // save field
