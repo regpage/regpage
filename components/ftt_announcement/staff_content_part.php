@@ -36,13 +36,9 @@
           $short_comment = CutString::cut($comment);
           $short_header = CutString::cut($header);
 
-
           echo "<div class='row list_string' data-id='{$id}' data-date='{$date}' data-time='{$time}' data-publication='{$publication}' data-header='{$header}' data-author='{$member_key}' data-comment='{$comment}' data-timezone='{$timezone}' data-archive_date='{$archive_date}'><div class='col-1'>{$date_show}</div><div class='col-2'>{$timezone_show}</div><div class='col-4'>{$short_header}</div><div class='col-3'>{$short_comment}</div><div class='col-2'>{$publication_badge}</div></div>";
         }
        ?>
        </div>
-    </div>
-    <div class="row">
-
     </div>
   </div>

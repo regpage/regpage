@@ -21,9 +21,17 @@ if (isset($_GET['type']) && $_GET['type'] === 'save_announcement') {
     exit();
 }
 
-// Сохранение бланка
+// Получение данных бланка
 if (isset($_GET['type']) && $_GET['type'] === 'get_announcement') {
     echo json_encode(["result"=>getAnnouncement($_GET['id'])]);
+    exit();
+}
+
+if (isset($_GET['type']) && $_GET['type'] === 'delete_announcement') {
+    $db_data = new DbData('dlt', 'ftt_announcement');
+    $db_data->set('condition_field', 'id');
+    $db_data->set('condition_value', $_GET['id']);
+    DbOperation::operation($db_data->get());
     exit();
 }
 

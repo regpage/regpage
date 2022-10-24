@@ -30,7 +30,7 @@ var nicEditorConfig = bkClass.extend({
 	},
 	iconsPath : '../nicEditorIcons.gif',
 	buttonList : ['save','bold','italic','underline','left','center','right','justify','ol','ul','fontSize','fontFamily','fontFormat','indent','outdent','image','upload','link','unlink','forecolor','bgcolor'],
-	iconList : {"bgcolor":1,"forecolor":2,"bold":3,"center":4,"hr":5,"indent":6,"italic":7,"justify":8,"left":9,"ol":10,"outdent":11,"removeformat":12,"right":13,"save":24,"strikethrough":15,"subscript":16,"superscript":17,"ul":18,"underline":19,"image":20,"link":21,"unlink":22,"close":23,"arrow":25}
+	iconList : {"xhtml":1,"bgcolor":2,"forecolor":3,"bold":4,"center":5,"hr":6,"indent":7,"italic":8,"justify":9,"left":10,"ol":11,"outdent":12,"removeformat":13,"right":14,"save":25,"strikethrough":16,"subscript":17,"superscript":18,"ul":19,"underline":20,"image":21,"link":22,"unlink":23,"close":24,"arrow":26,"upload":27}
 	
 });
 ;
@@ -99,4 +99,26 @@ var nicSaveOptions = {
 };
 
 var nicEditorSaveButton=nicEditorButton.extend({init:function(){if(!this.ne.options.onSave){this.margin.setStyle({display:"none"})}},mouseClick:function(){var B=this.ne.options.onSave;var A=this.ne.selectedInstance;B(A.getContent(),A.elm.id,A)}});nicEditors.registerPlugin(nicPlugin,nicSaveOptions);
+
+
+var nicUploadOptions = {
+	buttons : {
+		'upload' : {name : 'Upload Image', type : 'nicUploadButton'}
+	}
+	
+};
+
+var nicUploadButton=nicEditorAdvancedButton.extend({nicURI:"https://api.imgur.com/3/image",errorText:"Failed to upload image",addPane:function(){if(typeof window.FormData==="undefined"){return this.onError("Image uploads are not supported in this browser, use Chrome, Firefox, or Safari instead.")}this.im=this.ne.selectedInstance.selElm().parentTag("IMG");var A=new bkElement("div").setStyle({padding:"10px"}).appendTo(this.pane.pane);new bkElement("div").setStyle({fontSize:"14px",fontWeight:"bold",paddingBottom:"5px"}).setContent("Insert an Image").appendTo(A);this.fileInput=new bkElement("input").setAttributes({type:"file"}).appendTo(A);this.progress=new bkElement("progress").setStyle({width:"100%",display:"none"}).setAttributes("max",100).appendTo(A);this.fileInput.onchange=this.uploadFile.closure(this)},onError:function(A){this.removePane();alert(A||"Failed to upload image")},uploadFile:function(){var B=this.fileInput.files[0];if(!B||!B.type.match(/image.*/)){this.onError("Only image files can be uploaded");return }this.fileInput.setStyle({display:"none"});this.setProgress(0);var A=new FormData();A.append("image",B);var C=new XMLHttpRequest();C.open("POST",this.ne.options.uploadURI||this.nicURI);C.onload=function(){try{var D=JSON.parse(C.responseText).data}catch(E){return this.onError()}if(D.error){return this.onError(D.error)}this.onUploaded(D)}.closure(this);C.onerror=this.onError.closure(this);C.upload.onprogress=function(D){this.setProgress(D.loaded/D.total)}.closure(this);C.setRequestHeader("Authorization","Client-ID c37fc05199a05b7");C.send(A)},setProgress:function(A){this.progress.setStyle({display:"block"});if(A<0.98){this.progress.value=A}else{this.progress.removeAttribute("value")}},onUploaded:function(B){this.removePane();var D=B.link;if(!this.im){this.ne.selectedInstance.restoreRng();var C="javascript:nicImTemp();";this.ne.nicCommand("insertImage",D);this.im=this.findElm("IMG","src",D)}var A=parseInt(this.ne.selectedInstance.elm.getStyle("width"));if(this.im){this.im.setAttributes({src:D,width:(A&&B.width)?Math.min(A,B.width):""})}}});nicEditors.registerPlugin(nicPlugin,nicUploadOptions);
+
+nicEditor=nicEditor.extend({floatingPanel:function(){this.floating=new bkElement("DIV").setStyle({position:"absolute",top:"-1000px"}).appendTo(document.body);this.addEvent("focus",this.reposition.closure(this)).addEvent("blur",this.hide.closure(this));this.setPanel(this.floating)},reposition:function(){var B=this.selectedInstance.e;this.floating.setStyle({width:(parseInt(B.getStyle("width"))||B.clientWidth)+"px"});var A=B.offsetTop-this.floating.offsetHeight;if(A<0){A=B.offsetTop+B.offsetHeight}this.floating.setStyle({top:A+"px",left:B.offsetLeft+"px",display:"block"})},hide:function(){this.floating.setStyle({top:"-1000px"})}});
+
+
+var nicCodeOptions = {
+	buttons : {
+		'xhtml' : {name : 'Edit HTML', type : 'nicCodeButton'}
+	}
+	
+};
+
+var nicCodeButton=nicEditorAdvancedButton.extend({width:"350px",addPane:function(){this.addForm({"":{type:"title",txt:"Edit HTML"},code:{type:"content",value:this.ne.selectedInstance.getContent(),style:{width:"340px",height:"200px"}}})},submit:function(B){var A=this.inputs.code.value;this.ne.selectedInstance.setContent(A);this.removePane()}});nicEditors.registerPlugin(nicPlugin,nicCodeOptions);
 

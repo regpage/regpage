@@ -19,14 +19,35 @@ $(document).ready(function(){
     $("#announcement_modal_edit").attr("data-author","");
     // other
     $("#announcement_list_editor").hide();
+    // Цвета обрамления полей с ошибкой
+    $("#announcement_date_publication").css("border-color", "#ced4da");
+    $("#announcement_text_header").css("border-color", "#ced4da");
+    $(".nicEdit-main").parent().css("border-color", "#ced4da");
   }
 
   function blank_fill(data) {
+    // Скрываем кнопку "Сохранить" у опубликованных объявлений
+    if (data["publication"] === "1") {
+      $("#announcement_btn_save").hide();
+      $("#announcement_blank_delete").css("margin-right", "265px");
+    } else if ($("#announcement_blank_delete").css("margin-right") !== "169px") {
+      $("#announcement_btn_save").show();
+      $("#announcement_blank_delete").css("margin-right", "167px");
+    }
+    // Отображаем ссылку на список если чекбокс "По списку" включен
+    if (data["by_list"] === "1") {
+      $("#announcement_list_editor").show();
+      data["by_list"] = "checked";
+    } else {
+      $("#announcement_list_editor").hide();
+      data["by_list"] = "";
+    }
+
     data["to_14"] === "1" ? data["to_14"] = "checked" : data["to_14"] = "";
     data["to_56"] === "1" ? data["to_56"] = "checked" : data["to_56"] = "";
     data["to_coordinators"] === "1" ? data["to_coordinators"] = "checked" : data["to_coordinators"] = "";
     data["to_servingones"] === "1" ? data["to_servingones"] = "checked" : data["to_servingones"] = "";
-    data["by_list"] === "1" ? data["by_list"] = "checked" : data["by_list"] = "";
+
 
     $("#announcement_modal_edit").attr("data-id", data["id"]);
     $("#announcement_modal_edit").attr("data-publication", data["publication"]);
@@ -54,18 +75,20 @@ $(document).ready(function(){
     return arr;
   }
 
-  function get_data_fields() {
-    // получатели для не опубликованных объявлений вормируются динамически, или все помещаются в лист?
-    let recipients;
-    if ($("#announcement_modal_edit").attr("data-publication") === "1") {
-      recipients = get_recipients();
+  function get_data_fields(to_public) {
+    // получатели для не опубликованных объявлений формируются динамически, или все помещаются в лист?
+    let recipients, publication = $("#announcement_modal_edit").attr("data-publication");
+    if (to_public) {
+      publication = to_public;
+      //recipients = get_recipients();
+      recipients = $("#announcement_modal_edit").attr("data-recipients");
     } else {
       recipients = $("#announcement_modal_edit").attr("data-recipients");
     }
     let blank_data = new FormData();
     let data_field = {
       id: $("#announcement_modal_edit").attr("data-id"),
-      publication: $("#announcement_modal_edit").attr("data-publication"),
+      publication: publication,
       author: $("#announcement_modal_edit").attr("data-author"),
       to_14: $("#announcement_to_14").prop("checked"),
       to_56: $("#announcement_to_56").prop("checked"),
@@ -85,14 +108,55 @@ $(document).ready(function(){
     return blank_data;
   }
 
-  function blank_save() {
+  // Проверка полей перед публикацией
+  function blank_validation() {
+    let error = "Выберите получателей. ";
+    $("#announcement_modal_edit input[type='checkbox']:checked").each(function () {
+      if ($(this).attr("id") ==="announcement_by_list" && error) {
+        $("#announcement_modal_list input[type='checkbox']:checked").each(function () {
+          error = "";
+        });
+      } else {
+        error = "";
+      }
+    });
+
+    if (!$("#announcement_date_publication").val()) {
+      error += "Выберите дату публикации. ";
+      $("#announcement_date_publication").css("border-color", "red");
+    } else {
+      $("#announcement_date_publication").css("border-color", "#ced4da");
+    }
+
+    if (!$("#announcement_text_header").val()) {
+      error += "Введите заголовок. ";
+      $("#announcement_text_header").css("border-color", "red");
+    } else {
+      $("#announcement_text_header").css("border-color", "#ced4da");
+    }
+
+    if (!nicEditors.findEditor("announcement_text_editor").getContent() || nicEditors.findEditor("announcement_text_editor").getContent() === '<span class="text-secondary">Текст объявления...</span>') {
+      error += "Введите Текст объявления. ";
+      $(".nicEdit-main").parent().css("border-color", "red");
+    } else {
+      $(".nicEdit-main").parent().css("border-color", "#ced4da");
+    }
+    return error;
+  }
+  function blank_save(to_public) {
+    let validation = blank_validation();
+    if (to_public && validation) {
+      showError(validation);
+      return;
+    }
     fetch("ajax/ftt_announcement_ajax.php?type=save_announcement", {
       method: 'POST',
-      body: get_data_fields()
+      body: get_data_fields(to_public)
     })
     .then(response => response.text())
     .then(commits => {
-      console.log(commits.result);
+      $("#announcement_modal_edit").modal("hide");
+      //console.log(commits.result);
       //location.reload();
     });
   }
@@ -135,6 +199,10 @@ $(document).ready(function(){
 
   $("#announcement_btn_save").click(function () {
     blank_save();
+  });
+
+  $("#announcement_blank_publication").click(function () {
+    blank_save(1);
   });
 
   $("#announcement_add").click(function () {
@@ -190,6 +258,17 @@ setTimeout(function () {
     e.stopPropagation();
     e.preventDefault();
     $("#announcement_modal_list").modal("show");
+  });
+
+  // удаление объявления.
+  $("#announcement_blank_delete").click(function (e) {
+    // Удаление опубликованных объявлений
+    if (confirm("Удалить объявление?")) {
+      fetch("ajax/ftt_announcement_ajax.php?type=delete_announcement&id=" + $("#announcement_modal_edit").attr("data-id"));
+      $("#announcement_modal_edit").modal("hide");
+      blank_reset();
+      location.reload();
+    }
   });
 
   /* ==== DOCUMENT READY STOP ==== */
