@@ -37,7 +37,7 @@ $(document).ready(function(){
     $("#announcement_to_servingones").prop("checked", data["to_servingones"]);
     $("#announcement_by_list").prop("checked", data["by_list"]);
     $("#announcement_modal_edit").attr("data-recipients", data["list"]);
-    $("#announcement_modal_time_zone").val(data["time_zone"]);
+    $("#announcement_modal_time_zone").val(data["timezone"]);
     $("#announcement_date_publication").val(data["date"]);
     $("#announcement_time_publication").val(data["time"]);
     $("#announcement_date_archivation").val(data["archive_date"]);
@@ -86,15 +86,14 @@ $(document).ready(function(){
   }
 
   function blank_save() {
-    console.log(get_data_fields());
     fetch("ajax/ftt_announcement_ajax.php?type=save_announcement", {
       method: 'POST',
       body: get_data_fields()
     })
-    .then(response => response.json())
+    .then(response => response.text())
     .then(commits => {
-      //console.log(commits.result);
-    // location.reload();
+      console.log(commits.result);
+      //location.reload();
     });
   }
 
@@ -149,7 +148,6 @@ $(document).ready(function(){
     fetch("ajax/ftt_announcement_ajax.php?type=get_announcement&id=" + $(this).attr("data-id"))
     .then(response => response.json())
     .then(commits => {
-      console.log(commits.result);
       $("#announcement_modal_edit").modal("show");
       blank_fill(commits.result);
     });

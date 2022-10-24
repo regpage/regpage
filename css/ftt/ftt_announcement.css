@@ -5,4 +5,6 @@
 .list_string {
   border-bottom: 1px solid #dee2e6;
   cursor: pointer;
+  padding: 5px 0px;
+  border-bottom: 1px #dee2e6 solid;
 }

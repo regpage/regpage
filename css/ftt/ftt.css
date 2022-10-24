@@ -2,9 +2,13 @@
 /* Стиль верхней панели кнопок и списков выбора */
 .ftt_buttons_bar {
   padding-top: 20px;
-  padding-bottom: 20px;
+  margin-bottom: 8px;
 }
-
+/* Стиль заголовков списка */
+.list_header {
+  padding-bottom: 5px;
+}
+/* Стандартная ширика полей ДАТА */
 .input_date_width {
   max-width: 125px;
   min-width: 125px;

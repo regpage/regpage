@@ -31,26 +31,28 @@ function saveAnnouncement($data)
   $time_zone = $db->real_escape_string($data->time_zone);
   $header = $db->real_escape_string($data->header);
   $content = $db->real_escape_string($data->content);
-  //$recipients = $db->real_escape_string($data->recipients);
+
   $publication_date = $db->real_escape_string($data->publication_date);
   $publication_time = $db->real_escape_string($data->publication_time);
   $archivation_date = $db->real_escape_string($data->archivation_date);
   $publication = $db->real_escape_string($data->publication);
   $comment = $db->real_escape_string($data->comment);
-  //$recipients = $data->recipients;
   $recipients ='';
+  //$recipients = $data->recipients;
+  if ($publication !== '1') {
+    $recipients = $db->real_escape_string($data->recipients);
+  }
 
   if (empty($id)) { // new
     $res = db_query("INSERT INTO `ftt_announcement` (`id`, `date`, `time`, `publication`, `header`, `content`, `member_key`, `comment`, `to_14`, `to_56`, `to_coordinators`, `to_servingones`, `by_list`, `list`, `timezone`, `archive_date`)
     VALUES ('$id', '$publication_date', '$publication_time', '$publication', '$header', '$content', '$author', '$comment', '$to_14', '$to_56', '$to_coordinators', '$to_servingones', '$by_list', '$recipients', '$time_zone', '$archivation_date')");
   } else { // update
-    $res = db_query("UPDATE `ftt_permission_sheet` SET
+    $res = db_query("UPDATE `ftt_announcement` SET
       `date`='$publication_date', `time`='$publication_time', `publication`='$publication', `header`='$header',
       `content`='$content', `member_key`='$author', `comment`='$comment', `to_14`='$to_14', `to_56`='$to_56',
       `to_coordinators`='$to_coordinators', `to_servingones`='$to_servingones', `by_list`='$by_list',
       `list`='$recipients', `timezone`='$time_zone', `archive_date`='$archivation_date'
       WHERE `id` = '$id'");
-    db_query("DELETE FROM `ftt_permission` WHERE `sheet_id` = '$sheet_id'");
   }
   return $res;
 }
