@@ -13,3 +13,8 @@
   max-width: 125px;
   min-width: 125px;
 }
+
+/* Бэйджи */ 
+.badge {
+    font-size: 85% !important;
+}

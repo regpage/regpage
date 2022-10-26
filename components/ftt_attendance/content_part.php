@@ -148,7 +148,7 @@
             $pause_start = '';
             $pause_to = '';
             $pause_stop = '';
-            if ((date($current_date_z) >= date($date_start_str) && !$date_stop_str) || (date($current_date_z) >= date($date_start_str) && date($current_date_z) <= date($date_stop_str))) {
+            if ((strtotime(date($current_date_z)) >= strtotime(date($date_start_str)) && !$date_stop_str) || (strtotime(date($current_date_z)) >= strtotime(date($date_start_str)) && strtotime(date($current_date_z)) <= strtotime(date($date_stop_str)))) {
               $pause_from = 'Перерыв в учёте посещаемости с ';
               $pause_start = date_convert::yyyymmdd_to_ddmm($date_start_str);
               $pause_stop = date_convert::yyyymmdd_to_ddmm($date_stop_str).'.';

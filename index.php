@@ -939,7 +939,7 @@ $(document).ready(function(){
                 /* Сейчас для private мероприятий действует одно правило, на мероприятие саморегистрация открыта
                 только для ответственных и полновременно служащих братьев.
                 нужно добавить правила для всех мероприятий */
-                if(((!parseInt(isUserWithRights) && admin_category !== "RB" && admin_category !== "FS") && parseInt(event.private)>0 && !in_array(event.id, evArr) && event.regstate_key === null) || ((memberId !== event.author || memberId === '000005716') && !isEventActive)){                  
+                if(((!parseInt(isUserWithRights) && admin_category !== "RB" && admin_category !== "FS") && parseInt(event.private)>0 && !in_array(event.id, evArr) && event.regstate_key === null) || ((memberId !== event.author || memberId === '000005716') && !isEventActive)){
                     continue;
                 } else if(in_array(event.id, hidenEvents)){
                     hiddenEventsDesctop.push(desctopEvent);

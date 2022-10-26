@@ -1,6 +1,6 @@
 <?php
   /**
-   * rendering рендерим список выбора
+   * rendering рендерим список выбора FTT_Select_fields::rendering($list, $seleted_option, $extra_first_option)
    */
   class FTT_Select_fields
   {
@@ -14,7 +14,8 @@
         if ($key === $seleted_option) {
           $selected = 'selected';
         }
-        echo "<option value='{$key}' $selected>{$value}</option>";
+        $zone_key = strval($key);
+        echo "<option value='{$zone_key}' $selected>{$value}</option>";
       }
     }
   }

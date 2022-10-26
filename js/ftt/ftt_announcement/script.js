@@ -2,6 +2,7 @@
 $(document).ready(function(){
   /* ==== DOCUMENT READY START ==== */
   // BLANK
+  // сбрасываем данные в бланке
   function blank_reset() {
     // fields
     $("#announcement_modal_edit input[type='checkbox']").prop("checked", false);
@@ -10,6 +11,8 @@ $(document).ready(function(){
     $("#announcement_date_publication").val("");
     $("#announcement_date_archivation").val("");
     $("#announcement_modal_edit select").val("01");
+    $("#announcement_time_publication").val("00:00");
+
     // edit editor
     nicEditors.findEditor("announcement_text_editor").setContent("<span class='text-secondary'>Текст объявления...</span>");
     // attr data-
@@ -19,21 +22,38 @@ $(document).ready(function(){
     $("#announcement_modal_edit").attr("data-author","");
     // other
     $("#announcement_list_editor").hide();
+    // Кнопки
+    $("#announcement_btn_save").show();
+    $("#announcement_blank_delete").css("margin-right", "145px");
     // Цвета обрамления полей с ошибкой
     $("#announcement_date_publication").css("border-color", "#ced4da");
     $("#announcement_text_header").css("border-color", "#ced4da");
     $(".nicEdit-main").parent().css("border-color", "#ced4da");
   }
 
+  // Заполняем бланк
   function blank_fill(data) {
+    // готовим данные
     // Скрываем кнопку "Сохранить" у опубликованных объявлений
     if (data["publication"] === "1") {
       $("#announcement_btn_save").hide();
-      $("#announcement_blank_delete").css("margin-right", "265px");
-    } else if ($("#announcement_blank_delete").css("margin-right") !== "169px") {
+      $("#announcement_blank_delete").css("margin-right", "240px");
+    } else if ($("#announcement_blank_delete").css("margin-right") !== "145px") {
       $("#announcement_btn_save").show();
-      $("#announcement_blank_delete").css("margin-right", "167px");
+      $("#announcement_blank_delete").css("margin-right", "145px");
     }
+
+    // Заполняем список получателей в опции "По списку"
+    let list_arr;
+    if (data["list"]) {
+      list_arr = data["list"].split(",");
+      $("#announcement_modal_list input[type='checkbox']").each(function () {
+        if (list_arr.includes($(this).val())) {
+          $(this).prop("checked", true);
+        }
+      });
+    }
+
     // Отображаем ссылку на список если чекбокс "По списку" включен
     if (data["by_list"] === "1") {
       $("#announcement_list_editor").show();
@@ -47,8 +67,7 @@ $(document).ready(function(){
     data["to_56"] === "1" ? data["to_56"] = "checked" : data["to_56"] = "";
     data["to_coordinators"] === "1" ? data["to_coordinators"] = "checked" : data["to_coordinators"] = "";
     data["to_servingones"] === "1" ? data["to_servingones"] = "checked" : data["to_servingones"] = "";
-
-
+    // Заполняем поля
     $("#announcement_modal_edit").attr("data-id", data["id"]);
     $("#announcement_modal_edit").attr("data-publication", data["publication"]);
     $("#announcement_modal_edit").attr("data-author", data["member_key"]);
@@ -58,7 +77,7 @@ $(document).ready(function(){
     $("#announcement_to_servingones").prop("checked", data["to_servingones"]);
     $("#announcement_by_list").prop("checked", data["by_list"]);
     $("#announcement_modal_edit").attr("data-recipients", data["list"]);
-    $("#announcement_modal_time_zone").val(data["timezone"]);
+    $("#announcement_modal_time_zone").val(data["time_zone"]);
     $("#announcement_date_publication").val(data["date"]);
     $("#announcement_time_publication").val(data["time"]);
     $("#announcement_date_archivation").val(data["archive_date"]);
@@ -68,23 +87,30 @@ $(document).ready(function(){
   }
 
   function get_recipients() {
-    let arr = [];
+    recipients_group;
+
+    /*let arr = [];
     if ($("#announcement_by_list").prop("checked")) {
       return arr;
-    }
+    }*/
     return arr;
   }
 
   function get_data_fields(to_public) {
     // получатели для не опубликованных объявлений формируются динамически, или все помещаются в лист?
-    let recipients, publication = $("#announcement_modal_edit").attr("data-publication");
+    let recipients = "", publication = $("#announcement_modal_edit").attr("data-publication"), groups = "";
     if (to_public) {
       publication = to_public;
       //recipients = get_recipients();
       recipients = $("#announcement_modal_edit").attr("data-recipients");
+      $("#announcement_to_14").prop("checked") ? groups += recipients_group['trainee_14'][$("#announcement_modal_time_zone").val()] : "";
+      $("#announcement_to_56").prop("checked") ? groups += recipients_group['trainee_56'][$("#announcement_modal_time_zone").val()] : "";
+      $("#announcement_to_coordinators").prop("checked") ? groups += recipients_group['coordinators'][$("#announcement_modal_time_zone").val()] : "";
+      $("#announcement_to_servingones").prop("checked") ? groups += recipients_group["staff"][$("#announcement_modal_time_zone").val()] : "";
     } else {
       recipients = $("#announcement_modal_edit").attr("data-recipients");
     }
+
     let blank_data = new FormData();
     let data_field = {
       id: $("#announcement_modal_edit").attr("data-id"),
@@ -96,6 +122,7 @@ $(document).ready(function(){
       to_servingones: $("#announcement_to_servingones").prop("checked"),
       by_list: $("#announcement_by_list").prop("checked"),
       recipients: recipients,
+      groups: groups,
       time_zone: $("#announcement_modal_time_zone").val(),
       publication_date: $("#announcement_date_publication").val(),
       publication_time: $("#announcement_time_publication").val(),
@@ -157,10 +184,35 @@ $(document).ready(function(){
     .then(commits => {
       $("#announcement_modal_edit").modal("hide");
       //console.log(commits.result);
-      //location.reload();
+      location.reload();
     });
   }
 
+  // Фильтр списка
+  function filter_list() {
+    let is_archive;
+    $("#list_announcement .list_string").each(function () {
+      is_archive = false;
+      if ($(this).attr("data-archive_date") === gl_date_now) {
+        is_archive = true;
+      } else if (compare_date($(this).attr("data-archive_date")) && $(this).attr("data-archive_date")) {
+        is_archive = true;
+      }
+      if (($(this).attr("data-author") === $("#flt_service_ones").val() || $("#flt_service_ones").val() === "_all_")
+      && ($(this).attr("data-time_zone") === $("#flt_time_zone").val() || $("#flt_time_zone").val() === "01")
+      && (($(this).attr("data-publication") === $("#flt_public").val() && !is_archive) || $("#flt_public").val() === "_all_" || $("#flt_public").val() === "2")
+      && ((is_archive && $("#flt_public").val() === "2") || $("#flt_public").val() === "_all_" || $("#flt_public").val() !== "2")) {
+        $(this).show();
+      } else {
+        $(this).hide();
+      }
+    });
+  }
+
+  // Фильтры списка
+  $("#main_container .ftt_buttons_bar select").change(function () {
+    filter_list();
+  });
   // add/remove recipient
   $("#announcement_modal_list input[type='checkbox']").change(function () {
     let recipients = $("#announcement_modal_edit").attr("data-recipients");
@@ -223,14 +275,43 @@ $(document).ready(function(){
 
   // BLANK FIELDS BEHAVIORS
   // предусмотреть вставку
-  $("#announcement_time_publication").keyup(function () {
+  $("#announcement_time_publication").keyup(function (e) {
     let time = $(this).val();
-    if (time.length === 3 && time[2] !== ":") {
-      $(this).val(String(time[0])+String(time[1])+':'+String(time[2]))
-    } else if (time.length > 3 && time[2] !== ":") {
-      $(this).val(String(time[0])+String(time[1])+':'+String(time[2]) + String(time[3]));
+    if (e.keyCode !== 8 && e.keyCode !== 46 && e.keyCode !== 37 && e.keyCode !== 39 && e.keyCode !== 36 && e.keyCode !== 35) {
+      if (time.length === 3 && time[2] !== ":") {
+        /*if (time[3] === ":") {
+          time[3] = "";
+        } else if (time[1] === ":") {
+          time[1] = "";
+        } else if (time[0] === ":") {
+          time[0] = "";
+        }*/
+        $(this).val(String(time[0])+String(time[1])+':'+String(time[2]));
+      } else if (time.length > 3 && time[2] !== ":" && time[1] !== ":") {
+      /*  if (time[3] === ":") {
+          time[3] = "";
+        } else if (time[1] === ":") {
+          time[1] = "";
+        } else if (time[0] === ":") {
+          time[0] = "";
+        }*/
+        $(this).val(String(time[0])+String(time[1])+':'+String(time[2]) + String(time[3]));
+      }
     }
   });
+
+  $("#announcement_time_publication").click(function () {
+    if ($(this).val() === "00:00") {
+      $(this).val("");
+    }
+  });
+
+  $("#announcement_time_publication").focusout(function () {
+    if ($(this).val() === "") {
+      $(this).val("00:00");
+    }
+  });
+
 setTimeout(function () {
   // text editor place holder
   $(".nicEdit-main").click(function () {

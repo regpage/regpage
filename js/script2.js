@@ -167,10 +167,10 @@ function showHelp(html, autohide, time) {
 // текущая дата, получаем приводим к типу гггг.мм.дд
 function date_now_gl () {
   // YYYY-MM-dd
-  let date_now_gl = new Date();
-  let yyyy = date_now_gl.getFullYear();
-  let mm = date_now_gl.getMonth()+1;
-  let dd = date_now_gl.getDate();
+  let date_now = new Date();
+  let yyyy = date_now.getFullYear();
+  let mm = date_now.getMonth()+1;
+  let dd = date_now.getDate();
   if (mm <= 9) {
     mm = '0'+mm;
   }
@@ -271,7 +271,6 @@ function getNameDayOfWeekByDayNumber(date, short, no_capital, number) {
   function get_current_age(date) {
     return ((new Date().getTime() - new Date(date)) / (24 * 3600 * 365.25 * 1000)) | 0;
   }
-
 
   function compare_date(d1, d2) {
   	let current, dm;
