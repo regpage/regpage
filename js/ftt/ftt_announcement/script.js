@@ -1,6 +1,8 @@
 /* ==== ANNOUNCEMENT START ==== */
 $(document).ready(function(){
   /* ==== DOCUMENT READY START ==== */
+  // text editor nicEditor style
+  $(".nicEdit-main").css("padding", "1px 5px");
   // BLANK
   // сбрасываем данные в бланке
   function blank_reset() {
@@ -22,9 +24,13 @@ $(document).ready(function(){
     $("#announcement_modal_edit").attr("data-author","");
     // other
     $("#announcement_list_editor").hide();
+// !!!!!!!!!!!!!!!!!!!
+    //$("#announcement_modal_edit .modal-header span").css("")
+    //'<span class="badge badge-success mt-1 ml-3"></span>'
+
     // Кнопки
     $("#announcement_btn_save").show();
-    $("#announcement_blank_delete").css("margin-right", "145px");
+    $("#announcement_blank_delete").css("margin-right", "140px");
     // Цвета обрамления полей с ошибкой
     $("#announcement_date_publication").css("border-color", "#ced4da");
     $("#announcement_text_header").css("border-color", "#ced4da");
@@ -37,10 +43,10 @@ $(document).ready(function(){
     // Скрываем кнопку "Сохранить" у опубликованных объявлений
     if (data["publication"] === "1") {
       $("#announcement_btn_save").hide();
-      $("#announcement_blank_delete").css("margin-right", "240px");
-    } else if ($("#announcement_blank_delete").css("margin-right") !== "145px") {
+      $("#announcement_blank_delete").css("margin-right", "235px");
+    } else if ($("#announcement_blank_delete").css("margin-right") !== "140px") {
       $("#announcement_btn_save").show();
-      $("#announcement_blank_delete").css("margin-right", "145px");
+      $("#announcement_blank_delete").css("margin-right", "140px");
     }
 
     // Заполняем список получателей в опции "По списку"
@@ -82,7 +88,13 @@ $(document).ready(function(){
     $("#announcement_time_publication").val(data["time"]);
     $("#announcement_date_archivation").val(data["archive_date"]);
     $("#announcement_text_header").val(data["header"]);
-    nicEditors.findEditor("announcement_text_editor").setContent(data["content"]);
+
+    if (data["content"] !== "<br>") {
+      nicEditors.findEditor("announcement_text_editor").setContent(data["content"]);
+    } else {
+      nicEditors.findEditor("announcement_text_editor").setContent("<span class='text-secondary'>Текст объявления...</span>");
+    }
+
     $("#announcement_staff_comment").val(data["comment"]);
   }
 

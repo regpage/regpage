@@ -1,9 +1,17 @@
 <?php
   // ОБЪЯВЛЕНИЯ ПВОМ
+  // БД
+  include_once "db/ftt/ftt_announcement_db.php";
   // Classes
   include_once 'db/classes/extra_lists.php';
-  include_once 'db/classes/DatesCompare.php';  
+  include_once 'db/classes/DatesCompare.php';
   // Cookie
+  $tab_one_active = 'active';
+  $tab_two_active = '';
+  if (isset($_COOKIE['tab_active']) && $_COOKIE['tab_active'] === 'inbox') {
+    $tab_one_active = '';
+    $tab_two_active = 'active';
+  }
   // Sorting
   // Tabs
   $gl_time_zones = extra_lists::get_time_zones_list();

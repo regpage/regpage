@@ -206,7 +206,7 @@ function open_blank(el_this) {
   // поля бланка для просмотра служащими отображаются в соответствии с семестром обучающегося
   if (!trainee_access) {
    $("#name_of_trainee").text(trainee_list[el_this.attr("data-member_key")]);
-   let text_stts_for_blank = "<span class='badge badge-secondary text-right' style='font-size: 100%;'>Не отправлен</span>";
+   let text_stts_for_blank = "<span class='badge badge-secondary text-right' style='font-size: 100%;'>не отправлен</span>";
    if (status_sheet === "1") {
      let date_tmp, date_date, date_time;
       if (el_this.attr("data-date_send")) {
@@ -217,7 +217,7 @@ function open_blank(el_this) {
         date_time = date_time.split(":");
         date_time = date_time[0] + ":" + date_time[1];
       }
-     text_stts_for_blank = "<span class='badge badge-success text-right' style='font-size: 100%;'>Отправлен "+date_date+" "+date_time+"</span>";
+     text_stts_for_blank = "<span class='badge badge-success text-right' style='font-size: 100%;'>отправлен "+date_date+" "+date_time+"</span>";
    }
    $("#status_of_blank").html(text_stts_for_blank);
    if (status_sheet === "0") {

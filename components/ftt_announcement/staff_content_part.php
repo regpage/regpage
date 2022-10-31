@@ -1,8 +1,23 @@
   <!-- Announcement -->
+  <!-- OUTBOX -->
   <div class="container pl-0">
-    <div class="row">
-      <div class="ftt_buttons_bar btn-group" style="padding-left: 13px; padding-top: 21px;">
-        <button type="button" id="announcement_add" class="btn btn-success btn-sm rounded mr-2" data-toggle="modal" data-target="#announcement_modal_edit">Добавить</button>
+    <br>
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link <?php echo $tab_one_active; ?>" data-toggle="tab" href="#announcement_tab_1">Исходящие </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link <?php echo $tab_two_active; ?>" data-toggle="tab" href="#announcement_tab_2">
+          Входящие <?php echo $announcements_statistics; ?>
+        </a>
+      </li>
+    </ul>
+    <!-- Tab panes -->
+    <div id="" class="tab-content">
+      <div id="announcement_tab_1" class="tab-pane active <?php echo $tab_one_active; ?>">
+        <div class="row">
+          <div class="ftt_buttons_bar btn-group" style="padding-left: 15px; padding-top: 21px;">
+            <button type="button" id="announcement_add" class="btn btn-success btn-sm rounded mr-2" data-toggle="modal" data-target="#announcement_modal_edit">Добавить</button>
         <select id="flt_service_ones" class="form-control form-control-sm mr-2" name="">
           <?php FTT_Select_fields::rendering($serving_ones_list, 'missing', 'Все служащие') ?>
         </select>
@@ -18,10 +33,10 @@
       </div>
     </div>
     <div id="list_announcement" class="row">
-      <div class="container" style="padding-left: 10px;">
-        <div id="list_header" class="row border-bottom list_header">
-            <div class="col-1"><b>Дата</b></div>
-            <div class="col-2"><b>Зона</b></div>
+      <div class="container" style="padding-left: 13px;  padding-bottom: 0px;">
+        <div id="list_header" class="row list_header" style="margin-left: -4px; padding-bottom: 10px; border-bottom: 1px lightgray solid;">
+            <div class="col-1 pl-1"><b>Дата</b></div>
+            <div class="col-2"><b>Часовые пояса</b></div>
             <div class="col-4"><b>Заголовок</b></div>
             <div class="col-3"><b>Комментарий</b></div>
             <div class="col-2"><b>Статус</b></div>
@@ -65,16 +80,20 @@
 
           if ($publication && $is_active) {
             $text_badge = 'опубликованно';
-            $publication_badge = "<span class='badge badge-info'>{$text_badge}</span>";
+            $publication_badge = "<span class='badge badge-success'>{$text_badge}</span>";
           } else {
             $publication_badge = "<span class='badge badge-{$badge_class}'>{$badge_text}</span>";
           }
           $short_comment = CutString::cut($comment);
           $short_header = CutString::cut($header);
 
-          echo "<div class='row list_string' data-id='{$id}' data-date='{$date}' data-time='{$time}' data-publication='{$publication}' data-header='{$header}' data-author='{$member_key}' data-comment='{$comment}' data-time_zone='{$time_zone}' data-archive_date='{$archive_date}'><div class='col-1'>{$date_show}</div><div class='col-2'>{$time_zone_show}</div><div class='col-4'>{$short_header}</div><div class='col-3'>{$short_comment}</div><div class='col-2'>{$publication_badge}</div></div>";
+          echo "<div class='row list_string' data-id='{$id}' data-date='{$date}' data-time='{$time}' data-publication='{$publication}' data-header='{$header}' data-author='{$member_key}' data-comment='{$comment}' data-time_zone='{$time_zone}' data-archive_date='{$archive_date}'><div class='col-1 pl-1'>{$date_show}</div><div class='col-2'>{$time_zone_show}</div><div class='col-4'>{$short_header}</div><div class='col-3'>{$short_comment}</div><div class='col-2'>{$publication_badge}</div></div>";
         }
        ?>
        </div>
     </div>
   </div>
+<!-- INBOX -->
+<?php include_once 'components/ftt_announcement/staff_content_part_two.php';  ?>
+</div>
+</div>

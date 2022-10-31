@@ -78,7 +78,10 @@ switch ($h) {
           <span class="icon-bar"></span>
         </button>
         <div class="btn-group" style="float: right; margin-right: 10px;">
-          <a class="btn dropdown-toggle" type="button" data-toggle="dropdown" style="margin-top: 1px; height: 19px;"><i class="fa fa-question fa-lg"></i><span class="hide-name" style="padding-left: 5px">Справка</span></a>
+          <a class="btn dropdown-toggle" id="button_help_nav" ontouchstart="ontouchstart_function(event)" type="button" data-toggle="dropdown" style="margin-top: 1px; height: 19px;">
+            <i ontouchstart="ontouchstart_function(event)" class="fa fa-question fa-lg"></i>
+            <span class="hide-name" style="padding-left: 5px">Справка</span>
+          </a>
             <ul class="dropdown-menu pull-right">
               <?php
 
@@ -327,6 +330,30 @@ referenceSysAnew();
         else $('.show-name-list').css('display','none');
     });
 
+    function ontouchstart_function(event) {
+      event.stopPropagation();
+      event.preventDefault();
+      $(".dropdown-menu.pull-right").css("width","300px");
+      //$(".dropdown-menu.pull-right .modal-reference").css("white-space","normal");
+      $(".dropdown-menu.pull-right a").css("white-space","normal");
+
+      if (event.target.id === "button_help_nav") {
+        console.log(event.target);
+        if ($(".dropdown-menu.pull-right").is(":visible")) {
+          $(event.target).parent().removeClass("open");
+        } else {
+          $(event.target).parent().addClass("open");
+        }
+      } else {
+        if ($(".dropdown-menu.pull-right").is(":visible")) {
+          $(event.target).parent().parent().removeClass("open");
+        } else {
+          $(event.target).parent().parent().addClass("open");
+        }
+      }
+      console.log(event.target);
+    }
+
     $(".send-message-regteam").click (function (){
         $("#sendMsgEventName").text ($('#events-list option:selected').text());
     });
@@ -361,6 +388,8 @@ referenceSysAnew();
     if ($(window).width()>=769) {
       $('.bell-alarm-mbl').hide();
     } else {
+      $('#button_help_nav').css("padding", "4px 0px");
+      $('#button_help_nav i').css("padding", "4px 13px");
       $('.bell-alarm').hide();
     }
     // STOP notifications

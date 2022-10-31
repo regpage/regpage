@@ -6,5 +6,21 @@
   border-bottom: 1px solid #dee2e6;
   cursor: pointer;
   padding: 5px 0px;
-  border-bottom: 1px #dee2e6 solid;
+  border-bottom: 1px lightgray solid;
+}
+
+#main_container .nav-link.active {
+  background-color: #dee2e6;
+}
+
+#main_container .nav-link {
+  border: 1px lightgray solid;
+}
+
+#main_container {
+  padding-left: 18px !important;
+}
+
+#main_container .list_string {
+    margin-left: -4px !important;
 }

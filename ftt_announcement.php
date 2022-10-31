@@ -6,19 +6,13 @@
     // Глобальные переменные разделов
     include_once "components/ftt_main/var_part.php";
 
-    // БД
-    include_once "db/ftt/ftt_announcement_db.php";
-
     // Переменные раздела
     include_once "components/ftt_announcement/var_part.php";
 
-    // HTML код основной страницы
+    // HTML код раздела
     include_once "components/ftt_main/html_part_refactoring.php";
 
-    // HTML модальные окна страницы
-    include_once "components/ftt_announcement/modals_part.php";
-
-    // глобальный для ftt JS код
+    // глобальный JS код для ftt
     include_once "components/ftt_main/js_main.php";
 
     // JS раздела

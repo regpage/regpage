@@ -5,6 +5,7 @@
       <!-- Modal Header -->
       <div class="modal-header">
         <h5 class="mb-0">Объявление</h5>
+        <span class="badge badge-success mt-1 ml-3"></span>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <!-- Modal body -->
@@ -94,7 +95,7 @@
       </div>
       <!-- Modal footer -->
       <div class="modal-footer">
-        <button id="announcement_blank_delete" class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="margin-right: 145px;"><i class="fa fa-trash" aria-hidden="true"></i></button>
+        <button id="announcement_blank_delete" class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="margin-right: 140px;"><i class="fa fa-trash" aria-hidden="true"></i></button>
         <button type="button" id="announcement_blank_publication" class="btn btn-warning btn-sm">Опубликовать</button>
         <button type="button" id="announcement_btn_save" class="btn btn-primary btn-sm">Сохранить</button>
         <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Закрыть</button>

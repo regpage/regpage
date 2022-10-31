@@ -11,10 +11,14 @@
             }
           } elseif ($_SERVER['REQUEST_URI'] === '/ftt_announcement') {
             if ($ftt_access['group'] === 'staff') {
+              // HTML страница для служащих
               include_once 'components/ftt_announcement/staff_content_part.php';
             } elseif ($ftt_access['group'] === 'trainee') {
+              // HTML страница для обучающихся
               include_once 'components/ftt_announcement/content_part.php';
             }
+            // HTML модальные окна страниц
+            include_once "components/ftt_announcement/modals_part.php";
           } elseif ($_SERVER['REQUEST_URI'] === '/ftt_attendance') {
             if ($ftt_access['group'] === 'trainee') {
               include_once 'components/ftt_attendance/content_part.php';
