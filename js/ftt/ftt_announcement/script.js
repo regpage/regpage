@@ -3,6 +3,25 @@ $(document).ready(function(){
   /* ==== DOCUMENT READY START ==== */
   // text editor nicEditor style
   $(".nicEdit-main").css("padding", "1px 5px");
+  // UNIVERSAL
+  function badge_changer(element, badge) {
+    let badge_list = {
+      success: "опубликованно",
+      dark: "архив",
+      secondary: "не опубликованно"
+    }
+    if (!element.hasClass("badge-"+badge)) {
+      if (element.hasClass("badge-success")) {
+        element.removeClass("badge-success");
+      } else if (element.hasClass("badge-dark")) {
+        element.removeClass("badge-dark");
+      } else {
+        element.removeClass("badge-secondary");
+      }
+      element.addClass("badge-"+badge);
+      element.text(badge_list[badge]);
+    }
+  }
   // BLANK
   // сбрасываем данные в бланке
   function blank_reset() {
@@ -22,13 +41,10 @@ $(document).ready(function(){
     $("#announcement_modal_edit").attr("data-recipients","");
     $("#announcement_modal_edit").attr("data-publication","");
     $("#announcement_modal_edit").attr("data-author","");
+    // badge
+    badge_changer($("#announcement_modal_edit .modal-header span"), "secondary");
     // other
     $("#announcement_list_editor").hide();
-// !!!!!!!!!!!!!!!!!!!
-    //$("#announcement_modal_edit .modal-header span").css("")
-    //'<span class="badge badge-success mt-1 ml-3"></span>'
-
-    // Кнопки
     $("#announcement_btn_save").show();
     $("#announcement_blank_delete").css("margin-right", "140px");
     // Цвета обрамления полей с ошибкой
@@ -38,7 +54,7 @@ $(document).ready(function(){
   }
 
   // Заполняем бланк
-  function blank_fill(data) {
+  function blank_fill(data, status) {
     // готовим данные
     // Скрываем кнопку "Сохранить" у опубликованных объявлений
     if (data["publication"] === "1") {
@@ -48,6 +64,14 @@ $(document).ready(function(){
       $("#announcement_btn_save").show();
       $("#announcement_blank_delete").css("margin-right", "140px");
     }
+    if (status === "архив") {
+      status = "dark";
+    } else if (status === "опубликованно") {
+      status = "success";
+    } else {
+      status = "secondary";
+    }
+    badge_changer($("#announcement_modal_edit .modal-header span") ,status);
 
     // Заполняем список получателей в опции "По списку"
     let list_arr;
@@ -276,12 +300,13 @@ $(document).ready(function(){
   });
 
   $(".list_string").click(function () {
+    let status = $(this).find(".badge").text();
     blank_reset();
     fetch("ajax/ftt_announcement_ajax.php?type=get_announcement&id=" + $(this).attr("data-id"))
     .then(response => response.json())
     .then(commits => {
       $("#announcement_modal_edit").modal("show");
-      blank_fill(commits.result);
+      blank_fill(commits.result, status);
     });
   });
 
