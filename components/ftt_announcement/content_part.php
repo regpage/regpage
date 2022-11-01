@@ -1,7 +1,5 @@
   <!-- announcement -->
-  <div class="container">
-    <div id="list_header" class="row border-bottom pb-2">
-    </div>
-    <div id="list_announcement" class="row">
-    </div>
+  <div id="announcement_tab_2" class="container">
+      <!-- INBOX -->
+      <?php include_once 'components/ftt_announcement/staff_content_part_two.php';  ?>
   </div>

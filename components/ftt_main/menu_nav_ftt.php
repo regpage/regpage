@@ -32,7 +32,15 @@ if ($permission_stat_count_main == 0) {
 }
 $permission_stat_count_main_text .= "<sup style='color: red;'> <b> {$permission_stat_count_main}</b></sup>";
 
-$ftt_devisions = array('ftt_schedule' => 'Расписание', 'ftt_announcement' => 'Объявления',
+// счётчик объявлений в меню
+$announcement_unread_count_text = 'Объявления';
+$announcement_unread_count = statistics::announcement_unread($memberId);
+if ($announcement_unread_count == 0) {
+  $announcement_unread_count = '';
+}
+$announcement_unread_count_text .= "<sup style='color: red;'> <b> {$announcement_unread_count}</b></sup>";
+
+$ftt_devisions = array('ftt_schedule' => 'Расписание', 'ftt_announcement' => $announcement_unread_count_text,
 'ftt_attendance' => $permission_stat_count_main_text, 'ftt_service' => 'Служение','ftt_gospel' => 'Благовестие', 'contacts' => 'Контакты', 'ftt_extrahelp' => $extra_help_text,'ftt_application' => 'Заявления'); //'ftt_absence' => 'Отсутствие',
 if ($ftt_access['group'] === 'staff') { //
 

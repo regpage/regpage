@@ -7,9 +7,15 @@ include_once 'db/classes/ftt_lists.php';
 include_once 'db/classes/date_convert.php';
 include_once 'db/classes/statistics.php';
 include_once 'db/classes/ftt_info.php';
+include_once 'db/classes/extra_lists.php';
 // components
 include_once 'components/ftt_blocks/FTT_Select_fields.php';
-
+/**
+* Глобальные переменные
+*
+**/
+// GLOBALS
+$gl_time_zones = extra_lists::get_time_zones_list();
 // access
 if ($ftt_access['group'] === 'staff') {
   // получить группу служащего

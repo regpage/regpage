@@ -24,3 +24,7 @@
 #main_container .list_string {
     margin-left: -4px !important;
 }
+
+#announcement_tab_2 .list_string{
+  margin-left: 0px !important;
+}

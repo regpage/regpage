@@ -14,7 +14,7 @@
     </ul>
     <!-- Tab panes -->
     <div id="" class="tab-content">
-      <div id="announcement_tab_1" class="tab-pane active <?php echo $tab_one_active; ?>">
+      <div id="announcement_tab_1" class="tab-pane <?php echo $tab_one_active; ?>">
         <div class="row">
           <div class="ftt_buttons_bar btn-group" style="padding-left: 15px; padding-top: 21px;">
             <button type="button" id="announcement_add" class="btn btn-success btn-sm rounded mr-2" data-toggle="modal" data-target="#announcement_modal_edit">Добавить</button>
@@ -91,9 +91,11 @@
         }
        ?>
        </div>
+     </div>
     </div>
+  <!-- INBOX -->
+  <div id="announcement_tab_2" class="tab-pane <?php echo $tab_two_active; ?>">
+  <?php include_once 'components/ftt_announcement/staff_content_part_two.php';  ?>
   </div>
-<!-- INBOX -->
-<?php include_once 'components/ftt_announcement/staff_content_part_two.php';  ?>
-</div>
+  </div>
 </div>

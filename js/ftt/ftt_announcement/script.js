@@ -299,7 +299,7 @@ $(document).ready(function(){
     $("#announcement_date_publication").val(date_now_gl);
   });
 
-  $(".list_string").click(function () {
+  $("#list_announcement .list_string").click(function () {
     let status = $(this).find(".badge").text();
     blank_reset();
     fetch("ajax/ftt_announcement_ajax.php?type=get_announcement&id=" + $(this).attr("data-id"))
@@ -362,7 +362,6 @@ setTimeout(function () {
   // Список получателей объявления, опция "по списку"
   $("#announcement_by_list").change(function () {
     if ($(this).prop("checked")) {
-
       $("#announcement_modal_list").modal("show");
       $("#announcement_list_editor").show();
     } else {
@@ -389,6 +388,51 @@ setTimeout(function () {
     }
   });
 
+  $(".nav-tabs .nav-link").click(function () {
+    if ($(this).attr("href") === "#announcement_tab_1") {
+      setCookie("tab_active", "");
+    } else {
+      setCookie("tab_active", "inbox");
+    }
+  });
+
+  // OUTBOX END
+  // INBOX
+  function announcement_open (data) {
+    $("#announcement_title").text(dateStrFromyyyymmddToddmm(data.attr("data-date")) + " " + data.attr("data-header"));
+    $("#announcement_content").html(data.attr("data-content"));
+    if (!data.attr("data-notice")) {
+      fetch("ajax/ftt_announcement_ajax.php?type=noticed_announcement&id=" + data.attr("data-id_announcement"))
+      .then(response => response.json())
+      .then(commits => {
+        if (commits.result) {
+          data.removeClass("bg-notice-string");
+          $("#ftt_navs .active b").text(Number($("#ftt_navs .active b").text()) - 1);
+        }
+      });
+    }
+  }
+  $("#announcement_tab_2 .list_string").click(function (e) {
+    $("#announcement_show").modal("show");
+    announcement_open($(this));
+  });
+
+  // Фильтр списка inbox
+  function filter_list_inbox () {
+    $("#announcement_tab_2 .list_string").each(function () {
+      if ((($(this).attr("data-notice") && $("#flt_read").val() === "1")
+      || (!$(this).attr("data-notice") && $("#flt_read").val() === "0"))
+      || $("#flt_read").val() === "_all_") {
+        $(this).show();
+      } else {
+        $(this).hide();
+      }
+    });
+  }
+
+  $("#flt_read").change(function () {
+    filter_list_inbox();
+  });
   /* ==== DOCUMENT READY STOP ==== */
 });
 /* ==== ANNOUNCEMENT STOP ==== */

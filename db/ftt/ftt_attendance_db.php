@@ -433,7 +433,7 @@ function set_permission($sessions, $adminId)
   $sheet_id ? $operation_name = 'обновлён': '';
   $log_text = "Для пользователя {$member_key} {$operation_name} бланк разрешения. {$log_serving_one}";
   $date_send_update = '';
-  write_to_log::debug($adminId, $log_text);
+  //write_to_log::debug($adminId, $log_text);
   // condition
   $archive_sessions_field = "`archive_sessions`, ";
   $archive_sessions_value = "'$archive_sessions', ";

@@ -94,6 +94,15 @@ class statistics {
 
     return $result;
   }
+  static function announcement_unread($memberId)
+  {
+    $result = '';
+    $res = db_query("SELECT COUNT(`id_announcement`) AS total
+    FROM ftt_announcement_recipients
+    WHERE `member_key`= '$memberId' AND `date` IS NULL");
+    while ($row = $res->fetch_assoc()) $result = $row['total'];
+    return $result;
+  }
 }
 
 

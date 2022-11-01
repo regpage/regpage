@@ -2,8 +2,7 @@
   // ОБЪЯВЛЕНИЯ ПВОМ
   // БД
   include_once "db/ftt/ftt_announcement_db.php";
-  // Classes
-  include_once 'db/classes/extra_lists.php';
+  // Classes  
   include_once 'db/classes/DatesCompare.php';
   // Cookie
   $tab_one_active = 'active';
@@ -14,7 +13,7 @@
   }
   // Sorting
   // Tabs
-  $gl_time_zones = extra_lists::get_time_zones_list();
+
   // Готовим списки
   // Служащие
   $recipients_group = [];

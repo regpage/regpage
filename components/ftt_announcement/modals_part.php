@@ -142,3 +142,36 @@
     </div>
   </div>
 </div>
+
+<!-- Просмотр объявления -->
+<div id="announcement_show" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="mb-0">Объявление</h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="container pl-0 pr-0">
+          <div class="row">
+            <div class="col">
+              <h6 id="announcement_title"></h6>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div id="announcement_content">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>

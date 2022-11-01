@@ -1,4 +1,5 @@
 <?php
+// OUTBOX
 // LIST
 function getAnnouncements($admin_id)
 {
@@ -75,5 +76,32 @@ function saveAnnouncement($data)
       `list`='$recipients', `time_zone`='$time_zone', `archive_date`='$archivation_date'
       WHERE `id` = '$id'");
   }
+  return $res;
+}
+
+// INBOX
+// get announcements
+function getAnnouncementsForRecipient($admin_id)
+{
+  global $db;
+  $admin_id = $db->real_escape_string($admin_id);
+  $result = [];
+  $res = db_query("SELECT far.id_announcement, far.member_key, far.date AS notice, fa.id, fa.date, fa.time,
+    fa.publication, fa.header, fa.member_key AS author, fa.comment, fa.to_14, fa.to_56, fa.to_coordinators,
+    fa.to_servingones, fa.by_list, fa.time_zone, fa.archive_date, fa.content
+    FROM ftt_announcement_recipients AS far
+    INNER JOIN ftt_announcement fa ON fa.id = far.id_announcement
+    WHERE far.member_key = $admin_id ORDER BY fa.date");
+  while ($row = $res->fetch_assoc()) $result[] = $row;
+  return $result;
+}
+// set noticed
+function setAnnouncementNotice($id='', $memberId)
+{
+  global $db;
+  $id = $db->real_escape_string($id);
+  $memberId = $db->real_escape_string($memberId);
+
+  $res = db_query("UPDATE `ftt_announcement_recipients` SET `date`=NOW() WHERE `id_announcement` = '$id' AND `member_key` = '$memberId'");
   return $res;
 }
