@@ -204,6 +204,9 @@ include_once "modals.php";
 		?>
 	</div>
 	<div class="modal-footer">
+		<button class="btn" id="btnDoDeleteMember" style="float: left;">
+			<i title="Удалить" class="fa fa-trash fa-lg"></i>
+		</button>
 		<button class="btn btn-info disable-on-invalid" id="btnDoSaveMember">Сохранить</button>
 		<button class="btn" data-dismiss="modal" aria-hidden="true">Отменить</button>
 	</div>
@@ -326,6 +329,7 @@ include_once "modals.php";
 			handleMember(window.removeMemberId, 0, reason, searchText);
 
 			$('#removeMemberFromList').modal('hide');
+			$('#modalEditMember').modal('hide');
 		});
 
 		$('.search-text').keyup(function(){
@@ -485,13 +489,13 @@ include_once "modals.php";
 				'<td>' + age + '</td>' +
 				'<td><input type="checkbox" class="check-meeting-attend" '+ (m.attend_meeting == 1 ? "checked" : "") +' /></td>' +
 				'<td>' + htmlChanged + htmlEditor + '</td>' +
-				<?php if (db_getAdminRole($memberId) != 0) { ?>'<td><i class="'+(m.active==0?'icon-circle-arrow-up' : 'icon-trash')+' icon-black" title="'+(m.active==0?'Добавить в список':'Удалить из списка')+'"/></td>' <?php } ?> +
+				<?php if (db_getAdminRole($memberId) != 0) { ?>'<td><i class="'+(m.active==0?'icon-circle-arrow-up' : '')+' icon-black" title="'+(m.active==0?'Добавить в список':'Удалить из списка')+'"/></td>' <?php } ?> +
 				'</tr>'
 			);
 
 			phoneRows.push('<tr ' + dataFields +' class="'+(m.active==0?'inactive-member':'member-row')+'">'+
 				'<td>'+ '<span style="float:right;">' + htmlChanged + htmlEditor +
- 				'<i class="'+(m.active == 0 ? 'icon-circle-arrow-up' : 'icon-trash' )+' icon-black" title="'+(m.active==0?'Добавить в список':'Удалить из списка')+'"/>'+ '</span>' +
+ 				'<i class="'+(m.active == 0 ? 'icon-circle-arrow-up' : '' )+' icon-black" title="'+(m.active==0?'Добавить в список':'Удалить из списка')+'"/>'+ '</span>' +
 				'<span style="color: #006">' + he(m.name) + '</span>'+
 				'<div>' + m.cell_phone + '</div>' +
 				'<div>' + ' <span style="margin-left:0" class="example">'+memberInfo + memberSchoolOrCollegeDegree+'</span></div>'+
@@ -519,12 +523,11 @@ include_once "modals.php";
 			})
 		});
 
-		$(".icon-black").unbind('click');
-		$(".icon-black").click(function (event) {
-			event.stopPropagation();
+		// удаляем участника
+		$("#btnDoDeleteMember").click(function (event) {
 
-			if($(this).hasClass('icon-trash')){
-				window.removeMemberId = $(this).parents('tr').attr('data-id');
+			if($(this).find("i").hasClass('fa-trash')){
+				window.removeMemberId = window.currentEditMemberId;
 
 				$.post('/ajax/members.php?is_member_in_reg', {
 					memberId : window.removeMemberId
@@ -543,7 +546,33 @@ include_once "modals.php";
 					}
 				});
 			}
-			else{
+		});
+
+		// восстанавливаем участника
+		$(".icon-black").unbind('click');
+		$(".icon-black").click(function (event) {
+			event.stopPropagation();
+
+			if($(this).hasClass('icon-trash')){
+			/*	window.removeMemberId = $(this).parents('tr').attr('data-id');
+
+				$.post('/ajax/members.php?is_member_in_reg', {
+					memberId : window.removeMemberId
+				})
+				.done(function(data){
+					if(!data.res){
+						if(window.removeMemberId.substr(0,2) === '99'){
+							removeMember(window.removeMemberId);
+						}
+						else{
+							$('#removeMemberFromList').modal('show');
+						}
+					}
+					else{
+						showError('Этот участник находится в списке регистрации! Удаление отменено.');
+					}
+				}); */
+			} else if ($(this).hasClass('icon-circle-arrow-up')) {
 				var searchText = $('.search-text').val();
 				var recoverMemberId = $(this).parents('tr').attr('data-id');
 				handleMember(recoverMemberId, 1, '', searchText);

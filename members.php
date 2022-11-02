@@ -630,8 +630,7 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
         });
 
         // Удаляем участникаиз списка
-        $("#btnDoDeleteMember").click(function (event) {
-          event.stopPropagation();
+        $("#btnDoDeleteMember").click(function (event) {          
 
           if ($(this).find("i").hasClass('fa-trash')) {
             window.removeMemberId = window.currentEditMemberId;
@@ -650,10 +649,6 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
                 showError('Этот участник находится в списке регистрации! Удаление отменено.');
               }
             });
-          } else {
-            var searchText = $('.search-text').val();
-            var recoverMemberId = $(this).parents('tr').attr('data-id');
-            handleMember(recoverMemberId, 1, '', searchText);
           }
         });
 
