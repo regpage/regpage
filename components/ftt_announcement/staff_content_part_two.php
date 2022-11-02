@@ -3,10 +3,10 @@
     <select id="flt_read" class="form-control form-control-sm mr-2">
       <option value="_all_">Все</option>
       <option value="1">Прочитанные</option>
-      <option value="0">Не прочитанные</option>
+      <option value="0" selected>Непрочитанные</option>
     </select>
   </div>
-  <div id="list_header_inbox" class="row list_header" style="margin-left: 0px; padding-bottom: 10px; border-bottom: 1px lightgray solid;">
+  <div id="list_header_inbox" class="row list_header" style="margin-left: 0px; padding-bottom: 10px; border-bottom: 1px lightgray solid; display: none;">
       <div class="col-2 pl-1"><b>Дата</b></div>
       <div class="col-5"><b>Заголовок</b></div>
       <div class="col-3"><b>Группы получателей</b></div>
@@ -26,8 +26,10 @@
       $id = $value['id'];
       $noticed_date = $value['notice'];
       $notice = '';
+      $show_string = 'style="display: none"';
       if (!$value['notice']) {
         $notice = 'bg-notice-string';
+        $show_string = '';
       }
 
       $recipients_groups_text = '';
@@ -47,7 +49,7 @@
       if ($noticed_date && $archive_date && !DatesCompare::isMoreThanCurrent($archive_date)) {
         // nothing
       } else {
-        echo "<div class='row {$notice} list_string'
+        echo "<div class='row {$notice} list_string' $show_string
         data-id_announcement='{$id}' data-header='{$header}' data-content='{$content}' data-author='{$author}' data-time='{$time}' data-archive_date='{$archive_date}' data-date='{$date}' data-notice='{$noticed_date}'>
         <div class='col-2 pl-1'>{$date_show}</div><div class='col-5'>{$header}</div><div class='col-3'>{$recipients_groups_text}</div><div class='col-2'>{$time_zone_text}</div></div>";
       }

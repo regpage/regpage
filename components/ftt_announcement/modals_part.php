@@ -54,21 +54,22 @@
           </div>
           <div class="row">
             <div class="col">
-              <label class="form-check-label">Дата и время публикации</label>
+              <label class="form-check-label">Дата публикации</label>
+              <label id="label_time_field" class="form-check-label pl-4">Время</label>
             </div>
             <div class="col">
               <label class="form-check-label">Дата архивации</label>
             </div>
           </div>
           <div class="row mb-3">
-            <div class="col-4 input_date_width">
-              <input id="announcement_date_publication" type="date" class="form-control form-control-sm">
+            <div class="col-4">
+              <input id="announcement_date_publication" type="date" class="form-control form-control-sm input_date_width">
             </div>
             <div class="col-2 pl-0">
               <input id="announcement_time_publication" type="text" class="form-control form-control-sm" maxlength="5">
             </div>
-            <div class="col-4 input_date_width">
-              <input id="announcement_date_archivation" type="date" class="form-control form-control-sm">
+            <div class="col-4">
+              <input id="announcement_date_archivation" type="date" class="form-control form-control-sm input_date_width">
             </div>
             <div class="col-1 pl-0">
               <button type="button" id="announcement_to_archive" class="btn btn-secondary btn-sm" name="button"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
@@ -76,7 +77,7 @@
           </div>
           <div class="row mb-3">
             <div class="col">
-              <input id="announcement_text_header" type="text" name="" class="form-control form-control-sm" placeholder="Введите заголовок...">
+              <input id="announcement_text_header" type="text" name="" class="form-control form-control-sm" placeholder="Введите заголовок..." maxlength="50">
             </div>
           </div>
           <div class="row mb-3">

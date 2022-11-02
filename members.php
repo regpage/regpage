@@ -180,11 +180,14 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
         ?>
     </div>
     <div class="modal-footer">
+      <button class="btn" id="btnDoDeleteMember" style="float: left;">
+        <i title="Удалить" class="fa fa-trash fa-lg"></i>
+      </button>
         <!--<span class="footer-status">
             <input type="checkbox" class="emActive" />Активный
         </span> -->
-        <button class="btn btn-info disable-on-invalid" id="btnDoSaveMember">Сохранить</button>
-        <button class="btn" data-dismiss="modal" aria-hidden="true">Отменить</button>
+      <button class="btn btn-info disable-on-invalid" id="btnDoSaveMember">Сохранить</button>
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Отменить</button>
     </div>
 </div>
 
@@ -592,13 +595,13 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
                 '<td style="width:50px">' + age + '</td>' +
                 '<td><input type="checkbox" class="check-meeting-attend" '+ (m.attend_meeting == 1 ? "checked" : "") +' /></td>' +
                 '<td>' + htmlChanged + htmlEditor + '</td>' +
-  <?php if (db_getAdminRole($memberId) != 0) { ?> '<td><i class="'+(m.active==0?'icon-circle-arrow-up':'icon-trash')+' icon-black" title="'+(m.active==0?'Добавить в список':'Удалить из списка')+'"/></td>' <?php } ?> +
+  <?php if (db_getAdminRole($memberId) != 0) { ?> '<td><i class="'+(m.active==0?'icon-circle-arrow-up':'')+' icon-black" title="'+(m.active==0?'Добавить в список':'Удалить из списка')+'"/></td>' <?php } ?> +
                 '</tr>'
             );
 
             phoneRows.push('<tr data-id="'+m.id+'" data-name="'+m.name+'" data-age="'+m.age+'" data-attendance="'+m.attend_meeting+'" data-locality="'+m.locality_key+'" data-category="'+m.category_key+'" class="'+(m.active==0?'inactive-member':'member-row')+'">'+
                 '<td><span style="color: #006">' + he(m.name) + '</span>'+
-                '<i style="float: right; cursor:pointer;" class="'+(m.active==0?'icon-circle-arrow-up':'icon-trash')+' icon-black" title="'+(m.active==0 ? 'Добавить в список':'Удалить из списка')+'"/>'+
+                '<i style="float: right; cursor:pointer;" class="'+(m.active==0?'icon-circle-arrow-up':'')+' icon-black" title="'+(m.active==0 ? 'Добавить в список':'Удалить из списка')+'"/>'+
                 <?php if (!$singleCity) echo "'<div>' + he(m.locality ? (m.locality.length>20 ? m.locality.substring(0,18)+'...' : m.locality) : '') + ', ' + age + '</div>' + "; ?> (in_array(6, window.user_settings) ? '<span class="user_setting_span">'+(m.region || m.country)+'</span>' : '') +
                 '<div><span >'+ /*(m.cell_phone?'тел.: ':'') + */ he(m.cell_phone.trim()) + '</span>'+ (m.cell_phone && m.email ? ', ' :'' )+'<span>'+ /*(m.email?'email: ':'') + */ he(m.email) + '</span></div>' +
                 '<div>Посещает собрания: <input type="checkbox" class="check-meeting-attend" '+ (m.attend_meeting == 1 ? "checked" : "") +' /></div>'+
@@ -626,12 +629,40 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
             })
         });
 
+        // Удаляем участникаиз списка
+        $("#btnDoDeleteMember").click(function (event) {
+          event.stopPropagation();
+
+          if ($(this).find("i").hasClass('fa-trash')) {
+            window.removeMemberId = window.currentEditMemberId;
+
+            $.post('/ajax/members.php?is_member_in_reg', {
+              memberId : window.removeMemberId
+            })
+            .done(function(data){
+              if (!data.res){
+                if (window.removeMemberId.substr(0,2) === '99'){
+                  removeMember(window.removeMemberId);
+                } else {
+                  $('#removeMemberFromList').modal('show');
+                }
+              } else {
+                showError('Этот участник находится в списке регистрации! Удаление отменено.');
+              }
+            });
+          } else {
+            var searchText = $('.search-text').val();
+            var recoverMemberId = $(this).parents('tr').attr('data-id');
+            handleMember(recoverMemberId, 1, '', searchText);
+          }
+        });
+
         $(".icon-black").unbind('click');
         $(".icon-black").click(function (event) {
             event.stopPropagation();
 
-            if($(this).hasClass('icon-trash')){
-                window.removeMemberId = $(this).parents('tr').attr('data-id');
+            if ($(this).hasClass('icon-trash')){
+                /*window.removeMemberId = $(this).parents('tr').attr('data-id');
 
                 $.post('/ajax/members.php?is_member_in_reg', {
                     memberId : window.removeMemberId
@@ -648,9 +679,8 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
                     else{
                         showError('Этот участник находится в списке регистрации! Удаление отменено.');
                     }
-                });
-            }
-            else{
+                });*/
+            } else if($(this).hasClass('icon-circle-arrow-up')) {
                 var searchText = $('.search-text').val();
                 var recoverMemberId = $(this).parents('tr').attr('data-id');
                 handleMember(recoverMemberId, 1, '', searchText);
@@ -975,6 +1005,7 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
         handleMember(window.removeMemberId, 0, reason, searchText);
 
         $('#removeMemberFromList').modal('hide');
+        $('#modalEditMember').modal('hide');
     });
 
     function handleMember(member, active, reason, searchText) {

@@ -2,14 +2,17 @@
   // ОБЪЯВЛЕНИЯ ПВОМ
   // БД
   include_once "db/ftt/ftt_announcement_db.php";
-  // Classes  
+  // Classes
   include_once 'db/classes/DatesCompare.php';
   // Cookie
-  $tab_one_active = 'active';
-  $tab_two_active = '';
+  $tab_one_active = '';
+  $tab_two_active = 'active';
   if (isset($_COOKIE['tab_active']) && $_COOKIE['tab_active'] === 'inbox') {
     $tab_one_active = '';
     $tab_two_active = 'active';
+  } elseif (isset($_COOKIE['tab_active']) && $_COOKIE['tab_active'] === 'outbox') {
+    $tab_one_active = 'active';
+    $tab_two_active = '';
   }
   // Sorting
   // Tabs

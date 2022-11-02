@@ -1,6 +1,9 @@
 <script src="extensions/nicedit/nicEdit.js"></script>
 <script>
 // text editor nicEditor
+if ($(window).width()<=769) {
+  $("#announcement_text_editor").css("width", "335px");
+}
 bkLib.onDomLoaded(function() {
   new nicEditor({fullPanel : true}).panelInstance("announcement_text_editor");
 });
@@ -21,5 +24,5 @@ recipients_group["coordinators"] = [];
  ?>
 
 </script>
-<script src="js/ftt/ftt_announcement/script.js?v10"></script>
+<script src="js/ftt/ftt_announcement/script.js?v14"></script>
 <script src="js/ftt/ftt_announcement/design.js?v2"></script>

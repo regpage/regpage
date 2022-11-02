@@ -28,3 +28,8 @@
 #announcement_tab_2 .list_string{
   margin-left: 0px !important;
 }
+
+.light_text_grey {
+  font-size: 12px;
+  color: #AAA;
+}

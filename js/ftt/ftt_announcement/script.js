@@ -46,7 +46,12 @@ $(document).ready(function(){
     // other
     $("#announcement_list_editor").hide();
     $("#announcement_btn_save").show();
-    $("#announcement_blank_delete").css("margin-right", "140px");
+    if ($(window).width()<=769) {
+      $("#announcement_blank_delete").css("margin-right", "10px");
+    } else {
+      $("#announcement_blank_delete").css("margin-right", "140px");
+    }
+
     // Цвета обрамления полей с ошибкой
     $("#announcement_date_publication").css("border-color", "#ced4da");
     $("#announcement_text_header").css("border-color", "#ced4da");
@@ -59,10 +64,19 @@ $(document).ready(function(){
     // Скрываем кнопку "Сохранить" у опубликованных объявлений
     if (data["publication"] === "1") {
       $("#announcement_btn_save").hide();
-      $("#announcement_blank_delete").css("margin-right", "235px");
-    } else if ($("#announcement_blank_delete").css("margin-right") !== "140px") {
+      if ($(window).width()<=769) {
+        $("#announcement_blank_delete").css("margin-right", "100px");
+      } else {
+        $("#announcement_blank_delete").css("margin-right", "235px");
+      }
+    } else if ($("#announcement_blank_delete").css("margin-right") !== "140px" && $("#announcement_blank_delete").css("margin-right") !== "10px") {
       $("#announcement_btn_save").show();
-      $("#announcement_blank_delete").css("margin-right", "140px");
+      if ($(window).width()<=769) {
+        $("#announcement_blank_delete").css("margin-right", "10px");
+      } else {
+        $("#announcement_blank_delete").css("margin-right", "140px");
+      }
+
     }
     if (status === "архив") {
       status = "dark";
@@ -390,7 +404,7 @@ setTimeout(function () {
 
   $(".nav-tabs .nav-link").click(function () {
     if ($(this).attr("href") === "#announcement_tab_1") {
-      setCookie("tab_active", "");
+      setCookie("tab_active", "outbox");
     } else {
       setCookie("tab_active", "inbox");
     }
@@ -433,6 +447,7 @@ setTimeout(function () {
   $("#flt_read").change(function () {
     filter_list_inbox();
   });
+  $("#spinner").modal("hide");
   /* ==== DOCUMENT READY STOP ==== */
 });
 /* ==== ANNOUNCEMENT STOP ==== */
