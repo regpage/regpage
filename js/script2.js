@@ -272,7 +272,7 @@ function getNameDayOfWeekByDayNumber(date, short, no_capital, number) {
     return ((new Date().getTime() - new Date(date)) / (24 * 3600 * 365.25 * 1000)) | 0;
   }
 
-  function compare_date(d1, d2) {
+  function compare_date(d1, d2, less) {
   	let current, dm;
   	if (!d2) {
   		current = new Date();
@@ -280,7 +280,12 @@ function getNameDayOfWeekByDayNumber(date, short, no_capital, number) {
   		d1 = new Date(d1);
   		// Вчера и раньше от текущей даты
   		return (current - d1) > 0;
-  	} else {
+  	} else if (less) {
+      d1 = new Date(d1);      
+  		d2 = new Date(d2);
+  		// Вчера и раньше от d1
+  		return (d1 - d2) > 0;
+    } else {
   		d1 = new Date(d1);
   		d2 = new Date(d2);
   		// Разница между двумя датами в милисекундах

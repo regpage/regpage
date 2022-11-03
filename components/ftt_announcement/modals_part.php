@@ -11,68 +11,84 @@
       <!-- Modal body -->
       <div class="modal-body">
         <div class="container pl-0 pr-0">
-          <div class="row">
-            <div class="col">
-              <label class="form-check-label">
-                <input id="announcement_to_14" type="checkbox" class="">
-                Семестрам 1-4
-              </label>
-            </div>
-            <div class="col">
-              <label class="form-check-label">
-                <input id="announcement_to_coordinators" type="checkbox" class="">
-                Координаторам
-              </label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <label class="form-check-label">
-                <input id="announcement_to_56" type="checkbox" class="">
-                Семестрам 5-6
-              </label>
-            </div>
-            <div class="col font-weight-normal">
-              <label class="form-check-label">
-                <input id="announcement_by_list" type="checkbox" class="">
-                По списку <span id="announcement_list_editor" class="cursor-pointer pl-2" style="display: none;"><i class="fa fa-list"></i> выбрать</span>
-              </label>
-            </div>
-          </div>
           <div class="row mb-2">
-            <div class="col">
-              <label class="form-check-label">
-                <input id="announcement_to_servingones" type="checkbox" class="">
-                Служащим
-              </label>
+            <div class="col-6">
+              <div class="row">
+                <div class="col mb-2">
+                  <label class="form-check-label">
+                    Получатели
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col mb-2">
+                  <label class="form-check-label font-weight-normal">
+                    <input id="announcement_to_14" type="checkbox" class="">
+                    Семестры 1-4
+                  </label>
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col">
+                  <label class="form-check-label font-weight-normal">
+                    <input id="announcement_to_56" type="checkbox" class="">
+                    Семестры 5-6
+                  </label>
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col">
+                  <label class="form-check-label font-weight-normal">
+                    <input id="announcement_to_coordinators" type="checkbox" class="">
+                    Координаторы
+                  </label>
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col">
+                  <label class="form-check-label font-weight-normal">
+                    <input id="announcement_to_servingones" type="checkbox" class="">
+                    Служащие
+                  </label>
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col">
+                  <label class="form-check-label font-weight-normal">
+                    <input id="announcement_by_list" type="checkbox" class="">
+                    По списку <span id="announcement_list_editor" class="cursor-pointer pl-2" style="display: none;"><i class="fa fa-list"></i></span>
+                  </label>
+                </div>
+              </div>
             </div>
-            <div class="col">
-              <select id="announcement_modal_time_zone" class="form-control form-control-sm mr-2">
-                <?php FTT_Select_fields::rendering($gl_time_zones, '01'); ?>
-              </select>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <label class="form-check-label">Дата публикации</label>
-              <label id="label_time_field" class="form-check-label pl-4">Время</label>
-            </div>
-            <div class="col">
-              <label class="form-check-label">Дата архивации</label>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col-4">
-              <input id="announcement_date_publication" type="date" class="form-control form-control-sm input_date_width">
-            </div>
-            <div class="col-2 pl-0">
-              <input id="announcement_time_publication" type="text" class="form-control form-control-sm" maxlength="5">
-            </div>
-            <div class="col-4">
-              <input id="announcement_date_archivation" type="date" class="form-control form-control-sm input_date_width">
-            </div>
-            <div class="col-1 pl-0">
-              <button type="button" id="announcement_to_archive" class="btn btn-secondary btn-sm" name="button"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+            <div class="col-6">
+              <div class="row mb-2">
+                <div class="col-8 pr-1" style="max-width: 150px;">
+                  <label class="form-check-label">Дата публикации</label>
+                  <input id="announcement_date_publication" type="date" class="form-control form-control-sm input_date_width">
+                </div>
+                <div class="col-4 pl-1" >
+                  <label id="label_time_field" class="form-check-label">Время</label>
+                  <input id="announcement_time_publication" type="text" class="form-control form-control-sm" maxlength="5" style="width: 60px;">
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-8 pr-1" style="max-width: 150px;">
+                  <label class="form-check-label">Дата архивации</label>
+                  <input id="announcement_date_archivation" type="date" class="form-control form-control-sm input_date_width">
+                </div>
+                <div class="col-4 pl-1" style="margin-top: 22px;">
+                  <button type="button" id="announcement_to_archive" class="btn btn-secondary btn-sm" name="button" style="width: 60px;"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <label class="form-check-label">Часовые пояса</label>
+                  <select id="announcement_modal_time_zone" class="form-control form-control-sm mr-2" style="width: 198px;">
+                    <?php FTT_Select_fields::rendering($gl_time_zones, '01'); ?>
+                  </select>
+                </div>
+              </div>
             </div>
           </div>
           <div class="row mb-3">
@@ -87,7 +103,7 @@
                 </textarea>
             </div>
           </div>
-          <div class="row mb-3">
+          <div class="row mb-0">
             <div class="col">
               <input type="text" id="announcement_staff_comment" name="" class="form-control form-control-sm" placeholder="Комментарий служащих">
             </div>
@@ -96,10 +112,12 @@
       </div>
       <!-- Modal footer -->
       <div class="modal-footer">
-        <button id="announcement_blank_delete" class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="margin-right: 140px;"><i class="fa fa-trash" aria-hidden="true"></i></button>
-        <button type="button" id="announcement_blank_publication" class="btn btn-warning btn-sm">Опубликовать</button>
-        <button type="button" id="announcement_btn_save" class="btn btn-primary btn-sm">Сохранить</button>
-        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Закрыть</button>
+        <div class="" style="text-align: right;">
+          <button id="announcement_blank_delete" class="btn btn-sm btn-secondary float-left" data-dismiss="modal" aria-hidden="true" ><i class="fa fa-trash" aria-hidden="true"></i></button>
+          <button type="button" id="announcement_blank_publication" class="btn btn-warning btn-sm">Опубликовать</button>
+          <button type="button" id="announcement_btn_save" class="btn btn-primary btn-sm">Сохранить</button>
+          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Закрыть</button>
+        </div>
       </div>
     </div>
   </div>

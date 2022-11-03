@@ -63,7 +63,7 @@ include_once "preheader.php";
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <!--<script src="js/script.js?v182" type="text/javascript"></script>-->
-    <script src="js/script2.js?v13" type="text/javascript"></script>
+    <script src="js/script2.js?v14" type="text/javascript"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <?php if ($_SERVER['PHP_SELF'] === '/index.php' || $_SERVER['PHP_SELF'] === '/members.php') { ?>
 

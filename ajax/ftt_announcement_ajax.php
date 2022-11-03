@@ -35,6 +35,12 @@ if (isset($_GET['type']) && $_GET['type'] === 'delete_announcement') {
     exit();
 }
 
+// Откат публикации
+if (isset($_GET['type']) && $_GET['type'] === 'undo_publication_announcement') {
+    echo json_encode(["result"=>undoPublicationAnnouncement($_GET['id'])]);
+    exit();
+}
+
 // INBOX
 if (isset($_GET['type']) && $_GET['type'] === 'noticed_announcement') {
     echo json_encode(["result"=>setAnnouncementNotice($_GET['id'], $adminId)]);

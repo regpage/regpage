@@ -4,7 +4,7 @@
 function getAnnouncements($admin_id)
 {
     $result = [];
-    $res = db_query("SELECT `id`, `date`, `time`, `publication`, `header`, `member_key`, `comment`, `to_14`, `to_56`, `to_coordinators`, `to_servingones`, `by_list`, `time_zone`, `archive_date` FROM `ftt_announcement` WHERE 1");
+    $res = db_query("SELECT `id`, `date`, `time`, `publication`, `header`, `member_key`, `comment`, `to_14`, `to_56`, `to_coordinators`, `to_servingones`, `by_list`, `time_zone`, `archive_date` FROM `ftt_announcement` WHERE 1 ORDER BY `date` DESC");
     while ($row = $res->fetch_assoc()) $result[] = $row;
     return $result;
 }
@@ -76,6 +76,16 @@ function saveAnnouncement($data)
       `list`='$recipients', `time_zone`='$time_zone', `archive_date`='$archivation_date'
       WHERE `id` = '$id'");
   }
+  return $res;
+}
+
+// Откат публикации
+function undoPublicationAnnouncement($id)
+{
+  global $db;
+  $id = $db->real_escape_string($id);
+  $res = db_query("UPDATE `ftt_announcement` SET `publication`= 0 WHERE `id` = '$id'");
+  db_query("DELETE FROM `ftt_announcement_recipients` WHERE `id_announcement` = '$id'");
   return $res;
 }
 

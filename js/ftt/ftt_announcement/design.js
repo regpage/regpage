@@ -40,3 +40,6 @@ if ($(window).width()<=769) {
 } else {
   $(".list_header").show();
 }
+
+//let modal_footer_width = $("#announcement_modal_edit .modal-dialog").css("width") - $("#announcement_modal_edit .modal-modal-footer").css("padding-left") - $("#announcement_modal_edit .modal-modal-footer").css("padding-right") - 2;
+$("#announcement_modal_edit .modal-footer div").css("width", "100%");

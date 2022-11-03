@@ -45,12 +45,8 @@ $(document).ready(function(){
     badge_changer($("#announcement_modal_edit .modal-header span"), "secondary");
     // other
     $("#announcement_list_editor").hide();
-    $("#announcement_btn_save").show();
-    if ($(window).width()<=769) {
-      $("#announcement_blank_delete").css("margin-right", "10px");
-    } else {
-      $("#announcement_blank_delete").css("margin-right", "140px");
-    }
+    $("#announcement_blank_publication").show();
+    $("#announcement_blank_delete i").removeClass("fa-undo").addClass("fa-trash");
 
     // Цвета обрамления полей с ошибкой
     $("#announcement_date_publication").css("border-color", "#ced4da");
@@ -63,20 +59,11 @@ $(document).ready(function(){
     // готовим данные
     // Скрываем кнопку "Сохранить" у опубликованных объявлений
     if (data["publication"] === "1") {
-      $("#announcement_btn_save").hide();
-      if ($(window).width()<=769) {
-        $("#announcement_blank_delete").css("margin-right", "100px");
-      } else {
-        $("#announcement_blank_delete").css("margin-right", "235px");
-      }
-    } else if ($("#announcement_blank_delete").css("margin-right") !== "140px" && $("#announcement_blank_delete").css("margin-right") !== "10px") {
-      $("#announcement_btn_save").show();
-      if ($(window).width()<=769) {
-        $("#announcement_blank_delete").css("margin-right", "10px");
-      } else {
-        $("#announcement_blank_delete").css("margin-right", "140px");
-      }
-
+      $("#announcement_blank_publication").hide();
+      $("#announcement_blank_delete i").removeClass("fa-trash").addClass("fa-undo");
+    } else {
+      $("#announcement_blank_publication").show();
+      $("#announcement_blank_delete i").removeClass("fa-undo").addClass("fa-trash");
     }
     if (status === "архив") {
       status = "dark";
@@ -136,6 +123,7 @@ $(document).ready(function(){
     $("#announcement_staff_comment").val(data["comment"]);
   }
 
+  // ???
   function get_recipients() {
     recipients_group;
 
@@ -259,6 +247,14 @@ $(document).ready(function(){
     });
   }
 
+  function blank_publication_undo(id) {
+    fetch("ajax/ftt_announcement_ajax.php?type=undo_publication_announcement&id=" + id)
+    .then(response => response.json())
+    .then(commits => {
+      location.reload();
+    });
+  }
+
   // Фильтры списка
   $("#main_container .ftt_buttons_bar select").change(function () {
     filter_list();
@@ -296,11 +292,27 @@ $(document).ready(function(){
   });
 
   $("#announcement_to_archive").click(function () {
-    $("#announcement_date_archivation").val(date_now_gl);
+    if (!compare_date($("#announcement_date_archivation").val(), $("#announcement_date_publication").val(), 1)) {
+      showError("Дата архивации должна быть больше даты публикации.");
+    } else {
+      $("#announcement_date_archivation").val(date_now_gl);
+    }
+  });
+
+  $("#announcement_date_archivation").change(function () {
+    if (!compare_date($("#announcement_date_archivation").val(), $("#announcement_date_publication").val(), 1)) {
+      $(this).val("");
+      showError("Дата архивации должна быть больше даты публикации.");
+    }
   });
 
   $("#announcement_btn_save").click(function () {
-    blank_save();
+    if ($("#announcement_modal_edit").attr("data-publication") === "1") {
+      blank_save(1);
+    } else {
+      blank_save();
+    }
+
   });
 
   $("#announcement_blank_publication").click(function () {
@@ -394,7 +406,11 @@ setTimeout(function () {
   // удаление объявления.
   $("#announcement_blank_delete").click(function (e) {
     // Удаление опубликованных объявлений
-    if (confirm("Удалить объявление?")) {
+    if ($("#announcement_modal_edit").attr("data-publication") === "1") {
+       if (confirm("Снять объявление с публикации?")) {
+         blank_publication_undo($("#announcement_modal_edit").attr("data-id"));
+       }
+    } else if (confirm("Удалить объявление?")) {
       fetch("ajax/ftt_announcement_ajax.php?type=delete_announcement&id=" + $("#announcement_modal_edit").attr("data-id"));
       $("#announcement_modal_edit").modal("hide");
       blank_reset();
