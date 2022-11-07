@@ -7,9 +7,14 @@ if ($(window).width()<=769) {
   $(".list_string div:first-child").css("min-width", "46px");
 
   // OUTBOX
+  $("#announcement_add").css("max-width", "25%")
+  $("#modal_flt_open").css("max-width", "25%")
+  $("#modal_flt_open").show();
+  $("#announcement_tab_1 select").hide();
   $("#announcement_tab_1 .ftt_buttons_bar").css("margin-bottom", "0px");
   $("#announcement_tab_1 .ftt_buttons_bar").css("padding-bottom", "10px");
   $("#announcement_tab_1 .ftt_buttons_bar").css("border-bottom", "1px solid lightgray");
+  $("#announcement_tab_1 .ftt_buttons_bar").css("width", "100%");
   $("#announcement_tab_1 .ftt_buttons_bar").css("margin-left", "9px");
   $("#announcement_tab_1 .ftt_buttons_bar").css("padding-left", "6px");
   $("#announcement_tab_1 .list_string div:first-child").next().removeClass("col-2").addClass("col-5");
@@ -21,7 +26,6 @@ if ($(window).width()<=769) {
   $("#announcement_tab_1 .list_string div:first-child").next().next().next().next().next().next().show();
 
   // BLANK
-
   $("#announcement_to_14").parent().parent().parent().parent().addClass("pr-1");
   $("#announcement_to_14").parent().parent().parent().parent().removeClass("col-6").addClass("col-5");
   $("#announcement_to_14").parent().parent().parent().parent().next().removeClass("col-6").addClass("col-7");

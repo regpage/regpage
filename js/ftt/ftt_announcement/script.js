@@ -427,6 +427,14 @@ setTimeout(function () {
     }
   });
 
+  // modal filters apply
+  $("#modal_flt_apply").click(function () {
+    $("#flt_service_ones").val($("#modal_flt_service_ones").val());
+    $("#flt_time_zone").val($("#modal_flr_time_zones").val());
+    $("#flt_public").val($("#modal_flt_public").val());
+    filter_list();
+  });
+
   // OUTBOX END
   // INBOX
   function announcement_open (data) {

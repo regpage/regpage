@@ -194,3 +194,31 @@
     </div>
   </div>
 </div>
+
+<!-- ФИЛЬТРЫ -->
+<div id="announcement_modal_flt" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>Фильтры</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+      </div>
+      <div class="modal-body">
+        <select id="modal_flt_service_ones" class="form-control form-control-sm mb-2">
+          <?php FTT_Select_fields::rendering($serving_ones_list, $memberId, 'Все служащие') ?>
+        </select>
+        <select id="modal_flr_time_zones" class="form-control form-control-sm mb-2">
+          <?php FTT_Select_fields::rendering($gl_time_zones, '01'); ?>
+        </select>
+        <select id="modal_flt_public" class="form-control form-control-sm mb-2">
+          <option value="_all_" selected>Текущие</option>
+          <option value="2">Архивные</option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button id="modal_flt_apply" class="btn btn-sm btn-primary" data-dismiss="modal" aria-hidden="true">Применить</button>
+        <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
