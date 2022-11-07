@@ -97,9 +97,10 @@ class statistics {
   static function announcement_unread($memberId)
   {
     $result = '';
-    $res = db_query("SELECT COUNT(`id_announcement`) AS total
-    FROM ftt_announcement_recipients
-    WHERE `member_key`= '$memberId' AND `date` IS NULL");
+    $res = db_query("SELECT COUNT(far.id_announcement) AS total
+    FROM ftt_announcement_recipients AS far
+    INNER JOIN ftt_announcement fa ON fa.id = far.id_announcement
+    WHERE far.member_key = '$memberId' AND far.date IS NULL AND fa.date <= DATE(NOW())");
     while ($row = $res->fetch_assoc()) $result = $row['total'];
     return $result;
   }

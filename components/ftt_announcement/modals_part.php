@@ -23,7 +23,7 @@
               <div class="row">
                 <div class="col mb-2">
                   <label class="form-check-label font-weight-normal">
-                    <input id="announcement_to_14" type="checkbox" class="">
+                    <input id="announcement_to_14" type="checkbox" class="mr-1">
                     Семестры 1-4
                   </label>
                 </div>
@@ -31,7 +31,7 @@
               <div class="row mb-2">
                 <div class="col">
                   <label class="form-check-label font-weight-normal">
-                    <input id="announcement_to_56" type="checkbox" class="">
+                    <input id="announcement_to_56" type="checkbox" class="mr-1">
                     Семестры 5-6
                   </label>
                 </div>
@@ -39,7 +39,7 @@
               <div class="row mb-2">
                 <div class="col">
                   <label class="form-check-label font-weight-normal">
-                    <input id="announcement_to_coordinators" type="checkbox" class="">
+                    <input id="announcement_to_coordinators" type="checkbox" class="mr-1">
                     Координаторы
                   </label>
                 </div>
@@ -47,7 +47,7 @@
               <div class="row mb-2">
                 <div class="col">
                   <label class="form-check-label font-weight-normal">
-                    <input id="announcement_to_servingones" type="checkbox" class="">
+                    <input id="announcement_to_servingones" type="checkbox" class="mr-1">
                     Служащие
                   </label>
                 </div>
@@ -55,7 +55,7 @@
               <div class="row mb-2">
                 <div class="col">
                   <label class="form-check-label font-weight-normal">
-                    <input id="announcement_by_list" type="checkbox" class="">
+                    <input id="announcement_by_list" type="checkbox" class="mr-1">
                     По списку <span id="announcement_list_editor" class="cursor-pointer pl-2" style="display: none;"><i class="fa fa-list"></i></span>
                   </label>
                 </div>
@@ -83,7 +83,7 @@
               </div>
               <div class="row">
                 <div class="col">
-                  <label class="form-check-label">Часовые пояса</label>
+                  <label class="form-check-label">Часовой пояс</label>
                   <select id="announcement_modal_time_zone" class="form-control form-control-sm mr-2" style="width: 198px;">
                     <?php FTT_Select_fields::rendering($gl_time_zones, '01'); ?>
                   </select>
@@ -114,8 +114,8 @@
       <div class="modal-footer">
         <div class="" style="text-align: right;">
           <button id="announcement_blank_delete" class="btn btn-sm btn-secondary float-left" data-dismiss="modal" aria-hidden="true" ><i class="fa fa-trash" aria-hidden="true"></i></button>
-          <button type="button" id="announcement_blank_publication" class="btn btn-warning btn-sm">Опубликовать</button>
-          <button type="button" id="announcement_btn_save" class="btn btn-primary btn-sm">Сохранить</button>
+          <button type="button" id="announcement_blank_publication" class="btn btn-success btn-sm">Опубликовать</button>
+          <button type="button" id="announcement_btn_save" class="btn btn-warning btn-sm">Сохранить</button>
           <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Закрыть</button>
         </div>
       </div>

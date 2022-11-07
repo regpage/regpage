@@ -7,16 +7,17 @@ $(document).ready(function(){
   function badge_changer(element, badge) {
     let badge_list = {
       success: "опубликованно",
-      dark: "архив",
-      secondary: "не опубликованно"
+      dark: "",
+      secondary: "архив",
+      warning: "не опубликованно"
     }
     if (!element.hasClass("badge-"+badge)) {
       if (element.hasClass("badge-success")) {
         element.removeClass("badge-success");
-      } else if (element.hasClass("badge-dark")) {
-        element.removeClass("badge-dark");
-      } else {
+      } else if (element.hasClass("badge-secondary")) {
         element.removeClass("badge-secondary");
+      } else {
+        element.removeClass("badge-warning");
       }
       element.addClass("badge-"+badge);
       element.text(badge_list[badge]);
@@ -42,7 +43,7 @@ $(document).ready(function(){
     $("#announcement_modal_edit").attr("data-publication","");
     $("#announcement_modal_edit").attr("data-author","");
     // badge
-    badge_changer($("#announcement_modal_edit .modal-header span"), "secondary");
+    badge_changer($("#announcement_modal_edit .modal-header span"), "warning");
     // other
     $("#announcement_list_editor").hide();
     $("#announcement_blank_publication").show();
@@ -66,11 +67,11 @@ $(document).ready(function(){
       $("#announcement_blank_delete i").removeClass("fa-undo").addClass("fa-trash");
     }
     if (status === "архив") {
-      status = "dark";
+      status = "secondary";
     } else if (status === "опубликованно") {
       status = "success";
     } else {
-      status = "secondary";
+      status = "warning";
     }
     badge_changer($("#announcement_modal_edit .modal-header span") ,status);
 
@@ -238,8 +239,7 @@ $(document).ready(function(){
       }
       if (($(this).attr("data-author") === $("#flt_service_ones").val() || $("#flt_service_ones").val() === "_all_")
       && ($(this).attr("data-time_zone") === $("#flt_time_zone").val() || $("#flt_time_zone").val() === "01")
-      && (($(this).attr("data-publication") === $("#flt_public").val() && !is_archive) || $("#flt_public").val() === "_all_" || $("#flt_public").val() === "2")
-      && ((is_archive && $("#flt_public").val() === "2") || $("#flt_public").val() === "_all_" || $("#flt_public").val() !== "2")) {
+      && (!is_archive && $("#flt_public").val() === "_all_" || (is_archive && $("#flt_public").val() === "2"))) {
         $(this).show();
       } else {
         $(this).hide();
@@ -292,16 +292,17 @@ $(document).ready(function(){
   });
 
   $("#announcement_to_archive").click(function () {
-    if (!compare_date($("#announcement_date_archivation").val(), $("#announcement_date_publication").val(), 1)) {
+    if (!compare_date(gl_date_now, $("#announcement_date_publication").val(), 1)) {
       showError("Дата архивации должна быть больше даты публикации.");
     } else {
-      $("#announcement_date_archivation").val(date_now_gl);
+      $("#announcement_date_archivation").val(gl_date_now);
     }
   });
 
   $("#announcement_date_archivation").change(function () {
-    if (!compare_date($("#announcement_date_archivation").val(), $("#announcement_date_publication").val(), 1)) {
-      $(this).val("");
+    if (!compare_date($("#announcement_date_archivation").val(), $("#announcement_date_publication").val(), 1)
+    && $("#announcement_date_archivation").val() && $("#announcement_date_archivation").val() !== "0000-00-00") {
+      $("#announcement_date_archivation").val("");
       showError("Дата архивации должна быть больше даты публикации.");
     }
   });
@@ -322,7 +323,7 @@ $(document).ready(function(){
   $("#announcement_add").click(function () {
     blank_reset();
     $("#announcement_modal_edit").attr("data-author", admin_id_gl);
-    $("#announcement_date_publication").val(date_now_gl);
+    $("#announcement_date_publication").val(gl_date_now);
   });
 
   $("#list_announcement .list_string").click(function () {
@@ -450,9 +451,7 @@ setTimeout(function () {
   // Фильтр списка inbox
   function filter_list_inbox () {
     $("#announcement_tab_2 .list_string").each(function () {
-      if ((($(this).attr("data-notice") && $("#flt_read").val() === "1")
-      || (!$(this).attr("data-notice") && $("#flt_read").val() === "0"))
-      || $("#flt_read").val() === "_all_") {
+      if (($(this).attr("data-notice") && $("#flt_read").val() === "1") || (!$(this).attr("data-notice") && $("#flt_read").val() === "0")) {
         $(this).show();
       } else {
         $(this).hide();

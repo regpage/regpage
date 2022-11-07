@@ -1,18 +1,23 @@
 <!-- INBOX -->
   <div class="ftt_buttons_bar btn-group" style="padding-top: 21px;">
     <select id="flt_read" class="form-control form-control-sm mr-2">
-      <option value="_all_">Все</option>
-      <option value="1">Прочитанные</option>
-      <option value="0" selected>Непрочитанные</option>
+      <option value="0" selected>Текущие</option>
+      <option value="1">Архивные</option>
     </select>
   </div>
   <div id="list_header_inbox" class="row list_header" style="margin-left: 0px; padding-bottom: 10px; border-bottom: 1px lightgray solid; display: none;">
-      <div class="col-2 pl-1"><b>Дата</b></div>
-      <div class="col-5"><b>Заголовок</b></div>
-      <div class="col-3"><b>Группы получателей</b></div>
-      <div class="col-2"><b>Часовые пояса</b></div>
+      <div class="col-1 pl-1"><b>Дата</b></div>
+      <div class="col"><b>Заголовок</b></div>
+      <div class="col-3" <?php if ($ftt_access['group'] !== 'staff') {
+        echo 'style="display:none;"';
+      } ?>><b>Группы получателей</b></div>
   </div>
   <?php
+
+  $hide_for_trainee = 'style="display:none;"';
+  if ($ftt_access['group'] === 'staff') {
+    $hide_for_trainee = '';
+  }
     foreach (getAnnouncementsForRecipient($memberId) as $key => $value) {
 
       $date = $value['date'];
@@ -46,12 +51,14 @@
       } elseif ($value['by_list']) {
         $recipients_groups_text ? $recipients_groups_text .= ', по списку' : $recipients_groups_text .= 'по списку';
       }
-      if ($noticed_date && $archive_date && !DatesCompare::isMoreThanCurrent($archive_date)) {
+      if (DatesCompare::isMoreThanCurrent($date)) {
+
+      } elseif ($noticed_date && $archive_date && $archive_date !== '0000-00-00' && !DatesCompare::isMoreThanCurrent($archive_date)) {
         // nothing
       } else {
         echo "<div class='row {$notice} list_string' $show_string
         data-id_announcement='{$id}' data-header='{$header}' data-content='{$content}' data-author='{$author}' data-time='{$time}' data-archive_date='{$archive_date}' data-date='{$date}' data-notice='{$noticed_date}'>
-        <div class='col-2 pl-1'>{$date_show}</div><div class='col-5'>{$header}</div><div class='col-3'>{$recipients_groups_text}</div><div class='col-2'>{$time_zone_text}</div></div>";
+        <div class='col-1 pl-1'>{$date_show}</div><div class='col'>{$header}</div><div class='col-3' {$hide_for_trainee}>{$recipients_groups_text}</div></div>";
       }
     }
   ?>

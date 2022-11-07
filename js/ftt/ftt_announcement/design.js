@@ -20,15 +20,21 @@ if ($(window).width()<=769) {
   $("#announcement_tab_1 .list_string div:first-child").next().next().next().next().next().show();
   $("#announcement_tab_1 .list_string div:first-child").next().next().next().next().next().next().show();
 
-  // BLOCK
-  $("#announcement_date_publication").parent().css("margin-right", "20px");
+  // BLANK
+
+  $("#announcement_to_14").parent().parent().parent().parent().addClass("pr-1");
+  $("#announcement_to_14").parent().parent().parent().parent().removeClass("col-6").addClass("col-5");
+  $("#announcement_to_14").parent().parent().parent().parent().next().removeClass("col-6").addClass("col-7");
+  $("#announcement_to_14").parent().parent().parent().parent().next().addClass("pl-1");
+  $("#announcement_to_14").parent().parent().parent().parent().next().addClass("pr-1");
+  /*$("#announcement_date_publication").parent().css("margin-right", "20px");
   $("#announcement_time_publication").css("min-width", "55px");
   $("#announcement_date_archivation").parent().css("padding-left", "0px");
   $("#announcement_to_archive").parent().removeClass("pl-0").addClass("pl-1");
   $("#label_time_field").removeClass("pl-4").addClass("pl-1");
   $("#label_time_field").parent().css("padding-right", "0px");
   $("#label_time_field").parent().css("min-width", "200px");
-  $("#label_time_field").parent().next().css("padding-left", "5px");
+  $("#label_time_field").parent().next().css("padding-left", "5px");*/
 
   // INBOX
   $("#announcement_tab_2 .ftt_buttons_bar").css("padding-bottom", "10px");
