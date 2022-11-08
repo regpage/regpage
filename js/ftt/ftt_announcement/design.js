@@ -7,8 +7,9 @@ if ($(window).width()<=769) {
   $(".list_string div:first-child").css("min-width", "46px");
 
   // OUTBOX
-  $("#announcement_add").css("max-width", "25%")
-  $("#modal_flt_open").css("max-width", "25%")
+  $("#announcement_add").parent().parent().addClass("mr-0");
+  $("#announcement_add").css("max-width", "25%");
+  $("#modal_flt_open").css("max-width", "25%");
   $("#modal_flt_open").show();
   $("#announcement_tab_1 select").hide();
   $("#announcement_tab_1 .ftt_buttons_bar").css("margin-bottom", "0px");
@@ -17,10 +18,10 @@ if ($(window).width()<=769) {
   $("#announcement_tab_1 .ftt_buttons_bar").css("width", "100%");
   $("#announcement_tab_1 .ftt_buttons_bar").css("margin-left", "9px");
   $("#announcement_tab_1 .ftt_buttons_bar").css("padding-left", "6px");
-  $("#announcement_tab_1 .list_string div:first-child").next().removeClass("col-2").addClass("col-5");
+  $("#announcement_tab_1 .list_string div:first-child").next().removeClass("col-2").addClass("col-3");
   $("#announcement_tab_1 .list_string div:first-child").next().next().hide();
-  $("#announcement_tab_1 .list_string div:first-child").next().next().next().hide();
-  $("#announcement_tab_1 .list_string div:first-child").next().next().next().next().removeClass("col-2").addClass("col-5");
+  //$("#announcement_tab_1 .list_string div:first-child").next().next().next().hide();
+  $("#announcement_tab_1 .list_string div:first-child").next().next().next().next().removeClass("col-2").addClass("col-4");
   $("#announcement_tab_1 .list_string div:first-child").next().next().next().next().find("span").addClass("float-right");
   $("#announcement_tab_1 .list_string div:first-child").next().next().next().next().next().show();
   $("#announcement_tab_1 .list_string div:first-child").next().next().next().next().next().next().show();
@@ -46,7 +47,11 @@ if ($(window).width()<=769) {
   $("#announcement_tab_2 .ftt_buttons_bar").css("border-bottom", "1px solid lightgray");
   $("#flt_read").css("width", "150px");
   $("#announcement_tab_2 .list_string div:first-child").next().next().next().hide();
-  $("#announcement_tab_2 .list_string div:first-child").next().removeClass("col-5").addClass("col-6");
+  //$("#announcement_tab_2 .list_string div:first-child").next().removeClass("col-6").addClass("col-6");
+  $("#announcement_tab_2").addClass("pl-0");
+  $("#announcement_tab_2").parent().parent().addClass("pr-0");
+  $(".list_string").addClass("mr-0");
+
 } else {
   $(".list_header").show();
 }

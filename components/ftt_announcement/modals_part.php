@@ -103,10 +103,18 @@
                 </textarea>
             </div>
           </div>
-          <div class="row mb-0">
+          <div class="row mb-2">
             <div class="col">
               <input type="text" id="announcement_staff_comment" name="" class="form-control form-control-sm" placeholder="Комментарий служащих">
             </div>
+          </div>
+          <div class="mb-0 pr-3 pt-1 text-right" style="width: 100%;">
+              <span id="info_of_announcement" class="cursor-pointer" style="font-size: 12px; border-bottom: 1px dashed lightgrey;">Инфо</span>
+              <div class="text-right pt-1" style="font-size: 12px; width: 100%; display: none;">
+                <span id="author_of_announcement"></span>
+                &nbsp;
+                <span id="public_date_of_announcement"></span>
+              </div>
           </div>
         </div>
       </div>
@@ -168,7 +176,7 @@
     <div class="modal-content">
       <!-- Modal Header -->
       <div class="modal-header">
-        <h5 class="mb-0">Объявление</h5>
+        <h5 class="mb-0">Объявление <span id="modal_announcement_date_text"></span></h5>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <!-- Modal body -->
@@ -176,7 +184,7 @@
         <div class="container pl-0 pr-0">
           <div class="row">
             <div class="col">
-              <h6 id="announcement_title"></h6>
+              <h6 id="announcement_title" class="font-weight-bold"></h6>
             </div>
           </div>
           <div class="row">

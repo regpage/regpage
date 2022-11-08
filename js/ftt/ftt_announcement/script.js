@@ -34,6 +34,8 @@ $(document).ready(function(){
     $("#announcement_date_archivation").val("");
     $("#announcement_modal_edit select").val("01");
     $("#announcement_time_publication").val("00:00");
+    $("#author_of_announcement").text("");
+    $("#public_date_of_announcement").text("");
 
     // edit editor
     nicEditors.findEditor("announcement_text_editor").setContent("<span class='text-secondary'>Текст объявления...</span>");
@@ -75,6 +77,8 @@ $(document).ready(function(){
     }
     badge_changer($("#announcement_modal_edit .modal-header span") ,status);
 
+    $("#author_of_announcement").text(serving_ones_list[data["member_key"]]);
+    $("#public_date_of_announcement").text(dateStrFromyyyymmddToddmm(data["date"]));
     // Заполняем список получателей в опции "По списку"
     let list_arr;
     if (data["list"]) {
@@ -435,10 +439,20 @@ setTimeout(function () {
     filter_list();
   });
 
+  // info block
+  $("#info_of_announcement").click(function () {
+    if ($("#author_of_announcement").parent().is(":visible")) {
+      $("#author_of_announcement").parent().hide();
+    } else {
+      $("#author_of_announcement").parent().show();
+    }
+  });
+
   // OUTBOX END
   // INBOX
   function announcement_open (data) {
-    $("#announcement_title").text(dateStrFromyyyymmddToddmm(data.attr("data-date")) + " " + data.attr("data-header"));
+    $("#modal_announcement_date_text").text(dateStrFromyyyymmddToddmm(data.attr("data-date")));
+    $("#announcement_title").text(data.attr("data-header"));
     $("#announcement_content").html(data.attr("data-content"));
     if (!data.attr("data-notice")) {
       fetch("ajax/ftt_announcement_ajax.php?type=noticed_announcement&id=" + data.attr("data-id_announcement"))
