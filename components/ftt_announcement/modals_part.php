@@ -142,22 +142,50 @@
       </div>
       <!-- Modal body -->
       <div class="modal-body">
-        <div class="container pl-0 pr-0">
-          <div class="row">
-            <div class="col">
-              <h5>Служащие</h5>
-              <?php foreach ($serving_ones_list as $key => $value) {
-                echo "<label class='form-check-label'><input type='checkbox' value='{$key}'> {$value}</label><br>";
-              } ?>
-            </div>
+        <div class="container pl-2 pr-0">
+          <div class="row pl-2 pr-2">
+            <select id="modal_flt_male" class="form-control form-control-sm mb-2 mr-2">
+              <option value="_all_">Все</option>
+              <option value="1">Братья</option>
+              <option value="0">Сёстры</option>
+            </select>
+            <select id="modal_flt_apartment" class="form-control form-control-sm mb-2 mr-2">
+              <?php FTT_Select_fields::rendering(FttExtraLists::getApartments(), '_all_', 'Все квартиры'); ?>
+            </select>
+            <select id="modal_flt_semester" class="form-control form-control-sm mb-2 mr-2">
+              <option value="_all_">Все семестры</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+            </select>
           </div>
           <div class="row">
-            <div class="col">
-              <br>
-              <h5>Обучающиеся</h5>
-              <?php foreach ($trainee_list as $key => $value) {
-                echo "<label class='form-check-label'><input type='checkbox' value='{$key}'> {$value}</label><br>";
-              } ?>
+            <div class="col-6 pl-2">
+              <div class="row">
+                <div id="modal_extra_groups" class="col">
+                  <h5>Обучающиеся</h5>
+                  <div>
+                    <label class="form-check-label" style="display: none;"><input id="modal_list_select_all" type="checkbox"> <b>Выбрать все</b></label>
+                  </div>
+                  <?php
+                  foreach ($list_trainee_full as $key => $value) {
+                    echo "<div><label class='form-check-label'><input type='checkbox' ". RenderList::dataAttr($value, array('apartment', 'male', 'semester')) ." value='{$key}'> ".short_name::no_middle($value['name'])."</label></div>";
+                  } ?>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="row">
+                <div class="col">
+                  <h5>Служащие</h5>
+                  <?php foreach ($serving_ones_list as $key => $value) {
+                    echo "<label class='form-check-label'><input type='checkbox' value='{$key}'> {$value}</label><br>";
+                  } ?>
+                </div>
+              </div>
             </div>
           </div>
         </div>

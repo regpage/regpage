@@ -28,7 +28,6 @@ $(document).ready(function(){
   function blank_reset() {
     // fields
     $("#announcement_modal_edit input[type='checkbox']").prop("checked", false);
-    $("#announcement_modal_list input[type='checkbox']").prop("checked", false);
     $("#announcement_modal_edit input[type='text']").val("");
     $("#announcement_date_publication").val("");
     $("#announcement_date_archivation").val("");
@@ -55,6 +54,14 @@ $(document).ready(function(){
     $("#announcement_date_publication").css("border-color", "#ced4da");
     $("#announcement_text_header").css("border-color", "#ced4da");
     $(".nicEdit-main").parent().css("border-color", "#ced4da");
+
+    // Extra list
+    $("#modal_flt_male").val("_all_");
+    $("#modal_flt_apartment").val("_all_");
+    $("#modal_flt_semester").val("_all_");
+    $("#announcement_modal_list input[type='checkbox']").prop("checked", false);
+    $("#announcement_modal_list input[type='checkbox']").parent().show();
+    $("#modal_list_select_all").parent().hide();
   }
 
   // Заполняем бланк
@@ -153,6 +160,30 @@ $(document).ready(function(){
     } else {
       recipients = $("#announcement_modal_edit").attr("data-recipients");
     }
+    // comment
+    let comment = "", extra_comment = "";
+    if ($("#modal_flt_male").val() !== "_all_") {
+      extra_comment = $("#modal_flt_male option:selected").text();
+    }
+    if ($("#modal_flt_apartment").val() !== "_all_") {
+      if (extra_comment) {
+        extra_comment = extra_comment + ", " + $("#modal_flt_apartment option:selected").text();
+      } else {
+        extra_comment = $("#modal_flt_apartment option:selected").text();
+      }
+    }
+    if ($("#modal_flt_semester").val() !== "_all_") {
+      if (extra_comment) {
+        extra_comment = extra_comment + ", " + $("#modal_flt_semester option:selected").text();
+      } else {
+        extra_comment = $("#modal_flt_semester option:selected").text();
+      }
+    }
+    if (extra_comment) {
+      comment = "Получатели " + extra_comment + ". " + $("#announcement_staff_comment").val();
+    } else {
+      comment = $("#announcement_staff_comment").val();
+    }
 
     let blank_data = new FormData();
     let data_field = {
@@ -172,7 +203,7 @@ $(document).ready(function(){
       archivation_date: $("#announcement_date_archivation").val(),
       header: $("#announcement_text_header").val(),
       content: nicEditors.findEditor("announcement_text_editor").getContent(),
-      comment: $("#announcement_staff_comment").val()
+      comment: comment
     };
     blank_data.set("data", JSON.stringify(data_field));
     return blank_data;
@@ -251,6 +282,27 @@ $(document).ready(function(){
     });
   }
 
+  function filter_extra_groups() {
+    $("#modal_list_select_all").prop("checked", false);
+    if ($("#modal_flt_male").val() === "_all_" && $("#modal_flt_apartment").val() === "_all_" && $("#modal_flt_semester").val() === "_all_") {
+      $("#modal_list_select_all").parent().hide();
+    } else {
+      $("#modal_list_select_all").parent().show();
+    }
+
+    $("#modal_extra_groups input").each(function () {
+      if ($(this).attr("id") !== "modal_list_select_all") {
+        if (($("#modal_flt_semester").val() === "_all_" || $(this).attr("data-semester") === $("#modal_flt_semester").val())
+        && ($("#modal_flt_apartment").val() === "_all_" || $(this).attr("data-apartment") === $("#modal_flt_apartment").val())
+        && ($("#modal_flt_male").val() === "_all_" || $(this).attr("data-male") === $("#modal_flt_male").val())) {
+          $(this).parent().show();
+        } else {
+          $(this).parent().hide();
+        }
+      }
+    });
+  }
+
   function blank_publication_undo(id) {
     fetch("ajax/ftt_announcement_ajax.php?type=undo_publication_announcement&id=" + id)
     .then(response => response.json())
@@ -265,32 +317,68 @@ $(document).ready(function(){
   });
   // add/remove recipient
   $("#announcement_modal_list input[type='checkbox']").change(function () {
+    // Отмеченные
     let recipients = $("#announcement_modal_edit").attr("data-recipients");
     if ($("#announcement_modal_edit").attr("data-recipients")) {
       recipients = recipients.split(",");
     }
-    if ($(this).prop("checked")) {
-      if ($("#announcement_modal_edit").attr("data-recipients")) {
-        if (!recipients.includes($(this).val())) {
-          $("#announcement_modal_edit").attr("data-recipients", $("#announcement_modal_edit").attr("data-recipients")
-          + "," + $(this).val())
-        }
-      } else {
-        $("#announcement_modal_edit").attr("data-recipients", $(this).val())
-      }
-    } else if ($("#announcement_modal_edit").attr("data-recipients")) {
-      let html = "";
-      if (recipients.includes($(this).val())) {
-        for (var i = 0; i < recipients.length; i++) {
-          if (recipients[i] !== $(this).val()) {
-            if (html) {
-              html = html + "," + recipients[i];
+    // Выбрать все
+    if ($(this).attr("id") === "modal_list_select_all") {
+      $("#modal_extra_groups input:visible").prop("checked", $(this).prop("checked"));
+      $("#modal_extra_groups input:visible").each(function () {
+        if ($(this).attr("id") !== "modal_list_select_all") {
+          if ($(this).prop("checked")) {
+            if ($("#announcement_modal_edit").attr("data-recipients")) {
+              if (!recipients.includes($(this).val())) {
+                $("#announcement_modal_edit").attr("data-recipients", $("#announcement_modal_edit").attr("data-recipients")
+                + "," + $(this).val())
+              }
             } else {
-              html += recipients[i];
+              $("#announcement_modal_edit").attr("data-recipients", $(this).val())
+            }
+          } else if ($("#announcement_modal_edit").attr("data-recipients")) {
+            let html = "";
+            if (recipients.includes($(this).val())) {
+              for (var i = 0; i < recipients.length; i++) {
+                if (recipients[i] !== $(this).val() && recipients[i]) {
+                  if (html) {
+                    html = html + "," + recipients[i];
+                  } else {
+                    html += recipients[i];
+                  }
+                } else {
+                  recipients[i] = "";
+                }
+              }
+              $("#announcement_modal_edit").attr("data-recipients", html)
             }
           }
         }
-        $("#announcement_modal_edit").attr("data-recipients", html)
+      });
+    } else {
+      if ($(this).prop("checked")) {
+        if ($("#announcement_modal_edit").attr("data-recipients")) {
+          if (!recipients.includes($(this).val())) {
+            $("#announcement_modal_edit").attr("data-recipients", $("#announcement_modal_edit").attr("data-recipients")
+            + "," + $(this).val())
+          }
+        } else {
+          $("#announcement_modal_edit").attr("data-recipients", $(this).val())
+        }
+      } else if ($("#announcement_modal_edit").attr("data-recipients")) {
+        let html = "";
+        if (recipients.includes($(this).val())) {
+          for (var i = 0; i < recipients.length; i++) {
+            if (recipients[i] !== $(this).val()) {
+              if (html) {
+                html = html + "," + recipients[i];
+              } else {
+                html += recipients[i];
+              }
+            }
+          }
+          $("#announcement_modal_edit").attr("data-recipients", html)
+        }
       }
     }
   });
@@ -448,6 +536,10 @@ setTimeout(function () {
     }
   });
 
+  $("#modal_flt_male, #modal_flt_apartment, #modal_flt_semester").click(function () {
+    filter_extra_groups();
+  });
+
   // OUTBOX END
   // INBOX
   function announcement_open (data) {
@@ -461,6 +553,9 @@ setTimeout(function () {
         if (commits.result) {
           data.removeClass("bg-notice-string");
           $("#ftt_navs .active b").text(Number($("#ftt_navs .active b").text()) - 1);
+          if ($("#ftt_navs .active b").text() === "0") {
+            $("#ftt_navs .active b").text("");
+          }
         }
       });
     }
@@ -473,7 +568,13 @@ setTimeout(function () {
   // Фильтр списка inbox
   function filter_list_inbox () {
     $("#announcement_tab_2 .list_string").each(function () {
-      if (($(this).attr("data-notice") && $("#flt_read").val() === "1") || (!$(this).attr("data-notice") && $("#flt_read").val() === "0")) {
+      is_archive = false;
+      if ($(this).attr("data-archive_date") === gl_date_now) {
+        is_archive = true;
+      } else if (compare_date($(this).attr("data-archive_date")) && $(this).attr("data-archive_date")) {
+        is_archive = true;
+      }
+      if (((!is_archive && $("#flt_read").val() === "0" || is_archive && $("#flt_read").val() === "0" && !$(this).attr("data-notice"))) || (is_archive && $(this).attr("data-notice") && $("#flt_read").val() === "1")) {
         $(this).show();
       } else {
         $(this).hide();

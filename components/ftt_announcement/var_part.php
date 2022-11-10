@@ -2,8 +2,11 @@
   // ОБЪЯВЛЕНИЯ ПВОМ
   // БД
   include_once "db/ftt/ftt_announcement_db.php";
-  // Classes
+  // Classes DB
   include_once 'db/classes/DatesCompare.php';
+  include_once 'db/classes/FttExtraLists.php';
+  // Classes components
+  include_once 'components/ftt_blocks/RenderList.php';
   // Cookie
   $tab_one_active = '';
   $tab_two_active = 'active';
@@ -75,4 +78,9 @@
         $recipients_group['coordinators'][$value['time_zone']] = $recipients_group['coordinators'][$value['time_zone']].','.$key;
       }
     }
+  }
+  // полные списки обучающихся и служащих
+  if ($ftt_access['group'] === 'staff') {
+    //$list_serving_ones_full = ftt_lists::serving_ones_full();
+    $list_trainee_full = ftt_lists::trainee_list();
   }

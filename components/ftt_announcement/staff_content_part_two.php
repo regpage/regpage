@@ -46,28 +46,17 @@
       } elseif ($value['by_list']) {
         $recipients_groups_text ? $recipients_groups_text .= ', по списку' : $recipients_groups_text .= 'по списку';
       }
-/*
-      $is_active = true;
-      if ($date !== '0000-00-00' && $date && $publication) {
-        if ($time) {
-          $is_active = !DatesCompare::isMoreThanCurrentTime($date.' '.$time);
-        } else {
-          $is_active = !DatesCompare::isMoreThanCurrent($date);
-        }
-      }
-*/
+
       $show_string = 'style="display: none"';
       if (!$value['notice']) {
         $notice = 'bg-notice-string';
         $show_string = '';
-      }/* elseif ($is_active) {
+      } elseif (!($noticed_date && $archive_date && $archive_date !== '0000-00-00' && !DatesCompare::isMoreThanCurrent($archive_date))) {
         $show_string = '';
-      }*/
+      }
 
       if (DatesCompare::isMoreThanCurrent($date)) {
 
-      } elseif ($noticed_date && $archive_date && $archive_date !== '0000-00-00' && !DatesCompare::isMoreThanCurrent($archive_date)) {
-        // nothing
       } else {
         echo "<div class='row {$notice} list_string' $show_string
         data-id_announcement='{$id}' data-header='{$header}' data-content='{$content}' data-author='{$author}' data-time='{$time}' data-archive_date='{$archive_date}' data-date='{$date}' data-notice='{$noticed_date}'>

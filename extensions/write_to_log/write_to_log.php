@@ -20,7 +20,7 @@ class write_to_log {
     $logMemberId ? $logAdminRole = db_getAdminRole($logMemberId) : $logAdminRole = 'SUPERVISOR';
     $logMemberId ? '' : $logMemberId = 'none';
 
-    $file = 'logs/logFile_'.date("d-m-Y").'.log'; // 
+    $file = 'logFile_'.date("d-m-Y").'.log'; // 
     //Добавим разделитель, чтобы мы смогли отличить каждую запись
     $text = $type.' ==================================================='.PHP_EOL;
     $text .=  date('d-m-Y H:i:s') .PHP_EOL; //Добавим актуальную дату после текста или дампа массива

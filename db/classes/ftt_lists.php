@@ -81,7 +81,7 @@ class ftt_lists {
     $result = [];
     //  left & right join LOCALITY NAME ect
     $res = db_query("SELECT ft.member_key, ft.gospel_group, ft.gospel_team,
-      ft.semester, ft.serving_one, ft.coordinator, ft.time_zone,
+      ft.semester, ft.serving_one, ft.coordinator, ft.time_zone, ft.apartment,
       m.name, m.male, m.locality_key, m.birth_date, m.cell_phone, m.email,
       m.attend_meeting, m.category_key, m.changed, m.new_locality,
       l.name AS locality_name
