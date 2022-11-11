@@ -903,7 +903,7 @@ $("#info_of_extrahelp").click(function () {
     }
 //th {border-bottom: 1px solid black; text-align: center; border-collapse: separate;}
     function popup(data){
-      let mywindow = window.open('', 'Благовестие', 'height=600,width=800');
+      let mywindow = window.open('', 'Статистика', 'height=600,width=800');
       mywindow.document.write('<html><head><title>Доп. задания. Для отправки на принтер нажмите Ctrl+P.</title>');
       mywindow.document.write('</head><body><style> td {border-bottom: 1px solid black; text-align: right;} th {border-bottom: 1px solid black; text-align: center;}</style>');
       mywindow.document.write(data);

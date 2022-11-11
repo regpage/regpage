@@ -65,6 +65,89 @@ $('#service_ones_pvom').change(function() {
   }
 });
 
+// PRINT LIST
+function print_rendering_elements(modal) {
+  let page = [];
+  if (modal) {
+    page["title"] = "<html lang='ru'><head><title>Список</title></head>";
+    page["style"] = "<style>th {border: 1px solid black; text-align: center; border-collapse: collapse; padding: 5px 0px;} table, td {border: 1px solid black; text-align: right; border-collapse: collapse;} .numpp {width: 30px; text-align: center;} .dates{width: 50px;} .fio{text-align: left; padding-left: 5px;} .age {text-align: center;} .bold{font-weight: bold;}</style>";
+    page["header"] = "<body><h3>" + $("#selMemberLocality option:selected").text() + "</h3>";
+    page["thead"] = "<table><thead><tr><th class='numpp'>№</th><th>ФИО</th><th class='dates'>Возр.</th><th class='dates'></th><th class='dates'></th><th class='dates'></th><th class='dates'></th><th class='dates'></th><th class='dates'></th></tr></thead>";
+    page["end"] = "</table></body></html>";
+  } else {
+    page["tbody"] = "";
+    let age, bold, selectors;
+    if ($(window).width()<=769) {
+      selectors = "#membersPhone tbody tr:visible";
+    } else {
+      selectors = "#members tbody tr:visible";
+    }
+    $(selectors).each(function (e) {
+      if ($(this).attr("data-age") && $(this).attr("data-age") !== "null") {
+        age = Math.floor($(this).attr("data-age"));
+      } else {
+        age = "";
+      }
+
+      if ($(this).attr("data-category") === "FT") {
+        bold = "bold";
+      } else {
+        bold = "";
+      }
+
+      page["tbody"] += "<tbody><tr><td class='numpp'>" + (e + 1)
+      + "</td><td class='fio " + bold + "'>" + $(this).attr("data-name")
+      + "</td><td class='dates age'>" + age + "</td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td></tr>";
+    });
+    page["tbody"] += "</tbody>";
+  }
+  return page;
+}
+
+function print_page(element, is_preview) {
+  function popup(table){
+    let html = print_rendering_elements(true);
+    let mywindow = window.open('', 'Список', 'height=800,width=1000');
+    // рендерим страницу начало
+    mywindow.document.write(html["title"]);
+    mywindow.document.write(html["style"]);
+    mywindow.document.write(html["header"]);
+    mywindow.document.write(html["thead"]);
+    mywindow.document.write(table);
+    mywindow.document.write(html["end"]);
+    // рендерим страницу конец
+    console.log(mywindow);
+    if (!is_preview) {
+      mywindow.print();
+      mywindow.close();
+    }
+    return true;
+  }
+
+  function printElem(elem){
+    popup($(elem).html());
+  }
+
+  printElem(element);
+}
+
+$("#btnPrintOpenModal").click(function () {
+  //$("#modalPrintList").modal("show");
+  let data = print_rendering_elements();
+  $("#show_print_list").html(data["thead"] + data["tbody"]);
+  // В мобильной версии можно предоставлять окно с результатом для дальнейшей печати или выгрузки
+  print_page("#show_print_list");
+});
+
+// DESIGN
+if ($(window).width()<=769) {
+  $("body").css("font-size", "16px");
+}
+/*
+$("#printListButton").click(function () {
+
+});
+*/
 /*
 // START hide empty city
 function hideEmptyCity() {

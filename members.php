@@ -54,6 +54,21 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
                 <a class="btn btn-success add-member" data-locality="<?php echo $adminLocality; ?>" type="button"><i class="fa fa-plus icon-white"></i> <span class="hide-name">Добавить</span></a>
             </div>
             <div class="btn-group">
+                <a class="btn dropdown-toggle btnDownloadMembers" data-toggle="dropdown" href="#">
+                    <i class="fa fa-download"></i> <span class="hide-name">Скачать</span>
+                </a>
+            </div>
+            <div class="btn-group">
+                <a class="btn dropdown-toggle btnShowStatistic" data-toggle="dropdown" href="#">
+                    <i class="fa fa-bar-chart"></i> <span class="hide-name">Статистика</span>
+                </a>
+            </div>
+            <div class="btn-group">
+                <a id="btnPrintOpenModal" class="btn dropdown-toggle" href="#">
+                    <i class="fa fa-print"></i>
+                </a>
+            </div>
+            <div class="btn-group">
                 <a class="btn btn-info show-filters" type="button"><i class="fa fa-filter icon-white"></i> <span class="hide-name">Фильтры</span></a>
             </div>
             <?php if (!$singleCity) { ?>
@@ -77,16 +92,6 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
     						<option value='0' >Не посещают собрания</option>
     					</select>
     				</div>
-            <div class="btn-group">
-                <a class="btn dropdown-toggle btnDownloadMembers" data-toggle="dropdown" href="#">
-                    <i class="fa fa-download"></i> <span class="hide-name">Скачать</span>
-                </a>
-            </div>
-            <div class="btn-group">
-                <a class="btn dropdown-toggle btnShowStatistic" data-toggle="dropdown" href="#">
-                    <i class="fa fa-bar-chart"></i> <span class="hide-name">Статистика</span>
-                </a>
-            </div>
             <!--<div class="btn-group">
                 <a type="button" class="btn btn-default search"><i class="icon-search" title="Поле поиска"></i></a>
                 <div class="not-display" data-toggle="1">
@@ -286,6 +291,22 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
     </div>
 </div>
 
+<!-- Print list Modal -->
+<div id="modalPrintList" class="modal hide fade" data-width="400" tabindex="-1" role="dialog">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        <h3></h3>
+    </div>
+    <div class="modal-body">
+        <div id="show_print_list">
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button id="printListButton" class="btn btn-success" data-dismiss="modal" aria-hidden="true">Печать</button>
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Закрыть</button>
+    </div>
+</div>
 
 <script>
     var globalSingleCity = "<?php echo $singleCity; ?>";
@@ -603,9 +624,9 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
                 '<td><span style="color: #006">' + he(m.name) + '</span>'+
                 '<i style="float: right; cursor:pointer;" class="'+(m.active==0?'icon-circle-arrow-up':'')+' icon-black" title="'+(m.active==0 ? 'Добавить в список':'Удалить из списка')+'"/>'+
                 <?php if (!$singleCity) echo "'<div>' + he(m.locality ? (m.locality.length>20 ? m.locality.substring(0,18)+'...' : m.locality) : '') + ', ' + age + '</div>' + "; ?> (in_array(6, window.user_settings) ? '<span class="user_setting_span">'+(m.region || m.country)+'</span>' : '') +
-                '<div><span >'+ /*(m.cell_phone?'тел.: ':'') + */ he(m.cell_phone.trim()) + '</span>'+ (m.cell_phone && m.email ? ', ' :'' )+'<span>'+ /*(m.email?'email: ':'') + */ he(m.email) + '</span></div>' +
-                '<div>Посещает собрания: <input type="checkbox" class="check-meeting-attend" '+ (m.attend_meeting == 1 ? "checked" : "") +' /></div>'+
-                '<div>'+ htmlChanged + htmlEditor + '</div>'+
+                '<div><span >'+ /*(m.cell_phone?'тел.: ':'') + */ he(m.cell_phone.trim()) + '</span>'+ (m.cell_phone && m.email ? ', ' :'' )+'<span>'+ /*(m.email?'email: ':'') + he(m.email) + */ '</span></div>' +
+                '<div>Посещает собрания: <input type="checkbox" class="check-meeting-attend" '+ (m.attend_meeting == 1 ? "checked" : "") +' /> <span> '+ htmlChanged + htmlEditor + '</span></div>'+
+                /*'<div>'+ htmlChanged + htmlEditor + '</div>'+*/
                 '</td>' +
                 '</tr>'
             );
@@ -630,7 +651,7 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
         });
 
         // Удаляем участникаиз списка
-        $("#btnDoDeleteMember").click(function (event) {          
+        $("#btnDoDeleteMember").click(function (event) {
 
           if ($(this).find("i").hasClass('fa-trash')) {
             window.removeMemberId = window.currentEditMemberId;
@@ -1205,7 +1226,7 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
 
 // STOP check dublicate
 </script>
-<script src="/js/members.js?v9"></script>
+<script src="/js/members.js?v13"></script>
 <?php
 include_once "footer.php";
 ?>
