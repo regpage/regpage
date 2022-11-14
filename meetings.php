@@ -90,6 +90,7 @@ $sort_type = isset ($_SESSION['sort_type-meetings']) ? $_SESSION['sort_type-meet
                         <th style="text-align: center"><a id="sort-saints_count" href="#" title="сортировать">Святых</a>&nbsp;<i class="<?php echo $sort_field=='saints_count' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none'; ?>"></i></th>
                         <th id="pvom_count" style="text-align: center; display: none"><a href="#" title="">ПВОМ</a></th>
                         <th style="text-align: center"><a id="sort-guests_count" href="#" title="сортировать">Гостей</a>&nbsp;<i class="<?php echo $sort_field=='guests_count' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none'; ?>"></i></th>
+                        <th style="text-align: center"><a href="#">Функц.</a></th>
                         <th style="text-align: center"><a href="#">Всего</a></th>
                     </tr>
                     </thead>
@@ -672,7 +673,7 @@ var gloIsSingleCity = parseInt('<?php echo $isSingleCity; ?>');
 var gloSingleLocality = gloIsSingleCity ? '<?php echo $singleLocality; ?>' : '';
 </script>
 
-<script src="/js/meetings.js?v139"></script>
+<script src="/js/meetings.js?v140"></script>
 <?php
     include_once './footer.php';
 ?>

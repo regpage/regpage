@@ -1109,6 +1109,10 @@ var isFillTemplate = 0;
             if(list && list.length > 0){
                 for (var i in list){
                     var member = list[i], buttons = "<i title='Удалить' class='fa fa-trash fa-lg btn-remove-member'></i>";
+                    let text_bold = "";
+                    if (member.category_key === "FT") {
+                      text_bold = "font_weight_bold";
+                    }
                     if (member.id < 990000000) {
                        member.birth_date ? member_age = member.birth_date : member_age = 0;
                       if (member_age.length > 2) {
@@ -1133,7 +1137,7 @@ var isFillTemplate = 0;
                             "</tr>");
                       } else {
                         members.push("<tr class='check-member' data-id='"+member.id+"' data-attend_meeting='"+member.attend_meeting+"' data-name='"+shortName[0]+' '+shortName[1]+"' data-category_key='"+member.category_key+"' data-birth_date='"+member_age+"' data-locality_key='"+member.locality_key+"' data-locality='"+member.locality+"'>"+
-                            "<td><label class='check-member-label' style='line-height: 20px'>" + ( modalWindowSelector === '#modalHandleTemplate' ? "" : "<input type='checkbox' "+(member.present ? "checked='true'" : "" ) + " style='margin-top: -3px;' class='check-member-checkbox form-check-input'> ") +shortName[0]+' '+shortName[1]+"</label></td>"+
+                            "<td><label class='check-member-label "+ text_bold +"' style='line-height: 20px'>" + ( modalWindowSelector === '#modalHandleTemplate' ? "" : "<input type='checkbox' "+(member.present ? "checked='true'" : "" ) + " style='margin-top: -3px;' class='check-member-checkbox form-check-input'> ") +shortName[0]+' '+shortName[1]+"</label></td>"+
                             "<td>"+member.locality+"</td>"+
                             "<td>"+member_age+"</td>"+
                             "<td>"+(member.attend_meeting == 1 ? '<i class="fa fa-check"></i>' : '-') +"</td>"+
@@ -1605,6 +1609,7 @@ var isFillTemplate = 0;
                     (isSingleCity ? '' : '<td>' + he(localityName ? (localityName.length>20 ? localityName.substring(0,18)+'...' : localityName) : '') + '</td>') +
                     '<td style="text-align:center;">' + (meetingCounts.saintsCount || '') + '</td>' + (moskow ?'<td style="text-align:center;">' + (meetingCounts.traineesCount || '') + '</td>' : '') +
                     '<td style="text-align:center;">' + (meetingCounts.guestCount || '') + '</td>' +
+                    '<td style="text-align:center;">' + (m.func_count || '') + '</td>' +
                     '<td style="text-align:center;">' + (meetingCounts.countMembers || '') + '</td>' +
                     '<td><!--<i class="fa fa-list fa-lg meeting-list" title="Список"></i>--><i title="Удалить" class="fa fa-trash fa-lg btn-remove-meeting"></i></td>' +
                     '</tr>'
@@ -1616,6 +1621,7 @@ var isFillTemplate = 0;
                     //'<i style="float: right;" class="fa fa-list fa-lg meeting-list" title="Список"/>'+
                     '<div><span>'+formatDate(m.date)+'</span>; '+
                     (isSingleCity ? '' : he(localityName ? (localityName>20 ? localityName.substring(0,18)+'...' : localityName) : '') + '</div>') +
+                    (m.func_count !== "0" ? ('<span>Функц '+ m.func_count +', </span>') : '')+
                     (meetingCounts.countMembers ? ('<span class="meeting-list-counts" >Всего '+ meetingCounts.countMembers +'</span>') : '')+
                     '</td>' +
                     '</tr>'
