@@ -146,13 +146,15 @@ $sort_type = isset ($_SESSION['sort_type-meetings']) ? $_SESSION['sort_type-meet
     <label style="margin-right: 17px; margin-bottom: 0px">Cвятых</label>
     <label style="margin-right: 24px; margin-bottom: 0px" class="traineesClass">ПВОМ</label>
     <label style="margin-right: 22px; margin-bottom: 0px">Гостей</label>
-    <label style="margin-bottom: 0px">Всего</label>
+    <label style="margin-right: 28px; margin-bottom: 0px">Всего</label>
+    <label style="margin-bottom: 0px">Функц.</label>
   <div class="control-group row-fluid" style="margin-right: 100px; margin-top: -5px">
     <input class="datepicker meetingDate span2" type="text" placeholder="ДД.ММ.ГГГГ" valid="required,date" style="margin-top: 5px; margin-right: 10px; width: 100px;">
     <input type="text" readonly class="span2 meeting-saints-count text-right" style="margin-right: 10px; width: 55px;">
     <input type="text" style="margin-right: 10px; width: 55px;" class="span2 meeting-count-trainees traineesClass text-right" disabled>
     <input type="text" class="span2 meeting-count-guest text-right" style="margin-right: 10px; width: 55px;">
     <input disabled type="text" class="span2 meeting-count text-right" style="width: 55px; margin-right: 10px;">
+    <input type="text" id="func_count" class="span2 text-right" style="width: 55px;">
     </div>
     <div class="">
       <span style="" class="show-extra-fields fulltimersClass">в том числе полновременных служащих — <span class="meeting-count-fulltimers"></span></span>
@@ -670,7 +672,7 @@ var gloIsSingleCity = parseInt('<?php echo $isSingleCity; ?>');
 var gloSingleLocality = gloIsSingleCity ? '<?php echo $singleLocality; ?>' : '';
 </script>
 
-<script src="/js/meetings.js?v138"></script>
+<script src="/js/meetings.js?v139"></script>
 <?php
     include_once './footer.php';
 ?>

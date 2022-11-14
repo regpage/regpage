@@ -142,7 +142,13 @@ $("#btnPrintOpenModal").click(function () {
 // DESIGN
 if ($(window).width()<=769) {
   $("body").css("font-size", "16px");
+  $("#selMemberLocality").css("width", "208px");
+  $("#selMemberCategory").css("width", "208px");
+  $("#selMemberAttendMeeting").css("width", "208px");
+  //$("#dropdownMenu1").parent().hide();
+  $("#mblSortShow").parent().show();
 }
+
 /*
 $("#printListButton").click(function () {
 

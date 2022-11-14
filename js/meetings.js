@@ -405,7 +405,7 @@ var isFillTemplate = 0;
                                         }
                                     }
                                     isFillTemplate = 1;
-                                    fillMeetingModalForm('Новое собрание', '', templateInfo.locality_key, templateInfo.meeting_type_key, '', countList, '', '', countChildren, countFulltimers, countTrainees, false, '', templateInfo.meeting_name, templateInfo.participants, '');
+                                    fillMeetingModalForm('Новое собрание', '', templateInfo.locality_key, templateInfo.meeting_type_key, '', countList, '', '', countChildren, countFulltimers, countTrainees, false, '', templateInfo.meeting_name, templateInfo.participants, '', '');
 
                                 }
                                 else{
@@ -998,7 +998,7 @@ var isFillTemplate = 0;
             var meetingType = modal.find('#meetingCategory').val();
             var meetingName = modal.find('.meetingName').val();
             var note = modal.find('.meeting-note').val();
-
+            let func_count = modal.find('#func_count').val();
         //  var listCount = modal.find('.meeting-list-count').val(); //  listCount: listCount || 0,
             var countGuest = modal.find('.meeting-count-guest').val();
         // var countChildren = modal.find('.meeting-count-children').val(); // countChildren: countChildren || 0,
@@ -1042,6 +1042,7 @@ var isFillTemplate = 0;
                 traineesCount : traineesCount || 0,
                 fulltimersCount : fulltimersCount || 0,
                 members : members.join(','),
+                func_count : func_count,
                 attendMembers : attendMembers.length > 0 ? attendMembers.join(',') : ''
             }).done(function(data){
                 if(data.isDoubleMeeting){
@@ -1056,7 +1057,7 @@ var isFillTemplate = 0;
             });
         });
 
-        function fillMeetingModalForm(textMode, date, locality, meetingType, note, countList, count, countGuests, countChildren, countFulltimers, countTrainees, isMeetingSummary, saintsCount, meetingName, members, participants){
+        function fillMeetingModalForm(textMode, date, locality, meetingType, note, countList, count, countGuests, countChildren, countFulltimers, countTrainees, isMeetingSummary, saintsCount, meetingName, members, participants, func_count){
             //window.selectedMeetingMembers = [];
 
             var modal = $("#addEditMeetingModal");
@@ -1072,6 +1073,7 @@ var isFillTemplate = 0;
          // modal.find('.meeting-list-count').val(countList || '').attr('disabled', isMeetingSummary ? 'disabled' : false);
             modal.find('.meeting-saints-count').val(saintsCount || '');
             modal.find('.meeting-count').val(count || '');
+            modal.find('#func_count').val(func_count || '');
             modal.find('.meeting-count-guest').val(countGuests || '');
             //modal.find('.meeting-count-children').val(countChildren || '').attr('disabled', isMeetingSummary ? 'disabled' : false);
             modal.find('.meeting-count-fulltimers').text(countFulltimers || '');
@@ -1592,10 +1594,10 @@ var isFillTemplate = 0;
 
                 dataString = 'data-members="'+m.members+'" data-district="'+m.district+'" data-summary="'+m.summary+'" data-extra_fields="'+m.show_additions+'" '+
                     'class="meeting-row '+(parseInt(m.summary) ? '' : '')+' " data-note="'+he(m.note)+'" data-type="'+m.meeting_type+'" data-date="'+m.date+'" '+
-                    'data-count="'+meetingCounts.countMembers+'" data-fulltimers="'+meetingCounts.fulltimersCount+'" data-trainees="'+meetingCounts.traineesCount+'" '+
-                    'data-count_list="'+meetingCounts.listCount+'" data-saints_count="'+meetingCounts.saintsCount+'" '+
-                    'data-count_guests="'+meetingCounts.guestCount+'" data-count_children="'+meetingCounts.childrenCount+'" data-id="'+m.id+'" '+
-                    ' data-locality="'+m.locality_key+'" data-participants="'+m.participants+'" ';
+                    'data-count="'+meetingCounts.countMembers+'" data-fulltimers="'+meetingCounts.fulltimersCount+'" data-trainees="'+meetingCounts.traineesCount+'" data-func_count="'+m.func_count+'" '
+                    +'data-count_list="'+meetingCounts.listCount+'" data-saints_count="'+meetingCounts.saintsCount+'" '
+                    +'data-count_guests="'+meetingCounts.guestCount+'" data-count_children="'+meetingCounts.childrenCount+'" data-id="'+m.id+'" '
+                    +' data-locality="'+m.locality_key+'" data-participants="'+m.participants+'" ';
 
                 tableRows.push('<tr '+dataString +'>'+
                     '<td>' + formatDate(m.date) + '</td>' +
@@ -1632,6 +1634,7 @@ var isFillTemplate = 0;
                 var note = element.attr('data-note');
                 var date = element.attr('data-date');
                 var count = element.attr('data-count');
+                let func_count = element.attr('data-func_count');
                 var countList = element.attr('data-count_list');
                 var countGuests = element.attr('data-count_guests');
                 var countChildren = element.attr('data-count_children');
@@ -1654,7 +1657,7 @@ var isFillTemplate = 0;
                 $.get('/ajax/meeting.php?get_member_details_meeting', {meeting_id: meetingId})
                 .done(function(data){
                   members = data.members[0].members;
-                  fillMeetingModalForm(textMode, formatDate(date), locality, meetingType, note, countList, count, countGuests, countChildren, countFulltimers, countTrainees, isMeetingSummary, saintsCount, meetingName, members, participants);
+                  fillMeetingModalForm(textMode, formatDate(date), locality, meetingType, note, countList, count, countGuests, countChildren, countFulltimers, countTrainees, isMeetingSummary, saintsCount, meetingName, members, participants, func_count);
                 });
             });
             //

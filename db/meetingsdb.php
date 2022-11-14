@@ -73,7 +73,7 @@ function db_getMeetings($adminId, $sort_type, $sort_field, $localityFilter, $mee
     db_query('SET Session group_concat_max_len=100000');
 
     $res = db_query("SELECT DISTINCT * FROM (
-            SELECT me.name, me.id, l.name as locality_name, me.date,  me.list_count, me.saints_count,
+            SELECT me.name, me.id, l.name as locality_name, me.date, me.list_count, me.saints_count, me.func_count,
             mt.name as meeting_name, mt.short_name, mt.key as meeting_type, me.guests_count, me.children_count,
             me.locality_key, me.note, me.fulltimers_count, me.members as members, me.participants, me.trainees_count,
             IF(($requestCheckMeetingAdditions), 1, 0) as show_additions,
@@ -86,7 +86,7 @@ function db_getMeetings($adminId, $sort_type, $sort_field, $localityFilter, $mee
             INNER JOIN meeting_type mt ON mt.key=me.meeting_type
             WHERE a.member_key='$adminId' $requestMeeting $requestLocality $requestDates
             UNION
-            SELECT me.name, me.id, l.name as locality_name, me.date, me.list_count, me.saints_count,
+            SELECT me.name, me.id, l.name as locality_name, me.date, me.list_count, me.saints_count, me.func_count,
             mt.name as meeting_name, mt.short_name, mt.key as meeting_type, me.guests_count, me.children_count,
             me.locality_key, me.note, me.fulltimers_count, me.members as members, me.participants, me.trainees_count,
             IF(($requestCheckMeetingAdditions), 1, 0) as show_additions,
@@ -215,6 +215,7 @@ function db_setMeeting($data){
     $saintsCount = (int)($data['saintsCount']);
     $traineesCount = (int)($data['traineesCount']);
     $fulltimersCount = (int)($data['fulltimersCount']);
+    $func_count = ($data['func_count']);
 
     $meetingId = isset($data['meetingId']) ? $db->real_escape_string($data['meetingId']) : null;
 
@@ -231,15 +232,14 @@ function db_setMeeting($data){
         db_query("UPDATE meetings SET name='$name', meeting_type='$meetingType',
                 date='$date', locality_key='$locality', note='$note', guests_count=$guestsCount,
                 list_count=$listCount, saints_count=$saintsCount, members = '$members',
-                trainees_count=$traineesCount, fulltimers_count=$fulltimersCount, participants='$attendMembers' WHERE id='$meetingId' ");
-    }
-    else {
+                trainees_count=$traineesCount, fulltimers_count=$fulltimersCount, participants='$attendMembers', func_count='$func_count' WHERE id='$meetingId' ");
+    } else {
 
         db_query("INSERT INTO meetings (meeting_type, date, locality_key, note,
                                         guests_count, list_count,
-                                        saints_count, trainees_count, fulltimers_count, name, members, participants )
+                                        saints_count, trainees_count, fulltimers_count, name, members, participants, func_count)
                 VALUE ('$meetingType', '$date', '$locality', '$note', $guestsCount,
-                         $listCount, $saintsCount, $traineesCount, $fulltimersCount, '$name', '$members', '$attendMembers' )");
+                         $listCount, $saintsCount, $traineesCount, $fulltimersCount, '$name', '$members', '$attendMembers', '$func_count')");
     }
 
     return false;

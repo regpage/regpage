@@ -69,7 +69,15 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
                 </a>
             </div>
             <div class="btn-group">
-                <a class="btn btn-info show-filters" type="button"><i class="fa fa-filter icon-white"></i> <span class="hide-name">Фильтры</span></a>
+                <a class="btn btn-info show-filters" type="button">
+                  <i class="fa fa-filter icon-white"></i>
+                  <span class="hide-name">Фильтры</span>
+                </a>
+            </div>
+            <div class="btn-group" style="display: none;">
+                <a id="mblSortShow" class="btn" type="button">
+                  <i class="fa fa-sort"></i>
+                </a>
             </div>
             <?php if (!$singleCity) { ?>
             <div class="btn-group">
@@ -126,7 +134,7 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
                 </table>
             </div>
             <div class="show-phone">
-                <div class="dropdown">
+                <!--<div class="dropdown">
                     <button style="margin-top: 10px;" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         <span class="sortName"><?php echo $s = isset($_COOKIE['sort'])? $_COOKIE['sort'] : 'Сортировать' ?></span>
                         <span class="caret"></span>
@@ -143,7 +151,7 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
                         <li><a id="sort-birth_date" data-sort="Возраст" href="#" title="сортировать">Возраст</a>&nbsp;<i class="<?php echo $sort_field=='birth_date' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none'; ?>"></i></li>
                         <li><a id="sort-attend_meeting" href="#" data-sort="Посещает собрание" title="сортировать">Посещает собрание</a>&nbsp;<i class="<?php echo $sort_field=='attend_meeting' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none'; ?>"></i></li>
                     </ul>
-                </div>
+                </div>-->
                 <table id="membersPhone" class="table table-hover">
                     <tbody><tr><td colspan="8"><h3 style="text-align: center">Загрузка...</h3></td></tr></tbody>
                 </table>
@@ -260,6 +268,36 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
     </div>
 </div>
 
+<!-- Sorting Modal -->
+<div id="modalSorting" class="modal hide fade" data-width="400" tabindex="-1" role="dialog">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        <h3>Сортировка</h3>
+    </div>
+    <div class="modal-body">
+      <ul style="font-size: 16px;">
+        <li>
+          <a id="sort-name" data-sort="ФИО" href="#" title="сортировать">ФИО</a>&nbsp;<i class="icon-chevron-down"></i>
+        </li>
+        <br>
+        <li>
+          <a id="sort-locality" data-sort="Город" href="#" title="сортировать">Город</a>&nbsp;<i class="icon-none"></i>
+        </li>
+        <br>
+        <li>
+          <a id="sort-birth_date" data-sort="Возраст" href="#" title="сортировать">Возраст</a>&nbsp;<i class="icon-none"></i>
+        </li>
+        <br>
+        <li>
+          <a id="sort-attend_meeting" href="#" data-sort="Посещает собрание" title="сортировать">Посещает собрание</a>&nbsp;<i class="icon-none"></i>
+        </li>
+      </ul>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Закрыть</button>
+    </div>
+</div>
+
 <!-- Name Editing Message Modal -->
 <div id="modalShowFilter" class="modal hide fade" data-width="400" tabindex="-1" role="dialog">
     <div class="modal-header">
@@ -340,6 +378,10 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
         $('.filter_name').text('');
         getFilters();
         $("#modalFilters").modal('show');
+    });
+
+    $("#mblSortShow").click(function () {
+      $("#modalSorting").modal("show");
     });
 
     $(".create_filter").click(function(){
@@ -621,10 +663,11 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
             );
 
             phoneRows.push('<tr data-id="'+m.id+'" data-name="'+m.name+'" data-age="'+m.age+'" data-attendance="'+m.attend_meeting+'" data-locality="'+m.locality_key+'" data-category="'+m.category_key+'" class="'+(m.active==0?'inactive-member':'member-row')+'">'+
-                '<td><span style="color: #006">' + he(m.name) + '</span>'+
+                '<td><span style="color: #006">' + he(m.name) + ' '
+                + (in_array(5, window.user_settings) ? '<br/>'+ '<span class="user_setting_span">'+m.category_name+'</span>' : '') +'</span>'+
                 '<i style="float: right; cursor:pointer;" class="'+(m.active==0?'icon-circle-arrow-up':'')+' icon-black" title="'+(m.active==0 ? 'Добавить в список':'Удалить из списка')+'"/>'+
                 <?php if (!$singleCity) echo "'<div>' + he(m.locality ? (m.locality.length>20 ? m.locality.substring(0,18)+'...' : m.locality) : '') + ', ' + age + '</div>' + "; ?> (in_array(6, window.user_settings) ? '<span class="user_setting_span">'+(m.region || m.country)+'</span>' : '') +
-                '<div><span >'+ /*(m.cell_phone?'тел.: ':'') + */ he(m.cell_phone.trim()) + '</span>'+ (m.cell_phone && m.email ? ', ' :'' )+'<span>'+ /*(m.email?'email: ':'') + he(m.email) + */ '</span></div>' +
+                '<div><span >'+ /*(m.cell_phone?'тел.: ':'') + */ he(m.cell_phone.trim()) + '</span>'+ (m.cell_phone && m.email ? '' :'' )+'<span>'+ /*(m.email?'email: ':'') + he(m.email) + */ '</span></div>' +
                 '<div>Посещает собрания: <input type="checkbox" class="check-meeting-attend" '+ (m.attend_meeting == 1 ? "checked" : "") +' /> <span> '+ htmlChanged + htmlEditor + '</span></div>'+
                 /*'<div>'+ htmlChanged + htmlEditor + '</div>'+*/
                 '</td>' +
@@ -1070,7 +1113,7 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
         var id = $(this).attr("id");
         var icon = $(this).siblings("i");
 
-        $(($(document).width()>768 ? ".desctopVisible" : ".show-phone") + " a[id|='sort'][id!='"+id+"'] ~ i").attr("class","icon-none");
+        $(($(document).width()>768 ? ".desctopVisible" : "#modalSorting") + " a[id|='sort'][id!='"+id+"'] ~ i").attr("class","icon-none");
         icon.attr ("class", icon.hasClass("icon-chevron-down") ? "icon-chevron-up" : "icon-chevron-down");
         loadDashboard ();
     });
