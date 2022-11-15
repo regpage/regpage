@@ -63,14 +63,16 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
         <?php } ?>
       </div>
       <div class="modal-footer">
-          <button id="delete_permission_blank" class="btn btn-sm btn-secondary" style="margin-right: 167px;"><i class="fa fa-trash"></i></button>
+        <div class="text-right w-100">
+          <button id="delete_permission_blank" class="btn btn-sm btn-secondary float-left"><i class="fa fa-trash"></i></button>
         <?php if ($ftt_access['group'] === 'staff') { ?>
           <button id="apply_permission_blank" class="btn btn-sm btn-success">Одобрить</button>
           <button id="deny_permission_blank" class="btn btn-sm btn-danger">Отклонить</button>
         <?php } ?>
-        <button id="send_permission_blank" class="btn btn-sm btn-warning">Отправить</button>
-        <button id="save_permission_blank" class="btn btn-sm btn-primary">Сохранить</button>
-        <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Закрыть</button>
+          <button id="send_permission_blank" class="btn btn-sm btn-warning">Отправить</button>
+          <button id="save_permission_blank" class="btn btn-sm btn-primary">Сохранить</button>
+          <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Закрыть</button>
+        </div>
       </div>
     </div>
   </div>

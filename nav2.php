@@ -7,7 +7,7 @@ db_checkNotice($memberId) ? $noticeOn = '' : $noticeOn = 'none';
 $tempTmp = db_checkNotice($memberId);
 $contact_page_name = 'Контакты';
 if ($ftt_access['group'] === 'trainee') {
-  $contact_page_name = 'Полновременное обучение';
+  $contact_page_name = 'ПВОМ';
 }
 
 switch ($h) {
@@ -60,31 +60,31 @@ switch ($h) {
         $res = 'Панель';
         break;
     case '/ftt_application.php':
-        $res = 'Полновременное обучение';
+        $res = 'ПВОМ';
         break;
     case '/application.php':
         $res = 'Заявление на ПВОМ';
         break;
     case '/ftt_schedule.php':
-        $res = 'Полновременное обучение';
+        $res = 'ПВОМ';
         break;
     case '/ftt_announcement.php':
-        $res = 'Полновременное обучение';
+        $res = 'ПВОМ';
         break;
     case '/ftt_attendance.php':
-        $res = 'Полновременное обучение';
+        $res = 'ПВОМ';
         break;
     case '/ftt_service.php':
-        $res = 'Полновременное обучение';
+        $res = 'ПВОМ';
         break;
     case '/ftt_gospel.php':
-        $res = 'Полновременное обучение';
+        $res = 'ПВОМ';
         break;
     case '/ftt_absence.php':
-        $res = 'Полновременное обучение';
+        $res = 'ПВОМ';
         break;
     case '/ftt_extrahelp.php':
-        $res = 'Полновременное обучение';
+        $res = 'ПВОМ';
         break;
     case '/ftt_list.php':
         $res = 'ПВОМ';

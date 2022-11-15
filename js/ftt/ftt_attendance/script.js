@@ -1342,8 +1342,8 @@ function open_blank(el_this) {
   function prepare_data(status) {
     let comment_extra = $("#permission_modal_comment_extra").val();
     if ($("#permission_modal_date").val() && compare_date($("#permission_modal_date").val()) && (status === 2 || status === 3)) {
-      showHint("Так как дата прошедшая, бланк посещаемости не будет изменён.");
-      comment_extra += " Так как дата прошедшая, бланк посещаемости не будет изменён.";
+      showHint("Так как дата прошедшая, лист посещаемости не изменён.");
+      comment_extra += " Так как дата прошедшая, лист посещаемости не изменён.";
     }
     //  сверить дату бланка и текущую дату
     // если статус 2 или 3 Выдать предупреждение и дописать это предупреждение к концу коментария служащего
@@ -1354,7 +1354,7 @@ function open_blank(el_this) {
       status = $("#edit_permission_blank").attr("data-status");
     }
     let serving_one = "";
-    if (status === 1 || status === 2 || status === 3) {
+    if (status === 0 || status === 1 || status === 2 || status === 3) {
       serving_one = admin_id_gl;
     }
 
@@ -1493,9 +1493,26 @@ function open_blank(el_this) {
     // behavior
     // buttons
     $("#send_permission_blank").prop("disabled", true).hide();
-    $("#save_permission_blank").prop("disabled", true).hide();
-    $("#deny_permission_blank").prop("disabled", true).hide();
-    $("#apply_permission_blank").prop("disabled", true).hide();
+    if (!trainee_access) {
+      $("#save_permission_blank").prop("disabled", false).show();
+    } else {
+      $("#save_permission_blank").prop("disabled", true).hide();
+    }
+    if (element.attr("data-status") === "0") {
+      $("#deny_permission_blank").prop("disabled", true).hide();
+      $("#apply_permission_blank").prop("disabled", true).hide();
+    }
+
+    if (element.attr("data-status") === "2") {
+      $("#apply_permission_blank").prop("disabled", true).hide();
+      $("#deny_permission_blank").prop("disabled", false).show();
+    }
+
+    if (element.attr("data-status") === "3") {
+      $("#apply_permission_blank").prop("disabled", false).show();
+      $("#deny_permission_blank").prop("disabled", true).hide();
+    }
+
     // fields
     $("#edit_permission_blank input").attr("disabled", true);
     $("#edit_permission_blank select").attr("disabled", true);
@@ -1507,17 +1524,17 @@ function open_blank(el_this) {
     if (element.attr("data-status") === "1") {
       $("#delete_permission_blank").prop("disabled", false).show();
       if (!trainee_access) {
+        if ($(window).width()<=769) {
+          $("#apply_permission_blank").text("Одоб");
+          $("#deny_permission_blank").text("Откл");
+        }
         // buttons
         $("#deny_permission_blank").prop("disabled", false).show();
         $("#apply_permission_blank").prop("disabled", false).show();
         $("#edit_permission_blank input").attr("disabled", false);
         $("#edit_permission_blank select").attr("disabled", false);
       } else {
-        if ($(window).width()<=769) {
-          $("#delete_permission_blank").css("margin-right", "217px");
-        } else {
-          $("#delete_permission_blank").css("margin-right", "357px");
-        }
+
       }
     } else if (element.attr("data-status") === "2") {
       // buttons
@@ -1531,11 +1548,7 @@ function open_blank(el_this) {
       if (!trainee_access) {
 
       } else {
-        if ($(window).width()<=769) {
-          $("#delete_permission_blank").css("margin-right", "0px");
-        } else {
-          $("#delete_permission_blank").css("margin-right", "167px");
-        }
+
       }
       // buttons
       $("#send_permission_blank").prop("disabled", false).show();
@@ -1648,6 +1661,7 @@ function open_blank(el_this) {
         $("#allow_date_of_permission").text("");
       }
     }
+    $("#permission_modal_comment_extra").attr("disabled", false);
     valid_modal_permission_field();
   }
 

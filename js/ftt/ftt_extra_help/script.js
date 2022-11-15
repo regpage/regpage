@@ -458,6 +458,9 @@ $('#modalAddEditExtraHelp .close').click(function (e) {
 });
 
 $('#modalAddEditExtraHelp .btn-secondary').click(function (e) {
+  if ($(this).attr("data-dismiss") !== "modal") {
+    return;
+  }
   if ($("#save_extra_help").prop("disabled")) {
     clear_blank();
     return;
@@ -512,7 +515,8 @@ $('#showModalAddEditExtraHelp').click(function () {
 });
 
 // удалить доп задание
-$('#modalAddEditExtraHelp .btn-danger').click(function () {
+$('#delete_extra_help').click(function () {
+
   if (!$('#modalAddEditExtraHelp').attr('data-id')) {
     showError('Бланк не сохранён. Его нельзя удалить.');
     return;
@@ -523,6 +527,7 @@ $('#modalAddEditExtraHelp .btn-danger').click(function () {
     .then(commits => {
       $('.ftt_extra_help_string[data-id='+$('#modalAddEditExtraHelp').attr('data-id')+']').slideUp(300).removeClass('ftt_extra_help_string').hide();
       clear_blank();
+      $('#modalAddEditExtraHelp').modal("hide");
     });
   }
 });
@@ -1036,6 +1041,10 @@ $('#modalAddEditLate .close').click(function (e) {
 
 // check 2
 $('#modalAddEditLate .btn-secondary').click(function (e) {
+  if ($(this).attr("data-dismiss") !== "modal") {
+    return;
+  }
+
   if ($("#modalAddEditExtraHelp").attr("data-archive") === "1" && $("#archive_checkbox_field").prop("checked")) {
     clear_blank();
     return;
