@@ -12,8 +12,10 @@ document.cookie = "application_back=0";
       $("#save_icon").hide();
     }
   }
+  
   // всплывающая подсказка при наведении
   $("[data-tooltip]").mousemove(function (eventObject) {
+    console.log("I am here");
           $data_tooltip = $(this).attr("data-tooltip");
           $("#tooltip").text($data_tooltip)
                        .css({

@@ -62,7 +62,7 @@ $member_categories = db_getCategories();
 };
 </script>
 
-<script src="/js/ftt.js?v1"></script>
+<script src="js/ftt/ftt_application/ftt.js?v1"></script>
 
 <?php
 include_once "footer2.php";

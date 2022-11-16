@@ -3,7 +3,6 @@ let data_page = {"applicant":""};
 data_page.applicant = "<?php echo $applicant;?>";
 data_page.role = "<?php echo $serviceone_role;?>";
 //data_page.viewer = "<?php //echo $serviceones_pvom;?>";
-
 // блокировка полей
 function blockApplicationFields() {
   $("input").attr("disabled","disabled");
@@ -48,4 +47,4 @@ if (!data_page.applicant) {
 
 </script>
 
-<script src="js/ftt_request.js?v1"></script>
+<script src="js/ftt/ftt_application/ftt_request.js?v1"></script>

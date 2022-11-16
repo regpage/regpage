@@ -7,7 +7,7 @@
       <div class="modal-header">
         <h5 id="universalInfoTitle">Информация</h5>
       </div>
-      <div class="modal-body"><div id="universalInfoText"><?php echo getValueFttParamByName(); ?></div></div>
+      <div class="modal-body"><div id="universalInfoText"><?php echo getValueFttParamByName("request_interview_info"); ?></div></div>
       <div class="modal-footer">
         <div class="">
           <input type="checkbox" id="donotshowmethat" class="input-request" value="">
