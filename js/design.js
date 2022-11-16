@@ -19,7 +19,13 @@ function handleScrollUp(){
 				if ($(window).width()>=769 && $(window).width()<1200) {
 				//$('.contactsBtnsBar').css('padding-right','90px');
 			} else if ($(window).width() < 769) {
-				bar_top_position = '-213px';
+				if (Number($('#footer_info a').css("font-size").split("p")[0]) < 16 && Number($('#footer_info a').css("font-size").split("p")[0]) > 10) {
+					bar_top_position = '-230px';
+				} else if (Number($('#footer_info a').css("font-size").split("p")[0]) > 16) {
+					bar_top_position = '-247px';
+				} else {
+					bar_top_position = '-213px';
+				}
 			}
 				$('.contactsBtnsBar').css('margin-top', bar_top_position);
 				$('.contactsBtnsBar').css('border-bottom', '1px solid #ddd');
@@ -132,9 +138,27 @@ if (window.location.pathname === '/contacts') {
 		commentBlockHeight+= 'px';
 		mainBlockHeight+= 'px';
 
-		$('#chatBlock').css('height', chatBlockHeight);
-		$('#commentContact').parent().parent().css('height', commentBlockHeight);
-		$('#personalBlankTab').css('height', mainBlockHeight);
+		if (Number($('#footer_info a').css("font-size").split("p")[0]) < 16 && Number($('#footer_info a').css("font-size").split("p")[0]) > 10  && $(window).width()<=769) {
+			$('#personalBlankTab').css('height', "460px");
+			$('#commentContact').parent().parent().css('height', "360px");
+			$('#chatBlock').css('height', "329px");
+			$('#saveContact').val("Сохр.");
+			$('#cd-panel__close-watch').val("Закр.");
+		} else if (Number($('#footer_info a').css("font-size").split("p")[0]) > 15 && $(window).width()<=769) {
+			$('#personalBlankTab').css('height', "500px");
+			$('#commentContact').parent().parent().css('height', "400px");
+			$('#chatBlock').css('height', "369px");
+			$('#saveContact').val("Сох");
+			$('#cd-panel__close-watch').val("Зак");
+		} else {
+			if (($(window).height() - $('#personalBlankTab').height()) < 280 ) {
+				$('#personalBlankTab').css('height', "410px");
+				$('#commentContact').parent().parent().css('height', "320px");
+				$('#chatBlock').css('height', "289px");
+			} else {
+				$('#personalBlankTab').css('height', mainBlockHeight);
+			}
+		}
 	}
 
   if ($(window).width()>=769) {
