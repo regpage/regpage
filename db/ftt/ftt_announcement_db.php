@@ -42,7 +42,7 @@ function saveAnnouncement($data)
 
   if ($publication === '1' && !empty($id)) {
     if ($by_list === '1' && $recipients) {
-      $groups .= $recipients;
+      $groups = $groups . ',' . $recipients;
     }
     $groups = array_unique(explode(",", $groups));
     // добавляем получателей

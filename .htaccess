@@ -11,9 +11,6 @@ RewriteBase /
 RewriteRule ^admin$ reg.php
 RewriteRule ^admin/$ http://localhost:8080/admin [R=301,L]
 #RewriteRule ^admin/$ http://www.dev.reg-page.ru/admin [R=301,L]
-#RewriteRule ^faq$ index.php?faq
-#RewriteRule ^faq/$ http://localhost:8080/faq [R=301,L]
-#RewriteRule ^faq/$ http://www.dev.reg-page.ru/faq [R=301,L]
 RewriteRule ^(\w\w)$ index.php?$1
 RewriteRule ^(\w\w)/$ http://localhost:8080/$1 [R=301,L]
 #RewriteRule ^(\w\w)/$ http://www.dev.reg-page.ru/$1 [R=301,L]

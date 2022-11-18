@@ -147,19 +147,46 @@ $(document).ready(function(){
   }
 
   function get_data_fields(to_public) {
+
     // получатели для не опубликованных объявлений формируются динамически, или все помещаются в лист?
     let recipients = "", publication = $("#announcement_modal_edit").attr("data-publication"), groups = "";
     if (to_public) {
       publication = to_public;
       //recipients = get_recipients();
       recipients = $("#announcement_modal_edit").attr("data-recipients");
-      $("#announcement_to_14").prop("checked") ? groups += recipients_group['trainee_14'][$("#announcement_modal_time_zone").val()] : "";
-      $("#announcement_to_56").prop("checked") ? groups += recipients_group['trainee_56'][$("#announcement_modal_time_zone").val()] : "";
-      $("#announcement_to_coordinators").prop("checked") ? groups += recipients_group['coordinators'][$("#announcement_modal_time_zone").val()] : "";
-      $("#announcement_to_servingones").prop("checked") ? groups += recipients_group["staff"][$("#announcement_modal_time_zone").val()] : "";
+
+      if ($("#announcement_to_14").prop("checked")) {
+        groups += recipients_group['trainee_14'][$("#announcement_modal_time_zone").val()]
+      }
+
+      if ($("#announcement_to_56").prop("checked")) {
+        if (groups) {
+          groups = groups + "," + recipients_group['trainee_56'][$("#announcement_modal_time_zone").val()];
+        } else {
+          groups += recipients_group['trainee_56'][$("#announcement_modal_time_zone").val()];
+        }
+      }
+
+      if ($("#announcement_to_coordinators").prop("checked")) {
+        if (groups) {
+          groups = groups + "," + recipients_group['coordinators'][$("#announcement_modal_time_zone").val()];
+        } else {
+          groups += recipients_group['coordinators'][$("#announcement_modal_time_zone").val()];
+        }
+      }
+
+      if ($("#announcement_to_servingones").prop("checked")) {
+        if (groups) {
+          groups = groups + "," + recipients_group["staff"][$("#announcement_modal_time_zone").val()];
+        } else {
+          groups += recipients_group["staff"][$("#announcement_modal_time_zone").val()];
+        }
+      }
+
     } else {
       recipients = $("#announcement_modal_edit").attr("data-recipients");
     }
+
     // comment
     let comment = "", extra_comment = "";
     if ($("#modal_flt_male").val() !== "_all_") {
@@ -184,7 +211,6 @@ $(document).ready(function(){
     } else {
       comment = $("#announcement_staff_comment").val();
     }
-
     let blank_data = new FormData();
     let data_field = {
       id: $("#announcement_modal_edit").attr("data-id"),
@@ -250,6 +276,7 @@ $(document).ready(function(){
       showError(validation);
       return;
     }
+
     fetch("ajax/ftt_announcement_ajax.php?type=save_announcement", {
       method: 'POST',
       body: get_data_fields(to_public)
@@ -555,7 +582,7 @@ setTimeout(function () {
             $("#ftt_navs .active b").text(Number($("#ftt_navs .active b").text()) - 1);
             if ($("#ftt_navs .active b").text() === "0" || $("#ftt_navs .active b").text() === "-1") {
               $("#ftt_navs .active b").text("");
-            }          
+            }
         }
       });
     }
