@@ -1,10 +1,16 @@
 <?php
+// Функции для работы с БД
+include_once "db/ftt/ftt_request_db.php";
+include_once "components/ftt_blocks/FTTRenderPoints.php";
 
 /**** Р О Л И  ****/
 /*
 $hasMemberRightToSeePage = db_isAdmin($memberId);
 */
 
+// BEGIN VERSION 2
+$points = db_getRequestPoints();
+// END VERSION 2
 // Массив с данными заявления
 $request_data;
 // Ключ заявителя
@@ -85,6 +91,9 @@ if ($request_data['interview_name']) {
 // Get countries
 $countries1 = db_getCountries(true);
 $countries2 = db_getCountries(false);
+
+// Get localities
+$gl_localities = db_getLocalities();
 
 // Payment data
 $ftt_monthly_pay = getValueFttParamByName('monthly_pay');

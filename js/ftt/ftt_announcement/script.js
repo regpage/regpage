@@ -128,6 +128,9 @@ $(document).ready(function(){
 
     if (data["content"] !== "<br>") {
       nicEditors.findEditor("announcement_text_editor").setContent(data["content"]);
+      if (Number($(".nicEdit-main img").attr("width")) > 310 && $(window).width()<=769) {
+        $(".nicEdit-main img").attr("width", "310px");
+      }
     } else {
       nicEditors.findEditor("announcement_text_editor").setContent("<span class='text-secondary'>Текст объявления...</span>");
     }
@@ -573,6 +576,9 @@ setTimeout(function () {
     $("#modal_announcement_date_text").text(dateStrFromyyyymmddToddmm(data.attr("data-date")));
     $("#announcement_title").text(data.attr("data-header"));
     $("#announcement_content").html(data.attr("data-content"));
+    if (Number($("#announcement_content img").attr("width")) > 350 && $(window).width()<=769) {
+        $("#announcement_content img").attr("width", "350px");    
+    }
     if (!data.attr("data-notice")) {
       fetch("ajax/ftt_announcement_ajax.php?type=noticed_announcement&id=" + data.attr("data-id_announcement"))
       .then(response => response.json())

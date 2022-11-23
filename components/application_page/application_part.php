@@ -1,4 +1,4 @@
-<!-- ЗАЯВЛЕНИЕ ЗАЯВИТЕЛЯ -->
+<!-- ПРЕДОСМОТР ЗАЯВЛЕНИЕ ЗАЯВИТЕЛЯ -->
 <div class="row">
   <!--<div class="col"><img src="img/lsm-logo.png" alt=""></div>-->
   <div class="col">

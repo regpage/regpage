@@ -2,7 +2,7 @@
 // Ajax
 include_once "ajax.php";
 // подключаем запросы
-include_once "../db/ftt_db.php";
+include_once "../db/ftt/ftt_db.php";
 // Подключаем ведение лога
 include_once "../extensions/write_to_log/write_to_log.php";
 

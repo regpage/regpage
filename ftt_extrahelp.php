@@ -5,7 +5,7 @@
     // БД
     include_once "db/ftt/ftt_extra_help_db.php";
 
-    // РАСПИСАНИЕ Переменные раздела
+    // Переменные раздела
     include_once "components/ftt_extra_help/var_part.php";
 
     // HTML код основной страницы

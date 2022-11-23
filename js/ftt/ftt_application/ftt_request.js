@@ -12,7 +12,7 @@ document.cookie = "application_back=0";
       $("#save_icon").hide();
     }
   }
-  
+
   // всплывающая подсказка при наведении
   $("[data-tooltip]").mousemove(function (eventObject) {
     console.log("I am here");
@@ -360,7 +360,8 @@ document.cookie = "application_back=0";
     }
 
     if (table === "member") {
-      id = $("#member_fio").data("member_key");
+      //id = $("#member_fio").data("member_key");
+      id = $("#point_member_key").attr("data-value");
       fetch("ajax/ftt_request_ajax.php?type=set&table="+table+"&field="+field+"&data="+value+"&id="+id+"&guest="+is_guest)
       .then(response => response.json())
       .then(result => {
@@ -401,7 +402,8 @@ document.cookie = "application_back=0";
     }
     // Если данные из таблицы member
     if (table === "member") {
-      id = $("#member_fio").data("member_key");
+      // id = $("#member_fio").data("member_key");
+      id = $("#point_member_key").attr("data-value");
 
       // Обновляем страну если изменяется местность
       if (field === "locality_key") {
@@ -414,13 +416,14 @@ document.cookie = "application_back=0";
         fetch("ajax/ftt_request_ajax.php?type=get_country_by_locality&locality_key="+value)
         .then(response => response.json())
         .then(result => {
-          $("#request_country_key").val(result.result);
+          //$("#request_country_key").val(result.result);
+          $("#point_country_key").val(result.result);
           showSaveIcon();
         });
 
         // Сохраняем страну
-        setTimeout(function () {
-          fetch("ajax/ftt_request_ajax.php?type=set&table=ftt_request&field=country_key&data="+$("#request_country_key").val()+"&id="+request_id+"&guest="+is_guest)
+        setTimeout(function () {//$("#request_country_key").val()
+          fetch("ajax/ftt_request_ajax.php?type=set&table=ftt_request&field=country_key&data="+$("#point_country_key").val()+"&id="+request_id+"&guest="+is_guest)
           .then(response => response.json())
           .then(result => {
             element.prop('disabled', false);
@@ -443,30 +446,55 @@ document.cookie = "application_back=0";
     });
   });
 
+  // быстрое сохранение полей RADIO
+  $("input[type=radio]").change(function(){
+    let table = $(this).parent().parent().parent().attr('data-table');
+    let field = $(this).parent().parent().parent().attr('data-field');
+    let value = $(this).val();
+    let id = $("#main_container").attr("data-id");
+    let is_guest = $("#main_container").attr("data-guest") || 0;
+
+    fetch("ajax/ftt_request_ajax.php?type=set&table="+table+"&field="+field+"&data="+value+"&id="+id+"&guest="+is_guest)
+    .then(response => response.json())
+    .then(result => console.log(result.result));
+  });
+
   // быстрое сохранение полей ЧЕКБОКСЫ
   $("input[type=checkbox]").change(function(){
-    if (!$(this).is(":checked") && $(this).attr("id") !== "policy_agree") {
-      console.log("Isn\'t checked");
-      return;
-    }
-
     if ($(this).attr("id") === "donotshowmethat") {
       console.log("does not require a request");
       return;
     }
+    /*if (!$(this).is(":checked") && $(this).attr("id") !== "policy_agree") {
+      console.log("Isn\'t checked");
+      return;
+    }*/
+    let table;
+    let field;
+    let value;
+    let id = $("#main_container").attr("data-id");
+    let is_guest = $("#main_container").attr("data-guest") || 0;
+    //let  member_key = $("#point_member_key").attr("data-value");
 
-    let table = $(this).data('table');
-    let field = $(this).data('field');
-    let value = $(this).val();
-    let id = $("#member_fio").data("member_key");
-    let is_guest = $("#main_container").attr("data-guest");
-    if ($("#main_container").attr("data-guest")) {
-      is_guest = $("#main_container").attr("data-guest");
-    } else {
-      is_guest = 0;
+    // GROUP / REGULAR
+    if ($(this).attr("data-table")) { // REGULAR
+      table = $(this).data('table');
+      field = $(this).data('field');
+      value = $(this).val();
+    } else { // GROUP
+      table = $(this).parent().parent().parent().attr('data-table');
+      field = $(this).parent().parent().parent().attr('data-field');
+      value = "";
+      $(this).parent().parent().parent().find('input:checked').each(function () {
+        if (value) {
+          value = value + "," + $(this).val();
+        } else {
+          value = $(this).val();
+        }
+      });
     }
 
-    if ($(this).attr("id") === "policy_agree") {
+    if ($(this).attr("id") === "point_agreement") {
       id = $("#main_container").attr("data-id");
       if ($(this).prop("checked")) {
         value = 1;
@@ -766,5 +794,21 @@ document.cookie = "application_back=0";
     }
     showSaveIcon();
   });
-});
-// END document ready
+  // МАСТЕР (ВИЗАРД)
+  // Следующий, Предыдущий.
+  $("#next_step").click(function () {
+    if ($(".wizard_step:visible").next().is(":hidden")) {
+      let elem = $(".wizard_step:visible").next();
+      setCookie("wizard_step", elem.attr("id"));
+      $(".wizard_step:visible").hide().next().show();
+    }
+  });
+  $("#prev_step").click(function () {
+    if ($(".wizard_step:visible").prev().is(":hidden")) {
+      let elem = $(".wizard_step:visible").prev();
+      setCookie("wizard_step", elem.attr("id"));
+      $(".wizard_step:visible").hide().prev().show();
+    }
+  });
+
+}); // END document ready

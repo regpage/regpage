@@ -2,19 +2,15 @@
 // МОЖНО РЕАЛИЗОВАТЬ КАК КЛАСС 'ВЫЗОВ ПАРАМЕТРОВ'
 // ОБЯЗАТЕЛЬНО ПОСТАВИТЬ ЗАЩИТУ ОТ ИНЪЕКЦИЙ
 
-// Получаем страну по местности
-function db_getCountryByLocality($localityKey){
-    //global $db;
-    //$localityKey = $db->real_escape_string($localityKey);
-    $country;
+// Получаем вопросы
+function db_getRequestPoints() { // управлять зависимо от роли можно при рендеренге
+  /*global $db;
+  $admin = $db->real_escape_string($admin);*/
+  $result = [];
+  $res=db_query("SELECT * FROM `ftt_request_points` ORDER BY `group`, `position`");
+    while ($row = $res->fetch_assoc()) $result[] = $row;
 
-    $res=db_query ("SELECT r.country_key AS country_key
-                    FROM locality l
-                    INNER JOIN region r ON r.key = l.region_key
-                    WHERE l.key='$localityKey'");
-
-    while ($row = $res->fetch_assoc()) $country=$row['country_key'];
-    return $country;
+  return $result;
 }
 
 // заполнить поля заявление данными
@@ -35,6 +31,7 @@ function getMemberData($adminId) {
     fr.agreement, fr.candidate_signature,
     fr.send_date, fr.recommendation_name, fr.recommendation_status, fr.recommendation_info, fr.recommendation_signature,
     fr.recommendation_date, fr.request_status, fr.decision, fr.decision_info, fr.decision_date, fr.notice, fr.inn,
+    fr.skills, fr.right_handed,
     m.key AS m_key, m.name, m.male, m.locality_key, m.citizenship_key, m.baptized, m.document_auth, m.birth_date,
     DATEDIFF(CURRENT_DATE, STR_TO_DATE(m.birth_date, '%Y-%m-%d'))/365 as age, m.document_num, m.document_date, m.tp_num, m.tp_date,
     m.email, m.address, m.cell_phone, m.document_dep_code, m.tp_auth,
@@ -53,7 +50,21 @@ function getMemberData($adminId) {
   $result_count = count($result);
   //write_to_log::debug('000005716', "получено {$result_count} строк из списка заявлений для раздела ПВОМ"); //$adminId
 
-  return $result[0];
+  return $result[0];function db_getPicForRequest($id, $field) {
+  global $db;
+  $id = $db->real_escape_string($id);
+  $field = $db->real_escape_string($field);
+  $pics;
+  if ($field === 'passport_scan') {
+    $res=db_query("SELECT `passport_scan`, `passport_scan_2`, `passport_scan_3` FROM ftt_request WHERE `id` = '$id'");
+    while ($row = $res->fetch_assoc()) $pics=[$row['passport_scan'],$row['passport_scan_2'],$row['passport_scan_3']];
+  } else {
+    $res=db_query("SELECT `$field` FROM ftt_request WHERE `id` = '$id'");
+    while ($row = $res->fetch_assoc()) $pics=[$row[$field]];
+  }
+
+  return $pics;
+}
 }
 
 // предварительное заполнение заявления данными из базы рег пэйдж

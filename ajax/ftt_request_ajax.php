@@ -2,7 +2,8 @@
 // Ajax
 include_once "ajax.php";
 // подключаем запросы
-include_once "../db/ftt_request_db.php";
+include_once "../db/ftt/ftt_request_db.php";
+include_once "../db/classes/localities.php";
 // Подключаем ведение лога
 include_once "../extensions/write_to_log/write_to_log.php";
 
@@ -15,18 +16,13 @@ if (!$adminId) {
 
 // Получаем страну по местности
 if(isset($_GET['locality_key']) && $_GET['type'] === 'get_country_by_locality') {
-    echo json_encode(["result"=>db_getCountryByLocality($_GET['locality_key'])]);
+    echo json_encode(["result"=>localities::db_getCountryByLocality($_GET['locality_key'])]);
     exit();
 }
 
 // Сохранение полей при заполнении заявления
-if(isset($_GET['type']) && $_GET['type'] === 'set') {
-    if ($_GET['table'] === 'member') {
-      $set_table = $_GET['table'];
-    } else {
-      $set_table = 'ftt_request';
-    }
-    echo json_encode(["result"=>setRequestField($adminId, $_GET['field'], $_GET['data'], $_GET['id'], $set_table, $_GET['guest'])]);
+if(isset($_GET['type']) && $_GET['type'] === 'set') {    
+    echo json_encode(["result"=>setRequestField($adminId, $_GET['field'], $_GET['data'], $_GET['id'], $_GET['table'], $_GET['guest'])]);
     exit();
 }
 

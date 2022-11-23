@@ -82,8 +82,8 @@ class localities
 
   // Получаем страну по местности
   static function db_getCountryByLocality($localityKey){
-      //global $db;
-      //$localityKey = $db->real_escape_string($localityKey);
+      global $db;
+      $localityKey = $db->real_escape_string($localityKey);
       $country;
 
       $res=db_query ("SELECT r.country_key AS country_key

@@ -8,7 +8,7 @@ if ($(window).width()<=769) {
 
   // OUTBOX
   $("#announcement_add").parent().parent().addClass("mr-0");
-  $("#announcement_add").css("max-width", "25%");
+  $("#announcement_add").css("max-width", "27%");
   $("#modal_flt_open").css("max-width", "25%");
   $("#modal_flt_open").show();
   $("#announcement_tab_1 select").hide();
@@ -51,7 +51,6 @@ if ($(window).width()<=769) {
   $("#announcement_tab_2").addClass("pl-0");
   $("#announcement_tab_2").parent().parent().addClass("pr-0");
   $(".list_string").addClass("mr-0");
-
 } else {
   $(".list_header").show();
 }
