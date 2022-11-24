@@ -123,7 +123,7 @@ document.cookie = "application_back=0";
 
 // правило для псих здоровья
   function mentalProblemsBlockRule() {
-    if ($("select[data-field=mental_problems]").val() === "yes") {
+    /*if ($("select[data-field=mental_problems]").val() === "yes") {
         $(".mental_problems_block").show();
         $(".mental_dependency_problems_block").show();
     } else {
@@ -131,10 +131,10 @@ document.cookie = "application_back=0";
           $(".mental_dependency_problems_block").hide();
         }
         $(".mental_problems_block").hide();
-    }
+    }*/
   }
 
-  function dependencyProblemsBlockRule() {
+  function dependencyProblemsBlockRule() {/*
     if ($("select[data-field=dependency_problems]").val() === "yes") {
         $(".dependency_problems_block").show();
         $(".mental_dependency_problems_block").show();
@@ -143,7 +143,7 @@ document.cookie = "application_back=0";
         $(".mental_dependency_problems_block").hide();
       }
         $(".dependency_problems_block").hide();
-    }
+    }*/
   }
   // Правило показа блока иждевенцев
   function supportBlockExtraRule() {
@@ -395,11 +395,11 @@ document.cookie = "application_back=0";
 
     if ($(this).attr("id") === "marriage_select") {
       mariageBlockRules();
-    } else if ($(this).attr("data-field") === "mental_problems") {
+    }/* else if ($(this).attr("data-field") === "mental_problems") {
       mentalProblemsBlockRule();
     } else if ($(this).attr("data-field") === "dependency_problems") {
       dependencyProblemsBlockRule();
-    }
+    }*/
     // Если данные из таблицы member
     if (table === "member") {
       // id = $("#member_fio").data("member_key");

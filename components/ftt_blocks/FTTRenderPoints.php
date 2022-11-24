@@ -61,7 +61,7 @@ class FttRenderpoints {
       echo "<input type='checkbox' id='{$id}' class='form-check-input input-request' data-table='{$db_field[0]}' data-field='{$db_field[1]}' {$required} {$checked}>";
     } elseif ($type === 'radio buttons') {
       echo "<div data-value='{$value}' data-table='{$db_field[0]}' data-field='{$db_field[1]}' data-value='{$value}' {$required}>";
-      InputsGroup::radio($other['radio'], $other['radio'][0], $value);
+      InputsGroup::radio($other['radio'], $other['radio'][0], $value, $db_field[1]);
       echo "</div>";
     } elseif ($type === 'date field') {
       echo "<input type='date' {$data_attr}>";

@@ -572,34 +572,34 @@
     <div class="row">
       <!-- психические расстройства -->
       <div class="col"><span>Проходили ли вы лечение от психических расстройств? </span>
-        <select class="" data-field="mental_problems" data-value="<?php echo $request_data['mental_problems']; ?>" required>
+        <select class="" data-field="" data-value="" required>
           <option value=""></option>
-          <option value="no" <?php if ($request_data['mental_problems'] === 'no') : echo 'selected'; endif; ?>>нет</option>
-          <option value="yes" <?php if ($request_data['mental_problems'] === 'yes') : echo 'selected'; endif; ?>>да</option>
+          <option value="no" >нет</option>
+          <option value="yes">да</option>
         </select>
       </div>
     </div>
     <div class="row">
       <div class="col mental_problems_block">
         <span class="" for="mental_yes"><span class="help-underline" data-tooltip="Если вы знаете точную дату, напишите её в формате дд.мм.гггг. Если вы не помните точную дату, напишите месяц и год или только год.">Когда:</span> </span>
-        <input type="text" class="input-request b-width-150-px" data-field="mental_problems_when" data-value="<?php echo $request_data['mental_problems_when']; ?>" value="<?php echo $request_data['mental_problems_when']; ?>" required>
+        <input type="text" class="input-request b-width-150-px" data-field="" data-value="" value="" required>
       </div>
     </div>
     <!-- БЛОК 37 -->
     <div class="row">
       <!-- Зависимости -->
       <div class="col"><span>От алкогольной или наркотической зависимости? </span>
-        <select class="" data-field="dependency_problems" data-value="<?php echo $request_data['dependency_problems']; ?>" required>
+        <select class="" data-field="dependency_problems" data-value="" required>
             <option value=""></option>
-            <option value="no" <?php if ($request_data['dependency_problems'] === 'no') : echo 'selected'; endif; ?>>нет</option>
-            <option value="yes" <?php if ($request_data['dependency_problems'] === 'yes') : echo 'selected'; endif; ?>>да</option>
+            <option value="no" >нет</option>
+            <option value="yes">да</option>
         </select>
       </div>
     </div>
     <div class="row">
       <div class="col dependency_problems_block">
         <span for="alcohol_yes" class="span-label-width-210"><span class="help-underline" data-tooltip="Если вы знаете точную дату, напишите её в формате дд.мм.гггг. Если вы не помните точную дату, напишите месяц и год или только год.">Когда:</span> </span>
-        <input type="text" class="input-request b-width-150-px" data-field="dependency_problems_when" data-value="<?php echo $request_data['dependency_problems_when']; ?>" value="<?php echo $request_data['dependency_problems_when']; ?>" required>
+        <input type="text" class="input-request b-width-150-px" data-field="dependency_problems_when" data-value="" value="" required>
       </div>
     </div>
     <!-- БЛОК 38 -->
@@ -607,7 +607,7 @@
       <!-- Подробности о псих. расстройствах и /или зависимостях -->
       <div class="col">
         <span>Подробности: </span>
-        <input type="text" class="input-request i-width-long" data-field="problems_info" data-value="<?php echo $request_data['problems_info']; ?>" value="<?php echo $request_data['problems_info']; ?>" required>
+        <input type="text" class="input-request i-width-long" data-field="problems_info" data-value="" value="" required>
       </div>
     </div>
     <!-- Мотивы и уточнения раздел 9 -->
