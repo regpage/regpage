@@ -6,6 +6,7 @@
  */
 include_once "components/ftt_blocks/FTT_Select_fields.php";
 include_once "components/ftt_blocks/InputsGroup.php";
+include_once "components/ftt_blocks/FTTParsing.php";
 
 class FttRenderpoints {
   static function rendering ($points, $section, $data, $lists = []) {
@@ -15,7 +16,20 @@ class FttRenderpoints {
     echo "<div class='container'><h2>{$section}</h2>";
     for ($i=0; $i < count($points); $i++) {
       if ($points[$i]['group'] === $section) {
-        $db_field = explode('.', $points[$i]['db_field']);
+        $fields_values = [];
+        $db_field = explode(',', $points[$i]['db_field']);
+        // если полей больше чем одно
+        if (count($db_field) > 1) {
+          $db_field_temp = [];
+          foreach ($db_field as $key => $loop_value) {
+            $db_field_temp[] = explode('.', $loop_value);
+            $fields_values[] = $data[$loop_value[1]];
+          }
+          $db_field = $db_field_temp;
+        } else {
+          $db_field = explode('.', $points[$i]['db_field']);
+        }
+
         if ($points[$i]['required'] == 1) {
           $points[$i]['required'] = 'required';
         }
@@ -25,6 +39,11 @@ class FttRenderpoints {
         } elseif ($db_field[1] === 'country_key' || $db_field[1] === 'citizenship_key') {
           $other['list'] = [$countries1, $countries2];
         }
+
+        if (!empty($points[$i]['values'])) {
+          $other['list'] = explode(',', $points[$i]['values']);
+        }
+
         $is_display = '';
         if ($points[$i]['display_type'] === 'none') {
           $is_display = 'd-none';
@@ -32,8 +51,18 @@ class FttRenderpoints {
         if ($points[$i]['display_type'] === 'radio buttons' || $points[$i]['display_type'] === 'checkboxes') {
           $other['radio'] = explode(',', $points[$i]['values']);
         }
-        echo "<div class='row {$is_display}'><div class='col-5'><span>{$points[$i]['title']}</span><br><span class='grey_text'>{$points[$i]['help']}</span></div>";
-        echo self::field($points[$i]['display_type'],'point_', $data[$db_field[1]], $db_field, $points[$i]['required'], $other);
+        global $gl_gender_candidate;
+        $point_title = FTTParsing::gender($points[$i]['title'], $gl_gender_candidate);
+        $point_help = FTTParsing::gender($points[$i]['help'], $gl_gender_candidate);
+        echo "<div class='row {$is_display}'><div class='col-5'><span>{$point_title}</span><br><span class='grey_text'>{$point_help}</span></div>";
+
+        if (count($fields_values) > 0) {
+          $data_value = $fields_values;
+        } else {
+          $data_value = $data[$db_field[1]];
+        }
+
+        echo self::field($points[$i]['display_type'],'point_', $data_value, $db_field, $points[$i]['required'], $other);
         echo "</div>";
         /*$string_data = '';
         foreach ($data as $key => $value) {
@@ -49,7 +78,7 @@ class FttRenderpoints {
 
   static function field($type, $id, $value, $db_field, $required, $other=[]) {
     $id .= $db_field[1];
-    $data_attr = "id='{$id}' class='input-request i-width-280-px' value='{$value}' data-value='{$value}' data-table='{$db_field[0]}' data-field='{$db_field[1]}' {$required}";
+    $data_attr = "id='{$id}' class='input-request i-width-370-px' value='{$value}' data-value='{$value}' data-table='{$db_field[0]}' data-field='{$db_field[1]}' {$required}";
     echo "<div class='col-5'>";
     if ($type === 'string field') { //$type === 'input'
       echo "<input type='text' {$data_attr}>";
@@ -66,17 +95,38 @@ class FttRenderpoints {
     } elseif ($type === 'date field') {
       echo "<input type='date' {$data_attr}>";
     } elseif ($type === 'download') {
-
+      $multiple = '';
+      if (count($db_field) > 2) {
+        $multiple = 'multiple';
+        $db_tbl_str = $db_field[0][0];
+        $db_field_str = $db_field[0][1];
+        $value_str = $value[0];
+      } else {
+        $db_tbl_str = $db_field[0];
+        $db_field_str = $db_field[1];
+        $value_str = $value;
+      }
+      echo "<input type='file' class='input-request' data-table='{$db_tbl_str}' data-field='{$db_field_str}' data-value='{$value_str}' {$required} {$multiple} accept='.jpg, .jpeg, .png, .pdf'>";
+      // ВЫВОД ЗАГРУЖЕННЫХ ИЗОБРАЖЕНИЙ НА ЭКРАН
+      //print_r($value);
+      if (count($db_field) > 2) {
+        foreach ($db_field as $key => $loop_value) {
+          echo "<a href='{$value[$key]}' target='_blank'><img src='{$value[$key]}' alt='pic' height='100'></a><i class='fa fa-trash pic-delete' aria-hidden='true'></i>";
+        }
+      } else {
+        echo "<a href='{$value_str}' target='_blank'><img src='{$value_str}' alt='pic' height='100'></a><i class='fa fa-trash pic-delete' aria-hidden='true'></i>";
+      }
     } elseif ($type === 'text') {
 
     } elseif ($type === 'select list') {
-      echo "<select id='{$id}' class='input-request i-width-280-px' data-field='{$db_field[1]}' data-table='{$db_field[0]}' data-value='{$value}' {$required}>";
+      echo "<select id='{$id}' class='input-request i-width-280-px' data-table='{$db_field[0]}' data-field='{$db_field[1]}' data-value='{$value}' {$required}>";
       if ($db_field[1] === 'country_key' || $db_field[1] === 'citizenship_key') {
         FTT_Select_fields::rendering($other['list'][0], $value);
         echo "<option disavled>------------------------";
         FTT_Select_fields::rendering($other['list'][1], $value);
       } else {
-        FTT_Select_fields::rendering($other['list'], $value);
+        global $gl_gender_candidate;
+        FTT_Select_fields::rendering(FTTParsing::gender($other['list'], $gl_gender_candidate), $value);
       }
       echo "</select>";
     } elseif ($type === 'none') {

@@ -207,3 +207,19 @@ li.modal-reference {
 .bg-notice-string {
   background-color: #a1e4ef;
 }
+
+.link_custom {
+  cursor: pointer;
+  color: #007bff;
+  font-weight: bold;
+}
+
+.link_custom_active {
+  color: #004997;
+  text-decoration: underline;
+}
+
+.link_custom:hover {
+  color: #004997;
+  text-decoration: underline;
+}

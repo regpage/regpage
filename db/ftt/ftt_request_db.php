@@ -39,7 +39,7 @@ function getMemberData($adminId) {
     fr.health_question36, fr.health_question37, fr.health_question38, fr.health_question39, fr.health_question40,
     fr.health_question41, fr.health_question42, fr.health_question43, fr.health_question44, fr.health_question45,
     fr.health_question46, fr.health_question47, fr.health_question48, fr.health_question49, fr.vac_question1,
-    fr.vac_question2, fr.vac_question3, fr.vac_question4, fr.vac_question5, fr.vac_question6, fr.food_question1, fr.food_question2, fr.food_question3, fr.food_question4, fr.food_question6, fr.food_question7, fr.food_question8, fr.consecration, fr.decision_name,
+    fr.vac_question2, fr.vac_question3, fr.vac_question4, fr.vac_question5, fr.vac_question6, fr.food_question1, fr.food_question2, fr.food_question3, fr.food_question4, fr.food_question5, fr.food_question6, fr.food_question7, fr.food_question8, fr.consecration, fr.decision_name,
     fr.another_names, fr.place_of_birth, fr.arrests, fr.criminal_cases, fr.administrative_cases, fr.snils,
     fr.reg_document, fr.photo, fr.spouse_occupation, fr.spouse_plans, fr.support, fr.educational_institution,
     fr.education_end, fr.work_place, fr.russian_knowlege, fr.driver_license, fr.driving_experience,

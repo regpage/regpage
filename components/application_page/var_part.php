@@ -176,6 +176,8 @@ if ($request_data['support_info']) {
 $status_application;
 $status_application_show = 'style="display: none;"';
 
+$gl_gender_candidate = $request_data['male'];
+
 if ($request_data['male'] == 1) {
   $razveden = 'разведен';
   $vdova = 'вдовец';

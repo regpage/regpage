@@ -801,6 +801,8 @@ document.cookie = "application_back=0";
       let elem = $(".wizard_step:visible").next();
       setCookie("wizard_step", elem.attr("id"));
       $(".wizard_step:visible").hide().next().show();
+      $("#wizard_pagination .link_custom_active").removeClass("link_custom_active");
+      $("#wizard_pagination .link_custom[data-step='"+elem.attr("id")+"']" ).addClass("link_custom_active");
     }
   });
   $("#prev_step").click(function () {
@@ -808,7 +810,21 @@ document.cookie = "application_back=0";
       let elem = $(".wizard_step:visible").prev();
       setCookie("wizard_step", elem.attr("id"));
       $(".wizard_step:visible").hide().prev().show();
+      $("#wizard_pagination .link_custom_active").removeClass("link_custom_active");
+      $("#wizard_pagination .link_custom[data-step='"+elem.attr("id")+"']" ).addClass("link_custom_active");
     }
   });
 
+  // Пагинация
+  $("#wizard_pagination .link_custom").click(function () {
+    if ($(this).hasClass("link_custom_active")) {
+      return;
+    } else {
+      $("#wizard_pagination .link_custom_active").removeClass("link_custom_active");
+      $(this).addClass("link_custom_active");
+      $(".wizard_step").hide();
+      $("#"+$(this).attr("data-step")).show();
+      setCookie("wizard_step", $(this).attr("data-step"));
+    }
+  });
 }); // END document ready
