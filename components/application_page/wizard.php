@@ -53,5 +53,5 @@
     <button id="prev_step" type="button" class="btn btn-primary mr-3">Предыдущий</button>
     <button id="next_step" type="button" class="btn btn-primary">Следующий</button>
     <?php
-      echo $pagination;
+      echo $pagination;      
   } ?>

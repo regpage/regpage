@@ -23,7 +23,7 @@ class FttRenderpoints {
           $db_field_temp = [];
           foreach ($db_field as $key => $loop_value) {
             $db_field_temp[] = explode('.', $loop_value);
-            $fields_values[] = $data[$loop_value[1]];
+            $fields_values[] = $data[$db_field_temp[$key][1]];
           }
           $db_field = $db_field_temp;
         } else {
@@ -81,7 +81,13 @@ class FttRenderpoints {
     $data_attr = "id='{$id}' class='input-request i-width-370-px' value='{$value}' data-value='{$value}' data-table='{$db_field[0]}' data-field='{$db_field[1]}' {$required}";
     echo "<div class='col-5'>";
     if ($type === 'string field') { //$type === 'input'
-      echo "<input type='text' {$data_attr}>";
+      if ($db_field[1] === 'support_persons') {
+        echo "<div class='row support_block'><div class='col'><button type='button' id='add_support_block_extra' class='btn btn-info'> <b>+</b> Добавить</button></div></div>";
+        include_once "components/application_page/application_extra.php";
+        echo "<input type='hidden' {$data_attr}>";
+      } else {
+        echo "<input type='text' {$data_attr}>";
+      }
     } elseif ($type === 'checkbox') {
       $checked = '';
       if (!empty($value)) {
@@ -108,13 +114,12 @@ class FttRenderpoints {
       }
       echo "<input type='file' class='input-request' data-table='{$db_tbl_str}' data-field='{$db_field_str}' data-value='{$value_str}' {$required} {$multiple} accept='.jpg, .jpeg, .png, .pdf'>";
       // ВЫВОД ЗАГРУЖЕННЫХ ИЗОБРАЖЕНИЙ НА ЭКРАН
-      //print_r($value);
       if (count($db_field) > 2) {
         foreach ($db_field as $key => $loop_value) {
-          echo "<a href='{$value[$key]}' target='_blank'><img src='{$value[$key]}' alt='pic' height='100'></a><i class='fa fa-trash pic-delete' aria-hidden='true'></i>";
+          echo "<span><a href='{$value[$key]}' target='_blank'><img src='{$value[$key]}' alt='pic' height='100'></a><i class='fa fa-trash pic-delete' aria-hidden='true'></i></span>";
         }
       } else {
-        echo "<a href='{$value_str}' target='_blank'><img src='{$value_str}' alt='pic' height='100'></a><i class='fa fa-trash pic-delete' aria-hidden='true'></i>";
+        echo "<span><a href='{$value_str}' target='_blank'><img src='{$value_str}' alt='pic' height='100'></a><i class='fa fa-trash pic-delete' aria-hidden='true'></i></span>";
       }
     } elseif ($type === 'text') {
 
@@ -124,9 +129,11 @@ class FttRenderpoints {
         FTT_Select_fields::rendering($other['list'][0], $value);
         echo "<option disavled>------------------------";
         FTT_Select_fields::rendering($other['list'][1], $value);
+      } elseif ($db_field[1] === 'locality_key') {
+        FTT_Select_fields::rendering($other['list'], $value);
       } else {
         global $gl_gender_candidate;
-        FTT_Select_fields::rendering(FTTParsing::gender($other['list'], $gl_gender_candidate), $value);
+        FTT_Select_fields::rendering(FTTParsing::gender($other['list'], $gl_gender_candidate), $value, '', 1);
       }
       echo "</select>";
     } elseif ($type === 'none') {

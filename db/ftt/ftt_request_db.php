@@ -61,24 +61,10 @@ function getMemberData($adminId) {
   WHERE fr.member_key = '$adminId' AND fr.notice <> 2");
   while ($row = $res->fetch_assoc()) $result[]=$row;
   // для коректного запроса все ключевые поля для выборки из присоединяемых таблиц должны быть заполнены
-  $result_count = count($result);
-  //write_to_log::debug('000005716', "получено {$result_count} строк из списка заявлений для раздела ПВОМ"); //$adminId
+  // $result_count = count($result);
+  // write_to_log::debug('000005716', "получено {$result_count} строк из списка заявлений для раздела ПВОМ"); //$adminId
 
-  return $result[0];function db_getPicForRequest($id, $field) {
-  global $db;
-  $id = $db->real_escape_string($id);
-  $field = $db->real_escape_string($field);
-  $pics;
-  if ($field === 'passport_scan') {
-    $res=db_query("SELECT `passport_scan`, `passport_scan_2`, `passport_scan_3` FROM ftt_request WHERE `id` = '$id'");
-    while ($row = $res->fetch_assoc()) $pics=[$row['passport_scan'],$row['passport_scan_2'],$row['passport_scan_3']];
-  } else {
-    $res=db_query("SELECT `$field` FROM ftt_request WHERE `id` = '$id'");
-    while ($row = $res->fetch_assoc()) $pics=[$row[$field]];
-  }
-
-  return $pics;
-}
+  return $result[0];
 }
 
 // предварительное заполнение заявления данными из базы рег пэйдж
@@ -98,6 +84,7 @@ function getStartMemberData($adminId) {
 
   return $result[0];
 }
+
 // обновить данные переданного поля в заявлении переданными данными
 function setRequestField($adminId, $field, $data, $id, $table, $isGuest, $blob=false) {
   global $db;
@@ -173,6 +160,7 @@ function db_getPicForRequest($id, $field) {
 
   return $pics;
 }
+
 // Задаём статус ОТПРАВЛЕНО
 function db_setStatusRequestToSent($id, $status = 2) {
   global $db;
