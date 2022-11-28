@@ -149,7 +149,7 @@ document.cookie = "application_back=0";
   function supportBlockExtraRule() {
     $(".who-extra").hide();
     let three = 0;
-    $("input[data-field=support_info]").each(function (e) {
+    $("input[data-field=support_persons]").each(function (e) {
       if (e === 3 || e === 6 || e === 9) {
         three = 0;
       }
@@ -186,7 +186,7 @@ document.cookie = "application_back=0";
   $("#add_support_block_extra").click(function () {
     if (!$(".first-extra").is(":visible")) {
       $(".first-extra").show();
-      $(".who-extra").show();
+      $(".who-extra").parent().next();
     } else if (!$(".second-extra").is(":visible")) {
       $(".second-extra").show();
     } else if (!$(".third-extra").is(":visible")) {
@@ -240,15 +240,15 @@ document.cookie = "application_back=0";
       $(".support_block_extra").hide();
     }
 
-    let table = "";
-    let field = "support_info";
+    let table = "ftt_request";
+    let field = "support_persons";
     let value = "";
     let id = $("#main_container").attr("data-id");
     let is_guest = $("#main_container").attr("data-guest");
     // авто удаление при скрытии пользователем строки с иждевенцем
-    $("input[data-field=support_info]").each(function (e) {
+    $("input[data-field=support_persons]").each(function (e) {
         value += $(this).val() + ";" ;
-        if (e === 12) {
+        /*if (e === 12) {
           // Экранирование апострофа
           value = value.replace(/\"/g, "\'");
           fetch("ajax/ftt_request_ajax.php?type=set&table="+table+"&field="+field+"&data="+value+"&id="+id+"&guest="+is_guest)
@@ -259,7 +259,16 @@ document.cookie = "application_back=0";
               $("#main_container").attr("data-id", result.result);
             }
           });
-        }
+        }*/
+    });
+    fetch("ajax/ftt_request_ajax.php?type=set&table="+table+"&field="+field+"&data="+value+"&id="+id+"&guest="+is_guest)
+    .then(response => response.json())
+    .then(result => {
+      console.log(result.result);
+      showSaveIcon();
+      if (result.result > 1) {
+        $("#main_container").attr("data-id", result.result);
+      }
     });
   });
 
@@ -298,7 +307,6 @@ document.cookie = "application_back=0";
 
   // быстрое сохранение полей ТЕКСТОВЫЕ ПОЛЯ
   $("input[type=text], input[type=date], input[type=number], textarea").focusout(function(){
-
     let table = $(this).data("table");
     let field = $(this).data("field");
     let value = $(this).val();
@@ -310,13 +318,13 @@ document.cookie = "application_back=0";
     let prepare = "";
 
     // Иждевение и поддержна , соединение строк
-    if (field === 'support_info') {
+    if (field === 'support_persons') {
       value = "";
-      $("input[data-field=support_info]").each(function (e) {
+      $("input[data-field=support_persons]").each(function (e) {
           prepare = $(this).val();
           prepare = prepare.replace(/\"/g, "\'");
           value += prepare + ";";
-          if (e === 12) {
+          /*if (e === 12) {
             fetch("ajax/ftt_request_ajax.php?type=set&table="+table+"&field="+field+"&data="+value+"&id="+id+"&guest="+is_guest)
             .then(response => response.json())
             .then(result => {
@@ -325,7 +333,7 @@ document.cookie = "application_back=0";
                 $("#main_container").attr("data-id", result.result);
               }
             });
-          }
+          }*/
       });
     }
 
@@ -368,7 +376,7 @@ document.cookie = "application_back=0";
         console.log(result.result);
         showSaveIcon();
       });
-    } else if (field !== 'support_info') {
+    } else {
       fetch("ajax/ftt_request_ajax.php?type=set&table="+table+"&field="+field+"&data="+value+"&id="+id+"&guest="+is_guest)
       .then(response => response.json())
       .then(result => {

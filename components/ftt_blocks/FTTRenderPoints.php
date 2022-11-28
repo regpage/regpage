@@ -83,8 +83,7 @@ class FttRenderpoints {
     if ($type === 'string field') { //$type === 'input'
       if ($db_field[1] === 'support_persons') {
         echo "<div class='row support_block'><div class='col'><button type='button' id='add_support_block_extra' class='btn btn-info'> <b>+</b> Добавить</button></div></div>";
-        include_once "components/application_page/application_extra.php";
-        echo "<input type='hidden' {$data_attr}>";
+        include_once "components/application_page/application_extra.php";        
       } else {
         echo "<input type='text' {$data_attr}>";
       }
