@@ -1,11 +1,13 @@
   <!-- ЗАЯВЛЕНИЕ ЗАЯВИТЕЛЯ -->
   <div class="row">
     <!--<div class="col"><img src="img/lsm-logo.png" alt=""></div>-->
-    <div class="col">
+    <div class="col pl-3">
       <!-- ЗАГОЛОВОК -->
-      <h5>Заявление для участия в Полновременном обучении</h5>
-      <h6><?php echo getValueFttParamByName("semester"); ?>  (<?php echo getValueFttParamByName("period"); ?>)<h6>
-      <hr style="margin: 0;">
+      <h5 class="pl-3">Заявление для участия в Полновременном обучении</h5>
+      <h6 class="pl-3"><?php echo getValueFttParamByName("semester"); ?>  (<?php echo getValueFttParamByName("period"); ?>)<h6>
+    </div>
+    <div class="col">
+      <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalStartInfo">Информация</button>
     </div>
   </div>
   <!-- БЛОК ЗАЯВЛЕНИЯ -->
@@ -52,7 +54,7 @@
       // pagination
       $pagination .= "<span class='link_custom {$link_custom_active} pr-2 pl-2' data-step='wizard_step_{$key}'>{$key}</span>";
     }
-    $pagination = '<div id="wizard_pagination" class="text-center">'.$pagination.'</div>';
+    $pagination = '<div id="wizard_pagination" class="ml-1 mt-3">'.$pagination.'</div>';//text-center
     /*
     // МАСТЕР (WIZARD)
     $dir = '/components/application_page/'; // Папка с файлами
@@ -87,13 +89,13 @@
       }
     }
     */
-
-
-    //$pagination.='</div>';
+        //$pagination.='</div>';
 
     ?>
-    <button id="prev_step" type="button" class="btn btn-primary mr-3">Предыдущий</button>
-    <button id="next_step" type="button" class="btn btn-primary">Следующий</button>
+    <div class="ml-2 mt-3 pl-1">
+    <button id="prev_step" type="button" class="btn btn-primary btn-sm mr-3">Назад</button>
+    <button id="next_step" type="button" class="btn btn-primary btn-sm mr-5">Далее</button>
+    </div>
     <?php
       echo $pagination;
     } ?>

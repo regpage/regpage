@@ -1,8 +1,6 @@
 $(document).ready(function(){
 document.cookie = "application_back=0";
-  /**** ПОВЕДЕНИЕ ЭЛЕМЕНТОВ ****/
-  // Импорт модуля
-  //import {showSaveIcon} from './ftt/ftt_save_icon.js';
+  /**** ПОВЕДЕНИЕ ЭЛЕМЕНТОВ ****/  
 
   // Показать / скрыть иконку сохранения
   function showSaveIcon(show) {
@@ -12,7 +10,7 @@ document.cookie = "application_back=0";
       $("#save_icon").hide();
     }
   }
-
+/*
   // всплывающая подсказка при наведении
   $("[data-tooltip]").mousemove(function (eventObject) {
     console.log("I am here");
@@ -53,7 +51,7 @@ document.cookie = "application_back=0";
                             "left" : 0
                          });
       });
-
+*/
   // кнопка назад временно не используется (удалена)
   $("#goToEventsPage").click(function(){
     window.location = $(this).attr("data-page");
@@ -488,7 +486,10 @@ document.cookie = "application_back=0";
     if ($(this).attr("data-table")) { // REGULAR
       table = $(this).data('table');
       field = $(this).data('field');
-      value = $(this).val();
+      value = 0;
+      if ($(this).prop("checked")) {
+        value = 1;
+      }
     } else { // GROUP
       table = $(this).parent().parent().parent().attr('data-table');
       field = $(this).parent().parent().parent().attr('data-field');
@@ -500,15 +501,6 @@ document.cookie = "application_back=0";
           value = $(this).val();
         }
       });
-    }
-
-    if ($(this).attr("id") === "point_agreement") {
-      id = $("#main_container").attr("data-id");
-      if ($(this).prop("checked")) {
-        value = 1;
-      } else {
-        value = 0;
-      }
     }
 
     fetch("ajax/ftt_request_ajax.php?type=set&table="+table+"&field="+field+"&data="+value+"&id="+id+"&guest="+is_guest)
@@ -811,6 +803,7 @@ document.cookie = "application_back=0";
       $(".wizard_step:visible").hide().next().show();
       $("#wizard_pagination .link_custom_active").removeClass("link_custom_active");
       $("#wizard_pagination .link_custom[data-step='"+elem.attr("id")+"']" ).addClass("link_custom_active");
+      $("html").animate({scrollTop:0}, '250');
     }
   });
   $("#prev_step").click(function () {
@@ -820,6 +813,7 @@ document.cookie = "application_back=0";
       $(".wizard_step:visible").hide().prev().show();
       $("#wizard_pagination .link_custom_active").removeClass("link_custom_active");
       $("#wizard_pagination .link_custom[data-step='"+elem.attr("id")+"']" ).addClass("link_custom_active");
+      $("html").animate({scrollTop:0}, '250');
     }
   });
 
@@ -833,6 +827,7 @@ document.cookie = "application_back=0";
       $(".wizard_step").hide();
       $("#"+$(this).attr("data-step")).show();
       setCookie("wizard_step", $(this).attr("data-step"));
+      $("html").animate({scrollTop:0}, '250');
     }
   });
 }); // END document ready

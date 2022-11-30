@@ -13,7 +13,7 @@ class FttRenderpoints {
     $localities = $lists['localities'];
     $countries1 = $lists['countries1'];
     $countries2 = $lists['countries2'];
-    echo "<div class='container'><h2>{$section}</h2>";
+    echo "<div class='container'><div class='row text-white bg-secondary rounded'><h2 class='pl-3 mb-1'>{$section}</h2></div>";
     for ($i=0; $i < count($points); $i++) {
       if ($points[$i]['group'] === $section) {
         $fields_values = [];
@@ -54,7 +54,11 @@ class FttRenderpoints {
         global $gl_gender_candidate;
         $point_title = FTTParsing::gender($points[$i]['title'], $gl_gender_candidate);
         $point_help = FTTParsing::gender($points[$i]['help'], $gl_gender_candidate);
-        echo "<div class='row {$is_display}'><div class='col-5'><span>{$point_title}</span><br><span class='grey_text'>{$point_help}</span></div>";
+        if ($points[$i]['display_type'] === 'info') {
+          echo "<div class='row {$is_display}'><div class='col-12'><strong>{$point_title}</strong><br><span class='grey_text'>{$point_help}</span></div>";
+        } else {
+          echo "<div class='row {$is_display}'><div class='col-5'><span>{$point_title}</span><br><span class='grey_text'>{$point_help}</span></div>";
+        }
 
         if (count($fields_values) > 0) {
           $data_value = $fields_values;
@@ -77,13 +81,23 @@ class FttRenderpoints {
   }
 
   static function field($type, $id, $value, $db_field, $required, $other=[]) {
+
+    if (isset($db_field[0]) && !is_array($db_field[0])) {
+      $db_field[0] = trim($db_field[0]);
+    }
+
+    if (isset($db_field[1]) && !is_array($db_field[1])) {
+      $db_field[1] = trim($db_field[1]);
+    }
+
     $id .= $db_field[1];
+
     $data_attr = "id='{$id}' class='input-request i-width-370-px' value='{$value}' data-value='{$value}' data-table='{$db_field[0]}' data-field='{$db_field[1]}' {$required}";
     echo "<div class='col-5'>";
     if ($type === 'string field') { //$type === 'input'
       if ($db_field[1] === 'support_persons') {
         echo "<div class='row support_block'><div class='col'><button type='button' id='add_support_block_extra' class='btn btn-info'> <b>+</b> Добавить</button></div></div>";
-        include_once "components/application_page/application_extra.php";        
+        include_once "components/application_page/application_extra.php";
       } else {
         echo "<input type='text' {$data_attr}>";
       }
@@ -92,13 +106,18 @@ class FttRenderpoints {
       if (!empty($value)) {
         $checked = 'checked';
       }
-      echo "<input type='checkbox' id='{$id}' class='form-check-input input-request' data-table='{$db_field[0]}' data-field='{$db_field[1]}' {$required} {$checked}>";
+      echo "<input type='checkbox' id='{$id}' class='form-check-input input-request ml-1' data-table='{$db_field[0]}' data-field='{$db_field[1]}' {$required} {$checked}>";
     } elseif ($type === 'radio buttons') {
       echo "<div data-value='{$value}' data-table='{$db_field[0]}' data-field='{$db_field[1]}' data-value='{$value}' {$required}>";
       InputsGroup::radio($other['radio'], $other['radio'][0], $value, $db_field[1]);
       echo "</div>";
     } elseif ($type === 'date field') {
-      echo "<input type='date' {$data_attr}>";
+      if (!empty($value)) {
+        echo "<input type='date' {$data_attr}>";
+      } else {
+        echo "<input type='date' id='{$id}' class='input-request i-width-370-px bg_grey' data-table='{$db_field[0]}' data-field='{$db_field[1]}' {$required}>";
+      }
+
     } elseif ($type === 'download') {
       $multiple = '';
       if (count($db_field) > 2) {
@@ -115,18 +134,18 @@ class FttRenderpoints {
       // ВЫВОД ЗАГРУЖЕННЫХ ИЗОБРАЖЕНИЙ НА ЭКРАН
       if (count($db_field) > 2) {
         foreach ($db_field as $key => $loop_value) {
-          echo "<span><a href='{$value[$key]}' target='_blank'><img src='{$value[$key]}' alt='pic' height='100'></a><i class='fa fa-trash pic-delete' aria-hidden='true'></i></span>";
+          echo "<span><a href='{$value[$key]}' target='_blank'><img src='{$value[$key]}' alt='' width='100'></a><i class='fa fa-trash pic-delete' aria-hidden='true'></i></span>";
         }
       } else {
-        echo "<span><a href='{$value_str}' target='_blank'><img src='{$value_str}' alt='pic' height='100'></a><i class='fa fa-trash pic-delete' aria-hidden='true'></i></span>";
+        echo "<span><a href='{$value_str}' target='_blank'><img src='{$value_str}' alt='' width='100'></a><i class='fa fa-trash pic-delete' aria-hidden='true'></i></span>";
       }
-    } elseif ($type === 'text') {
-
+    } elseif ($type === 'textarea') {
+      echo "<textarea id='{$id}' class='input-request i-width-370-px' row='2' value='{$value}' data-value='{$value}' data-table='{$db_field[0]}' data-field='{$db_field[1]}' {$required}>{$value}</textarea>";
     } elseif ($type === 'select list') {
-      echo "<select id='{$id}' class='input-request i-width-280-px' data-table='{$db_field[0]}' data-field='{$db_field[1]}' data-value='{$value}' {$required}>";
+      echo "<select id='{$id}' class='i-width-280-px' data-table='{$db_field[0]}' data-field='{$db_field[1]}' data-value='{$value}' {$required}>";
       if ($db_field[1] === 'country_key' || $db_field[1] === 'citizenship_key') {
         FTT_Select_fields::rendering($other['list'][0], $value);
-        echo "<option disavled>------------------------";
+        echo "<option disabled>------------------------";
         FTT_Select_fields::rendering($other['list'][1], $value);
       } elseif ($db_field[1] === 'locality_key') {
         FTT_Select_fields::rendering($other['list'], $value);
@@ -140,7 +159,7 @@ class FttRenderpoints {
     } elseif ($type === 'header' || $type === 'info') {
 
     } elseif ($type === 'checkboxes') {
-      echo "<div data-table='{$db_field[0]}' data-field='{$db_field[1]}' data-value='{$value}' {$required}>";
+      echo "<div class='ml-3 pl-1' data-table='{$db_field[0]}' data-field='{$db_field[1]}' data-value='{$value}' {$required}>";
       InputsGroup::checkboxes($other['radio'], $other['radio'][0], $value);
       echo "</div>";
     } else {

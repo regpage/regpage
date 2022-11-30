@@ -409,7 +409,7 @@ if (window.location.pathname === "/application.php") {
 		$(".btn-danger").addClass("btn-lg");
 		$(".btn-success").html('<i class="fa fa-paper-plane-o" aria-hidden="true"></i>');
 		$(".btn-success").addClass("btn-lg");
-		$(".btn-primary").html('<i class="fa fa-info-circle" aria-hidden="true"></i>');
+		$("button[data-target='#modalStartInfo']").html('<i class="fa fa-info-circle" aria-hidden="true"></i>');
 		$(".btn-primary").addClass("btn-lg");
 		$(".span-label-width-500").removeClass("span-label-width-500");
 		// cols

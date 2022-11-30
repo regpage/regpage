@@ -199,6 +199,10 @@ li.modal-reference {
   display: none !important;
 }
 
+.bg_grey {
+  background-color: #d1d5d8;
+}
+
 .bg_pink {
   background-color: #FCF4F4;
 }

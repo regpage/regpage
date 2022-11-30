@@ -48,7 +48,7 @@ function getMemberData($adminId) {
     fr.read_books, fr.semester, fr.was_there_training, fr.will_be_two_years, fr.how_many_semesters,
     fr.how_many_explanation, fr.who_will_pay,
     m.key AS m_key, m.name, m.male, m.locality_key, m.citizenship_key, m.baptized, m.document_auth, m.birth_date,
-    DATEDIFF(CURRENT_DATE, STR_TO_DATE(m.birth_date, '%Y-%m-%d'))/365 as age, m.document_num, m.document_date, m.tp_num, m.tp_date,
+    DATEDIFF(CURRENT_DATE, STR_TO_DATE(m.birth_date, '%Y-%m-%d'))/365 as age, m.document_num, m.document_date, m.tp_num, m.tp_date, m.tp_name,
     m.email, m.address, m.cell_phone, m.document_dep_code, m.tp_auth,
     fi.spiritual_question_02, fi.interview_name,
     l.name AS locality_name, c.name AS country_name, r.country_key
