@@ -842,12 +842,11 @@ if (getCookie("application_check") === '1') {
             arr[i] = temp_str_select_elem.trim();
             if (arr[i][0] === "[") {
               arr[i] = arr[i].substring(1);
-            } else if (arr[i][arr.length-1] === "]") {
-              arr[i] = arr[i].substring(0, arr.length-2);
+            } else if (arr[i][arr[i].length-1] === "]") {              
+              arr[i] = arr[i].slice(0, -1);
             }
             arr[i] = arr[i].toLowerCase();
           }
-
           if (data.operator === "=") {
             return !arr.includes(elem.val().toLowerCase())
           } else if (data['operator'] === "<>") {
@@ -861,13 +860,15 @@ if (getCookie("application_check") === '1') {
             return false;
           }
         } else if (elem.attr("type") === "text") {
-          /*if (elem.val()) {
+          let input_condition = elem.val().toLowerCase();
+          if (elem.attr("id") === "point_driver_license" && input_condition[0] === "н" && input_condition[1] === "е") {
             return true;
-          } else {
+          } else if (elem.id === "point_driver_license") {
             return false;
-          }*/
-        } else if (elem.attr("type") === "radio") {
-          return elem.attr("data-value").toLowerCase() === data['value'].toLowerCase();
+          }
+
+        } else if (elem.find("input").attr("type") === "radio") {
+          return elem.attr("data-value").toLowerCase() !== data['value'].toLowerCase();
         }
       } else {
         return false;
@@ -876,7 +877,7 @@ if (getCookie("application_check") === '1') {
 
     $("input[required]").each(function () {
       if ($(this).attr("data-display_condition") && condition_check(condition_parsing($(this).attr("data-display_condition")))) {
-
+        console.log($(this).attr("data-display_condition"));
       } else if ($(this).attr("type") === "checkbox" && !$(this).prop("checked")) {
         showError("Заполните все обязательные поля!");
         $(this).parent().find("label").css("border","2px solid red");
