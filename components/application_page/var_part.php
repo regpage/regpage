@@ -98,6 +98,7 @@ $gl_localities = db_getLocalities();
 // Payment data
 $ftt_monthly_pay = getValueFttParamByName('monthly_pay');
 $ftt_min_pay = getValueFttParamByName('min_pay');
+$ftt_consecration = getValueFttParamByName('consecration');
 
 /**** П Р А В И Л А ****/
 // Кнопка возврата
@@ -105,6 +106,11 @@ if (isset ($_COOKIE['application_back']) && $_COOKIE['application_back'] === '1'
   $btn_close = 'ftt';
 } else {
   $btn_close = 'index';
+}
+
+$application_prepare = '';
+if (isset ($_COOKIE['application_prepare']) && $_COOKIE['application_prepare'] === '1') {
+  $application_prepare = 1;
 }
 
 /**** П О Д Г О Т О В К А   Н Е К О Т О Р Ы Х   Д А Н Н Ы Х ****/
@@ -199,6 +205,9 @@ if ($request_data['male'] == 1) {
   $pomolvlen = 'помолвлена';
   $vashego = 'вашего';
 }
+
+// статус в заголовке предосмотра
+$status_application_label = '<>';
 
 if ($request_data['request_status'] > 1) {
   $status_phrase = "Заявление отправлено служащим Полновременного обучения в Москве {$request_data['send_date']}.";

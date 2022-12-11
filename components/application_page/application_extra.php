@@ -13,15 +13,15 @@
 
         echo "<div class='col-12'>
           <span class='span-label-width-210'>Фамилия Имя </span>
-          <input type='text' class='input-request b-width-150-px' value='$support_info_part1' data-table='ftt_request' data-field='support_persons' data-value='$support_info_part1' required>
+          <input type='text' class='input-request b-width-150-px' value='$support_info_part1' data-table='ftt_request' data-field='support_persons' data-value='$support_info_part1'>
         </div>
         <div class='col-12'>
           <span class='span-label-width-210'>Степень родства </span>
-          <input type='text' class='input-request b-width-150-px' value='$support_info_part2' data-table='ftt_request' data-field='support_persons' data-value='$support_info_part2' required>
+          <input type='text' class='input-request b-width-150-px' value='$support_info_part2' data-table='ftt_request' data-field='support_persons' data-value='$support_info_part2'>
         </div>
         <div class='col-12'>
           <span class='span-label-width-210'>Возраст </span>
-          <input type='text' class='input-request b-width-150-px' value='$support_info_part3' data-table='ftt_request' data-field='support_persons' data-value='$support_info_part3' required>
+          <input type='text' class='input-request b-width-150-px' value='$support_info_part3' data-table='ftt_request' data-field='support_persons' data-value='$support_info_part3'>
       </div>
       <div class='col-12'>
         <span class='delete_extra_string' style='cursor: pointer; font-weight: bold; color: red; font-size: 18px;' title='Удалить'> X </span>

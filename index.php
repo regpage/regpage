@@ -115,7 +115,7 @@ else if (isset ($_SESSION["logged-in"])){
       if ($ftt_access['group'] === 'trainee') { //$memberId == '000001679' || $memberId == '000005716' || $memberId == '000012559'
         $not_for_show = 'style="display: none;"';
       }
-      if ($memberId == '000001679' || $memberId == '000005716' || $memberId == '000012559') {
+      if ($memberId == '000001679' || $memberId == '000005716' || $memberId == '000012559' || $memberId ==  '000001680') {
         $not_for_show_application = '';
       }
       ?>
@@ -167,7 +167,7 @@ else if (isset ($_SESSION["logged-in"])){
         <!-- Desktop Заявление на ПВОМ -->
         <div class="tab-content" style="margin-top:10px; <?php echo $not_for_show_application; ?>">
           <div class="desctopVisible">
-          <?php if ($memberId == '000001679' || $memberId == '000005716' || $memberId == '000012559'): ?>
+          <?php if ($memberId == '000001679' || $memberId == '000005716' || $memberId == '000012559' || $memberId ==  '000001680'): ?>
           <?php $requestData = isExistrRequest($memberId);
             $isExistrRequest;
             $request_status;

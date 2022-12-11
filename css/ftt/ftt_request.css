@@ -209,3 +209,7 @@ sup {
 .help-underline {
 	border-bottom: 1px dashed darkgrey;
 }
+
+.required_field {
+  border-color: red;
+}

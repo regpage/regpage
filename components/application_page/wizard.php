@@ -11,16 +11,37 @@
     </div>
   </div>
   <!-- БЛОК ЗАЯВЛЕНИЯ -->
-  <?php if (false) {
+  <?php if ($application_prepare === 1 || $request_data['request_status'] > 1) {
     // ПРЕДОСМОТР И ОТПРАВКА
     // Панель кнопок
-    include_once "components/application_page/btn_bar_part.php";
+    //include_once "components/application_page/btn_bar_part.php";
     // Предосмотр анкеты
-    include_once "components/application_page/application_part.php";
-    // Рекомендации, служащие и решения
-    if (!$applicant) {
-      include_once "components/application_page/service_part.php";
+    //include_once "components/application_page/application_part.php";
+    $points_head =[];
+    for ($i=0; $i <count($points); $i++) {
+      if ($points[$i]['display_type'] === 'header' && $points[$i]['group_position'] !== '0') {
+        $points_head[$points[$i]['group_position']] = $points[$i]['group'];
+      }
     }
+    ksort($points_head);
+    foreach ($points_head as $key => $value_group) {
+      if ($value_group === 'Общая информация') {
+        $other = array('localities' => $gl_localities, 'countries1' => $countries1, 'countries2' => $countries2);
+      }
+      FTTRenderPoints::rendering($points, $value_group, $request_data, $other);
+    }
+    // Рекомендации, служащие и решения
+    /*if (!$applicant) {
+      include_once "components/application_page/service_part.php";
+    }*/
+    echo '<div class="ml-2 mt-3 pl-1">';
+    if ($request_data['request_status'] < 2) {
+      echo '<button id="back_to_master" type="button" class="btn btn-primary btn-sm mr-3">Вернуться</button>';
+    }
+    if ($request_data['request_status'] < 3) {
+      echo '<button id="send_application" type="button" class="btn btn-success btn-sm">Отправить</button>';
+    }
+    echo '</div>';
   } else {
     $points_head =[];
     for ($i=0; $i <count($points); $i++) {
@@ -94,7 +115,8 @@
     ?>
     <div class="ml-2 mt-3 pl-1">
     <button id="prev_step" type="button" class="btn btn-primary btn-sm mr-3">Назад</button>
-    <button id="next_step" type="button" class="btn btn-primary btn-sm mr-5">Далее</button>
+    <button id="next_step" type="button" class="btn btn-primary btn-sm mr-3">Далее</button>
+    <button id="send_application" type="button" class="btn btn-warning btn-sm" style="display: none;">Предпросмотр</button>
     </div>
     <?php
       echo $pagination;

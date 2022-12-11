@@ -1,6 +1,11 @@
 $(document).ready(function(){
 document.cookie = "application_back=0";
-  /**** ПОВЕДЕНИЕ ЭЛЕМЕНТОВ ****/  
+  /**** ПОВЕДЕНИЕ ЭЛЕМЕНТОВ ****/
+
+// COOKIE
+if (getCookie("application_check") === '1') {
+  validationFields();
+}
 
   // Показать / скрыть иконку сохранения
   function showSaveIcon(show) {
@@ -89,33 +94,57 @@ document.cookie = "application_back=0";
 
   // Скрыть показать блоки семейного положения
   function mariageBlockRules() {
-    if ($("#marriage_select").val() === "1" || !$("#marriage_select").val()) {
-        $(".marriage_block").hide();
-        $(".widow_block").hide();
-        $(".divorce_block").hide();
-        supportBlockExtraRule();
-
-    } else if ($("#marriage_select").val() === "2") {
-        $(".marriage_block").show();
-        $(".widow_block").hide();
-        $(".divorce_block").hide();
-        supportBlockExtraRule();
-
-    } else if ($("#marriage_select").val() === "3") {
-        $(".marriage_block").hide();
-        $(".widow_block").hide();
-        $(".divorce_block").hide();
-        supportBlockExtraRule();
-    } else if ($("#marriage_select").val() === "4") {
-        $(".marriage_block").hide();
-        $(".widow_block").hide();
-        $(".divorce_block").show();
-        supportBlockExtraRule();
-    } else if ($("#marriage_select").val() === "5") {
-        $(".marriage_block").hide();
-        $(".widow_block").show();
-        $(".divorce_block").hide();
-        supportBlockExtraRule();
+    if (!$("#point_marital_status").val() ||
+    $("#point_marital_status").val() === "не состояла в браке" ||
+    $("#point_marital_status").val() === "не состоял в браке" ||
+    $("#point_marital_status").val() === "помолвлена" ||
+    $("#point_marital_status").val() === "помолвлен") {
+      $("#point_marital_info").parent().parent().hide();
+      $("#point_spouse_name").parent().parent().hide();
+      $("#point_spouse_age").parent().parent().hide();
+      $("#point_spouse_occupation").parent().parent().hide();
+      $("#point_spouse_faith").parent().parent().hide();
+      $("#point_spouse_church").parent().parent().hide();
+      $("#point_spouse_state").parent().parent().hide();
+      $("#point_spouse_plans").parent().parent().hide();
+      $("#point_spouse_consent").parent().parent().hide();
+      supportBlockExtraRule(1);
+    } else if ($("#point_marital_status").val() === "состою в браке") {
+      $("#point_marital_info").parent().parent().find(".title_point").text("Дата заключения брака");
+      $("#point_marital_info").parent().parent().show();
+      $("#point_spouse_name").parent().parent().show();
+      $("#point_spouse_age").parent().parent().show();
+      $("#point_spouse_occupation").parent().parent().show();
+      $("#point_spouse_faith").parent().parent().show();
+      $("#point_spouse_church").parent().parent().show();
+      $("#point_spouse_state").parent().parent().show();
+      $("#point_spouse_plans").parent().parent().show();
+      $("#point_spouse_consent").parent().parent().show();
+      supportBlockExtraRule();
+    } else if ($("#point_marital_status").val() === "разведена" || $("#point_marital_status").val() === "разведён") {
+      $("#point_marital_info").parent().parent().find(".title_point").text("Дата развода");
+      $("#point_marital_info").parent().parent().show();
+      $("#point_spouse_name").parent().parent().hide();
+      $("#point_spouse_age").parent().parent().hide();
+      $("#point_spouse_occupation").parent().parent().hide();
+      $("#point_spouse_faith").parent().parent().hide();
+      $("#point_spouse_church").parent().parent().hide();
+      $("#point_spouse_state").parent().parent().hide();
+      $("#point_spouse_plans").parent().parent().hide();
+      $("#point_spouse_consent").parent().parent().hide();
+      supportBlockExtraRule();
+    } else if ($("#point_marital_status").val() === "вдова" || $("#point_marital_status").val() === "вдовец") {
+      $("#point_marital_info").parent().parent().find(".title_point").text("С какого времени");
+      $("#point_marital_info").parent().parent().show();
+      $("#point_spouse_name").parent().parent().hide();
+      $("#point_spouse_age").parent().parent().hide();
+      $("#point_spouse_occupation").parent().parent().hide();
+      $("#point_spouse_faith").parent().parent().hide();
+      $("#point_spouse_church").parent().parent().hide();
+      $("#point_spouse_state").parent().parent().hide();
+      $("#point_spouse_plans").parent().parent().hide();
+      $("#point_spouse_consent").parent().parent().hide();
+      supportBlockExtraRule();
     }
   }
 
@@ -144,21 +173,28 @@ document.cookie = "application_back=0";
     }*/
   }
   // Правило показа блока иждевенцев
-  function supportBlockExtraRule() {
-    $(".who-extra").hide();
+  function supportBlockExtraRule(hide) {
+    if ($("#radio_point_support_0").prop("checked") && !hide) {
+      $("#point_support_info").parent().parent().show();
+      $("#add_support_block_extra").parent().parent().parent().parent().show();
+    } else if ($("#radio_point_support_1").prop("checked")) {
+      $("#point_support_info").parent().parent().hide();
+      $("#add_support_block_extra").parent().parent().parent().parent().hide();
+    } else {
+      $("#point_support_info").parent().parent().hide();
+      $("#add_support_block_extra").parent().parent().parent().parent().hide();
+    }
+
     let three = 0;
     $("input[data-field=support_persons]").each(function (e) {
       if (e === 3 || e === 6 || e === 9) {
         three = 0;
       }
-      if ($(this).val() && !$(this).parent().parent().hasClass("who-extra")) {
+      if ($(this).val()) {
         three++;
-        $(".who-extra").show();
         $(this).parent().parent().show();
-      } else if (three === 0 && !$(this).parent().parent().hasClass("who-extra")) {
+      } else if (three === 0) {
         $(this).parent().parent().hide();
-      } else if ($(this).parent().parent().hasClass("who-extra") && $(this).val()) {
-        $(".who-extra").show();
       }
     });
   }
@@ -175,11 +211,94 @@ document.cookie = "application_back=0";
     });
   }
 
+  // ПОВЕДЕНИЕ БЛОКОВ
+  function hide_for_guest() {
+    $("#radio_point_semester_0").parent().parent().parent().parent().parent().hide();
+    $("#radio_point_will_be_two_years_0").parent().parent().parent().parent().parent().hide();
+    $("#point_semester_pay").parent().parent().prev().prev().hide();
+  }
+
+  function hide_for_candidate() {
+    $("#point_semester_pay").parent().parent().prev().hide();
+  }
+
+  function radio_buttons_behavior() {
+    if ($("#radio_point_will_be_two_years_0").prop("checked")) {
+      $("#point_how_many_semesters").parent().parent().hide();
+      $("#point_how_many_explanation").parent().parent().hide();
+    } else if ($("#radio_point_will_be_two_years_1").prop("checked")) {
+      $("#point_how_many_semesters").parent().parent().show();
+      $("#point_how_many_explanation").parent().parent().show();
+    } else {
+      $("#point_how_many_semesters").parent().parent().hide();
+      $("#point_how_many_explanation").parent().parent().hide();
+    }
+    if ($("#radio_point_health_question40_0").prop("checked")) {
+      $("#point_health_question41").parent().parent().show();
+    } else if ($("#radio_point_health_question40_1").prop("checked")) {
+      $("#point_health_question41").parent().parent().hide();
+    } else {
+      $("#point_health_question41").parent().parent().hide();
+    }
+  }
+
+  function select_behavior() {
+    if ($("#point_citizenship_key").val() === "RU") {
+      $("#point_passport_exp").parent().parent().hide();
+      $("#point_document_dep_code").parent().parent().show();
+      $("#point_snils").parent().parent().show();
+      $("#point_inn").parent().parent().show();
+      $("#radio_point_reg_document_0").parent().parent().parent().parent().parent().hide();
+    } else {
+      $("#point_passport_exp").parent().parent().show();
+      $("#point_document_dep_code").parent().parent().hide();
+      $("#point_snils").parent().parent().hide();
+      $("#point_inn").parent().parent().hide();
+      $("#radio_point_reg_document_0").parent().parent().parent().parent().parent().show();
+    }
+
+    if ($("#point_church_life_period").val() === "не участвовал" || $("#point_church_life_period").val() === "не участвовала") {
+      $("#point_church_life_date").parent().parent().hide();
+      $("#point_first_church_life_city").parent().parent().hide();
+      $("#point_next_church_life_city").parent().parent().hide();
+      $("#point_church_life_city").parent().parent().hide();
+      $("#point_church_life_city_when").parent().parent().hide();
+      $("#point_church_service").parent().parent().hide();
+    } else {
+      $("#point_passport_exp").parent().parent().show();
+      $("#point_first_church_life_city").parent().parent().show();
+      $("#point_next_church_life_city").parent().parent().show();
+      $("#point_church_life_city").parent().parent().show();
+      $("#point_church_life_city_when").parent().parent().show();
+      $("#point_church_service").parent().parent().show();
+    }
+  }
+
+  function point_driver_license () {
+    let point_driver_license = $("#point_driver_license").val();
+    if (!point_driver_license || point_driver_license[0] === "н" || point_driver_license[0] === "Н") {
+      $("#point_driving_experience").parent().parent().hide();
+    } else {
+      $("#point_driving_experience").parent().parent().show();
+    }
+  }
+
+  if ($("#main_container").attr("data-guest") === "1") {
+    hide_for_guest();
+  } else {
+    hide_for_candidate();
+  }
   mariageBlockRules();
+  supportBlockExtraRule();
   mentalProblemsBlockRule();
   dependencyProblemsBlockRule();
   ruleForInnAndKodPodrazdeleniya();
+  point_driver_license();
   inputFileStyle();
+  radio_buttons_behavior();
+  select_behavior();
+
+  $("#point_country_key").attr("disabled", true);
 
   $("#add_support_block_extra").click(function () {
     if (!$(".first-extra").is(":visible")) {
@@ -304,13 +423,23 @@ document.cookie = "application_back=0";
 */
 
   // быстрое сохранение полей ТЕКСТОВЫЕ ПОЛЯ
-  $("input[type=text], input[type=date], input[type=number], textarea").focusout(function(){
-    let table = $(this).data("table");
-    let field = $(this).data("field");
-    let value = $(this).val();
+  function quickly_save_input(element) {
+    if (element.attr("id") === "point_driver_license") {
+      point_driver_license ();
+    }
+
+    if (element.next().next().hasClass("set_no") && element.next().next().is(":visible") && element.val()) {
+      element.next().next().hide();
+    } else if (element.next().next().hasClass("set_no") && !element.next().next().is(":visible") && !element.val()) {
+      element.next().next().show();
+    }
+
+    let table = element.data("table");
+    let field = element.data("field");
+    let value = element.val();
     //value = value.replace(/\'/g, "\_");
     value = value.replace(/\"/g, "\'");
-    let prev_value = $(this).data("value");
+    let prev_value = element.data("value");
     let id = $("#main_container").attr("data-id");
     let is_guest = $("#main_container").attr("data-guest");
     let prepare = "";
@@ -319,7 +448,7 @@ document.cookie = "application_back=0";
     if (field === 'support_persons') {
       value = "";
       $("input[data-field=support_persons]").each(function (e) {
-          prepare = $(this).val();
+          prepare = element.val();
           prepare = prepare.replace(/\"/g, "\'");
           value += prepare + ";";
           /*if (e === 12) {
@@ -385,6 +514,11 @@ document.cookie = "application_back=0";
         }
       });
     }
+  }
+
+
+  $("input[type=text], input[type=date], input[type=number], textarea").focusout(function(){
+    quickly_save_input($(this));
   });
 
   // быстрое сохранение полей СПИСКИ ВЫБОРА
@@ -395,11 +529,11 @@ document.cookie = "application_back=0";
     let prev_value = $(this).data("value");
     let id = $("#main_container").attr("data-id");
     let is_guest = $("#main_container").attr("data-guest");
-
+    select_behavior();
     // Показать иконку сохранения
     showSaveIcon(1);
 
-    if ($(this).attr("id") === "marriage_select") {
+    if ($(this).attr("id") === "point_marital_status") {
       mariageBlockRules();
     }/* else if ($(this).attr("data-field") === "mental_problems") {
       mentalProblemsBlockRule();
@@ -454,12 +588,14 @@ document.cookie = "application_back=0";
 
   // быстрое сохранение полей RADIO
   $("input[type=radio]").change(function(){
+    $(this).parent().parent().parent().attr("data-value", $(this).val());
     let table = $(this).parent().parent().parent().attr('data-table');
     let field = $(this).parent().parent().parent().attr('data-field');
     let value = $(this).val();
     let id = $("#main_container").attr("data-id");
     let is_guest = $("#main_container").attr("data-guest") || 0;
-
+    radio_buttons_behavior();
+    supportBlockExtraRule();
     fetch("ajax/ftt_request_ajax.php?type=set&table="+table+"&field="+field+"&data="+value+"&id="+id+"&guest="+is_guest)
     .then(response => response.json())
     .then(result => console.log(result.result));
@@ -664,42 +800,87 @@ document.cookie = "application_back=0";
       }
     });
 */
-    // проверка полей паспортов. Если национальный заполнен значит загран не обязателен.
-    if ($("input[data-field=document_date]").val() && $("input[data-field=document_num]").val()) {
-      if ($("input[data-field=tp_num]").attr("required")) {
-        $("input[data-field=tp_num]").css("border-color", "black");
-        $("input[data-field=tp_auth]").css("border-color", "black");
-        $("input[data-field=tp_date]").css("border-color", "black");
+    // parsing condition
+    function condition_parsing (element) {
+      let operator;
+      element = element.split("=");
+      if (element.length > 1) {
+        operator = "=";
+      } else {
+        element = element[0].split("<>");
+        operator = "<>";
       }
-      $("input[data-field=tp_num]").removeAttr("required");
-      $("input[data-field=tp_auth]").removeAttr("required");
-      $("input[data-field=tp_date]").removeAttr("required");
-    } else {
-      if (!$("input[data-field=tp_num]").attr("required")) {
-        $("input[data-field=tp_num]").attr("required", true);
-        $("input[data-field=tp_auth]").attr("required", true);
-        $("input[data-field=tp_date]").attr("required", true);
+
+      //let table = element[0].split(".");
+      //table = table[0].trim();
+      let field = element[0];
+      field ? field = field.trim() : "";
+      let value = element[1];
+      value ? value = value.trim() : "";
+
+      element = $("select[data-field='"+field+"']");
+      if (element.length === 0) {
+        element = $("input[data-field='"+field+"']");
       }
+
+      if (element.length === 0) {
+        element = $("div[data-field='"+field+"']");
+      }
+
+      /*table: table,*/
+      return {field: field, value: value, element: element, operator: operator};
     }
 
-    // проверка чекбоксов брат сестра
-    /*
-    if ($("#brother").prop("checked") || $("#sister").prop("checked")) {
+    function condition_check(data) {
+      if (data.element) {
+        let elem = data.element;
+        if (elem[0].localName === "select") {
+          let some_var = data.value;
+          let arr = some_var.split(",");
+          for (let i = 0; i < arr.length; i++) {
+            let temp_str_select_elem = arr[i];
+            arr[i] = temp_str_select_elem.trim();
+            if (arr[i][0] === "[") {
+              arr[i] = arr[i].substring(1);
+            } else if (arr[i][arr.length-1] === "]") {
+              arr[i] = arr[i].substring(0, arr.length-2);
+            }
+            arr[i] = arr[i].toLowerCase();
+          }
 
-    } else {
-      showError("Заполните все обязательные поля!");
-      $("#brother").parent().find("label").css("border","2px solid red");
-      $("#sister").parent().find("label").css("border","2px solid red");
-      has_error++;
-    }
-    */
-    $("input[required]:visible").each(function () {
-      if ($(this).attr("type") === "checkbox") {
-        if ($(this).attr("id") === "policy_agree" && !$(this).prop("checked")) {
-          showError("Заполните все обязательные поля!");
-          $(this).parent().find("label").css("border","2px solid red");
-          has_error++;
+          if (data.operator === "=") {
+            return !arr.includes(elem.val().toLowerCase())
+          } else if (data['operator'] === "<>") {
+            return arr.includes(elem.val().toLowerCase());
+          }
+
+        } else if (elem.attr("type") === "checkbox") {
+          if (elem.val()) {
+            return true;
+          } else {
+            return false;
+          }
+        } else if (elem.attr("type") === "text") {
+          /*if (elem.val()) {
+            return true;
+          } else {
+            return false;
+          }*/
+        } else if (elem.attr("type") === "radio") {
+          return elem.attr("data-value").toLowerCase() === data['value'].toLowerCase();
         }
+      } else {
+        return false;
+      }
+    }
+
+    $("input[required]").each(function () {
+      if ($(this).attr("data-display_condition") && condition_check(condition_parsing($(this).attr("data-display_condition")))) {
+
+      } else if ($(this).attr("type") === "checkbox" && !$(this).prop("checked")) {
+        showError("Заполните все обязательные поля!");
+        $(this).parent().find("label").css("border","2px solid red");
+        has_error++;
       } else if ($(this).attr("type") === "file") {
         let check_check;
         check_check = "error";
@@ -719,7 +900,6 @@ document.cookie = "application_back=0";
         } else {
           // СОГЛАСИЕ СУПРУГА
           if ($(this).parent().parent().find("img").attr("src")) {
-            console.log(check_check);
             check_check = "ok";
           }
 
@@ -737,33 +917,49 @@ document.cookie = "application_back=0";
           has_error++;
         }
       }
-
     });
     $("select[required]:visible").each(function () {
-      if (!$(this).val()) {
+      if (!$(this).val() || $(this).val() === "_none_") {
         showError("Заполните все обязательные поля!");
         $(this).css("border-color","red");
         has_error++;
       }
     });
     $("textarea[required]").each(function () {
-      if (!$(this).val()) {
+      if ($(this).attr("data-display_condition") && condition_check(condition_parsing($(this).attr("data-display_condition")))) {
+
+      } else if (!$(this).val()) {
         showError("Заполните все обязательные поля!");
         $(this).css("border-color","red");
         has_error++;
       }
     });
+
     showSaveIcon();
     return has_error;
   }
 
   // Отправка заявления
+  // Возврат
+  $("#back_to_master").click(function (e) {
+    setCookie("application_prepare", '');
+    setCookie("application_check", '1');
+    setTimeout(function () {
+      location.reload();
+    }, 100);
+  });
   // Валидация
-  $("#toModalSendMyRequest").click(function (e) {
-
-    if (validationFields()) {
-      e.stopPropagation();
+  $("#send_application").click(function (e) {
+    if (getCookie("application_prepare") !== "1") {
+      setCookie("application_prepare", '1');
+      setCookie("application_check", '1');
+      setTimeout(function () {
+        location.reload();
+      }, 100);
+    } else if (validationFields()) {
       return;
+    } else {
+      $("#modalSendMyRequest").modal("show");
     }
   });
   // Отправка
@@ -778,6 +974,7 @@ document.cookie = "application_back=0";
         if (data) {
           blockApplicationFields();
           $("#main_container").attr("data-status", "2");
+          $("#back_to_master").hide();
           showHint("Заявление отправлено служащим Полновременного обучения в Москве.");
         }
       });
@@ -804,6 +1001,9 @@ document.cookie = "application_back=0";
       $("#wizard_pagination .link_custom_active").removeClass("link_custom_active");
       $("#wizard_pagination .link_custom[data-step='"+elem.attr("id")+"']" ).addClass("link_custom_active");
       $("html").animate({scrollTop:0}, '250');
+      show_hide_buttons();
+    } else {
+      // ПРЕДОСМОТР
     }
   });
   $("#prev_step").click(function () {
@@ -814,6 +1014,7 @@ document.cookie = "application_back=0";
       $("#wizard_pagination .link_custom_active").removeClass("link_custom_active");
       $("#wizard_pagination .link_custom[data-step='"+elem.attr("id")+"']" ).addClass("link_custom_active");
       $("html").animate({scrollTop:0}, '250');
+      show_hide_buttons();
     }
   });
 
@@ -828,6 +1029,39 @@ document.cookie = "application_back=0";
       $("#"+$(this).attr("data-step")).show();
       setCookie("wizard_step", $(this).attr("data-step"));
       $("html").animate({scrollTop:0}, '250');
+      show_hide_buttons();
     }
   });
+
+  function show_hide_buttons() {
+    if (!$(".wizard_step:visible").next().hasClass("wizard_step")) {
+      $("#send_application").show();
+      $("#next_step").hide();
+    } else if ($("#send_application").is(":visible")) {
+      $("#send_application").hide();
+      $("#next_step").show();
+    }
+  }
+  show_hide_buttons();
+
+  function simbol_counter(element) {
+    return element.val().length;
+  }
+  $("input[type='text'], textarea").keyup(function () {
+    // скрывем / показываем кнопку НЕТ
+    if ($(this).next().next().hasClass("set_no") && $(this).next().next().is(":visible") && $(this).val()) {
+      $(this).next().next().hide();
+    } else if ($(this).next().next().hasClass("set_no") && !$(this).next().next().is(":visible") && !$(this).val()) {
+      $(this).next().next().show();
+    }
+    $(this).next().text($(this).attr("maxlength") - $(this).val().length);
+  });
+
+  // быстрое заполнение полей
+  $(".set_no").click(function () {
+    $(this).prev().prev().val($(this).text());
+    $(this).hide();
+    quickly_save_input($(this).prev().prev());
+  });
+
 }); // END document ready

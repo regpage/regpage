@@ -35,26 +35,26 @@ function handleScrollUp(){
       }
 			if (window.location.pathname === '/application.php') {
 					// Фиксация панели кнопок страница Заявления
-					$("#buttons_bar").css("top","48px");
-					$("#buttons_bar").css("background-color","#eee");
-					$("#buttons_bar").addClass("fixed-top");
-					let element_position = $("#main_container");
-					$("#buttons_bar").css("left", element_position[0].offsetLeft+15);
-					$("#buttons_bar").css("width", element_position[0].offsetWidth);
-					$("#main_container").css("padding-top","60px");
+					//$("#buttons_bar").css("top","48px");
+					//$("#buttons_bar").css("background-color","#eee");
+					//$("#buttons_bar").addClass("fixed-top");
+					//let element_position = $("#main_container");
+					//$("#buttons_bar").css("left", element_position[0].offsetLeft+15);
+					//$("#buttons_bar").css("width", element_position[0].offsetWidth);
+					//$("#main_container").css("padding-top","60px");
 					//$("#buttons_bar").attr("style", "")
-					$("#buttons_bar button").css("margin-top", "10px");
-					$("#buttons_bar button").css("margin-bottom", "10px");
+					//$("#buttons_bar button").css("margin-top", "10px");
+					//$("#buttons_bar button").css("margin-bottom", "10px");
 
 					//$("#buttons_bar").css("border-button", "1px solid lightgrey");
 					//$("#buttons_bar").css("border-radius", "5px");
 
 					if ($(window).width()<=769) {
-						$("#main_container").css("padding-top","110px");
+						//$("#main_container").css("padding-top","110px");
 					} else {
-						$("#main_container").css("padding-top","60px");
-						$("#buttons_bar").css("border-left","1px solid lightgrey");
-						$("#buttons_bar").css("border-right","1px solid lightgrey");
+						//$("#main_container").css("padding-top","60px");
+						//$("#buttons_bar").css("border-left","1px solid lightgrey");
+						//$("#buttons_bar").css("border-right","1px solid lightgrey");
 						//$("#buttons_bar").css("position", "fixed");
 						//$(".btn-group").css("margin-left", "auto");
 						//$(".btn-group").css("margin-right", "auto");
@@ -70,20 +70,20 @@ function handleScrollUp(){
       }
 			if (window.location.pathname === '/application.php') {
 					// Фиксация панели кнопок страница Заявления
-					$("#buttons_bar").removeClass("fixed-top");
+					/*$("#buttons_bar").removeClass("fixed-top");
 					$("#buttons_bar").css("top","0px");
 					$("#buttons_bar").css("background-color", "white");
 					$("#buttons_bar button").css("margin-top", "0px");
 					$("#buttons_bar button").css("margin-bottom", "0px");
-					$("#main_container").css("padding-top","20px");
+					$("#main_container").css("padding-top","20px");*/
 					//$("#buttons_bar").css("border", "none");
 					//$(".btn-group").css("padding", "0px");
 					if ($(window).width()<=769) {
 						//$(".btn-group").css("padding-left", "15px");
 					} else {
 						//$(".btn-g// меню разделов пвомroup").css("padding", "0px");
-						$("#buttons_bar").css("border-left","none");
-						$("#buttons_bar").css("border-right","none");
+						/*$("#buttons_bar").css("border-left","none");
+						$("#buttons_bar").css("border-right","none");*/
 					}
 			}
     }

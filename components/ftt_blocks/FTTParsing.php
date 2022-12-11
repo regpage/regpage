@@ -31,7 +31,7 @@ class FTTParsing
                 if ($male == 1) {
                   $temp_string[] = $temp_gender[0];
                 } else {
-                  $temp_string[] = $temp_gender[0];
+                  $temp_string[] = $temp_gender[1];
                 }
                 if (isset($temp[1])) {
                   $temp_string[] = $temp[1];
@@ -66,9 +66,71 @@ class FTTParsing
     return $result;
   }
 
-  static function variables($string)
+  static function variables($string, $male)
   {
+    $array = explode('{',$string);
+    if (count($array) < 2) {
+      return $string;
+    }
+    $res_array = [];
+    for ($i=0; $i < count($array); $i++) {
+      if ($i=== 0) {
+        $res_array[] = $array[$i];
+      } else {
+        $temp = explode('}', $array[$i]);
+        if (count($temp) > 1) {
+          $res_array[] = $temp[0];
+          $res_array[] = $temp[1];
+        } else {
+          $res_array[] = $temp[0];
+        }
+      }
+    }
+    global $ftt_monthly_pay;
+    global $ftt_min_pay;
+    global $request_data;
+    global $ftt_consecration;
 
+    foreach ($res_array as $key => $value) {
+      $value = trim($value);
+      if ($key === 0 && substr($value, 0, 1) === '$') {
+        $res_array[$key] = '';
+      }
+      // finance
+      if ($value === 'ftt_param.monthly_pay') {
+        $res_array[$key] = $ftt_monthly_pay;
+      } elseif ($value === 'ftt_param.monthly_pay x 4') {
+        $res_array[$key] = $ftt_monthly_pay * 4;
+      } elseif ($value === 'ftt_param.min_pay') {
+        $res_array[$key] = $ftt_min_pay;
+      } elseif ($value === 'ftt_param.min_pay x 4') {
+        $res_array[$key] = $ftt_min_pay * 4;
+      }
+
+      // Фор с шагом 2
+      if ($value === 'состою в браке' || $value === 'разведён' || $value === 'вдовец'
+      || $value === 'разведена' || $value === 'вдова') {
+        if ($request_data['marital_status'] === $value) {
+          $res_array[$key] = '';
+          $temp_sub = explode(',', $res_array[$key+1]);
+          $temp_sub = explode(':', $temp_sub[0]);
+          $res_array = [$temp_sub[1]];
+        } elseif ($value === 'состою в браке' || $value === 'разведён' || $value === 'вдовец'
+        || $value === 'разведена' || $value === 'вдова') {
+          $res_array[$key] = '';
+          $res_array[$key+1] = '';
+        } else {
+          $res_array[$key] = '';
+        }
+      }
+
+      // consecration
+      if ($value === 'ftt_param.consecration') {
+        $res_array[$key] = self::gender($ftt_consecration, $male);
+      }
+    }
+
+    return implode('', $res_array);
   }
 }
  ?>

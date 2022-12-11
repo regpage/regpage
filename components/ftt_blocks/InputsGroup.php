@@ -15,7 +15,7 @@
           $checked = 'checked';
         }
         echo "<div class='form-check-inline'><label class='form-check-label'>
-        <input type='radio' class='form-check-input' id='radio_point{$key}' name='{$group}' value='{$value}' {$checked}>{$value}</label></div>";
+        <input type='radio' class='form-check-input' id='radio_point_{$group}_{$key}' name='{$group}' value='{$value}' {$checked}>{$value}</label></div>";
       }
     }
     static function checkboxes ($list, $seleted_option_default = 'missing', $seleted_options_value = '')
