@@ -842,7 +842,7 @@ if (getCookie("application_check") === '1') {
             arr[i] = temp_str_select_elem.trim();
             if (arr[i][0] === "[") {
               arr[i] = arr[i].substring(1);
-            } else if (arr[i][arr[i].length-1] === "]") {              
+            } else if (arr[i][arr[i].length-1] === "]") {
               arr[i] = arr[i].slice(0, -1);
             }
             arr[i] = arr[i].toLowerCase();
@@ -877,10 +877,10 @@ if (getCookie("application_check") === '1') {
 
     $("input[required]").each(function () {
       if ($(this).attr("data-display_condition") && condition_check(condition_parsing($(this).attr("data-display_condition")))) {
-        console.log($(this).attr("data-display_condition"));
+        // check cancel
       } else if ($(this).attr("type") === "checkbox" && !$(this).prop("checked")) {
         showError("Заполните все обязательные поля!");
-        $(this).parent().find("label").css("border","2px solid red");
+        $(this).next().css("border-bottom","2px solid red");
         has_error++;
       } else if ($(this).attr("type") === "file") {
         let check_check;
@@ -919,6 +919,17 @@ if (getCookie("application_check") === '1') {
         }
       }
     });
+
+    $("input[type='radio']").each(function () {
+      if ($(this).parent().parent().parent().attr("required")) {
+        let arr_radio = $(this).parent().parent().parent().find("input[type='radio']:checked");
+        if (arr_radio.length === 0) {
+          $(this).parent().parent().parent().css("border-bottom","2px solid red");
+          has_error++;
+        }
+      }
+    });
+
     $("select[required]:visible").each(function () {
       if (!$(this).val() || $(this).val() === "_none_") {
         showError("Заполните все обязательные поля!");
@@ -931,7 +942,7 @@ if (getCookie("application_check") === '1') {
 
       } else if (!$(this).val()) {
         showError("Заполните все обязательные поля!");
-        $(this).css("border-color","red");
+        $(this).css("border-bottom","2px solid red");
         has_error++;
       }
     });

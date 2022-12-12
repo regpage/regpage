@@ -207,13 +207,24 @@ if ($request_data['male'] == 1) {
 }
 
 // статус в заголовке предосмотра
-$status_application_label = '<>';
+$status_application_label = '<span class="badge badge-secondary">черновик</span>';
 
 if ($request_data['request_status'] > 1) {
   $status_phrase = "Заявление отправлено служащим Полновременного обучения в Москве {$request_data['send_date']}.";
 } elseif ($request_data['request_status'] == 1) {
   $status_phrase = getValueFttParamByName('request_bottom');
 }
+
+//Label
+if ($request_data['request_status'] == 2) {
+  $status_application_label = '<span class="badge badge-warning">на рассмотрении</span>';
+} elseif ($request_data['request_status'] == 3) {
+  $status_application_label = '<span class="badge badge-success">принят</span>';
+} elseif ($request_data['request_status'] == 4) {
+  $status_application_label = '<span class="badge badge-danger">отклонён</span>';
+}
+
+
 // POLICY AGREE
 if ($request_data["agreement"] == 1) {
   $agreement = "checked";

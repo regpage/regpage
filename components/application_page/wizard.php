@@ -6,8 +6,11 @@
       <h5 class="pl-3">Заявление для участия в Полновременном обучении</h5>
       <h6 class="pl-3"><?php echo getValueFttParamByName("semester"); ?>  (<?php echo getValueFttParamByName("period"); ?>)<h6>
     </div>
-    <div class="col">
+    <div class="col-3">
       <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalStartInfo">Информация</button>
+    </div>
+    <div class="col-2">
+      <?php echo $status_application_label; ?>
     </div>
   </div>
   <!-- БЛОК ЗАЯВЛЕНИЯ -->

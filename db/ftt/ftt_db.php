@@ -31,7 +31,7 @@ function db_getAllRequests ($adminId, $role, $guest){
     // для коректного запроса все ключевые поля для выборки из присоединяемых таблиц должны быть заполнены
 
     $result_count = count($result);
-    write_to_log::debug('000005716', "получено {$result_count} строк из списка заявлений для раздела ПВОМ"); //$adminId
+    //write_to_log::debug('000005716', "получено {$result_count} строк из списка заявлений для раздела ПВОМ"); //$adminId
 
     return $result;
 }

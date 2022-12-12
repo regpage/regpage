@@ -87,9 +87,13 @@ class FttRenderpoints {
 
   static function field($type, $id, $value, $db_field, $required, $other=[]) {
     $required_class = '';
+    $required_class_extra = '';
     global $application_prepare;
-    if ($required === 'required' && $application_prepare === '1') {
+    if ($required === 'required' && $application_prepare !== '1') {
       $required_class = 'required_field';
+    }
+    if ($type === 'checkbox') {
+      $required_class_extra = 'required_field i-width-370-px mt-4';
     }
     $maxlength = $other['maxlength'];
     if (!empty($maxlength)) {
@@ -115,21 +119,22 @@ class FttRenderpoints {
         $no_button_elem = '<span class="link_custom set_no" style="margin-left: -45px; display:none;">нет</span>';
       }
       echo "<input type='text' maxlength='{$maxlength}' {$data_attr}><span class='pl-2'></span>".$no_button_elem;
-    } elseif ($type === 'checkbox') {
+    } elseif ($type === 'checkbox') { // CHECKBOX
       $checked = '';
       if (!empty($value)) {
         $checked = 'checked';
       }
       echo "<input type='checkbox' id='{$id}' class='form-check-input input-request ml-1' data-table='{$db_field[0]}' data-field='{$db_field[1]}' data-display_condition='{$other['display_condition']}' {$required} {$checked}>";
+      echo "<div class='{$required_class_extra}'></div>";
     } elseif ($type === 'radio buttons') { // RADIO BUTTONS
-      echo "<div data-value='{$value}' data-table='{$db_field[0]}' data-field='{$db_field[1]}' data-value='{$value}' {$required}>";
+      echo "<div class='i-width-370-px {$required_class}' data-value='{$value}' data-table='{$db_field[0]}' data-field='{$db_field[1]}' data-value='{$value}' {$required}>";
       InputsGroup::radio($other['radio'], $other['radio'][0], $value, $db_field[1]);
       echo "</div>";
     } elseif ($type === 'date field') {
       if (!empty($value)) {
         echo "<input type='date' {$data_attr}>";
       } else {
-        echo "<input type='date' id='{$id}' class='input-request i-width-370-px bg_grey' data-table='{$db_field[0]}' data-field='{$db_field[1]}' data-display_condition='{$other['display_condition']}' {$required}>";
+        echo "<input type='date' id='{$id}' class='input-request i-width-370-px bg_grey $required_class' data-table='{$db_field[0]}' data-field='{$db_field[1]}' data-display_condition='{$other['display_condition']}' {$required}>";
       }
     } elseif ($type === 'download') { // DOWNLOAD
       $multiple = '';
@@ -143,7 +148,7 @@ class FttRenderpoints {
         $db_field_str = $db_field[1];
         $value_str = $value;
       }
-      echo "<input type='file' id='{$id}' class='input-request' data-table='{$db_tbl_str}' data-field='{$db_field_str}' data-value='{$value_str}' data-display_condition='{$other['display_condition']}' {$required} {$multiple} accept='.jpg, .jpeg, .png, .pdf'>";
+      echo "<input type='file' id='{$id}' class='input-request {$required_class}' data-table='{$db_tbl_str}' data-field='{$db_field_str}' data-value='{$value_str}' data-display_condition='{$other['display_condition']}' {$required} {$multiple} accept='.jpg, .jpeg, .png, .pdf'>";
       // ВЫВОД ЗАГРУЖЕННЫХ ИЗОБРАЖЕНИЙ НА ЭКРАН
       if (count($db_field) > 2) {
         foreach ($db_field as $key => $loop_value) {
@@ -165,7 +170,7 @@ class FttRenderpoints {
         echo "<textarea id='{$id}' class='input-request i-width-370-px {$required_class}' row='2' value='{$value}' maxlength='{$maxlength}' data-value='{$value}' data-table='{$db_field[0]}' data-field='{$db_field[1]}' data-display_condition='{$other['display_condition']}' {$required}>{$value}</textarea><span class='pl-2'></span>".$no_button_elem;
       }
     } elseif ($type === 'select list') { // SELECT
-      echo "<select id='{$id}' class='i-width-280-px' data-table='{$db_field[0]}' data-field='{$db_field[1]}' data-value='{$value}' data-display_condition='{$other['display_condition']}' {$required}>";
+      echo "<select id='{$id}' class='i-width-280-px {$required_class}' data-table='{$db_field[0]}' data-field='{$db_field[1]}' data-value='{$value}' data-display_condition='{$other['display_condition']}' {$required}>";
       if ($db_field[1] === 'country_key' || $db_field[1] === 'citizenship_key') {
         FTT_Select_fields::rendering($other['list'][0], $value);
         echo "<option disabled>------------------------";
