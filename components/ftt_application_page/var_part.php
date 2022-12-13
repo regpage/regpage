@@ -110,7 +110,7 @@ if (isset ($_COOKIE['application_back']) && $_COOKIE['application_back'] === '1'
 
 $application_prepare = '';
 if (isset ($_COOKIE['application_prepare']) && $_COOKIE['application_prepare'] === '1') {
-  $application_prepare = 1;
+  $application_prepare = $_COOKIE['application_prepare'];
 }
 
 /**** П О Д Г О Т О В К А   Н Е К О Т О Р Ы Х   Д А Н Н Ы Х ****/

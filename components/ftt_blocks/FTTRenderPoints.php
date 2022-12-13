@@ -71,6 +71,7 @@ class FttRenderpoints {
         $other['display_condition'] = $points[$i]['display_condition'];
         $other['maxlength'] = $points[$i]['value_type'];
         $other['no_button'] = $points[$i]['no_button'];
+        $other['status'] = $data['request_status'];
         echo self::field($points[$i]['display_type'],'point_', $data_value, $db_field, $points[$i]['required'], $other);
         echo "</div>";
         /*$string_data = '';
@@ -89,11 +90,12 @@ class FttRenderpoints {
     $required_class = '';
     $required_class_extra = '';
     global $application_prepare;
-    if ($required === 'required' && $application_prepare !== '1') {
+    if ($required === 'required' && $other['status'] === '1' && $application_prepare !== '1'
+    || $required === 'required' && empty($other['status']) && $application_prepare !== '1') {
       $required_class = 'required_field';
     }
-    if ($type === 'checkbox') {
-      $required_class_extra = 'required_field i-width-370-px mt-4';
+    if ($required === 'required' && $type === 'checkbox' && $other['status'] === '1' && $application_prepare !== '1') {
+      $required_class_extra = 'required_field';
     }
     $maxlength = $other['maxlength'];
     if (!empty($maxlength)) {
@@ -125,7 +127,7 @@ class FttRenderpoints {
         $checked = 'checked';
       }
       echo "<input type='checkbox' id='{$id}' class='form-check-input input-request ml-1' data-table='{$db_field[0]}' data-field='{$db_field[1]}' data-display_condition='{$other['display_condition']}' {$required} {$checked}>";
-      echo "<div class='{$required_class_extra}'></div>";
+      echo "<div class='i-width-370-px mt-4 {$required_class_extra}'></div>";
     } elseif ($type === 'radio buttons') { // RADIO BUTTONS
       echo "<div class='i-width-370-px {$required_class}' data-value='{$value}' data-table='{$db_field[0]}' data-field='{$db_field[1]}' data-value='{$value}' {$required}>";
       InputsGroup::radio($other['radio'], $other['radio'][0], $value, $db_field[1]);
@@ -151,8 +153,8 @@ class FttRenderpoints {
       echo "<input type='file' id='{$id}' class='input-request {$required_class}' data-table='{$db_tbl_str}' data-field='{$db_field_str}' data-value='{$value_str}' data-display_condition='{$other['display_condition']}' {$required} {$multiple} accept='.jpg, .jpeg, .png, .pdf'>";
       // ВЫВОД ЗАГРУЖЕННЫХ ИЗОБРАЖЕНИЙ НА ЭКРАН
       if (count($db_field) > 2) {
-        foreach ($db_field as $key => $loop_value) {
-          echo "<span><a href='{$value[$key]}' target='_blank'><img src='{$value[$key]}' alt='' width='100'></a><i class='fa fa-trash pic-delete' aria-hidden='true'></i></span>";
+        for ($i=0; $i < count($value); $i++) {
+          echo "<span><a href='{$value[$i]}' target='_blank'><img src='{$value[$i]}' alt='' width='100'></a><i class='fa fa-trash pic-delete' aria-hidden='true'></i></span>";
         }
       } else {
         echo "<span><a href='{$value_str}' target='_blank'><img src='{$value_str}' alt='' width='100'></a><i class='fa fa-trash pic-delete' aria-hidden='true'></i></span>";
@@ -160,14 +162,18 @@ class FttRenderpoints {
     } elseif ($type === 'textarea') { // TEXTAREA
       if ($db_field[1] === 'support_persons') {
         echo "<div class='row support_block'><div class='col'><button type='button' id='add_support_block_extra' class='btn btn-info'> <b>+</b> Добавить</button></div></div>";
-        include_once "components/application_page/application_extra.php";
+        include_once "components/ftt_application_page/application_extra.php";
       } else {
         if ($other['no_button'] == 1 && empty($value)) {
           $no_button_elem = '<span class="link_custom set_no" style="margin-left: -45px; vertical-align: super;">нет</span>';
         } elseif ($other['no_button'] == 1 && !empty($value)) {
           $no_button_elem = '<span class="link_custom set_no" style="margin-left: -45px; vertical-align: super; display:none;">нет</span>';
         }
-        echo "<textarea id='{$id}' class='input-request i-width-370-px {$required_class}' row='2' value='{$value}' maxlength='{$maxlength}' data-value='{$value}' data-table='{$db_field[0]}' data-field='{$db_field[1]}' data-display_condition='{$other['display_condition']}' {$required}>{$value}</textarea><span class='pl-2'></span>".$no_button_elem;
+        $textarea_height = '';
+        if ($maxlength > 255) {
+          $textarea_height = 'field_height_90px';
+        }
+        echo "<textarea id='{$id}' class='input-request i-width-370-px {$required_class} {$textarea_height}' value='{$value}' maxlength='{$maxlength}' data-value='{$value}' data-table='{$db_field[0]}' data-field='{$db_field[1]}' data-display_condition='{$other['display_condition']}' {$required}>{$value}</textarea><span class='pl-2'></span>".$no_button_elem;
       }
     } elseif ($type === 'select list') { // SELECT
       echo "<select id='{$id}' class='i-width-280-px {$required_class}' data-table='{$db_field[0]}' data-field='{$db_field[1]}' data-value='{$value}' data-display_condition='{$other['display_condition']}' {$required}>";

@@ -4,22 +4,26 @@
     <div class="col pl-3">
       <!-- ЗАГОЛОВОК -->
       <h5 class="pl-3">Заявление для участия в Полновременном обучении</h5>
-      <h6 class="pl-3"><?php echo getValueFttParamByName("semester"); ?>  (<?php echo getValueFttParamByName("period"); ?>)<h6>
+      <h6 class="pl-3"><?php echo getValueFttParamByName("semester"); ?>  (<?php echo getValueFttParamByName("period"); ?>)
+      <?php echo $status_application_label; ?>
+      </h6>
     </div>
     <div class="col-3">
       <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalStartInfo">Информация</button>
     </div>
-    <div class="col-2">
-      <?php echo $status_application_label; ?>
+    <?php if (!empty($request_data['member_key']) && $memberId != $request_data['member_key']): ?>
+    <div class="col-1">
+      <button id="application_print" type="button" class="btn btn-primary btn-sm" disabled>Печать</button>
     </div>
+    <?php endif; ?>
   </div>
   <!-- БЛОК ЗАЯВЛЕНИЯ -->
-  <?php if ($application_prepare === 1 || $request_data['request_status'] > 1) {
+  <?php if ($application_prepare === '1' || $request_data['request_status'] > 1) {
     // ПРЕДОСМОТР И ОТПРАВКА
     // Панель кнопок
-    //include_once "components/application_page/btn_bar_part.php";
+    //include_once "components/ftt_application_page/btn_bar_part.php";
     // Предосмотр анкеты
-    //include_once "components/application_page/application_part.php";
+    //include_once "components/ftt_application_page/application_part.php";
     $points_head =[];
     for ($i=0; $i <count($points); $i++) {
       if ($points[$i]['display_type'] === 'header' && $points[$i]['group_position'] !== '0') {
@@ -35,13 +39,16 @@
     }
     // Рекомендации, служащие и решения
     /*if (!$applicant) {
-      include_once "components/application_page/service_part.php";
+      include_once "components/ftt_application_page/service_part.php";
     }*/
     echo '<div class="ml-2 mt-3 pl-1">';
     if ($request_data['request_status'] < 2) {
       echo '<button id="back_to_master" type="button" class="btn btn-primary btn-sm mr-3">Вернуться</button>';
     }
-    if ($request_data['request_status'] < 3) {
+    if ($request_data['request_status'] < 2 && $memberId === $request_data['member_key']) {
+      echo '<button type="button" id="toModalDeleteMyRequest" class="btn btn-danger btn-sm mr-3" data-toggle="modal" data-target="#modalDeleteMyRequest">Удалить</button>';
+    }
+    if ($request_data['request_status'] < 2) {
       echo '<button id="send_application" type="button" class="btn btn-success btn-sm">Отправить</button>';
     }
     echo '</div>';
@@ -81,7 +88,7 @@
     $pagination = '<div id="wizard_pagination" class="ml-1 mt-3">'.$pagination.'</div>';//text-center
     /*
     // МАСТЕР (WIZARD)
-    $dir = '/components/application_page/'; // Папка с файлами
+    $dir = '/components/ftt_application_page/'; // Папка с файлами
     $files = scandir($_SERVER['DOCUMENT_ROOT'].$dir);
     sort($files);
     */
@@ -116,10 +123,14 @@
         //$pagination.='</div>';
 
     ?>
+    <div id="send_application_text" class="ml-2 mt-3 pl-1" style="display: none;">
+      <b>После заполнения данных нажмите кнопку «Предпросмотр» — откроется окно, в котором вы можете проверить информацию и отправить заявление служащим ПВОМ кнопкой «Отправить».</b>
+    </div>
     <div class="ml-2 mt-3 pl-1">
-    <button id="prev_step" type="button" class="btn btn-primary btn-sm mr-3">Назад</button>
-    <button id="next_step" type="button" class="btn btn-primary btn-sm mr-3">Далее</button>
-    <button id="send_application" type="button" class="btn btn-warning btn-sm" style="display: none;">Предпросмотр</button>
+      <button id="prev_step" type="button" class="btn btn-primary btn-sm mr-3">Назад</button>
+      <button id="next_step" type="button" class="btn btn-primary btn-sm mr-3">Далее</button>
+      <button type="button" id="toModalDeleteMyRequest" class="btn btn-danger btn-sm mr-3" data-toggle="modal" data-target="#modalDeleteMyRequest">Удалить</button>
+      <button id="send_application" type="button" class="btn btn-warning btn-sm" style="display: none;">Предпросмотр</button>
     </div>
     <?php
       echo $pagination;

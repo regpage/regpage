@@ -24,31 +24,17 @@ $member_categories = db_getCategories();
 <?php include_once 'components/ftt_main/menu_nav_ftt.php'; ?>
 <!-- раздел заявлений на ПВОМ -->
 <div class="container-xl" style="max-width: 1170px; margin-top: 10px; padding-bottom: 10px; background-color: white;">
-  <!-- Nav tabs -->
-  <ul class="nav nav-tabs">
-    <li class="nav-item" style="padding-right: 20px;">
-      <h3>Заявления для участия в обучении</h3>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link active" data-toggle="tab" href="#list_requests">Заявление</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#list_attendance">Посещаемость</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#list_others">Прочее</a>
-    </li>
-  </ul>
-  <div class="tab-content" style="padding-top: 20px;">
+
+  <div class="" style="padding-top: 20px;">
   <!-- TAB APPLICATION CONTAINER -->
-    <?php include_once 'components/ftt_page/applications_part.php'; ?>
+    <?php include_once 'components/ftt_application_list/applications_part.php'; ?>
 
 
   <!-- TAB ATTENDANCE CONTAINER -->
-     <?php include_once "components/ftt_page/attendance_part.php"; ?>
+     <?php include_once "components/ftt_application_list/attendance_part.php"; ?>
 
   <!-- TAB OTHER CONTAINER -->
-     <?php include_once "components/ftt_page/other_part.php"; ?>
+     <?php include_once "components/ftt_application_list/other_part.php"; ?>
   </div>
 </div>
 <script>

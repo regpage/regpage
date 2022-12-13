@@ -21,8 +21,8 @@ if(isset($_GET['locality_key']) && $_GET['type'] === 'get_country_by_locality') 
 }
 
 // Сохранение полей при заполнении заявления
-if(isset($_GET['type']) && $_GET['type'] === 'set') {    
-    echo json_encode(["result"=>setRequestField($adminId, $_GET['field'], $_GET['data'], $_GET['id'], $_GET['table'], $_GET['guest'])]);
+if(isset($_GET['type']) && $_GET['type'] === 'set') {
+    echo json_encode(["result"=>setRequestField($adminId, $_GET['field'], $_POST['data'], $_GET['id'], $_GET['table'], $_GET['guest'])]);
     exit();
 }
 

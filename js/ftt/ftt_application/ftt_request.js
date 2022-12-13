@@ -424,6 +424,9 @@ if (getCookie("application_check") === '1') {
 
   // быстрое сохранение полей ТЕКСТОВЫЕ ПОЛЯ
   function quickly_save_input(element) {
+    if ($("#main_container").attr("data-status") > 1) {
+      return;
+    }
     if (element.attr("id") === "point_driver_license") {
       point_driver_license ();
     }
@@ -504,7 +507,11 @@ if (getCookie("application_check") === '1') {
         showSaveIcon();
       });
     } else {
-      fetch("ajax/ftt_request_ajax.php?type=set&table="+table+"&field="+field+"&data="+value+"&id="+id+"&guest="+is_guest)
+      let formData = new FormData();
+      formData.append('data', value);
+      fetch("ajax/ftt_request_ajax.php?type=set&table="+table+"&field="+field+"&data="+value+"&id="+id+"&guest="+is_guest, {
+					method: 'POST',
+					body: formData})
       .then(response => response.json())
       .then(result => {
         console.log(result.result);
@@ -649,7 +656,7 @@ if (getCookie("application_check") === '1') {
     // variables
     let formData = new FormData();
     let element = $(this);
-    let field = $(this).data('field');
+    let field = $(this).attr('data-field');
     let id;
     let is_guest = $("#main_container").attr("data-guest");
     let next_blob = "";
@@ -693,7 +700,7 @@ if (getCookie("application_check") === '1') {
       .then(response => response.json())
       .then(result => {
         if (field === "passport_scan") {
-          element.parent().parent().next().find("img").each(function (e) {
+          element.parent().parent().find("img").each(function (e) {
           $(this).attr("src",result.result[e]);
           $(this).parent().attr("href",result.result[e]);
           if (result.result[e]) {
@@ -754,6 +761,9 @@ if (getCookie("application_check") === '1') {
 
   // Удалние заявления из модального окна
   $("#btnMdlDeleteMyRequest").click(function () {
+    setCookie("wizard_step", 'wizard_step_1');
+    setCookie("application_prepare", '');
+    setCookie("application_check", '');
     let id = $("#main_container").attr("data-id");
     showSaveIcon(1);
     fetch("ajax/ftt_request_ajax.php?type=to_trash_request&id="+id)
@@ -924,8 +934,13 @@ if (getCookie("application_check") === '1') {
       if ($(this).parent().parent().parent().attr("required")) {
         let arr_radio = $(this).parent().parent().parent().find("input[type='radio']:checked");
         if (arr_radio.length === 0) {
-          $(this).parent().parent().parent().css("border-bottom","2px solid red");
-          has_error++;
+          if ($(this).attr("name") === "reg_document" && $("#point_citizenship_key").val() === "RU") {
+
+          } else {
+            showError("Заполните все обязательные поля!");
+            $(this).parent().parent().parent().css("border-bottom","2px solid red");
+            has_error++;
+          }
         }
       }
     });
@@ -962,14 +977,14 @@ if (getCookie("application_check") === '1') {
   });
   // Валидация
   $("#send_application").click(function (e) {
-    if (getCookie("application_prepare") !== "1") {
+    if ($(this).text() === "Предпросмотр") {
       setCookie("application_prepare", '1');
       setCookie("application_check", '1');
       setTimeout(function () {
         location.reload();
       }, 100);
     } else if (validationFields()) {
-      return;
+
     } else {
       $("#modalSendMyRequest").modal("show");
     }
@@ -1048,9 +1063,11 @@ if (getCookie("application_check") === '1') {
   function show_hide_buttons() {
     if (!$(".wizard_step:visible").next().hasClass("wizard_step")) {
       $("#send_application").show();
+      $("#send_application_text").show();
       $("#next_step").hide();
     } else if ($("#send_application").is(":visible")) {
       $("#send_application").hide();
+      $("#send_application_text").hide();
       $("#next_step").show();
     }
   }
@@ -1071,9 +1088,11 @@ if (getCookie("application_check") === '1') {
 
   // быстрое заполнение полей
   $(".set_no").click(function () {
-    $(this).prev().prev().val($(this).text());
-    $(this).hide();
-    quickly_save_input($(this).prev().prev());
+    if (!$(this).prev().prev().attr("disabled")) {
+      $(this).prev().prev().val($(this).text());
+      $(this).hide();
+      quickly_save_input($(this).prev().prev());
+    }
   });
 
 }); // END document ready

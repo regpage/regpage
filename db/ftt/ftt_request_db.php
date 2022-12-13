@@ -130,7 +130,8 @@ function db_deleteRequest($id) {
 }
 // отправить заявление в корзину
 function db_setTrashForRequest($id) {
-  $res = db_query("UPDATE ftt_request SET `notice` = 2 WHERE `id` = '$id'");
+  $res = db_query("DELETE FROM ftt_request WHERE `id` = '$id'");
+  //$res = db_query("UPDATE ftt_request SET `notice` = 2 WHERE `id` = '$id'");
 
   return $res;
 }

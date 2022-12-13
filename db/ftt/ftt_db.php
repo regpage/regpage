@@ -26,7 +26,7 @@ function db_getAllRequests ($adminId, $role, $guest){
     INNER JOIN member m ON m.key = fr.member_key
     INNER JOIN locality l ON l.key = m.locality_key
     INNER JOIN ftt_interview fi ON fi.request_id = fr.id
-    WHERE fr.notice < 2 {$condition} ");
+    WHERE fr.request_status > 1 {$condition} ");
     while ($row = $res->fetch_assoc()) $result[]=$row;
     // для коректного запроса все ключевые поля для выборки из присоединяемых таблиц должны быть заполнены
 
