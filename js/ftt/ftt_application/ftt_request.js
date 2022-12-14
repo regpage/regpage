@@ -424,7 +424,7 @@ if (getCookie("application_check") === '1') {
 
   // быстрое сохранение полей ТЕКСТОВЫЕ ПОЛЯ
   function quickly_save_input(element) {
-    if ($("#main_container").attr("data-status") > 1) {
+    if ($("#main_container").attr("data-status") > 1 && window.adminId === $("#point_member_key").attr("data-value")) {
       return;
     }
     if (element.attr("id") === "point_driver_license") {
@@ -442,7 +442,7 @@ if (getCookie("application_check") === '1') {
     let value = element.val();
     //value = value.replace(/\'/g, "\_");
     value = value.replace(/\"/g, "\'");
-    let prev_value = element.data("value");
+    let prev_value = element.attr("data-value");
     let id = $("#main_container").attr("data-id");
     let is_guest = $("#main_container").attr("data-guest");
     let prepare = "";
@@ -508,7 +508,7 @@ if (getCookie("application_check") === '1') {
       });
     } else {
       let formData = new FormData();
-      formData.append('data', value);
+      formData.append('data_post', value);
       fetch("ajax/ftt_request_ajax.php?type=set&table="+table+"&field="+field+"&data="+value+"&id="+id+"&guest="+is_guest, {
 					method: 'POST',
 					body: formData})
@@ -1002,6 +1002,8 @@ if (getCookie("application_check") === '1') {
           blockApplicationFields();
           $("#main_container").attr("data-status", "2");
           $("#back_to_master").hide();
+          $("#toModalDeleteMyRequest").hide();
+          $("#send_application").hide();
           showHint("Заявление отправлено служащим Полновременного обучения в Москве.");
         }
       });
@@ -1012,7 +1014,10 @@ if (getCookie("application_check") === '1') {
         if (data) {
           blockApplicationFields();
           $("#main_container").attr("data-status", "3");
-          showHint("Заявление отправлено служащим Полновременного обучения в Москве.");
+          $("#back_to_master").hide();
+          $("#toModalDeleteMyRequest").hide();
+          $("#send_application").hide();
+          showHint("Заявление отправлено служащим Полновременного обучения в Москве. ????");
         }
       });
     }
@@ -1094,5 +1099,9 @@ if (getCookie("application_check") === '1') {
       quickly_save_input($(this).prev().prev());
     }
   });
-
+  // Раздел служащие
+  $(".serviceone_block input").attr("disabled", false);
+  $(".serviceone_block select").attr("disabled", false);
+  $(".serviceone_block textarea").attr("disabled", false);
+  $(".serviceone_block checkbox").attr("disabled", false);
 }); // END document ready

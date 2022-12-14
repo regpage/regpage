@@ -25,6 +25,18 @@ class ftt_lists {
 
       return $result;
   }
+  // братья
+  static function serving_ones_brothers()  {
+    $result = [];
+
+    $res = db_query("SELECT fso.member_key, m.key, m.name, m.male
+      FROM ftt_serving_one fso
+      INNER JOIN member m ON m.key = fso.member_key
+      WHERE m.male = 1 ORDER BY m.name");
+      while ($row = $res->fetch_assoc()) $result[$row['key']]=short_name::no_middle($row['name']);
+
+      return $result;
+  }
 
   static function serving_ones_full()  {
     $result = [];

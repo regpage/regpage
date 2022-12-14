@@ -2,7 +2,7 @@
 // Функции для работы с БД
 include_once "db/ftt/ftt_request_db.php";
 include_once "components/ftt_blocks/FTTRenderPoints.php";
-
+include_once 'db/classes/ftt_lists.php';
 /**** Р О Л И  ****/
 /*
 $hasMemberRightToSeePage = db_isAdmin($memberId);
@@ -20,7 +20,8 @@ $applicant;
 // Дающий рекомендация
 $serviceone_role = -1;
 // ключ служащего
-$serviceones_pvom;
+$serviceones_pvom = ftt_lists::serving_ones();
+$serviceones_pvom_brothers = ftt_lists::serving_ones_brothers();
 
 // Заявитель или служащий (то есть не заявитель)
 // если служащий
@@ -43,13 +44,11 @@ if (isset($_GET['member_key']) && $_GET['member_key'] !== $memberId) { // Есл
     $serviceone_role = 2;
   } else {
     // Получаем служащих по зоне ПВОМ
-    // НУЖНА ФУНКЦИЯ ДЛЯ ПОЛУЧЕНИЕ СЛУЖАЩИХ БРАТЬЕВ НА ПВОМ
-    /*foreach ( SOME_VAR as $key => $value) {
-      if ($memberId === $key) {
-        $serviceones_pvom[$key] = $value;
+    foreach ($serviceones_pvom as $key => $value) {
+      if ($memberId === $key || $memberId === '000001679' || $memberId === '000005716') {
         $serviceone_role = 3;
       }
-    }*/
+    }
   }
 } else { // Если не указан ключ участника // Если заявитель
   $applicant = 1;
@@ -64,6 +63,7 @@ if (isset($_GET['member_key']) && $_GET['member_key'] !== $memberId) { // Есл
 }
 
 // Проверка доступа
+
 if ($serviceone_role === -1) {
   ?>
   <div><br><br><br><h5>Заявление не найдено</h5><a href="index">ВЕРНУТЬСЯ НА ГЛАВНУЮ</a></div>

@@ -86,11 +86,15 @@ function getStartMemberData($adminId) {
 }
 
 // обновить данные переданного поля в заявлении переданными данными
-function setRequestField($adminId, $field, $data, $id, $table, $isGuest, $blob=false) {
+function setRequestField($adminId, $field, $data, $id, $table, $isGuest, $blob=false, $data_post=false) {
   global $db;
   $adminId = $db->real_escape_string($adminId);
   $field = $db->real_escape_string($field);
-  $data = $db->real_escape_string($data);
+  if ($data_post) {
+    $data = $db->real_escape_string($data_post);
+  } else {
+    $data = $db->real_escape_string($data);
+  }
   $id = $db->real_escape_string($id);
   $table = $db->real_escape_string($table);
   $isGuest = $db->real_escape_string($isGuest);

@@ -1,17 +1,7 @@
 <?php
- # РАЗДЕЛ НЕ ИСПОЛЬЗУЕСТСЯ
-include_once "header2.php";
-include_once "nav2.php";
-include_once "db/ftt/ftt_db.php";
-
-// Проверка прав пользователя.
-// служащий ПВОМ
-$accessToPage = 0;
-// Права
-include_once "db/modules/ftt_page_access.php";
-
+include_once 'components/ftt_application_list/var_part.php';
 if($accessToPage > 0) { //!$hasMemberRightToSeePage &&
-  // всем привет!
+
 } else {
   echo '<h1 style="margin-top: 70px; margin-left: 70px;">Пожалуйста, выберите другой раздел.</h1>';
   die();
@@ -27,30 +17,11 @@ $member_categories = db_getCategories();
 
   <div class="" style="padding-top: 20px;">
   <!-- TAB APPLICATION CONTAINER -->
-    <?php include_once 'components/ftt_application_list/applications_part.php'; ?>
-
-
-  <!-- TAB ATTENDANCE CONTAINER -->
-     <?php include_once "components/ftt_application_list/attendance_part.php"; ?>
-
-  <!-- TAB OTHER CONTAINER -->
-     <?php include_once "components/ftt_application_list/other_part.php"; ?>
+    <?php include_once 'components/ftt_application_list/applications_part.php'; ?>  
   </div>
 </div>
-<script>
-  let data_page = {};
-  // get admin ID
-  data_page.admin_id = <?php echo $memberId; ?>;
-  // get members category
-  data_page.category = {
-  <?php foreach ($member_categories as $key => $value) { ?>
-    "<?php echo $key; ?>":"<?php echo $value; ?>",
-  <?php } ?>
-};
-</script>
-
-<script src="js/ftt/ftt_application/ftt.js?v1"></script>
 
 <?php
+include_once "components/ftt_application_list/js_part.php";
 include_once "footer2.php";
 ?>

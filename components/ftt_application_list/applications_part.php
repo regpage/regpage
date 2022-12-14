@@ -1,6 +1,6 @@
-<div id="list_requests" class="container tab-pane active" style="padding-top: 20px; background-color: white;" data-role="<?php echo $accessToPage; ?>">
+<div id="list_requests" class="container tab-pane active" style="background-color: white;" data-role="<?php echo $accessToPage; ?>">
 <!-- МЕНЮ СПИСКА ЗАЯВЛЕНИЙ -->
-<?php include_once 'menu_applications_part.php'; ?>
+<?php // include_once 'menu_applications_part.php'; ?>
   <!-- Список заявлений -->
 <div class="row align-center">
   <div class="col">

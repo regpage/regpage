@@ -6,7 +6,9 @@
   {
     static function rendering ($list, $seleted_option = 'missing', $extra_first_option = '', $same_value = false)
     {
-      if ($extra_first_option) {
+      if ($extra_first_option === '_none_') {
+        echo "<option value='_none_'></option>";
+      } elseif ($extra_first_option) {
         echo "<option value='_all_'>{$extra_first_option}</option>";
       }
       foreach ($list as $key => $value) {
