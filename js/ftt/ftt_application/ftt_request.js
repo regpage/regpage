@@ -759,7 +759,17 @@ if (getCookie("application_check") === '1') {
     });
   });
 
-  // Удалние заявления из модального окна
+
+
+  $("#toModalDeleteMyRequest").click(function (e) {
+    if ($("#main_container").attr("data-status") && $("#main_container").attr("data-status") !== "0") {
+      e.stopPropagation();
+      e.preventDefault();
+      showError("Удаление заявления доступно только в статусе «Черновик». По всем вопросам обращайтесь через чат в правом нижнем углу страницы.");
+      return;
+    }
+  });
+    // Удалние заявления из модального окна
   $("#btnMdlDeleteMyRequest").click(function () {
     setCookie("wizard_step", 'wizard_step_1');
     setCookie("application_prepare", '');
@@ -1002,9 +1012,12 @@ if (getCookie("application_check") === '1') {
           blockApplicationFields();
           $("#main_container").attr("data-status", "1");
           $("#back_to_master").hide();
-          $("#toModalDeleteMyRequest").hide();
+          //$("#toModalDeleteMyRequest").hide();
           $("#send_application").hide();
           showHint("Заявление отправлено служащим Полновременного обучения в Москве.");
+          /*setTimeout(function () {
+            location.reload();
+          }, 1500);*/
         }
       });
     } else if (data_page.role === "1") { // recommendator
@@ -1015,7 +1028,7 @@ if (getCookie("application_check") === '1') {
           blockApplicationFields();
           $("#main_container").attr("data-status", "3");
           $("#back_to_master").hide();
-          $("#toModalDeleteMyRequest").hide();
+          //$("#toModalDeleteMyRequest").hide();
           $("#send_application").hide();
           showHint("Заявление отправлено служащим Полновременного обучения в Москве. ????");
         }

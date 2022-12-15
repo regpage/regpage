@@ -170,7 +170,7 @@ function db_getPicForRequest($id, $field) {
 }
 
 // Задаём статус ОТПРАВЛЕНО
-function db_setStatusRequestToSent($id, $status = 2) {
+function db_setStatusRequestToSent($id, $status = 1) {
   global $db;
   $id = $db->real_escape_string($id);
   $status = $db->real_escape_string($status);

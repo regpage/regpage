@@ -212,7 +212,7 @@ $status_application_label = '<span class="badge badge-secondary">чернови�
 if ($request_data['stage'] > 0) {
   $status_phrase = "Заявление отправлено служащим Полновременного обучения в Москве {$request_data['send_date']}.";
 } elseif ($request_data['stage'] == 0) {
-  $status_phrase = getValueFttParamByName('request_bottom');
+  $status_phrase = '';
 }
 
 //Label

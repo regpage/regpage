@@ -8,7 +8,7 @@ function blockApplicationFields() {
   $("input").attr("disabled","disabled");
   $("select").attr("disabled","disabled");
   $("textarea").attr("disabled","disabled");
-  $("#toModalDeleteMyRequest").attr("disabled","disabled");
+  //$("#toModalDeleteMyRequest").attr("disabled","disabled");
   $("#toModalSendMyRequest").attr("disabled","disabled");
   $("#btnMdlSendMyRequest").attr("disabled","disabled");
   $("#btnMdlDeleteMyRequest").attr("disabled","disabled");
@@ -39,7 +39,9 @@ if (!data_page.applicant) {
     $(".serviceone_block select").attr("disabled",false);
     $(".serviceone_block textarea").attr("disabled",false);
   }
-} else if (data_page.applicant && ($("#main_container").attr("data-status") === "1" || $("#main_container").attr("data-status") === "")) {
+} else if (data_page.applicant && ($("#main_container").attr("data-status") === "1")) {
+  blockApplicationFields();
+} else if (data_page.applicant && ($("#main_container").attr("data-status") === "0")) {
   // разблокировано
 } else {
   blockApplicationFields();

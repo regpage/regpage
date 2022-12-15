@@ -9,7 +9,10 @@
       </h6>
     </div>
     <div class="col-3">
-      <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalStartInfo">Информация</button>
+      <button type="button" class="btn btn-primary btn-sm mr-3" data-toggle="modal" data-target="#modalStartInfo">Информация</button>
+      <?php if ($memberId === $request_data['member_key']): ?>
+        <button type="button" id="toModalDeleteMyRequest" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalDeleteMyRequest"><i class="fa fa-trash" aria-hidden="true"></i></button>
+      <?php endif; ?>
     </div>
     <?php if (!empty($request_data['member_key']) && $memberId != $request_data['member_key']): ?>
     <div class="col-1">
@@ -41,12 +44,10 @@
     /*if (!$applicant) {
       include_once "components/ftt_application_page/service_part.php";
     }*/
+    echo "<div class='ml-2 pl-1'>{$status_phrase}</div>";
     echo '<div class="ml-2 mt-3 pl-1">';
     if ($request_data['stage'] < 1) {
       echo '<button id="back_to_master" type="button" class="btn btn-primary btn-sm mr-3">Вернуться</button>';
-    }
-    if ($request_data['stage'] < 1 && $memberId === $request_data['member_key']) {
-      echo '<button type="button" id="toModalDeleteMyRequest" class="btn btn-danger btn-sm mr-3" data-toggle="modal" data-target="#modalDeleteMyRequest">Удалить</button>';
     }
     if ($request_data['stage'] < 1) {
       echo '<button id="send_application" type="button" class="btn btn-success btn-sm">Отправить</button>';
@@ -124,12 +125,11 @@
 
     ?>
     <div id="send_application_text" class="ml-2 mt-3 pl-1" style="display: none;">
-      <b>После заполнения данных нажмите кнопку «Предпросмотр» — откроется окно, в котором вы можете проверить информацию и отправить заявление служащим ПВОМ кнопкой «Отправить».</b>
+      <b><?php echo getValueFttParamByName('request_bottom'); ?></b>
     </div>
     <div class="ml-2 mt-3 pl-1">
       <button id="prev_step" type="button" class="btn btn-primary btn-sm mr-3">Назад</button>
       <button id="next_step" type="button" class="btn btn-primary btn-sm mr-3">Далее</button>
-      <button type="button" id="toModalDeleteMyRequest" class="btn btn-danger btn-sm mr-3" data-toggle="modal" data-target="#modalDeleteMyRequest">Удалить</button>
       <button id="send_application" type="button" class="btn btn-warning btn-sm" style="display: none;">Предпросмотр</button>
     </div>
     <?php
