@@ -8,7 +8,7 @@
   </strong></div>
 </div>
 <div class="row recommendation_block">
-  <div class="col"><span>Ответственный за рекомендацию: </span><input type="text" class="input-request" data-field="recommendation_name" data-value="<?php echo $request_data['recommendation_name']; ?>" value="<?php echo $recommendation_name; ?>"></div>  
+  <div class="col"><span>Ответственный за рекомендацию: </span><input type="text" class="input-request" data-field="recommendation_name" data-value="<?php echo $request_data['recommendation_name']; ?>" value="<?php echo $recommendation_name; ?>"></div>
 </div>
 <div class="row recommendation_block">
   <div class="col"><span>Мы рекомендуем этого кандидата: </span>
@@ -40,29 +40,29 @@
   <div class="col">
     <select class="" name="">
       <option value="1" <?php
-      if ($request_data['request_status'] === "1") { ?>
+      if ($request_data['stage'] === "1") { ?>
         selected
       <?php } ?>>черновик</option>
       <option value="2" <?php
-      if ($request_data['request_status'] === "2") { ?>
+      if ($request_data['stage'] === "2") { ?>
         selected
       <?php } ?>>на рассмотрении</option>
       <option value="3" <?php
-      if ($request_data['request_status'] === "3") { ?>
+      if ($request_data['stage'] === "3") { ?>
       selected
       <?php } ?>>на собеседовании</option>
       <option value="4" <?php
-      if ($request_data['request_status'] === "4") { ?>
+      if ($request_data['stage'] === "4") { ?>
         selected
       <?php } ?>>на согласовании</option>
       <option value="5" <?php
-      if ($request_data['request_status'] === "5") { ?>
+      if ($request_data['stage'] === "5") { ?>
         selected
       <?php } ?>>решение принято</option>
     </select>
     </div>
   </div>
-  <!--<div class="col"><span>Статус заявления: </span><input type="text" class="input-request" data-field="request_status" data-value="<?php echo $request_data['request_status']; ?>" value="<?php echo $request_data['request_status']; ?>"></div>
+  <!--<div class="col"><span>Статус заявления: </span><input type="text" class="input-request" data-field="stage" data-value="<?php echo $request_data['stage']; ?>" value="<?php echo $request_data['stage']; ?>"></div>
 </div>-->
 <?php if ($serviceone_role === 3): ?>
 <h2>Служащие ПВОМ:</h2>

@@ -28,7 +28,7 @@ function blockApplicationFields() {
 if (!data_page.applicant) {
   // Блокируем если просматривает не заявитель
   blockApplicationFields();
-  $('button[data-target="#modalStartInfo"]').hide();
+  //$('button[data-target="#modalStartInfo"]').hide();
   // разблокировка данных для рекомендатора и служащих
   if (data_page.role === "1" && $("#main_container").attr("data-status") === "2") { // разблокировка данных для рекомендатора
     $(".recommendation_block input").attr("disabled",false);

@@ -29,7 +29,7 @@ function getMemberData($adminId) {
     fr.health_condition, fr.health_problems, fr.known_to, fr.request_info, fr.passport_scan, fr.passport_scan_2, fr.passport_scan_3, fr.questions,
     fr.agreement, fr.candidate_signature,
     fr.send_date, fr.recommendation_name, fr.recommendation_status, fr.recommendation_info, fr.recommendation_signature,
-    fr.recommendation_date, fr.request_status, fr.decision, fr.decision_info, fr.decision_date, fr.notice, fr.inn,
+    fr.recommendation_date, fr.stage, fr.decision, fr.decision_info, fr.decision_date, fr.notice, fr.inn,
     fr.skills, fr.right_handed,
     fr.health_question1, fr.health_question2, fr.health_question3, fr.health_question4, fr.health_question5,
     fr.health_question6, fr.health_question7, fr.health_question8, fr.health_question9, fr.health_question10, fr.health_question11, fr.health_question12, fr.health_question13, fr.health_question14, fr.health_question15,
@@ -102,8 +102,11 @@ function setRequestField($adminId, $field, $data, $id, $table, $isGuest, $blob=f
 
   if ($table === 'member') {
     $id_field = 'key';
+    $changed_one = ", `changed` = '1'";
+    //$changed_one = '';
   } else {
     $id_field = 'id';
+    $changed_one = '';
   }
   // дополнительные фотки
   if ($blob == 1) {
@@ -111,11 +114,11 @@ function setRequestField($adminId, $field, $data, $id, $table, $isGuest, $blob=f
   } elseif ($blob == 2) {
     $field .= '_3';
   }
-  //write_to_log::debug($adminId, "ПВОМ. Получены данные {$field} & {$data} & {$id} для обновления строк таблицы заявлений.");
+  //write_to_log::debug($adminId, "ПВОМ. Получены данные {$field} & {$data} & {$id} для обновления строк таблицы заявлений.");$changed_one
   if ($id) {
-    $res = db_query("UPDATE $table SET `$field` = '$data' WHERE  `$id_field` = '$id'");
+    $res = db_query("UPDATE $table SET `$field` = '$data' $changed_one  WHERE  `$id_field` = '$id'");
   } else {
-    db_query("INSERT INTO $table (`$field`, `member_key`, `guest`, `request_status`) VALUES ('$data', '$adminId', '$isGuest', '1')");
+    db_query("INSERT INTO $table (`$field`, `member_key`, `guest`, `stage`) VALUES ('$data', '$adminId', '$isGuest', '1')");
     $res2 = db_query("SELECT MAX(id) AS maxid FROM $table");
     while ($row = $res2->fetch_assoc()) $res=$row['maxid'];
 
@@ -175,7 +178,7 @@ function db_setStatusRequestToSent($id, $status = 2) {
   if ($status == 3) {
     $date = 'recommendation_date';
   }
-  $res = db_query("UPDATE ftt_request SET `request_status` = '$status', `$date` = NOW() WHERE `id` = '$id'");
+  $res = db_query("UPDATE ftt_request SET `stage` = '$status', `$date` = NOW() WHERE `id` = '$id'");
 }
 
 

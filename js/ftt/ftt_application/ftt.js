@@ -25,9 +25,9 @@ $(document).ready(function() {
      for (var i = 0; i < list.length; i++) {
        // подготавливаем данные
        let request_status = "";
-       if (list[i].request_status == 1) {
+       if (list[i].stage == 0) {
          request_status = "Черновик";
-       } else if (list[i].request_status == 2) {
+       } else if (list[i].stage > 0 ) {
          request_status = "Отправлен";
        }
        //Рендорим список

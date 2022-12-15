@@ -19,14 +19,14 @@ function db_getAllRequests ($adminId, $role, $guest){
   }
     $result = [];
 //fr.interview_name, fr.interview_status, fr.interview_info,  fr.interview_meetings, fr.interview_apprehension, fr.interview_coordination, fr.interview_signature, fr.interview_date,
-    $res=db_query ("SELECT fr.id as fr_id, fr.member_key, fr.request_date, fr.request_status, fr.notice, fr.send_date, fr.decision,
+    $res=db_query ("SELECT fr.id as fr_id, fr.member_key, fr.request_date, fr.stage, fr.notice, fr.send_date, fr.decision,
       m.name, m.male, m.locality_key, m.cell_phone, m.email, m.category_key, l.name AS locality_name,
       fi.interview_name
     FROM ftt_request AS fr
     INNER JOIN member m ON m.key = fr.member_key
     INNER JOIN locality l ON l.key = m.locality_key
     INNER JOIN ftt_interview fi ON fi.request_id = fr.id
-    WHERE fr.request_status > 1 {$condition} ");
+    WHERE fr.stage > 1 {$condition} ");
     while ($row = $res->fetch_assoc()) $result[]=$row;
     // для коректного запроса все ключевые поля для выборки из присоединяемых таблиц должны быть заполнены
 

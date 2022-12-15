@@ -66,7 +66,7 @@ if (getCookie("application_check") === '1') {
   if (!getCookie("hide_info")) {
     $("#modalStartInfo").modal().show();
   } else {
-    $("#modalStartInfo").find("button").text("Закрыть");
+    //$("#modalStartInfo").find("button").text("Закрыть");
     $("#donotshowmethat").prop("checked", true);
   }
 
@@ -424,7 +424,7 @@ if (getCookie("application_check") === '1') {
 
   // быстрое сохранение полей ТЕКСТОВЫЕ ПОЛЯ
   function quickly_save_input(element) {
-    if ($("#main_container").attr("data-status") > 1 && window.adminId === $("#point_member_key").attr("data-value")) {
+    if ($("#main_container").attr("data-status") > 0 && window.adminId === $("#point_member_key").attr("data-value")) {
       return;
     }
     if (element.attr("id") === "point_driver_license") {
@@ -1000,7 +1000,7 @@ if (getCookie("application_check") === '1') {
       .then(data => {
         if (data) {
           blockApplicationFields();
-          $("#main_container").attr("data-status", "2");
+          $("#main_container").attr("data-status", "1");
           $("#back_to_master").hide();
           $("#toModalDeleteMyRequest").hide();
           $("#send_application").hide();

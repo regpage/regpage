@@ -71,7 +71,7 @@ class FttRenderpoints {
         $other['display_condition'] = $points[$i]['display_condition'];
         $other['maxlength'] = $points[$i]['value_type'];
         $other['no_button'] = $points[$i]['no_button'];
-        $other['status'] = $data['request_status'];
+        $other['status'] = $data['stage'];
         echo self::field($points[$i]['display_type'],'point_', $data_value, $db_field, $points[$i]['required'], $other);
         echo "</div>";
         /*$string_data = '';

@@ -7,13 +7,19 @@
       <div class="modal-header">
         <h5 id="universalInfoTitle">Информация</h5>
       </div>
-      <div class="modal-body"><div id="universalInfoText"><?php echo getValueFttParamByName("request_candidate_info"); ?></div></div>
+      <div class="modal-body"><div id="universalInfoText"><?php
+       if ($serviceone_role > 0) {
+        echo getValueFttParamByName("request_interview_info");
+       } else {
+        echo getValueFttParamByName("request_candidate_info");
+       }
+       ?></div></div>
       <div class="modal-footer">
         <div class="">
           <input type="checkbox" id="donotshowmethat" class="input-request" value="">
-          <label title="Этот раздел также доступен в пункте справка." for="donotshowmethat">  не показывать при открытии заявления </label>
+          <label title="Этот раздел также доступен в пункте справка." for="donotshowmethat">  больше не показывать эту страницу </label>
         </div>
-        <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true">Прочитано</button>
+        <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true">Продолжить</button>
       </div>
     </div>
   </div>
@@ -30,7 +36,7 @@
       <div class="modal-body">
         <h5>Удалить заявление?</h5>
       </div>
-      <div class="modal-footer pb-2 pl-2 pt-2 pr-2">        
+      <div class="modal-footer pb-2 pl-2 pt-2 pr-2">
         <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true">ОТМЕНА</button>
         <button class="btn btn-sm btn-danger" id="btnMdlDeleteMyRequest" data-dismiss="modal" aria-hidden="true">УДАЛИТЬ</button>
       </div>

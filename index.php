@@ -176,19 +176,22 @@ else if (isset ($_SESSION["logged-in"])){
               $isExistrRequest = $requestData['guest'];
             }
             if ($requestData !== 'does not exist') {
-              if ($requestData['request_status'] === '1') {
+              if ($requestData['stage'] === '0') {
                 $request_status = 'Черновик';
-                $label_class = 'label-primary';
-              } elseif ($requestData['request_status'] === '2') {
+                $label_class = 'label-secondary';
+              } elseif ($requestData['stage'] === '2') {
                 $request_status = 'На рассмотрении';
                 $label_class = 'label-warning';
-              } elseif ($requestData['request_status'] === '3') {
-                $request_status = 'На собеседовании';
-                $label_class = 'label-info';
-              } elseif ($requestData['request_status'] === '4') {
-                $request_status = 'На согласовании';
-                $label_class = 'label-danger';
-              } elseif ($requestData['request_status'] === '5') {
+              } elseif ($requestData['stage'] === '3') {
+                $request_status = 'На рассмотрении';
+                $label_class = 'label-warning';
+              } elseif ($requestData['stage'] === '4') {
+                $request_status = 'На рассмотрении';
+                $label_class = 'label-warning';
+              } elseif ($requestData['stage'] === '5') {
+                $request_status = 'На рассмотрении';
+                $label_class = 'label-warning';
+              } elseif ($requestData['stage'] === '6') {
                 $request_status = 'Решение принято';
                 $label_class = 'label-success';
               }

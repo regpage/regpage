@@ -307,7 +307,7 @@ function isExistrRequest($adminId) {
   $adminId = $db->real_escape_string($adminId);
 
   $request;
-  $res=db_query("SELECT `id`, `member_key`, `guest`, `request_status`, `notice` FROM ftt_request WHERE `member_key` = '$adminId' AND `notice` <> 2 ORDER BY `id`");
+  $res=db_query("SELECT `id`, `member_key`, `guest`, `stage`, `notice` FROM ftt_request WHERE `member_key` = '$adminId' AND `notice` <> 2 ORDER BY `id`");
   while ($row = $res->fetch_assoc()) $request=$row;
 
   if (isset($request['member_key'])) {

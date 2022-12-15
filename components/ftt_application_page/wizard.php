@@ -18,7 +18,7 @@
     <?php endif; ?>
   </div>
   <!-- БЛОК ЗАЯВЛЕНИЯ -->
-  <?php if ($application_prepare === '1' || $request_data['request_status'] > 1) {
+  <?php if ($application_prepare === '1' || $request_data['stage'] > 0) {
     // ПРЕДОСМОТР И ОТПРАВКА
     // Панель кнопок
     //include_once "components/ftt_application_page/btn_bar_part.php";
@@ -42,13 +42,13 @@
       include_once "components/ftt_application_page/service_part.php";
     }*/
     echo '<div class="ml-2 mt-3 pl-1">';
-    if ($request_data['request_status'] < 2) {
+    if ($request_data['stage'] < 1) {
       echo '<button id="back_to_master" type="button" class="btn btn-primary btn-sm mr-3">Вернуться</button>';
     }
-    if ($request_data['request_status'] < 2 && $memberId === $request_data['member_key']) {
+    if ($request_data['stage'] < 1 && $memberId === $request_data['member_key']) {
       echo '<button type="button" id="toModalDeleteMyRequest" class="btn btn-danger btn-sm mr-3" data-toggle="modal" data-target="#modalDeleteMyRequest">Удалить</button>';
     }
-    if ($request_data['request_status'] < 2) {
+    if ($request_data['stage'] < 1) {
       echo '<button id="send_application" type="button" class="btn btn-success btn-sm">Отправить</button>';
     }
     echo '</div>';
