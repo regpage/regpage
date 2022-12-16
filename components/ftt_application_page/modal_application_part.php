@@ -8,7 +8,8 @@
         <h5 id="universalInfoTitle">Информация</h5>
       </div>
       <div class="modal-body"><div id="universalInfoText"><?php
-       if ($serviceone_role > 0) {
+       if ($serviceone_role === 3 ) {
+        echo getValueFttParamByName("request_recommend_info");
         echo getValueFttParamByName("request_interview_info");
        } else {
         echo getValueFttParamByName("request_candidate_info");

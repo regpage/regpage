@@ -1,27 +1,20 @@
 <?php
-// Функции для работы с БД
+// Функции для работы с БД и классы
 include_once "db/ftt/ftt_request_db.php";
 include_once "components/ftt_blocks/FTTRenderPoints.php";
 include_once 'db/classes/ftt_lists.php';
-/**** Р О Л И  ****/
-/*
-$hasMemberRightToSeePage = db_isAdmin($memberId);
-*/
 
-// BEGIN VERSION 2
-$points = db_getRequestPoints();
-// END VERSION 2
+/**** Р О Л И  ****/
 // Массив с данными заявления
 $request_data;
 // Ключ заявителя
 $member_key;
 // Заявитель
 $applicant;
-// Дающий рекомендация
+// Рекомендатор, служащий ПВОМ, собеседующий.
 $serviceone_role = -1;
-// ключ служащего
+// Списки служащих ПВОМ
 $serviceones_pvom = ftt_lists::serving_ones();
-$serviceones_pvom_brothers = ftt_lists::serving_ones_brothers();
 
 // Заявитель или служащий (то есть не заявитель)
 // если служащий
@@ -66,7 +59,7 @@ if (isset($_GET['member_key']) && $_GET['member_key'] !== $memberId) { // Есл
 
 if ($serviceone_role === -1) {
   ?>
-  <div><br><br><br><h5>Заявление не найдено</h5><a href="index">ВЕРНУТЬСЯ НА ГЛАВНУЮ</a></div>
+  <div><br><br><br><h5>Страница не найдена</h5><a href="index">ВЕРНУТЬСЯ НА ГЛАВНУЮ</a></div>
   <?php
   die();
 }
@@ -77,6 +70,24 @@ if ((!$request_data['fr_id'] && isset($_GET['guest'])) || $request_data['guest']
   $is_guest = 1;
 }
 
+/**** ДАННЫЕ ****/
+// Вопросы
+$points = db_getRequestPoints();
+
+/**** СПИСКИ ****/
+// служащие братья на ПВОМ
+$serviceones_pvom_brothers = ftt_lists::serving_ones_brothers();
+
+// Get countries
+$countries1 = db_getCountries(true);
+$countries2 = db_getCountries(false);
+
+// Get localities
+$gl_localities = db_getLocalities();
+
+// END VERSION 2
+
+// START REFACTORING
 /**** Д О П.   Д А Н Н Ы Е ****/
 // ФИО рекомендатора
 if ($request_data['recommendation_name']) {
@@ -86,14 +97,6 @@ if ($request_data['recommendation_name']) {
 if ($request_data['interview_name']) {
   $interview_name = db_getAdminNameById($request_data['interview_name']);
 }
-
-
-// Get countries
-$countries1 = db_getCountries(true);
-$countries2 = db_getCountries(false);
-
-// Get localities
-$gl_localities = db_getLocalities();
 
 // Payment data
 $ftt_monthly_pay = getValueFttParamByName('monthly_pay');
@@ -183,28 +186,6 @@ $status_application;
 $status_application_show = 'style="display: none;"';
 
 $gl_gender_candidate = $request_data['male'];
-
-if ($request_data['male'] == 1) {
-  $razveden = 'разведен';
-  $vdova = 'вдовец';
-  $suprug = 'супруги';
-  $who = 'Она';
-  $ego = 'её';
-  $verujuschiy = 'верующая';
-  $v_brake = 'женат';
-  $pomolvlen = 'помолвлен';
-  $vashego = 'вашей';
-} else {
-  $razveden = 'разведена';
-  $vdova = 'вдова';
-  $suprug = 'супруга';
-  $who = 'Он';
-  $ego = 'его';
-  $verujuschiy = 'верующий';
-  $v_brake = 'замужем';
-  $pomolvlen = 'помолвлена';
-  $vashego = 'вашего';
-}
 
 // статус в заголовке предосмотра
 $status_application_label = '<span class="badge badge-secondary">черновик</span>';

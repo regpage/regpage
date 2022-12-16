@@ -762,12 +762,17 @@ if (getCookie("application_check") === '1') {
 
 
   $("#toModalDeleteMyRequest").click(function (e) {
-    if ($("#main_container").attr("data-status") && $("#main_container").attr("data-status") !== "0") {
+    if ($("#main_container").attr("data-status") && $("#main_container").attr("data-status") !== "0" && data_page.role !== "3") {
       e.stopPropagation();
       e.preventDefault();
       showError("Удаление заявления доступно только в статусе «Черновик». По всем вопросам обращайтесь через чат в правом нижнем углу страницы.");
       return;
     }
+    if (data_page.role === "3") {
+      $("#modalDeleteMyRequest h5").text("Бланк заявления будет удалён безвозвратно. Продолжить?").css("background-color", "red").css("padding", "8px").addClass("rounded");
+      $("#btnMdlDeleteMyRequest").attr("disabled", false);
+    }
+
   });
     // Удалние заявления из модального окна
   $("#btnMdlDeleteMyRequest").click(function () {
@@ -1012,6 +1017,7 @@ if (getCookie("application_check") === '1') {
           blockApplicationFields();
           $("#main_container").attr("data-status", "1");
           $("#back_to_master").hide();
+          $(".badge-secondary").removeClass("badge-secondary").addClass("badge-warning").text("на рассмотрении");
           //$("#toModalDeleteMyRequest").hide();
           $("#send_application").hide();
           showHint("Заявление отправлено служащим Полновременного обучения в Москве.");

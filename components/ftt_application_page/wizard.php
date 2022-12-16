@@ -10,7 +10,10 @@
     </div>
     <div class="col-3">
       <button type="button" class="btn btn-primary btn-sm mr-3" data-toggle="modal" data-target="#modalStartInfo">Информация</button>
-      <?php if ($memberId === $request_data['member_key']): ?>
+      <?php if ($serviceone_role === 3): ?>
+        <button type="button" id="toEditMyRequest" class="btn btn-warning btn-sm mr-3"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+      <?php endif; ?>
+      <?php if ($memberId === $request_data['member_key'] || $serviceone_role === 3): ?>
         <button type="button" id="toModalDeleteMyRequest" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalDeleteMyRequest"><i class="fa fa-trash" aria-hidden="true"></i></button>
       <?php endif; ?>
     </div>

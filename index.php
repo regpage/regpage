@@ -179,6 +179,9 @@ else if (isset ($_SESSION["logged-in"])){
               if ($requestData['stage'] === '0') {
                 $request_status = 'Черновик';
                 $label_class = 'label-secondary';
+              } elseif ($requestData['stage'] === '1') {
+                $request_status = 'На рассмотрении';
+                $label_class = 'label-warning';
               } elseif ($requestData['stage'] === '2') {
                 $request_status = 'На рассмотрении';
                 $label_class = 'label-warning';
@@ -190,7 +193,7 @@ else if (isset ($_SESSION["logged-in"])){
                 $label_class = 'label-warning';
               } elseif ($requestData['stage'] === '5') {
                 $request_status = 'На рассмотрении';
-                $label_class = 'label-warning';
+                $label_class = 'label-success';
               } elseif ($requestData['stage'] === '6') {
                 $request_status = 'Решение принято';
                 $label_class = 'label-success';

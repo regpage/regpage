@@ -8,7 +8,7 @@
   </div>
   <!-- -->
   <div class="row serviceone_block text-white bg-info rounded mb-5">
-    <h2 class="pl-3 mb-1">Собеседование</h2>
+    <h2 class="pl-3 mb-1">Cлужащие ПВОМ</h2>
   </div>
   <!-- -->
   <div class="row serviceone_block">
