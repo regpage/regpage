@@ -614,6 +614,13 @@ if (getCookie("application_check") === '1') {
       console.log("does not require a request");
       return;
     }
+    // блоки рекомендации и собеседования
+    if ($(this).attr("id") === "point_need_recommend") {
+      $(this).prop("checked") ? $("#recommended_block").show() : $("#recommended_block").hide();
+    } else if ($(this).attr("id") === "point_need_interview") {
+      $(this).prop("checked") ? $("#interview_block").show() : $("#interview_block").hide();
+    }
+
     /*if (!$(this).is(":checked") && $(this).attr("id") !== "policy_agree") {
       console.log("Isn\'t checked");
       return;
@@ -790,7 +797,12 @@ if (getCookie("application_check") === '1') {
       }
     });
   });
-
+  // edit button
+  $("#toEditMyRequest").click(function () {
+    $("input").attr("disabled", false);
+    $("textarea").attr("disabled", false);
+    $("select").attr("disabled", false);
+  });
   // Валидация при отправке
   function validationFields() {
     showSaveIcon(true);
@@ -1123,4 +1135,9 @@ if (getCookie("application_check") === '1') {
   $(".serviceone_block select").attr("disabled", false);
   $(".serviceone_block textarea").attr("disabled", false);
   $(".serviceone_block checkbox").attr("disabled", false);
+  // Рекомендации
+  $("#point_need_recommend").prop("checked") ? $("#recommended_block").show() : $("#recommended_block").hide();
+  // Собеседование
+  $("#point_need_interview").prop("checked") ? $("#interview_block").show() : $("#interview_block").hide();
+
 }); // END document ready

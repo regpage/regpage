@@ -3,6 +3,8 @@
 include_once "db/ftt/ftt_request_db.php";
 include_once "components/ftt_blocks/FTTRenderPoints.php";
 include_once 'db/classes/ftt_lists.php';
+include_once 'db/classes/date_convert.php';
+
 
 /**** Р О Л И  ****/
 // Массив с данными заявления
@@ -15,6 +17,15 @@ $applicant;
 $serviceone_role = -1;
 // Списки служащих ПВОМ
 $serviceones_pvom = ftt_lists::serving_ones();
+
+function oneToChecked($one)
+{
+  if ($one == 1) {
+    echo 'checked';
+  } else {
+    echo '';
+  }
+}
 
 // Заявитель или служащий (то есть не заявитель)
 // если служащий
@@ -191,7 +202,8 @@ $gl_gender_candidate = $request_data['male'];
 $status_application_label = '<span class="badge badge-secondary">черновик</span>';
 
 if ($request_data['stage'] > 0) {
-  $status_phrase = "Заявление отправлено служащим Полновременного обучения в Москве {$request_data['send_date']}.";
+  $date_send = date_convert::yyyymmdd_to_ddmmyyyy($request_data['send_date']);
+  $status_phrase = "Заявление отправлено служащим Полновременного обучения в Москве {$date_send}.";
 } elseif ($request_data['stage'] == 0) {
   $status_phrase = '';
 }

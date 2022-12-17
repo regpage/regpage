@@ -47,7 +47,7 @@
     /*if (!$applicant) {
       include_once "components/ftt_application_page/service_part.php";
     }*/
-    echo "<div class='ml-2 pl-1'>{$status_phrase}</div>";
+    echo "<div class='col'>{$status_phrase}</div>";
     echo '<div class="ml-2 mt-3 pl-1">';
     if ($request_data['stage'] < 1) {
       echo '<button id="back_to_master" type="button" class="btn btn-primary btn-sm mr-3">Вернуться</button>';

@@ -9,7 +9,7 @@ include_once "components/ftt_application_page/var_part.php";
 <div id="main_container" class="container-xl" style="margin-top: 60px; padding-top: 20px; padding-bottom: 20px; background-color: white;" data-id="<?php echo $request_data['fr_id']; ?>" data-guest="<?php echo $is_guest ?>"
   data-status="<?php echo $request_data['stage']; ?>">
 
-  <!-- специальные блоке (иконка загрузки, всплывающие подсказки) -->
+  <!-- специальные блоки (иконка загрузки, всплывающие подсказки) -->
   <?php include_once "components/ftt_application_page/special_part.php"; ?>
 
   <!-- БЛОК ЗАЯВЛЕНИЯ -->
