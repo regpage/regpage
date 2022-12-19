@@ -10,13 +10,25 @@
       Ответственный за рекомендацию
     </div>
     <div class="col-5">
-      <!--<select class="" name="">
+      <select id="" class="i-width-280-px mr-2" data-table="ftt_request" data-field="recommendation_name" value="<?php echo $request_data['recommendation_name']; ?>" style="width: 180px;"required>
+      <?php
+        $recommendation_name = false;
+        if (!empty($request_data['recommendation_name'])) {
+          $recommendation_name = $request_data['recommendation_name'];
+        }
+        FTT_Select_fields::rendering(db_getChurchLifeBrothers(), $recommendation_name, '_none_');
+      ?>
+      </select>
 
-      </select>-->
-      <input type="text" class="input-request i-width-370-px" value="<?php echo $request_data['recommendation_name']; ?>" list="recommedators_list" data-table="ftt_request" data-field="recommendation_name" required>
-      <datalist id="recommedators_list">
-        <option value="Иванов">
-      </datalist>
+      <!--<input type="text" class="input-request i-width-370-px" value="<?php // echo $request_data['recommendation_name']; ?>" list="recommedators_list" data-table="ftt_request" data-field="recommendation_name" required>
+
+
+      echo "<datalist id='recommedators_list'>";
+      foreach (db_getChurchLifeBrothers() as $key => $value) {
+        echo "<option data-member_key='{$key}' value='{$value}'>";
+      }
+      echo "</datalist>";-->
+
     </div>
   </div>
 

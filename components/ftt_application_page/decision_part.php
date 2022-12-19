@@ -20,7 +20,8 @@
       <span>Дата принятия решения: </span>
     </div>
     <div class="col-5">
-      <input type="date" class="input-request b-width-125-px" data-table="ftt_request" data-field="decision_date" data-value="<?php echo $request_data['decision_date']; ?>" value="<?php echo $request_data['decision_date']; ?>">
+      <!--<input type="date" class="input-request b-width-125-px" data-table="ftt_request" data-field="decision_date" data-value="<?php echo $request_data['decision_date']; ?>" value="<?php echo $request_data['decision_date']; ?>">-->
+      <span><?php echo date_convert::yyyymmdd_to_ddmmyyyy($request_data['decision_date']); ?></span>
     </div>
   </div>
   <!-- -->

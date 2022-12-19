@@ -119,7 +119,7 @@ function setRequestField($adminId, $field, $data, $id, $table, $isGuest, $blob=f
   if ($id) {
     $res = db_query("UPDATE $table SET `$field` = '$data' $changed_one  WHERE  `$id_field` = '$id'");
   } else {
-    db_query("INSERT INTO $table (`$field`, `member_key`, `guest`, `stage`) VALUES ('$data', '$adminId', '$isGuest', '1')");
+    db_query("INSERT INTO $table (`$field`, `member_key`, `guest`, `stage`) VALUES ('$data', '$adminId', '$isGuest', '0')");
     $res2 = db_query("SELECT MAX(id) AS maxid FROM $table");
     while ($row = $res2->fetch_assoc()) $res=$row['maxid'];
 
@@ -182,5 +182,17 @@ function db_setStatusRequestToSent($id, $status = 1) {
   $res = db_query("UPDATE ftt_request SET `stage` = '$status', `$date` = NOW() WHERE `id` = '$id'");
 }
 
+// Получаем вопросы
+function db_getChurchLifeBrothers() { // управлять зависимо от роли можно при рендеренге
+  /*global $db;
+  $admin = $db->real_escape_string($admin);*/
+  $result = [];
+  $res=db_query("SELECT `key`,`name`
+    FROM `member`
+    WHERE `male` = 1 AND (`category_key` = 'ST' OR `category_key` = 'RB' OR `category_key` = 'FS' OR `category_key` = 'FT') ORDER BY `name`");
+    while ($row = $res->fetch_assoc()) $result[$row['key']] = $row['name'];
+
+  return $result;
+}
 
 ?>

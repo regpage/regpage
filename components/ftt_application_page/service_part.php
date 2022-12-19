@@ -52,16 +52,6 @@
       ?>
     </div>
   </div>
-  <hr><hr><hr>
-  <!--
-  <div class="row serviceone_block">
-    <div class="col-5">
-      <span>Передано на собеседование</span>
-    </div>
-    <div class="col-5">
-      <strong>хх.хх.хххх</strong>
-    </div>
-  </div>-->
 </div>
 <?php endif;
 if ($serviceone_role === 3)

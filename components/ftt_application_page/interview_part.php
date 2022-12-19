@@ -17,7 +17,7 @@
         if (!empty($request_data['interview_name'])) {
           $interview_name = $request_data['interview_name'];
         }
-        FTT_Select_fields::rendering($serviceones_pvom_brothers, $interview_name, '_none_') ?>
+        FTT_Select_fields::rendering($serviceones_pvom_brothers, $interview_name, '_none_'); ?>
       </select>
     </div>
   </div>
@@ -28,7 +28,7 @@
       Содержание собеседования
     </div>
     <div class="col-5">
-      <textarea class="input-request i-width-370-px field_height_90px" data-table="ftt_request" data-field="interviev_info" required><?php echo $request_data['interview_info']; ?></textarea>
+      <textarea class="input-request i-width-370-px field_height_90px" data-table="ftt_request" data-field="interview_info" required><?php echo $request_data['interview_info']; ?></textarea>
     </div>
   </div>
 
@@ -51,7 +51,7 @@
           ?>
       </select>
 
-      <span class="link_custom_active cursor-pointer" data-text="">Справка</span>
+      <span id="interview_help_link" class="link_custom_active cursor-pointer" tooltip="<?php echo getValueFttParamByName('interview_help'); ?>">Справка</span>
     </div>
   </div>
 
@@ -60,5 +60,11 @@
     <div class="col-12">
       <button type="button" class="btn btn-primary btn-sm mr-3 mb-4" data-toggle="modal" data-target="">Передать</button>
     </div>
+  </div>
+</div>
+
+<div class="row serviceone_block mb-3">
+  <div class="col-12">
+    <span>ФИ передал заявление ответственному за собеседование — ФИ [дата и время].</span>
   </div>
 </div>

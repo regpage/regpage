@@ -10,7 +10,7 @@
 </div>
 
 <!-- ОКНО ПОДТВЕРЖДЕНИЯ -->
-<div id="modal_confirm" class="modal fade">
+<div id="modal_confirm" class="modal fade" role="dialog" data-backdrop="static">
   <div class="modal-dialog">
     <div class="modal-content">
       <!-- Modal Header -->

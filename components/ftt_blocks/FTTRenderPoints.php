@@ -90,13 +90,13 @@ class FttRenderpoints {
     $required_class = '';
     $required_class_extra = '';
     global $application_prepare;
-    if ($required === 'required' && $other['status'] === '1' && $application_prepare !== '1'
+    /*if ($required === 'required' && $other['status'] === '1' && $application_prepare !== '1'
     || $required === 'required' && empty($other['status']) && $application_prepare !== '1') {
       $required_class = 'required_field';
     }
     if ($required === 'required' && $type === 'checkbox' && $other['status'] === '1' && $application_prepare !== '1') {
       $required_class_extra = 'required_field';
-    }
+    }*/
     $maxlength = $other['maxlength'];
     if (!empty($maxlength)) {
       $maxlength = trim($maxlength);

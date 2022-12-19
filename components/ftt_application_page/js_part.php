@@ -41,13 +41,12 @@ if (!data_page.applicant) {
   }
 } else if (data_page.applicant && ($("#main_container").attr("data-status") === "1")) {
   blockApplicationFields();
-} else if (data_page.applicant && ($("#main_container").attr("data-status") === "0")) {
+} else if (data_page.applicant && ($("#main_container").attr("data-status") === "0" || !$("#main_container").attr("data-status"))) {
   // разблокировано
 } else {
   blockApplicationFields();
 }
-
 </script>
 
-<script src="js/ftt/ftt_application/ftt_request.js?v14"></script>
+<script src="js/ftt/ftt_application/ftt_request.js?v16"></script>
 <script src="js/ftt/ftt_application/design.js?v2"></script>

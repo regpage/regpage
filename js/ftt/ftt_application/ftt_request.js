@@ -1131,13 +1131,20 @@ if (getCookie("application_check") === '1') {
     }
   });
   // Раздел служащие
+  /*
   $(".serviceone_block input").attr("disabled", false);
   $(".serviceone_block select").attr("disabled", false);
   $(".serviceone_block textarea").attr("disabled", false);
-  $(".serviceone_block checkbox").attr("disabled", false);
+  */
+  $(".serviceone_block input[type='checkbox']").attr("disabled", false);
   // Рекомендации
   $("#point_need_recommend").prop("checked") ? $("#recommended_block").show() : $("#recommended_block").hide();
   // Собеседование
   $("#point_need_interview").prop("checked") ? $("#interview_block").show() : $("#interview_block").hide();
 
+  // справка
+  $("#interview_help_link").click(function () {
+    $("#modal_info .container").html($(this).attr("tooltip"));
+    $("#modal_info").modal("show");
+  });
 }); // END document ready

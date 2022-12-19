@@ -246,6 +246,10 @@ function handleFieldsByAdminRole(adminRole, isEventPrivate, regstate){
 
 // Заявление на ПВОМ
 $(".request-row").click(function () {
+  setCookie("application_back", 0);
+  setCookie("application_check", "");
+  setCookie("application_prepare", "");
+
   if (!$(this).hasClass("it_is_guest")) {
     window.location = "application.php";
   } else {
