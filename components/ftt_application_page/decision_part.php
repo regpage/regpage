@@ -30,31 +30,4 @@
       <textarea rows="4" cols="50" class="input-request t-width-long" data-table="ftt_request" data-field="decision_info" data-value="<?php echo $request_data['decision_info']; ?>"><?php echo $request_data['decision_info']; ?></textarea>
     </div>
   </div>
-  <!-- -->
-  <div class="row serviceone_block">
-    <div class="col-5">
-      1
-    </div>
-    <div class="col-5">
-      2
-    </div>
-  </div>
-  <div class="row serviceone_block">
-    <div class="col-5">
-      1
-    </div>
-    <div class="col-5">
-      2
-    </div>
-  </div>
-
-  <!-- -->
-  <div class="row serviceone_block">
-    <div class="col-5">
-      1
-    </div>
-    <div class="col-5">
-      2
-    </div>
-  </div>
 </div>

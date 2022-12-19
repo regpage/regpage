@@ -1,33 +1,71 @@
-<div id="recommended_block" class="container">
+<div id="recommended_block" class="container" data-date="<?php echo $request_data['recommendation_date']; ?>">
   <!-- -->
   <div class="row serviceone_block text-white bg-info rounded mb-5">
     <h2 class="pl-3 mb-1">Рекомендация</h2>
   </div>
+
   <!-- -->
   <div class="row serviceone_block">
     <div class="col-5">
-      1
+      Ответственный за рекомендацию
     </div>
     <div class="col-5">
-      2
-    </div>
-  </div>
-  <div class="row serviceone_block">
-    <div class="col-5">
-      1
-    </div>
-    <div class="col-5">
-      2
+      <!--<select class="" name="">
+
+      </select>-->
+      <input type="text" class="input-request i-width-370-px" value="<?php echo $request_data['recommendation_name']; ?>" list="recommedators_list" data-table="ftt_request" data-field="recommendation_name" required>
+      <datalist id="recommedators_list">
+        <option value="Иванов">
+      </datalist>
     </div>
   </div>
 
   <!-- -->
   <div class="row serviceone_block">
     <div class="col-5">
-      1
+      Содержание рекомендации
     </div>
     <div class="col-5">
-      2
+      <textarea class="input-request i-width-370-px field_height_90px" data-table="ftt_request" data-field="recommendation_info" required><?php echo $request_data['recommendation_info']; ?></textarea>
+    </div>
+  </div>
+
+  <!-- -->
+  <div class="row serviceone_block">
+    <div class="col-5">
+      Статус рекомендации
+    </div>
+    <div class="col-5">
+      <div class="i-width-370-px" data-table="ftt_request" data-field="recommendation_status" data-value="<?php echo $request_data['recommendation_info']; ?>" required>
+        <div class="form-check-inline">
+          <label class="form-check-label" for="person_recommended_yes">
+            <input type="radio" id="person_recommended_yes" name="person_recommended" value="да"
+            <?php if ($request_data['recommendation_status'] === 'да'): ?>
+              <?php echo 'checked'; ?>
+            <?php endif; ?>>
+          Да</label>
+        </div>
+        <div class="form-check-inline">
+          <label class="form-check-label" for="person_recommended_no">
+            <input type="radio" id="person_recommended_no" name="person_recommended" value="нет"
+            <?php if ($request_data['recommendation_status'] === 'нет'): ?>
+              <?php echo 'checked'; ?>
+            <?php endif; ?>>
+          Нет</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- -->
+  <div class="row serviceone_block">
+    <div class="col-12">
+      <button type="button" class="btn btn-primary btn-sm mr-3 mb-4" data-toggle="modal" data-target="">Передать</button>
+    </div>
+  </div>
+  <!-- -->
+  <div class="row serviceone_block mb-3">
+    <div class="col-12">
+      <span><?php $request_data['recommendation_signature']; ?> ФИ передал заявление ответственному за рекомендацию — ФИ [дата и время].</span>
     </div>
   </div>
 </div>

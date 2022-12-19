@@ -1,49 +1,64 @@
 <div id="interview_block" class="container">
+
   <!-- -->
   <div class="row serviceone_block text-white bg-info rounded mb-5">
     <h2 class="pl-3 mb-1">Собеседование</h2>
   </div>
+
   <!-- -->
   <div class="row serviceone_block">
     <div class="col-5">
-      <span>Кто проводит собеседование?</span>
+      <span>Ответственный за собеседование</span>
     </div>
     <div class="col-5">
-      <select id="flt_service_ones" class="i-width-280-px mr-2" data-table="ftt_request" data-field="decision_name" style="width: 180px;">
+      <select id="" class="i-width-280-px mr-2" data-table="ftt_request" data-field="interview_name" value="<?php echo $request_data['interview_name']; ?>" style="width: 180px;"required>
       <?php
-        $decision_name = false;
-        if (!empty($request_data['decision_name'])) {
-          $decision_name = $request_data['decision_name'];
+        $interview_name = false;
+        if (!empty($request_data['interview_name'])) {
+          $interview_name = $request_data['interview_name'];
         }
-        FTT_Select_fields::rendering($serviceones_pvom_brothers, $decision_name, '_none_') ?>
+        FTT_Select_fields::rendering($serviceones_pvom_brothers, $interview_name, '_none_') ?>
       </select>
-    </div>
-  </div>
-  <!-- -->
-  <div class="row serviceone_block">
-    <div class="col-5">
-      1
-    </div>
-    <div class="col-5">
-      2
-    </div>
-  </div>
-  <div class="row serviceone_block">
-    <div class="col-5">
-      1
-    </div>
-    <div class="col-5">
-      2
     </div>
   </div>
 
   <!-- -->
   <div class="row serviceone_block">
     <div class="col-5">
-      1
+      Содержание собеседования
     </div>
     <div class="col-5">
-      2
+      <textarea class="input-request i-width-370-px field_height_90px" data-table="ftt_request" data-field="interviev_info" required><?php echo $request_data['interview_info']; ?></textarea>
+    </div>
+  </div>
+
+  <!-- -->
+  <div class="row serviceone_block">
+    <div class="col-5">
+      Результат собеседования
+    </div>
+    <div class="col-5">
+      <select class="i-width-280-px mr-3" data-table="ftt_request" data-field="interview_status" value="<?php echo $request_data['interview_status']; ?>" required>
+        <?php
+          $options = ['','высоко рекомендовать','рекомендовать','сдержанно рекомендовать','ждать следующего семестра','не рекомендовать'];
+          foreach ($options as $key => $value) {
+            $interview_status = '';
+            if ($request_data['interview_status'] === $value) {
+              $interview_status = 'selected';
+            }
+            echo "<option {$interview_status}> $value";
+          }
+          ?>
+      </select>
+
+      <span class="link_custom_active cursor-pointer" data-text="">Справка</span>
+    </div>
+  </div>
+
+  <!-- -->
+  <div class="row serviceone_block">
+    <div class="col-12">
+      <button type="button" class="btn btn-primary btn-sm mr-3 mb-4" data-toggle="modal" data-target="">Передать</button>
     </div>
   </div>
 </div>
