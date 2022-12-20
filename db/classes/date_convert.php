@@ -20,14 +20,34 @@ class date_convert {
     if (!$date) {
       return 'No date';
     }
+
+    $date = explode('-', $date);
+    if (isset($date[2])) {
+      $date = $date[2].'.'.$date[1].'.'.$date[0];
+    } else {
+      return 'Date is incorrect.';
+    }
+
+    return $date;
+  }
+
+  // yyyy-mm-dd_to_dd.mm.yyyy + time
+  static function yyyymmdd_time_to_ddmmyyyy_time ($date)  {
+    if (!$date) {
+      return 'No date';
+    }
     $time;
     $check = explode(':', $date);
     if (count($check) > 1) {
-      $time = explode(' ', $date);
+      $time = explode(' ', trim($date));
       $date = $time[0];
-      $time = $time[1];
-      $time = explode(':', $time);
-      $time = $time[0].':'.$time[1];
+      if (isset($time[1])) {
+        $time = $time[1];
+        $time = explode(':', $time);
+        $time = $time[0].':'.$time[1];
+      } else {
+        $time = '';
+      }
     }
 
     $date = explode('-', $date);

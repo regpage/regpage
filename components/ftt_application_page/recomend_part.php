@@ -10,7 +10,7 @@
       Ответственный за рекомендацию
     </div>
     <div class="col-5">
-      <select id="" class="i-width-280-px mr-2" data-table="ftt_request" data-field="recommendation_name" value="<?php echo $request_data['recommendation_name']; ?>" style="width: 180px;"required>
+      <select id="service_recommendation_name" class="i-width-280-px mr-2" data-table="ftt_request" data-field="recommendation_name" value="<?php echo $request_data['recommendation_name']; ?>" style="width: 180px;"required>
       <?php
         $recommendation_name = false;
         if (!empty($request_data['recommendation_name'])) {
@@ -77,7 +77,7 @@
   <!-- 'ЭТОТ БЛОК ДОЛЖЕН МЕНЯТЬСЯ ПОСЛЕ ОТПРАВКИ РЕКОМЕНДАЦИИ' -->
   <div class="row serviceone_block mb-3">
     <div class="col-12">
-      <span> <?php echo $brothers_in_church[$request_data['responsible']]; ?> передал заявление ответственному за рекомендацию — <?php echo $brothers_in_church[$request_data['recommendation_name']]; echo ' ' . date_convert::yyyymmdd_to_ddmmyyyy($request_data['recommendation_date']); ?>.</span>
+      <span> <?php echo $brothers_in_church[$request_data['responsible']]; ?> передал заявление ответственному за рекомендацию — <?php echo $brothers_in_church[$request_data['recommendation_name']]; echo ' ' . date_convert::yyyymmdd_time_to_ddmmyyyy_time($request_data['recommendation_date']); ?>.</span>
     </div>
   </div>
 </div>

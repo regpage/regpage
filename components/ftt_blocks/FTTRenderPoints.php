@@ -121,6 +121,8 @@ class FttRenderpoints {
         $no_button_elem = '<span class="link_custom_gray set_no" style="margin-left: -45px; display:none;">нет</span>';
       }
       echo "<input type='text' maxlength='{$maxlength}' {$data_attr}><span class='pl-2'></span>".$no_button_elem;
+    } elseif ($type === 'number') {
+      echo "<input type='number' maxlength='{$maxlength}' {$data_attr}><span class='pl-2'></span>";
     } elseif ($type === 'checkbox') { // CHECKBOX
       $checked = '';
       if (!empty($value)) {

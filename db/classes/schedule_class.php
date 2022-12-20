@@ -54,7 +54,7 @@ class schedule_class {
       $date_today = strtotime($date_today_tmp);
     } else {
       $day_today = $day;
-      $date_today = strtotime($date);      
+      $date_today = strtotime($date);
     }
 
     // это можно вынести в переменные раздела

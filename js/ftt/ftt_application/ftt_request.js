@@ -431,6 +431,8 @@ if (getCookie("application_check") === '1') {
     }
     if (element.hasClass("required_field") && element.val()) {
       element.removeClass("required_field");
+    } else if (!element.hasClass("required_field") && !element.val()) {
+      element.addClass("required_field");
     }
 
     if (element.attr("id") === "point_driver_license") {
@@ -822,6 +824,9 @@ if (getCookie("application_check") === '1') {
       $("textarea").attr("disabled", false);
       $("select").attr("disabled", false);
       $(".serviceone_block button").attr("disabled", false);
+      /*if ($("#main_container").attr("data-status") === "2" && $("#service_recommendation_name").val() !== window.adminId) {
+
+      }*/
     } else {
       $("input").attr("disabled", true);
       $("textarea").attr("disabled", true);
@@ -1053,6 +1058,8 @@ if (getCookie("application_check") === '1') {
       .then(response => response.json())
       .then(data => {
         if (data) {
+          location.reload();
+          /*
           blockApplicationFields();
           $("#main_container").attr("data-status", "1");
           $("#back_to_master").hide();
@@ -1060,6 +1067,7 @@ if (getCookie("application_check") === '1') {
           //$("#toModalDeleteMyRequest").hide();
           $("#send_application").hide();
           showHint("Заявление отправлено служащим Полновременного обучения в Москве.");
+          */
           /*setTimeout(function () {
             location.reload();
           }, 1500);*/
