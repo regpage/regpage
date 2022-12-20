@@ -17,7 +17,7 @@ $applicant;
 $serviceone_role = -1;
 // Списки служащих ПВОМ
 $serviceones_pvom = ftt_lists::serving_ones();
-
+$brothers_in_church = db_getChurchLifeBrothers();
 function oneToChecked($one)
 {
   if ($one == 1) {

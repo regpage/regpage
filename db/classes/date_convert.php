@@ -20,11 +20,26 @@ class date_convert {
     if (!$date) {
       return 'No date';
     }
+    $time;
+    $check = explode(':', $date);
+    if (count($check) > 1) {
+      $time = explode(' ', $date);
+      $date = $time[0];
+      $time = $time[1];
+      $time = explode(':', $time);
+      $time = $time[0].':'.$time[1];
+    }
+
     $date = explode('-', $date);
     if (isset($date[2])) {
-      return $date[2].'.'.$date[1].'.'.$date[0];
+      $date = $date[2].'.'.$date[1].'.'.$date[0];
     } else {
       return 'Date is incorrect.';
+    }
+    if (!$time) {
+      return $date;
+    } else {
+      return $date.' '.$time;
     }
   }
 

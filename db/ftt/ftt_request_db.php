@@ -47,18 +47,16 @@ function getMemberData($adminId) {
     fr.next_church_life_city, fr.church_life_city_when, fr.church_service, fr.conf_num, fr.read_nt, fr.read_to,
     fr.read_books, fr.semester, fr.was_there_training, fr.will_be_two_years, fr.how_many_semesters,
     fr.how_many_explanation, fr.who_will_pay, fr.need_recommend, fr.need_interview,
-    fr.interview_status, fr.interview_name, fr.interview_info,
+    fr.interview_status, fr.interview_name, fr.interview_info, fr.interview_date, fr.responsible,
     m.key AS m_key, m.name, m.male, m.locality_key, m.citizenship_key, m.baptized, m.document_auth, m.birth_date,
     DATEDIFF(CURRENT_DATE, STR_TO_DATE(m.birth_date, '%Y-%m-%d'))/365 as age, m.document_num, m.document_date, m.tp_num, m.tp_date, m.tp_name,
     m.email, m.address, m.cell_phone, m.document_dep_code, m.tp_auth,
-    fi.spiritual_question_02, fi.interview_name AS fi_interview_name,
     l.name AS locality_name, c.name AS country_name, r.country_key
   FROM ftt_request AS fr
   INNER JOIN member m ON m.key = fr.member_key
   INNER JOIN locality l ON l.key = m.locality_key
   INNER JOIN region r ON r.key = l.region_key
   INNER JOIN country c ON c.key = r.country_key
-  INNER JOIN ftt_interview fi ON fi.request_id = fr.id
   WHERE fr.member_key = '$adminId' AND fr.notice <> 2");
   while ($row = $res->fetch_assoc()) $result[]=$row;
   // для коректного запроса все ключевые поля для выборки из присоединяемых таблиц должны быть заполнены
@@ -119,11 +117,11 @@ function setRequestField($adminId, $field, $data, $id, $table, $isGuest, $blob=f
   if ($id) {
     $res = db_query("UPDATE $table SET `$field` = '$data' $changed_one  WHERE  `$id_field` = '$id'");
   } else {
-    db_query("INSERT INTO $table (`$field`, `member_key`, `guest`, `stage`) VALUES ('$data', '$adminId', '$isGuest', '0')");
-    $res2 = db_query("SELECT MAX(id) AS maxid FROM $table");
-    while ($row = $res2->fetch_assoc()) $res=$row['maxid'];
+    $res = db_query("INSERT INTO $table (`$field`, `member_key`, `guest`, `stage`) VALUES ('$data', '$adminId', '$isGuest', '0')");
+    //$res2 = db_query("SELECT MAX(id) AS maxid FROM $table");
+    //while ($row = $res2->fetch_assoc()) $res=$row['maxid'];
 
-    db_query("INSERT INTO ftt_interview (`request_id`) VALUES ('$res')");
+    //db_query("INSERT INTO ftt_interview (`request_id`) VALUES ('$res')");
   }
 
   return $res;
@@ -171,15 +169,23 @@ function db_getPicForRequest($id, $field) {
 }
 
 // Задаём статус ОТПРАВЛЕНО
-function db_setStatusRequestToSent($id, $status = 1) {
+function db_setStatusRequestToSent($id, $status = 1, $adminId='') {
   global $db;
   $id = $db->real_escape_string($id);
   $status = $db->real_escape_string($status);
   $date = 'send_date';
-  if ($status == 3) {
+  $responsible = '';
+  if ($status == 2 || $status == 3) {
     $date = 'recommendation_date';
+  } elseif ($status == 4 || $status == 5) {
+    $date = 'interview_date';
+  } elseif ($status == 6) {
+    $date = 'decision_date';
   }
-  $res = db_query("UPDATE ftt_request SET `stage` = '$status', `$date` = NOW() WHERE `id` = '$id'");
+  if ($adminId && ($status == 2 || $status == 4)) {
+    $responsible = ", `responsible` = '$adminId' ";
+  }
+  $res = db_query("UPDATE ftt_request SET `stage` = '$status', `$date` = NOW() $responsible WHERE `id` = '$id'");
 }
 
 // Получаем вопросы

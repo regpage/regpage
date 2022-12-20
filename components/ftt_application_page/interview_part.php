@@ -58,13 +58,12 @@
   <!-- -->
   <div class="row serviceone_block">
     <div class="col-12">
-      <button type="button" class="btn btn-primary btn-sm mr-3 mb-4" data-toggle="modal" data-target="">Передать</button>
+      <button id="send_to_interview" type="button" class="btn btn-primary btn-sm mr-3 mb-4" data-toggle="modal" data-target="">Передать</button>
     </div>
   </div>
-</div>
-
-<div class="row serviceone_block mb-3">
-  <div class="col-12">
-    <span>ФИ передал заявление ответственному за собеседование — ФИ [дата и время].</span>
+  <div class="row serviceone_block mb-3">
+    <div class="col-12">
+      <span>ФИ передал заявление ответственному за собеседование — ФИ [дата и время].</span>
+    </div>
   </div>
 </div>

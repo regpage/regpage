@@ -8,20 +8,18 @@
       <?php echo $status_application_label; ?>
       </h6>
     </div>
-    <div class="col-3">
-      <button type="button" class="btn btn-primary btn-sm mr-3" data-toggle="modal" data-target="#modalStartInfo">Информация</button>
+    <div class="col-4">
+      <button type="button" class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#modalStartInfo">Информация</button>
+      <?php if (!empty($request_data['member_key']) && $memberId != $request_data['member_key']): ?>
+        <button id="application_print" type="button" class="btn btn-primary btn-sm mr-2" disabled>Печать</button>
+      <?php endif; ?>
       <?php if ($serviceone_role === 3): ?>
-        <button type="button" id="toEditMyRequest" class="btn btn-warning btn-sm mr-3"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+        <button type="button" id="toEditMyRequest" class="btn btn-warning btn-sm mr-2"><i class="fa fa-pencil" aria-hidden="true"></i></button>
       <?php endif; ?>
       <?php if ($memberId === $request_data['member_key'] || $serviceone_role === 3): ?>
-        <button type="button" id="toModalDeleteMyRequest" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalDeleteMyRequest"><i class="fa fa-trash" aria-hidden="true"></i></button>
+        <button type="button" id="toModalDeleteMyRequest" class="btn btn-danger btn-sm mr-2" data-toggle="modal" data-target="#modalDeleteMyRequest"><i class="fa fa-trash" aria-hidden="true"></i></button>
       <?php endif; ?>
     </div>
-    <?php if (!empty($request_data['member_key']) && $memberId != $request_data['member_key']): ?>
-    <div class="col-1">
-      <button id="application_print" type="button" class="btn btn-primary btn-sm" disabled>Печать</button>
-    </div>
-    <?php endif; ?>
   </div>
   <!-- БЛОК ЗАЯВЛЕНИЯ -->
   <?php if ($application_prepare === '1' || $request_data['stage'] > 0) {

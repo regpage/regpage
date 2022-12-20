@@ -73,9 +73,15 @@ if(isset($_GET['type']) && $_GET['type'] === 'to_send_request') {
     exit();
 }
 
-// Отправление рекомендации
+// Отправление рекомендации СТАРЫЙ КОД /* */
 if(isset($_GET['type']) && $_GET['type'] === 'recommendation') {
     echo json_encode(["result"=>db_setStatusRequestToSent($_GET['id'], 3)]);
+    exit();
+}
+
+// Отправление рекомендации
+if(isset($_GET['type']) && $_GET['type'] === 'set_status') {
+    echo json_encode(["result"=>db_setStatusRequestToSent($_GET['id'], $_GET['status'], $adminId)]);
     exit();
 }
 

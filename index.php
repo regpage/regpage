@@ -210,7 +210,7 @@ else if (isset ($_SESSION["logged-in"])){
             }*/
 
             ?>
-            <h4>Полновременное обучение</h4>
+            <h4>Заявления для участия в ПВОМ</h4>
             <h5 style="margin-left: 10px;"><?php echo getValueFttParamByName("semester"); ?>  (<?php echo getValueFttParamByName("period"); ?>)</h5>
             <div class="ftt-request-list">
               <?php if ($requestData === 'does not exist' || $isExistrRequest !== '1'): ?>

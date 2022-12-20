@@ -249,10 +249,11 @@ $(".request-row").click(function () {
   setCookie("application_back", 0);
   setCookie("application_check", "");
   setCookie("application_prepare", "");
-
-  if (!$(this).hasClass("it_is_guest")) {
-    window.location = "application.php";
-  } else {
-    window.location = "application.php?guest=1";
-  }
+  setTimeout(function () {
+    if (!$(this).hasClass("it_is_guest")) {
+      window.location = "application.php";
+    } else {
+      window.location = "application.php?guest=1";
+    }
+  }, 50);
 });

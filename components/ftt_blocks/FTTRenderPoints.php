@@ -116,9 +116,9 @@ class FttRenderpoints {
     echo "<div class='col-5'>";
     if ($type === 'string field') { //$type === 'input'
       if ($other['no_button'] == 1 && empty($value)) {
-        $no_button_elem = '<span class="link_custom set_no" style="margin-left: -45px;">нет</span>';
+        $no_button_elem = '<span class="link_custom_gray set_no" style="margin-left: -45px;">нет</span>';
       } elseif ($other['no_button'] == 1 && !empty($value)) {
-        $no_button_elem = '<span class="link_custom set_no" style="margin-left: -45px; display:none;">нет</span>';
+        $no_button_elem = '<span class="link_custom_gray set_no" style="margin-left: -45px; display:none;">нет</span>';
       }
       echo "<input type='text' maxlength='{$maxlength}' {$data_attr}><span class='pl-2'></span>".$no_button_elem;
     } elseif ($type === 'checkbox') { // CHECKBOX
@@ -165,9 +165,9 @@ class FttRenderpoints {
         include_once "components/ftt_application_page/application_extra.php";
       } else {
         if ($other['no_button'] == 1 && empty($value)) {
-          $no_button_elem = '<span class="link_custom set_no" style="margin-left: -45px; vertical-align: super;">нет</span>';
+          $no_button_elem = '<span class="link_custom_gray set_no" style="margin-left: -45px; vertical-align: super;">нет</span>';
         } elseif ($other['no_button'] == 1 && !empty($value)) {
-          $no_button_elem = '<span class="link_custom set_no" style="margin-left: -45px; vertical-align: super; display:none;">нет</span>';
+          $no_button_elem = '<span class="link_custom_gray set_no" style="margin-left: -45px; vertical-align: super; display:none;">нет</span>';
         }
         $textarea_height = '';
         if ($maxlength > 255) {

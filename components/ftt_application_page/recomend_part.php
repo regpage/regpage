@@ -16,7 +16,7 @@
         if (!empty($request_data['recommendation_name'])) {
           $recommendation_name = $request_data['recommendation_name'];
         }
-        FTT_Select_fields::rendering(db_getChurchLifeBrothers(), $recommendation_name, '_none_');
+        FTT_Select_fields::rendering($brothers_in_church, $recommendation_name, '_none_');
       ?>
       </select>
 
@@ -71,13 +71,13 @@
   <!-- -->
   <div class="row serviceone_block">
     <div class="col-12">
-      <button type="button" class="btn btn-primary btn-sm mr-3 mb-4" data-toggle="modal" data-target="">Передать</button>
+      <button id="send_to_recommend" type="button" class="btn btn-primary btn-sm mr-3 mb-4" data-toggle="modal" data-target="">Передать</button>
     </div>
   </div>
-  <!-- -->
+  <!-- 'ЭТОТ БЛОК ДОЛЖЕН МЕНЯТЬСЯ ПОСЛЕ ОТПРАВКИ РЕКОМЕНДАЦИИ' -->
   <div class="row serviceone_block mb-3">
     <div class="col-12">
-      <span><?php $request_data['recommendation_signature']; ?> ФИ передал заявление ответственному за рекомендацию — ФИ [дата и время].</span>
+      <span> <?php echo $brothers_in_church[$request_data['responsible']]; ?> передал заявление ответственному за рекомендацию — <?php echo $brothers_in_church[$request_data['recommendation_name']]; echo ' ' . date_convert::yyyymmdd_to_ddmmyyyy($request_data['recommendation_date']); ?>.</span>
     </div>
   </div>
 </div>

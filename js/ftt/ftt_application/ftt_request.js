@@ -3,8 +3,10 @@ document.cookie = "application_back=0";
   /**** ПОВЕДЕНИЕ ЭЛЕМЕНТОВ ****/
 
 // COOKIE
+
 if (getCookie("application_check") === '1') {
   validationFields();
+  setCookie("application_check") === '0'
 }
 
   // Показать / скрыть иконку сохранения
@@ -427,6 +429,10 @@ if (getCookie("application_check") === '1') {
     if ($("#main_container").attr("data-status") > 0 && window.adminId === $("#point_member_key").attr("data-value")) {
       return;
     }
+    if (element.hasClass("required_field") && element.val()) {
+      element.removeClass("required_field");
+    }
+
     if (element.attr("id") === "point_driver_license") {
       point_driver_license ();
     }
@@ -453,7 +459,7 @@ if (getCookie("application_check") === '1') {
       $("input[data-field=support_persons]").each(function (e) {
           prepare = element.val();
           prepare = prepare.replace(/\"/g, "\'");
-          value += prepare + ";";
+          value = value + prepare + ";";
           /*if (e === 12) {
             fetch("ajax/ftt_request_ajax.php?type=set&table="+table+"&field="+field+"&data="+value+"&id="+id+"&guest="+is_guest)
             .then(response => response.json())
@@ -499,8 +505,12 @@ if (getCookie("application_check") === '1') {
 
     if (table === "member") {
       //id = $("#member_fio").data("member_key");
+      let formData = new FormData();
+      formData.append('data_post', value);
       id = $("#point_member_key").attr("data-value");
-      fetch("ajax/ftt_request_ajax.php?type=set&table="+table+"&field="+field+"&data="+value+"&id="+id+"&guest="+is_guest)
+      fetch("ajax/ftt_request_ajax.php?type=set&table="+table+"&field="+field+"&data="+value+"&id="+id+"&guest="+is_guest, { method: 'POST',
+        body: formData
+      })
       .then(response => response.json())
       .then(result => {
         console.log(result.result);
@@ -511,7 +521,8 @@ if (getCookie("application_check") === '1') {
       formData.append('data_post', value);
       fetch("ajax/ftt_request_ajax.php?type=set&table="+table+"&field="+field+"&data="+value+"&id="+id+"&guest="+is_guest, {
 					method: 'POST',
-					body: formData})
+					body: formData
+        })
       .then(response => response.json())
       .then(result => {
         console.log(result.result);
@@ -595,6 +606,9 @@ if (getCookie("application_check") === '1') {
 
   // быстрое сохранение полей RADIO
   $("input[type=radio]").change(function(){
+    if ($(this).parent().parent().parent().hasClass("required_field")) {
+      $(this).parent().parent().parent().removeClass("required_field").css("padding-bottom", "2px");
+    }
     $(this).parent().parent().parent().attr("data-value", $(this).val());
     let table = $(this).parent().parent().parent().attr('data-table');
     let field = $(this).parent().parent().parent().attr('data-field');
@@ -611,8 +625,12 @@ if (getCookie("application_check") === '1') {
   // быстрое сохранение полей ЧЕКБОКСЫ
   $("input[type=checkbox]").change(function(){
     if ($(this).attr("id") === "donotshowmethat") {
-      console.log("does not require a request");
       return;
+    }
+    if ($(this).next().hasClass("required_field") && $(this).prop("checked")) {
+      $(this).next().removeClass("required_field").css("padding-bottom", "2px");
+    } else if (!$(this).next().hasClass("required_field") && !$(this).prop("checked")) {
+      $(this).next().addClass("required_field").css("padding-bottom", "0px");
     }
     // блоки рекомендации и собеседования
     if ($(this).attr("id") === "point_need_recommend") {
@@ -772,7 +790,7 @@ if (getCookie("application_check") === '1') {
     if ($("#main_container").attr("data-status") && $("#main_container").attr("data-status") !== "0" && data_page.role !== "3") {
       e.stopPropagation();
       e.preventDefault();
-      showError("Удаление заявления доступно только в статусе «Черновик». По всем вопросам обращайтесь через чат в правом нижнем углу страницы.");
+      showError("Удаление заявления доступно только в статусе «Черновик». По всем вопросам обращайтесь к служащим ПВОМ.");
       return;
     }
     if (data_page.role === "3") {
@@ -799,9 +817,18 @@ if (getCookie("application_check") === '1') {
   });
   // edit button
   $("#toEditMyRequest").click(function () {
-    $("input").attr("disabled", false);
-    $("textarea").attr("disabled", false);
-    $("select").attr("disabled", false);
+    if ($("#point_name").attr("disabled")) {
+      $("input").attr("disabled", false);
+      $("textarea").attr("disabled", false);
+      $("select").attr("disabled", false);
+      $(".serviceone_block button").attr("disabled", false);
+    } else {
+      $("input").attr("disabled", true);
+      $("textarea").attr("disabled", true);
+      $("select").attr("disabled", true);
+      $(".serviceone_block button").attr("disabled", true);
+    }
+
   });
   // Валидация при отправке
   function validationFields() {
@@ -917,7 +944,7 @@ if (getCookie("application_check") === '1') {
         // check cancel
       } else if ($(this).attr("type") === "checkbox" && !$(this).prop("checked")) {
         showError("Заполните все обязательные поля!");
-        $(this).next().css("border-bottom","2px solid red");
+        $(this).next().addClass("required_field");
         has_error++;
       } else if ($(this).attr("type") === "file") {
         let check_check;
@@ -931,7 +958,7 @@ if (getCookie("application_check") === '1') {
           });
           if (!$(this).val() && check_check === "error") {
             showError("Заполните все обязательные поля!");
-            $(this).css("color","red");
+            $(this).addClass("required_field");
             $(this).css("width","auto");
             has_error++;
           }
@@ -943,7 +970,7 @@ if (getCookie("application_check") === '1') {
 
           if (!$(this).val() && check_check === "error") {
             showError("Заполните все обязательные поля!");
-            $(this).css("color","red");
+            $(this).addClass("required_field");
             $(this).css("width","auto");
             has_error++;
           }
@@ -951,7 +978,7 @@ if (getCookie("application_check") === '1') {
       } else {
         if (!$(this).val()) {
           showError("Заполните все обязательные поля!");
-          $(this).css("border-color","red");
+          $(this).addClass("required_field");
           has_error++;
         }
       }
@@ -965,7 +992,7 @@ if (getCookie("application_check") === '1') {
 
           } else {
             showError("Заполните все обязательные поля!");
-            $(this).parent().parent().parent().css("border-bottom","2px solid red");
+            $(this).parent().parent().parent().addClass("required_field");
             has_error++;
           }
         }
@@ -975,7 +1002,7 @@ if (getCookie("application_check") === '1') {
     $("select[required]:visible").each(function () {
       if (!$(this).val() || $(this).val() === "_none_") {
         showError("Заполните все обязательные поля!");
-        $(this).css("border-color","red");
+        $(this).addClass("required_field");
         has_error++;
       }
     });
@@ -984,7 +1011,7 @@ if (getCookie("application_check") === '1') {
 
       } else if (!$(this).val()) {
         showError("Заполните все обязательные поля!");
-        $(this).css("border-bottom","2px solid red");
+        $(this).addClass("required_field");
         has_error++;
       }
     });
@@ -1147,4 +1174,33 @@ if (getCookie("application_check") === '1') {
     $("#modal_info .container").html($(this).attr("tooltip"));
     $("#modal_info").modal("show");
   });
+
+  // кнопка на рекомендацию
+  $("#send_to_recommend").click(function () {
+    let id = $("#main_container").attr("data-id");
+    let is_guest = $("#main_container").attr("data-guest");
+    fetch("ajax/ftt_request_ajax.php?type=set_status&status=2&id="+id)
+    .then(response => response.json())
+    .then(result => {
+      location.reload();
+    });
+  });
+
+  // кнопка на собеседование
+  $("#send_to_interview").click(function () {
+    let id = $("#main_container").attr("data-id");
+    let is_guest = $("#main_container").attr("data-guest");
+    fetch("ajax/ftt_request_ajax.php?type=set_status&status=4&id="+id)
+    .then(response => response.json())
+    .then(result => {
+      location.reload();
+    });
+  });
+  // enable disable show hide
+  function service_block_behavior() {
+    if ($("#main_container").attr("data-status") > 1 || $("#person_recommended_yes").attr("disabled")) {
+      $("#send_to_recommend").attr("disabled", true);
+    }
+  }
+  service_block_behavior();
 }); // END document ready

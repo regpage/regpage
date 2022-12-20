@@ -227,3 +227,14 @@ li.modal-reference {
   color: #004997;
   text-decoration: underline;
 }
+
+.link_custom_gray {
+  cursor: pointer;
+  color: gray;
+  font-weight: bold;
+}
+
+.link_custom_gray:hover {
+  color: #272626;
+  text-decoration: underline;
+}
