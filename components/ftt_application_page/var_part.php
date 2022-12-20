@@ -15,6 +15,8 @@ $member_key;
 $applicant;
 // Рекомендатор, служащий ПВОМ, собеседующий.
 $serviceone_role = -1;
+$is_recommendator;
+$is_interviewer;
 // Списки служащих ПВОМ
 $serviceones_pvom = ftt_lists::serving_ones();
 $brothers_in_church = db_getChurchLifeBrothers();
@@ -42,16 +44,21 @@ if (isset($_GET['member_key']) && $_GET['member_key'] !== $memberId) { // Есл
   }
   // Проверка на ответственного, что бы избежать попадания третьим лицам!!!
   // Определение роли служащего
+  // Получаем служащих по зоне ПВОМ
+  foreach ($serviceones_pvom as $key => $value) {
+    if ($memberId === $key || $memberId === '000001679') {
+      $serviceone_role = 3;
+    }
+  }
   if ($memberId === $request_data['recommendation_name']) {
-    $serviceone_role = 1;
+    $is_recommendator = 1;
+    if ($serviceone_role === -1) {
+      $serviceone_role = 1;
+    }
   } elseif ($memberId === $request_data['interview_name']) {
-    $serviceone_role = 2;
-  } else {
-    // Получаем служащих по зоне ПВОМ
-    foreach ($serviceones_pvom as $key => $value) {
-      if ($memberId === $key || $memberId === '000001679' || $memberId === '000005716') {
-        $serviceone_role = 3;
-      }
+    $is_interviewer = 1;
+    if ($serviceone_role === -1) {
+      $serviceone_role = 2;
     }
   }
 } else { // Если не указан ключ участника // Если заявитель

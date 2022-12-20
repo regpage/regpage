@@ -10,12 +10,18 @@ include_once "components/ftt_blocks/FTTParsing.php";
 
 class FttRenderpoints {
   static function rendering ($points, $section, $data, $lists = []) {
+    global $is_recommendator;
+    global $serviceone_role;
     $localities = $lists['localities'];
     $countries1 = $lists['countries1'];
     $countries2 = $lists['countries2'];
+    $except = [];
     echo "<div class='container'><div class='row text-white bg-secondary rounded'><h2 class='pl-3 mb-1'>{$section}</h2></div>";
     for ($i=0; $i < count($points); $i++) {
       if ($points[$i]['group'] === $section) {
+        if ($points[$i]['not_for_recommend'] == 1 && $is_recommendator == 1 && $serviceone_role != 3) {
+            continue;
+        }
         $fields_values = [];
         $db_field = explode(',', $points[$i]['db_field']);
         // если полей больше чем одно
@@ -33,6 +39,7 @@ class FttRenderpoints {
         if ($points[$i]['required'] == 1) {
           $points[$i]['required'] = 'required';
         }
+
         $other = [];
         if ($db_field[1] === 'locality_key') {
           $other['list'] = $lists['localities'];

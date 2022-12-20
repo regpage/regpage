@@ -23,14 +23,12 @@
   </div>
   <!-- БЛОК ЗАЯВЛЕНИЯ -->
   <?php if ($application_prepare === '1' || $request_data['stage'] > 0) {
-    // ПРЕДОСМОТР И ОТПРАВКА
-    // Панель кнопок
-    //include_once "components/ftt_application_page/btn_bar_part.php";
-    // Предосмотр анкеты
-    //include_once "components/ftt_application_page/application_part.php";
     $points_head =[];
     for ($i=0; $i <count($points); $i++) {
       if ($points[$i]['display_type'] === 'header' && $points[$i]['group_position'] !== '0') {
+        if ($points[$i]['not_for_recommend'] == 1 && $is_recommendator == 1 && $serviceone_role != 3) {
+          continue;
+        }
         $points_head[$points[$i]['group_position']] = $points[$i]['group'];
       }
     }
@@ -39,12 +37,10 @@
       if ($value_group === 'Общая информация') {
         $other = array('localities' => $gl_localities, 'countries1' => $countries1, 'countries2' => $countries2);
       }
+
       FTTRenderPoints::rendering($points, $value_group, $request_data, $other);
     }
-    // Рекомендации, служащие и решения
-    /*if (!$applicant) {
-      include_once "components/ftt_application_page/service_part.php";
-    }*/
+
     echo "<div class='col'>{$status_phrase}</div>";
     echo '<div class="ml-2 mt-3 pl-1">';
     if ($request_data['stage'] < 1) {
@@ -88,41 +84,6 @@
       $pagination .= "<span class='link_custom {$link_custom_active} pr-2 pl-2' data-step='wizard_step_{$key}'>{$key}</span>";
     }
     $pagination = '<div id="wizard_pagination" class="ml-1 mt-3">'.$pagination.'</div>';//text-center
-    /*
-    // МАСТЕР (WIZARD)
-    $dir = '/components/ftt_application_page/'; // Папка с файлами
-    $files = scandir($_SERVER['DOCUMENT_ROOT'].$dir);
-    sort($files);
-    */
-    /*$cookie_v_ruky = 'wizard_step_01';
-    if (isset($_COOKIE['wizard_step'])) {
-      $cookie_v_ruky = $_COOKIE['wizard_step'];
-    }
-    $pagination = '<div id="wizard_pagination" class="text-center">';
-    */
-
-    /*
-    $counter = 1;
-    foreach ($files as $file){
-
-      if(preg_match('/(wizard_step_)/', $file)) { // Выводим только .wizard_step_
-        $visibility = 'style="display: none;"';
-        $link_custom_active = '';
-        if ($file == $cookie_v_ruky.'.php') {
-          $visibility = '';
-          $link_custom_active = 'link_custom_active';
-        }
-        $step_id = explode('.',$file);
-        //echo "<div id='{$step_id[0]}' class='wizard_step' {$visibility}>";
-        //include_once $_SERVER['DOCUMENT_ROOT'].$dir.$file;
-        //echo "</div>";
-        $link_step = explode('.', $file);
-        $pagination .= "<span class='link_custom {$link_custom_active} pr-2 pl-2' data-step='{$link_step[0]}'>{$counter}</span>";
-        $counter++;
-      }
-    }
-    */
-        //$pagination.='</div>';
 
     ?>
     <div id="send_application_text" class="ml-2 mt-3 pl-1" style="display: none;">
