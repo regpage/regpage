@@ -257,3 +257,13 @@ $(".request-row").click(function () {
     }
   }, 50);
 });
+
+$(".application-row").click(function () {
+  setCookie("application_back", 0);
+  setCookie("application_check", "");
+  setCookie("application_prepare", "");
+  let hi_bye = $(this).attr("data-link");
+  setTimeout(function () {
+    window.location = hi_bye;
+  }, 50);
+});

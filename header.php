@@ -33,7 +33,7 @@ include_once "preheader.php";
     <link href="css/bootstrap-responsive.min.css" rel="stylesheet" />
     <link href="css/bootstrap-modal.css" rel="stylesheet" />
     <link href="css/bootstrap-datepicker.min.css" rel="stylesheet" />
-    <link href="css/style.css?v74" rel="stylesheet" />
+    <link href="css/style.css?v75" rel="stylesheet" />
     <link href="css/style_slide.css?v2" rel="stylesheet" />
 
     <script src="js/jquery.min.js" type="text/javascript"></script>

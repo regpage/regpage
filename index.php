@@ -1,5 +1,7 @@
 <?php
     include_once "header.php";
+    include_once "db/ftt/ftt_db.php";
+    $application_data = db_getApplications($memberId);
     global $appRootPath;
 
     $indexPage = true;
@@ -164,6 +166,25 @@ else if (isset ($_SESSION["logged-in"])){
         </div>
 
         <?php if ($ftt_access['group'] !== 'trainee'): ?>
+          <!-- СПИСОК ЗАЯВЛЕНИЙ РЕКОМЕНДАТОРЫ И СОБЕСЕДУЮЩИЕ -->
+          <?php if ($memberId == '000001679' || $memberId == '000005716'): ?>
+          <div class="tab-content" style="margin-top:10px;">
+            <div class="desctopVisible">
+              <h4>Ответственным. Заявления для участия в ПВОМ</h4>
+              <h5 style="border-bottom: 1px solid #DDD; margin-bottom: 0px; padding-bottom: 10px;"><?php echo getValueFttParamByName("semester"); ?>  (<?php echo getValueFttParamByName("period"); ?>)</h5>
+            <?php foreach ($application_data as $key => $value) {
+              $label = '';
+              if ($value['stage'] == 2) {
+                $label = '<span style="margin-top:5px; margin-left: 0px; margin-right: 19px; display: inline;" class="label label-info">рекомендация</span>';
+              } elseif ($value['stage'] == 4) {
+                $label = '<span style="margin-top:5px; margin-left: 0px; margin-right: 19px; display: inline;" class="label label-warning">собеседование</span>';
+              }
+
+              echo "<div class='application-row' data-link='application.php?member_key={$value['member_key']}'>Заявление на ПВОМ {$value['name']} {$value['locality_name']} {$label}</div>";
+            } ?>
+            </div>
+          </div>
+          <?php endif; ?>
         <!-- Desktop Заявление на ПВОМ -->
         <div class="tab-content" style="margin-top:10px; <?php echo $not_for_show_application; ?>">
           <div class="desctopVisible">
@@ -211,8 +232,8 @@ else if (isset ($_SESSION["logged-in"])){
 
             ?>
             <h4>Заявления для участия в ПВОМ</h4>
-            <h5 style="margin-left: 10px;"><?php echo getValueFttParamByName("semester"); ?>  (<?php echo getValueFttParamByName("period"); ?>)</h5>
-            <div class="ftt-request-list">
+            <h5><?php echo getValueFttParamByName("semester"); ?>  (<?php echo getValueFttParamByName("period"); ?>)</h5>
+            <div class="ftt-request-list" style="border-top: 1px solid #DDD;">
               <?php if ($requestData === 'does not exist' || $isExistrRequest !== '1'): ?>
               <div class="request-row">
                 <span href="application.php">
@@ -1703,7 +1724,7 @@ console.log('stop is ', stopRegistration, 'close is ', closeRegistration, modalW
 var adminRole = '<?php echo db_getAdminRole($memberId); ?>';
 
 </script>
-<script src="/js/mainpage.js?v26"></script>
+<script src="/js/mainpage.js?v27"></script>
 
 <?php
 }

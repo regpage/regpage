@@ -30,10 +30,29 @@ function db_getAllRequests ($adminId, $role, $guest){
     while ($row = $res->fetch_assoc()) $result[]=$row;
     // для коректного запроса все ключевые поля для выборки из присоединяемых таблиц должны быть заполнены
 
-    $result_count = count($result);
+    //$result_count = count($result);
     //write_to_log::debug('000005716', "получено {$result_count} строк из списка заявлений для раздела ПВОМ"); //$adminId
 
     return $result;
+}
+
+// get requests
+function db_getApplications ($adminId){
+  global $db;
+  $adminId = $db->real_escape_string($adminId);
+  $result = [];
+
+  $res=db_query ("SELECT fr.id, fr.member_key, fr.request_date, fr.stage, fr.notice, fr.send_date, fr.decision,
+    m.name, m.male, m.locality_key, m.cell_phone, m.email, m.category_key, l.name AS locality_name,
+    fr.interview_name, fr.recommendation_name
+  FROM ftt_request AS fr
+  INNER JOIN member m ON m.key = fr.member_key
+  INNER JOIN locality l ON l.key = m.locality_key
+  WHERE (fr.stage = 2 AND fr.recommendation_name = '$adminId') OR (fr.stage = 4 AND fr.interview_name = '$adminId')
+  ORDER BY fr.stage, m.name");
+  while ($row = $res->fetch_assoc()) $result[]=$row;
+
+  return $result;
 }
 
 // получаем рекомендатора
