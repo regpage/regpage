@@ -1957,7 +1957,7 @@ input.error, .control-group.error select, textarea.error {
 }
 
 .request-row {
-  padding: 10px 0;
+  padding: 10px;
   border-bottom: 1px solid #DDD;
 }
 
@@ -1967,7 +1967,7 @@ input.error, .control-group.error select, textarea.error {
 }
 
 .application-row {
-  padding: 10px 0;
+  padding: 10px;
   border-bottom: 1px solid #DDD;
 }
 

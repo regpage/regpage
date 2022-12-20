@@ -128,7 +128,7 @@ else if (isset ($_SESSION["logged-in"])){
                     if($memberId == '000005716'){
                     echo '
                         <div class="btn-group">
-                            <a class="btn btn-success btnAddEvent" title="Добавить мероприятие" href="#">
+                            <a class="btn btn-success btnAddEvent" title="Добавить мероприятие" href="#" style="margin-left: 10px;">
                                 <i class="fa fa-plus"></i>
                                 <span class="hide-name">Добавить</span>
                             </a>
@@ -138,7 +138,7 @@ else if (isset ($_SESSION["logged-in"])){
                 ?>
 
                 <div class="desctopVisible">
-                    <h4>Конференции и обучения</h4>
+                    <h4 style="margin-left: 10px;">Конференции и обучения</h4>
                     <div class="events-list-headers" style="display: none;">
                         <span class="span5">Название</span>
                         <span class="span3">Место проведения</span>
@@ -170,8 +170,8 @@ else if (isset ($_SESSION["logged-in"])){
           <?php if ($memberId == '000001679' || $memberId == '000005716'): ?>
           <div class="tab-content" style="margin-top:10px;">
             <div class="desctopVisible">
-              <h4>Ответственным. Заявления для участия в ПВОМ</h4>
-              <h5 style="border-bottom: 1px solid #DDD; margin-bottom: 0px; padding-bottom: 10px;"><?php echo getValueFttParamByName("semester"); ?>  (<?php echo getValueFttParamByName("period"); ?>)</h5>
+              <h4 style="margin-left: 10px;">Ответственным. Заявления для участия в ПВОМ</h4>
+              <h5 style="border-bottom: 1px solid #DDD; margin-bottom: 0px; margin-left: 10px; padding-bottom: 10px;"><?php echo getValueFttParamByName("semester"); ?>  (<?php echo getValueFttParamByName("period"); ?>)</h5>
             <?php foreach ($application_data as $key => $value) {
               $label = '';
               if ($value['stage'] == 2) {
@@ -231,8 +231,8 @@ else if (isset ($_SESSION["logged-in"])){
             }*/
 
             ?>
-            <h4>Заявления для участия в ПВОМ</h4>
-            <h5><?php echo getValueFttParamByName("semester"); ?>  (<?php echo getValueFttParamByName("period"); ?>)</h5>
+            <h4 style="margin-left: 10px;">Заявления для участия в ПВОМ</h4>
+            <h5 style="margin-left: 10px;"><?php echo getValueFttParamByName("semester"); ?>  (<?php echo getValueFttParamByName("period"); ?>)</h5>
             <div class="ftt-request-list" style="border-top: 1px solid #DDD;">
               <?php if ($requestData === 'does not exist' || $isExistrRequest !== '1'): ?>
               <div class="request-row">
@@ -240,7 +240,7 @@ else if (isset ($_SESSION["logged-in"])){
                   <?php if ($requestData === 'does not exist') { ?>
                     Заявление для участия в Полновременном обучении
                   <?php } else { ?>
-                    Заявление для участия в Полновременном обучении <span style="margin-top:5px; margin-left: 0px; margin-right: 19px; display: inline;" class="label <?php echo $label_class ?>"><?php echo $request_status ?></span>
+                    Заявление для участия в Полновременном обучении <span style="margin-top:5px; margin-right: 19px; display: inline;" class="label <?php echo $label_class ?>"><?php echo $request_status ?></span>
                   <?php } ?>
                 </span>
               </div>
@@ -251,7 +251,7 @@ else if (isset ($_SESSION["logged-in"])){
                 <?php if ($requestData === 'does not exist') { ?>
                   Заявление для участия в Полновременном обучении в качестве гостя
                 <?php } else { ?>
-                  Заявление для участия в Полновременном обучении в качестве гостя <span style="margin-top:5px; margin-left: 0px; margin-right: 19px; display: inline;" class="label <?php echo $label_class ?>"><?php echo $request_status ?></span>
+                  Заявление для участия в Полновременном обучении в качестве гостя <span style="margin-top:5px; margin-right: 19px; display: inline;" class="label <?php echo $label_class ?>"><?php echo $request_status ?></span>
                 <?php } ?>
               </span>
             </div>
