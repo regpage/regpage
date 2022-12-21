@@ -38,7 +38,7 @@
       Содержание рекомендации
     </div>
     <div class="col-5">
-      <textarea class="input-request i-width-370-px field_height_90px" data-table="ftt_request" data-field="recommendation_info" required><?php echo $request_data['recommendation_info']; ?></textarea>
+      <textarea id="point_recommendation_info" class="input-request i-width-370-px field_height_90px" data-table="ftt_request" data-field="recommendation_info" required><?php echo $request_data['recommendation_info']; ?></textarea>
     </div>
   </div>
 
@@ -71,13 +71,29 @@
   <!-- -->
   <div class="row serviceone_block">
     <div class="col-12">
+      <?php if ($request_data['stage'] == 1): ?>
       <button id="send_to_recommend" type="button" class="btn btn-primary btn-sm mr-3 mb-4" data-toggle="modal" data-target="">Передать</button>
+      <?php endif; ?>
+      <?php if ($is_recommendator == 1 && $request_data['stage'] == 2): ?>
+        <button id="send_recommend_to" type="button" class="btn btn-success btn-sm mr-3 mb-4" data-toggle="modal" data-target="">Отправить</button>
+      <?php endif; ?>
     </div>
   </div>
-  <!-- 'ЭТОТ БЛОК ДОЛЖЕН МЕНЯТЬСЯ ПОСЛЕ ОТПРАВКИ РЕКОМЕНДАЦИИ' -->
+  <!-- -->
   <div class="row serviceone_block mb-3">
     <div class="col-12">
-      <span> <?php echo $brothers_in_church[$request_data['responsible']]; ?> передал заявление ответственному за рекомендацию — <?php echo $brothers_in_church[$request_data['recommendation_name']]; echo ' ' . date_convert::yyyymmdd_time_to_ddmmyyyy_time($request_data['recommendation_date']); ?>.</span>
+      <?php
+      $text_recomm = '';
+      $text_date_recomm = date_convert::yyyymmdd_time_to_ddmmyyyy_time($request_data['recommendation_date']);
+      if ($request_data['stage'] == 2) {
+        $text_recomm_send = $brothers_in_church[$request_data['responsible']].' передал заявление ответственному за рекомендацию — '.$brothers_in_church[$request_data['recommendation_name']].' '.$text_date_recomm;
+      } elseif ($request_data['stage'] > 2) {
+        $text_recomm_send = $brothers_in_church[$request_data['responsible']].' передал заявление ответственному за рекомендацию — '.$brothers_in_church[$request_data['recommendation_name']];
+        $text_recomm_get = "Рекомендация получена $text_date_recomm";
+      } ?>
+      <div><?php echo $text_recomm_send; ?></div>
+      <div><?php echo $text_recomm_get; ?></div>
+
     </div>
   </div>
 </div>

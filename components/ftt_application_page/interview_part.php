@@ -11,7 +11,7 @@
       <span>Ответственный за собеседование</span>
     </div>
     <div class="col-5">
-      <select id="" class="i-width-280-px mr-2" data-table="ftt_request" data-field="interview_name" value="<?php echo $request_data['interview_name']; ?>" style="width: 180px;"required>
+      <select id="service_interview_name" class="i-width-280-px mr-2" data-table="ftt_request" data-field="interview_name" value="<?php echo $request_data['interview_name']; ?>" style="width: 180px;"required>
       <?php
         $interview_name = false;
         if (!empty($request_data['interview_name'])) {

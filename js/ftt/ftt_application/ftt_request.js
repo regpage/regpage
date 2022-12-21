@@ -1173,7 +1173,23 @@ if (getCookie("application_check") === '1') {
   */
   $(".serviceone_block input[type='checkbox']").attr("disabled", false);
   // Рекомендации
-  $("#point_need_recommend").prop("checked") ? $("#recommended_block").show() : $("#recommended_block").hide();
+  if ($("#point_need_recommend").prop("checked")) {
+    if ($("#service_recommendation_name").val() === window.adminId && $("#main_container").attr("data-status") === "2") {
+      $("#recommended_block textarea").attr("disabled",false);
+      $("#recommended_block input[type='radio']").attr("disabled", false);
+      $("#recommended_block button").attr("disabled", false);
+    }
+    $("#recommended_block").show()
+  } else if (!$("#point_need_recommend").is(":visible")) {
+    if ($("#service_recommendation_name").val() === window.adminId && $("#main_container").attr("data-status") > 1 ) {
+      $("#recommended_block").show();
+    } else {
+      $("#recommended_block").hide();
+    }
+  } else {
+    $("#recommended_block").hide();
+  }
+
   // Собеседование
   $("#point_need_interview").prop("checked") ? $("#interview_block").show() : $("#interview_block").hide();
 
@@ -1186,7 +1202,6 @@ if (getCookie("application_check") === '1') {
   // кнопка на рекомендацию
   $("#send_to_recommend").click(function () {
     let id = $("#main_container").attr("data-id");
-    let is_guest = $("#main_container").attr("data-guest");
     fetch("ajax/ftt_request_ajax.php?type=set_status&status=2&id="+id)
     .then(response => response.json())
     .then(result => {
@@ -1197,7 +1212,6 @@ if (getCookie("application_check") === '1') {
   // кнопка на собеседование
   $("#send_to_interview").click(function () {
     let id = $("#main_container").attr("data-id");
-    let is_guest = $("#main_container").attr("data-guest");
     fetch("ajax/ftt_request_ajax.php?type=set_status&status=4&id="+id)
     .then(response => response.json())
     .then(result => {
@@ -1210,5 +1224,26 @@ if (getCookie("application_check") === '1') {
       $("#send_to_recommend").attr("disabled", true);
     }
   }
+  //
+  $("#send_recommend_to").click(function () {
+    if ($("#point_recommendation_info").val() === "" || (!$("#person_recommended_yes").prop("checked") && !$("#person_recommended_no").prop("checked"))) {
+      showError("Заполните все обязательные поля!");
+      if ($("#point_recommendation_info").text() === "") {
+        $("#point_recommendation_info").css("border-bottom", "2px solid red");
+      }
+      if (!$("#person_recommended_yes").prop("checked") && !$("#person_recommended_no").prop("checked")) {
+        $("#person_recommended_yes").parent().parent().parent().css("border-bottom", "2px solid red");
+      }
+      return;
+    }
+
+    let id = $("#main_container").attr("data-id");
+    fetch("ajax/ftt_request_ajax.php?type=set_status&status=3&id="+id)
+    .then(response => response.json())
+    .then(result => {
+      location.reload();
+    });
+  });
+
   service_block_behavior();
 }); // END document ready
