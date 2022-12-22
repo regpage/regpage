@@ -38,8 +38,8 @@ function getMemberData($adminId) {
     fr.health_question26, fr.health_question27, fr.health_question28, fr.health_question29, fr.health_question30, fr.health_question31, fr.health_question32, fr.health_question33, fr.health_question34, fr.health_question35,
     fr.health_question36, fr.health_question37, fr.health_question38, fr.health_question39, fr.health_question40,
     fr.health_question41, fr.health_question42, fr.health_question43, fr.health_question44, fr.health_question45,
-    fr.health_question46, fr.health_question47, fr.health_question48, fr.health_question49, fr.vac_question1,
-    fr.vac_question2, fr.vac_question3, fr.vac_question4, fr.vac_question5, fr.vac_question6, fr.food_question1, fr.food_question2, fr.food_question3, fr.food_question4, fr.food_question5, fr.food_question6, fr.food_question7, fr.food_question8, fr.consecration, fr.decision_name,
+    fr.health_question46, fr.health_question47, fr.health_question48, fr.health_question49, fr.health_question50,
+    fr.vac_question1, fr.vac_question2, fr.vac_question3, fr.vac_question4, fr.vac_question5, fr.vac_question6, fr.food_question1, fr.food_question2, fr.food_question3, fr.food_question4, fr.food_question5, fr.food_question6, fr.food_question7, fr.food_question8, fr.consecration, fr.decision_name,
     fr.another_names, fr.place_of_birth, fr.arrests, fr.criminal_cases, fr.administrative_cases, fr.snils,
     fr.reg_document, fr.photo, fr.spouse_occupation, fr.spouse_plans, fr.support, fr.educational_institution,
     fr.education_end, fr.work_place, fr.russian_knowlege, fr.driver_license, fr.driving_experience,
@@ -118,10 +118,7 @@ function setRequestField($adminId, $field, $data, $id, $table, $isGuest, $blob=f
     $res = db_query("UPDATE $table SET `$field` = '$data' $changed_one  WHERE  `$id_field` = '$id'");
   } else {
     $res = db_query("INSERT INTO $table (`$field`, `member_key`, `guest`, `stage`) VALUES ('$data', '$adminId', '$isGuest', '0')");
-    //$res2 = db_query("SELECT MAX(id) AS maxid FROM $table");
-    //while ($row = $res2->fetch_assoc()) $res=$row['maxid'];
-
-    //db_query("INSERT INTO ftt_interview (`request_id`) VALUES ('$res')");
+    $res = $db->insert_id;
   }
 
   return $res;
@@ -129,9 +126,9 @@ function setRequestField($adminId, $field, $data, $id, $table, $isGuest, $blob=f
 // удалить заявление из базы
 function db_deleteRequest($id) {
   $res = db_query("DELETE FROM ftt_request WHERE `id` = '$id'");
-  if ($res) {
+  /*if ($res) {
     db_query("DELETE FROM ftt_interview WHERE `request_id` = '$id'");
-  }
+  }*/
   return $res;
 }
 // отправить заявление в корзину

@@ -7,11 +7,6 @@ function db_getAllRequests ($adminId, $role, $guest){
   $role = $db->real_escape_string($role);
   $guest = $db->real_escape_string($guest);
   $condition = '';
-  if ($role == 1) {
-    $condition = "AND fr.recommendation_name = '".$adminId."'";
-  } elseif ($role == 2) {
-    $condition = "AND fi.interview_name = '".$adminId."' ";
-  }
   if ($guest == 1) {
     $condition .= " AND fr.guest = 1";
   } else {
@@ -20,12 +15,10 @@ function db_getAllRequests ($adminId, $role, $guest){
     $result = [];
 //fr.interview_name, fr.interview_status, fr.interview_info,  fr.interview_meetings, fr.interview_apprehension, fr.interview_coordination, fr.interview_signature, fr.interview_date,
     $res=db_query ("SELECT fr.id as fr_id, fr.member_key, fr.request_date, fr.stage, fr.notice, fr.send_date, fr.decision,
-      m.name, m.male, m.locality_key, m.cell_phone, m.email, m.category_key, l.name AS locality_name,
-      fi.interview_name
+      m.name, m.male, m.locality_key, m.cell_phone, m.email, m.category_key, l.name AS locality_name
     FROM ftt_request AS fr
     INNER JOIN member m ON m.key = fr.member_key
     INNER JOIN locality l ON l.key = m.locality_key
-    INNER JOIN ftt_interview fi ON fi.request_id = fr.id
     WHERE fr.stage > 0 {$condition} ");
     while ($row = $res->fetch_assoc()) $result[]=$row;
     // для коректного запроса все ключевые поля для выборки из присоединяемых таблиц должны быть заполнены
@@ -65,6 +58,7 @@ function db_getRecommender($adminId) {
 }
 
 // получаем собеседующего
+/*
 function db_getInterviewer($adminId) {
   $access = false;
   $res=db_query("SELECT fi.id AS interview_id
@@ -76,7 +70,7 @@ function db_getInterviewer($adminId) {
   return $access;
 }
 
-/*
+
 // get requests
 function db_getAllRequests ($adminId){
   global $db;

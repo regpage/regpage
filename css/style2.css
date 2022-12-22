@@ -230,11 +230,12 @@ li.modal-reference {
 
 .link_custom_gray {
   cursor: pointer;
-  color: gray;
-  font-weight: bold;
+  color: #625f5f;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-radius: 5px;
 }
 
 .link_custom_gray:hover {
-  color: #272626;
-  text-decoration: underline;
+  color: #272626;  
 }

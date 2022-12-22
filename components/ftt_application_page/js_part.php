@@ -48,5 +48,5 @@ if (!data_page.applicant) {
 }
 </script>
 
-<script src="js/ftt/ftt_application/ftt_request.js?v17"></script>
+<script src="js/ftt/ftt_application/ftt_request.js?v19"></script>
 <script src="js/ftt/ftt_application/design.js?v2"></script>

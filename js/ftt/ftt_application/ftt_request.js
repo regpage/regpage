@@ -510,6 +510,18 @@ if (getCookie("application_check") === '1') {
       let formData = new FormData();
       formData.append('data_post', value);
       id = $("#point_member_key").attr("data-value");
+      if (!$("#main_container").attr("data-id") && !id) {
+        id = window.adminId;
+        let field_request = $("#point_another_names").val();
+        fetch("ajax/ftt_request_ajax.php?type=set&table=ftt_request&field=another_names&data="+field_request+"&id=&guest="+is_guest)
+        .then(response => response.json())
+        .then(result => {
+          console.log(result.result);          
+          if (result.result > 1) {
+            $("#main_container").attr("data-id", result.result);
+          }
+        });
+      }
       fetch("ajax/ftt_request_ajax.php?type=set&table="+table+"&field="+field+"&data="+value+"&id="+id+"&guest="+is_guest, { method: 'POST',
         body: formData
       })
@@ -621,7 +633,12 @@ if (getCookie("application_check") === '1') {
     supportBlockExtraRule();
     fetch("ajax/ftt_request_ajax.php?type=set&table="+table+"&field="+field+"&data="+value+"&id="+id+"&guest="+is_guest)
     .then(response => response.json())
-    .then(result => console.log(result.result));
+    .then(result => {
+        console.log(result.result)
+        if (result.result > 1) {
+          $("#main_container").attr("data-id", result.result);
+        }
+      });
   });
 
   // быстрое сохранение полей ЧЕКБОКСЫ
@@ -675,7 +692,12 @@ if (getCookie("application_check") === '1') {
 
     fetch("ajax/ftt_request_ajax.php?type=set&table="+table+"&field="+field+"&data="+value+"&id="+id+"&guest="+is_guest)
     .then(response => response.json())
-    .then(result => console.log(result.result));
+    .then(result => {
+      console.log(result.result)
+      if (result.result > 1) {
+        $("#main_container").attr("data-id", result.result);
+      }
+    });
   });
 
   // Upload a file
@@ -1041,7 +1063,7 @@ if (getCookie("application_check") === '1') {
       setCookie("application_check", '1');
       setTimeout(function () {
         location.reload();
-      }, 100);
+      }, 50);
     } else if (validationFields()) {
 
     } else {

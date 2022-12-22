@@ -1,25 +1,15 @@
 <?php
-// Доступ до раздела ПВОМ
-// НУЖНА ФУНКЦИЯ ДЛЯ ПОЛУЧЕНИЕ СЛУЖАЩИХ БРАТЬЕВ НА ПВОМ
-/*foreach ( SOME_VAR as $key => $value) {
+// Доступ до раздела ЗАЯВЛЕНИЯ
+include_once 'db/classes/ftt_lists.php';
+$serviceones_pvom = ftt_lists::serving_ones();
+foreach ($serviceones_pvom as $key => $value) {
   if ($memberId === $key) {
-    //$Serviceones_pvom = $key;
     $accessToPage = 3;
   }
-}*/
-
-// Проверка рекомендатора
-if ($accessToPage === 0 && db_getRecommender($memberId)) {
-  $accessToPage = 1;
-}
-
-// Проверка собеседующего
-if ($accessToPage === 0 &&  db_getInterviewer($memberId)) {
-  $accessToPage = 2;
 }
 
 // Проверка разработчика
-if ($accessToPage === 0 && ($memberId === '000005716' || $memberId === '000001679')) {
+if ($accessToPage === 0 && ($memberId === '000005716')) {
   $accessToPage = 4;
 }
 

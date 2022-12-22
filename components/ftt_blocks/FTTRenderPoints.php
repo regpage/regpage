@@ -22,6 +22,15 @@ class FttRenderpoints {
         if ($points[$i]['not_for_recommend'] == 1 && $is_recommendator == 1 && $serviceone_role != 3) {
             continue;
         }
+        
+        if ($points[$i]['display_condition']) {
+          $display_condition_nothing = $points[$i]['display_condition'];
+          $display_condition_nothing = explode(' ', $display_condition_nothing);
+          if ($display_condition_nothing[0] === 'none') {
+            continue;
+          }
+        }
+
         $fields_values = [];
         $db_field = explode(',', $points[$i]['db_field']);
         // если полей больше чем одно
@@ -123,9 +132,9 @@ class FttRenderpoints {
     echo "<div class='col-5'>";
     if ($type === 'string field') { //$type === 'input'
       if ($other['no_button'] == 1 && empty($value)) {
-        $no_button_elem = '<span class="link_custom_gray set_no" style="margin-left: -45px;">нет</span>';
+        $no_button_elem = '<span class="link_custom_gray set_no" style="margin-left: -55px; background-color: lightgrey;">нет</span>';
       } elseif ($other['no_button'] == 1 && !empty($value)) {
-        $no_button_elem = '<span class="link_custom_gray set_no" style="margin-left: -45px; display:none;">нет</span>';
+        $no_button_elem = '<span class="link_custom_gray set_no" style="margin-left: -55px; display:none; background-color: lightgrey;">нет</span>';
       }
       echo "<input type='text' maxlength='{$maxlength}' {$data_attr}><span class='pl-2'></span>".$no_button_elem;
     } elseif ($type === 'number') {
@@ -174,9 +183,9 @@ class FttRenderpoints {
         include_once "components/ftt_application_page/application_extra.php";
       } else {
         if ($other['no_button'] == 1 && empty($value)) {
-          $no_button_elem = '<span class="link_custom_gray set_no" style="margin-left: -45px; vertical-align: super;">нет</span>';
+          $no_button_elem = '<span class="link_custom_gray set_no" style="margin-left: -55px; vertical-align: super;  background-color: lightgrey;">нет</span>';
         } elseif ($other['no_button'] == 1 && !empty($value)) {
-          $no_button_elem = '<span class="link_custom_gray set_no" style="margin-left: -45px; vertical-align: super; display:none;">нет</span>';
+          $no_button_elem = '<span class="link_custom_gray set_no" style="margin-left: -55px; vertical-align: super; display:none;  background-color: lightgrey;">нет</span>';
         }
         $textarea_height = '';
         if ($maxlength > 255) {

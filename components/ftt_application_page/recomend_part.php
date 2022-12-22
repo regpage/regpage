@@ -84,7 +84,7 @@
     <div class="col-12">
       <?php
       $text_recomm = '';
-      $text_date_recomm = date_convert::yyyymmdd_time_to_ddmmyyyy_time($request_data['recommendation_date']);
+      $text_date_recomm = date_convert::yyyymmdd_to_ddmmyyyy($request_data['recommendation_date']);
       if ($request_data['stage'] == 2) {
         $text_recomm_send = $brothers_in_church[$request_data['responsible']].' передал заявление ответственному за рекомендацию — '.$brothers_in_church[$request_data['recommendation_name']].' '.$text_date_recomm;
       } elseif ($request_data['stage'] > 2) {
