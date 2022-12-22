@@ -4,7 +4,7 @@
     <div class="col pl-3">
       <!-- ЗАГОЛОВОК -->
       <h5 class="pl-3">Заявление для участия в Полновременном обучении</h5>
-      <h6 class="pl-3"><?php echo getValueFttParamByName("semester"); ?>  (<?php echo getValueFttParamByName("period"); ?>)
+      <h6 class="pl-3"><?php echo getValueFttParamByName("application_title"); ?>
       <?php echo $status_application_label; ?>
       </h6>
     </div>
@@ -16,7 +16,7 @@
       <?php if ($serviceone_role === 3): ?>
         <button type="button" id="toEditMyRequest" class="btn btn-warning btn-sm mr-2"><i class="fa fa-pencil" aria-hidden="true"></i></button>
       <?php endif; ?>
-      <?php if ($memberId === $request_data['member_key'] || $serviceone_role === 3): ?>
+      <?php if (!$request_data['member_key'] || $memberId === $request_data['member_key'] || $serviceone_role === 3): ?>
         <button type="button" id="toModalDeleteMyRequest" class="btn btn-danger btn-sm mr-2" data-toggle="modal" data-target="#modalDeleteMyRequest"><i class="fa fa-trash" aria-hidden="true"></i></button>
       <?php endif; ?>
     </div>

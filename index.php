@@ -172,7 +172,7 @@ else if (isset ($_SESSION["logged-in"])){
           <div class="tab-content" style="margin-top:10px;">
             <div class="desctopVisible">
               <h4 style="margin-left: 10px;">Заявления для рекомендаций</h4>
-              <h5 style="border-bottom: 1px solid #DDD; margin-bottom: 0px; margin-left: 10px; padding-bottom: 10px;"><?php echo getValueFttParamByName("semester"); ?>  (<?php echo getValueFttParamByName("period"); ?>)</h5>
+              <h5 style="border-bottom: 1px solid #DDD; margin-bottom: 0px; margin-left: 10px; padding-bottom: 10px;"><?php echo getValueFttParamByName("application_title"); ?></h5>
             <?php foreach ($application_data as $key => $value) {
               $label = '';
               if ($value['stage'] == 2) {
@@ -233,7 +233,7 @@ else if (isset ($_SESSION["logged-in"])){
 
             ?>
             <h4 style="margin-left: 10px;">Заявления для участия в ПВОМ</h4>
-            <h5 style="margin-left: 10px;"><?php echo getValueFttParamByName("semester"); ?>  (<?php echo getValueFttParamByName("period"); ?>)</h5>
+            <h5 style="margin-left: 10px;"><?php echo getValueFttParamByName("application_title"); ?></h5>
             <div class="ftt-request-list" style="border-top: 1px solid #DDD;">
               <?php if ($requestData === 'does not exist' || $isExistrRequest !== '1'): ?>
               <div class="request-row">
@@ -265,7 +265,7 @@ else if (isset ($_SESSION["logged-in"])){
         <div class="show-phone">
           <?php if ($memberId == '000001679' || $memberId == '000005716'): ?>
           <h3>Полновременное обучение</h3>
-          <h5 style="margin-left: 10px;"><?php echo getValueFttParamByName("semester"); ?>  (<?php echo getValueFttParamByName("period"); ?>)</h5>
+          <h5 style="margin-left: 10px;"><?php echo getValueFttParamByName("application_title"); ?></h5>
           <div class="ftt-request-list">
             <?php if ($requestData === 'does not exist' || $isExistrRequest !== '1'): ?>
               <div class="request-row">

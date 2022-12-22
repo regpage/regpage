@@ -242,6 +242,22 @@ if (getCookie("application_check") === '1') {
     } else {
       $("#point_health_question41").parent().parent().hide();
     }
+    if ($("#radio_point_food_question7_0").prop("checked")) {
+      $("#radio_point_health_question50_1").parent().parent().parent().parent().parent().show();
+    } else if ($("#radio_point_food_question7_1").prop("checked")) {
+      $("#radio_point_health_question50_1").parent().parent().parent().parent().parent().hide();
+    } else {
+      $("#radio_point_health_question50_1").parent().parent().parent().parent().parent().hide();
+    }
+    andOrCondition();
+  }
+
+  function andOrCondition() {
+    if (!$("#main_container").attr("data-guest") && $("#radio_point_semester_0").prop("checked")) {
+      $("#radio_point_will_be_two_years_0").parent().parent().parent().parent().parent().show();
+    } else {
+      $("#radio_point_will_be_two_years_0").parent().parent().parent().parent().parent().hide();
+    }
   }
 
   function select_behavior() {
@@ -299,7 +315,7 @@ if (getCookie("application_check") === '1') {
   inputFileStyle();
   radio_buttons_behavior();
   select_behavior();
-
+  andOrCondition();
   $("#point_country_key").attr("disabled", true);
 
   $("#add_support_block_extra").click(function () {
@@ -429,9 +445,9 @@ if (getCookie("application_check") === '1') {
     if ($("#main_container").attr("data-status") > 0 && window.adminId === $("#point_member_key").attr("data-value")) {
       return;
     }
-    if (element.hasClass("required_field") && element.val()) {
+    if (element.hasClass("required_field") && element.val() && element.attr("required")) {
       element.removeClass("required_field");
-    } else if (!element.hasClass("required_field") && !element.val()) {
+    } else if (!element.hasClass("required_field") && !element.val() && element.attr("required")) {
       element.addClass("required_field");
     }
 
@@ -516,7 +532,7 @@ if (getCookie("application_check") === '1') {
         fetch("ajax/ftt_request_ajax.php?type=set&table=ftt_request&field=another_names&data="+field_request+"&id=&guest="+is_guest)
         .then(response => response.json())
         .then(result => {
-          console.log(result.result);          
+          console.log(result.result);
           if (result.result > 1) {
             $("#main_container").attr("data-id", result.result);
           }
@@ -1012,7 +1028,9 @@ if (getCookie("application_check") === '1') {
     });
 
     $("input[type='radio']").each(function () {
-      if ($(this).parent().parent().parent().attr("required")) {
+      if ($(this).parent().parent().parent().attr("data-display_condition") === "food_question7 = да" && !$("#radio_point_health_question50_1").is(":visible")) {
+
+      } else if ($(this).parent().parent().parent().attr("required")) {
         let arr_radio = $(this).parent().parent().parent().find("input[type='radio']:checked");
         if (arr_radio.length === 0) {
           if ($(this).attr("name") === "reg_document" && $("#point_citizenship_key").val() === "RU") {

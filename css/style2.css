@@ -234,8 +234,9 @@ li.modal-reference {
   padding-left: 5px;
   padding-right: 5px;
   border-radius: 5px;
+  font-size: 12px;
 }
 
 .link_custom_gray:hover {
-  color: #272626;  
+  color: #272626;
 }

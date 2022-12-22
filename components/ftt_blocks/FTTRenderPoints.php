@@ -22,7 +22,7 @@ class FttRenderpoints {
         if ($points[$i]['not_for_recommend'] == 1 && $is_recommendator == 1 && $serviceone_role != 3) {
             continue;
         }
-        
+
         if ($points[$i]['display_condition']) {
           $display_condition_nothing = $points[$i]['display_condition'];
           $display_condition_nothing = explode(' ', $display_condition_nothing);
@@ -132,9 +132,9 @@ class FttRenderpoints {
     echo "<div class='col-5'>";
     if ($type === 'string field') { //$type === 'input'
       if ($other['no_button'] == 1 && empty($value)) {
-        $no_button_elem = '<span class="link_custom_gray set_no" style="margin-left: -55px; background-color: lightgrey;">нет</span>';
+        $no_button_elem = '<span class="link_custom_gray set_no" style="margin-left: -45px; background-color: lightgrey;">нет</span>';
       } elseif ($other['no_button'] == 1 && !empty($value)) {
-        $no_button_elem = '<span class="link_custom_gray set_no" style="margin-left: -55px; display:none; background-color: lightgrey;">нет</span>';
+        $no_button_elem = '<span class="link_custom_gray set_no" style="margin-left: -45px; display:none; background-color: lightgrey;">нет</span>';
       }
       echo "<input type='text' maxlength='{$maxlength}' {$data_attr}><span class='pl-2'></span>".$no_button_elem;
     } elseif ($type === 'number') {
@@ -147,7 +147,7 @@ class FttRenderpoints {
       echo "<input type='checkbox' id='{$id}' class='form-check-input input-request ml-1' data-table='{$db_field[0]}' data-field='{$db_field[1]}' data-display_condition='{$other['display_condition']}' {$required} {$checked}>";
       echo "<div class='i-width-370-px mt-4 {$required_class_extra}'></div>";
     } elseif ($type === 'radio buttons') { // RADIO BUTTONS
-      echo "<div class='i-width-370-px {$required_class}' data-value='{$value}' data-table='{$db_field[0]}' data-field='{$db_field[1]}' data-value='{$value}' {$required}>";
+      echo "<div class='i-width-370-px {$required_class}' data-value='{$value}' data-table='{$db_field[0]}' data-field='{$db_field[1]}' data-value='{$value}' data-display_condition='{$other['display_condition']}' {$required}>";
       InputsGroup::radio($other['radio'], $other['radio'][0], $value, $db_field[1]);
       echo "</div>";
     } elseif ($type === 'date field') {
@@ -183,9 +183,9 @@ class FttRenderpoints {
         include_once "components/ftt_application_page/application_extra.php";
       } else {
         if ($other['no_button'] == 1 && empty($value)) {
-          $no_button_elem = '<span class="link_custom_gray set_no" style="margin-left: -55px; vertical-align: super;  background-color: lightgrey;">нет</span>';
+          $no_button_elem = '<span class="link_custom_gray set_no" style="margin-left: -45px; vertical-align: super;  background-color: lightgrey;">нет</span>';
         } elseif ($other['no_button'] == 1 && !empty($value)) {
-          $no_button_elem = '<span class="link_custom_gray set_no" style="margin-left: -55px; vertical-align: super; display:none;  background-color: lightgrey;">нет</span>';
+          $no_button_elem = '<span class="link_custom_gray set_no" style="margin-left: -45px; vertical-align: super; display:none;  background-color: lightgrey;">нет</span>';
         }
         $textarea_height = '';
         if ($maxlength > 255) {

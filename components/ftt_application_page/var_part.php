@@ -36,7 +36,7 @@ if (isset($_GET['member_key']) && $_GET['member_key'] !== $memberId) { // Есл
   // get data
   $request_data = getMemberData($member_key);
   // если по КЛЮЧУ не найдено данных
-  if (!$request_data['fr_id']) {
+  if (!$request_data['id']) {
     ?>
     <div><br><br><br><h5>Заявление не найдено</h5><a href="index">ВЕРНУТЬСЯ НА ГЛАВНУЮ</a></div>
     <?php
@@ -68,7 +68,7 @@ if (isset($_GET['member_key']) && $_GET['member_key'] !== $memberId) { // Есл
   // get data
   $request_data = getMemberData($member_key);
   // если по КЛЮЧУ не найдено данных
-  if (!$request_data['fr_id']) {
+  if (!$request_data['id']) {
     $request_data = getStartMemberData($member_key);
   }
 }
@@ -84,7 +84,7 @@ if ($serviceone_role === -1) {
 
 // Is like guest
 $is_guest = '';
-if ((!$request_data['fr_id'] && isset($_GET['guest'])) || $request_data['guest'] === '1') {
+if ((!$request_data['id'] && isset($_GET['guest'])) || $request_data['guest'] === '1') {
   $is_guest = 1;
 }
 

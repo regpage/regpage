@@ -4,7 +4,7 @@
   <div class="col">
     <!-- ЗАГОЛОВОК -->
     <h5>Заявление для участия в Полновременном обучении</h5>
-    <h6><?php echo getValueFttParamByName("semester"); ?>  (<?php echo getValueFttParamByName("period"); ?>)<h6>
+    <h6><?php echo getValueFttParamByName("application_title"); ?><h6>
     <hr style="margin: 0;">
   </div>
 </div>

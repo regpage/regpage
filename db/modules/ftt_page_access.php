@@ -9,7 +9,7 @@ foreach ($serviceones_pvom as $key => $value) {
 }
 
 // Проверка разработчика
-if ($accessToPage === 0 && ($memberId === '000005716')) {
+if ($memberId === '000005716') {
   $accessToPage = 4;
 }
 
