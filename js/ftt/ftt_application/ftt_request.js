@@ -1,7 +1,7 @@
 $(document).ready(function(){
 document.cookie = "application_back=0";
   /**** ПОВЕДЕНИЕ ЭЛЕМЕНТОВ ****/
-
+radio_buttons_behavior()
 // COOKIE
 
 if (getCookie("application_check") === '1') {
@@ -65,10 +65,10 @@ if (getCookie("application_check") === '1') {
   });
 
   // Показывать модально окно с информацией при старте.
-  if (!getCookie("hide_info")) {
+  if (localStorage.getItem('hide_info') === "1") {
+    //!getCookie("hide_info")
     $("#modalStartInfo").modal().show();
   } else {
-    //$("#modalStartInfo").find("button").text("Закрыть");
     $("#donotshowmethat").prop("checked", true);
   }
 
@@ -313,7 +313,7 @@ if (getCookie("application_check") === '1') {
   ruleForInnAndKodPodrazdeleniya();
   point_driver_license();
   inputFileStyle();
-  radio_buttons_behavior();
+  // radio_buttons_behavior(); перенесён в начало
   select_behavior();
   andOrCondition();
   $("#point_country_key").attr("disabled", true);
@@ -333,21 +333,16 @@ if (getCookie("application_check") === '1') {
 
   /**** COOKIE ****/
   $("#donotshowmethat").change(function () {
-    if ($(this).is(":checked") && !getCookie("hide_info")) {
-      setCookie("hide_info", 1, 365);
-    } else if (!$(this).is(":checked") && getCookie("hide_info")){
-      setCookie("hide_info", "", 365);
-    } else if ($(this).is(":checked") && getCookie("hide_info")) {
-      setCookie("hide_info", "", 365);
-    } else if (!$(this).is(":checked") && !getCookie("hide_info")) {
-      setCookie("hide_info", 1, 365);
+    if ($(this).is(":checked")) {
+      localStorage.setItem('hide_info', "");
+      //setCookie("hide_info", 1, 365);
+    } else if (!$(this).is(":checked")) {
+      //setCookie("hide_info", "", 365);
+      localStorage.setItem('hide_info', "1");
     }
   });
 
   /**** ЗАПРОСЫ К БД ****/
-  /*function quickFieldSave() {
-
-  }*/
   // Удалить строки с иждевенцем
   $(".delete_extra_string").click(function () {
     // Показать иконку сохранения
@@ -399,7 +394,7 @@ if (getCookie("application_check") === '1') {
     fetch("ajax/ftt_request_ajax.php?type=set&table="+table+"&field="+field+"&data="+value+"&id="+id+"&guest="+is_guest)
     .then(response => response.json())
     .then(result => {
-      console.log(result.result);
+      //console.log(result.result);
       showSaveIcon();
       if (result.result > 1) {
         $("#main_container").attr("data-id", result.result);
@@ -532,7 +527,7 @@ if (getCookie("application_check") === '1') {
         fetch("ajax/ftt_request_ajax.php?type=set&table=ftt_request&field=another_names&data="+field_request+"&id=&guest="+is_guest)
         .then(response => response.json())
         .then(result => {
-          console.log(result.result);
+          //console.log(result.result);
           if (result.result > 1) {
             $("#main_container").attr("data-id", result.result);
           }
@@ -543,7 +538,7 @@ if (getCookie("application_check") === '1') {
       })
       .then(response => response.json())
       .then(result => {
-        console.log(result.result);
+        //console.log(result.result);
         showSaveIcon();
       });
     } else {
@@ -555,7 +550,7 @@ if (getCookie("application_check") === '1') {
         })
       .then(response => response.json())
       .then(result => {
-        console.log(result.result);
+        //console.log(result.result);
         showSaveIcon();
         if (result.result > 1) {
           $("#main_container").attr("data-id", result.result);
@@ -626,7 +621,7 @@ if (getCookie("application_check") === '1') {
     fetch("ajax/ftt_request_ajax.php?type=set&table="+table+"&data="+value+"&field="+field+"&id="+id+"&guest="+is_guest)
     .then(response => response.json())
     .then(result => {
-      console.log(result.result);
+      //console.log(result.result);
       if (result.result > 1) {
         $("#main_container").attr("data-id", result.result);
       }
@@ -748,7 +743,7 @@ if (getCookie("application_check") === '1') {
   		})
       .then(response => response.json())
       .then(result => {
-        console.log(result.result);
+        //console.log(result.result);
         if (result.result > 1) {
           $("#main_container").attr("data-id", result.result);
         }
@@ -796,18 +791,19 @@ if (getCookie("application_check") === '1') {
   $(".pic-delete").click(function () {
     let id = $("#main_container").attr("data-id");
     let field;
-    if ($(this).parent().parent().find("input[type=file]").attr("data-field")) {
-      field = $(this).parent().parent().find("input[type=file]").attr("data-field");
+    if ($(this).parent().parent().find("input[type='file']").attr("data-field")) {
+      field = $(this).parent().parent().find("input[type='file']").attr("data-field");
     } else {
-      field = $(this).parent().parent().prev().find("input[type=file]").attr("data-field");
+      field = $(this).parent().parent().prev().find("input[type='file']").attr("data-field");
     }
-
+// УДАЛЕНИЕ БЛОБА
     let element = $(this);
-    if ($(this).parent().index() === 1 && field === "passport_scan") {
+    if (field === "passport_scan" && $(this).attr("data-pic") === "1") {
       field += "_2";
-    } else if ($(this).parent().index() === 2 && field === "passport_scan") {
+    } else if (field === "passport_scan" && $(this).attr("data-pic") === "2") {
       field += "_3";
     }
+
     fetch("ajax/ftt_request_ajax.php?type=delete_pic&field="+field+"&id="+id)
     .then(response => response.json())
     .then(data => {
@@ -1192,9 +1188,22 @@ if (getCookie("application_check") === '1') {
     if ($(this).next().next().hasClass("set_no") && $(this).next().next().is(":visible") && $(this).val()) {
       $(this).next().next().hide();
     } else if ($(this).next().next().hasClass("set_no") && !$(this).next().next().is(":visible") && !$(this).val()) {
-      $(this).next().next().show();
+      //$(this).next().next().show();
     }
-    $(this).next().text($(this).attr("maxlength") - $(this).val().length);
+    // счётчик слов
+    if ($(this).attr("data-field") === "request_info") {
+      let text_for_count = $(this).val();
+      if (text_for_count) {
+        text_for_count = text_for_count.split(" ");
+        text_for_count = text_for_count.length;
+      } else {
+        text_for_count = 0;
+      }
+      $(this).next().css("color", "red").css("font-weight", "bold");
+      $(this).next().text(250 - text_for_count);
+    } else { // счётчик символов
+      $(this).next().text($(this).attr("maxlength") - $(this).val().length);
+    }
   });
 
   // быстрое заполнение полей

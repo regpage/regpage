@@ -1,12 +1,3 @@
-label {
-  font-weight: normal;
-  margin-right: 5px;
-}
-
-button {
-  margin-right: 5px !important;
-}
-
 sup {
   color: red;
   font-size: 100% !important;
@@ -79,6 +70,10 @@ sup {
   margin-bottom: 15px;
 }
 
+.width-95-px {
+  width: 95px;
+}
+
 .width-100-px {
   min-width: 100px;
   margin-bottom: 15px;
@@ -140,7 +135,7 @@ sup {
 }
 
 .i-width-long-one {
-  width: 96%;
+  width: 99%;
 }
 
 .i-width-370-px {

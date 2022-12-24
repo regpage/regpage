@@ -16,7 +16,7 @@ class FttRenderpoints {
     $countries1 = $lists['countries1'];
     $countries2 = $lists['countries2'];
     $except = [];
-    echo "<div class='container'><div class='row text-white bg-secondary rounded'><h2 class='pl-3 mb-1'>{$section}</h2></div>";
+    echo "<div class='container'><div class='row text-white bg-secondary rounded mb-3'><h4 class='pl-3 mb-1 mt-1'>{$section}</h4></div>";
     for ($i=0; $i < count($points); $i++) {
       if ($points[$i]['group'] === $section) {
         if ($points[$i]['not_for_recommend'] == 1 && $is_recommendator == 1 && $serviceone_role != 3) {
@@ -125,8 +125,12 @@ class FttRenderpoints {
     if (isset($db_field[1]) && !is_array($db_field[1])) {
       $db_field[1] = trim($db_field[1]);
     }
+    if (!is_array($db_field[1])) {
+      $id .= $db_field[1];
+    } else {
+      $id .= $db_field[1][1];
+    }
 
-    $id .= $db_field[1];
 
     $data_attr = "id='{$id}' class='input-request i-width-370-px {$required_class}' value='{$value}' data-value='{$value}' data-table='{$db_field[0]}' data-field='{$db_field[1]}' data-display_condition='{$other['display_condition']}' {$required}";
     echo "<div class='col-5'>";
@@ -168,14 +172,30 @@ class FttRenderpoints {
         $db_field_str = $db_field[1];
         $value_str = $value;
       }
-      echo "<input type='file' id='{$id}' class='input-request {$required_class}' data-table='{$db_tbl_str}' data-field='{$db_field_str}' data-value='{$value_str}' data-display_condition='{$other['display_condition']}' {$required} {$multiple} accept='.jpg, .jpeg, .png, .pdf'>";
+
+      $width_class = '';
+      if (count($db_field) < 3 && $value_str) {
+        $width_class = 'width-95-px';
+      } elseif (count($db_field) > 2 && $value_str) {
+        $width_class = 'b-width-100-px';
+      }
+
+      echo "<input type='file' id='{$id}' class='input-request {$required_class} {$width_class}  mr-3' data-table='{$db_tbl_str}' data-field='{$db_field_str}' data-value='{$value_str}' data-display_condition='{$other['display_condition']}' {$required} {$multiple} accept='.jpg, .jpeg, .png, .pdf'>";
       // ВЫВОД ЗАГРУЖЕННЫХ ИЗОБРАЖЕНИЙ НА ЭКРАН
       if (count($db_field) > 2) {
         for ($i=0; $i < count($value); $i++) {
-          echo "<span><a href='{$value[$i]}' target='_blank'><img src='{$value[$i]}' alt='' width='100'></a><i class='fa fa-trash pic-delete' aria-hidden='true'></i></span>";
+          if (mb_substr(trim($value[$i]), -1) === 'f' || mb_substr(trim($value[$i]), -1) === 'F') {
+            echo "<span><a href='{$value[$i]}' target='_blank'><img class='mr-3' src='img/pdf.jpeg' alt='' width='50' data-pic='$i'></a><i class='fa fa-trash pic-delete' data-pic='$i' aria-hidden='true'></i></span>";
+          } else {
+            echo "<span><a href='{$value[$i]}' target='_blank'><img src='{$value[$i]}' alt='' width='100' data-pic='$i'></a><i class='fa fa-trash pic-delete mr-3' data-pic='$i' aria-hidden='true'></i></span>";
+          }
         }
       } else {
-        echo "<span><a href='{$value_str}' target='_blank'><img src='{$value_str}' alt='' width='100'></a><i class='fa fa-trash pic-delete' aria-hidden='true'></i></span>";
+        if (mb_substr(trim($value_str), -1) === 'f' || mb_substr(trim($value_str), -1) === 'F') {
+          echo "<span><a href='{$value_str}' target='_blank'><img class='mr-3' src='img/pdf.jpeg' alt='' width='50'></a><i class='fa fa-trash pic-delete' aria-hidden='true'></i></span>";
+        } else {
+          echo "<span $check_meck><a href='{$value_str}' target='_blank'><img src='{$value_str}' alt='' width='100'></a><i class='fa fa-trash pic-delete' aria-hidden='true'></i></span>";
+        }
       }
     } elseif ($type === 'textarea') { // TEXTAREA
       if ($db_field[1] === 'support_persons') {
@@ -190,6 +210,9 @@ class FttRenderpoints {
         $textarea_height = '';
         if ($maxlength > 255) {
           $textarea_height = 'field_height_90px';
+        }
+        if ($db_field[1] === 'request_info') {
+          $maxlength = '';
         }
         echo "<textarea id='{$id}' class='input-request i-width-370-px {$required_class} {$textarea_height}' value='{$value}' maxlength='{$maxlength}' data-value='{$value}' data-table='{$db_field[0]}' data-field='{$db_field[1]}' data-display_condition='{$other['display_condition']}' {$required}>{$value}</textarea><span class='pl-2'></span>".$no_button_elem;
       }

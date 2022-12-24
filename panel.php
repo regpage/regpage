@@ -205,13 +205,19 @@ if ($memberId !== '000001679'){
                   <div class="col-sm-6">
                     <select id="statusesStatisticsSelect" class="form-control form-control form-control-sm" name="" title="Выберите месяц.">
                       <option value="">Выберите месяц</option>
-                      <option value="" disabled>---- 2020 г. ----</option>
-                      <option value="2020-06-30_2020-08-01">Июль</option>
-                      <option value="2020-07-31_2020-09-01">Август</option>
-                      <option value="2020-08-31_2020-10-01">Сентябрь</option>
-                      <option value="2020-09-30_2020-11-01">Октябрь</option>
-                      <option value="2020-10-31_2020-12-01">Ноябрь</option>
-                      <option value="2020-11-30_2021-01-01">Декабрь</option>
+                      <option value="" disabled>---- 2022 г. ----</option>
+                      <option value="2021-12-31_2022-02-01">Январь</option>
+                      <option value="2022-01-31_2022-03-01">Февраль</option>
+                      <option value="2022-02-28_2022-04-01">Март</option>
+                      <option value="2022-03-31_2022-05-01">Апрель</option>
+                      <option value="2022-04-30_2022-06-01">Май</option>
+                      <option value="2022-05-31_2022-07-01">Июнь</option>
+                      <option value="2022-06-30_2022-08-01">Июль</option>
+                      <option value="2022-07-31_2022-09-01">Август</option>
+                      <option value="2022-08-31_2022-10-01">Сентябрь</option>
+                      <option value="2022-09-30_2022-11-01">Октябрь</option>
+                      <option value="2022-10-31_2022-12-01">Ноябрь</option>
+                      <option value="2022-11-30_2023-01-01">Декабрь</option>
                       <option value="" disabled>---- 2021 г. ----</option>
                       <option value="2020-12-31_2021-02-01">Январь</option>
                       <option value="2021-01-31_2021-03-01">Февраль</option>
@@ -225,6 +231,13 @@ if ($memberId !== '000001679'){
                       <option value="2021-09-30_2021-11-01">Октябрь</option>
                       <option value="2021-10-31_2021-12-01">Ноябрь</option>
                       <option value="2021-11-30_2022-01-01">Декабрь</option>
+                      <option value="" disabled>---- 2020 г. ----</option>
+                      <option value="2020-06-30_2020-08-01">Июль</option>
+                      <option value="2020-07-31_2020-09-01">Август</option>
+                      <option value="2020-08-31_2020-10-01">Сентябрь</option>
+                      <option value="2020-09-30_2020-11-01">Октябрь</option>
+                      <option value="2020-10-31_2020-12-01">Ноябрь</option>
+                      <option value="2020-11-30_2021-01-01">Декабрь</option>
                     </select>
                   </div>
                   <div class="col-sm-6">

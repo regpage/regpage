@@ -403,25 +403,36 @@ if (window.location.pathname === "/application.php") {
 	});
 
 	if ($(window).width()<=769) {
-		//$("#buttons_bar").css("width", ($(window).width()+"px !important"));
+		$(".set_no").css("margin-left", "-65px");
+		$(".i-width-350-px").removeClass("i-width-350-px").addClass("i-width-long-one");
+		$("h5").removeClass("pl-3");
+		$("h6").removeClass("pl-3");
+		$(".text-white.bg-secondary").next().hide();
+		$(".title_point").addClass("font-weight-bold");
+		$(".grey_text").css("font-size", "16px");
+		$(".form-check-label").css("font-weight", "normal");
+		$(".btn-sm").removeClass("btn-sm");
+		$("#main_container .container .col-12").css("padding-left", "0px");
+		$("#main_container .container .col-12").css("padding-right", "0px");
+		$("input[type='file']").each(function () {
+			if ($(this).attr("id") === "point_passport_scan_2") {
+				$(this).removeClass("b-width-100-px").css("width","138px");
+			} else {
+				$(this).removeClass("width-95-px").css("max-width","133px");
+			}
+		});
 		$("body").attr("style", "font-size: 16px !important;");
-		$(".btn-danger").html("<i class='fa fa-trash-o' aria-hidden='true'></i>");
-		$(".btn-danger").addClass("btn-lg");
-		$(".btn-success").html('<i class="fa fa-paper-plane-o" aria-hidden="true"></i>');
-		$(".btn-success").addClass("btn-lg");
-		$("button[data-target='#modalStartInfo']").html('<i class="fa fa-info-circle" aria-hidden="true"></i>');
-		$(".btn-primary").addClass("btn-lg");
+
+		$("#toModalDeleteMyRequest").removeClass("mr-2").parent().addClass("text-right");
+		//$(".btn-danger").html("<i class='fa fa-trash-o' aria-hidden='true'></i>");
+		//$(".btn-success").html('<i class="fa fa-paper-plane-o" aria-hidden="true"></i>');
 		$(".span-label-width-500").removeClass("span-label-width-500");
 		// cols
 		$(".col").css("min-width", "95%");
 		$(".col-2").css("min-width", "95%");
-		$(".col-4").css("min-width", "95%");
+		$(".col-4").css("min-width", "99%");
 		$(".col-6").css("min-width", "95%");
 		$(".col-8").css("min-width", "95%");
-		// buttons
-		$("#buttons_bar button").removeClass("btn-sm");
-		$("#buttons_bar button").addClass("btn-lg");
-		//$("input[type=date]").addClass("b-width-125-px");
 		$(".b-width-150-px").addClass("b-width-125-px").removeClass("b-width-150-px");
 		// lables (spans)
 		$(".span-label-width-120").removeClass("span-label-width-120");
@@ -435,9 +446,9 @@ if (window.location.pathname === "/application.php") {
 			$(this).css("width","95%");
 		});
 		// select
-		$("select[data-field=locality_key]").addClass("b-width-150-px"); //b-width-200-px
-		// inputs
-		$("input[data-field=candidate_signature]").addClass("b-width-150-px");
+		//$("select[data-field=locality_key]").addClass("b-width-150-px"); //b-width-200-px
+
+
 		// Доп блоки
 		$(".delete_extra_string").text("Удалить");
 		// textarea width
@@ -459,6 +470,7 @@ if (window.location.pathname === "/application.php") {
 		$(".t-width-long").each(function () {
 			$(this).css("width","95%");
 		});
+		$(".form-check-label").css("font-weight", "normal");
 	}
 }
 
