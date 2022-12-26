@@ -267,3 +267,24 @@ $(".application-row").click(function () {
     window.location = hi_bye;
   }, 50);
 });
+
+function hideShowPVOMBlock(elem, show, set) {
+  if (show) {
+    elem.prev().prev().fadeOut(5);
+    elem.prev().fadeOut(5);
+    elem.css("padding-top", "0px");
+    elem.text("Показать раздел");
+    set ? localStorage.setItem('pvom_block', 1) : "";
+  } else {
+    elem.prev().prev().fadeIn(5);
+    elem.prev().fadeIn(5);
+    elem.css("padding-top", "10px");
+    elem.text("Скрыть раздел");
+    set ? localStorage.setItem('pvom_block', "") : "";
+  }
+}
+
+$("#hideShowPVOMBlock").click(function () {
+  hideShowPVOMBlock($(this), $(this).prev().is(":visible"), 1);
+});
+hideShowPVOMBlock($("#hideShowPVOMBlock"), localStorage.getItem('pvom_block'));

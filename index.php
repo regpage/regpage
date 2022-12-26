@@ -259,6 +259,7 @@ else if (isset ($_SESSION["logged-in"])){
           <?php endif; ?>
           </div>
           <?php endif; ?>
+          <div id="hideShowPVOMBlock" style="padding-top: 10px; padding-left: 10px; font-weight: normal;" class="link_custom">Скрыть раздел</div>
         </div>
 
         <!-- Mobile Заявление на ПВОМ -->
@@ -919,6 +920,10 @@ $(document).ready(function(){
                 hideHidenEvents = localStorage.getItem('hide-hiden-events') === 'true', icons = '', eventAttrs = '', desctopEvent = '', tabletEvent = '';
 
             for(var i in events){
+              let border_top = "";
+              if (i === "0") {
+                border_top = 'style="border-top: 1px solid #DDD"';
+              }
                 var event = events[i], archiveAccess = -1,
                     isEventActive = parseInt(event.is_active);
                     var evArr = '<?php echo $adminEvents; ?>';
@@ -935,10 +940,10 @@ $(document).ready(function(){
                         '<span style="display: inline; margin-right: 5px;" class="fa fa-trash-o btnRemoveEvent" title="Удалить мероприятие" aria-hidden="true"></span>' : '')+
                         ((event.archived === '0' && memberId === '000001679'/*(isEventsAdmin || archiveAccess != -1 || memberId === event.author)*/) ? '<span style="display: inline; margin-left: 5px;" class="fa fa-database btnGetArchive" title="Архивировать данные" aria-hidden="true"></span>' : '');
 
-                eventAttrs = ' class="event-row" data-name="'+event.name+'" data-locality_name="'+event.locality_name+'" '+
+                eventAttrs = ' class="event-row" '+border_top+' data-name="'+event.name+'" data-locality_name="'+event.locality_name+'" '+
                         'data-start_date="'+event.start_date+'" data-end_date="'+event.end_date+'" data-private="'+event.private+'" '+
                         'data-is_active="'+event.is_active+'" data-id="'+event.id+'" data-author="'+event.author+'" '+
-                        'data-archived="'+event.archived+'" data-regstate_key="'+event.regstate_key+'" data-max_age="'+event.max_age+'" data-min_age="'+event.min_age+'" data-event_type="'+event.event_type+'" data-online_event="'+event.online+'" ';
+                        'data-archived="'+event.archived+'" data-regstate_key="'+event.regstate_key+'" data-max_age="'+event.max_age+'" data-min_age="'+event.min_age+'" data-event_type="'+event.event_type+'" data-online_event="'+event.online+'"';
 
                 var regstateText='', regstateClass = '';
                 if(event.member_key !== null){
@@ -957,7 +962,7 @@ $(document).ready(function(){
                             '<span class="span5 event-name">'+ event.name + ', ' + event.locality_name + '</span>'+
                             '<span style="display: none;" class="span3">'+ event.locality_name + '</span>'+
                             '<span class="span2 event-date" style="display: none;">'+ formatDDMM(event.start_date) + ' - ' + formatDDMM(event.end_date)+'</span>'+
-                            '<span class="span2 event-icons"  style="width: 190px";>'+ (regstateClass == "" ?  "" : '<span style="margin-top:5px; margin-left: 0px; margin-right: 19px; display: inline;" class="label label-'+regstateClass+'">'+ regstateText + '</span>') +((regstateText) ? ((regstateText === 'регистрация подтверждена' || regstateText === 'ожидание подтверждения') ? '<br><span style="padding-left: 0px;"><a style="padding-left: 0px; font-size: 12px; display: none;" class="handleRegistrationFast editEventMember" title="Редактировать данные"> Изменить</a></span><span><a class="rejectRegistrationFast" title="Отменить регистрацию" style=" margin-right: 12px; font-size: 12px; display: none;"> Отменить</a></span>':''):'<span style="margin-top:5px; margin-left: 0px; margin-right: 1px; padding-left:0px;"><a class="handleRegistrationFast addEventMember" style="display: none;">Отправить</a></span>')+ icons +'</span>'+
+                            '<span class="span2 event-icons"  style="width: 190px";>'+ (regstateClass == "" ?  "" : '<span style="margin-top:5px; margin-left: 0px; margin-right: 19px; display: inline;" class="label label-'+regstateClass+'">'+ regstateText + '</span>') +((regstateText) ? ((regstateText === 'регистрация подтверждена' || regstateText === 'ожидание подтверждения') ? '<span style="padding-left: 0px;"><a style="padding-left: 0px; font-size: 12px; display: none;" class="handleRegistrationFast editEventMember" title="Редактировать данные"> Изменить</a></span><span><a class="rejectRegistrationFast" title="Отменить регистрацию" style=" margin-right: 12px; font-size: 12px; display: none;"> Отменить</a></span>':''):'<span style="margin-top:5px; margin-left: 0px; margin-right: 1px; padding-left:0px;"><a class="handleRegistrationFast addEventMember" style="display: none;">Отправить</a></span>')+ icons +'</span>'+
                             '</div>';
 
                 tabletEvent = '<div '+eventAttrs+'>'+
@@ -1725,7 +1730,7 @@ console.log('stop is ', stopRegistration, 'close is ', closeRegistration, modalW
 var adminRole = '<?php echo db_getAdminRole($memberId); ?>';
 
 </script>
-<script src="/js/mainpage.js?v27"></script>
+<script src="/js/mainpage.js?v28"></script>
 
 <?php
 }

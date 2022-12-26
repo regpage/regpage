@@ -929,7 +929,7 @@ input.error, .control-group.error select, textarea.error {
     cursor:pointer;
 }
 .list-events > div, .hidden-events-list > div{
-    display: inline-block;
+    display: inline-flex;
     border-bottom: 1px solid #DDD;
     width: 100%;
     padding-top: 10px;
@@ -1989,4 +1989,15 @@ input.error, .control-group.error select, textarea.error {
 
 .font_weight_bold {
   font-weight: bold;
+}
+
+.link_custom {
+  cursor: pointer;
+  color: #007bff;
+  font-weight: bold;
+}
+
+.link_custom:hover {
+  color: #004997;
+  text-decoration: underline;
 }
