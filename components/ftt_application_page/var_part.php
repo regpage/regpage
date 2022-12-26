@@ -220,7 +220,18 @@ if ($request_data['stage'] == 1 || $request_data['stage'] == 2 || $request_data[
 || $request_data['stage'] == 4 || $request_data['stage'] == 5) {
   $status_application_label = '<span class="badge badge-warning">на рассмотрении</span>';
 } elseif ($request_data['stage'] == 6) {
-  $status_application_label = '<span class="badge badge-success">принят/отклонён</span>';
+  /*
+  $text_decision_status;
+  if ($request_data['decision'] === "approve") {
+    $gl_gender_candidate ? $text_decision_status = 'принят' : $text_decision_status = 'принята';
+    $status_application_label = "<span class='badge badge-success'>{$text_decision_status}</span>";
+  } else {
+    $gl_gender_candidate ? $text_decision_status = 'не принят' : $text_decision_status = 'не принята';
+    $status_application_label = "<span class='badge badge-danger'>{$text_decision_status}</span>";
+  }
+
+  */
+  $status_application_label = "<span class='badge badge-success'>Решение принято</span>";
 }
 
 

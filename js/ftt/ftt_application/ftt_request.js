@@ -1248,36 +1248,27 @@ if (getCookie("application_check") === '1') {
     $("#modal_info").modal("show");
   });
 
+  function set_status(status) {
+    if (!status) {
+      showError("Статус не установлен.");
+    }
+    let id = $("#main_container").attr("data-id");
+    fetch("ajax/ftt_request_ajax.php?type=set_status&status="+status+"&id="+id)
+    .then(response => response.json())
+    .then(result => {
+      location.reload();
+    });
+  }
+
   // кнопка на рекомендацию
   $("#send_to_recommend").click(function () {
-    let id = $("#main_container").attr("data-id");
-    fetch("ajax/ftt_request_ajax.php?type=set_status&status=2&id="+id)
-    .then(response => response.json())
-    .then(result => {
-      location.reload();
-    });
+    set_status(2);
   });
-
-  // кнопка на собеседование
-  $("#send_to_interview").click(function () {
-    let id = $("#main_container").attr("data-id");
-    fetch("ajax/ftt_request_ajax.php?type=set_status&status=4&id="+id)
-    .then(response => response.json())
-    .then(result => {
-      location.reload();
-    });
-  });
-  // enable disable show hide
-  function service_block_behavior() {
-    if ($("#main_container").attr("data-status") > 1 || $("#person_recommended_yes").attr("disabled")) {
-      $("#send_to_recommend").attr("disabled", true);
-    }
-  }
   //
   $("#send_recommend_to").click(function () {
     if ($("#point_recommendation_info").val() === "" || (!$("#person_recommended_yes").prop("checked") && !$("#person_recommended_no").prop("checked"))) {
       showError("Заполните все обязательные поля!");
-      if ($("#point_recommendation_info").text() === "") {
+      if ($("#point_recommendation_info").val() === "") {
         $("#point_recommendation_info").css("border-bottom", "2px solid red");
       }
       if (!$("#person_recommended_yes").prop("checked") && !$("#person_recommended_no").prop("checked")) {
@@ -1285,14 +1276,46 @@ if (getCookie("application_check") === '1') {
       }
       return;
     }
-
-    let id = $("#main_container").attr("data-id");
-    fetch("ajax/ftt_request_ajax.php?type=set_status&status=3&id="+id)
-    .then(response => response.json())
-    .then(result => {
-      location.reload();
-    });
+    set_status(3);
   });
 
+  // кнопка на собеседование
+  $("#send_to_interview").click(function () {
+    set_status(4);
+  });
+  // interview
+  $("#send_interview_to").click(function () {
+    if ($("#point_interview_status").val() === "_none_" || !$("#point_interview_info").val()) {
+      showError("Заполните все обязательные поля!");
+      if ($("#point_interview_info").val() === "") {
+        $("#point_interview_info").css("border-bottom", "2px solid red");
+      }
+      if ($("#point_interview_status").val() === "_none_") {
+        $("#point_interview_status").css("border-bottom", "2px solid red");
+      }
+      return;
+    }
+    set_status(5);
+  });
+  // Decision
+  $("#send_decision_to").click(function () {
+    if ($("#point_decision").val() === "_none_" || !$("#point_decision_info").val()) {
+      showError("Заполните все обязательные поля!");
+      if ($("#point_decision_info").val() === "") {
+        $("#point_decision_info").css("border-bottom", "2px solid red");
+      }
+      if ($("#point_decision").val() === "_none_") {
+        $("#point_decision").css("border-bottom", "2px solid red");
+      }
+      return;
+    }
+    set_status(6);
+  });
+  // enable disable show hide
+  function service_block_behavior() {
+    if ($("#main_container").attr("data-status") > 1 || $("#person_recommended_yes").attr("disabled")) {
+      $("#send_to_recommend").attr("disabled", true);
+    }
+  }
   service_block_behavior();
 }); // END document ready

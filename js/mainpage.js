@@ -277,6 +277,7 @@ function hideShowPVOMBlock(elem, show, set) {
     set ? localStorage.setItem('pvom_block', 1) : "";
   } else {
     elem.prev().prev().fadeIn(5);
+    elem.prev().prev().fadeIn(5);
     elem.prev().fadeIn(5);
     elem.css("padding-top", "10px");
     elem.text("Скрыть раздел");
@@ -284,7 +285,8 @@ function hideShowPVOMBlock(elem, show, set) {
   }
 }
 
-$("#hideShowPVOMBlock").click(function () {
+$("#hideShowPVOMBlock, .hideShowPVOMBlock").click(function () {
   hideShowPVOMBlock($(this), $(this).prev().is(":visible"), 1);
 });
+hideShowPVOMBlock($("#hideShowPVOMBlock"), localStorage.getItem('pvom_block'));
 hideShowPVOMBlock($("#hideShowPVOMBlock"), localStorage.getItem('pvom_block'));

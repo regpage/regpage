@@ -118,7 +118,8 @@ else if (isset ($_SESSION["logged-in"])){
         $not_for_show = 'style="display: none;"';
       }
       include_once "db/modules/ftt_page_access.php";
-      if ($accessToPage === 3 || $accessToPage === 4  || $memberId == '000012559' || $memberId ==  '000001680') {
+      //$accessToPage === 3 || $accessToPage === 4  || $memberId == '000012559' || $memberId ==  '000001680'
+      if (true) {
         $not_for_show_application = '';
       }
       ?>
@@ -168,7 +169,7 @@ else if (isset ($_SESSION["logged-in"])){
 
         <?php if ($ftt_access['group'] !== 'trainee'): ?>
           <!-- СПИСОК ЗАЯВЛЕНИЙ РЕКОМЕНДАТОРЫ И СОБЕСЕДУЮЩИЕ -->
-          <?php if ($memberId == '000001679' || $memberId == '000005716'): ?>
+          <?php if (($memberId == '000001679' || $memberId == '000005716' || $memberId == '000002634') && substr($memberId, 0, 2) !== '99'): ?>
           <div class="tab-content" style="margin-top:10px;">
             <div class="desctopVisible">
               <h4 style="margin-left: 10px;">Заявления для рекомендаций</h4>
@@ -186,10 +187,10 @@ else if (isset ($_SESSION["logged-in"])){
             </div>
           </div>
           <?php endif; ?>
-        <!-- Desktop Заявление на ПВОМ -->
+        <!-- Desktop Заявление на ПВОМ $accessToPage === 3 || $accessToPage === 4 || $memberId == '000012559' || $memberId ==  '000001680'-->
         <div class="tab-content" style="margin-top:10px; <?php echo $not_for_show_application; ?>">
           <div class="desctopVisible">
-          <?php if ($accessToPage === 3 || $accessToPage === 4 || $memberId == '000012559' || $memberId ==  '000001680'): ?>
+          <?php if (true): ?>
           <?php $requestData = isExistrRequest($memberId);
             $isExistrRequest;
             $request_status;
@@ -235,7 +236,7 @@ else if (isset ($_SESSION["logged-in"])){
             <h4 style="margin-left: 10px;">Заявления для участия в ПВОМ</h4>
             <h5 style="margin-left: 10px;"><?php echo getValueFttParamByName("application_title"); ?></h5>
             <div class="ftt-request-list" style="border-top: 1px solid #DDD;">
-              <?php if ($requestData === 'does not exist' || $isExistrRequest !== '1'): ?>
+              <?php if (($requestData === 'does not exist' || $isExistrRequest !== '1') && substr($memberId, 0, 2) !== '99'): ?>
               <div class="request-row">
                 <span href="application.php">
                   <?php if ($requestData === 'does not exist') { ?>
@@ -246,7 +247,7 @@ else if (isset ($_SESSION["logged-in"])){
                 </span>
               </div>
             <?php endif; ?>
-            <?php if ($requestData === 'does not exist' || $isExistrRequest === '1'): ?>
+            <?php if (($requestData === 'does not exist' || $isExistrRequest === '1') && substr($memberId, 0, 2) !== '99'): ?>
             <div class="request-row it_is_guest">
               <span href="application.php?guest=1">
                 <?php if ($requestData === 'does not exist') { ?>
@@ -257,6 +258,9 @@ else if (isset ($_SESSION["logged-in"])){
               </span>
             </div>
           <?php endif; ?>
+          <?php if (substr($memberId, 0, 2) === '99'): ?>
+             <span style="display: inline-block; padding-left: 10px; padding-top: 10px;">Заявление будет доступно вам после подтверждения учётной записи служащими ПВОМ</span>
+          <?php endif; ?>
           </div>
           <?php endif; ?>
           <div id="hideShowPVOMBlock" style="padding-top: 10px; padding-left: 10px; font-weight: normal;" class="link_custom">Скрыть раздел</div>
@@ -264,11 +268,11 @@ else if (isset ($_SESSION["logged-in"])){
 
         <!-- Mobile Заявление на ПВОМ -->
         <div class="show-phone">
-          <?php if ($memberId == '000001679' || $memberId == '000005716'): ?>
+          <?php if (true): ?>
           <h3>Полновременное обучение</h3>
-          <h5 style="margin-left: 10px;"><?php echo getValueFttParamByName("application_title"); ?></h5>
+          <h5><?php echo getValueFttParamByName("application_title"); ?></h5>
           <div class="ftt-request-list">
-            <?php if ($requestData === 'does not exist' || $isExistrRequest !== '1'): ?>
+            <?php if (($requestData === 'does not exist' || $isExistrRequest !== '1') && substr($memberId, 0, 2) !== '99'): ?>
               <div class="request-row">
                 <span href="application.php">
                   <?php if ($requestData === 'does not exist') { ?>
@@ -279,7 +283,7 @@ else if (isset ($_SESSION["logged-in"])){
                 </span>
               </div>
             <?php endif; ?>
-            <?php if ($requestData === 'does not exist' || $isExistrRequest === '1'): ?>
+            <?php if (($requestData === 'does not exist' || $isExistrRequest === '1') && substr($memberId, 0, 2) !== '99'): ?>
               <div class="request-row it_is_guest">
                 <span href="application.php?guest=1">
                   <?php if ($requestData === 'does not exist') { ?>
@@ -290,8 +294,12 @@ else if (isset ($_SESSION["logged-in"])){
                 </span>
               </div>
             <?php endif; ?>
+            <?php if (substr($memberId, 0, 2) === '99'): ?>
+               <span style="display: inline-block; padding-top: 10px;">Заявление будет доступно вам после подтверждения учётной записи служащими ПВОМ</span>
+            <?php endif; ?>
           </div>
         <?php endif; ?>
+        <div style="padding-top: 10px; font-weight: normal;" class="hideShowPVOMBlock link_custom">Скрыть раздел</div>
         </div>
       </div>
       <?php endif; ?>
@@ -1730,7 +1738,7 @@ console.log('stop is ', stopRegistration, 'close is ', closeRegistration, modalW
 var adminRole = '<?php echo db_getAdminRole($memberId); ?>';
 
 </script>
-<script src="/js/mainpage.js?v28"></script>
+<script src="/js/mainpage.js?v29"></script>
 
 <?php
 }

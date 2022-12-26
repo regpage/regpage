@@ -28,7 +28,7 @@
       Содержание собеседования
     </div>
     <div class="col-5">
-      <textarea class="input-request i-width-370-px field_height_90px" data-table="ftt_request" data-field="interview_info" required><?php echo $request_data['interview_info']; ?></textarea>
+      <textarea id="point_interview_info" class="input-request i-width-370-px field_height_90px" data-table="ftt_request" data-field="interview_info" required><?php echo $request_data['interview_info']; ?></textarea>
     </div>
   </div>
 
@@ -38,19 +38,22 @@
       Результат собеседования
     </div>
     <div class="col-5">
-      <select class="i-width-280-px mr-3" data-table="ftt_request" data-field="interview_status" value="<?php echo $request_data['interview_status']; ?>" required>
+      <select id="point_interview_status" class="i-width-280-px mr-3" data-table="ftt_request" data-field="interview_status" value="<?php echo $request_data['interview_status']; ?>" required>
         <?php
           $options = ['','высоко рекомендовать','рекомендовать','сдержанно рекомендовать','ждать следующего семестра','не рекомендовать'];
           foreach ($options as $key => $value) {
             $interview_status = '';
+            $value_data = $value;
             if ($request_data['interview_status'] === $value) {
               $interview_status = 'selected';
             }
-            echo "<option {$interview_status}> $value";
+            if (!$value) {
+              $value_data = '_none_';
+            }
+            echo "<option value='{$value_data}' {$interview_status}> {$value}";
           }
           ?>
       </select>
-
       <span id="interview_help_link" class="link_custom_active cursor-pointer" tooltip="<?php echo getValueFttParamByName('interview_help'); ?>">Справка</span>
     </div>
   </div>
@@ -58,7 +61,12 @@
   <!-- -->
   <div class="row serviceone_block">
     <div class="col-12">
+      <?php if ($request_data['stage'] == 1 || $request_data['stage'] == 3): ?>
       <button id="send_to_interview" type="button" class="btn btn-primary btn-sm mr-3 mb-4" data-toggle="modal" data-target="">Передать</button>
+      <?php endif; ?>
+      <?php if ($is_interviewer == 1 && $request_data['stage'] == 4): ?>
+      <button id="send_interview_to" type="button" class="btn btn-success btn-sm mr-3 mb-4" data-toggle="modal" data-target="">Отправить</button>
+      <?php endif; ?>
     </div>
   </div>
   <div class="row serviceone_block mb-3">
