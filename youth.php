@@ -475,6 +475,7 @@ include_once "modals.php";
 			if (m.region =='--') {
 				m.region = m.country;
 			} else {
+				//console.log(m.region);
 				m.region = m.region.substring(0, m.region.indexOf(" ("));
 				// m.region += ', ';
 				// m.region += m.country;

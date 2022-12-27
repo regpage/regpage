@@ -31,12 +31,14 @@ if (!data_page.applicant) {
   //$('button[data-target="#modalStartInfo"]').hide();
   // разблокировка данных для рекомендатора и служащих
   if ((data_page.role === "1" || data_page.role === "3") && window.adminId === $("#service_recommendation_name").val() && $("#main_container").attr("data-status") === "2") { // разблокировка данных для рекомендатора
+    $("#point_recommendation_status").attr("disabled",false);
     $("#recommended_block textarea").attr("disabled",false);
-    $("#recommended_block input[type='radio']").attr("disabled", false);
+    //$("#recommended_block input[type='radio']").attr("disabled", false);
     $("#recommended_block button").attr("disabled", false);
   } else if ((data_page.role === "3" || data_page.role === "2")  && window.adminId === $("#service_interview_name").val() &&  $("#main_container").attr("data-status") === "4") { // разблокировка данных для служащих
     $("#interview_block input").attr("disabled",false);
-    $("#interview_block select").attr("disabled",false);
+    //$("#interview_block select").attr("disabled",false);
+    $("#point_interview_status").attr("disabled",false);
     $("#interview_block textarea").attr("disabled",false);
   }
 } else if (data_page.applicant && ($("#main_container").attr("data-status") === "1")) {
@@ -48,5 +50,5 @@ if (!data_page.applicant) {
 }
 </script>
 
-<script src="js/ftt/ftt_application/ftt_request.js?v24"></script>
+<script src="js/ftt/ftt_application/ftt_request.js?v25"></script>
 <script src="js/ftt/ftt_application/design.js?v2"></script>

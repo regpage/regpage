@@ -65,7 +65,7 @@
   <!--<div class="col"><span>Статус заявления: </span><input type="text" class="input-request" data-field="stage" data-value="<?php echo $request_data['stage']; ?>" value="<?php echo $request_data['stage']; ?>"></div>
 </div>-->
 <?php if ($serviceone_role === 3): ?>
-<h2>Служащие ПВОМ:</h2>
+<h5>Служащие ПВОМ:</h5>
 <div class="row serviceone_block">
   <div class="col"><span class="span-label-width-210">Решение служащих ПВОМ: </span>
     <select class="" data-field="decision" data-value="<?php echo $request_data['decision']; ?>">

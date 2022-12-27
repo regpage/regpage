@@ -1,7 +1,58 @@
 <div id="decision_block" class="container">
   <!-- -->
   <div class="row serviceone_block text-white bg-info rounded mb-5">
-    <h2 class="pl-3 mb-1">Решение</h2>
+    <h4 class="pl-3 mb-1 mt-1">Решение</h4>
+  </div>
+  <!-- -->
+  <div class="row serviceone_block">
+    <div class="col-5">
+      <span>Этап заявления</span>
+    </div>
+    <div class="col-5">
+      <?php
+        $swith_status = '';
+        switch ($request_data['stage']) {
+          case '1':
+            echo 'рассмотрения заявления служащими';
+            break;
+          case '2':
+            echo 'этап рекомендации';
+            break;
+          case '3':
+            echo 'рассмотрения рекомендации служащими';
+            break;
+          case '4':
+            echo 'на собеседовании';
+            break;
+          case '5':
+            echo 'принятие решения';
+            break;
+          case '6':
+            echo 'решение принято';
+            break;
+          default:
+          echo 'черновик';
+            break;
+        }
+      ?>
+    </div>
+  </div>
+  <!-- -->
+  <div class="row serviceone_block">
+    <div class="col-5">
+      требуется рекомендация
+    </div>
+    <div class="col-5">
+      <input type="checkbox" id="point_need_recommend" class="form-check-input input-request ml-1" data-table="ftt_request" data-field="need_recommend" <?php oneToChecked($request_data['need_recommend']); ?>>
+    </div>
+  </div>
+  <div class="row serviceone_block">
+    <div class="col-5">
+      требуется собеседование
+    </div>
+    <div class="col-5">
+      <input type="checkbox" id="point_need_interview" class="form-check-input input-request ml-1" data-table="ftt_request" data-field="need_interview" <?php oneToChecked($request_data['need_interview']); ?>>
+    </div>
   </div>
   <!-- -->
   <div class="row serviceone_block">

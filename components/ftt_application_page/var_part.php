@@ -46,7 +46,7 @@ if (isset($_GET['member_key']) && $_GET['member_key'] !== $memberId) { // Есл
   // Определение роли служащего
   // Получаем служащих по зоне ПВОМ
   foreach ($serviceones_pvom as $key => $value) {
-    if ($memberId === $key || $memberId === '000001679') {
+    if ($memberId === $key) {
       $serviceone_role = 3;
     }
   }

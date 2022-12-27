@@ -15,9 +15,9 @@ function db_getYouthList($adminId, $sort_field, $sort_type){
         DATEDIFF(CURRENT_DATE, STR_TO_DATE(m.birth_date, '%Y-%m-%d'))/365 as age, m.birth_date,
         m.school_comment, m.college_comment, m.college_start, m.college_end, m.school_start, m.school_end,
         m.comment, co.name as college_name, m.category_key, m.attend_meeting,
-        co.short_name as college, r.name as region, c.name as country,
-        /*(SELECT rg.name FROM region rg WHERE rg.key=l.region_key) as region,the next 2 lines are Romans code ver 5.0.1
-        (SELECT cn.name FROM country cn INNER JOIN region re ON cn.key=re.country_key WHERE l.region_key=re.key) as country,*/
+        co.short_name as college,
+        (SELECT rg.name FROM region rg WHERE rg.key=l.region_key) as region,
+        (SELECT co.name FROM country co INNER JOIN region re ON co.key=re.country_key WHERE l.region_key=re.key) as country,
         (SELECT lo.name FROM locality lo WHERE co.locality_key = lo.key ) as college_locality,
         CASE WHEN m.category_key='SC' OR m.category_key='PS' THEN 1 ELSE 0 END as school,
         CASE WHEN m.school_start>0 THEN YEAR(NOW()) - m.school_start + 1 ELSE 0 END as school_level,
@@ -37,9 +37,9 @@ function db_getYouthList($adminId, $sort_field, $sort_type){
         DATEDIFF(CURRENT_DATE, STR_TO_DATE(m.birth_date, '%Y-%m-%d'))/365 as age, m.birth_date,
         m.school_comment, m.college_comment, m.college_start, m.college_end, m.school_start, m.school_end,
         m.comment, co.name as college_name, m.category_key, m.attend_meeting,
-        co.short_name as college, r.name as region, c.name as country,
-        /*(SELECT rg.name FROM region rg WHERE rg.key=l.region_key) as region, Roman! Bug was HERE!!! the next 2 lines are Romans code ver 5.0.1
-        (SELECT cn.name FROM country cn INNER JOIN region re ON cn.key=re.country_key WHERE l.region_key=re.key) as country,*/
+        co.short_name as college,
+        (SELECT rg.name FROM region rg WHERE rg.key=l.region_key) as region,
+        (SELECT co.name FROM country co INNER JOIN region re ON co.key=re.country_key WHERE l.region_key=re.key) as country,
         (SELECT lo.name FROM locality lo WHERE co.locality_key = lo.key ) as college_locality,
         CASE WHEN m.category_key='SC' OR m.category_key='PS' THEN 1 ELSE 0 END as school,
         CASE WHEN m.school_start>0 THEN YEAR(NOW()) - m.school_start + 1 ELSE 0 END as school_level,
@@ -50,7 +50,8 @@ function db_getYouthList($adminId, $sort_field, $sort_type){
         INNER JOIN locality l ON l.region_key = r.key OR l.key=a.locality_key
         INNER JOIN member m ON m.locality_key = l.key
         INNER JOIN college co ON co.key = m.college_key
-        WHERE a.member_key='$adminId' AND ( m.category_key = 'ST' OR m.category_key = 'SC' OR ((m.category_key = 'BL' OR m.category_key = 'SN' ) AND ROUND(DATEDIFF(CURRENT_DATE, STR_TO_DATE(m.birth_date, '%Y-%m-%d'))/365, 0) < 25 AND ROUND(DATEDIFF(CURRENT_DATE, STR_TO_DATE(m.birth_date, '%Y-%m-%d'))/365, 0) > 17 ) )) q ORDER BY q.active DESC, $sort_field $sort_type");
+        WHERE a.member_key='$adminId' AND ( m.category_key = 'ST' OR m.category_key = 'SC' OR ((m.category_key = 'BL' OR m.category_key = 'SN' ) AND ROUND(DATEDIFF(CURRENT_DATE, STR_TO_DATE(m.birth_date, '%Y-%m-%d'))/365, 0) < 25
+        AND ROUND(DATEDIFF(CURRENT_DATE, STR_TO_DATE(m.birth_date, '%Y-%m-%d'))/365, 0) > 17 ) )) q ORDER BY q.active DESC, $sort_field $sort_type");
 
     $members = array ();
     while ($row = $res->fetch_object()) $members[]=$row;

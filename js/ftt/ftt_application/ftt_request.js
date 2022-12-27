@@ -1026,6 +1026,8 @@ if (getCookie("application_check") === '1') {
     $("input[type='radio']").each(function () {
       if ($(this).parent().parent().parent().attr("data-display_condition") === "food_question7 = да" && !$("#radio_point_health_question50_1").is(":visible")) {
 
+      } else if ($(this).parent().parent().parent().attr("data-display_condition") === "guest = 0 & semester = 1" && !$("#radio_point_semester_0").prop("checked")) {
+
       } else if ($(this).parent().parent().parent().attr("required")) {
         let arr_radio = $(this).parent().parent().parent().find("input[type='radio']:checked");
         if (arr_radio.length === 0) {
@@ -1243,7 +1245,7 @@ if (getCookie("application_check") === '1') {
   $("#point_need_interview").prop("checked") ? $("#interview_block").show() : $("#interview_block").hide();
 
   // справка
-  $("#interview_help_link").click(function () {
+  $(".interview_help_link").click(function () {
     $("#modal_info .container").html($(this).attr("tooltip"));
     $("#modal_info").modal("show");
   });
@@ -1266,13 +1268,13 @@ if (getCookie("application_check") === '1') {
   });
   //
   $("#send_recommend_to").click(function () {
-    if ($("#point_recommendation_info").val() === "" || (!$("#person_recommended_yes").prop("checked") && !$("#person_recommended_no").prop("checked"))) {
+    if (!$("#point_recommendation_info").val() || $("#point_recommendation_status").val() === "_none_") {
       showError("Заполните все обязательные поля!");
       if ($("#point_recommendation_info").val() === "") {
         $("#point_recommendation_info").css("border-bottom", "2px solid red");
       }
-      if (!$("#person_recommended_yes").prop("checked") && !$("#person_recommended_no").prop("checked")) {
-        $("#person_recommended_yes").parent().parent().parent().css("border-bottom", "2px solid red");
+      if (!$("#point_recommendation_status").val()) {
+        $("#point_recommendation_status").css("border-bottom", "2px solid red");
       }
       return;
     }
@@ -1313,8 +1315,11 @@ if (getCookie("application_check") === '1') {
   });
   // enable disable show hide
   function service_block_behavior() {
-    if ($("#main_container").attr("data-status") > 1 || $("#person_recommended_yes").attr("disabled")) {
+    if ($("#main_container").attr("data-status") > 1 || $("#point_recommendation_status").attr("disabled")) {
       $("#send_to_recommend").attr("disabled", true);
+    }
+    if ($("#main_container").attr("data-status") > 1 || $("#point_interview_status").attr("disabled")) {
+      $("#send_to_interview").attr("disabled", true);
     }
   }
   service_block_behavior();

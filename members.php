@@ -635,7 +635,7 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
             // *** changes processed
             var htmlChanged = (m.changed > 0 ? '<i class="icon-pencil" title="Изменения еще не обработаны"></i>' : '');
             var age = getAgeWithSuffix(parseInt(m.age), m.age);
-            // Cut the m.region string. Roman's code ver 5.0.0
+            // Cut the m.region string. Roman's code ver 5.0.0            
             if (m.region =='--') {
               m.region = m.country;
             } else {

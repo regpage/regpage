@@ -16,10 +16,14 @@ class FttRenderpoints {
     $countries1 = $lists['countries1'];
     $countries2 = $lists['countries2'];
     $except = [];
-    echo "<div class='container'><div class='row text-white bg-secondary rounded mb-3'><h4 class='pl-3 mb-1 mt-1'>{$section}</h4></div>";
+    echo "<div class='container'><div class='row text-white bg-secondary rounded mb-4 mt-3'><h4 class='pl-3 mb-1 mt-1'>{$section}</h4></div>";
     for ($i=0; $i < count($points); $i++) {
       if ($points[$i]['group'] === $section) {
         if ($points[$i]['not_for_recommend'] == 1 && $is_recommendator == 1 && $serviceone_role != 3) {
+            continue;
+        }
+
+        if (empty($points[$i]['title'])) {
             continue;
         }
 
