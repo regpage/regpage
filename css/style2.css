@@ -214,7 +214,7 @@ li.modal-reference {
 
 .link_custom {
   cursor: pointer;
-  color: #007bff;
+  color: #007bff !important;
   font-weight: bold;
 }
 

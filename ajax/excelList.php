@@ -471,13 +471,13 @@ else if (isset($_POST ['members']) && isset ($_POST ['memberslength']) && isset(
                                 $courseLevel = "планирует поступить";
                             }
                             else if($currentYear == $collegeEnd){
-                                $courseLevel = $courseLevel + " курс, окончание в этом году";
+                                $courseLevel = $courseLevel . " курс, окончание в этом году";
                             }
                             else if($currentYear > $collegeEnd){
                                 $courseLevel = "учёба завершена";
                             }
                             else{
-                                $courseLevel = $courseLevel+" курс";
+                                $courseLevel = $courseLevel." курс";
                             }
                         }
 

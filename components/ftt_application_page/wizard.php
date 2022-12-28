@@ -8,10 +8,11 @@
       <?php echo $status_application_label; ?>
       </h6>
     </div>
-    <div class="col-4">
-      <button type="button" class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#modalStartInfo">Информация</button>      
+    <div class="col-5">
+      <button type="button" class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#modalStartInfo">Информация</button>
       <?php if (!empty($request_data['member_key']) && $memberId != $request_data['member_key']): ?>
         <button id="application_print" type="button" class="btn btn-primary btn-sm mr-2" disabled>Печать</button>
+        <button id="application_download" type="button" class="btn btn-primary btn-sm mr-2">Скачать</button>
       <?php endif; ?>
       <?php if ($serviceone_role === 3): ?>
         <button type="button" id="toEditMyRequest" class="btn btn-warning btn-sm mr-2"><i class="fa fa-pencil" aria-hidden="true"></i></button>

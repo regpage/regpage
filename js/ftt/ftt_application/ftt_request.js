@@ -1323,4 +1323,117 @@ if (getCookie("application_check") === '1') {
     }
   }
   service_block_behavior();
+
+  // PRINT
+  $("#application_print").click(function() {
+
+  });
+
+  // DOWNLOAD
+  $("#application_download").click(function() {
+    // дата выгрузки
+    let copytext = "Дата выгрузки — " + dateStrToddmmyyyyToyyyymmdd(date_now_gl(), true) + "\n";
+    let file_name = $("#point_name").val();
+    $("#main_container .container").each(function () {
+      // check
+      if (($(this).find("h4").text().trim() === "Рекомендация" && (!$("#point_need_recommend").prop("checked")
+      || $("#service_recommendation_name").val() === "_none_"))
+      || ($(this).find("h4").text().trim() === "Собеседование" && (!$("#point_need_interview").prop("checked")
+      || $("#service_interview_name").val() === "_none_"))
+      || ($(this).find("h4").text().trim() === "Решение" && $("#point_decision").val() === "_none_")) {
+        // nothing
+      } else {
+        // get text for file
+        copytext += "\n" + $(this).find("h4").text().trim() + "\n\n";
+        $(this).find(".row").each(function () {
+
+            if ($(this).find(".title_point").is(":visible")) {
+              copytext += $(this).find(".title_point").text().trim();
+            }
+
+            if ($(this).find("input[type='text']").is(":visible")) {
+              copytext += " — " + $(this).find("input[type='text']").val() + "\n";
+            } else if ($(this).find("textarea").is(":visible")) {
+              copytext += " — " + $(this).find("textarea").val() + "\n";
+            } else if ($(this).find("input[type='radio']").is(":visible")) {
+              copytext += " — " + $(this).find("input[type='radio']").parent().parent().parent().attr("data-value") + "\n";
+            } else if ($(this).find("input[type='checkbox']").is(":visible")) {
+              copytext += " — ";
+              if ($(this).find("input[type='checkbox']").parent().text()) {
+                $(this).find("input[type='checkbox']:checked").parent().each(function (i) {
+                  if (i > 0) {
+                    copytext += ", ";
+                  }
+                  copytext += $(this).text();
+                });
+                copytext += ".\n";
+              } else {
+                if ($(this).find("input[type='checkbox']:checked")) {
+                  copytext += "Да\n"
+                } else {
+                  copytext += "Нет\n"
+                }
+              }
+            } else if ($(this).find("select").is(":visible")) {
+              copytext += " — " + $(this).find("select option:checked").text() + "\n";
+            } else if ($(this).find("input[type='file']").is(":visible")) {
+              copytext += " — ";
+            if ($(this).find("input[type='file']").attr("id") === "point_passport_scan_2") {
+              let counter_pics = 0;
+              $(this).find("img").each(function() {
+                counter_pics++
+                if (counter_pics === 2 || counter_pics === 3) {
+                  copytext += ", "
+                }
+                if ($(this).attr("src")) {
+                  copytext += "файл " + counter_pics + " прилагается";
+                } else {
+                  copytext += "файл " + counter_pics + " не прилагается";
+                }
+                if (counter_pics === 3) {
+                  copytext += "\n"
+                }
+              });
+            } else {
+              if ($(this).find("img").attr("src")) {
+                copytext += "файл прилагается\n";
+              } else {
+                copytext += "файл не прилагается\n";
+              }
+            }
+          } else if ($(this).find("input[type='date']").is(":visible")) {
+            copytext += " — " + $(this).find("input[type='date']").val() + "\n";
+          } else {
+            //copytext += "\n";
+          }
+        });
+      }
+    });
+    console.log(copytext.trim());
+    downloadSys(copytext.trim(), file_name)
+  });
+
+  function downloadSys(file_text, file_name) {
+    $("#modal_download").modal("show");
+    $("#modal_download .container").html("");
+    $("#modal_download .container").append("<h6>Ссылки для загрузки</h6>");
+
+    let el = "<a href='"+`data:text/plain;charset=utf-8,${encodeURIComponent(file_text)}`+"' download='"+"Анкета_"+ file_name +".doc"+"'>"+"Анкета_"+ file_name +".doc"+"</a><br>";
+    $("#modal_download .container").append(el);
+    //el.attr("href", `data:text/plain;charset=utf-8,${encodeURIComponent(file_text)}`);
+    //el.attr("download", "anketa_"+ file_name +".doc");
+    // pics
+    $("#main_container img").each(function (i) {
+      let link_name = $(this).parent().attr("href");
+      let file_name = $(this).parent().parent().parent().find("input").attr("data-field");
+      let counter_pics_passport = "";
+      if ( $(this).parent().parent().parent().find("input").attr("id") === "point_passport_scan_2") {
+        counter_pics_passport = i+1;
+      }
+      if (link_name) {
+        let elem = "<a href='"+$(this).parent().attr("href")+"' download='"+file_name + counter_pics_passport +"'>Скан " + file_name + " " + counter_pics_passport + "</a><br>";
+        $("#modal_download .container").append(elem);
+      }
+    });
+  }
 }); // END document ready
