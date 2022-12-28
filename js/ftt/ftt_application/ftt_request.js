@@ -1436,4 +1436,17 @@ if (getCookie("application_check") === '1') {
       }
     });
   }
+
+  // нумерация вопросов для служащих
+  function numQuestionsForStaff() {
+    $("#main_container .text-white.bg-secondary").each(function (i) {
+      $(this).find("h4").text(i+1 + ". " + $(this).find("h4").text());
+      $(this).parent().find(".title_point").each(function (ii) {
+        $(this).text((i+1) + "." + (ii+1) + " " + $(this).text());
+      });
+    });
+  }
+  if (data_page.role > 1) {
+    numQuestionsForStaff();
+  }
 }); // END document ready

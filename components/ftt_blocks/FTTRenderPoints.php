@@ -144,9 +144,9 @@ class FttRenderpoints {
       } elseif ($other['no_button'] == 1 && !empty($value)) {
         $no_button_elem = '<span class="link_custom_gray set_no" style="margin-left: -45px; display:none; background-color: lightgrey;">нет</span>';
       }
-      echo "<input type='text' maxlength='{$maxlength}' {$data_attr}><span class='pl-2'></span>".$no_button_elem;
+      echo "<input type='text' maxlength='{$maxlength}' {$data_attr}><span class='pl-2 link_custom_gray'></span>".$no_button_elem;
     } elseif ($type === 'number') {
-      echo "<input type='number' maxlength='{$maxlength}' {$data_attr}><span class='pl-2'></span>";
+      echo "<input type='number' maxlength='{$maxlength}' {$data_attr}><span class='pl-2 link_custom_gray'></span>";
     } elseif ($type === 'checkbox') { // CHECKBOX
       $checked = '';
       if (!empty($value)) {
@@ -218,7 +218,7 @@ class FttRenderpoints {
         if ($db_field[1] === 'request_info') {
           $maxlength = '';
         }
-        echo "<textarea id='{$id}' class='input-request i-width-370-px {$required_class} {$textarea_height}' value='{$value}' maxlength='{$maxlength}' data-value='{$value}' data-table='{$db_field[0]}' data-field='{$db_field[1]}' data-display_condition='{$other['display_condition']}' {$required}>{$value}</textarea><span class='pl-2'></span>".$no_button_elem;
+        echo "<textarea id='{$id}' class='input-request i-width-370-px {$required_class} {$textarea_height}' value='{$value}' maxlength='{$maxlength}' data-value='{$value}' data-table='{$db_field[0]}' data-field='{$db_field[1]}' data-display_condition='{$other['display_condition']}' {$required}>{$value}</textarea><span class='pl-2 link_custom_gray'></span>".$no_button_elem;
       }
     } elseif ($type === 'select list') { // SELECT
       echo "<select id='{$id}' class='i-width-280-px {$required_class}' data-table='{$db_field[0]}' data-field='{$db_field[1]}' data-value='{$value}' data-display_condition='{$other['display_condition']}' {$required}>";
