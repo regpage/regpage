@@ -190,7 +190,7 @@ class FttRenderpoints {
         for ($i=0; $i < count($value); $i++) {
           if (mb_substr(trim($value[$i]), -1) === 'f' || mb_substr(trim($value[$i]), -1) === 'F') {
             echo "<span><a href='{$value[$i]}' target='_blank'><img class='mr-3' src='img/pdf.jpeg' alt='' width='50' data-pic='$i'></a><i class='fa fa-trash pic-delete' data-pic='$i' aria-hidden='true'></i></span>";
-          } else {
+          } else { // src='data:image/jpeg;base64,".base64_encode($value[$i])."'
             echo "<span><a href='{$value[$i]}' target='_blank'><img src='{$value[$i]}' alt='' width='100' data-pic='$i'></a><i class='fa fa-trash pic-delete mr-3' data-pic='$i' aria-hidden='true'></i></span>";
           }
         }

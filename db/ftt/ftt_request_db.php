@@ -154,10 +154,37 @@ function db_setStatusRequestToSent($id, $status = 1, $adminId='') {
   } elseif ($status == 6) {
     $date = 'decision_date';
   }
+
+  if ($status == 1) {
+    if (empty($adminId)) {
+      $adminId = db_getMemberIdBySessionId (session_id());
+    }
+    if (true) { //debug
+	   $men = 'zhichkinroman@gmail.com, info@new-constellation.ru';
+    } else {
+	   $men = 'zhichkinroman@gmail.com, a.rudanok@gmail.com, kristalenkoserg@gmail.com';
+    }
+    // получаем имя пользователя
+    $user ='';
+    $res=db_query("SELECT `name` FROM `member` WHERE `key` = '$adminId'");
+      while ($row = $res->fetch_assoc()) $user = $row['name'];
+
+    // письмо reg-page
+    $headers = 'From: noreply@reg-page.ru' . "\r\n" .
+    'Content-Type: text/html; charset=utf-8' . "\r\n" .
+    'Reply-To: zhichkinroman@gmail.com' . "\r\n" .
+    'X-Mailer: PHP/' . phpversion();
+    $to = $men;
+    $subject = 'Новая анкета на ПВОМ';
+    $message = "Получена новая анкета на ПВОМ от {$user} ".date("H:i:s").' '.date("d.m.Y").'.'; // for Windows $text = str_replace("\n.", "\n..", $text);
+    $mail = mail($to, $subject, $message, $headers);
+  }
+
   if ($adminId && ($status == 2 || $status == 4)) {
     $responsible = ", `responsible` = '$adminId' ";
   }
-  $res = db_query("UPDATE ftt_request SET `stage` = '$status', `$date` = NOW() $responsible WHERE `id` = '$id'");
+
+  $res2 = db_query("UPDATE ftt_request SET `stage` = '$status', `$date` = NOW() $responsible WHERE `id` = '$id'");
 }
 
 // Получаем вопросы
