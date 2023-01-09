@@ -1442,7 +1442,7 @@ if (getCookie("application_check") === '1') {
     $("#main_container .text-white.bg-secondary").each(function (i) {
       $(this).find("h4").text(i+1 + ". " + $(this).find("h4").text());
       $(this).parent().find(".title_point").each(function (ii) {
-        $(this).text((i+1) + "." + (ii+1) + " " + $(this).text());
+        $(this).text((i+1) + "." + (ii+1) + ". " + $(this).text());
       });
     });
   }

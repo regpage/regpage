@@ -159,7 +159,7 @@ function db_setStatusRequestToSent($id, $status = 1, $adminId='') {
     if (empty($adminId)) {
       $adminId = db_getMemberIdBySessionId (session_id());
     }
-    if (true) { //debug
+    if (false) { //debug
 	   $men = 'zhichkinroman@gmail.com, info@new-constellation.ru';
     } else {
 	   $men = 'zhichkinroman@gmail.com, a.rudanok@gmail.com, kristalenkoserg@gmail.com';
@@ -175,8 +175,8 @@ function db_setStatusRequestToSent($id, $status = 1, $adminId='') {
     'Reply-To: zhichkinroman@gmail.com' . "\r\n" .
     'X-Mailer: PHP/' . phpversion();
     $to = $men;
-    $subject = 'Новая анкета на ПВОМ';
-    $message = "Получена новая анкета на ПВОМ от {$user} ".date("H:i:s").' '.date("d.m.Y").'.'; // for Windows $text = str_replace("\n.", "\n..", $text);
+    $subject = 'Новое заявление ПВОМ';
+    $message = "Получено новое заявление ПВОМ от {$user} ".date("H:i:s").' '.date("d.m.Y").".\r\n\r\n https://reg-page.ru/application.php?member_key=".strval($adminId); // for Windows $text = str_replace("\n.", "\n..", $text);
     $mail = mail($to, $subject, $message, $headers);
   }
 

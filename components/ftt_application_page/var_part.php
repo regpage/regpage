@@ -210,7 +210,8 @@ $status_application_label = '<span class="badge badge-secondary">чернови�
 
 if ($request_data['stage'] > 0) {
   $date_send = date_convert::yyyymmdd_time_to_ddmmyyyy_time($request_data['send_date']);
-  $status_phrase = "Заявление отправлено служащим Полновременного обучения в Москве {$date_send}.";
+  $date_send = explode(' ', $date_send);
+  $status_phrase = "Заявление отправлено служащим Полновременного обучения в Москве {$date_send[0]} в {$date_send[1]}.";
 } elseif ($request_data['stage'] == 0) {
   $status_phrase = '';
 }
