@@ -166,12 +166,21 @@ function db_setStatusRequestToSent($id, $status = 1, $adminId='') {
     }
 
     // получаем имя пользователя
-    $user ='';
+    $user = '';
     $res=db_query("SELECT `name` FROM `member` WHERE `key` = '$adminId'");
       while ($row = $res->fetch_assoc()) $user = $row['name'];
+    $guest = '';
+    $res4=db_query("SELECT `guest` FROM `ftt_request` WHERE `id` = '$id'");
+      while ($row = $res4->fetch_assoc()) $guest = $row['guest'];
 
-    $message = "Получено новое заявление ПВОМ от {$user} ".date("H:i:s").' '.date("d.m.Y").".\r\n\r\n https://reg-page.ru/application.php?member_key=".strval($adminId);
-    Emailing::send($men, 'Новое заявление ПВОМ', $message);
+    if ($guest == 1) {
+      $guest = " ГОСТЬ ";
+    } else {
+      $guest = '';
+    }
+
+    $message = "Получено новое заявление ПВОМ {$guest} от {$user} ".date("H:i:s").' '.date("d.m.Y").".<br><br> https://reg-page.ru/application.php?member_key=".strval($adminId);
+    Emailing::send($men, "Новое заявление ПВОМ {$guest}", $message);
   }
 
   if ($adminId && ($status == 2 || $status == 4)) {
@@ -187,7 +196,7 @@ function db_setStatusRequestToSent($id, $status = 1, $adminId='') {
       INNER JOIN member m ON m.key = fr.member_key
       WHERE `id` = '$id'");
       while ($row = $res3->fetch_assoc()) $data = $row;
-    $message = "Новая рекомендация. Ссылка на заявление ПВОМ от {$data['name']}.\r\n\r\n https://reg-page.ru/application.php?member_key=".strval($data['member_key']);
+    $message = "Новая рекомендация. Ссылка на заявление ПВОМ от {$data['name']}.<br><br> https://reg-page.ru/application.php?member_key=".strval($data['member_key']);
     Emailing::send_by_key($data['recommendation_name'], 'Новая рекомендация', $message);
   }
 }

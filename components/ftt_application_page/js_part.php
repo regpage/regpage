@@ -30,16 +30,30 @@ if (!data_page.applicant) {
   blockApplicationFields();
   //$('button[data-target="#modalStartInfo"]').hide();
   // разблокировка данных для рекомендатора и служащих
-  if ((data_page.role === "1" || data_page.role === "3") && window.adminId === $("#service_recommendation_name").val() && $("#main_container").attr("data-status") === "2") { // разблокировка данных для рекомендатора
+  if ($("#main_container").attr("data-status") === "2" && (data_page.role === "1" || data_page.role === "3") && window.adminId === $("#service_recommendation_name").val()) { // разблокировка данных для рекомендатора
     $("#point_recommendation_status").attr("disabled",false);
     $("#recommended_block textarea").attr("disabled",false);
     //$("#recommended_block input[type='radio']").attr("disabled", false);
     $("#recommended_block button").attr("disabled", false);
-  } else if ((data_page.role === "3" || data_page.role === "2")  && window.adminId === $("#service_interview_name").val() &&  $("#main_container").attr("data-status") === "4") { // разблокировка данных для служащих
+  } else if ($("#main_container").attr("data-status") === "4" && (data_page.role === "3" || data_page.role === "2")  && window.adminId === $("#service_interview_name").val()) { // разблокировка данных для служащих
     $("#interview_block input").attr("disabled",false);
     //$("#interview_block select").attr("disabled",false);
     $("#point_interview_status").attr("disabled",false);
     $("#interview_block textarea").attr("disabled",false);
+  } else if (($("#main_container").attr("data-status") && $("#main_container").attr("data-status") !== "0" && $("#main_container").attr("data-status") !== "6") && data_page.role === "3") {
+    // recommend block
+    $("#recommended_block textarea").attr("disabled",false);
+    $("#recommended_block button").attr("disabled", false);
+    $("#recommended_block select").attr("disabled", false);
+    $("#recommended_block button").attr("disabled", false);
+    // interview block
+    $("#interview_block select").attr("disabled",false);
+    $("#interview_block input").attr("disabled",false);
+    $("#interview_block textarea").attr("disabled",false);
+    $("#interview_block button").attr("disabled", false);
+    // main service block
+    $("#point_decision").attr("disabled",false);
+    $("#point_decision_info").attr("disabled",false);
   }
 } else if (data_page.applicant && ($("#main_container").attr("data-status") === "1")) {
   blockApplicationFields();

@@ -1315,12 +1315,13 @@ if (getCookie("application_check") === '1') {
   });
   // enable disable show hide
   function service_block_behavior() {
+    /*
     if ($("#main_container").attr("data-status") > 1 || $("#point_recommendation_status").attr("disabled")) {
-      $("#send_to_recommend").attr("disabled", true);
+      //$("#send_to_recommend").attr("disabled", true);
     }
     if ($("#main_container").attr("data-status") > 1 || $("#point_interview_status").attr("disabled")) {
-      $("#send_to_interview").attr("disabled", true);
-    }
+      //$("#send_to_interview").attr("disabled", true);
+    }*/
   }
   service_block_behavior();
 
