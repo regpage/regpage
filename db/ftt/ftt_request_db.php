@@ -164,20 +164,14 @@ function db_setStatusRequestToSent($id, $status = 1, $adminId='') {
     } else {
 	   $men = 'zhichkinroman@gmail.com, a.rudanok@gmail.com, kristalenkoserg@gmail.com';
     }
+
     // получаем имя пользователя
     $user ='';
     $res=db_query("SELECT `name` FROM `member` WHERE `key` = '$adminId'");
       while ($row = $res->fetch_assoc()) $user = $row['name'];
 
-    // письмо reg-page
-    $headers = 'From: noreply@reg-page.ru' . "\r\n" .
-    'Content-Type: text/html; charset=utf-8' . "\r\n" .
-    'Reply-To: zhichkinroman@gmail.com' . "\r\n" .
-    'X-Mailer: PHP/' . phpversion();
-    $to = $men;
-    $subject = 'Новое заявление ПВОМ';
-    $message = "Получено новое заявление ПВОМ от {$user} ".date("H:i:s").' '.date("d.m.Y").".\r\n\r\n https://reg-page.ru/application.php?member_key=".strval($adminId); // for Windows $text = str_replace("\n.", "\n..", $text);
-    $mail = mail($to, $subject, $message, $headers);
+    $message = "Получено новое заявление ПВОМ от {$user} ".date("H:i:s").' '.date("d.m.Y").".\r\n\r\n https://reg-page.ru/application.php?member_key=".strval($adminId);
+    Emailing::send($men, 'Новое заявление ПВОМ', $message);
   }
 
   if ($adminId && ($status == 2 || $status == 4)) {
@@ -185,6 +179,17 @@ function db_setStatusRequestToSent($id, $status = 1, $adminId='') {
   }
 
   $res2 = db_query("UPDATE ftt_request SET `stage` = '$status', `$date` = NOW() $responsible WHERE `id` = '$id'");
+
+  if ($res2 && $status == 2) {
+    $data;
+    $res3 = db_query("SELECT fr.recommendation_name, fr.member_key, m.name
+      FROM ftt_request fr
+      INNER JOIN member m ON m.key = fr.member_key
+      WHERE `id` = '$id'");
+      while ($row = $res3->fetch_assoc()) $data = $row;
+    $message = "Новая рекомендация. Ссылка на заявление ПВОМ от {$data['name']}.\r\n\r\n https://reg-page.ru/application.php?member_key=".strval($data['member_key']);
+    Emailing::send_by_key($data['recommendation_name'], 'Новая рекомендация', $message);
+  }
 }
 
 // Получаем вопросы

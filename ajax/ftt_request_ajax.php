@@ -4,6 +4,7 @@ include_once "ajax.php";
 // подключаем запросы
 include_once "../db/ftt/ftt_request_db.php";
 include_once "../db/classes/localities.php";
+require_once "../db/classes/emailing.php";
 // Подключаем ведение лога
 include_once "../extensions/write_to_log/write_to_log.php";
 
