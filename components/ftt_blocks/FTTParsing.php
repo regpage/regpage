@@ -47,6 +47,7 @@ class FTTParsing
             }
           }
           //$result = implode(' ', $temp_string);
+          $result = '';
           foreach ($temp_string as $key => $value) {
             if (substr($value, 0, 1) === '.' || substr($value, 0, 1) === ',' || substr($value, 0, 1) === ':'
             || substr($value, 0, 1) === ';' || substr(htmlentities($value), 0, 1) === '&' || substr($value, 0, 1) === '"'

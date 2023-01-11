@@ -533,7 +533,7 @@ if (getCookie("application_check") === '1') {
           }
         });
       }
-      fetch("ajax/ftt_request_ajax.php?type=set&table="+table+"&field="+field+"&data="+value+"&id="+id+"&guest="+is_guest, { method: 'POST',
+      fetch("ajax/ftt_request_ajax.php?type=set&table="+table+"&field="+field+"&data&id="+id+"&guest="+is_guest, { method: 'POST',
         body: formData
       })
       .then(response => response.json())
@@ -544,7 +544,7 @@ if (getCookie("application_check") === '1') {
     } else {
       let formData = new FormData();
       formData.append('data_post', value);
-      fetch("ajax/ftt_request_ajax.php?type=set&table="+table+"&field="+field+"&data="+value+"&id="+id+"&guest="+is_guest, {
+      fetch("ajax/ftt_request_ajax.php?type=set&table="+table+"&field="+field+"&data&id="+id+"&guest="+is_guest, {
 					method: 'POST',
 					body: formData
         })
