@@ -4,6 +4,7 @@
  */
 class FTTParsing
 {
+
   // Разбор текста типа [его] [её]
   static function gender($string, $male)
   {
@@ -15,10 +16,14 @@ class FTTParsing
         if (count($string) === 2) {
           $string_2 = explode(']',$string[1]);
           $string_3 = explode(',',$string_2[0]);
+          $space = ' ';
+          if (substr(htmlentities($string_2[1]), 0, 1) === '&') {
+            $space = '';
+          }
           if ($male == 1) {
-            $result = $string[0].' '.$string_3[0].' '.$string_2[1];
+            $result = $string[0].' '.$string_3[0].$space.$string_2[1];
           } else {
-            $result = $string[0].' '.$string_3[1].' '.$string_2[1];
+            $result = $string[0].' '.$string_3[1].$space.$string_2[1];
           }
         } elseif (count($string) > 2) {
           for ($i=0; $i < count($string); $i++) {
@@ -41,7 +46,16 @@ class FTTParsing
               }
             }
           }
-          $result = implode(' ', $temp_string);
+          //$result = implode(' ', $temp_string);
+          foreach ($temp_string as $key => $value) {
+            if (substr($value, 0, 1) === '.' || substr($value, 0, 1) === ',' || substr($value, 0, 1) === ':'
+            || substr($value, 0, 1) === ';' || substr(htmlentities($value), 0, 1) === '&' || substr($value, 0, 1) === '"'
+            || substr($value, 0, 1) === '?' || substr($value, 0, 1) === '!') {
+              $result = $result . '' . $value;
+            } else {
+              $result = $result . ' ' . $value;
+            }
+          }
         } else {
           $result = $string[0];
         }
