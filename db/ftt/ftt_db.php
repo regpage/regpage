@@ -30,18 +30,22 @@ function db_getAllRequests ($adminId, $role, $guest){
 }
 
 // get requests
-function db_getApplications ($adminId){
+function db_getApplications ($adminId, $interview=false){
   global $db;
   $adminId = $db->real_escape_string($adminId);
   $result = [];
-
+  if ($interview) {
+    $condition = " fr.interview_name = '{$adminId}'";
+  } else {
+    $condition = " fr.recommendation_name = '{$adminId}'";
+  }
   $res=db_query ("SELECT fr.id, fr.member_key, fr.request_date, fr.stage, fr.notice, fr.send_date, fr.decision,
     m.name, m.male, m.locality_key, m.cell_phone, m.email, m.category_key, l.name AS locality_name,
     fr.interview_name, fr.recommendation_name
   FROM ftt_request AS fr
   INNER JOIN member m ON m.key = fr.member_key
   INNER JOIN locality l ON l.key = m.locality_key
-  WHERE (fr.stage = 2 AND fr.recommendation_name = '$adminId') OR (fr.stage = 4 AND fr.interview_name = '$adminId')
+  WHERE fr.stage <> 0 AND {$condition}
   ORDER BY fr.stage, m.name");
   while ($row = $res->fetch_assoc()) $result[]=$row;
 

@@ -2,6 +2,7 @@
     include_once "header.php";
     include_once "db/ftt/ftt_db.php";
     $application_data = db_getApplications($memberId);
+    $application_data_interview = db_getApplications($memberId, true);
     global $appRootPath;
 
     $indexPage = true;
@@ -168,23 +169,42 @@ else if (isset ($_SESSION["logged-in"])){
         </div>
 
         <?php if ($ftt_access['group'] !== 'trainee'): ?>
-          <!-- СПИСОК ЗАЯВЛЕНИЙ РЕКОМЕНДАТОРЫ И СОБЕСЕДУЮЩИЕ -->
-          <?php if (($memberId == '000001679' || $memberId == '000005716' || $memberId == '000002634') && substr($memberId, 0, 2) !== '99'): ?>
+          <!-- СПИСОК ЗАЯВЛЕНИЙ РЕКОМЕНДАТОРЫ И СОБЕСЕДУЮЩИЕ || $memberId == '000005716' || $memberId == '000002634'  || ($memberId == '000001679') || ($memberId == '000001679' ) -->
+          <?php if ((count($application_data) > 0 || count($application_data_interview) > 0) && substr($memberId, 0, 2) !== '99'): ?>
           <div class="tab-content" style="margin-top:10px;">
+            <?php
+            $status_arr = [
+              'черновик','рассмотрения заявления служащими','этап рекомендации','рассмотрения рекомендации служащими','на собеседовании','принятие решения', 'решение принято'];
+            $status_color = [
+              'label-secondary','label-warning','label-warning','label-warning','label-warning','label-warning', 'label-success'];
+            if (count($application_data) > 0): ?>
             <div class="desctopVisible">
               <h4 style="margin-left: 10px;">Заявления для рекомендаций</h4>
               <h5 style="border-bottom: 1px solid #DDD; margin-bottom: 0px; margin-left: 10px; padding-bottom: 10px;"><?php echo getValueFttParamByName("application_title"); ?></h5>
-            <?php foreach ($application_data as $key => $value) {
+            <?php
+            foreach ($application_data as $key => $value) {
               $label = '';
-              if ($value['stage'] == 2) {
-                $label = '<span style="margin-top:5px; margin-left: 0px; margin-right: 19px; display: inline;" class="label label-info">рекомендация</span>';
-              } elseif ($value['stage'] == 4) {
-                $label = '<span style="margin-top:5px; margin-left: 0px; margin-right: 19px; display: inline;" class="label label-warning">собеседование</span>';
+              if ($value['recommendation_name'] == $memberId) {
+                $label = "<span style='margin-top:5px; margin-left: 0px; margin-right: 19px; display: inline;' class='label ".$status_color[$value['stage']]."'>".$status_arr[$value['stage']]."</span>";
+                echo "<div class='application-row' data-link='application.php?member_key={$value['member_key']}'>Заявление на ПВОМ {$value['name']} {$value['locality_name']} {$label}</div>";
               }
-
-              echo "<div class='application-row' data-link='application.php?member_key={$value['member_key']}'>Заявление на ПВОМ {$value['name']} {$value['locality_name']} {$label}</div>";
             } ?>
             </div>
+            <?php endif; ?>
+            <?php if (count($application_data_interview) > 0): ?>
+            <div class="desctopVisible">
+              <h4 style="margin-left: 10px;">Заявления для собеседований</h4>
+              <h5 style="border-bottom: 1px solid #DDD; margin-bottom: 0px; margin-left: 10px; padding-bottom: 10px;"><?php echo getValueFttParamByName("application_title"); ?></h5>
+            <?php foreach ($application_data_interview as $key => $value) {
+              $label = '';
+              if ($value['interview_name'] == $memberId) {
+                $label = '<span style="margin-top:5px; margin-left: 0px; margin-right: 19px; display: inline;" class="label '.$status_color[$value['stage']].'">'.$status_arr[$value['stage']].'</span>';
+
+                echo "<div class='application-row' data-link='application.php?member_key={$value['member_key']}'>Заявление на ПВОМ {$value['name']} {$value['locality_name']} {$label}</div>";
+              }
+            } ?>
+            </div>
+            <?php endif; ?>
           </div>
           <?php endif; ?>
         <!-- Desktop Заявление на ПВОМ $accessToPage === 3 || $accessToPage === 4 || $memberId == '000012559' || $memberId ==  '000001680'-->
