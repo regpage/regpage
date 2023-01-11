@@ -1056,6 +1056,18 @@ if (getCookie("application_check") === '1') {
         showError("Заполните все обязательные поля!");
         $(this).addClass("required_field");
         has_error++;
+      } else {
+        if ($(this).attr("id") === "point_request_info") {
+          let check_info_field = $(this).val();
+          check_info_field = check_info_field.split(" ");
+          if (check_info_field.length < 250) {
+            showError('Поле "Напишите ваше свидетельство" должно содержать не менее 250 слов.');
+            $(this).addClass("required_field");
+            let aTag = $(this);
+            $('html,body').animate({scrollTop: aTag.offset().top},'slow');
+            has_error++;
+          }
+        }
       }
     });
 
@@ -1202,7 +1214,11 @@ if (getCookie("application_check") === '1') {
         text_for_count = 0;
       }
       $(this).next().css("color", "red").css("font-weight", "bold");
-      $(this).next().text(250 - text_for_count);
+      text_for_count = 250 - text_for_count;
+      if (text_for_count <= 0) {
+        text_for_count = "";
+      }
+      $(this).next().text(text_for_count);
     } else { // счётчик символов
       $(this).next().text($(this).attr("maxlength") - $(this).val().length);
     }

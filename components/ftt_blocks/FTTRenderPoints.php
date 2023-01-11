@@ -212,9 +212,9 @@ class FttRenderpoints {
           $no_button_elem = '<span class="link_custom_gray set_no" style="margin-left: -45px; vertical-align: super; display:none;  background-color: lightgrey;">нет</span>';
         }
         $textarea_height = '';
-        if ($maxlength > 255 && $maxlength < 400) {
+        if ($maxlength > 255 && $maxlength <= 400) {
           $textarea_height = 'field_height_90px';
-        } elseif ($maxlength >= 400) {
+        } elseif ($maxlength > 400) {
           $textarea_height = 'field_height_400px';
         }
         if ($db_field[1] === 'request_info') {
