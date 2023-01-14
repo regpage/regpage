@@ -281,7 +281,7 @@ function getNameDayOfWeekByDayNumber(date, short, no_capital, number) {
   		// Вчера и раньше от текущей даты
   		return (current - d1) > 0;
   	} else if (less) {
-      d1 = new Date(d1);      
+      d1 = new Date(d1);
   		d2 = new Date(d2);
   		// Вчера и раньше от d1
   		return (d1 - d2) > 0;
@@ -317,4 +317,13 @@ function getNameDayOfWeekByDayNumber(date, short, no_capital, number) {
 function modalInfoUniversal(text) {
   $('#modalUniversalInfo').modal().show();
   $('#universalInfoText').html(text);
+}
+
+function get_ftt_param(param, elem) {
+  if (!param || !elem) {
+    return "error";
+  }
+  fetch("ajax/ftt_request_ajax.php?type=get_ftt_param&param="+param)
+  .then(response => response.json())
+  .then(result => elem.html(result.result));
 }

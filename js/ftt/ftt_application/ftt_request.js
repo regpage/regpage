@@ -1280,7 +1280,13 @@ if (getCookie("application_check") === '1') {
 
   // кнопка на рекомендацию
   $("#send_to_recommend").click(function () {
-    set_status(2);
+    if ($("#service_recommendation_name").val() === "_none_") {
+      $("#service_recommendation_name").css("border-bottom", "2px solid red");
+      showError("Выберите ответственного за рекомендацию.");
+      return;
+    }
+
+    modalUniversalConfirmData(2, "Передать анкету для рекомендации " + $("#service_recommendation_name option:selected").text() + "?");
   });
   //
   $("#send_recommend_to").click(function () {
@@ -1294,12 +1300,30 @@ if (getCookie("application_check") === '1') {
       }
       return;
     }
-    set_status(3);
+    modalUniversalConfirmData(3, "Отправить рекомендацию?");
   });
 
   // кнопка на собеседование
+  function modalUniversalConfirmData(data, text) {
+    if (!data) {
+      showError("Произошёл сбой, повторите попытку после перезагрузки страницы или обратитесь к администратору");
+      return;
+    }
+    $("#modalUniversalConfirm").attr("data-data", data);
+    $("#modalUniversalConfirmText").text(text);
+    $("#modalUniversalConfirm").modal("show");
+  }
+
   $("#send_to_interview").click(function () {
-    set_status(4);
+    if ($("#service_interview_name").val() === "_none_") {
+      $("#service_interview_name").css("border-bottom", "2px solid red");
+      showError("Выберите ответственного за рекомендацию.");
+      return;
+    }
+    modalUniversalConfirmData(4, "Передать анкету на собеседование " + $("#service_interview_name option:selected").text() + "?");
+  });
+  $("#btnUniversalConfirm").click(function () {
+    set_status($("#modalUniversalConfirm").attr("data-data"));
   });
   // interview
   $("#send_interview_to").click(function () {
@@ -1313,7 +1337,7 @@ if (getCookie("application_check") === '1') {
       }
       return;
     }
-    set_status(5);
+    modalUniversalConfirmData(5, "Завершить собеседование?");
   });
   // Decision
   $("#send_decision_to").click(function () {
@@ -1466,4 +1490,7 @@ if (getCookie("application_check") === '1') {
   if (data_page.role > 1) {
     numQuestionsForStaff();
   }
+  // ПОЛУЧИТЬ FTT_PARAM МОЖНО ПЕРЕДАЛАТЬ В ОБЪЕКТ
+  //let gt_ftt_param = get_ftt_param("request_recommend_info", $("#some_element"));
+
 }); // END document ready

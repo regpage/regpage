@@ -86,5 +86,10 @@ if(isset($_GET['type']) && $_GET['type'] === 'set_status') {
     exit();
 }
 
+// get ftt param
+if(isset($_GET['type']) && $_GET['type'] === 'get_ftt_param') {
+    echo json_encode(["result"=>getValueFttParamByName($_GET['param'])]);
+    exit();
+}
 /**/
 ?>
