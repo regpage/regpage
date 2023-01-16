@@ -1372,6 +1372,7 @@ if (getCookie("application_check") === '1') {
 
   // DOWNLOAD
   $("#application_download").click(function() {
+    $("#main_container .hide_element").removeClass("hide_element");
     // дата выгрузки
     let copytext = "Дата выгрузки — " + dateStrToddmmyyyyToyyyymmdd(date_now_gl(), true) + "\n";
     let file_name = $("#point_name").val();

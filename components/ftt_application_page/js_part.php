@@ -62,8 +62,36 @@ if (!data_page.applicant) {
 } else {
   blockApplicationFields();
 }
+
+if (data_page.role !== "0" && data_page.role) {
+  $("#main_container > .container > .row").each(function () {
+    if (!$(this).parent().attr("id")) {
+      if (!$(this).hasClass("text-white") && $(this).is(":visible")) {
+        $(this).addClass("hide_element");
+      } else {
+        $(this).addClass("cursor-pointer");
+        console.log("I am here!");
+        $(this).click(function () {
+          let count = 0;
+          $(this).parent().find(".hide_element").each(function() {
+            $(this).removeClass("hide_element");
+            count++
+          });
+          if (count === 0) {
+            $(this).parent().find(".row:visible").each(function() {
+              if (!$(this).hasClass("text-white") && $(this).is(":visible")) {
+                $(this).addClass("hide_element");
+              }
+            });
+          }
+        });
+      }
+    }
+  });
+}
+
 </script>
 
 <script src="js/modules/date.js?v1"></script>
-<script src="js/ftt/ftt_application/ftt_request.js?v27"></script>
+<script src="js/ftt/ftt_application/ftt_request.js?v28"></script>
 <script src="js/ftt/ftt_application/design.js?v2"></script>

@@ -240,3 +240,7 @@ li.modal-reference {
 .link_custom_gray:hover {
   color: #272626;
 }
+
+.hide_element {
+  display: none !important;
+}
