@@ -47,9 +47,6 @@ switch ($h) {
     case '/event.php':
         $res = 'Мероприятия';
         break;
-    case '/links.php':
-        $res = 'Ссылки';
-        break;
     case '/practices.php':
         $res = 'Практики';
         break;
@@ -186,12 +183,6 @@ switch ($h) {
                 echo '<li ';
                 if ($res === 'Контакты') {echo " class='nav-item active'";}else{echo " class='nav-item'";}
                 echo"><a class='nav-link' href='/contacts'>Контакты</a></li>";
-            }
-
-            if(isset($memberId) && $ftt_access['group'] !== 'trainee'){
-                echo '<li  class="nav-item"';
-                if (strpos ($s,"/links")!==FALSE) {echo " class='active'";}
-                echo"><a class='nav-link' href='/links'>Ссылки</a></li>";
             }
 
             if(!isset($isGuest) && $memberId && $ftt_access['group'] !== 'trainee'){

@@ -116,7 +116,7 @@ function print_page(element, is_preview) {
     mywindow.document.write(table);
     mywindow.document.write(html["end"]);
     // рендерим страницу конец
-    console.log(mywindow);
+    //console.log(mywindow);
     if (!is_preview) {
       mywindow.print();
       mywindow.close();

@@ -76,7 +76,7 @@ if (data_page.role !== "0" && data_page.role) {
           if ($(this).find("b").text() == "+") {
             $(this).find("b").text("−");
           } else {
-            $(this).find("b").text("+");            
+            $(this).find("b").text("+");
           }
           $(this).parent().find(".hide_element").each(function() {
             $(this).removeClass("hide_element");
@@ -99,5 +99,5 @@ if (data_page.role !== "0" && data_page.role) {
 </script>
 
 <script src="js/modules/date.js?v1"></script>
-<script src="js/ftt/ftt_application/ftt_request.js?v28"></script>
+<script src="js/ftt/ftt_application/ftt_request.js?v29"></script>
 <script src="js/ftt/ftt_application/design.js?v2"></script>
