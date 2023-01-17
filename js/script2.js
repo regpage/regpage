@@ -293,7 +293,10 @@ function getNameDayOfWeekByDayNumber(date, short, no_capital, number) {
   	}
   	// добавить вычесление количества дней если нет стандартной функции
   }
-
+function modalInfoUniversal(text) {
+  $('#modalUniversalInfo').modal().show();
+  $('#universalInfoText').html(text);
+}
 // STOP DATES
 // TIME
   function time_plus_minutes(time, minutes) {
@@ -315,6 +318,7 @@ function getNameDayOfWeekByDayNumber(date, short, no_capital, number) {
 // STOP TIME
 
 function modalInfoUniversal(text) {
+  // так же передавать селектор универсального окна и записывать в бади
   $('#modalUniversalInfo').modal().show();
   $('#universalInfoText').html(text);
 }

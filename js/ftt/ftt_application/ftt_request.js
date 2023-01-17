@@ -1,13 +1,21 @@
 $(document).ready(function(){
-document.cookie = "application_back=0";
-  /**** ПОВЕДЕНИЕ ЭЛЕМЕНТОВ ****/
-radio_buttons_behavior()
-// COOKIE
+  document.cookie = "application_back=0";
 
-if (getCookie("application_check") === '1') {
-  validationFields();
-  setCookie("application_check") === '0'
-}
+  // Прозапас
+  // spinner
+  //$("#spinner").modal("show");
+  //$("#spinner").modal("hide");
+  // ПОЛУЧИТЬ FTT_PARAM МОЖНО ПЕРЕДАЛАТЬ В ОБЪЕКТ это понадобится
+  //let gt_ftt_param = get_ftt_param("request_recommend_info", $("#some_element"));
+
+  /**** ПОВЕДЕНИЕ ЭЛЕМЕНТОВ ****/
+  radio_buttons_behavior()
+  // COOKIE
+
+  if (getCookie("application_check") === '1') {
+    validationFields();
+    setCookie("application_check") === '0'
+  }
 
   // Показать / скрыть иконку сохранения
   function showSaveIcon(show) {
@@ -1372,7 +1380,7 @@ if (getCookie("application_check") === '1') {
 
   // DOWNLOAD
   $("#application_download").click(function() {
-    $("#main_container .hide_element").removeClass("hide_element");
+    $("#main_container .hide_element").removeClass("hide_element").css("display","flex");
     // дата выгрузки
     let copytext = "Дата выгрузки — " + dateStrToddmmyyyyToyyyymmdd(date_now_gl(), true) + "\n";
     let file_name = $("#point_name").val();
@@ -1491,7 +1499,5 @@ if (getCookie("application_check") === '1') {
   if (data_page.role > 1) {
     numQuestionsForStaff();
   }
-  // ПОЛУЧИТЬ FTT_PARAM МОЖНО ПЕРЕДАЛАТЬ В ОБЪЕКТ
-  //let gt_ftt_param = get_ftt_param("request_recommend_info", $("#some_element"));
 
 }); // END document ready
