@@ -2,6 +2,7 @@
 // Ajax
 include_once "ajax.php";
 // подключаем запросы
+include_once "../db/classes/db_operations.php";
 include_once "../db/ftt/ftt_request_db.php";
 include_once "../db/classes/localities.php";
 require_once "../db/classes/emailing.php";
@@ -89,6 +90,23 @@ if(isset($_GET['type']) && $_GET['type'] === 'set_status') {
 // get ftt param
 if(isset($_GET['type']) && $_GET['type'] === 'get_ftt_param') {
     echo json_encode(["result"=>getValueFttParamByName($_GET['param'])]);
+    exit();
+}
+
+if(isset($_GET['type']) && $_GET['type'] === 'universal_set') {
+    // Сохранение изменений в полях бланка
+    // готовим данные
+    $db_data = new DbData('set', $_GET['table']);
+    $db_data->set('field', $_GET['field']);
+    $db_data->set('value', $_GET['value']);
+    $db_data->set('condition_field', $_GET['condition_field']);
+    $db_data->set('condition_value', $_GET['condition']);
+    if ($_GET['changed'] === "1") {
+      $db_data->set('changed', 1);
+    }
+    
+    // запрос
+    echo json_encode(['result'=>DbOperation::operation($db_data->get())]);
     exit();
 }
 /**/

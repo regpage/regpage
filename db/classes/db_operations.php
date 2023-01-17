@@ -36,7 +36,7 @@ class DbOperation {
     } else {
       $changed = '';
     }
-
+    
     if ($operation === 'dlt') {
       $res = db_query("DELETE FROM `{$table}` WHERE `{$condition_field}` = {$condition_value}");
     } elseif ($operation === 'set') {
@@ -69,7 +69,7 @@ class DbOperation {
         $query_set .= ' `'.$key."`='$value'";
       }
     }
-        
+
     $result = db_query("UPDATE `{$table}` SET {$query_set} WHERE `{$condition_field}` = '{$condition_value}'");
 
     return $result;

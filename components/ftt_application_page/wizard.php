@@ -16,6 +16,7 @@
       <?php endif; ?>
       <?php if ($serviceone_role === 3): ?>
         <button type="button" id="toEditMyRequest" class="btn btn-warning btn-sm mr-2"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+        <button type="button" id="type_of_application" class="btn btn-primary btn-sm mr-2">Тип</button>
       <?php endif; ?>
       <?php if (!$request_data['member_key'] || $memberId === $request_data['member_key'] || $serviceone_role === 3): ?>
         <button type="button" id="toModalDeleteMyRequest" class="btn btn-danger btn-sm mr-2" data-toggle="modal" data-target="#modalDeleteMyRequest"><i class="fa fa-trash" aria-hidden="true"></i></button>

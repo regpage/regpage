@@ -1,6 +1,10 @@
 $(document).ready(function(){
   document.cookie = "application_back=0";
 
+  // PRINT
+  $("#application_print").click(function() {
+
+  });
   // Прозапас
   // spinner
   //$("#spinner").modal("show");
@@ -1373,11 +1377,6 @@ $(document).ready(function(){
   }
   service_block_behavior();
 
-  // PRINT
-  $("#application_print").click(function() {
-
-  });
-
   // DOWNLOAD
   $("#application_download").click(function() {
     $("#main_container .hide_element").removeClass("hide_element").css("display","flex");
@@ -1459,7 +1458,6 @@ $(document).ready(function(){
         });
       }
     });
-    console.log(copytext.trim());
     downloadSys(copytext.trim(), file_name)
   });
 
@@ -1496,8 +1494,37 @@ $(document).ready(function(){
       });
     });
   }
+
+  // numeric
   if (data_page.role > 1) {
     numQuestionsForStaff();
   }
+
+  // type of application
+ $("#type_of_application").click(function () {
+   if ($("#main_container").attr("data-guest") === "1") {
+     $("#change_to_regular").show();
+     $("#change_to_guest").hide();
+   } else {
+     $("#change_to_regular").hide();
+     $("#change_to_guest").show();
+   }
+   $("#modal_type_of_application").modal("show");
+ });
+
+ $("#change_to_regular, #change_to_guest").click(function (e) {
+   showSaveIcon();
+   let value = 1;
+   console.log(e.target.id);
+   if (e.target.id === "change_to_regular") {
+     console.log("I am here");
+     value = 0;
+   }
+   fetch("ajax/ftt_request_ajax.php?type=universal_set&table=ftt_request&field=guest&value="+value+"&condition="+$("#main_container").attr("data-id")+"&condition_field=id&changed")
+   .then(response => response.json())
+   .then(result => {
+     location.reload();
+   });
+ });
 
 }); // END document ready
