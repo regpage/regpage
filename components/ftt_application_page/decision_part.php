@@ -93,7 +93,7 @@
   </div>
   <!-- -->
   <div class="row serviceone_block">
-    <div class="col-5 m-b-15px"><span>Комментарий к принятому решению: </span></div>
+    <div class="col-5 m-b-15px"><span>Комментарий к принятому решению (виден только служащим): </span></div>
     <div class="col-5">
       <textarea id="point_decision_info" rows="4" cols="50" class="input-request t-width-long" data-table="ftt_request" data-field="decision_info" data-value="<?php echo $request_data['decision_info']; ?>"><?php echo $request_data['decision_info']; ?></textarea>
     </div>

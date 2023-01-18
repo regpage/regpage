@@ -7,7 +7,7 @@
   <!-- -->
   <div class="row serviceone_block">
     <div class="col-5">
-      Ответственный за рекомендацию
+      Ответственный за рекомендацию:
     </div>
     <div class="col-5">
       <select id="service_recommendation_name" class="i-width-280-px mr-2" data-table="ftt_request" data-field="recommendation_name" value="<?php echo $request_data['recommendation_name']; ?>" required>
@@ -35,7 +35,7 @@
   <!-- -->
   <div class="row serviceone_block">
     <div class="col-5">
-      Рекомендация
+      Рекомендация:
     </div>
     <div class="col-5">
       <select id="point_recommendation_status" class="i-width-280-px mr-3" data-table="ftt_request" data-field="recommendation_status" value="<?php echo $request_data['recommendation_status']; ?>" required>
@@ -61,7 +61,7 @@
   <!-- -->
   <div class="row serviceone_block">
     <div class="col-5">
-      Комментарий к рекомендации
+      Комментарий к рекомендации:
     </div>
     <div class="col-5">
       <textarea id="point_recommendation_info" class="input-request i-width-370-px field_height_90px" data-table="ftt_request" data-field="recommendation_info" required><?php echo $request_data['recommendation_info']; ?></textarea>

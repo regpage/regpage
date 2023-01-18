@@ -1,6 +1,5 @@
 $(document).ready(function(){
   document.cookie = "application_back=0";
-
   // PRINT
   $("#application_print").click(function() {
 
@@ -1281,6 +1280,7 @@ $(document).ready(function(){
   function set_status(status) {
     if (!status) {
       showError("Статус не установлен.");
+      //rw_log("fun set_status(status): Статус не установлен.", "w");
     }
     let id = $("#main_container").attr("data-id");
     fetch("ajax/ftt_request_ajax.php?type=set_status&status="+status+"&id="+id)
@@ -1318,7 +1318,7 @@ $(document).ready(function(){
   // кнопка на собеседование
   function modalUniversalConfirmData(data, text) {
     if (!data) {
-      showError("Произошёл сбой, повторите попытку после перезагрузки страницы или обратитесь к администратору");
+      showError("Произошёл сбой, перезагрузите страницу и повторите попытку или обратитесь к администратору");
       return;
     }
     $("#modalUniversalConfirm").attr("data-data", data);

@@ -199,6 +199,17 @@ function db_setStatusRequestToSent($id, $status = 1, $adminId='') {
     $message = "Новая рекомендация. Ссылка на заявление ПВОМ от {$data['name']}.<br><br> https://reg-page.ru/application.php?member_key=".strval($data['member_key']);
     Emailing::send_by_key($data['recommendation_name'], 'Новая рекомендация', $message);
   }
+
+  if ($res2 && $status == 4) {
+    $data;
+    $res3 = db_query("SELECT fr.interview_name, fr.member_key, m.name
+      FROM ftt_request fr
+      INNER JOIN member m ON m.key = fr.member_key
+      WHERE `id` = '$id'");
+      while ($row = $res3->fetch_assoc()) $data = $row;
+    $message = "Новое собеседование. Ссылка на заявление ПВОМ от {$data['name']}.<br><br> https://reg-page.ru/application.php?member_key=".strval($data['member_key']);
+    Emailing::send_by_key($data['interview_name'], 'Новое собеседование', $message);
+  }
 }
 
 // Получаем вопросы
