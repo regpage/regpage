@@ -1526,5 +1526,37 @@ $(document).ready(function(){
      location.reload();
    });
  });
-
+ // accordeon
+ if (data_page.role !== "0" && data_page.role) {
+   $("#main_container > .container > .row").each(function () {
+     if (!$(this).parent().attr("id")) {
+       if (!$(this).hasClass("text-white") && $(this).is(":visible")) {
+         $(this).addClass("hide_element");
+       } else if ($(this).hasClass("text-white")) {
+         $(this).addClass("cursor-pointer").addClass("justify-content-between").addClass("pr-2");
+         $(this).append("<b class='mt-1' style='color: white; font-size: 1.5em;'>+</b>")
+         $(this).click(function () {
+           let count = 0;
+           if ($(this).find("b").text() == "+") {
+             $(this).find("b").text("−");
+           } else {
+             $(this).find("b").text("+");
+           }
+           $(this).parent().find(".hide_element").each(function() {
+             $(this).removeClass("hide_element");
+             $(this).css("display","flex");
+             count++
+           });
+           if (count === 0) {
+             $(this).parent().find(".row:visible").each(function() {
+               if (!$(this).hasClass("text-white") && $(this).is(":visible")) {
+                 $(this).addClass("hide_element");
+               }
+             });
+           }
+         });
+       }
+     }
+   });
+ }
 }); // END document ready
