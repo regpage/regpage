@@ -90,11 +90,12 @@
         <i class="icon-pencil unblock-input" style="display: none"></i>
     </div>
     <?php } ?>
-
+    <?php if ($roleThisAdmin == 2): ?>
     <div class="control-group row-fluid address_block">
         <label class="span12">Почтовый адрес<?php e('<sup>*</sup>'); ?><span class="example">Пример: Россия, 180000, Псковская обл., г. Псков, ул. Труда 5, кв. 6</span></label>
         <input class="span12 emAddress" type="text" maxlength="150" <?php e('valid="required"'); ?>>
     </div>
+    <?php endif; ?>
     <div class="control-group row-fluid" style="width: 48%">
         <label class="span12">Email<?php g('<sup id="supEmailRequred">*</sup>'); ?></label>
         <input class="span12 emEmail" type="email" maxlength="50" valid="<?php g('required, '); ?>email">
@@ -116,13 +117,16 @@
         <label class="span12">Дата крещения</label>
         <input class="span12 emBaptized datepicker" type="text" maxlength="10" placeholder="ДД.ММ.ГГГГ" valid="date">
     </div>
-    <div class="control-group row-fluid handle-passport-info" style="margin-bottom: 10px;color: cadetblue">
-        <strong>Паспортные данные</strong>
-        <i style="margin-left: 10px;" class="fa fa-chevron-down fa-lg"></i>
-    </div>
+    <?php if ($roleThisAdmin == 2): ?>
+      <div class="control-group row-fluid handle-passport-info" style="margin-bottom: 10px;color: cadetblue">
+          <strong>Паспортные данные</strong>
+          <i style="margin-left: 10px;" class="fa fa-chevron-down fa-lg"></i>
+      </div>
+    <?php endif; ?>
     <?php } ?>
 </div>
 <?php if($noEvent) { echo '<div class="block-passport-info" style="display: none;">'; } ?>
+  <?php if ($roleThisAdmin == 2): ?>
     <div class="controls passport-info">
         <div class="control-group row-fluid passport-info">
             <label class="span12">Тип документа<?php e('<sup>*</sup>'); ?></label>
@@ -162,6 +166,7 @@
                 <input class="span12 emDocumentNameTp" type="text" maxlength="150" <?php e('valid="required"');?>>
         </div>
     </div>
+    <?php endif; ?>
 <?php if($noEvent) { echo '</div>'; } ?>
 
 <?php if(!$noEvent){ ?>
