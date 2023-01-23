@@ -317,6 +317,26 @@ $(document).ready(function(){
   } else {
     hide_for_candidate();
   }
+  // Блок
+  $("#point_name").attr("disabled", true);
+  $("#point_name").next().next().after('<i class="fa fa-pencil cursor-pointer" aria-hidden="true" style="margin-left: -30px;"></i>');
+  $("#point_name").next().next().next().click(function () {
+    $("#modalUniversalConfirmOther h5").html('<b>Внимание!</b> Правила изменения ФИО');
+    // open confirme window and after that unblock the field
+    $("#modalUniversalConfirmOther h6").html('<div>1. Вводите ФИО в строгой последовательности: <b>Фамилия Имя Отчество</b>.</div><div>2. Если фамилия недавно была изменена, напишите прежнюю фамилию после отчества в скобках.</div>');
+    $("#modalUniversalConfirmOther .btn-primary").click(function () {
+      $("#point_name").next().next().next().hide();
+      $("#point_name").attr("disabled", false);
+      $("#modalUniversalConfirmOther").modal("hide");
+      $("#modalUniversalConfirmOther h6").html('');
+      $("#modalUniversalConfirmOther h5").html('');
+      $("#modalUniversalConfirmOther .btn-primary").click(function () {
+        // empty
+      });
+    });
+    $("#modalUniversalConfirmOther").modal("show");
+  });
+
   mariageBlockRules();
   supportBlockExtraRule();
   mentalProblemsBlockRule();
