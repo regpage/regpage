@@ -53,7 +53,11 @@ if(isset($_GET['type']) && $_GET['type'] === 'delete_request') {
 
 // Переместить заявление в корзину
 if(isset($_GET['type']) && $_GET['type'] === 'to_trash_request') {
-    echo json_encode(["result"=>db_setTrashForRequest($_GET['id'])]);
+    if (isset($_GET['type_dlt']) && $_GET['type_dlt'] === 'trash') {
+      echo json_encode(["result"=>db_setTrashForRequest($_GET['id'])]);
+    } else {
+      echo json_encode(["result"=>db_deleteRequest($_GET['id'])]);
+    }
     exit();
 }
 
@@ -104,7 +108,7 @@ if(isset($_GET['type']) && $_GET['type'] === 'universal_set') {
     if ($_GET['changed'] === "1") {
       $db_data->set('changed', 1);
     }
-    
+
     // запрос
     echo json_encode(['result'=>DbOperation::operation($db_data->get())]);
     exit();

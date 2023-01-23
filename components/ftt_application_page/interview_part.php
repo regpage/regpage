@@ -73,9 +73,9 @@
       $text_interw = '';
       $text_date_interw = date_convert::yyyymmdd_to_ddmmyyyy($request_data['interview_date']);
       if ($request_data['stage'] == 4) {
-        $text_interw_send = $serviceones_pvom[$request_data['responsible']].' передал заявление ответственному за собеседование — '.$brothers_in_church[$request_data['interview_name']].' '.$text_date_interw;
-      } elseif ($request_data['stage'] > 4) {
-        $text_interw_send = $serviceones_pvom[$request_data['responsible']].' передал заявление ответственному за собеседование — '.$brothers_in_church[$request_data['interview_name']];
+        $text_interw_send = $serviceones_pvom[$request_data['responsible_int']].' передал заявление ответственному за собеседование — '.$brothers_in_church[$request_data['interview_name']].' '.$text_date_interw;
+      } elseif ($request_data['stage'] > 4 && $request_data['interview_name']) {
+        $text_interw_send = $serviceones_pvom[$request_data['responsible_int']].' передал заявление ответственному за собеседование — '.$brothers_in_church[$request_data['interview_name']];
         $text_interw_get = "Собеседование прошло $text_date_interw";
       } ?>
       <div><?php echo $text_interw_send; ?></div>

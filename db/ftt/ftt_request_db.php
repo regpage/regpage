@@ -100,17 +100,12 @@ function setRequestField($adminId, $field, $data, $id, $table, $isGuest, $blob=f
 }
 // удалить заявление из базы
 function db_deleteRequest($id) {
-  $res = db_query("DELETE FROM ftt_request WHERE `id` = '$id'");
-  /*if ($res) {
-    db_query("DELETE FROM ftt_interview WHERE `request_id` = '$id'");
-  }*/
+  $res = db_query("DELETE FROM ftt_request WHERE `id` = '$id'");  
   return $res;
 }
 // отправить заявление в корзину
 function db_setTrashForRequest($id) {
-  $res = db_query("DELETE FROM ftt_request WHERE `id` = '$id'");
-  //$res = db_query("UPDATE ftt_request SET `notice` = 2 WHERE `id` = '$id'");
-
+  $res = db_query("UPDATE ftt_request SET `notice` = 2 WHERE `id` = '$id'");
   return $res;
 }
 // Удаление сканов из бланка
@@ -183,7 +178,11 @@ function db_setStatusRequestToSent($id, $status = 1, $adminId='') {
     Emailing::send($men, "Новое заявление ПВОМ {$guest}", $message);
   }
 
-  if ($adminId && ($status == 2 || $status == 4)) {
+  if ($adminId && $status == 2) {
+    $responsible = ", `responsible_rec` = '$adminId' ";
+  } elseif ($adminId && $status == 4) {
+    $responsible = ", `responsible_int` = '$adminId' ";
+  } elseif ($adminId && $status == 6) {
     $responsible = ", `responsible` = '$adminId' ";
   }
 
@@ -209,6 +208,28 @@ function db_setStatusRequestToSent($id, $status = 1, $adminId='') {
       while ($row = $res3->fetch_assoc()) $data = $row;
     $message = "Новое собеседование. Ссылка на заявление ПВОМ от {$data['name']}.<br><br> https://reg-page.ru/application.php?member_key=".strval($data['member_key']);
     Emailing::send_by_key($data['interview_name'], 'Новое собеседование', $message);
+  }
+
+  if ($res2 && $status == 3) {
+    $data;
+    $res3 = db_query("SELECT fr.responsible_rec, fr.member_key, m.name
+      FROM ftt_request fr
+      INNER JOIN member m ON m.key = fr.member_key
+      WHERE `id` = '$id'");
+      while ($row = $res3->fetch_assoc()) $data = $row;
+    $message = "Получена рекомендация. Ссылка на заявление ПВОМ от {$data['name']}.<br><br> https://reg-page.ru/application.php?member_key=".strval($data['member_key']);
+    Emailing::send_by_key($data['interview_name'], 'Получена рекомендация', $message);
+  }
+
+  if ($res2 && $status == 5) {
+    $data;
+    $res3 = db_query("SELECT fr.responsible_int, fr.member_key, m.name
+      FROM ftt_request fr
+      INNER JOIN member m ON m.key = fr.member_key
+      WHERE `id` = '$id'");
+      while ($row = $res3->fetch_assoc()) $data = $row;
+    $message = "Пройдено собеседование. Ссылка на заявление ПВОМ от {$data['name']}.<br><br> https://reg-page.ru/application.php?member_key=".strval($data['member_key']);
+    Emailing::send_by_key($data['interview_name'], 'Пройдено собеседование', $message);
   }
 }
 

@@ -45,7 +45,7 @@ function db_getApplications ($adminId, $interview=false){
   FROM ftt_request AS fr
   INNER JOIN member m ON m.key = fr.member_key
   INNER JOIN locality l ON l.key = m.locality_key
-  WHERE fr.stage <> 0 AND {$condition}
+  WHERE fr.stage <> 0 AND fr.notice <> 2 AND {$condition}
   ORDER BY fr.stage, m.name");
   while ($row = $res->fetch_assoc()) $result[]=$row;
 

@@ -86,9 +86,9 @@
       $text_recomm = '';
       $text_date_recomm = date_convert::yyyymmdd_to_ddmmyyyy($request_data['recommendation_date']);
       if ($request_data['stage'] == 2) {
-        $text_recomm_send = $serviceones_pvom[$request_data['responsible']].' передал заявление ответственному за рекомендацию — '.$brothers_in_church[$request_data['recommendation_name']].' '.$text_date_recomm;
-      } elseif ($request_data['stage'] > 2) {
-        $text_recomm_send = $serviceones_pvom[$request_data['responsible']].' передал заявление ответственному за рекомендацию — '.$brothers_in_church[$request_data['recommendation_name']];
+        $text_recomm_send = $serviceones_pvom[$request_data['responsible_rec']].' передал заявление ответственному за рекомендацию — '.$brothers_in_church[$request_data['recommendation_name']].' '.$text_date_recomm;
+      } elseif ($request_data['stage'] > 2 && $request_data['recommendation_name']) {
+        $text_recomm_send = $serviceones_pvom[$request_data['responsible_rec']].' передал заявление ответственному за рекомендацию — '.$brothers_in_church[$request_data['recommendation_name']];
         $text_recomm_get = "Рекомендация получена $text_date_recomm";
       } ?>
       <div><?php echo $text_recomm_send; ?></div>

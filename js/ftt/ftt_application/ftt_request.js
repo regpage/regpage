@@ -851,9 +851,12 @@ $(document).ready(function(){
     setCookie("wizard_step", 'wizard_step_1');
     setCookie("application_prepare", '');
     setCookie("application_check", '');
-    let id = $("#main_container").attr("data-id");
     showSaveIcon(1);
-    fetch("ajax/ftt_request_ajax.php?type=to_trash_request&id="+id)
+    let type_dlt = "dlt";
+    if ($("#main_container").attr("data-status") && $("#main_container").attr("data-status") > 0) {
+      type_dlt = "trash";
+    }
+    fetch("ajax/ftt_request_ajax.php?type=to_trash_request&type_dlt="+ type_dlt +"&id="+$("#main_container").attr("data-id"))
     .then(response => response.json())
     .then(data => {
       showSaveIcon();

@@ -67,5 +67,5 @@ if (!data_page.applicant) {
 
 <script src="extensions/rw_log/rw_log.js?v1"></script>
 <script src="js/modules/date.js?v1"></script>
-<script src="js/ftt/ftt_application/ftt_request.js?v29"></script>
+<script src="js/ftt/ftt_application/ftt_request.js?v30"></script>
 <script src="js/ftt/ftt_application/design.js?v2"></script>
