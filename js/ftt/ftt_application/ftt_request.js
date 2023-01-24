@@ -327,7 +327,7 @@ $(document).ready(function(){
     $("#modalUniversalConfirmOther .btn-primary").click(function () {
       $("#point_name").next().next().next().hide();
       $("#point_name").attr("disabled", false);
-      $("#modalUniversalConfirmOther").modal("hide");
+      //$("#modalUniversalConfirmOther").modal("hide");
       $("#modalUniversalConfirmOther h6").html('');
       $("#modalUniversalConfirmOther h5").html('');
       $("#modalUniversalConfirmOther .btn-primary").click(function () {

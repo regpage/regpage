@@ -24,9 +24,9 @@
   <div class="col-2">
     РЕШЕНИЕ
   </div>
-  <div class="col-1">
+  <!--<div class="col-1">
     X
-  </div>
+  </div>-->
 </div>
   <div id="requests-list" class="">
    <span>З А Г Р У З К А</span>
@@ -54,9 +54,9 @@
   <div class="col-2">
     РЕШЕНИЕ
   </div>
-  <div class="col-1">
+  <!--<div class="col-1">
     X
-  </div>
+  </div>-->
 </div>
   <div id="requests-guest-list" class="">
     <span>З А Г Р У З К А</span>

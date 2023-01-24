@@ -78,7 +78,7 @@
       </div>
       <div class="modal-footer pb-2 pl-2 pt-2 pr-2">
         <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true">Отмена</button>
-        <button id="" class="btn btn-sm btn-primary" data-dismiss="modal" aria-hidden="true">Да</button>
+        <button class="btn btn-sm btn-primary" data-dismiss="modal" aria-hidden="true">Да</button>
       </div>
     </div>
   </div>

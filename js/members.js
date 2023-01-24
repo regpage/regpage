@@ -27,6 +27,10 @@ $('#modalEditMember').on('show', function() {
     });
   }
   $('.modalListInput').hide();
+  if (global_role_admin < 2) {
+    $('#modalEditMember .handle-passport-info').hide();
+    $('#modalEditMember .address_block').hide();
+  }
 });
 $('#modalEditMember').on('hide', function() {
   // ЧАТ

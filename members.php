@@ -349,6 +349,7 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
 <script>
     var globalSingleCity = "<?php echo $singleCity; ?>";
     window.user_settings = "<?php echo $userSettings; ?>".split(',');
+    let global_role_admin = "<?php echo $roleThisAdmin; ?>";
     get_localities();
     setAdminRole_0('.add-member','#btnDoSaveMember');
 
@@ -1269,7 +1270,7 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
 
 // STOP check dublicate
 </script>
-<script src="/js/members.js?v13"></script>
+<script src="/js/members.js?v14"></script>
 <?php
 include_once "footer.php";
 ?>

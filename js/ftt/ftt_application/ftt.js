@@ -14,10 +14,13 @@ $(document).ready(function() {
        return;
      }
 
-     list_id = "#requests-list";
+     let list_id = "#requests-list";
 
      if (guest) {
        list_id = "#requests-guest-list";
+       $("#requests-guest-list").prev().prev().find("h3").text("Гости (" + list.length+")");
+     } else {
+       $("#requests-list").prev().prev().find("h3").text("Кандидаты (" + list.length+")");
      }
 
      console.log(list);
@@ -30,10 +33,18 @@ $(document).ready(function() {
        } else if (list[i].stage > 0 ) {
          request_status = "Отправлен";
        }
+       let decision_text = "";
+       if (list[i].decision === "deny") {
+         decision_text = '<span class="badge badge-danger">отклонён</span>';
+       } else if (list[i].decision === "approve") {
+         decision_text = '<span class="badge badge-success">принят</span>';
+       }
+
        //Рендорим список
        list_desk.push("<hr><div class='row request-string' data-member_key='"+ list[i].member_key +"'><div class='col-3'><span>"+list[i].name+
        "</span><br><span>"+ data_page.category[list[i].category_key] +"</span></div><div class='col'>"+list[i].locality_name+"</div><div class='col'><span>"+list[i].cell_phone+"</span><br><span>"+list[i].email+
-       "</span></div><div class='col-2'><span>"+request_status+"</span><br><span>"+list[i].send_date+"</span></div><div class='col-2'>"+list[i].decision+"</div><div class='col-1 request-trash'>🗑</div></div>");
+       "</span></div><div class='col-2'><span>"+request_status+"</span><br><span>"+list[i].send_date+"</span></div><div class='col-2'>"+decision_text+"</div></div>");
+       //<div class='col-1 request-trash'>🗑</div>
      }
      $(list_id).html(list_desk);
 
@@ -53,9 +64,10 @@ $(document).ready(function() {
   .then(response => response.json())
   .then(result => rendoringListOfRequests(result.result));
 
-  // Получаем заявления гостей
-  fetch("ajax/ftt_ajax.php?type=all_requests&guest=1&role="+$("#list_requests").attr("data-role"))
-  .then(response => response.json())
-  .then(result => rendoringListOfRequests(result.result, true));
-
+  setTimeout(function () {
+    // Получаем заявления гостей
+    fetch("ajax/ftt_ajax.php?type=all_requests&guest=1&role="+$("#list_requests").attr("data-role"))
+    .then(response => response.json())
+    .then(result => rendoringListOfRequests(result.result, true));
+  }, 50);
 });

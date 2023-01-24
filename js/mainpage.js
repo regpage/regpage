@@ -134,6 +134,10 @@ $('#modalEditMember').on('show',  function() {
   }
 
   handleFieldsByAdminRole(adminRole, $('.event-row.theActiveEvent').attr('data-private'), $('.event-row.theActiveEvent').attr('data-regstate_key'));
+  if (adminRole < 2) {
+    $('#modalEditMember .handle-passport-info').hide();
+    $('#modalEditMember .address_block').hide();
+  }
 });
 
 // hide the blank
