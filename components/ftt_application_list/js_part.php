@@ -10,4 +10,4 @@
 };
 </script>
 
-<script src="js/ftt/ftt_application/ftt.js?v1"></script>
+<script src="js/ftt/ftt_applications_list/ftt.js?v2"></script>

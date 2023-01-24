@@ -1,25 +1,37 @@
 <?php
 // DB Query for FTT
 // get requests
-function db_getAllRequests ($adminId, $role, $guest){
+function db_getAllRequests ($adminId, $role, $guest, $sorting){
   global $db;
   $adminId = $db->real_escape_string($adminId);
   $role = $db->real_escape_string($role);
   $guest = $db->real_escape_string($guest);
+  $sorting = $db->real_escape_string($sorting);
+  $result = [];
   $condition = '';
   if ($guest == 1) {
     $condition .= " AND fr.guest = 1";
   } else {
     $condition .= " AND fr.guest = 0";
   }
-    $result = [];
+  if ($sorting === 'sort_fio-desc') {
+    $order_by = 'm.name DESC';
+  } elseif ($sorting === 'sort_fio-asc') {
+    $order_by = 'm.name ASC';
+  } elseif ($sorting === 'sort_locality-desc') {
+    $order_by = 'l.name DESC';
+  } elseif ($sorting === 'sort_locality-asc') {
+    $order_by = 'l.name ASC';
+  } else {
+    $order_by = 'm.name DESC';
+  }
 //fr.interview_name, fr.interview_status, fr.interview_info,  fr.interview_meetings, fr.interview_apprehension, fr.interview_coordination, fr.interview_signature, fr.interview_date,
     $res=db_query ("SELECT fr.id as fr_id, fr.member_key, fr.request_date, fr.stage, fr.notice, fr.send_date, fr.decision,
       m.name, m.male, m.locality_key, m.cell_phone, m.email, m.category_key, l.name AS locality_name
     FROM ftt_request AS fr
     INNER JOIN member m ON m.key = fr.member_key
     INNER JOIN locality l ON l.key = m.locality_key
-    WHERE fr.stage > 0 {$condition} ");
+    WHERE fr.stage > 0 {$condition} ORDER BY {$order_by}");
     while ($row = $res->fetch_assoc()) $result[]=$row;
     // для коректного запроса все ключевые поля для выборки из присоединяемых таблиц должны быть заполнены
 

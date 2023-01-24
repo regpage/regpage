@@ -16,7 +16,7 @@ if (!$adminId) {
 // Получаем все заявления
 if(isset($_GET['type']) && $_GET['type'] === 'all_requests'){
     //write_to_log::debug('000005716', 'Запрошен весь список заявлений для раздела ПВОМ');//$adminId
-    echo json_encode(["result"=>db_getAllRequests($adminId, $_GET['role'], $_GET['guest'])]);
+    echo json_encode(["result"=>db_getAllRequests($adminId, $_GET['role'], $_GET['guest'], $_GET['sort'])]);
     exit();
 }
 

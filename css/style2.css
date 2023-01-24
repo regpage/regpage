@@ -244,3 +244,8 @@ li.modal-reference {
 .hide_element {
   display: none !important;
 }
+
+
+.text_blue {
+  color: #08c;
+}
