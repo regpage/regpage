@@ -1,4 +1,5 @@
 <?php
+    require_once "preheader.php";
     include_once "header2.php";
     include_once "nav2.php";
     include_once "db/contactsdb.php";
@@ -957,7 +958,7 @@
         if (respMemTmp[iv+1]) {
           data_page.members_responsibles[String(respMemTmp[iv])] = respMemTmp[iv+1];
         }
-      }      
+      }
       respMemTmp=[];
 
       data_page.locality_responsibles = [];

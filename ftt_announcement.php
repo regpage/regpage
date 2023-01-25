@@ -1,13 +1,16 @@
 <?php
-    include_once "header2.php";
-    // Меню
-    include_once "nav2.php";
+    // preheader
+    require_once "preheader.php";
 
     // Глобальные переменные разделов
     include_once "components/ftt_main/var_part.php";
 
     // Переменные раздела
     include_once "components/ftt_announcement/var_part.php";
+
+    include_once "header2.php";
+    // Меню
+    include_once "nav2.php";
 
     // HTML код раздела
     include_once "components/ftt_main/html_part_refactoring.php";

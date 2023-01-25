@@ -2180,6 +2180,7 @@ $(document).ready(function(){
           case 'youth': window.location = '/youth'; break;
           case 'list': window.location = '/list'; break;
           case 'activity': window.location = '/activity'; break;
+          case 'attend': window.location = '/attend'; break;
       }
   });
   $('.continue-closed-registration').click(function(){

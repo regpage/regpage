@@ -41,6 +41,7 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
     <div class="tab-content">
       <select class="controls span5 members-lists-combo" tooltip="Выберите нужный вам список здесь" style="margin-right: 7px;">
           <option selected value="members">Общий список</option>
+          <option value="attend">Список посещаемости</option>
           <option value="youth">Молодые люди</option>
           <option value="list">Ответственные за регистрацию</option>
           <?php if ($roleThisAdmin===2) { ?>
@@ -125,7 +126,7 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
                         <th>Телефон</th>
                         <th>Email</th>
                         <th style="width: 80px"><a id="sort-birth_date" href="#" title="сортировать">Возраст</a>&nbsp;<i class="<?php echo $sort_field=='birth_date' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none'; ?>"></i></th>
-                        <th style="width: 40px"><a id="sort-attend_meeting" href="#" title="Посещает собрания">С</a>&nbsp;<i class="<?php echo $sort_field=='attend_meeting' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none'; ?>"></i></th>
+                        <!--<th style="width: 40px"><a id="sort-attend_meeting" href="#" title="Посещает собрания">С</a>&nbsp;<i class="<?php echo $sort_field=='attend_meeting' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none'; ?>"></i></th>-->
                         <th> </th>
                         <th>&nbsp;</th>
                     </tr>
@@ -287,10 +288,10 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
         <li>
           <a id="sort-birth_date" data-sort="Возраст" href="#" title="сортировать">Возраст</a>&nbsp;<i class="icon-none"></i>
         </li>
-        <br>
+        <!--<br>
         <li>
           <a id="sort-attend_meeting" href="#" data-sort="Посещает собрание" title="сортировать">Посещает собрание</a>&nbsp;<i class="icon-none"></i>
-        </li>
+        </li>-->
       </ul>
     </div>
     <div class="modal-footer">
@@ -657,7 +658,7 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
                 '<td>' + he(m.cell_phone) + '</td>' +
                 '<td>' + he(m.email) + '</td>' +
                 '<td style="width:50px">' + age + '</td>' +
-                '<td><input type="checkbox" class="check-meeting-attend" '+ (m.attend_meeting == 1 ? "checked" : "") +' /></td>' +
+                //'<td><input type="checkbox" class="check-meeting-attend" '+ (m.attend_meeting == 1 ? "checked" : "") +' /></td>' +
                 '<td>' + htmlChanged + htmlEditor + '</td>' +
   <?php if (db_getAdminRole($memberId) != 0) { ?> '<td><i class="'+(m.active==0?'icon-circle-arrow-up':'')+' icon-black" title="'+(m.active==0?'Добавить в список':'Удалить из списка')+'"/></td>' <?php } ?> +
                 '</tr>'
@@ -669,7 +670,8 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
                 '<i style="float: right; cursor:pointer;" class="'+(m.active==0?'icon-circle-arrow-up':'')+' icon-black" title="'+(m.active==0 ? 'Добавить в список':'Удалить из списка')+'"/>'+
                 <?php if (!$singleCity) echo "'<div>' + he(m.locality ? (m.locality.length>20 ? m.locality.substring(0,18)+'...' : m.locality) : '') + ', ' + age + '</div>' + "; ?> (in_array(6, window.user_settings) ? '<span class="user_setting_span">'+(m.region || m.country)+'</span>' : '') +
                 '<div><span >'+ /*(m.cell_phone?'тел.: ':'') + */ he(m.cell_phone.trim()) + '</span>'+ (m.cell_phone && m.email ? '' :'' )+'<span>'+ /*(m.email?'email: ':'') + he(m.email) + */ '</span></div>' +
-                '<div>Посещает собрания: <input type="checkbox" class="check-meeting-attend" '+ (m.attend_meeting == 1 ? "checked" : "") +' /> <span> '+ htmlChanged + htmlEditor + '</span></div>'+
+                //<div>Посещает собрания: <input type="checkbox" class="check-meeting-attend" '+ (m.attend_meeting == 1 ? "checked" : "") +' />
+                '<span> '+ htmlChanged + htmlEditor + '</span></div>'+
                 /*'<div>'+ htmlChanged + htmlEditor + '</div>'+*/
                 '</td>' +
                 '</tr>'

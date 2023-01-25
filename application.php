@@ -1,5 +1,6 @@
 <?php
 // include
+require_once "preheader.php";
 require_once "header2.php";
 require_once "nav2.php";
 // Переменные раздела

@@ -1,7 +1,3 @@
-<?php
-include_once "preheader.php";
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,7 +26,7 @@ include_once "preheader.php";
     <meta name="mailru-domain" content="z83V20hFDKLekMbc">
     <link href="favicon.ico" rel="shortcut icon">
     <link href="css/font-awesome.min.css" rel="stylesheet">
-    <link href="css/style2.css?v14" rel="stylesheet">
+    <link href="css/style2.css?v15" rel="stylesheet">
     <!--  <link href="css/style_slide.css?v2" rel="stylesheet">-->
 
 <?php if (IS_FTT) { ?>

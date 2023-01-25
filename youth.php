@@ -35,6 +35,7 @@ include_once "modals.php";
 		<div class="tab-content">
 			<select class="controls span5 members-lists-combo" tooltip="Выберите нужный вам список здесь" style="margin-right: 7px;">
           <option value="members">Общий список</option>
+					<option value="attend">Список посещаемости</option>
           <option selected value="youth">Молодые люди</option>
           <option value="list">Ответственные за регистрацию</option>
 					<?php if ($roleThisAdmin===2) { ?>

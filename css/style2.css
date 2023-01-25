@@ -19,6 +19,15 @@ label.required-for-label:after
     color: red;
     content: " *";
 }
+
+#main_container_reg {
+  margin-top: 10px;
+  padding-left: 20px;
+  padding-bottom: 25px;
+  background-color: white;
+  max-width: 1170px;
+}
+
 /* Быстрый возврат к верху страницы */
 .scroll-up{
     z-index: 1;

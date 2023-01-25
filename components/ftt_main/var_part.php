@@ -35,6 +35,8 @@ if ($ftt_access['group'] === 'staff') {
     $ftt_access['serving_trainee'] = $ftt_access['ftt_service'];
   }
 } else {
+   // redirect to index page
+  header("Location: index");
   exit();
 }
 

@@ -1,7 +1,7 @@
 <?php
   // СПИСОК ПВОМ
   // DB
-  include_once 'db/ftt/ftt_list_db.php';  
+  include_once 'db/ftt/ftt_list_db.php';
   // Classes
   include_once 'db/classes/trainee_data.php';
   include_once 'db/classes/short_name.php';
@@ -13,11 +13,6 @@
 
   //include_once 'db/classes/members.php';
   //include_once 'db/classes/ftt_info.php';
-
-// access
-if ($ftt_access['group'] !== 'staff') {
-  exit();
-}
 
 // данные обучающегося
 $trainee_data = trainee_data::get_data($memberId);

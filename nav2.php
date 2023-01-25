@@ -153,7 +153,12 @@ switch ($h) {
             if(!isset($isGuest) && db_isAdmin($memberId)) {
               if ($ftt_access['group'] !== 'trainee') {
                 echo '<li class="nav-item ';
-                if (strpos($s,"/members")!==FALSE || strpos($s,"/youth")!==FALSE || strpos($s,"/list")!==FALSE) {echo ' active"';} else {echo ' "';}
+                if (strpos($s,"/members") !== FALSE || strpos($s,"/youth") !== FALSE
+                || strpos($s,"/list") !== FALSE || strpos($s,"/attend") !== FALSE) {
+                  echo ' active"';
+                } else {
+                  echo ' "';
+                }
                 echo'><a class="nav-link" href="/members">Списки</a></li>';
               }
             }
