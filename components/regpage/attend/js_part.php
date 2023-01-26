@@ -11,3 +11,4 @@ $(".members-lists-combo").change(function(){
     }
 });
 </script>
+<script src="/js/regpage/attend/script.js?v1"></script>

@@ -1,0 +1,8 @@
+.attend_str {
+  cursor: pointer;
+  border-top: 1px solid #eee;  
+}
+
+.attend_str:hover {
+  background-color: #eee;
+}

@@ -21,8 +21,9 @@ label.required-for-label:after
 }
 
 #main_container_reg {
-  margin-top: 10px;
-  padding-left: 20px;
+  margin-top: 60px;
+  padding-top: 20px;
+  padding-left: 30px;
   padding-bottom: 25px;
   background-color: white;
   max-width: 1170px;
@@ -254,7 +255,11 @@ li.modal-reference {
   display: none !important;
 }
 
-
 .text_blue {
   color: #08c;
+}
+
+.sort_col {
+  color: #08c;
+  cursor: pointer;
 }

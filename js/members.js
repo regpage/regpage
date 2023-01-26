@@ -150,7 +150,7 @@ if ($(window).width()<=769) {
   $("#selMemberCategory").css("width", "208px");
   $("#selMemberAttendMeeting").css("width", "208px");
   //$("#dropdownMenu1").parent().hide();
-  $("#mblSortShow").parent().show();
+  $("#mblSortShow").parent().show();  
 }
 
 /*

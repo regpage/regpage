@@ -276,7 +276,7 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
         <h3>Сортировка</h3>
     </div>
     <div class="modal-body">
-      <ul style="font-size: 16px;">
+      <ul class="show-phone" style="font-size: 16px;">
         <li>
           <a id="sort-name" data-sort="ФИО" href="#" title="сортировать">ФИО</a>&nbsp;<i class="icon-chevron-down"></i>
         </li>

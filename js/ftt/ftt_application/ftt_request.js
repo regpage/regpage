@@ -1090,7 +1090,7 @@ $(document).ready(function(){
         showError("Заполните все обязательные поля!");
         $(this).addClass("required_field");
         has_error++;
-      } else {
+      }/* else {
         if ($(this).attr("id") === "point_request_info") {
           let check_info_field = $(this).val();
           check_info_field = check_info_field.split(" ");
@@ -1102,7 +1102,7 @@ $(document).ready(function(){
             has_error++;
           }
         }
-      }
+      }*/
     });
 
     showSaveIcon();
