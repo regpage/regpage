@@ -331,3 +331,12 @@ function get_ftt_param(param, elem) {
   .then(response => response.json())
   .then(result => elem.html(result.result));
 }
+
+function he(str) {
+    return str ? String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;') : "";
+}

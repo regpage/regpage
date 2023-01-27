@@ -1,5 +1,5 @@
 <script>
 // Modules
-
+let global_admin_localities = <?php echo $adminLocalitiesList; ?>;
 </script>
-<script src="/js/regpage/attend/script.js?v2"></script>
+<script src="/js/regpage/attend/script.js?v3"></script>

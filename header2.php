@@ -26,7 +26,7 @@
     <meta name="mailru-domain" content="z83V20hFDKLekMbc">
     <link href="favicon.ico" rel="shortcut icon">
     <link href="css/font-awesome.min.css" rel="stylesheet">
-    <link href="css/style2.css?v15" rel="stylesheet">
+    <link href="css/style2.css?v16" rel="stylesheet">
     <!--  <link href="css/style_slide.css?v2" rel="stylesheet">-->
 
 <?php if (IS_FTT) { ?>
@@ -61,7 +61,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <!--<script src="js/script.js?v182" type="text/javascript"></script>-->
-    <script src="js/script2.js?v15" type="text/javascript"></script>
+    <script src="js/script2.js?v16" type="text/javascript"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <?php if ($_SERVER['PHP_SELF'] === '/index.php' || $_SERVER['PHP_SELF'] === '/members.php') { ?>
 

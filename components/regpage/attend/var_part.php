@@ -33,3 +33,4 @@ if (isset($_COOKIE['sorting-attend']) && !empty($_COOKIE['sorting-attend'])) {
 }
 
 $membersList = Members::getListAttend($memberId, $sort_setting[0], $sort_setting[1]);
+$adminLocalitiesList = localities::getAdminLocalities($memberId);

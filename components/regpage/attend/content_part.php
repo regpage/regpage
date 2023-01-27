@@ -1,6 +1,6 @@
-<div class="row mb-3">
+<div class="row" style="margin-bottom: 19px;">
   <!-- Список подразделов -->
-  <select class="form-control form-control-sm members-lists-combo mr-2" tooltip="Выберите нужный вам список здесь" style="max-width: 468px;">
+  <select id="members-lists-combo" class="form-control form-control-sm mr-2" tooltip="Выберите нужный вам список здесь" style="max-width: 468px;">
     <option value="members">Общий список</option>
     <option value="attend" selected>Список посещаемости</option>
     <option value="youth">Молодые люди</option>
@@ -9,7 +9,7 @@
       <option value="activity">Активность ответственных</option>
     <?php } ?>
   </select>
-  <input type="search" id="field_search_text" class="form-control form-control-sm" placeholder="Поиск по фамилии" style="max-width: 468px; margin-bottom: 10px;">
+  <input type="search" id="field_search_text" class="form-control form-control-sm" placeholder="Поиск по фамилии" style="max-width: 468px;">
 </div>
 <div class="row mb-3">
   <!--<div class="btn-group">
@@ -25,33 +25,33 @@
       <i class="fa fa-bar-chart"></i> <span class="hide-name">Статистика</span>
     </a>
   </div>
-  <div class="btn-group">
-    <a id="btnPrintOpenModal" class="btn dropdown-toggle" href="#">
-      <i class="fa fa-print"></i>
-    </a>
-  </div>
-  <div class="btn-group">
-    <a class="btn btn-info show-filters" type="button">
-      <i class="fa fa-filter icon-white"></i>
-      <span class="hide-name">Фильтры</span>
-    </a>
-  </div>
   <div class="btn-group" style="display: none;">
     <a id="" class="btn" type="button">
       <i class="fa fa-sort"></i>
     </a>
+  </div>
+  <div class="">
+    <button id="btn_show_custom_filters" type="button" class="btn btn-primary btn-sm rounded mr-2">
+      <i class="fa fa-filter icon-white"></i>
+      <span class="hide-name">Фильтры</span>
+    </button>
   </div>-->
-  <div class="btn-group">
-    <select id="flt_members_localities" class="form-control form-control-sm mr-2">
-      <?php FTT_Select_fields::rendering(localities::getAdminLocalities($memberId), '_all_', 'Все местности'); ?>
+  <div class="mr-2">
+    <button id="btnPrintOpenModal" type="button" class="btn btn-light btn-sm rounded">
+      <i class="fa fa-print"></i>
+    </button>
+  </div>
+  <div class="mr-2">
+    <select id="flt_members_localities" class="form-control form-control-sm">
+      <?php FTT_Select_fields::rendering($adminLocalitiesList, '_all_', 'Все местности'); ?>
     </select>
   </div>
-  <div class="btn-group">
-    <select id="flt_members_category" class="form-control form-control-sm mr-2">
+  <div class="mr-2">
+    <select id="flt_members_category" class="form-control form-control-sm">
       <?php FTT_Select_fields::rendering(MemberProperties::get_categories(), '_all_', 'Все участники'); ?>
     </select>
   </div>
-  <div class="btn-group">
+  <div class="">
   	<select id="flt_members_attend" class="form-control form-control-sm">
       <option value="_all_">Все участники</option>
   		<option value="1">Посещают Господню трапезу</option>
@@ -114,6 +114,7 @@
           <input type="checkbox" data-field="attend_vt" <?php if ($value->attend_vt) echo 'checked'; ?>>
         </div>
         <div class="col-1">
+          <span class="data_age">
           <?php
           if ($value->age == 0) {
             echo "-";
@@ -121,6 +122,7 @@
             echo floor($value->age);
           }
           ?>
+          </span>
         </div>
       </div>
     <?php endforeach; ?>
