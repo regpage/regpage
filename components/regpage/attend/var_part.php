@@ -4,6 +4,7 @@
 // db
 require_once 'db/classes/members.php';
 require_once 'db/classes/localities.php';
+require_once 'db/classes/settings.php';
 
 // Sorting
 $sort_fio_ico = '';
@@ -34,3 +35,6 @@ if (isset($_COOKIE['sorting-attend']) && !empty($_COOKIE['sorting-attend'])) {
 
 $membersList = Members::getListAttend($memberId, $sort_setting[0], $sort_setting[1]);
 $adminLocalitiesList = localities::getAdminLocalities($memberId);
+$singleCity = localities::isSingleCityAdmin($memberId);
+
+$userSettings = Settings::getUserSettings($memberId);

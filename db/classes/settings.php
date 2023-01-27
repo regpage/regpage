@@ -1,11 +1,11 @@
 <?php /**
  *
  */
-class ClassName extends AnotherClass
+class Settings
 {
 
   // SETTINGS
-  function db_getSettings(){
+  function getSettings(){
       $res = db_query("SELECT * FROM setting_category sc
                        LEFT JOIN setting_item si ON si.setting_category_key=sc.category_key");
 
@@ -17,7 +17,7 @@ class ClassName extends AnotherClass
       return $settings;
   }
 
-  function db_getUserSettings($admin_key){
+  function getUserSettings($admin_key){
       global $db;
       $_admin_key = $db->real_escape_string($admin_key);
 

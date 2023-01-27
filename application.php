@@ -1,10 +1,11 @@
 <?php
 // include
 require_once "preheader.php";
-require_once "header2.php";
-require_once "nav2.php";
 // Переменные раздела
 require_once "components/ftt_application_page/var_part.php";
+// main
+require_once "header2.php";
+require_once "nav2.php";
 require_once "components/main/spinner.php";
 ?>
 

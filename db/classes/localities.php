@@ -205,6 +205,21 @@ class localities
 
   }
 
+  static function isSingleCityAdmin ($adminId)
+  {
+      global $db;
+      $adminId = $db->real_escape_string($adminId);
+
+      $res=db_query ("SELECT IF ((SELECT COUNT(DISTINCT c.key) FROM access as a LEFT JOIN country c ON c.key = a.country_key WHERE a.member_key='$adminId')=0
+                             AND (SELECT COUNT(DISTINCT r.key) FROM access as a LEFT JOIN region r ON r.key = a.region_key WHERE a.member_key='$adminId')=0
+                             AND (SELECT COUNT(DISTINCT l.key) FROM access as a LEFT JOIN locality l ON l.key = a.locality_key WHERE a.member_key='$adminId')=1,1,0) as single");
+
+      if ($row = $res->fetch_assoc())
+          return $row['single']=='1';
+      else
+          return false;
+  }
+
 }
 
 

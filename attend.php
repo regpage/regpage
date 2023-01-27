@@ -1,17 +1,18 @@
 <?php
     // preheader
     require_once "preheader.php";
-    // Header
-    require_once "header2.php";
-
-    // Меню
-    require_once "nav2.php";
 
     // Глобальные переменные разделов
     require_once "components/regpage/main/var_main.php";
 
     // Переменные раздела
     require_once "components/regpage/attend/var_part.php";
+
+    // Header
+    require_once "header2.php";
+
+    // Меню
+    require_once "nav2.php";
 
     // HTML код раздела
     require_once "components/regpage/main/content_container.php";

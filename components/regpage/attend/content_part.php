@@ -30,22 +30,28 @@
       <i class="fa fa-sort"></i>
     </a>
   </div>
+  <?php // if (!$singleCity): ?>
   <div class="">
     <button id="btn_show_custom_filters" type="button" class="btn btn-primary btn-sm rounded mr-2">
       <i class="fa fa-filter icon-white"></i>
       <span class="hide-name">Фильтры</span>
     </button>
+  <?php // endif; ?>
   </div>-->
+
+
   <div class="mr-2">
     <button id="btnPrintOpenModal" type="button" class="btn btn-light btn-sm rounded">
       <i class="fa fa-print"></i>
     </button>
   </div>
+  <?php if (!$singleCity): ?>
   <div class="mr-2">
     <select id="flt_members_localities" class="form-control form-control-sm">
       <?php FTT_Select_fields::rendering($adminLocalitiesList, '_all_', 'Все местности'); ?>
     </select>
   </div>
+  <?php endif; ?>
   <div class="mr-2">
     <select id="flt_members_category" class="form-control form-control-sm">
       <?php FTT_Select_fields::rendering(MemberProperties::get_categories(), '_all_', 'Все участники'); ?>
@@ -68,9 +74,11 @@
   <div class="col-3 pl-1">
     <b class="sort_col" data-sort="name">ФИО <i class="<?php echo $sort_fio_ico; ?>"></i></b>
   </div>
+  <?php if (!$singleCity): ?>
   <div class="col-3">
     <b class="sort_col" data-sort="locality">Город <i class="<?php echo $sort_locality_ico; ?>"></i></b>
   </div>
+  <?php endif; ?>
   <div class="col-1" title="Собрания Господней трапезы"><b>Т</b></div>
   <div class="col-1" title="Молитвенные собрания" style="padding-left: 13px;"><b>М</b></div>
   <div class="col-1" title="Групповые собрания" style="padding-left: 13px;"><b>Г</b></div>
@@ -92,12 +100,16 @@
         data-category_key="<?php echo $value->category_key; ?>">
         <div class="col-3 pl-0">
           <span class="data_name"><?php echo $value->name; ?></span>
-          <br>
-          <span class="grey_text"><?php echo $value->category_name; ?></span>
+          <?php if (in_array(5, $userSettings)): ?>
+            <br>
+            <span class="grey_text"><?php echo $value->category_name; ?></span>
+          <?php endif; ?>
         </div>
+        <?php if (!$singleCity): ?>
         <div class="col-3">
           <?php echo $value->locality; ?>
         </div>
+        <?php endif; ?>
         <div class="col-1">
           <input type="checkbox" data-field="attend_meeting" <?php if ($value->attend_meeting) echo 'checked'; ?>>
         </div>
