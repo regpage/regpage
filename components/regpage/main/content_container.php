@@ -2,6 +2,7 @@
   <?php
   if ($_SERVER['REQUEST_URI'] === '/attend') {
     include_once 'components/regpage/attend/content_part.php';
+    include_once 'components/regpage/attend/modals.php';
   }
   ?>
 </div>
