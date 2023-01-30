@@ -78,14 +78,20 @@ $(document).ready(function(){
       } else {
         searchResult = true;
       }
+
+      let localities = $("#flt_members_localities").val();
+      if (localities !== "_all_") {
+        localities = $("#flt_members_localities").val();
+        localities = localities.split(",");
+      }
+      console.log(localities.indexOf($(this).attr("data-locality_key")) !== -1 || localities === "_all_");
       // STOP Search text
       ltm = $(this).find("input[data-field='attend_meeting']").prop("checked");
       pm = $(this).find("input[data-field='attend_pm']").prop("checked");
       gm = $(this).find("input[data-field='attend_gm']").prop("checked");
       am = $(this).find("input[data-field='attend_am']").prop("checked");
       vt = $(this).find("input[data-field='attend_vt']").prop("checked");
-      if (($("#flt_members_localities").val() === $(this).attr("data-locality_key")
-      || $("#flt_members_localities").val() === "_all_")
+      if ((localities.indexOf($(this).attr("data-locality_key")) !== -1 || localities === "_all_")
       && ($("#flt_members_category").val() === $(this).attr("data-category_key")
       || $("#flt_members_category").val() === "_all_") &&
       ($("#flt_members_attend").val() === "_all_"
@@ -312,7 +318,7 @@ $(document).ready(function(){
       $(selectors).each(function (e) {
         if ($(this).find(".data_age").text() && $(this).find(".data_age").text() !== "null"
         && !isNaN($(this).find(".data_age").text())) {
-          age = Math.floor($(this).find(".data_age").text());          
+          age = Math.floor($(this).find(".data_age").text());
         } else {
           age = "";
         }
