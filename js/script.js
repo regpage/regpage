@@ -376,8 +376,8 @@ function handleAditionalMenu(){
         var isDepDate = $(this).hasClass('emDepDate');
         if(!$(this).parents('.control-group').hasClass('error')) {
             var currentDates = $(this).val().split('.'),
-            tooltipDate = $(this).parents("#modalEditMember").find( isDepDate ? ".tooltipDepDate" : ".tooltipArrDate").data ('date'),
-            //tooltipDate = $(this).parents("#modalEditMember").find( isTabletWidth ? ".tablets-visible" : ".desctop-visible").find( isDepDate ? ".tooltipDepDate" : ".tooltipArrDate").data ('date'),
+            tooltipDate = $(this).parents("#modalEditMember").find( isDepDate ? ".tooltipDepDate" : ".tooltipArrDate").attr('data-date'),
+            //tooltipDate = $(this).parents("#modalEditMember").find( isTabletWidth ? ".tablets-visible" : ".desctop-visible").find( isDepDate ? ".tooltipDepDate" : ".tooltipArrDate").attr('data-date'),
             eventDate = new Date(tooltipDate),
             eventDateDbl = new Date(tooltipDate),
             eventDateMilliseconds = eventDate.setDate(eventDate.getDate() + ( isDepDate ? 10 : -11)),
@@ -487,9 +487,9 @@ function handleAditionalMenu(){
     });
 
     $('.filter-aid').click(function(){
-        var scope = $(this).data('scope');
+        var scope = $(this).attr('data-scope');
         var modalHeader = $(this).parents('#modalAidStatistic').find('.modal-header h4');
-        var eventId = modalHeader.data('event-id'), eventName = modalHeader.find('.event-name').text();
+        var eventId = modalHeader.attr('data-event-id'), eventName = modalHeader.find('.event-name').text();
 
         $.getJSON('/ajax/get.php', { eventIdAid: eventId, scope : scope})
             .done (function(data) {
@@ -1039,8 +1039,8 @@ function getValuesRegformFields(form, isIndexPage, isInvitation){
         event: window.currentEventId,
         name: form.find(".emName").val (),
         address: form.find(".emAddress").val(),
-        arr_date: parseDDMM (form.find(".emArrDate").val(), new Date (form.find(".tooltipArrDate").data ('date'))),
-        dep_date: parseDDMM (form.find(".emDepDate").val(), new Date (form.find(".tooltipDepDate").data ('date'))),
+        arr_date: parseDDMM (form.find(".emArrDate").val(), new Date (form.find(".tooltipArrDate").attr('data-date'))),
+        dep_date: parseDDMM (form.find(".emDepDate").val(), new Date (form.find(".tooltipDepDate").attr('data-date'))),
         arr_time: parseTime (form.find(".emArrTime").val()),
         dep_time: parseTime (form.find(".emDepTime").val()),
         birth_date: form.find(".emBirthdate").val(),
@@ -1401,8 +1401,8 @@ function fillEditMember (memberId, info, localities, newMemberBlank) {
     $(".emDocumentAuth").val (info["document_auth"] ? info["document_auth"] : "").keyup();
     $(".emCategory").val (info["category_key"] ? info["category_key"] : "_none_").change();
     $(".emDocumentType").val (info["document_key"] ? info["document_key"] : "_none_").change();
-    $(".tooltipArrDate").attr('title', "День и месяц приезда. Мероприятие начинается "+formatDate (info["start_date"])).tooltip('fixTitle').data ('date', info["start_date"]);
-    $(".tooltipDepDate").attr('title', "День и месяц отъезда. Мероприятие заканчивается "+formatDate (info["end_date"])).tooltip('fixTitle').data ('date', info["end_date"]);
+    $(".tooltipArrDate").attr('title', "День и месяц приезда. Мероприятие начинается "+formatDate (info["start_date"])).tooltip('fixTitle').attr('data-date', info["start_date"]);
+    $(".tooltipDepDate").attr('title', "День и месяц отъезда. Мероприятие заканчивается "+formatDate (info["end_date"])).tooltip('fixTitle').attr('data-date', info["end_date"]);
 
     if (info["gender"]) $('.emGender').val (info["gender"]); else $('.emGender').val ("_none_");
     $(".emGender").change();
@@ -1798,8 +1798,8 @@ function downloadAidListExcel(memberslength, members, generalValues){
 function helpFuncToHandleAidInteraction(that){
     var elem = $(that).parents("#modalUserAidInfo");
     var userId = elem.find("tr[class|='mem_id']").attr('class').replace(/^mem_id-/,'').replace(/inactive-member/,'');
-    var eventId = elem.find("tr[class|='mem_id']").data('eventid');
-    var eventName = elem.find("tr[class|='mem_id']").data('event-name');
+    var eventId = elem.find("tr[class|='mem_id']").attr('data-eventid');
+    var eventName = elem.find("tr[class|='mem_id']").attr('data-event-name');
     var amount = elem.find('.aid-amount').val();
 
     return{id:userId, amount: amount, eventId: eventId, eventName: eventName};

@@ -70,14 +70,20 @@ $('#service_ones_pvom').change(function() {
 });
 
 // PRINT LIST
-function print_rendering_elements(modal) {
+function print_rendering_elements(modal, empty) {
   let page = [];
   if (modal) {
     page["title"] = "<html lang='ru'><head><title>Список</title></head>";
     page["style"] = "<style>th {border: 1px solid black; text-align: center; border-collapse: collapse; padding: 5px 0px;} table, td {border: 1px solid black; text-align: right; border-collapse: collapse;} .numpp {width: 30px; text-align: center;} .dates{width: 50px;} .fio{text-align: left; padding-left: 5px;} .age {text-align: center;} .bold{font-weight: bold;}</style>";
-    page["header"] = "<body><h3>" + $("#selMemberLocality option:selected").text() + "</h3>";
-    page["thead"] = "<table><thead><tr><th class='numpp'>№</th><th>ФИО</th><th class='dates'>Возр.</th><th class='dates'></th><th class='dates'></th><th class='dates'></th><th class='dates'></th><th class='dates'></th><th class='dates'></th></tr></thead>";
-    page["end"] = "</table></body></html>";
+    if (empty) {
+      page["header"] = "<body>";
+      page["thead"] = "<table><thead><tr><th class='numpp'>№</th><th>ФИО</th><th class='dates'>Возр.</th><th class='dates'></th><th class='dates'></th><th class='dates'></th><th class='dates'></th><th class='dates'></th><th class='dates'></th></tr></thead>";
+      page["end"] = "</table></body></html>";
+    } else {
+      page["header"] = "<body><h3>" + $("#selMemberLocality option:selected").text() + "</h3>";
+      page["thead"] = "<table><thead><tr><th class='numpp'>№</th><th>ФИО</th><th class='dates'>Возр.</th><th class='dates'></th><th class='dates'></th><th class='dates'></th><th class='dates'></th><th class='dates'></th><th class='dates'></th></tr></thead>";
+      page["end"] = "<tr><td colspan='3' style='text-align: left;'><b>Гостей</b></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td colspan='3' style='text-align: left;'><b>Всего</b></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td colspan='3' style='text-align: left;'><b>Функционировали</b></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table></body></html>";
+    }
   } else {
     page["tbody"] = "";
     let age, bold, selectors;
@@ -86,31 +92,45 @@ function print_rendering_elements(modal) {
     } else {
       selectors = "#members tbody tr:visible";
     }
-    $(selectors).each(function (e) {
-      if ($(this).attr("data-age") && $(this).attr("data-age") !== "null") {
-        age = Math.floor($(this).attr("data-age"));
-      } else {
-        age = "";
-      }
 
-      if ($(this).attr("data-category") === "FT") {
-        bold = "bold";
-      } else {
-        bold = "";
+    if (empty) {
+      for (var i = 0; i < 40; i++) {
+        page["tbody"] += "<tbody><tr style='height: 25px;'><td class='numpp'></td><td class='fio' style='width: 400px;>"
+        + "</td><td class='dates age'></td><td class='dates'></td><td class='dates'></td>"
+        +"<td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td></tr>";
       }
+    } else {
+      $(selectors).each(function (e) {
+        if ($(this).attr("data-age") && $(this).attr("data-age") !== "null") {
+          age = Math.floor($(this).attr("data-age"));
+        } else {
+          age = "";
+        }
 
-      page["tbody"] += "<tbody><tr><td class='numpp'>" + (e + 1)
-      + "</td><td class='fio " + bold + "'>" + $(this).attr("data-name")
-      + "</td><td class='dates age'>" + age + "</td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td></tr>";
-    });
+        if ($(this).attr("data-category") === "FT") {
+          bold = "bold";
+        } else {
+          bold = "";
+        }
+
+        page["tbody"] += "<tbody><tr><td class='numpp'>" + (e + 1)
+        + "</td><td class='fio " + bold + "'>" + $(this).attr("data-name")
+        + "</td><td class='dates age'>" + age + "</td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td></tr>";
+      });
+    }
     page["tbody"] += "</tbody>";
   }
   return page;
 }
 
-function print_page(element, is_preview) {
+function print_page(element, is_preview, empty) {
   function popup(table){
-    let html = print_rendering_elements(true);
+    let html;
+    if (empty) {
+      html = print_rendering_elements(true, true);
+    } else {
+      html = print_rendering_elements(true);
+    }
     let mywindow = window.open('', 'Список', 'height=800,width=1000');
     // рендерим страницу начало
     mywindow.document.write(html["title"]);
@@ -135,12 +155,22 @@ function print_page(element, is_preview) {
   printElem(element);
 }
 
-$("#btnPrintOpenModal").click(function () {
+$("#btnPrintOpenModal, #btnPrintOpenModalEmpty").click(function (e) {
+  let data;
+  if (e.target.id === "btnPrintOpenModalEmpty") {
+    data = print_rendering_elements(false, true);
+    $("#show_print_list").html(data["thead"] + data["tbody"]);
+    print_page("#show_print_list", false, true);
+  } else {
+    data = print_rendering_elements();
+    $("#show_print_list").html(data["thead"] + data["tbody"]);
+    print_page("#show_print_list");
+  }
   //$("#modalPrintList").modal("show");
-  let data = print_rendering_elements();
-  $("#show_print_list").html(data["thead"] + data["tbody"]);
+
+
   // В мобильной версии можно предоставлять окно с результатом для дальнейшей печати или выгрузки
-  print_page("#show_print_list");
+
 });
 
 // DESIGN
@@ -150,7 +180,7 @@ if ($(window).width()<=769) {
   $("#selMemberCategory").css("width", "208px");
   $("#selMemberAttendMeeting").css("width", "208px");
   //$("#dropdownMenu1").parent().hide();
-  $("#mblSortShow").parent().show();  
+  $("#mblSortShow").parent().show();
 }
 
 /*
