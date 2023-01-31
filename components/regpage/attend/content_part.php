@@ -39,11 +39,19 @@
   <?php // endif; ?>
   </div>-->
 
-
   <div class="mr-2">
-    <button id="btnPrintOpenModal" type="button" class="btn btn-light btn-sm rounded">
-      <i class="fa fa-print"></i>
-    </button>
+    <div class="dropdown">
+      <button type="button" class="btn btn-light btn-sm rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+        <i class="fa fa-print"></i>
+        <i class="fa fa-caret-down" aria-hidden="true"></i>
+      </button>
+      <div class="dropdown-menu">
+        <button id="btnPrintOpenModal" class="dropdown-item" type="button">Таблица посещаемости</button>
+        <button id="btnPrintOpenModalControlListVT" class="dropdown-item" type="button">Контрольный список Видеообучения</button>
+        <button id="btnPrintOpenModalBadgesVT" class="dropdown-item" type="button">Значки для Видеообучения</button>
+        <button id="btnPrintOpenModalVT" class="dropdown-item" type="button">Список участников Видеообучения</button>
+      </div>
+    </div>
   </div>
   <?php if (!$singleCity): ?>
   <div class="mr-2">
