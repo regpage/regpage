@@ -298,40 +298,78 @@ $(document).ready(function(){
   }
 
   // --- PRINT LIST events --- //
-  $("#btnPrintOpenModal").click(function () {
-    //$("#modalPrintList").modal("show");
-    let data = print_rendering_elements();
-    $("#show_print_list").html(data["thead"] + data["tbody"]);
+  // Таблица посещаемости
+  $("#btnPrintOpenModal, #btnPrintOpenModalBlank").click(function (e) {
     // В мобильной версии можно предоставлять окно с результатом для дальнейшей печати или выгрузки
-    print_page("#show_print_list");
+    let data;
+    if (e.target.id === "btnPrintOpenModal") {
+      data = print_rendering_elements();
+    } else {
+      data = print_rendering_elements(false, true);
+    }
+
+    $("#show_print_list").html(data["thead"] + data["tbody"]);
+    if (e.target.id === "btnPrintOpenModal") {
+      print_page("#show_print_list");
+    } else {
+      print_page("#show_print_list", false, "blank");
+    }
+
   });
+
   // Контрольный список ВО
-  $("#btnPrintOpenModalControlListVT").click(function () {
-    if ($("#flt_members_attend").val() !== "6") {
+  $("#btnPrintOpenModalControlListVT, #btnPrintOpenModalControlListVTBlank, #btnPrintOpenModalVT").click(function (e) {
+    let filter_vt = $("#flt_members_attend").val();
+    if (filter_vt !== "6") {
       $("#flt_members_attend").val("6");
       filtersOfString();
     }
     setTimeout(function () {
-      let data = print_rendering_elements_vt();
+      let data;
+      if (e.target.id === "btnPrintOpenModalVT") {
+        data = print_rendering_elements_vt_list();
+      } else if (e.target.id === "btnPrintOpenModalControlListVTBlank") {
+        data = print_rendering_elements_vt(false, true);
+      } else {
+        data = print_rendering_elements_vt();
+      }
       if (data.tbody === "</tbody>") {
         showError("Ошибка. В списке посещаемости нет отметок в колонке «В».");
         return;
       }
       $("#show_print_list").html(data["thead"] + data["tbody"]);
       // В мобильной версии можно предоставлять окно с результатом для дальнейшей печати или выгрузки
-      print_page("#show_print_list", false, "vt");
+
+      if (e.target.id === "btnPrintOpenModalVT") {
+        print_page("#show_print_list", false, "vt_list");
+      } else if (e.target.id === "btnPrintOpenModalControlListVTBlank") {
+        print_page("#show_print_list", false, "vt_blank");
+      } else {
+        print_page("#show_print_list", false, "vt");
+      }
     }, 10);
+    setTimeout(function () {
+      if (filter_vt !== "6") {
+        $("#flt_members_attend").val(filter_vt);
+        filtersOfString();
+      }
+    }, 20);
   });
 
   // --- PRINT LIST functions --- //
-  function print_rendering_elements(modal) {
+  // Таблица посещаемости
+  function print_rendering_elements(modal, blank) {
     let page = [];
+    let blank_text = "";
+    if (blank) {
+      blank_text = " (бланк)";
+    }
     if (modal) {
-      page["title"] = "<html lang='ru'><head><title>Список</title></head>";
+      page["title"] = "<html lang='ru'><head><title>Таблица посещаемости"+blank_text+"</title></head>";
       page["style"] = "<style>th {border: 1px solid black; text-align: center; border-collapse: collapse; padding: 5px 0px;} table, td {border: 1px solid black; text-align: right; border-collapse: collapse;} .numpp {width: 30px; text-align: center;} .dates{width: 50px;} .fio{text-align: left; padding-left: 5px;} .age {text-align: center;} .bold{font-weight: bold;}</style>";
       page["header"] = "<body><h3>" + $("#flt_members_localities option:selected").text() + "</h3>";
       page["thead"] = "<table><thead><tr><th class='numpp'>№</th><th>ФИО</th><th class='dates'>Возр.</th><th class='dates'></th><th class='dates'></th><th class='dates'></th><th class='dates'></th><th class='dates'></th><th class='dates'></th></tr></thead>";
-      page["end"] = "</table></body></html>";
+      page["end"] = "<tr><td colspan='3' style='text-align: right; height: 30px; padding-right: 15px;'><b>ГОСТЕЙ</b></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td colspan='3' style='text-align: right; height: 30px; padding-right: 15px;'><b>ВСЕГО</b></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td colspan='3' style='text-align: right; height: 30px; padding-right: 15px;'><b>ФУНКЦ.</b></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table></body></html>";
     } else {
       page["tbody"] = "";
       let age, bold, selectors;
@@ -340,64 +378,43 @@ $(document).ready(function(){
       } else {
         selectors = "#attend_list .attend_str:visible";
       }
-      $(selectors).each(function (e) {
-        if ($(this).find(".data_age").text() && $(this).find(".data_age").text() !== "null"
-        && !isNaN($(this).find(".data_age").text())) {
-          age = Math.floor($(this).find(".data_age").text());
-        } else {
-          age = "";
-        }
+      if (!blank) {
+        $(selectors).each(function (e) {
+          if ($(this).find(".data_age").text() && $(this).find(".data_age").text() !== "null"
+          && !isNaN($(this).find(".data_age").text())) {
+            age = Math.floor($(this).find(".data_age").text());
+          } else {
+            age = "";
+          }
 
-        if ($(this).attr("data-category_key") === "FT") {
-          bold = "bold";
-        } else {
-          bold = "";
-        }
+          if ($(this).attr("data-category_key") === "FT") {
+            bold = "bold";
+          } else {
+            bold = "";
+          }
 
-        page["tbody"] += "<tbody><tr><td class='numpp'>" + (e + 1)
-        + "</td><td class='fio " + bold + "'>" + $(this).find(".data_name").text()
-        + "</td><td class='dates age'>" + age + "</td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td></tr>";
-      });
+          page["tbody"] += "<tbody><tr><td class='numpp'>" + (e + 1)
+          + "</td><td class='fio " + bold + "'>" + $(this).find(".data_name").text()
+          + "</td><td class='dates age'>" + age + "</td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td></tr>";
+        });
+      } else {
+        for (var i = 0; i < 33; i++) {
+          page["tbody"] += "<tbody><tr><td class='numpp' style='height: 25px;'></td><td class='fio' style='width: 400px;'></td><td class='dates age'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td></tr>";
+        }
+      }
       page["tbody"] += "</tbody>";
     }
     return page;
   }
 
-  // Список видеообучения
-  function print_rendering_elements_vt(modal) {
+  // Список ВО
+  function print_rendering_elements_vt_list(modal) {
     let page = [];
     if (modal) {
-      page["title"] = "<html lang='ru'><head><title>Список</title></head>";
-      page["style"] = "<style>th {border: 1px solid black; text-align: center; border-collapse: collapse; padding: 5px 0px;} table, td {border: 1px solid black; text-align: right; border-collapse: collapse;} .numpp {width: 30px; text-align: center;} .dates{width: 50px;} .fio{text-align: left; padding-left: 5px;} .age {text-align: center;} .bold{font-weight: bold;}</style>"; //" + $("#flt_members_localities option:selected").text() + "
-      page["header"] = "<body><span>Местность __________________________</span>"
-      + "<span style='padding-left: 20px;'>Даты проведения обучения __________________________</span>"
-      + "<span style='padding-left: 20px;'>Координатор __________________________</span><br><br>";
-      page["thead"] = "<table>"
-      +"<thead>"
-        +"<tr>"
-          +"<th class='numpp' rowspan='2' style='text-align: center;'>№<br>п/п</th>"
-          +"<th rowspan='2' style='text-align: center; width: 180px;'>Фамилия Имя</th>"
-          +"<th class='dates' rowspan='2' style='text-align: center; padding: 0 5px;'>Дата<br>регистрации</th>"
-          +"<th class='dates' rowspan='2' style='text-align: center; padding: 0 5px;'>Возраст<br>участника</th>"
-          +"<th class='dates' rowspan='2' style='text-align: center; padding: 0 5px;'>Участие<br>(полное/<br>частич.)</th>"
-          +"<th class='dates' rowspan='2' style='text-align: center; padding: 0 5px;'>Взнос/<br>доп. сбор</th>"
-          +"<th class='dates' colspan='12' style='text-align: center;'>Собрания посещаемые участниками обучения</th>"
-        +"</tr>"
-        +"<tr>"
-          +"<th class='dates'>1</th>"
-          +"<th class='dates'>2</th>"
-          +"<th class='dates'>3</th>"
-          +"<th class='dates'>4</th>"
-          +"<th class='dates'>5</th>"
-          +"<th class='dates'>6</th>"
-          +"<th class='dates'>7</th>"
-          +"<th class='dates'>8</th>"
-          +"<th class='dates'>9</th>"
-          +"<th class='dates'>10</th>"
-          +"<th class='dates'>11</th>"
-          +"<th class='dates'>12</th>"
-        +"</tr>"
-      +"</thead>";
+      page["title"] = "<html lang='ru'><head><title>Список участников ВО</title></head>";
+      page["style"] = "<style>th {border: 1px solid black; text-align: center; border-collapse: collapse; padding: 5px 0px;} table, td {border: 1px solid black; text-align: right; border-collapse: collapse;} .numpp {width: 30px; text-align: center;} .dates{width: 150px;} .fio{text-align: left; padding-left: 5px; width: 220px;} .age {text-align: center;} .bold{font-weight: bold;}</style>";
+      page["header"] = "<body><strong>СПИСОК УЧАСТНИКОВ</strong>";
+      page["thead"] = "<table><thead><tr><th class='numpp'>№</th><th>ФИО</th><th class='dates'></th><th class='dates'></th><th class='dates'></th></tr></thead>";
       page["end"] = "</table></body></html>";
     } else {
       page["tbody"] = "";
@@ -423,10 +440,94 @@ $(document).ready(function(){
 
         page["tbody"] += "<tbody><tr><td class='numpp'>" + (e + 1)
         + "</td><td class='fio " + bold + "'>" + fullNameToNoMiddleName($(this).find(".data_name").text())
-        + "</td><td class='dates'></td><td class='dates age'>" + age + "</td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td></tr>";
+        + "</td><td class='dates'></td><td class='dates'></td><td class='dates'></td></tr>";
       });
       page["tbody"] += "</tbody>";
     }
+    return page;
+  }
+
+  // Контрольный список ВО
+  function print_rendering_elements_vt(modal, blank) {
+    let blank_text = "";
+    if (blank) {
+      blank_text = " (бланк)";
+    }
+    /*let locality_text = "Местность ";
+    $("#flt_members_localities option").each(function () {
+      if ($(this).text() === "Москва") {
+        locality_text = "Район ____";
+      }
+    });*/
+    let page = [];
+    if (modal) {
+      page["title"] = "<html lang='ru'><head><title>Контрольный список"+blank_text+"</title></head>";
+      page["style"] = "<style>th {border: 1px solid black; text-align: center; border-collapse: collapse; padding: 5px 0px;} table, td {border: 1px solid black; text-align: right; border-collapse: collapse;} .numpp {width: 30px; text-align: center;} .dates{width: 50px;} .fio{text-align: left; padding-left: 5px;} .age {text-align: center;} .bold{font-weight: bold;}</style>"; //" + $("#flt_members_localities option:selected").text() + "
+      page["header"] = "<body><strong style='margin-left: 350px;'>КОНТРОЛЬНЫЙ СПИСОК ВИДЕООБУЧЕНИЯ</strong><br><br><span>Местность ______________________</span>"
+      + "<span style='padding-left: 20px;'>Даты проведения обучения ___________________</span>"
+      + "<span style='padding-left: 20px;'>Координатор ___________________</span><br><br>";
+      page["thead"] = "<table>"
+      +"<thead>"
+        +"<tr>"
+          +"<th class='numpp' rowspan='2' style='text-align: center;'>№<br>п/п</th>"
+          +"<th rowspan='2' style='text-align: center; width: 220px;'>Фамилия Имя</th>"
+          +"<th class='dates' rowspan='2' style='text-align: center; padding: 0 5px;'>Дата<br>регистр.</th>"
+          +"<th class='' rowspan='2' style='text-align: center; padding: 0 5px; width: 80px;'>Взнос/<br>доп. сбор</th>"
+          +"<th class='dates' rowspan='2' style='text-align: center; padding: 0 5px;'>Частич.<br>участие</th>"
+          +"<th class='dates' colspan='12' style='text-align: center;'>Собрания, посещаемые участниками обучения</th>"
+        +"</tr>"
+        +"<tr>"
+          +"<th class='dates'>1</th>"
+          +"<th class='dates'>2</th>"
+          +"<th class='dates'>3</th>"
+          +"<th class='dates'>4</th>"
+          +"<th class='dates'>5</th>"
+          +"<th class='dates'>6</th>"
+          +"<th class='dates'>7</th>"
+          +"<th class='dates'>8</th>"
+          +"<th class='dates'>9</th>"
+          +"<th class='dates'>10</th>"
+          +"<th class='dates'>11</th>"
+          +"<th class='dates'>12</th>"
+        +"</tr>"
+      +"</thead>";
+      page["end"] = "<tr><td class='numpp' colspan='5'>Итого ОТСУТСТВУЮЩИХ:</td>"
+      + "<td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td></tr></table></body></html>";
+    } else {
+      page["tbody"] = "";
+      let age, bold, selectors;
+      if ($(window).width()<=769) {
+        selectors = "#attend_list .attend_str:visible";
+      } else {
+        selectors = "#attend_list .attend_str:visible";
+      }
+      if (!blank) {
+        $(selectors).each(function (e) {
+          if ($(this).find(".data_age").text() && $(this).find(".data_age").text() !== "null"
+          && !isNaN($(this).find(".data_age").text())) {
+            age = Math.floor($(this).find(".data_age").text());
+          } else {
+            age = "";
+          }
+
+          if ($(this).attr("data-category_key") === "FT") {
+            bold = "bold";
+          } else {
+            bold = "";
+          }
+
+          page["tbody"] += "<tbody><tr><td class='numpp'>" + (e + 1)
+          + "</td><td class='fio " + bold + "'>" + fullNameToNoMiddleName($(this).find(".data_name").text())
+          + "</td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td></tr>";
+        });
+      } else {
+        for (let i = 0; i < 20; i++) {
+          page["tbody"] += "<tbody><tr><td class='numpp' style='height: 25px;'></td><td class='fio'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td></tr>";
+        }
+      }
+      page["tbody"] += "</tbody>";
+    }
+
     return page;
   }
 
@@ -435,10 +536,19 @@ $(document).ready(function(){
       let html, mywindow;
       if (type === "vt") {
         html = print_rendering_elements_vt(true);
-        mywindow = window.open('', 'Список', 'height=1000,width=800');
+        mywindow = window.open('', 'Контрольный список ВО', 'height=1000,width=800');
+      } else if (type === "vt_blank") {
+        html = print_rendering_elements_vt(true, true);
+        mywindow = window.open('', 'Контрольный список ВО (бланк)', 'height=1000,width=800');
+      } else if (type === "vt_list") {
+        html = print_rendering_elements_vt_list(true);
+        mywindow = window.open('', 'Список ВО', 'height=800,width=1000');
+      } else if (type === "blank") {
+        html = print_rendering_elements(true, true);
+        mywindow = window.open('', 'Таблица посещаемости (бланк)', 'height=800,width=1000');
       } else {
         html = print_rendering_elements(true);
-        mywindow = window.open('', 'Список', 'height=800,width=1000');
+        mywindow = window.open('', 'Таблица посещаемости', 'height=800,width=1000');
       }
 
       // рендерим страницу начало

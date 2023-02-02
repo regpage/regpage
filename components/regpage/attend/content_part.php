@@ -47,7 +47,9 @@
       </button>
       <div class="dropdown-menu">
         <button id="btnPrintOpenModal" class="dropdown-item" type="button">Таблица посещаемости</button>
-        <button id="btnPrintOpenModalControlListVT" class="dropdown-item" type="button">Контрольный список Видеообучения</button>
+        <button id="btnPrintOpenModalBlank" class="dropdown-item" type="button">Таблица посещаемости (бланк)</button>
+        <button id="btnPrintOpenModalControlListVT" class="dropdown-item" type="button">Контрольный список ВО</button>
+        <button id="btnPrintOpenModalControlListVTBlank" class="dropdown-item" type="button">Контрольный список ВО (бланк)</button>
         <button id="btnPrintOpenModalBadgesVT" class="dropdown-item" type="button">Значки для Видеообучения</button>
         <button id="btnPrintOpenModalVT" class="dropdown-item" type="button">Список участников Видеообучения</button>
       </div>

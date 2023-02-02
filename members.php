@@ -71,7 +71,7 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
                 </a>
                 <ul class="dropdown-menu">
                     <li><a id="btnPrintOpenModal" class="" tabindex="-1" href="#">Таблица посещаемости</a></li>
-                    <li><a id="btnPrintOpenModalEmpty" class="" tabindex="-1" href="#">Таблица посещаемости (пустая)</a></li>
+                    <li><a id="btnPrintOpenModalEmpty" class="" tabindex="-1" href="#">Таблица посещаемости (бланк)</a></li>
                 </ul>
             </div>
             <div class="btn-group">
@@ -1277,7 +1277,7 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
 
 // STOP check dublicate
 </script>
-<script src="/js/members.js?v16"></script>
+<script src="/js/members.js?v24"></script>
 <?php
 include_once "footer.php";
 ?>

@@ -72,17 +72,21 @@ $('#service_ones_pvom').change(function() {
 // PRINT LIST
 function print_rendering_elements(modal, empty) {
   let page = [];
+  let blank_text = "";
+  if (empty) {
+    blank_text = " (бланк)";
+  }
   if (modal) {
-    page["title"] = "<html lang='ru'><head><title>Список</title></head>";
+    page["title"] = "<html lang='ru'><head><title>Таблица посещаемости"+blank_text+"</title></head>";
     page["style"] = "<style>th {border: 1px solid black; text-align: center; border-collapse: collapse; padding: 5px 0px;} table, td {border: 1px solid black; text-align: right; border-collapse: collapse;} .numpp {width: 30px; text-align: center;} .dates{width: 50px;} .fio{text-align: left; padding-left: 5px;} .age {text-align: center;} .bold{font-weight: bold;}</style>";
     if (empty) {
       page["header"] = "<body>";
       page["thead"] = "<table><thead><tr><th class='numpp'>№</th><th>ФИО</th><th class='dates'>Возр.</th><th class='dates'></th><th class='dates'></th><th class='dates'></th><th class='dates'></th><th class='dates'></th><th class='dates'></th></tr></thead>";
-      page["end"] = "</table></body></html>";
+      page["end"] = "<tr><td colspan='3' style='text-align: right; height: 30px; padding-right: 15px;'><b>ГОСТЕЙ</b></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td colspan='3' style='text-align: right; height: 30px; padding-right: 15px;'><b>ВСЕГО</b></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td colspan='3' style='text-align: right; height: 30px; padding-right: 15px;'><b>ФУНКЦ.</b></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table></body></html>";
     } else {
       page["header"] = "<body><h3>" + $("#selMemberLocality option:selected").text() + "</h3>";
       page["thead"] = "<table><thead><tr><th class='numpp'>№</th><th>ФИО</th><th class='dates'>Возр.</th><th class='dates'></th><th class='dates'></th><th class='dates'></th><th class='dates'></th><th class='dates'></th><th class='dates'></th></tr></thead>";
-      page["end"] = "<tr><td colspan='3' style='text-align: left;'><b>Гостей</b></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td colspan='3' style='text-align: left;'><b>Всего</b></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td colspan='3' style='text-align: left;'><b>Функционировали</b></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table></body></html>";
+      page["end"] = "<tr><td colspan='3' style='text-align: right; height: 30px; padding-right: 15px;'><b>ГОСТЕЙ</b></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td colspan='3' style='text-align: right; height: 30px; padding-right: 15px;'><b>ВСЕГО</b></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td colspan='3' style='text-align: right; height: 30px; padding-right: 15px;'><b>ФУНКЦ.</b></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table></body></html>";
     }
   } else {
     page["tbody"] = "";
@@ -94,7 +98,7 @@ function print_rendering_elements(modal, empty) {
     }
 
     if (empty) {
-      for (var i = 0; i < 40; i++) {
+      for (var i = 0; i < 35; i++) {
         page["tbody"] += "<tbody><tr style='height: 25px;'><td class='numpp'></td><td class='fio' style='width: 400px;>"
         + "</td><td class='dates age'></td><td class='dates'></td><td class='dates'></td>"
         +"<td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td></tr>";
