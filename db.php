@@ -9,6 +9,7 @@ define ('MEMBER_TYPE',"member");
 require_once 'config.php';
 include_once 'utils.php';
 include_once 'db2.php';
+//include_once 'extensions/write_to_log/write_to_log.php';
 
 function db_checkSync () {
     $res=db_query ("SELECT value FROM param WHERE name='sync_started'");
@@ -1301,8 +1302,11 @@ function db_setEventMember ($adminId, $get, $post){
 
             if ($_college ===DONT_CHANGE) $_college= $m["college_key"] ? $m["college_key"] : '';
             if ($_collegeComment===DONT_CHANGE) $_collegeComment= $m["college_comment"] ? $m["college_comment"] : '';
+            if ($_collegeStart ===DONT_CHANGE) $_collegeStart= $m["college_start"] ? $m["college_start"] : '';
+            if ($_collegeEnd ===DONT_CHANGE) $_collegeEnd= $m["college_end"] ? $m["college_end"] : '';
             if ($_schoolComment===DONT_CHANGE) $_schoolComment= $m["school_comment"] ? $m["school_comment"] : '';
-
+            if ($_schoolStart===DONT_CHANGE) $_schoolStart= $m["school_start"] ? $m["school_start"] : '';
+            if ($_schoolEnd===DONT_CHANGE) $_schoolComment= $m["school_end"] ? $m["school_end"] : '';
             if ($_baptized===DONT_CHANGE) $_baptized= $m["baptized"] ? $m["baptized"] : null;
             if ($_mate_key===DONT_CHANGE) $_mate_key= isset($m["mate_key"]) ? $m["mate_key"] : null;
         }

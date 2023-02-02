@@ -4,6 +4,7 @@ $(document).ready(function(){
   $("#application_print").click(function() {
 
   });
+
   // Прозапас
   // spinner
   //$("#spinner").modal("show");
@@ -18,6 +19,16 @@ $(document).ready(function(){
   if (getCookie("application_check") === '1') {
     validationFields();
     setCookie("application_check") === '0'
+  }
+
+  if (getCookie("show_recommend") === '1') {
+    setCookie("show_recommend") === '0'
+    showHint("Ваша рекомендация отправлена служащим ПВОМ");
+  }
+
+  if (getCookie("show_interview") === '1') {
+    setCookie("show_interview") === '0'
+    showHint("Отправлено служащим ПВОМ");
   }
 
   // Показать / скрыть иконку сохранения
@@ -1167,7 +1178,7 @@ $(document).ready(function(){
           $("#back_to_master").hide();
           //$("#toModalDeleteMyRequest").hide();
           $("#send_application").hide();
-          showHint("Заявление отправлено служащим Полновременного обучения в Москве. ????");
+          showHint("Заявление отправлено служащим Полновременного обучения в Москве.");
         }
       });
     }
@@ -1305,11 +1316,19 @@ $(document).ready(function(){
       showError("Статус не установлен.");
       //rw_log("fun set_status(status): Статус не установлен.", "w");
     }
+
     let id = $("#main_container").attr("data-id");
     fetch("ajax/ftt_request_ajax.php?type=set_status&status="+status+"&id="+id)
     .then(response => response.json())
     .then(result => {
-      location.reload();
+      if (status == 3) {
+        setCookie("show_recommend", 1);
+      } else if (status == 5) {
+        setCookie("show_interview", 1);
+      }
+      setTimeout(function () {
+        location.reload();
+      }, 30);
     });
   }
 
@@ -1335,7 +1354,7 @@ $(document).ready(function(){
       }
       return;
     }
-    modalUniversalConfirmData(3, "Отправить рекомендацию?");
+    modalUniversalConfirmData(3, "Отправить рекомендацию служащим ПВОМ?");
   });
 
   // кнопка на собеседование

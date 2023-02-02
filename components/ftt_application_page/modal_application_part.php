@@ -28,8 +28,7 @@
   </div>
 </div>
 
-<!-- Удаление своего заявления  -->
-<!-- Использовать как универсальное для окон подтверждения-->
+<!-- Удаление заявления  -->
 <div id="modalDeleteMyRequest" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -55,11 +54,11 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
       </div>
       <div class="modal-body">
-        <h6 id="modalUniversalConfirmText">Удалить заявление?</h6>
+        <h6 id="modalUniversalConfirmText"></h6>
       </div>
       <div class="modal-footer pb-2 pl-2 pt-2 pr-2">
         <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true">Отмена</button>
-        <button id="btnUniversalConfirm" class="btn btn-sm btn-primary" data-dismiss="modal" aria-hidden="true">Передать</button>
+        <button id="btnUniversalConfirm" class="btn btn-sm btn-success" data-dismiss="modal" aria-hidden="true">Отправить</button>
       </div>
     </div>
   </div>

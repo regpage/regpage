@@ -100,7 +100,7 @@ function setRequestField($adminId, $field, $data, $id, $table, $isGuest, $blob=f
 }
 // удалить заявление из базы
 function db_deleteRequest($id) {
-  $res = db_query("DELETE FROM ftt_request WHERE `id` = '$id'");  
+  $res = db_query("DELETE FROM ftt_request WHERE `id` = '$id'");
   return $res;
 }
 // отправить заявление в корзину
@@ -195,8 +195,8 @@ function db_setStatusRequestToSent($id, $status = 1, $adminId='') {
       INNER JOIN member m ON m.key = fr.member_key
       WHERE `id` = '$id'");
       while ($row = $res3->fetch_assoc()) $data = $row;
-    $message = "Новая рекомендация. Ссылка на заявление ПВОМ от {$data['name']}.<br><br> https://reg-page.ru/application.php?member_key=".strval($data['member_key']);
-    Emailing::send_by_key($data['recommendation_name'], 'Новая рекомендация', $message);
+    $message = "Просим вас дать рекомендацию кандидату на ПВОМ — {$data['name']}.<br><br>Ссылка на заявление ПВОМ  https://reg-page.ru/application.php?member_key=".strval($data['member_key'])."<br><br>Служащие ПВОМ";
+    Emailing::send_by_key($data['recommendation_name'], 'Рекомендация кандидату на ПВОМ', $message);
   }
 
   if ($res2 && $status == 4) {
@@ -206,8 +206,8 @@ function db_setStatusRequestToSent($id, $status = 1, $adminId='') {
       INNER JOIN member m ON m.key = fr.member_key
       WHERE `id` = '$id'");
       while ($row = $res3->fetch_assoc()) $data = $row;
-    $message = "Новое собеседование. Ссылка на заявление ПВОМ от {$data['name']}.<br><br> https://reg-page.ru/application.php?member_key=".strval($data['member_key']);
-    Emailing::send_by_key($data['interview_name'], 'Новое собеседование', $message);
+    $message = "Просим вас провести собеседование с кандидатом на ПВОМ — {$data['name']}.<br><br> https://reg-page.ru/application.php?member_key=".strval($data['member_key'])."<br><br>Служащие ПВОМ";
+    Emailing::send_by_key($data['interview_name'], 'Собеседование с кандидатом на ПВОМ', $message);
   }
 
   if ($res2 && $status == 3) {
@@ -218,7 +218,7 @@ function db_setStatusRequestToSent($id, $status = 1, $adminId='') {
       WHERE `id` = '$id'");
       while ($row = $res3->fetch_assoc()) $data = $row;
     $message = "Получена рекомендация. Ссылка на заявление ПВОМ от {$data['name']}.<br><br> https://reg-page.ru/application.php?member_key=".strval($data['member_key']);
-    Emailing::send_by_key($data['interview_name'], 'Получена рекомендация', $message);
+    Emailing::send_by_key($data['responsible_rec'], 'Получена рекомендация', $message);
   }
 
   if ($res2 && $status == 5) {
@@ -229,7 +229,7 @@ function db_setStatusRequestToSent($id, $status = 1, $adminId='') {
       WHERE `id` = '$id'");
       while ($row = $res3->fetch_assoc()) $data = $row;
     $message = "Пройдено собеседование. Ссылка на заявление ПВОМ от {$data['name']}.<br><br> https://reg-page.ru/application.php?member_key=".strval($data['member_key']);
-    Emailing::send_by_key($data['interview_name'], 'Пройдено собеседование', $message);
+    Emailing::send_by_key($data['responsible_int'], 'Пройдено собеседование', $message);
   }
 }
 
