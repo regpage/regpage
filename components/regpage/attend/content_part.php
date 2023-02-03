@@ -64,8 +64,15 @@
   <?php endif; ?>
   <div class="mr-2">
     <select id="flt_members_category" class="form-control form-control-sm">
-      <?php FTT_Select_fields::rendering(MemberProperties::get_categories(), '_all_', 'Все участники'); ?>
-      <option value="NF">Без обучающихся ПВОМ</option>
+      <?php
+      $memberCategoriesFilter = [];
+      foreach (MemberProperties::get_categories() as $key => $value) {
+        $memberCategoriesFilter[$key] = $value;
+        if ($key === 'FT') {
+          $memberCategoriesFilter['NF'] = 'Без обучающихся ПВОМ';
+        }
+      }
+      FTT_Select_fields::rendering($memberCategoriesFilter, '_all_', 'Все участники'); ?>
     </select>
   </div>
   <div class="">

@@ -470,13 +470,13 @@ $(document).ready(function(){
       page["style"] = "<style>th {border: 1px solid black; text-align: center; border-collapse: collapse; padding: 5px 0px;} table, td {border: 1px solid black; text-align: right; border-collapse: collapse;} .numpp {width: 30px; text-align: center;} .dates{width: 50px;} .fio{text-align: left; padding-left: 5px;} .age {text-align: center;} .bold{font-weight: bold;}</style>"; //" + $("#flt_members_localities option:selected").text() + "
       page["header"] = "<body><strong style='margin-left: 350px;'>КОНТРОЛЬНЫЙ СПИСОК ВИДЕООБУЧЕНИЯ</strong><br><br><span>Местность ______________________</span>"
       + "<span style='padding-left: 20px;'>Даты проведения обучения ___________________</span>"
-      + "<span style='padding-left: 20px;'>Координатор ___________________</span><br><br>";
+      + "<span style='padding-left: 20px;'>Ответственный ___________________</span><br><br>";
       page["thead"] = "<table>"
       +"<thead>"
         +"<tr>"
           +"<th class='numpp' rowspan='2' style='text-align: center;'>№<br>п/п</th>"
           +"<th rowspan='2' style='text-align: center; width: 240px;'>Фамилия Имя</th>"
-          +"<th class='' rowspan='2' style='text-align: center; padding: 0 5px; width: 100px;'>Взнос/<br>доп. сбор</th>"
+          +"<th class='' rowspan='2' style='text-align: center; padding: 0 5px; width: 100px;'>Взнос и<br>доп. сбор</th>"
           +"<th class='dates' rowspan='2' style='text-align: center; padding: 0 5px;'>Частич.<br>участие</th>"
           +"<th class='dates' colspan='12' style='text-align: center;'>Собрания, посещаемые участниками обучения</th>"
         +"</tr>"
@@ -498,7 +498,7 @@ $(document).ready(function(){
       page["end"] = "<tr><td class='numpp' colspan='2'>Итого ОТСУТСТВУЮЩИХ:</td>"
       + "<td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td></tr></table></body></html>";
     } else {
-      page["tbody"] = "";
+      page["tbody"] = "<tbody>";
       let age, bold, selectors;
       if ($(window).width()<=769) {
         selectors = "#attend_list .attend_str:visible";
@@ -506,6 +506,10 @@ $(document).ready(function(){
         selectors = "#attend_list .attend_str:visible";
       }
       if (!blank) {
+        let count_empty_strings = prompt("Сколько добавить пустых строк?", 10);
+        if (isNaN(count_empty_strings)) {
+          count_empty_strings = 0;
+        }
         $(selectors).each(function (e) {
           if ($(this).find(".data_age").text() && $(this).find(".data_age").text() !== "null"
           && !isNaN($(this).find(".data_age").text())) {
@@ -520,13 +524,16 @@ $(document).ready(function(){
             bold = "";
           }
 
-          page["tbody"] += "<tbody><tr><td class='numpp'>" + (e + 1)
+          page["tbody"] += "<tr><td class='numpp'>" + (e + 1)
           + "</td><td class='fio " + bold + "'>" + fullNameToNoMiddleName($(this).find(".data_name").text())
           + "</td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td></tr>";
         });
+        for (let i = 0; i < count_empty_strings; i++) {
+          page["tbody"] += "<tr><td class='numpp' style='height: 25px;'></td><td class='fio'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td></tr>";
+        }
       } else {
         for (let i = 0; i < 20; i++) {
-          page["tbody"] += "<tbody><tr><td class='numpp' style='height: 25px;'></td><td class='fio'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td></tr>";
+          page["tbody"] += "<tr><td class='numpp' style='height: 25px;'></td><td class='fio'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td></tr>";
         }
       }
       page["tbody"] += "</tbody>";
