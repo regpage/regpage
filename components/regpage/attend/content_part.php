@@ -65,6 +65,7 @@
   <div class="mr-2">
     <select id="flt_members_category" class="form-control form-control-sm">
       <?php FTT_Select_fields::rendering(MemberProperties::get_categories(), '_all_', 'Все участники'); ?>
+      <option value="NF">Без обучающихся ПВОМ</option>
     </select>
   </div>
   <div class="">

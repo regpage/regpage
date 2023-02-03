@@ -65,8 +65,13 @@ $(document).ready(function(){
   function filtersOfString() {
     $("#spinner").modal("show");
     setTimeout(function () {
-      let ltm, pm, gm, am, vt;
+      let ltm, pm, gm, am, vt, no_ftt;
     let text = $("#field_search_text").val().trim();
+
+    if ($("#flt_members_category").val() === "NF") {
+      no_ftt = true;
+    }
+
     $("#attend_list .attend_str").each(function () {
       // Search text
       if (text.length > 2) {
@@ -91,8 +96,8 @@ $(document).ready(function(){
       am = $(this).find("input[data-field='attend_am']").prop("checked");
       vt = $(this).find("input[data-field='attend_vt']").prop("checked");
       if ((localities.indexOf($(this).attr("data-locality_key")) !== -1 || localities === "_all_")
-      && ($("#flt_members_category").val() === $(this).attr("data-category_key")
-      || $("#flt_members_category").val() === "_all_") &&
+      && (($("#flt_members_category").val() === $(this).attr("data-category_key")
+      || $("#flt_members_category").val() === "_all_") || (no_ftt && $(this).attr("data-category_key") !== "FT")) &&
       ($("#flt_members_attend").val() === "_all_"
       || ($("#flt_members_attend").val() === "5" && (ltm || pm || gm || am))
       || ($("#flt_members_attend").val() === "0" && (!ltm && !pm && !gm && !am))
@@ -470,9 +475,8 @@ $(document).ready(function(){
       +"<thead>"
         +"<tr>"
           +"<th class='numpp' rowspan='2' style='text-align: center;'>№<br>п/п</th>"
-          +"<th rowspan='2' style='text-align: center; width: 220px;'>Фамилия Имя</th>"
-          +"<th class='dates' rowspan='2' style='text-align: center; padding: 0 5px;'>Дата<br>регистр.</th>"
-          +"<th class='' rowspan='2' style='text-align: center; padding: 0 5px; width: 80px;'>Взнос/<br>доп. сбор</th>"
+          +"<th rowspan='2' style='text-align: center; width: 240px;'>Фамилия Имя</th>"
+          +"<th class='' rowspan='2' style='text-align: center; padding: 0 5px; width: 100px;'>Взнос/<br>доп. сбор</th>"
           +"<th class='dates' rowspan='2' style='text-align: center; padding: 0 5px;'>Частич.<br>участие</th>"
           +"<th class='dates' colspan='12' style='text-align: center;'>Собрания, посещаемые участниками обучения</th>"
         +"</tr>"
@@ -491,8 +495,8 @@ $(document).ready(function(){
           +"<th class='dates'>12</th>"
         +"</tr>"
       +"</thead>";
-      page["end"] = "<tr><td class='numpp' colspan='5'>Итого ОТСУТСТВУЮЩИХ:</td>"
-      + "<td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td></tr></table></body></html>";
+      page["end"] = "<tr><td class='numpp' colspan='2'>Итого ОТСУТСТВУЮЩИХ:</td>"
+      + "<td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td></tr></table></body></html>";
     } else {
       page["tbody"] = "";
       let age, bold, selectors;
@@ -518,11 +522,11 @@ $(document).ready(function(){
 
           page["tbody"] += "<tbody><tr><td class='numpp'>" + (e + 1)
           + "</td><td class='fio " + bold + "'>" + fullNameToNoMiddleName($(this).find(".data_name").text())
-          + "</td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td></tr>";
+          + "</td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td></tr>";
         });
       } else {
         for (let i = 0; i < 20; i++) {
-          page["tbody"] += "<tbody><tr><td class='numpp' style='height: 25px;'></td><td class='fio'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td></tr>";
+          page["tbody"] += "<tbody><tr><td class='numpp' style='height: 25px;'></td><td class='fio'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td></tr>";
         }
       }
       page["tbody"] += "</tbody>";

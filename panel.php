@@ -42,6 +42,12 @@ if ($memberId !== '000001679'){
           <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#menu3">Other</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#menu3">Заявления трэш</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#menu3">Заявления черн.</a>
+          </li>
         </ul>
 
   <!-- Tab panes -->

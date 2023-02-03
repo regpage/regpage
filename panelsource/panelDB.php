@@ -198,4 +198,28 @@ function dltStrLogDvlp() {
   //logFileWriter(false, 'АКТИВНОСТЬ АДМИНИСТРАТОРОВ. Автоматическое удаление строк 99 активности администраторов. Удаление завешено.', 'WARNING');
 }
 
+// get requests
+function db_getApplicationsPanel ($adminId, $trash){
+  global $db;
+  $adminId = $db->real_escape_string($adminId);
+  $trash = $db->real_escape_string($trash);
+  $result = [];
+  if ($trash) {
+    $condition = " fr.notice = 2 ";
+  } else {
+    $condition = " fr.stage = 0 AND fr.notice <> 2 ";
+  }
+  $res=db_query ("SELECT fr.id, fr.member_key, fr.request_date, fr.stage, fr.notice, fr.send_date, fr.decision,
+    m.name, m.male, m.locality_key, m.cell_phone, m.email, m.category_key, l.name AS locality_name,
+    fr.interview_name, fr.recommendation_name
+  FROM ftt_request AS fr
+  INNER JOIN member m ON m.key = fr.member_key
+  INNER JOIN locality l ON l.key = m.locality_key
+  WHERE {$condition}
+  ORDER BY fr.stage, m.name");
+  while ($row = $res->fetch_assoc()) $result[]=$row;
+
+  return $result;
+}
+
 ?>

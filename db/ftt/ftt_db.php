@@ -45,6 +45,7 @@ function db_getAllRequests ($adminId, $role, $guest, $sorting){
 function db_getApplications ($adminId, $interview=false){
   global $db;
   $adminId = $db->real_escape_string($adminId);
+  $interview = $db->real_escape_string($interview);
   $result = [];
   if ($interview) {
     $condition = " fr.interview_name = '{$adminId}'";
