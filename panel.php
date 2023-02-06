@@ -5,6 +5,7 @@ include_once 'nav2.php';
 include_once 'panelsource/panelDB.php';
 include_once 'panelsource/adminpaneldb.php';
 include_once 'panelsource/panelModal.php';
+//$allLocalities = db_getLocalities();
 $pages = db_getPages();
 $customPages = db_getCustomPagesPanel();
 $ResponsibleContacts = db_getResponsibleContacts1And2();
@@ -22,38 +23,38 @@ if ($memberId !== '000001679'){
 <div id="" class="container">
   <div class="" style="display: flex">
     <div class="col-md-12" style="margin-top: 50px;">
-      <h4>Options panel</h4>
+      <h4>Раздел разработчика</h4>
       <div class="container">
-        <br>
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
           <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#home">General</a>
+            <a class="nav-link active" data-toggle="tab" href="#home">Логи</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#menu1">Pages</a>
+            <a class="nav-link" data-toggle="tab" href="#menu1">Разделы</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#menu2">Practices</a>
+            <a class="nav-link" data-toggle="tab" href="#menu4">Контакты</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#menu4">Contacts</a>
+            <a class="nav-link" data-toggle="tab" href="#menu5">Заявления трэш</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#menu3">Other</a>
+            <a class="nav-link" data-toggle="tab" href="#menu6">Заявления черн.</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#menu3">Заявления трэш</a>
+            <a class="nav-link" data-toggle="tab" href="#menu2">Практики</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#menu3">Заявления черн.</a>
+            <a class="nav-link" data-toggle="tab" href="#menu3">Ещё</a>
           </li>
+
         </ul>
 
   <!-- Tab panes -->
         <div class="tab-content">
           <div id="home" class="container tab-pane active"><br>
-            <h3>GENERAL</h3>
+            <h3>Лог файлы</h3>
             <hr>
             <h5>Download log files</h5>
             <div class="">
@@ -145,7 +146,7 @@ if ($memberId !== '000001679'){
             </div>
           </div>
           <div id="menu1" class="container tab-pane fade"><br>
-            <h3>Pages</h3>
+            <h3>Разделы</h3>
             <div class="col-md-12">
               <select id="selMemberCategory" class="form-control form-control form-control-sm" title="Все страницы на которые когда либо осуществляется переход.">
                 <option value="_all_" selected>Все страницы</option>
@@ -174,7 +175,7 @@ if ($memberId !== '000001679'){
                 <option value="activity">Журнал активности</option>
               </select>
               <hr>
-              <h4>Pages</h4>
+              <h4>Ссылки на разделы</h4>
               <div class="">
                 <?php
                 foreach ($pages as $key => $page) {
@@ -182,7 +183,7 @@ if ($memberId !== '000001679'){
                 }?>
               </div>
               <hr>
-              <h4>Custom pages</h4>
+              <h4>Ссылки на custom pages</h4>
               <div class="">
                 <?php
                 foreach ($customPages as $name => $value) {
@@ -202,7 +203,7 @@ if ($memberId !== '000001679'){
           <div id="menu4" class="container tab-pane fade"><br>
             <div class="row">
               <div class="col-sm-8">
-                <h3>Contacts</h3>
+                <h3>Контакты</h3>
                 <hr>
                 <h4>Статистика по статусам</h4>
                 <div class="row">
@@ -252,7 +253,7 @@ if ($memberId !== '000001679'){
                   </div>
                 </div>
                 <hr>
-                <h4>Responibles 1 & 2</h4>
+                <h4>Ответственные 1 & 2</h4>
                 <div class="" style="margin: 7px;">
                   <?php
                   for ($i=0; $i < count($ResponsibleContacts); $i++) {
@@ -262,7 +263,7 @@ if ($memberId !== '000001679'){
                   ?>
                 </div>
                 <hr>
-                <h4>Responibles 0</h4>
+                <h4>Ответственные 0</h4>
                 <div class="">
                   <?php
                   foreach ($ResponsibleZero as $name => $names) {
@@ -274,7 +275,7 @@ if ($memberId !== '000001679'){
                 </div>
               </div>
               <div class="col-sm-4">
-                <h3>Lost contacts</h3>
+                <h3>Потеряные контакты</h3>
                 <hr>
                 <?php
                 for ($i=0; $i < count($checkLostContactsList); $i++) {
@@ -322,6 +323,12 @@ if ($memberId !== '000001679'){
               </form>
             </div>
             <hr>
+          </div>
+          <div id="menu5" class="container tab-pane fade"><br>
+            <?php require_once 'panelsource/content/applications/application_trash.php' ?>
+          </div>
+          <div id="menu6" class="container tab-pane fade"><br>
+            <?php require_once 'panelsource/content/applications/application_drafts.php' ?>
           </div>
         </div>
       </div>

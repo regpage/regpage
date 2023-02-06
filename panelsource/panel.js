@@ -132,5 +132,11 @@ $(document).ready(function(){
   $('#dltDvlpLogStr').click(function () {
     fetch('panelsource/panelAjax.php?dlt_dvlp_logstr');
   });
+
+  // Заявления ПВОМ
+  $(".str_of_list").click(function () {
+    let query = "application.php?member_key=" + $(this).attr("data-member_key");
+    window.location = query;
+  });
 // ready page stop here
 });

@@ -199,7 +199,7 @@ function dltStrLogDvlp() {
 }
 
 // get requests
-function db_getApplicationsPanel ($adminId, $trash){
+function db_getApplicationsPanel ($adminId, $trash=''){
   global $db;
   $adminId = $db->real_escape_string($adminId);
   $trash = $db->real_escape_string($trash);
@@ -209,9 +209,8 @@ function db_getApplicationsPanel ($adminId, $trash){
   } else {
     $condition = " fr.stage = 0 AND fr.notice <> 2 ";
   }
-  $res=db_query ("SELECT fr.id, fr.member_key, fr.request_date, fr.stage, fr.notice, fr.send_date, fr.decision,
-    m.name, m.male, m.locality_key, m.cell_phone, m.email, m.category_key, l.name AS locality_name,
-    fr.interview_name, fr.recommendation_name
+  $res=db_query ("SELECT fr.*,    
+    m.name, m.male, m.locality_key, m.cell_phone, m.email, m.category_key, l.name AS locality_name
   FROM ftt_request AS fr
   INNER JOIN member m ON m.key = fr.member_key
   INNER JOIN locality l ON l.key = m.locality_key

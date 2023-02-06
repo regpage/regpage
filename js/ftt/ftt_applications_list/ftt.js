@@ -22,8 +22,7 @@ $(document).ready(function() {
      } else {
        $("#requests-list").prev().prev().find("h3").text("Кандидаты (" + list.length+")");
      }
-
-     console.log(list);
+     
      let list_desk = [];
      for (var i = 0; i < list.length; i++) {
        // подготавливаем данные

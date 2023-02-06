@@ -512,9 +512,9 @@ $(document).ready(function(){
     if (field === 'support_persons') {
       value = "";
       $("input[data-field=support_persons]").each(function (e) {
-          prepare = element.val();
-          prepare = prepare.replace(/\"/g, "\'");
-          value = value + prepare + ";";
+        prepare = $(this).val();
+        prepare = prepare.replace(/\"/g, "\'");
+        value = value + prepare + ";";
           /*if (e === 12) {
             fetch("ajax/ftt_request_ajax.php?type=set&table="+table+"&field="+field+"&data="+value+"&id="+id+"&guest="+is_guest)
             .then(response => response.json())
@@ -526,6 +526,8 @@ $(document).ready(function(){
             });
           }*/
       });
+
+      console.log(value);
     }
 
     // Если значения не изменились
