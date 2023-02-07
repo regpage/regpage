@@ -88,7 +88,7 @@
   	</select>
   </div>
 </div>
-<div class="row mb-2">
+<div id="col_name" class="row mb-2">
   <div class="col-3 pl-1">
     <b class="sort_col" data-sort="name">ФИО <i class="<?php echo $sort_fio_ico; ?>"></i></b>
   </div>
@@ -102,7 +102,7 @@
   <div class="col-1" title="Групповые собрания" style="padding-left: 13px;"><b>Г</b></div>
   <div class="col-1" title="Другие виды собраний" style="padding-left: 12px;"><b>Д</b></div>
   <div class="col-1" title="Собрания видеообучения" style="padding-left: 10px;"><b>В</b></div>
-  <div class="col-1" style="padding-left: 10px;">
+  <div class="col-1" style="padding-left: 10px;" title="Возраст">
     <b class="sort_col" data-sort="age">Возраст <i class="<?php echo $sort_birth_date_ico; ?>"></i></b>
   </div>
 </div>

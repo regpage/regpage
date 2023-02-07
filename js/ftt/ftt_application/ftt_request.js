@@ -1603,4 +1603,8 @@ $(document).ready(function(){
      }
    });
  }
+ // Новый бланк, указать ключ пользователя.
+ if (!$("#point_member_key").attr("data-value") && !$("#main_container").attr("data-id")) {
+   $("#point_member_key").attr("data-value", window.adminId);
+ }
 }); // END document ready
