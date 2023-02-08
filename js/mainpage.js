@@ -249,12 +249,13 @@ function handleFieldsByAdminRole(adminRole, isEventPrivate, regstate){
 // STOP DENY FOR REGISTRATION ON PRIVATE
 
 // Заявление на ПВОМ
-$(".request-row").click(function () {
+$(".request-row").click(function (e) {
   setCookie("application_back", 0);
   setCookie("application_check", "");
   setCookie("application_prepare", "");
+  let is_guest_check = $(this).hasClass("it_is_guest");
   setTimeout(function () {
-    if (!$(this).hasClass("it_is_guest")) {
+    if (!is_guest_check) {
       window.location = "application.php";
     } else {
       window.location = "application.php?guest=1";

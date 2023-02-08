@@ -5,7 +5,8 @@
   include_once 'db/classes/short_name.php';
   include_once 'db/classes/ftt_lists.php';
   include_once 'db/classes/date_convert.php';
-
+  // Classes components
+  include_once 'components/ftt_blocks/RenderList.php';
 // ПОСЕЩАЕМОСТЬ
 // access
 // данные обучающегося

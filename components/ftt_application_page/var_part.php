@@ -87,6 +87,11 @@ $is_guest = '';
 if ((!$request_data['id'] && isset($_GET['guest'])) || $request_data['guest'] === '1') {
   $is_guest = 1;
 }
+$guest_text_h = '';
+if ($is_guest) {
+  $guest_text_h = 'в качестве гостя';
+}
+
 
 /**** ДАННЫЕ ****/
 // Вопросы
@@ -281,5 +286,7 @@ if (isset($request_data['passport_scan_3'])) {
     $img_scan_3 = $request_data['passport_scan_3'];
   }
 }
+
+
 //$request_data['passport_scan'];
 ?>

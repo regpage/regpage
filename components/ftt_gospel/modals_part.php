@@ -58,6 +58,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
               ?>
               </select>
               <input id="group_members_field" class="input-google" type="text" value="">
+              <button type="button" class="btn btn-primary btn-sm" name="button" data-toggle="modal" data-target="#gospel_modal_list"><b>+</b></button>
             </div>
           </div>
         </div>
@@ -578,6 +579,61 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
       </div>
       <div class="modal-footer" style="">
         <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Список получателей -->
+<div id="gospel_modal_list" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="mb-0"></h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="container pl-2 pr-0">
+          <div class="row pl-2 pr-2">
+            <select id="modal_flt_male" class="form-control form-control-sm mb-2 mr-2">
+              <option value="_all_">Все</option>
+              <option value="1">Братья</option>
+              <option value="0">Сёстры</option>
+            </select>
+            <select id="modal_flt_semester" class="form-control form-control-sm mb-2 mr-2">
+              <option value="_all_">Все семестры</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+            </select>
+          </div>
+          <div class="row">
+            <div class="col-6 pl-2">
+              <div class="row">
+                <div id="modal_extra_groups" class="col">
+                  <h5>Обучающиеся</h5>
+                  <div>
+                    <label class="form-check-label" style="display: none;"><input id="modal_list_select_all" type="checkbox"> <b>Выбрать все</b></label>
+                  </div>
+                  <?php
+                  foreach ($trainee_list_full as $key => $value) {
+                    echo "<div><label class='form-check-label'><input type='checkbox' ". RenderList::dataAttr($value, array('apartment', 'male', 'semester')) ." value='{$key}'> ".$value[0]."</label></div>";
+                  } ?>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Закрыть</button>
       </div>
     </div>
   </div>

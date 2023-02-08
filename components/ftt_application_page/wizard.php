@@ -3,7 +3,7 @@
     <!--<div class="col"><img src="img/lsm-logo.png" alt=""></div>-->
     <div class="col pl-3">
       <!-- ЗАГОЛОВОК -->
-      <h5 class="pl-3">Заявление для участия в Полновременном обучении</h5>
+      <h5 class="pl-3">Заявление для участия в Полновременном обучении <?php echo $guest_text_h; ?></h5>
       <h6 class="pl-3"><?php echo getValueFttParamByName("application_title"); ?>
       <?php echo $status_application_label; ?>
       </h6>

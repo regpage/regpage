@@ -1,4 +1,4 @@
-<div id="ftt_schedule_container_2" class="col-6" style="background-color: white; padding: 0px; margin-top: 13px;">
+<div id="ftt_schedule_container_2" class="col-6 mb-2" style="background-color: white; padding: 0px; margin-top: 13px;">
   <span id="label_5_6" style="margin-left: 20px;">Семестры 5-6</span>
   <div id="ftt_schedule_list_2" class="container" style="margin-top: 5px;">
     <div class="accordion" id="accordionExample_2">

@@ -387,6 +387,7 @@ $('#showModalAddEdit').click(function () {
   }
 
   $("#group_members_field").val(get_gospel_group_members());
+  $("#group_members_field_block").html(get_gospel_group_members());
   $('#info_of').hide();
   $('#gospel_group_field').hide();
 });
