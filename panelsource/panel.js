@@ -138,5 +138,70 @@ $(document).ready(function(){
     let query = "application.php?member_key=" + $(this).attr("data-member_key");
     window.location = query;
   });
+
+  $("#showModalUniversalConfirm, #showModalUniversalConfirmApplication").click(function (e) {
+    if (e.target.id === "showModalUniversalConfirm") {
+      $("#modalUniversalConfirm").attr("data-type", "1");
+      $("#modalUniversalTitle").text("УДАЛЕНИЕ");
+      $("#modalUniversalText").text("Удалить данные семестра?");
+    } else if (e.target.id === "showModalUniversalConfirmApplication") {
+      $("#modalUniversalConfirm").attr("data-type", "2");
+      $("#modalUniversalTitle").text("УДАЛЕНИЕ");
+      $("#modalUniversalText").text("Удалить заявления? Вопросы не будут удалены.");
+    } else {
+      $("#modalUniversalConfirm").attr("data-type", "0");
+      $("#modalUniversalTitle").text("?");
+      $("#modalUniversalText").text("?");
+    }
+
+  });
+
+  // ПВОМ
+  $("#modalUniversalOK").click(function () {
+    if ($("#modalUniversalConfirm").attr("data-type") === "1") {
+      fetch('panelsource/panelAjax.php?type=reset_semester')
+      .then(response => response.text())
+      .then(result => {
+        setCookie("panel_tab_active", 'ftt', 1);
+        if (result == 1) {
+          $('#noticePlace .alert-success').addClass("show");
+          setTimeout(function () {
+            location.reload();
+          }, 1000);
+        } else {
+          $('#noticePlace .alert-danger').addClass("show");
+          setTimeout(function () {
+            location.reload();
+          }, 1000);
+        }
+      });
+    } else if ($("#modalUniversalConfirm").attr("data-type") === "2") {
+      fetch('panelsource/panelAjax.php?type=reset_applications')
+      .then(response => response.text())
+      .then(result => {
+        setCookie("panel_tab_active", 'ftt', 1);
+        if (result == 1) {
+          $('#noticePlace .alert-success').addClass("show");
+          setTimeout(function () {
+            location.reload();
+          }, 1000);
+        } else {
+          $('#noticePlace .alert-danger').addClass("show");
+          setTimeout(function () {
+            location.reload();
+          }, 1000);
+        }
+      });
+    }
+  });
+
+  $('#noticePlace .alert .close').click(function () {
+    $(this).parent().removeClass("show");
+  });
+
+  if (getCookie('panel_tab_active') === "ftt") {
+    setCookie('panel_tab_active') === "";
+  }
+
 // ready page stop here
 });

@@ -1,4 +1,5 @@
 <?php
+
 function db_getSessionsAdmins(){
     $res=db_query ("SELECT member_key, session FROM admin WHERE session IS NOT NULL");
 
@@ -209,7 +210,7 @@ function db_getApplicationsPanel ($adminId, $trash=''){
   } else {
     $condition = " fr.stage = 0 AND fr.notice <> 2 ";
   }
-  $res=db_query ("SELECT fr.*,    
+  $res=db_query ("SELECT fr.*,
     m.name, m.male, m.locality_key, m.cell_phone, m.email, m.category_key, l.name AS locality_name
   FROM ftt_request AS fr
   INNER JOIN member m ON m.key = fr.member_key
@@ -221,4 +222,56 @@ function db_getApplicationsPanel ($adminId, $trash=''){
   return $result;
 }
 
-?>
+function resetSemester(){
+
+  $tables = array('ftt_announcement', 'ftt_announcement_recipients', 'ftt_attendance', 	'ftt_attendance_sheet', 'ftt_extra_help', 'ftt_gospel', 'ftt_gospel_goals', 'ftt_gospel_team', 'ftt_late', 'ftt_permission', 'ftt_permission_sheet', 'ftt_session', 'ftt_session_correction', 'ftt_trainee');
+  $result;
+
+  foreach ($tables as $value) {
+    $result = db_query ("DELETE FROM {$value}");
+  }
+  write_to_log::warning(db_getMemberIdBySessionId (session_id()), "Данные таблиц ПВОМ удалены администратором. Результат: {$result}");
+  return $result;
+}
+
+function resetApplications(){
+
+  $tables = array('ftt_request');
+  $result;
+
+  foreach ($tables as $value) {
+    $result = db_query ("DELETE FROM {$value}");
+  }
+  write_to_log::warning(db_getMemberIdBySessionId (session_id()), "Данные таблиц ПВОМ удалены администратором. Результат: {$result}");
+  return $result;
+}
+
+function checkDataSemester(){
+    $tables = array('ftt_announcement', 'ftt_announcement_recipients', 'ftt_attendance', 	'ftt_attendance_sheet', 'ftt_extra_help', 'ftt_gospel', 'ftt_gospel_goals', 'ftt_gospel_team', 'ftt_late', 'ftt_permission', 'ftt_permission_sheet', 'ftt_session', 'ftt_session_correction', 'ftt_trainee');
+    $result = array();
+    foreach ($tables as $key => $value) {
+      $result[$value] = db_query ("SELECT * FROM {$value} limit 1");
+    }
+    //while ($row = $res->fetch_assoc()) $result[]=$row;
+    return $result;
+}
+
+function checkOtherDataSemester(){
+    $tables = array('ftt_serving_one', 'ftt_apartment', 'ftt_service', 'ftt_param', 'ftt_study_group');
+    $result = array();
+    foreach ($tables as $key => $value) {
+      $result[$value] = db_query ("SELECT * FROM {$value} limit 1");
+    }
+
+    return $result;
+}
+
+function checkApplicationData(){
+    $tables = array('ftt_request', 'ftt_request_points');
+    $result = array();
+    foreach ($tables as $key => $value) {
+      $result[$value] = db_query ("SELECT * FROM {$value} limit 1");
+    }
+
+    return $result;
+}

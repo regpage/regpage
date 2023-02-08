@@ -2,6 +2,7 @@
 include_once "../ajax/ajax.php";
 include_once "panelDB.php";
 include_once '../logWriter.php';
+include_once '../extensions/write_to_log/write_to_log.php';
 
 $adminId = db_getMemberIdBySessionId (session_id());
 if (!$adminId)
@@ -36,6 +37,12 @@ else if(isset($_GET['set_practices_pvom'])){
   exit();
 } elseif (isset($_GET['dlt_dvlp_logstr'])) {
   dltStrLogDvlp();
+  exit();
+} elseif (isset($_GET['type']) && $_GET['type'] === 'reset_semester') {
+  echo resetSemester();
+  exit();
+} elseif (isset($_GET['type']) && $_GET['type'] === 'reset_applications') {
+  echo resetApplications();
   exit();
 }
 

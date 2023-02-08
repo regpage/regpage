@@ -1300,15 +1300,15 @@ function db_setEventMember ($adminId, $get, $post){
             if ($_currency===DONT_CHANGE) $_currency = isset($m["currency"]) ? $m["currency"] : null;
             if ($_service_key===DONT_CHANGE) $_service_key = isset($m["service_key"]) ? $m["service_key"] : null;
 
-            if ($_college ===DONT_CHANGE) $_college= $m["college_key"] ? $m["college_key"] : '';
-            if ($_collegeComment===DONT_CHANGE) $_collegeComment= $m["college_comment"] ? $m["college_comment"] : '';
-            if ($_collegeStart ===DONT_CHANGE) $_collegeStart= $m["college_start"] ? $m["college_start"] : '';
-            if ($_collegeEnd ===DONT_CHANGE) $_collegeEnd= $m["college_end"] ? $m["college_end"] : '';
-            if ($_schoolComment===DONT_CHANGE) $_schoolComment= $m["school_comment"] ? $m["school_comment"] : '';
-            if ($_schoolStart===DONT_CHANGE) $_schoolStart= $m["school_start"] ? $m["school_start"] : '';
-            if ($_schoolEnd===DONT_CHANGE) $_schoolComment= $m["school_end"] ? $m["school_end"] : '';
-            if ($_baptized===DONT_CHANGE) $_baptized= $m["baptized"] ? $m["baptized"] : null;
-            if ($_mate_key===DONT_CHANGE) $_mate_key= isset($m["mate_key"]) ? $m["mate_key"] : null;
+            if ($_college ===DONT_CHANGE) $_college = $m["college_key"] ? $m["college_key"] : '';
+            if ($_collegeComment===DONT_CHANGE) $_collegeComment = $m["college_comment"] ? $m["college_comment"] : '';
+            if ($_collegeStart ===DONT_CHANGE) $_collegeStart = $m["college_start"] ? $m["college_start"] : 0;
+            if ($_collegeEnd ===DONT_CHANGE) $_collegeEnd = $m["college_end"] ? $m["college_end"] : 0;
+            if ($_schoolComment===DONT_CHANGE) $_schoolComment = $m["school_comment"] ? $m["school_comment"] : '';
+            if ($_schoolStart===DONT_CHANGE) $_schoolStart = $m["school_start"] ? $m["school_start"] : 0;
+            if ($_schoolEnd===DONT_CHANGE) $_schoolComment = $m["school_end"] ? $m["school_end"] : 0;
+            if ($_baptized===DONT_CHANGE) $_baptized = $m["baptized"] ? $m["baptized"] : null;
+            if ($_mate_key===DONT_CHANGE) $_mate_key = isset($m["mate_key"]) ? $m["mate_key"] : null;
         }
         else{
             if ($_english_level===DONT_CHANGE) $_english_level = $m["english"];

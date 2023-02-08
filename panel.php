@@ -5,6 +5,7 @@ include_once 'nav2.php';
 include_once 'panelsource/panelDB.php';
 include_once 'panelsource/adminpaneldb.php';
 include_once 'panelsource/panelModal.php';
+include_once 'extensions/write_to_log/write_to_log.php';
 //$allLocalities = db_getLocalities();
 $pages = db_getPages();
 $customPages = db_getCustomPagesPanel();
@@ -17,6 +18,14 @@ if ($memberId !== '000001679'){
     return;
   }
 }
+$active = 'active';
+$active_ftt = '';
+if (isset($_COOKIE['panel_tab_active']) && $_COOKIE['panel_tab_active'] === 'ftt') {
+  $active = '';
+  $active_ftt = 'active';
+}
+
+write_to_log::info($memberId, 'Админ зашёл в панел администратора.');
 //$aaa = db_newDailyPracticesPac(9); Dont touch!!!
 ?>
 
@@ -28,7 +37,7 @@ if ($memberId !== '000001679'){
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
           <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#home">Логи</a>
+            <a class="nav-link <?php echo $active; ?>" data-toggle="tab" href="#home">Логи</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#menu1">Разделы</a>
@@ -43,6 +52,9 @@ if ($memberId !== '000001679'){
             <a class="nav-link" data-toggle="tab" href="#menu6">Заявления черн.</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link <?php echo $active_ftt; ?>" data-toggle="tab" href="#menu7">ПВОМ</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#menu2">Практики</a>
           </li>
           <li class="nav-item">
@@ -53,7 +65,7 @@ if ($memberId !== '000001679'){
 
   <!-- Tab panes -->
         <div class="tab-content">
-          <div id="home" class="container tab-pane active"><br>
+          <div id="home" class="container tab-pane <?php echo $active; ?>"><br>
             <h3>Лог файлы</h3>
             <hr>
             <h5>Download log files</h5>
@@ -330,12 +342,23 @@ if ($memberId !== '000001679'){
           <div id="menu6" class="container tab-pane fade"><br>
             <?php require_once 'panelsource/content/applications/application_drafts.php' ?>
           </div>
+          <div id="menu7" class="container tab-pane <?php echo $active_ftt; ?>"><br>
+            <?php require_once 'panelsource/content/ftt/ftt_reset.php' ?>
+          </div>
         </div>
       </div>
-        <div class="noticePlace">
+        <div id="noticePlace">
           <div class="alert alert-success alert-dismissible fade">
+            <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
+            <strong>Успех!</strong> Операция прошла успешна.
+          </div>
+          <div class="alert alert-danger alert-dismissible fade">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong>Success!</strong> Indicates a successful or positive action.
+            <strong>Ошибка!</strong> Что то пошло не так.
+          </div>
+          <div class="alert alert-warning alert-dismissible fade">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Внимание!</strong> Это предупреждение.
           </div>
         </div>
       </div>
@@ -348,8 +371,9 @@ var data_page = {};
 </script>
 
 
-<script src="/panelsource/panel.js?v29"></script>
+<script src="/panelsource/panel.js?v31"></script>
 
 <?php
+include_once 'panelsource/js_part.php';
 include_once 'footer2.php';
 ?>
