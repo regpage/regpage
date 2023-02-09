@@ -58,6 +58,9 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
               ?>
               </select>
               <input id="group_members_field" class="input-google" type="text" value="">
+              <div id="group_members_block" class="">
+
+              </div>
               <button type="button" class="btn btn-primary btn-sm" name="button" data-toggle="modal" data-target="#gospel_modal_list"><b>+</b></button>
             </div>
           </div>

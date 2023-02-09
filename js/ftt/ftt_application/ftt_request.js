@@ -241,7 +241,6 @@ $(document).ready(function(){
     $("#radio_point_will_be_two_years_0").parent().parent().parent().parent().parent().hide();
     $("#point_semester_pay").parent().parent().prev().prev().hide();
     $("#point_how_many_semesters").parent().parent().hide();
-    $("#point_how_many_explanation").parent().parent().hide();
   }
 
   function hide_for_candidate() {
@@ -1605,6 +1604,10 @@ $(document).ready(function(){
      }
    });
  }
+ if ($("#main_container").attr("data-guest") === "1") {
+   $("#point_how_many_explanation").parent().parent().show();
+ }
+
  // Новый бланк, указать ключ пользователя.
  if (!$("#point_member_key").attr("data-value") && !$("#main_container").attr("data-id")) {
    $("#point_member_key").attr("data-value", window.adminId);

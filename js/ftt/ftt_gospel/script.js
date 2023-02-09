@@ -42,7 +42,14 @@ function clear_blank() {
     data.set('fio_field', $('#fio_field').val());
     data.set('date_field', $('#date_field').val());
     data.set('gospel_group_field', $('#gospel_group_field').val());
-    data.set('group_members_field', $('#group_members_field').val());
+    let group_members_list = "";
+    $("#group_members_block input:checked").each(function () {
+      if (group_members_list) {
+        group_members_list += ",";
+      }
+       group_members_list += $(this).val();
+    });
+    data.set('group_members_field', group_members_list);
     data.set('number_field', $('#number_field').val());
     data.set('flyers_field', $('#flyers_field').val());
     data.set('people_field', $('#people_field').val());
@@ -306,7 +313,7 @@ $('#modalAddEdit .btn-secondary').click(function (e) {
   if (($('#fio_field').val() !== $("#modalAddEdit").attr("data-gospel_team") && $('#fio_field').val() !== '_none_') ||
     $('#date_field').val() !== $("#modalAddEdit").attr("data-date") ||
     ($('#gospel_group_field').val() !== $("#modalAddEdit").attr("data-gospel_group") && $('#gospel_group_field').val() !== '0') ||
-    $('#group_members_field').val() !== $("#modalAddEdit").attr("data-group_members") ||
+    /*$('#group_members_field').val() !== $("#modalAddEdit").attr("data-group_members") || НАСТРОИТЬ*/
     $('#number_field').val() !== $("#modalAddEdit").attr("data-number") ||
     $('#flyers_field').val() !== $("#modalAddEdit").attr("data-flyers") ||
     $('#people_field').val() !== $("#modalAddEdit").attr("data-people") ||
@@ -343,10 +350,10 @@ function get_gospel_group_members() {
           gospel_group_data_tmp = trainee_list[gospel_groups[i]['member_key']];
           if (gospel_group_data_tmp) {
             if (i_count > 0) {
-              gospel_group_data += ", ";
+              gospel_group_data += "<br>";
             }
             gospel_group_data_tmp = gospel_group_data_tmp.split(" ");
-            gospel_group_data += gospel_group_data_tmp[0]+" "+gospel_group_data_tmp[1][0]+". ";
+            gospel_group_data += '<label class="form-check-label"><input type="checkbox" class="mr-1" checked value="'+gospel_groups[i]['member_key']+'">'+gospel_group_data_tmp[0]+" "+gospel_group_data_tmp[1][0]+'.</label>';
             i_count++;
           }
         }
@@ -386,10 +393,9 @@ $('#showModalAddEdit').click(function () {
     $('#fio_field').val(serving_ones_list_full[admin_id_gl]['gospel_team']);
   }
 
-  $("#group_members_field").val(get_gospel_group_members());
-  $("#group_members_field_block").html(get_gospel_group_members());
+  $("#group_members_block").html(get_gospel_group_members());
   $('#info_of').hide();
-  $('#gospel_group_field').hide();
+  $('#group_members_block').html();
 });
 
 // удалить доп задание
@@ -514,7 +520,7 @@ $(".list_string").click(function () {
   $('#fio_field').val($(this).attr('data-gospel_team'));
   $('#date_field').val($(this).attr('data-date'));
   $('#gospel_group_field').val($(this).attr('data-gospel_group'));
-  $("#group_members_field").val(get_gospel_group_members());
+  $("#group_members_block").html(get_gospel_group_members());
 /*
   for (var i = 0; i < group_members.length; i++) {
     if (i > 0) {
@@ -524,8 +530,15 @@ $(".list_string").click(function () {
      list_group += trainee_list[group_members_one.trim()];
   }
 */
+  let group_members_list_render = $(this).attr('data-group_members');
+  group_members_list_render = group_members_list_render.split(",");
+  let group_members_list_html = "";
+  for (var i = 0; i < group_members_list_render.length; i++) {
+    group_members_list_html += '<label class="form-check-label"><input type="checkbox" class="mr-1" value="'+group_members_list_render[i].trim()+'" checked>'
+    +trainee_list[group_members_list_render[i].trim()]+'</label><br>';
+  }
 
-  $('#group_members_field').val($(this).attr('data-group_members'));
+  $('#group_members_block').html(group_members_list_html);
   $('#number_field').val($(this).attr('data-number'));
   $('#flyers_field').val($(this).attr('data-flyers'));
   $('#people_field').val($(this).attr('data-people'));
@@ -1092,19 +1105,19 @@ $("#gospel_group_field").change(function () {
         gospel_group_data_tmp = trainee_list[gospel_groups[i]['member_key']];
         if (gospel_group_data_tmp) {
           if (i_count > 0) {
-            gospel_group_data += ", ";
+            gospel_group_data += "<br>";
           }
           gospel_group_data_tmp = gospel_group_data_tmp.split(" ");
-          gospel_group_data += gospel_group_data_tmp[0]+" "+gospel_group_data_tmp[1][0]+".";
+          gospel_group_data += '<label class="form-check-label"> <input type="checkbox" class="mr-1" checked value="'+gospel_groups[i]['member_key']+'">'+gospel_group_data_tmp[0]+" "+gospel_group_data_tmp[1][0]+'.</label>';
           i_count++;
         }
       }
     }
   }
   if (gospel_group_data) {
-    $("#group_members_field").val(gospel_group_data);
+    $("#group_members_block").html(gospel_group_data);
   } else {
-    $("#group_members_field").val('');
+    $("#group_members_block").html('');
   }
 });
 // смена команды
@@ -1122,19 +1135,19 @@ $('#fio_field').change(function () {
         gospel_group_data_tmp = trainee_list[gospel_groups[i]['member_key']];
         if (gospel_group_data_tmp) {
           if (i_count > 0) {
-            gospel_group_data += ", ";
+            gospel_group_data += "<br>";
           }
           gospel_group_data_tmp = gospel_group_data_tmp.split(" ");
-          gospel_group_data += gospel_group_data_tmp[0]+" "+gospel_group_data_tmp[1][0]+".";
+          gospel_group_data += '<label class="form-check-label"> <input type="checkbox" class="mr-1" checked value="'+gospel_groups[i]['member_key']+'">'+gospel_group_data_tmp[0]+" "+gospel_group_data_tmp[1][0]+'.</label>';
           i_count++;
         }
       }
     }
   }
   if (gospel_group_data) {
-    $("#group_members_field").val(gospel_group_data);
+    $("#group_members_block").html(gospel_group_data);
   } else {
-    $("#group_members_field").val('');
+    $("#group_members_block").html('');
   }
 });
 
