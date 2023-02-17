@@ -508,7 +508,7 @@ $(document).ready(function(){
     let page = [];
     if (modal) {
       page["title"] = "<html lang='ru'><head><title>Контрольный список"+blank_text+"</title></head>";
-      page["style"] = "<style>th {border: 1px solid black; text-align: center; border-collapse: collapse; padding: 5px 0px;} table, td {border: 1px solid black; text-align: right; border-collapse: collapse;} .numpp {width: 30px; text-align: center;} .dates{width: 50px;} .fio{text-align: left; padding-left: 5px;} .age {text-align: center;} .bold{font-weight: bold;}</style>"; //" + $("#flt_members_localities option:selected").text() + "
+      page["style"] = "<style>th {border: 1px solid black; text-align: center; border-collapse: collapse; padding: 5px 0px;} table, td {border: 1px solid black; text-align: right; border-collapse: collapse;} .numpp {width: 30px; text-align: center;} .dates{width: 50px;} .fio{text-align: left; padding-left: 5px;} .age {text-align: center;} .bold{font-weight: bold;} .center{text-align: center;}</style>"; //" + $("#flt_members_localities option:selected").text() + "
       page["header"] = "<body><strong style='margin-left: 350px;'>КОНТРОЛЬНЫЙ СПИСОК ВИДЕООБУЧЕНИЯ</strong><br><br><span>Местность ______________________</span>"
       + "<span style='padding-left: 20px;'>Даты проведения обучения ___________________</span>"
       + "<span style='padding-left: 20px;'>Ответственный ___________________</span><br><br>";
@@ -564,10 +564,33 @@ $(document).ready(function(){
           } else {
             bold = "";
           }
+          let text_v = "";
+          let miss = ["","","","","","","","","","","","",""];
+          if ($(this).find(".vt_comment_field").val()) {
+            let temp = $(this).find(".vt_comment_field").val().trim();
+            temp = temp.slice(",");
+            if (!isNaN(temp[0])) {
+              text_v = 'V';
+              for (var i = 1; i <= 12; i++) {
+                if (temp.includes(i)) {
+                  miss[i] = "—";
+                } else {
+                  miss[i] = "";
+                }
+              }
+            }
+          }
 
           page["tbody"] += "<tr><td class='numpp'>" + (e + 1)
           + "</td><td class='fio " + bold + "'>" + fullNameToNoMiddleName($(this).find(".data_name").text())
-          + "</td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td></tr>";
+          + "</td><td class='dates'></td><td class='dates center'>"+ text_v
+          +"</td><td class='dates center'>"+miss[1]+"</td><td class='dates center'>"+miss[2]
+          +"</td><td class='dates center'"+miss[3]+"></td><td class='dates center'>"+miss[4]
+          +"</td><td class='dates center'>"+miss[5]+"</td><td class='dates center'>"+miss[6]
+          +"</td><td class='dates center'>"+miss[7]+"</td><td class='dates center'>"+miss[8]
+          +"</td><td class='dates center'>"+miss[9]+"</td><td class='dates center'>"+miss[10]
+          +"</td><td class='dates center'>"+miss[11]+"</td><td class='dates center'>"+miss[12]
+          +"</td></tr>";
         });
         for (let i = 0; i < count_empty_strings; i++) {
           page["tbody"] += "<tr><td class='numpp' style='height: 25px;'></td><td class='fio'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td></tr>";
