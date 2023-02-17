@@ -38,23 +38,6 @@
     </button>
   <?php // endif; ?>
   </div>-->
-
-  <div class="mr-2">
-    <div class="dropdown">
-      <button type="button" class="btn btn-light btn-sm rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-        <i class="fa fa-print"></i>
-        <i class="fa fa-caret-down" aria-hidden="true"></i>
-      </button>
-      <div class="dropdown-menu">
-        <button id="btnPrintOpenModal" class="dropdown-item" type="button">Таблица посещаемости</button>
-        <button id="btnPrintOpenModalBlank" class="dropdown-item" type="button">Таблица посещаемости (бланк)</button>
-        <button id="btnPrintOpenModalControlListVT" class="dropdown-item" type="button">Контрольный список ВО</button>
-        <button id="btnPrintOpenModalControlListVTBlank" class="dropdown-item" type="button">Контрольный список ВО (бланк)</button>
-        <button id="btnPrintOpenModalBadgesVT" class="dropdown-item" type="button">Значки для Видеообучения</button>
-        <button id="btnPrintOpenModalVT" class="dropdown-item" type="button">Список участников Видеообучения</button>
-      </div>
-    </div>
-  </div>
   <?php if (!$singleCity): ?>
   <div class="mr-2">
     <select id="flt_members_localities" class="form-control form-control-sm">
@@ -75,7 +58,7 @@
       FTT_Select_fields::rendering($memberCategoriesFilter, '_all_', 'Все участники'); ?>
     </select>
   </div>
-  <div class="">
+  <div class="mr-2">
   	<select id="flt_members_attend" class="form-control form-control-sm">
       <option value="_all_">Все участники</option>
   		<option value="1">Посещают Господню трапезу</option>
@@ -87,21 +70,38 @@
       <option value="0">Не посещают собрания</option>
   	</select>
   </div>
+  <div class="mr-2">
+    <div class="dropdown">
+      <button type="button" class="btn btn-light btn-sm rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+        <i class="fa fa-print"></i>
+        <i class="fa fa-caret-down" aria-hidden="true"></i>
+      </button>
+      <div class="dropdown-menu">
+        <button id="btnPrintOpenModal" class="dropdown-item" type="button">Таблица посещаемости</button>
+        <button id="btnPrintOpenModalBlank" class="dropdown-item" type="button">Таблица посещаемости (бланк)</button>
+        <button id="btnPrintOpenModalControlListVT" class="dropdown-item" type="button">Контрольный список ВО</button>
+        <button id="btnPrintOpenModalControlListVTBlank" class="dropdown-item" type="button">Контрольный список ВО (бланк)</button>
+        <button id="btnPrintOpenModalBadgesVT" class="dropdown-item" type="button">Значки для Видеообучения</button>
+        <button id="btnPrintOpenModalVT" class="dropdown-item" type="button">Список участников Видеообучения</button>
+      </div>
+    </div>
+  </div>
 </div>
 <div id="col_name" class="row mb-2">
   <div class="col-3 pl-1">
     <b class="sort_col" data-sort="name">ФИО <i class="<?php echo $sort_fio_ico; ?>"></i></b>
   </div>
   <?php if (!$singleCity): ?>
-  <div class="col-3">
+  <div class="col-2">
     <b class="sort_col" data-sort="locality">Город <i class="<?php echo $sort_locality_ico; ?>"></i></b>
   </div>
   <?php endif; ?>
-  <div class="col-1" title="Собрания Господней трапезы"><b>Т</b></div>
-  <div class="col-1" title="Молитвенные собрания" style="padding-left: 13px;"><b>М</b></div>
-  <div class="col-1" title="Групповые собрания" style="padding-left: 13px;"><b>Г</b></div>
-  <div class="col-1" title="Другие виды собраний" style="padding-left: 12px;"><b>Д</b></div>
-  <div class="col-1" title="Собрания видеообучения" style="padding-left: 10px;"><b>В</b></div>
+  <div class="col-1 m_width_check" title="Собрания Господней трапезы"><b>Т</b></div>
+  <div class="col-1 m_width_check" title="Молитвенные собрания" style="padding-left: 13px;"><b>М</b></div>
+  <div class="col-1 m_width_check" title="Групповые собрания" style="padding-left: 15px;"><b>Г</b></div>
+  <div class="col-1 m_width_check" title="Другие виды собраний" style="padding-left: 15px;"><b>Д</b></div>
+  <div class="col-1 m_width_check" title="Собрания видеообучения" style="padding-left: 15px;"><b>В</b></div>
+  <div class="col-1" title="Комментарий" style="min-width: 220px; padding-left: 10px;"><b>Коммент</b></div>
   <div class="col-1" style="padding-left: 10px;" title="Возраст">
     <b class="sort_col" data-sort="age">Возраст <i class="<?php echo $sort_birth_date_ico; ?>"></i></b>
   </div>
@@ -124,27 +124,33 @@
           <?php endif; ?>
         </div>
         <?php if (!$singleCity): ?>
-        <div class="col-3">
+        <div class="col-2">
           <?php echo $value->locality; ?>
         </div>
         <?php endif; ?>
-        <div class="col-1">
+        <div class="col-1 m_width_check">
           <input type="checkbox" data-field="attend_meeting" <?php if ($value->attend_meeting) echo 'checked'; ?>>
         </div>
-        <div class="col-1">
+        <div class="col-1 m_width_check">
           <input type="checkbox" data-field="attend_pm" <?php if ($value->attend_pm) echo 'checked'; ?>>
         </div>
-        <div class="col-1">
+        <div class="col-1 m_width_check">
           <input type="checkbox" data-field="attend_gm" <?php if ($value->attend_gm) echo 'checked'; ?>>
         </div>
-        <div class="col-1">
+        <div class="col-1 m_width_check">
           <input type="checkbox" data-field="attend_am" <?php if ($value->attend_am) echo 'checked'; ?>>
         </div>
-        <div class="col-1">
+        <div class="col-1 m_width_check">
           <input type="checkbox" data-field="attend_vt" <?php if ($value->attend_vt) echo 'checked'; ?>>
-          <i class="fa fa-comment pl-2" title="<?php echo $value->at_comment; ?> <?php if($value->editors) echo "Редактор ".short_name::short(Member::get_name($value->editors)); ?>"></i>
-          <textarea maxlength="25" type="text" class="form-control form-control-sm vt_comment_field" style="display: none;" data-field="comment" data-editors="<?php echo $value->editors; ?>"><?php echo $value->at_comment; ?></textarea>
         </div>
+        <div class="col-1 pl-1 pr-1" style="min-width: 220px;">
+          <i class="fa fa-comment pl-2" <?php if ($value->at_comment) echo "style='display: none;'"; ?>></i>
+          <input maxlength="25" type="text" class="form-control form-control-sm vt_comment_field"
+          value="<?php echo $value->at_comment; ?>"
+          title="<?php if($value->editors) echo "Редактор ".short_name::short(Member::get_name($value->editors)); ?>"
+          style="display: none;" data-field="comment" data-editors="<?php echo $value->editors; ?>">
+          <span class="vt_comment_text" <?php if (!$value->at_comment) echo "style='display: none;'"; ?>><?php echo $value->at_comment; ?></span>
+        </div> <!-- style="display: none;" -->
         <div class="col-1">
           <span class="data_age">
           <?php

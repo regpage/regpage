@@ -63,10 +63,37 @@ $(document).ready(function(){
   $(".attend_str .fa-comment").click(function(){
     if ($(this).parent().find(".vt_comment_field").is(":visible")) {
       $(this).parent().find(".vt_comment_field").hide();
+      $(this).show();
     } else {
       $(this).parent().find(".vt_comment_field").show();
+      $(this).hide();
     }
   });
+
+  $(".attend_str .vt_comment_text").click(function(){
+    if ($(this).parent().find(".vt_comment_field").is(":visible")) {
+      $(this).parent().find(".vt_comment_field").hide();
+      $(this).show();
+    } else {
+      $(this).parent().find(".vt_comment_field").show();
+      $(this).hide();
+    }
+  });
+  // list, comment
+  $(".vt_comment_field").keydown(function(e) {
+      if(e.keyCode === 13) {
+        e.preventDefault();
+        if ($(this).val()) {
+          $(this).hide();
+          $(this).next().text($(this).val());
+          $(this).next().show();
+        } else {
+          $(this).hide();
+          $(this).next().text($(this).val());
+          $(this).prev().show();
+        }
+      }
+    });
 
   // sorting
   $(".sort_col").click(function () {

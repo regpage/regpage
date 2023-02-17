@@ -9,7 +9,7 @@
   background-color: #eee;
 }
 
-.vt_comment_field {
-  /*min-width: 172px;
-  margin-left: 15px;  */
+.m_width_check {
+  max-width: 70px !important;
+  /*margin-left: 15px;  */
 }
