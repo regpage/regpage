@@ -16,13 +16,33 @@ if (!$adminId) {
 
 // Сохранение чекбокса
 if (isset($_GET['type']) && $_GET['type'] === 'change_checkbox') {
-    $db_data = new DbData('set', 'member');
+  $check='';
+  $condition_field = 'key';
+  if ($_GET['table'] === 'attendance') {
+    $condition_field = 'member_key';
+    $condition_value = $_GET['id'];
+    $res = db_query("SELECT DISTINCT `member_key` FROM `attendance` WHERE `{$condition_field}` = '{$condition_value}'");
+    while ($row = $res->fetch_assoc()) $check=$row['member_key'];
+  } else {
+    $check = 1;
+  }
+
+  if ($_GET['table'] === 'attendance' && !$check) {
+    $field = $_GET['field'];
+    $value = $_GET['value'];
+    $member_key = $_GET['id'];
+    $res = db_query("INSERT INTO `attendance` (`member_key`, `$field`) VALUES ('$member_key', '$value')");
+  } else {
+    $db_data = new DbData('set', $_GET['table']);
     $db_data->set('field', $_GET['field']);
     $db_data->set('value', $_GET['value']);
-    $db_data->set('condition_field', 'key');
+    $db_data->set('condition_field', $condition_field);
     $db_data->set('condition_value', $_GET['id']);
-    DbOperation::operation($db_data->get());
-    exit();
+    $res = DbOperation::operation($db_data->get());
+  }
+  //echo $res;
+  echo $check;
+  exit();
 }
 
 if (isset($_GET['type']) && $_GET['type'] === 'get_filters') {

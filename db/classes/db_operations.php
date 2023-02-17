@@ -20,6 +20,9 @@ class DbOperation {
     $condition_field = $db->real_escape_string(trim($data['condition_field']));
     $condition_value = $db->real_escape_string(trim($data['condition_value']));
     $order_by = $db->real_escape_string(trim($data['order_by']));
+    if ($order_by) {
+      $order_by = " ORDER BY ".$order_by;
+    }
     $changed = $db->real_escape_string(trim($data['changed']));
     $changed_field = '';
     $equal ='';
@@ -36,13 +39,13 @@ class DbOperation {
     } else {
       $changed = '';
     }
-    
+
     if ($operation === 'dlt') {
       $res = db_query("DELETE FROM `{$table}` WHERE `{$condition_field}` = {$condition_value}");
     } elseif ($operation === 'set') {
       $res = db_query("UPDATE `{$table}` SET `{$field}` = '{$value}' {$changed_field}{$equal}{$changed} WHERE `{$condition_field}` = '{$condition_value}'");
-    } elseif ($operation === 'get') {
-      $res = db_query("SELECT {$field} FROM {$table} WHERE {$condition_field} = '{$condition_value}' ORDER BY {$order_by}");
+    } elseif ($operation === 'get') {      
+      $res = db_query("SELECT {$field} FROM {$table} WHERE {$condition_field} = '{$condition_value}' {$order_by}");
     } elseif ($operation === 'insert') {
       $res = db_query("INSERT INTO `{$table}` (`{$field}` {$equal}{$changed_field}) VALUES ('$value' {$equal}{$changed})");
     }

@@ -2,17 +2,21 @@
 $(document).ready(function(){
   /* ==== DOCUMENT READY START ==== */
   $("#attend_list input[type='checkbox']").change(function () {
+    let table = "attendance";
+    if ($(this).attr("data-field") === "attend_meeting") {
+      table = "member";
+    }
+
     let value = 0;
     if ($(this).prop("checked")) {
       value = 1;
     }
     fetch("ajax/attend_ajax.php?type=change_checkbox&id="
-    + $(this).parent().parent().attr("data-member_key") + "&field=" + $(this).attr("data-field")
+    + $(this).parent().parent().attr("data-member_key") + "&table=" + table
+    + "&field=" + $(this).attr("data-field")
     + "&value=" + value)
-    .then(response => response.text())
-    .then(commits => {
-
-    });
+    /*.then(response => response.text())
+    .then(commits => );*/
   });
 
   // Выбор подраздела
