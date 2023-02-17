@@ -1,8 +1,10 @@
 /* ==== Attend START ==== */
 $(document).ready(function(){
   /* ==== DOCUMENT READY START ==== */
+  // save checkbox
   $("#attend_list input[type='checkbox']").change(function () {
     let table = "attendance";
+    let key = $(this).parent().parent().attr("data-member_key");
     if ($(this).attr("data-field") === "attend_meeting") {
       table = "member";
     }
@@ -12,11 +14,37 @@ $(document).ready(function(){
       value = 1;
     }
     fetch("ajax/attend_ajax.php?type=change_checkbox&id="
-    + $(this).parent().parent().attr("data-member_key") + "&table=" + table
+    + key + "&table=" + table
     + "&field=" + $(this).attr("data-field")
     + "&value=" + value)
     /*.then(response => response.text())
     .then(commits => );*/
+    // записываем текущего редактора
+    setTimeout(function () {
+      fetch("ajax/attend_ajax.php?type=change_checkbox&id="
+      + key + "&table=attendance&field=editors"
+      + "&value=" + window.adminId)
+      /*.then(response => response.text())
+      .then(commits => );*/
+    }, 10);
+  });
+  // save text
+  $(".vt_comment_field").change(function () {
+    let key = $(this).parent().parent().attr("data-member_key");
+    fetch("ajax/attend_ajax.php?type=change_checkbox&id="
+    + key + "&table=attendance&field="
+    + $(this).attr("data-field") + "&value=" + $(this).val())
+    $(this).parent().find("i").attr("title", $(this).val());
+    /*.then(response => response.text())
+    .then(commits => );*/
+    // записываем текущего редактора
+    setTimeout(function () {
+      fetch("ajax/attend_ajax.php?type=change_checkbox&id="
+      + key + "&table=attendance&field=editors"
+      + "&value=" + window.adminId)
+      /*.then(response => response.text())
+      .then(commits => );*/
+    }, 10);
   });
 
   // Выбор подраздела
@@ -29,6 +57,15 @@ $(document).ready(function(){
           case 'activity': window.location = '/activity'; break;
           case 'attend': window.location = '/attend'; break;
       }
+  });
+
+  // string
+  $(".attend_str .fa-comment").click(function(){
+    if ($(this).parent().find(".vt_comment_field").is(":visible")) {
+      $(this).parent().find(".vt_comment_field").hide();
+    } else {
+      $(this).parent().find(".vt_comment_field").show();
+    }
   });
 
   // sorting

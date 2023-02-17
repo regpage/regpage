@@ -20,8 +20,8 @@ class short_name {
   static function short($fio) {
     $pieces = explode(" ", $fio);
     if (isset($pieces[1])) {
-      $name = $pieces[1];
-      return $pieces[0].' '.$name[0].'. ';
+      $name = iconv_substr($pieces[1], 0, 1, 'UTF-8');
+      return $pieces[0].' '.$name.'. ';
     } else {
       return $fio;
     }
@@ -31,12 +31,12 @@ class short_name {
   static function short_n_p($fio) {
     $pieces = explode(" ", $fio);
     if (isset($pieces[2])) {
-      $name = $pieces[1];
-      $patro = $pieces[2];
-      return $pieces[0].' '.$name[0].'. '.$patro[0].'. ';
+      $name = iconv_substr($pieces[1], 0, 1, 'UTF-8');
+      $patro = iconv_substr($pieces[2], 0, 1, 'UTF-8');
+      return $pieces[0].' '.$name.'. '.$patro.'. ';
     } else if (isset($pieces[1])) {
-      $name = $pieces[1];
-      return $pieces[0].' '.$name[0].'. ';
+      $name = iconv_substr($pieces[1], 0, 1, 'UTF-8');
+      return $pieces[0].' '.$name.'. ';
     } else {
       return $fio;
     }

@@ -3,8 +3,10 @@
 // components
 // db
 require_once 'db/classes/members.php';
+require_once 'db/classes/member.php';
 require_once 'db/classes/localities.php';
 require_once 'db/classes/settings.php';
+require_once 'db/classes/short_name.php';
 
 // Sorting
 $sort_fio_ico = '';

@@ -142,6 +142,8 @@
         </div>
         <div class="col-1">
           <input type="checkbox" data-field="attend_vt" <?php if ($value->attend_vt) echo 'checked'; ?>>
+          <i class="fa fa-comment pl-2" title="<?php echo $value->at_comment; ?> <?php if($value->editors) echo "Редактор ".short_name::short(Member::get_name($value->editors)); ?>"></i>
+          <textarea maxlength="25" type="text" class="form-control form-control-sm vt_comment_field" style="display: none;" data-field="comment" data-editors="<?php echo $value->editors; ?>"><?php echo $value->at_comment; ?></textarea>
         </div>
         <div class="col-1">
           <span class="data_age">

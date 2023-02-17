@@ -8,3 +8,8 @@
 .attend_str:hover {
   background-color: #eee;
 }
+
+.vt_comment_field {
+  /*min-width: 172px;
+  margin-left: 15px;  */
+}

@@ -5,6 +5,14 @@
 class Member
 {
 
+  function get_name ($memberId)
+  {
+      global $db;
+      $memberId = $db->real_escape_string($memberId);
+      $res=db_query ("SELECT name FROM member WHERE `key`='$memberId'");
+      $row = $res->fetch_assoc();
+      return $row ? $row['name'] : '';
+  }
   static function get_data($member_key)
   {
     global $db;
