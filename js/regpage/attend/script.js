@@ -398,7 +398,11 @@ $(document).ready(function(){
   });
 
   // Контрольный список ВО
-  $("#btnPrintOpenModalControlListVT, #btnPrintOpenModalControlListVTBlank, #btnPrintOpenModalVT").click(function (e) {
+  $("#btnPrintOpenModalControlListVT").click(function () {
+    $("#modalEmptyStrsVT").modal("show");
+  });
+
+  $("#setEmptyStrsVT, #btnPrintOpenModalControlListVTBlank, #btnPrintOpenModalVT").click(function (e) {
     let filter_vt = $("#flt_members_attend").val();
     if (filter_vt !== "6") {
       $("#flt_members_attend").val("6");
@@ -438,6 +442,14 @@ $(document).ready(function(){
 
   // badge
   $("#btnPrintOpenModalBadgesVT").click(function () {
+    $("#modalTopicVT").modal("show");
+  });
+
+  $("#setTopicVTMdl").click(function () {
+    if (!$("#textTopicVTMdl").val().trim()) {
+      showError("Тема не указана.");
+      return;
+    }
     let filter_vt = $("#flt_members_attend").val();
     if (filter_vt !== "6") {
       $("#flt_members_attend").val("6");
@@ -462,8 +474,8 @@ $(document).ready(function(){
         filtersOfString();
       }
     }, 20);
+    $("#modalTopicVT").modal("hide");
   });
-
   // --- PRINT LIST functions --- //
   // Таблица посещаемости
   function print_badges(modal, blank) {
@@ -492,11 +504,8 @@ $(document).ready(function(){
       let counter_x = 0;
       if (!blank) {
         let topic;
-        topic = prompt("Введите тему обучения");
-        if (!topic) {
-          showError("Тема не указана.");
-          return;
-        }
+        topic = $("#textTopicVTMdl").val();
+        $("#textTopicVTMdl").val("");
         $(selectors).each(function (e) {
           counter_x = e;
           let name = $(this).find(".data_name").text().trim();
@@ -677,10 +686,11 @@ $(document).ready(function(){
         selectors = "#attend_list .attend_str:visible";
       }
       if (!blank) {
-        let count_empty_strings = prompt("Сколько добавить пустых строк?", 10);
+        let count_empty_strings = $("#textEmptyStrsVT").val();
         if (isNaN(count_empty_strings)) {
           count_empty_strings = 0;
         }
+        $("#textEmptyStrsVT").val(10)
         $(selectors).each(function (e) {
           if ($(this).find(".data_age").text() && $(this).find(".data_age").text() !== "null"
           && !isNaN($(this).find(".data_age").text())) {

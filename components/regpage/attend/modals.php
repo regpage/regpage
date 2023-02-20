@@ -6,7 +6,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5>Фильтры</h5>
+        <h5 class="mb-0">Фильтры</h5>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
       </div>
       <div class="modal-body">
@@ -33,7 +33,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h3></h3>
+        <h5 class="mb-0"></h5>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
       </div>
       <div class="modal-body">
@@ -54,14 +54,14 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h3>Подтверждение удаления фильтра</h3>
+        <h5 class="mb-0">Подтверждение удаления фильтра</h5>
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
       </div>
       <div class="modal-body">
       </div>
       <div class="modal-footer">
-        <button class="btn btn-danger remove_filter_confirm" data-dismiss="modal" aria-hidden="true">Подтвердить</button>
-        <button class="btn" data-dismiss="modal" aria-hidden="true">Отмена</button>
+        <button class="btn btn-danger remove_filter_confirm btn-sm" data-dismiss="modal" aria-hidden="true">Подтвердить</button>
+        <button class="btn btn-secondary btn-sm" data-dismiss="modal" aria-hidden="true">Отмена</button>
       </div>
     </div>
   </div>
@@ -72,8 +72,8 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
+        <h5 class="mb-0"></h5>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-        <h3></h3>
       </div>
       <div class="modal-body">
         <div id="show_print_list">
@@ -81,8 +81,50 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button id="printListButton" class="btn btn-success" data-dismiss="modal" aria-hidden="true">Печать</button>
-        <button class="btn" data-dismiss="modal" aria-hidden="true">Закрыть</button>
+        <button id="printListButton" class="btn btn-success btn-sm" data-dismiss="modal" aria-hidden="true">Печать</button>
+        <button class="btn btn-secondary btn-sm" data-dismiss="modal" aria-hidden="true">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Print topic for videotraining -->
+<div id="modalTopicVT" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="mb-0">Введите тему Видеообучения</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <input type="text" id="textTopicVTMdl" class="form-control form-control-sm">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="setTopicVTMdl" class="btn btn-success btn-sm" aria-hidden="true">Сохранить</button>
+        <button class="btn btn-secondary btn-sm" data-dismiss="modal" aria-hidden="true">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Print topic for videotraining -->
+<div id="modalEmptyStrsVT" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="mb-0">Сколько добавить пустых строк?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <input type="text" id="textEmptyStrsVT" class="form-control form-control-sm" value="10">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="setEmptyStrsVT" class="btn btn-success btn-sm" data-dismiss="modal" aria-hidden="true">Сохранить</button>
+        <button class="btn btn-secondary btn-sm" data-dismiss="modal" aria-hidden="true">Закрыть</button>
       </div>
     </div>
   </div>
