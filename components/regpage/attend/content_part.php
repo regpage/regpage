@@ -101,7 +101,7 @@
   <div class="col-1 m_width_check" title="Групповые собрания" style="padding-left: 15px;"><b>Г</b></div>
   <div class="col-1 m_width_check" title="Другие виды собраний" style="padding-left: 15px;"><b>Д</b></div>
   <div class="col-1 m_width_check" title="Собрания видеообучения" style="padding-left: 15px;"><b>В</b></div>
-  <div class="col-1" title="Комментарий" style="min-width: 220px; padding-left: 10px;"><b>Коммент</b></div>
+  <div class="col-1" title="Комментарий к видеообучению" style="min-width: 220px; padding-left: 10px;"><b>Комментарий</b></div>
   <div class="col-1" style="padding-left: 10px;" title="Возраст">
     <b class="sort_col" data-sort="age">Возраст <i class="<?php echo $sort_birth_date_ico; ?>"></i></b>
   </div>
@@ -144,12 +144,11 @@
           <input type="checkbox" data-field="attend_vt" <?php if ($value->attend_vt) echo 'checked'; ?>>
         </div>
         <div class="col-1 pl-1 pr-1" style="min-width: 220px;">
-          <i class="fa fa-comment pl-2" <?php if ($value->at_comment) echo "style='display: none;'"; ?>></i>
           <input maxlength="25" type="text" class="form-control form-control-sm vt_comment_field"
           value="<?php echo $value->at_comment; ?>"
           title="<?php if($value->editors) echo "Редактор ".short_name::short(Member::get_name($value->editors)); ?>"
           style="display: none;" data-field="comment" data-editors="<?php echo $value->editors; ?>">
-          <span class="vt_comment_text" <?php if (!$value->at_comment) echo "style='display: none;'"; ?>><?php echo $value->at_comment; ?></span>
+          <span class="vt_comment_text" style="display: inline-block; width: 100%; height: 100%;"><?php echo $value->at_comment; ?></span>
         </div> <!-- style="display: none;" -->
         <div class="col-1">
           <span class="data_age">

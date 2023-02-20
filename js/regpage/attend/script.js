@@ -60,6 +60,7 @@ $(document).ready(function(){
   });
 
   // string
+  /*
   $(".attend_str .fa-comment").click(function(){
     if ($(this).parent().find(".vt_comment_field").is(":visible")) {
       $(this).parent().find(".vt_comment_field").hide();
@@ -69,32 +70,38 @@ $(document).ready(function(){
       $(this).hide();
     }
   });
-
+*/
   $(".attend_str .vt_comment_text").click(function(){
     if ($(this).parent().find(".vt_comment_field").is(":visible")) {
       $(this).parent().find(".vt_comment_field").hide();
       $(this).show();
     } else {
-      $(this).parent().find(".vt_comment_field").show();
+      $(".attend_str .vt_comment_text").show();
+      $(".attend_str .vt_comment_field").hide();
       $(this).hide();
+      $(this).parent().find(".vt_comment_field").show();
+      $(this).parent().find(".vt_comment_field").focus();
     }
   });
   // list, comment
   $(".vt_comment_field").keydown(function(e) {
       if(e.keyCode === 13) {
         e.preventDefault();
-        if ($(this).val()) {
-          $(this).hide();
-          $(this).next().text($(this).val());
-          $(this).next().show();
-        } else {
-          $(this).hide();
-          $(this).next().text($(this).val());
-          $(this).prev().show();
-        }
+        $(this).next().text($(this).val());
+        $(this).hide();
+        $(this).next().show();
+      } else if (e.keyCode === 27) {
+        e.preventDefault();
+        $(this).val($(this).next().text());
+        $(this).hide();
+        $(this).next().show();
       }
     });
-
+    $(".attend_str .vt_comment_field").focusout(function () {
+      $(this).next().text($(this).val());
+      $(this).hide();
+      $(this).next().show();
+    });
   // sorting
   $(".sort_col").click(function () {
     if ($(this).find("i").hasClass("fa-sort-desc")) {
