@@ -62,6 +62,7 @@ $(document).ready(function(){
       }
     });
   } else { // desktop version
+    $("#main_container").css("padding-top", "10px");
     $("#accordionExample .card-header").css("padding-top", "0px");
     $("#accordionExample .card-header").css("padding-bottom", "0px");
     //5-6

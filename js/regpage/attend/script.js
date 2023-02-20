@@ -143,7 +143,7 @@ $(document).ready(function(){
     $("#attend_list .attend_str").each(function () {
       // Search text
       if (text.length > 2) {
-        fio = $(this).findfilters('.data_name').text().trim();
+        fio = $(this).find('.data_name').text().trim();
         searchResult = true;
         if (fio.toLowerCase().indexOf(String(text.toLowerCase())) === -1) {
           searchResult = false;
@@ -429,7 +429,103 @@ $(document).ready(function(){
     }, 20);
   });
 
+  // badge
+  $("#btnPrintOpenModalBadgesVT").click(function () {
+    let filter_vt = $("#flt_members_attend").val();
+    if (filter_vt !== "6") {
+      $("#flt_members_attend").val("6");
+      filtersOfString();
+    }
+    setTimeout(function () {
+      let data;
+      data = print_badges();
+      if (data.tbody === "</tbody>") {
+        showError("Ошибка. В списке посещаемости нет отметок в колонке «В».");
+        return;
+      }
+      $("#show_print_list").html(data["thead"] + data["tbody"]);
+      // В мобильной версии можно предоставлять окно с результатом для дальнейшей печати или выгрузки
+      // ???
+      print_page("#show_print_list", true, "badges");
+
+    }, 10);
+    setTimeout(function () {
+      if (filter_vt !== "6") {
+        $("#flt_members_attend").val(filter_vt);
+        filtersOfString();
+      }
+    }, 20);
+  });
+
   // --- PRINT LIST functions --- //
+  // Таблица посещаемости
+  function print_badges(modal, blank) {
+    let page = [];
+    let blank_text = "";
+    if (blank) {
+      blank_text = " (бланк)";
+    }
+    if (modal) {
+      page["title"] = "<html lang='ru'><head><title>Значки для видеообучения"+blank_text+"</title></head>";
+      page["style"] = "<style>table, tr, td{border-collapse: collapse;}"
+      +" td{border: 1px dashed gray; width: 330px; background: url('img/lsm-logo-g2.png') no-repeat; background-size: 150px 150px; background-position: 50% 75%; text-align: center; vertical-align: top; height: 190px !important;}"
+      +" hr{border-color: black; border-width: 2px;}"
+      +"p {padding: 5px;}</style>";
+      page["header"] = "<body style='margin-top: 0px; margin-bottom: 0px'>";
+      page["thead"] = "<table>";
+      page["end"] = "";
+    } else {
+      page["tbody"] = "<tbody>";
+      let age, bold, selectors;
+      if ($(window).width()<=769) {
+        selectors = "#attend_list .attend_str:visible";
+      } else {
+        selectors = "#attend_list .attend_str:visible";
+      }
+      let counter_x = 0;
+      if (!blank) {
+        let topic;
+        topic = prompt("Введите тему обучения");
+        if (!topic) {
+          showError("Тема не указана.");
+          return;
+        }
+        $(selectors).each(function (e) {
+          counter_x = e;
+          let name = $(this).find(".data_name").text().trim();
+          let page_break;
+          name = name.split(" ");
+          if (e % 10 === 0 && e !== 0) {
+            page_break = 'style="page-break-before: always"';
+          } else {
+            page_break = '';
+          }
+          if (e % 2 === 0 || e === 0) {
+            page["tbody"] += '<tr '+page_break+'><td><h1 style="margin-bottom: 0px; margin-top: 10px;">ВИДЕООБУЧЕНИЕ</h1><hr>'
+            +'<h4 style="margin-bottom: 0px; margin-top: 20px;">' + name[0]
+            + '</h4><h1 style="margin-bottom: 0px;  margin-top: 5px;">' + name[1]
+            + '</h1><p>«' + topic + '»‎</p></td>';
+          } else {
+            page["tbody"] += '<td><h1 style="margin-bottom: 0px; margin-top: 10px;">ВИДЕООБУЧЕНИЕ</h1><hr>'
+            +'<h4 style="margin-bottom: 0px; margin-top: 20px;">' + name[0]
+            + '</h4><h1 style="margin-bottom: 0px;  margin-top: 5px;">' + name[1]
+            + '</h1><p>«‎' + topic + '»‎</p></td></tr>';
+          }
+        });
+      } else {
+        for (var i = 0; i < 33; i++) {
+          page["tbody"] += "<tr><td></td><td></td></tr>";
+        }
+      }
+      if (counter_x % 2 !== 0 || counter_x == 0) {
+        page["tbody"] += "</tbody>";
+      } else {
+        page["tbody"] += "</tr></tbody>";
+      }
+    }
+    return page;
+  }
+
   // Таблица посещаемости
   function print_rendering_elements(modal, blank) {
     let page = [];
@@ -444,7 +540,7 @@ $(document).ready(function(){
       page["thead"] = "<table><thead><tr><th class='numpp'>№</th><th>ФИО</th><th class='dates'>Возр.</th><th class='dates'></th><th class='dates'></th><th class='dates'></th><th class='dates'></th><th class='dates'></th><th class='dates'></th></tr></thead>";
       page["end"] = "<tr><td colspan='3' style='text-align: right; height: 30px; padding-right: 15px;'><b>ГОСТЕЙ</b></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td colspan='3' style='text-align: right; height: 30px; padding-right: 15px;'><b>ВСЕГО</b></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td colspan='3' style='text-align: right; height: 30px; padding-right: 15px;'><b>ФУНКЦ.</b></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table></body></html>";
     } else {
-      page["tbody"] = "";
+      page["tbody"] = "<tbody>";
       let age, bold, selectors;
       if ($(window).width()<=769) {
         selectors = "#attend_list .attend_str:visible";
@@ -466,13 +562,13 @@ $(document).ready(function(){
             bold = "";
           }
 
-          page["tbody"] += "<tbody><tr><td class='numpp'>" + (e + 1)
+          page["tbody"] += "<tr><td class='numpp'>" + (e + 1)
           + "</td><td class='fio " + bold + "'>" + $(this).find(".data_name").text()
           + "</td><td class='dates age'>" + age + "</td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td></tr>";
         });
       } else {
         for (var i = 0; i < 33; i++) {
-          page["tbody"] += "<tbody><tr><td class='numpp' style='height: 25px;'></td><td class='fio' style='width: 400px;'></td><td class='dates age'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td></tr>";
+          page["tbody"] += "<tr><td class='numpp' style='height: 25px;'></td><td class='fio' style='width: 400px;'></td><td class='dates age'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td><td class='dates'></td></tr>";
         }
       }
       page["tbody"] += "</tbody>";
@@ -645,6 +741,9 @@ $(document).ready(function(){
       } else if (type === "vt_list") {
         html = print_rendering_elements_vt_list(true);
         mywindow = window.open('', 'Список ВО', 'height=800,width=1000');
+      } else if (type === "badges") {
+        html = print_badges(true);
+        mywindow = window.open('', 'Значки', 'height=1000,width=800');
       } else if (type === "blank") {
         html = print_rendering_elements(true, true);
         mywindow = window.open('', 'Таблица посещаемости (бланк)', 'height=800,width=1000');

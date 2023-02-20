@@ -1,7 +1,7 @@
 <div id="ftt_schedule_container" class="container" style="background-color: white; padding: 0px;">
   <div class="row">
   <div id="ftt_schedule_list" class="col-6">
-    <select id="time_zone_select" class="col-3 form-control form-control-sm mb-2 mt-2">
+    <select id="time_zone_select" style="margin-bottom: 10px;" class="col-3 form-control form-control-sm">
       <?php foreach (extra_lists::get_schedule_zones() as $key => $value):
         $selected = '';
         if ($key === $time_zone_list) {
