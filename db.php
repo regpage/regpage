@@ -9,7 +9,6 @@ define ('MEMBER_TYPE',"member");
 require_once 'config.php';
 include_once 'utils.php';
 include_once 'db2.php';
-//include_once 'extensions/write_to_log/write_to_log.php';
 
 function db_checkSync () {
     $res=db_query ("SELECT value FROM param WHERE name='sync_started'");

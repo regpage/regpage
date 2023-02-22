@@ -60,6 +60,7 @@ $(document).ready(function(){
         $(this).prev().prev().html($(this).prev().prev().text() + ' <i class="fa fa-sticky-note" aria-hidden="true"></i>');
         $(this).parent().tooltip();
       }
+      $("#main_container").css("padding-top", "10px");
     });
   } else { // desktop version
     $("#main_container").css("padding-top", "10px");

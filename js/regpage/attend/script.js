@@ -487,10 +487,10 @@ $(document).ready(function(){
     if (modal) {
       page["title"] = "<html lang='ru'><head><title>Значки для видеообучения"+blank_text+"</title></head>";
       page["style"] = "<style>table, tr, td{border-collapse: collapse;}"
-      +" td{border: 1px dashed gray; width: 330px; background: url('img/lsm-logo-g2.png') no-repeat; background-size: 150px 150px; background-position: 50% 75%; text-align: center; vertical-align: top; height: 190px !important;}"
+      +" td{border: 1px dashed gray; background: url('img/lsm-logo-g2.png') no-repeat; background-size: 160px 160px; background-position: 50% 100%; text-align: center; vertical-align: top;}"
       +" hr{border-color: black; border-width: 2px;}"
       +"p {padding: 5px;}</style>";
-      page["header"] = "<body style='margin-top: 0px; margin-bottom: 0px'>";
+      page["header"] = "<body style='margin-top: 0px; margin-bottom: 0px;'>";
       page["thead"] = "<table>";
       page["end"] = "";
     } else {
@@ -517,15 +517,15 @@ $(document).ready(function(){
             page_break = '';
           }
           if (e % 2 === 0 || e === 0) {
-            page["tbody"] += '<tr '+page_break+'><td><h1 style="margin-bottom: 0px; margin-top: 10px;">ВИДЕООБУЧЕНИЕ</h1><hr>'
-            +'<h4 style="margin-bottom: 0px; margin-top: 20px;">' + name[0]
+            page["tbody"] += '<tr '+page_break+'><td><div style="min-height: 200px !important; max-height: 200px !important; max-width: 330px !important; min-width: 330px !important; overflow:hidden;"><h2 style="margin-bottom: 0px; margin-top: 6px;">ВИДЕООБУЧЕНИЕ</h2><hr style="margin-top: 4px;">'
+            +'<h4 style="margin-bottom: 0px; margin-top: 15px;">' + name[0]
             + '</h4><h1 style="margin-bottom: 0px;  margin-top: 5px;">' + name[1]
-            + '</h1><p>«' + topic + '»‎</p></td>';
+            + '</h1><p style="margin-bottom: 0px;  margin-top: 8px;">«' + topic + '»‎</p></div></td>';
           } else {
-            page["tbody"] += '<td><h1 style="margin-bottom: 0px; margin-top: 10px;">ВИДЕООБУЧЕНИЕ</h1><hr>'
-            +'<h4 style="margin-bottom: 0px; margin-top: 20px;">' + name[0]
+            page["tbody"] += '<td><div style="min-height: 200px !important; max-height: 200px !important; max-width: 330px !important; min-width: 330px !important; overflow:hidden;"><h2 style="margin-bottom: 0px; margin-top: 6px;">ВИДЕООБУЧЕНИЕ</h2><hr style="margin-top: 4px;">'
+            +'<h4 style="margin-bottom: 0px; margin-top: 15px;">' + name[0]
             + '</h4><h1 style="margin-bottom: 0px;  margin-top: 5px;">' + name[1]
-            + '</h1><p>«‎' + topic + '»‎</p></td></tr>';
+            + '</h1><p style="margin-bottom: 0px;  margin-top: 8px;">«‎' + topic + '»‎</p></div></td></tr>';
           }
         });
       } else {
