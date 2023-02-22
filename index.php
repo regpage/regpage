@@ -96,21 +96,40 @@ else if (isset ($_SESSION["logged-in"])){
           <div class="">
             <div class="" style="">
               <p style="margin-top: 8px; margin-bottom: 0px; margin-left: 2px;">
-                <span><a class="ftt_menu_a" href="ftt_schedule">Расписание</a></span>
-                <span><a class="ftt_menu_a" href="ftt_announcement">Объявления</a></span>
-                <span><a class="ftt_menu_a" href="ftt_attendance">Посещаемость</a></span>
-                <span><a class="ftt_menu_a" href="ftt_service">Служение</a></span>
-                <span><a class="ftt_menu_a" href="ftt_gospel">Благовестие</a></span>
-                <span><a class="ftt_menu_a" href="contacts">Контакты</a></span>
+                <!--
+                <span class="ftt_menu_a ftt_menu_s" data-link="ftt_schedule">Расписание</span>
+                <span class="ftt_menu_a ftt_menu_s" data-link="ftt_announcement" >Объявления</span>
+                <span class="ftt_menu_a ftt_menu_s" data-link="ftt_attendance">Посещаемость</span>
+                <span class="ftt_menu_a ftt_menu_s" data-link="ftt_service">Служение</span>
+                <span class="ftt_menu_a ftt_menu_s" data-link="ftt_gospel">Благовестие</span>
+                <span class="ftt_menu_a ftt_menu_s" data-link="contacts">Контакты</span>
+                <span class="ftt_menu_a ftt_menu_s" data-link="ftt_extrahelp">Доп. задания</span>
+                <span class="ftt_menu_a ftt_menu_s" data-link="ftt_application">Заявления</span>
+               https://test.new-constellation.ru/-->
+
+
+                <span><a class="ftt_menu_a" href="/ftt_schedule.php">Расписание</a></span>
+                <span><a class="ftt_menu_a" href="/ftt_announcement.php">Объявления</a></span>
+                <span><a class="ftt_menu_a" href="/ftt_attendance.php">Посещаемость</a></span>
+                <span><a class="ftt_menu_a" href="/ftt_service">Служение</a></span>
+                <span><a class="ftt_menu_a" href="/ftt_gospel.php">Благовестие</a></span>
+                <span><a class="ftt_menu_a" href="/contacts.php">Контакты</a></span>
                 <!--<span><a class="ftt_menu_a" href="ftt_absence">Отсутствие</a></span>-->
-                <span><a class="ftt_menu_a" href="ftt_extrahelp">Доп. задания<?php echo "<sup style='color: red;'><b>{$extra_help_count}</b></sup>"; ?></a></span>
+                <span><a class="ftt_menu_a" href="/ftt_extrahelp.php">Доп. задания<?php echo "<sup style='color: red;'><b>{$extra_help_count}</b></sup>"; ?></a></span>
               <?php if ($ftt_access['group'] === 'staff') { ?>
-                <span><a class="ftt_menu_a" href="ftt_application">Заявления</a></span>
+                <span><a class="ftt_menu_a" href="/ftt_application.php">Заявления</a></span>
               <?php }?>
               </p>
             </div>
         </div>
       </div>
+      <script>
+      /*
+      $("#ftt_trainee_block .ftt_menu_s").click(function () {
+        let href_tmp = "https://reg-page.ru/"+ $(this).attr("data-link") +".php"
+        window.location.href = href_tmp;
+      });*/
+      </script>
       <?php endif; ?>
       <?php
       $not_for_show = '';

@@ -56,14 +56,14 @@ if ($ftt_access['group'] === 'trainee') {
       <!-- Меню разделов -->
       <ul class="nav" role="tablist" style="margin: 0px;">
         <?php foreach ($ftt_devisions as $key => $value):
-          if ($_SERVER['REQUEST_URI'] === '/'.$key) {
+          if ($_SERVER['REQUEST_URI'] === '/'.$key || $_SERVER['PHP_SELF'] === '/'.$key.'.php') {
             $class_btn = 'active mark_menu_item';
           } else {
             $class_btn = '';
           }
           ?>
           <li class="nav-item">
-            <a class="nav-link <?php echo $class_btn ?>" href="<?php echo $key ?>"><?php echo $value ?></a>
+            <a class="nav-link <?php echo $class_btn ?>" href="<?php echo '/'.$key ?>"><?php echo $value ?></a>
           </li>
         <?php endforeach; ?>
       </ul>

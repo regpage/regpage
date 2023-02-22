@@ -1,31 +1,35 @@
 <?php
 /* настройки */
 header('Content-Type: text/html; charset=utf-8');
-/* переадресации */
-if ($_SERVER['REQUEST_URI'] === '/os') {
-  header("Location: https://slovozaboty.ru/os/"); // redirect to
-} elseif ($_SERVER['REQUEST_URI'] === '/mc') {
-  header("Location: https://slovozaboty.ru/mc/"); // redirect to
-}
-//Redirect to service page like SORRY THE WEBSIE NOT AVAILABLE........
-//header("Location: /attention.html"); // redirect to service page
-// нет необходимости подключать библиотеки майлера и некоторые утилиты подключаемые в db.php в новых разделах
-/* подключение необходимых функций и конфигов */
-// Подключаем основной файл с запросами к бд
 
-include_once "db.php";
+/* переадресации */
+// Redirect to service page like SORRY THE WEBSIE NOT AVAILABLE........
+// header("Location: /attention.html"); // redirect to service page
+// нет необходимости подключать библиотеки майлера и некоторые утилиты подключаемые в db.php в новых разделах
+
 // START COOKIES
 ini_set('session.cookie_lifetime', 60 * 60 * 24 * 365);  // 365 day cookie lifetime
 // STOP COOKIES
 session_start();
 
+// logs
+include_once 'extensions/write_to_log/write_to_log.php';
+// подключение необходимых функций и конфигов
+include_once "db.php";
 // if (!isset($isGuest)) { // лишнее условие, эта переменная выше не объявляется.
 /* авторизация на сайте */
 // получаем админа по сессии
 $memberId = db_getMemberIdBySessionId (session_id());
+
+// security
+if (!isset($_COOKIE['PHPSESSID']) && !isset($_SERVER['HTTP_USER_AGENT'])) {
+  write_to_log::debug($memberId, session_id());
+  write_to_log::debug($memberId, 'PHPSESSID & HTTP_USER_AGENT missing');
+  exit;
+}
+
 // можно записать сессию в кукки и если сессия была сегодня то пропускать обращение к бд для записи даты последнего визита
 $memberId ? db_lastVisitTimeUpdate(session_id()) : '';
-
 /* пути */
 // переменная из config.php
 global $appRootPath;
@@ -39,12 +43,15 @@ $thispage = explode('.', substr($_SERVER['PHP_SELF'], 1))[0];
 /* ВСЕ ПРАВИЛА ДОСТУПА ДОЛЖНЫ БЫТЬ ПЕРЕНЕСЕНЫ СЮДА */
 // это раздел ПВОМ?
 $isFttPage = explode('_', $_SERVER['PHP_SELF'])[0];
+
 if ($isFttPage === '/ftt') {
   $isFttPage = true;
 } else {
   $isFttPage = false;
 }
+
 define("IS_FTT", $isFttPage);
+
 // Бланки по ссылке. Эта проверка перенесена в index.php
 /* if ((!$memberId && isset ($_GET["link"])) || (!$memberId && isset ($_GET["invited"]))){
 } else*/
@@ -87,6 +94,7 @@ if(strlen($_SERVER['REQUEST_URI']) == 3){
     header("Location: ".$appRootPath);
   	exit;
 }
+
 /*Раздел ftt_reports.php не используется сейчас*/
 /*
 Убран потому что даёт доступ только админам шаблонов собраний
@@ -103,13 +111,13 @@ $admin_data = get_admin_data::data($memberId);
 
 // правило отображения разделов для обучающихся
 $ftt_access = get_admin_data::ftt($memberId);
+
 if ($ftt_access !== 'denied') {
   if ($ftt_access['group'] === 'trainee' && ($thispage === 'meetings' || $thispage === 'reg' || $thispage === 'members')) {
     header("Location: ".$appRootPath);
     exit;
   }
 }
-
 
 /*
 if ($memberId && $ftt_access['group'] === 'trainee' && preg_match("/(index.php)|(signup.php)|(passrec.php)|(login.php)|(ftt.php)|(practices.php)|(contacts.php)|(profile.php)|(settings.php)|(links.php)/", $_SERVER["SCRIPT_NAME"])==0) {
