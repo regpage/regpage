@@ -176,13 +176,11 @@
           $str_group_members = $value['group_members'];
           $group_members_text = '';
           if ($str_group_members) {
-            $str_pieces = explode(" ", $str_group_members);
-            for ($i=0; $i<count($str_pieces); $i=$i+2) {
-              if ($i>0) {
-                $group_members_text .= " ";
-              }
-              $group_members_text .= $str_pieces[$i]."&#8239;".$str_pieces[$i+1];
+            $str_pieces = explode(',', $str_group_members);
+            for ($i=0; $i < count($str_pieces); $i++) {
+              $group_members_text .= short_name::short($trainee_list[trim($str_pieces[$i])]);
             }
+            //$group_members_text .= $str_pieces[$i]."&#8239;".$str_pieces[$i+1];
           }
           $str_number = $value['number'];
           $str_flyers = $value['flyers'];
@@ -192,9 +190,7 @@
           $str_meets_last = $value['meets_last'];
           $str_meets_current = $value['meets_current'];
           $str_meetings_last = $value['meetings_last'];
-          $str_meetings_current = $value['meetings_current'];
-          $str_first_contacts = $value['first_contacts'];
-          $str_further_contacts = $value['further_contacts'];
+          $str_meetings_current = $value['meetings_current'];          
           $str_homes = $value['homes'];
           $str_changed = $value['changed'];
           $str_place_name = $value['place_name'];
@@ -230,7 +226,7 @@
 
           echo "<div class='row list_string {$done_string}' {$show_string} data-id='{$str_id}' data-date='{$str_date}' data-author='{$str_author}' data-gospel_team='{$str_gospel_team}' data-gospel_group='{$str_gospel_group}' data-place='{$str_place}' data-group_members='{$str_group_members}' data-number='{$str_number}' data-flyers='{$str_flyers}' data-people='{$str_people}' data-prayers='{$str_prayers}' data-baptism='{$str_baptism}'
           data-meets_last='{$str_meets_last}' data-meets_current='{$str_meets_current}' data-meetings_last='{$str_meetings_last}' data-meetings_current='{$str_meetings_current}'
-          data-first_contacts='{$str_first_contacts}' data-further_contacts='{$str_further_contacts}' data-homes='{$str_homes}' data-place_name='{$str_place_name}' data-fgt_place='{$str_fgt_place}' data-comment='{$str_comment}'
+          data-homes='{$str_homes}' data-place_name='{$str_place_name}' data-fgt_place='{$str_fgt_place}' data-comment='{$str_comment}'
           data-toggle='modal' data-target='#modalAddEdit'>
             <div class='col-2 pl-1 col_n_1'><span class='col_n_1_2'>{$str_date_short}</span></div>
             <div class='col-2 col_n_2'><span class='col_n_2_2'>{$str_place_name}</span><span class='col_n_2_3'></span><br><span class='col_n_2_3' style='font-size: 12px; color: #AAA;'></span></div>
@@ -238,8 +234,8 @@
             <div class='col-1 col_n_4 text-right'><span class='col_n_4_2'>{$str_flyers}</span></div>
             <div class='col-1 col_n_5 text-right'><span class='col_n_5_2'>{$str_people}</span></div>
             <div class='col-1 col_n_6 text-right'><span class='col_n_6_2'>{$str_prayers}</span></div>
-            <div class='col-1 col_n_7 text-right'><span class='col_n_7_2'>{$str_first_contacts}</span></div>
-            <div class='col-1 col_n_8 text-right'><span class='col_n_8_2'>{$str_further_contacts}</span></div>
+            <div class='col-1 col_n_7 text-right'><span class='col_n_7_2'></span></div>
+            <div class='col-1 col_n_8 text-right'><span class='col_n_8_2'></span></div>
             <div class='col-1 col_n_9 text-right'><span class='col_n_9_2 {$str_comment_hide}' title='{$str_comment}'><i class='fa fa-sticky-note' aria-hidden='true'></i></span></div>
             <div class='col-12 col_n_11 pl-1 hide_element'><span class='col_n_11_2' style='font-size: 14px; color: #AAA;'>{$str_gospel_group}: {$group_members_text}</span></div>
           </div>";

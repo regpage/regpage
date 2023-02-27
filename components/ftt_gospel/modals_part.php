@@ -15,7 +15,7 @@ if ($number_day_today > 0) {
 <div id="modalAddEdit" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true"
 data-id="" data-date="" data-author="" data-gospel_team="" data-gospel_group="" data-place="" data-group_members="" data-number=""
 data-flyers="" data-people="" data-prayers="" data-baptism="" data-meets_last="" data-meets_current="" data-meetings_last=""
-data-meetings_current="" data-first_contacts="" data-further_contacts="" data-homes="" data-place_name="" data-fgt_place="" data-comment="">
+data-meetings_current="" data-first_contacts="" data-further_contacts="" data-homes="" data-place_name="" data-fgt_place="" data-comment="" style="overflow: auto;">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -57,11 +57,11 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
                 endforeach;
               ?>
               </select>
-              <input id="group_members_field" class="input-google" type="text" value="">
+              <!--<input id="group_members_field" class="input-google" type="text" value="">-->
               <div id="group_members_block" class="">
 
               </div>
-              <button type="button" class="btn btn-primary btn-sm" name="button" data-toggle="modal" data-target="#gospel_modal_list"><b>+</b></button>
+              <button type="button" id="show_gospel_modal_list" class="btn btn-primary btn-sm" name="button" data-toggle="modal" data-target="#gospel_modal_list"><b>+</b></button>
             </div>
           </div>
         </div>
@@ -152,7 +152,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
           </div>
         </div>
         <h6 class="mt-2">Проект «Библия, открытая для всех»</h6>
-        <div class="row">
+        <!--<div class="row">
           <div class="col-12">
             <div class="form-group">
               <label class="label-google" for="first_contacts_field">Сколько было <u>первых</u> контактов по телефону или в переписке?</label>
@@ -167,7 +167,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
               <input id="further_contacts_field" type="number" class="input-google short_number_field" min="0" max="1000000">
             </div>
           </div>
-        </div>
+        </div>-->
         <div id="comment_block" class="form-group">
           <label class="label-google">Комментарий</label>
           <textarea class="input-google" id="comment_field" rows="3" cols="20"></textarea>
@@ -540,7 +540,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
             <div class="col-2"><input id="semester_flyers" type="number" class="form-control form-control-sm recom_goal little_number_field" data-field="flyers"
               value="<?php echo $semester_flyers; ?>">
             </div>
-            <div class="col-1 pt-1 pl-1"> (<?php echo getValueFttParamByName('min_flyers'); ?>)</div>
+            <div class="col-1 pt-1 pl-1"> (не менее <?php echo getValueFttParamByName('min_flyers'); ?>)</div>
           </div>
           <div class="row mb-2">
             <div class="col-12 mb-1"><b>Скольким людям вы хотите благовествовать в течение недели?</b></div>
@@ -548,7 +548,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
               value="<?php echo $semester_people; ?>">
             </div>
             <div class="col-1 pt-1 pl-1">
-              (<?php echo getValueFttParamByName('min_people'); ?>)
+              (не менее <?php echo getValueFttParamByName('min_people'); ?>)
             </div>
           </div>
           <div class="row mb-2">
@@ -557,7 +557,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
               value="<?php echo $semester_prayers; ?>">
             </div>
             <div class="col-1 pt-1 pl-1">
-                (<?php echo getValueFttParamByName('min_prayers'); ?>)
+                (не менее <?php echo getValueFttParamByName('min_prayers'); ?>)
             </div>
           </div>
           <div class="row mb-2">
@@ -566,7 +566,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
               value="<?php echo $semester_baptism; ?>">
             </div>
             <div class="col-1 pt-1 pl-1">
-                (<?php echo getValueFttParamByName('min_baptism'); ?>)
+                (не менее <?php echo getValueFttParamByName('min_baptism'); ?>)
             </div>
           </div>
           <div class="row mb-2">
@@ -575,7 +575,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
               value="<?php echo $semester_fruit; ?>">
             </div>
             <div class="col-1 pt-1 pl-1">
-              (<?php echo getValueFttParamByName('min_fruit'); ?>)
+              (не менее <?php echo getValueFttParamByName('min_fruit'); ?>)
             </div>
           </div>
         </div>
@@ -617,7 +617,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
             </select>
           </div>
           <div class="row">
-            <div class="col-6 pl-2">
+            <div class="col pl-2">
               <div class="row">
                 <div id="modal_extra_groups" class="col">
                   <h5>Обучающиеся</h5>

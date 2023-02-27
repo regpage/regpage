@@ -27,6 +27,10 @@ function clear_blank() {
     $('#modalAddEdit textarea').css('border-color', 'lightgray');
     // info
     $('#modalAddEdit #info_of').show();
+    // personal blocks
+    $(".personal_block").each(function () {
+      $(this).remove();
+    });
   }
 }
 
@@ -43,12 +47,27 @@ function clear_blank() {
     data.set('date_field', $('#date_field').val());
     data.set('gospel_group_field', $('#gospel_group_field').val());
     let group_members_list = "";
+    // members
     $("#group_members_block input:checked").each(function () {
       if (group_members_list) {
         group_members_list += ",";
       }
        group_members_list += $(this).val();
     });
+
+    // member personal block
+    let personal_block_arr = {};
+    $(".personal_block").each(function () {
+      if (!personal_block_arr.hasOwnProperty($(this).attr("data-member_key"))) {
+        personal_block_arr[$(this).attr("data-member_key")] = {first_contacts: "", further_contacts: ""};
+      }
+      if ($(this).find("input").hasClass("further_contacts_field")) {
+        personal_block_arr[$(this).attr("data-member_key")]["further_contacts"] = $(this).find("input").val();
+      } else if ($(this).find("input").hasClass("first_contacts_field")) {
+        personal_block_arr[$(this).attr("data-member_key")]["first_contacts"] = $(this).find("input").val();
+      }
+    });
+
     data.set('group_members_field', group_members_list);
     data.set('number_field', $('#number_field').val());
     data.set('flyers_field', $('#flyers_field').val());
@@ -61,10 +80,9 @@ function clear_blank() {
     data.set('meetings_last_field', $('#meetings_last_field').val());
     data.set('meetings_current_field', $('#meetings_current_field').val());
     data.set('homes_field', $('#homes_field').val());
-    data.set('first_contacts_field', $('#first_contacts_field').val());
-    data.set('further_contacts_field', $('#further_contacts_field').val());
     data.set('comment_field', $('#comment_field').val());
     data.set('archive_checkbox_field', $('#archive_checkbox_field').val());
+    data.set('personal_blocks', JSON.stringify(personal_block_arr));
 
     return data;
   }
@@ -293,8 +311,6 @@ $('#modalAddEdit .close').click(function (e) {
     $('#meetings_last_field').val() !== $("#modalAddEdit").attr("data-meetings_last") ||
     $('#meetings_current_field').val() !== $("#modalAddEdit").attr("data-meetings_current") ||
     $('#homes_field').val() !== $("#modalAddEdit").attr("data-homes") ||
-    $('#first_contacts_field').val() !== $("#modalAddEdit").attr("data-first_contacts") ||
-    $('#further_contacts_field').val() !== $("#modalAddEdit").attr("data-further_contacts") ||
     $('#comment_field').val() !== $("#modalAddEdit").attr("data-comment")) {
     if (confirm('Сохранить изменения?')) {
       if (validation_fields(e)) {
@@ -313,7 +329,8 @@ $('#modalAddEdit .btn-secondary').click(function (e) {
   if (($('#fio_field').val() !== $("#modalAddEdit").attr("data-gospel_team") && $('#fio_field').val() !== '_none_') ||
     $('#date_field').val() !== $("#modalAddEdit").attr("data-date") ||
     ($('#gospel_group_field').val() !== $("#modalAddEdit").attr("data-gospel_group") && $('#gospel_group_field').val() !== '0') ||
-    /*$('#group_members_field').val() !== $("#modalAddEdit").attr("data-group_members") || НАСТРОИТЬ*/
+    /*$('#group_members_field').val() !== $("#modalAddEdit").attr("data-group_members") || НАСТРОИТЬ
+    */
     $('#number_field').val() !== $("#modalAddEdit").attr("data-number") ||
     $('#flyers_field').val() !== $("#modalAddEdit").attr("data-flyers") ||
     $('#people_field').val() !== $("#modalAddEdit").attr("data-people") ||
@@ -324,8 +341,6 @@ $('#modalAddEdit .btn-secondary').click(function (e) {
     $('#meetings_last_field').val() !== $("#modalAddEdit").attr("data-meetings_last") ||
     $('#meetings_current_field').val() !== $("#modalAddEdit").attr("data-meetings_current") ||
     $('#homes_field').val() !== $("#modalAddEdit").attr("data-homes") ||
-    $('#first_contacts_field').val() !== $("#modalAddEdit").attr("data-first_contacts") ||
-    $('#further_contacts_field').val() !== $("#modalAddEdit").attr("data-further_contacts") ||
     $('#comment_field').val() !== $("#modalAddEdit").attr("data-comment")) {
     if (confirm('Сохранить изменения?')) {
       if (validation_fields(e)) {
@@ -459,7 +474,7 @@ $('#save_extra_help').click(function (e) {
     return;
   }
   // валидация значений полей
-  if ($('#modalAddEdit #fio_field').val() === '_none_') {
+  if ($('#modalAddEdit #fio_field').val() === '_none_' || !$('#modalAddEdit #fio_field').val()) {
     e.stopPropagation();
     e.preventDefault();
     showError('Заполните поля выделенные красной рамкой.');
@@ -534,8 +549,13 @@ $(".list_string").click(function () {
   group_members_list_render = group_members_list_render.split(",");
   let group_members_list_html = "";
   for (var i = 0; i < group_members_list_render.length; i++) {
-    group_members_list_html += '<label class="form-check-label"><input type="checkbox" class="mr-1" value="'+group_members_list_render[i].trim()+'" checked>'
+    // add checkbox
+    group_members_list_html += '<label class="form-check-label"><input type="checkbox" class="mr-1" value="'+group_members_list_render[i].trim()+'" data-name="'+
+    trainee_list[group_members_list_render[i].trim()]
+    +'" checked>'
     +trainee_list[group_members_list_render[i].trim()]+'</label><br>';
+    // add block
+    add_remove_gospel_personal_block('', group_members_list_render[i].trim());
   }
 
   $('#group_members_block').html(group_members_list_html);
@@ -549,8 +569,6 @@ $(".list_string").click(function () {
   $('#meetings_last_field').val($(this).attr('data-meetings_last'));
   $('#meetings_current_field').val($(this).attr('data-meetings_current'));
   $('#homes_field').val($(this).attr('data-homes'));
-  $('#first_contacts_field').val($(this).attr('data-first_contacts'));
-  $('#further_contacts_field').val($(this).attr('data-further_contacts'));
   $('#comment_field').val($(this).attr('data-comment'));
   if ($(this).attr('data-comment')) {
     $("#add_comment").hide();
@@ -606,6 +624,23 @@ $(".list_string").click(function () {
 
   let text = 'Создал' + male_word + ' ' + servise_one_author;
   $('#author_of').text(text);
+  $("#group_members_block input").change(function () {
+    add_remove_gospel_personal_block($(this));
+  });
+  // save personal block
+  if (group_members_list_render.length > 0) {
+    fetch("ajax/ftt_gospel_ajax.php?type=get_gospel_members&id=" + $(this).attr("data-id"))
+    .then(response => response.json())
+    .then(commits => {
+      let members_data = commits.result;
+      for (var i = 0; i < members_data.length; i++) {
+        $(".personal_block[data-member_key='" + members_data[i]['member_key']
+        + "']").find(".first_contacts_field").val(members_data[i]['first_contacts']);
+        $(".personal_block[data-member_key='" + members_data[i]['member_key']
+        + "']").find(".further_contacts_field").val(members_data[i]['further_contacts']);
+      }
+    });
+  }
 });
 
 // список применённых фильтров
@@ -658,8 +693,8 @@ filters_list_show();
           meets_current += Number(stat[i].meets_current);
           meetings_last += Number(stat[i].meetings_last);
           meetings_current += Number(stat[i].meetings_current);
-          first_contacts += Number(stat[i].first_contacts);
-          further_contacts += Number(stat[i].further_contacts);
+          //first_contacts += Number(stat[i].first_contacts);
+          //further_contacts += Number(stat[i].further_contacts);
           homes += Number(stat[i].homes);
           // periods
           let date_str = new Date(stat[i].date);
@@ -672,8 +707,8 @@ filters_list_show();
             range_meets_current += Number(stat[i].meets_current);
             range_meetings_last += Number(stat[i].meetings_last);
             range_meetings_current += Number(stat[i].meetings_current);
-            range_first_contacts += Number(stat[i].first_contacts);
-            range_further_contacts += Number(stat[i].further_contacts);
+            //range_first_contacts += Number(stat[i].first_contacts);
+            //range_further_contacts += Number(stat[i].further_contacts);
             range_homes += Number(stat[i].homes);
           }
         }
@@ -689,8 +724,8 @@ filters_list_show();
               group_stat[stat[i].gospel_group]["meets_current"] = 0;
               group_stat[stat[i].gospel_group]["meetings_last"] = 0;
               group_stat[stat[i].gospel_group]["meetings_current"] = 0;
-              group_stat[stat[i].gospel_group]["first_contacts"] = 0;
-              group_stat[stat[i].gospel_group]["further_contacts"] = 0;
+              //group_stat[stat[i].gospel_group]["first_contacts"] = 0;
+              //group_stat[stat[i].gospel_group]["further_contacts"] = 0;
               group_stat[stat[i].gospel_group]["homes"] = 0;
             }
             let date_str_group = new Date(stat[i].date);
@@ -703,8 +738,8 @@ filters_list_show();
               group_stat[stat[i].gospel_group]["meets_current"] += Number(stat[i].meets_current);
               group_stat[stat[i].gospel_group]["meetings_last"] += Number(stat[i].meetings_last);
               group_stat[stat[i].gospel_group]["meetings_current"] += Number(stat[i].meetings_current);
-              group_stat[stat[i].gospel_group]["first_contacts"] += Number(stat[i].first_contacts);
-              group_stat[stat[i].gospel_group]["further_contacts"] += Number(stat[i].further_contacts);
+              //group_stat[stat[i].gospel_group]["first_contacts"] += Number(stat[i].first_contacts);
+              //group_stat[stat[i].gospel_group]["further_contacts"] += Number(stat[i].further_contacts);
               group_stat[stat[i].gospel_group]["homes"] += Number(stat[i].homes);
             }
           }
@@ -716,8 +751,8 @@ filters_list_show();
           meets_current += Number(stat[i].meets_current);
           meetings_last += Number(stat[i].meetings_last);
           meetings_current += Number(stat[i].meetings_current);
-          first_contacts += Number(stat[i].first_contacts);
-          further_contacts += Number(stat[i].further_contacts);
+          //first_contacts += Number(stat[i].first_contacts);
+          //further_contacts += Number(stat[i].further_contacts);
           homes += Number(stat[i].homes);
           // periods
           let date_str = new Date(stat[i].date);
@@ -730,8 +765,8 @@ filters_list_show();
             range_meets_current += Number(stat[i].meets_current);
             range_meetings_last += Number(stat[i].meetings_last);
             range_meetings_current += Number(stat[i].meetings_current);
-            range_first_contacts += Number(stat[i].first_contacts);
-            range_further_contacts += Number(stat[i].further_contacts);
+            //range_first_contacts += Number(stat[i].first_contacts);
+            //range_further_contacts += Number(stat[i].further_contacts);
             range_homes += Number(stat[i].homes);
           }
         }
@@ -794,8 +829,8 @@ filters_list_show();
       $("#meets_current_all").text(meets_current);
       $("#meetings_last_all").text(meetings_last);
       $("#meetings_current_all").text(meetings_current);
-      $("#first_contacts_all").text(first_contacts);
-      $("#further_contacts_all").text(further_contacts);
+      //$("#first_contacts_all").text(first_contacts);
+      //$("#further_contacts_all").text(further_contacts);
       $("#homes_all").text(homes);
 
       $("#range_flyers").text(range_flyers);
@@ -806,8 +841,8 @@ filters_list_show();
       $("#range_meets_current").text(range_meets_current);
       $("#range_meetings_last").text(range_meetings_last);
       $("#range_meetings_current").text(range_meetings_current);
-      $("#range_first_contacts").text(range_first_contacts);
-      $("#range_further_contacts").text(range_further_contacts);
+      //$("#range_first_contacts").text(range_first_contacts);
+      //$("#range_further_contacts").text(range_further_contacts);
       $("#range_homes").text(range_homes);
     });
   }
@@ -1095,6 +1130,9 @@ $("#gospelGroupNumber").click(function () {
 // смена группы
 // Подстановка данных для группы благовестия
 $("#gospel_group_field").change(function () {
+  $(".personal_block").each(function () {
+    $(this).remove();
+  });
   $("#gospelGroupNumber").text($(this).val());
   let gospel_group_data = '';
   let gospel_group_data_tmp;
@@ -1107,8 +1145,11 @@ $("#gospel_group_field").change(function () {
           if (i_count > 0) {
             gospel_group_data += "<br>";
           }
+          // checkboxes
           gospel_group_data_tmp = gospel_group_data_tmp.split(" ");
           gospel_group_data += '<label class="form-check-label"> <input type="checkbox" class="mr-1" checked value="'+gospel_groups[i]['member_key']+'">'+gospel_group_data_tmp[0]+" "+gospel_group_data_tmp[1][0]+'.</label>';
+          // personal blocks
+          add_remove_gospel_personal_block('', gospel_groups[i]['member_key'])
           i_count++;
         }
       }
@@ -1122,9 +1163,14 @@ $("#gospel_group_field").change(function () {
 });
 // смена команды
 $('#fio_field').change(function () {
+  $("#gospel_group_field").val(0);
+  $("#gospelGroupNumber").text(0);
   if ($(this).css('border-color') === 'rgb(255, 0, 0)') {
     $(this).css('border-color', 'lightgray');
   }
+  $(".personal_block").each(function () {
+    $(this).remove();
+  });
   // Подстановка данных для группы благовестия
   let gospel_group_data = '';
   let gospel_group_data_tmp;
@@ -1137,8 +1183,13 @@ $('#fio_field').change(function () {
           if (i_count > 0) {
             gospel_group_data += "<br>";
           }
+          // checkboxes
           gospel_group_data_tmp = gospel_group_data_tmp.split(" ");
-          gospel_group_data += '<label class="form-check-label"> <input type="checkbox" class="mr-1" checked value="'+gospel_groups[i]['member_key']+'">'+gospel_group_data_tmp[0]+" "+gospel_group_data_tmp[1][0]+'.</label>';
+          gospel_group_data += '<label class="form-check-label"> <input type="checkbox" class="mr-1" checked value="'+gospel_groups[i]['member_key']+'" data-name="'
+          +trainee_list[gospel_groups[i]['member_key']]+'">'
+          +gospel_group_data_tmp[0]+" "+gospel_group_data_tmp[1][0]+'.</label>';
+          // personal blocks
+          add_remove_gospel_personal_block('',gospel_groups[i]['member_key']);
           i_count++;
         }
       }
@@ -1151,6 +1202,71 @@ $('#fio_field').change(function () {
   }
 });
 
+// ==== BEGIN новый блок участников в бланке отчётности ====
+$("#modal_extra_groups input[type='checkbox']").change(function () {
+  let elem = $(this);
+  if (elem.prop("checked")) {
+    // add checkbox
+    $("#group_members_block").append("<label class='form-check-label'><input type='checkbox' class='mr-1' data-name='" +
+    elem.attr("data-0")+"' value='" + elem.val() + "' checked>" +
+    elem.attr("data-0") +"</label><br>");
+  } else {
+    // remove checkbox
+    $("#group_members_block input").each(function () {
+      if ($(this).val() === elem.val()) {
+        $(this).parent().remove();
+        $(this).hide();
+      }
+    });
+  }
+  // pessonal blocks add / remove
+  add_remove_gospel_personal_block(elem);
+  $("#group_members_block input").change(function () {
+    add_remove_gospel_personal_block($(this));
+  });
+});
+
+function add_remove_gospel_personal_block(elem, key) {
+  let member_key, checked;
+  if (key) {
+    member_key = key;
+    checked = true;
+  } else {
+    member_key = elem.val();
+    checked = elem.prop("checked");
+  }
+  if (checked) {
+    // add block
+    $("#comment_block").before('<div class="row personal_block" data-member_key="'+ member_key
+    +'"><div class="col-12">'
+    + '<h6>'+trainee_list[member_key]+'</h6>'
+    +'<div class="form-group"><label class="label-google">Сколько было <u>первых</u> контактов по телефону или в переписке?</label><input type="number" class="input-google short_number_field first_contacts_field" min="0" max="1000000"></div></div></div>'
+    +'<div class="row personal_block" data-member_key="'+ member_key
+    +'"><div class="col-12"><div class="form-group"><label class="label-google">Сколько было <u>повторных</u> контактов по телефону или в переписке?</label> <input type="number" class="input-google short_number_field further_contacts_field" min="0" max="1000000"></div></div></div>');
+  } else {
+    $(".personal_block").each(function () {
+      if ($(this).attr("data-member_key") === elem.val()) {
+        $(this).remove();
+      }
+    });
+  }
+}
+
+$("#show_gospel_modal_list").click(function () {
+  let members_group = [];
+  $("#group_members_block input").each(function (e) {
+    members_group[e] = $(this).val();
+  });
+
+  $("#modal_extra_groups input[type='checkbox']").each(function () {
+    if (members_group.includes($(this).val())) {
+      $(this).prop("checked", "true");
+    }
+  });
+});
+// ==== END новый блок участников в бланке отчётности ====
+
+// ==== СОРТИРОВКА ====
 $(".sort_date, .sort_team, .sort_group").click(function (e) {
 
   $(".sort_date i, .sort_team i, .sort_group i").addClass("hide_element");

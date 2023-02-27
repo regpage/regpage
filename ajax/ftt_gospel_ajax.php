@@ -65,4 +65,10 @@ if (isset($_GET['type']) && $_GET['type'] === 'get_ftt_group_members') {
   exit();
 }
 
+// get group members
+if (isset($_GET['type']) && $_GET['type'] === 'get_gospel_members') {
+  echo json_encode(["result"=>get_gospel_members($_GET['id'])]);
+  exit();
+}
+
 ?>

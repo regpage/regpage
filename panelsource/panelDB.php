@@ -224,7 +224,7 @@ function db_getApplicationsPanel ($adminId, $trash=''){
 
 function resetSemester(){
 
-  $tables = array('ftt_announcement', 'ftt_announcement_recipients', 'ftt_attendance', 	'ftt_attendance_sheet', 'ftt_extra_help', 'ftt_gospel', 'ftt_gospel_goals', 'ftt_gospel_team', 'ftt_late', 'ftt_permission', 'ftt_permission_sheet', 'ftt_session', 'ftt_session_correction', 'ftt_trainee');
+  $tables = array('ftt_announcement', 'ftt_announcement_recipients', 'ftt_attendance', 	'ftt_attendance_sheet', 'ftt_extra_help', 'ftt_gospel', 'ftt_gospel_goals', 'ftt_late', 'ftt_permission', 'ftt_permission_sheet', 'ftt_session', 'ftt_session_correction', 'ftt_trainee');
   $result;
 
   foreach ($tables as $value) {
@@ -247,7 +247,7 @@ function resetApplications(){
 }
 
 function checkDataSemester(){
-    $tables = array('ftt_announcement', 'ftt_announcement_recipients', 'ftt_attendance', 	'ftt_attendance_sheet', 'ftt_extra_help', 'ftt_gospel', 'ftt_gospel_goals', 'ftt_gospel_team', 'ftt_late', 'ftt_permission', 'ftt_permission_sheet', 'ftt_session', 'ftt_session_correction', 'ftt_trainee');
+    $tables = array('ftt_announcement', 'ftt_announcement_recipients', 'ftt_attendance', 	'ftt_attendance_sheet', 'ftt_extra_help', 'ftt_gospel', 'ftt_gospel_goals', 'ftt_late', 'ftt_permission', 'ftt_permission_sheet', 'ftt_session', 'ftt_session_correction', 'ftt_trainee');
     $result = array();
     foreach ($tables as $key => $value) {
       $result[$value] = db_query ("SELECT * FROM {$value} limit 1");
@@ -257,7 +257,7 @@ function checkDataSemester(){
 }
 
 function checkOtherDataSemester(){
-    $tables = array('ftt_serving_one', 'ftt_apartment', 'ftt_service', 'ftt_param', 'ftt_study_group');
+    $tables = array('ftt_serving_one', 'ftt_apartment', 'ftt_service', 'ftt_param', 'ftt_study_group', 'ftt_gospel_team');
     $result = array();
     foreach ($tables as $key => $value) {
       $result[$value] = db_query ("SELECT * FROM {$value} limit 1");
