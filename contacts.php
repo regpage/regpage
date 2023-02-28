@@ -55,12 +55,12 @@
 
 <!-- РАЗДЕЛ КОНТАКТЫ -->
 <div style="background-color: white; margin-left: auto; margin-right: auto; max-width: 1170px; padding-bottom: 20px;">
-  <div class="" style="background-color: #eee; margin-left: auto; margin-right: auto; height: 60px; max-width: 1170px">
+  <!--<div class="" style="background-color: #eee; margin-left: auto; margin-right: auto; height: 60px; max-width: 1170px">
     <div id="leftSidepanel" class="leftsidepanel">
       <a href="#" id="leftPanelCloseBtn" class="leftclosebtn">×</a>
       <h5 style="padding-left: 10px;">Админ панель</h5>
     </div>
-  </div>
+  </div>-->
 <div class="container">
 <!-- Botton bar Statistic START -->
   <div id="contactsBtnsBar" class="row contactsBtnsBar" style="">
@@ -106,7 +106,7 @@
   </div>
 <!-- Botton bar Statistic STOP -->
 <!-- List Statistic BEGIN -->
-      <div class="" id="desctop_visible" style="margin-top: 60px;">
+      <div class="" id="desctop_visible" style="margin-top: 100px;">
         <div id="" class="" style="">
           <div class="tab-pane">
             <a href="#0" class="cd-panel__close-watch js-cd-close-watch">Закрыть</a>

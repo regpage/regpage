@@ -108,16 +108,16 @@ else if (isset ($_SESSION["logged-in"])){
                https://test.new-constellation.ru/-->
 
 
-                <span><a class="ftt_menu_a" href="/ftt_schedule.php">Расписание</a></span>
-                <span><a class="ftt_menu_a" href="/ftt_announcement.php">Объявления</a></span>
-                <span><a class="ftt_menu_a" href="/ftt_attendance.php">Посещаемость</a></span>
+                <span><a class="ftt_menu_a" href="/ftt_schedule">Расписание</a></span>
+                <span><a class="ftt_menu_a" href="/ftt_announcement">Объявления</a></span>
+                <span><a class="ftt_menu_a" href="/ftt_attendance">Посещаемость</a></span>
                 <span><a class="ftt_menu_a" href="/ftt_service">Служение</a></span>
-                <span><a class="ftt_menu_a" href="/ftt_gospel.php">Благовестие</a></span>
-                <span><a class="ftt_menu_a" href="/contacts.php">Контакты</a></span>
+                <span><a class="ftt_menu_a" href="/ftt_gospel">Благовестие</a></span>
+                <span><a class="ftt_menu_a" href="/contacts">Контакты</a></span>
                 <!--<span><a class="ftt_menu_a" href="ftt_absence">Отсутствие</a></span>-->
-                <span><a class="ftt_menu_a" href="/ftt_extrahelp.php">Доп. задания<?php echo "<sup style='color: red;'><b>{$extra_help_count}</b></sup>"; ?></a></span>
+                <span><a class="ftt_menu_a" href="/ftt_extrahelp">Доп. задания<?php echo "<sup style='color: red;'><b>{$extra_help_count}</b></sup>"; ?></a></span>
               <?php if ($ftt_access['group'] === 'staff') { ?>
-                <span><a class="ftt_menu_a" href="/ftt_application.php">Заявления</a></span>
+                <span><a class="ftt_menu_a" href="/ftt_application">Заявления</a></span>
               <?php }?>
               </p>
             </div>

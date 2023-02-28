@@ -148,7 +148,8 @@ function db_getContactsStringsPrev($memberId, $contRole){
   $memberId = $db->real_escape_string($memberId);
   $contRole = $db->real_escape_string($contRole);
   $previousAdmin = ' c.responsible_previous = '.$memberId;
-  if ($contRole === '2') {
+  /* Код ниже был для админов 2 что бы им видеть больше ответственных (каких именно?)*/
+  /*if ($contRole === '2') {
     $resultCheck = [];
     $resCheck=db_query ("SELECT `member_key` FROM contacts_resp WHERE `role` = '1'");
     while ($rowCheck = $resCheck->fetch_assoc()) $resultCheck[]=$rowCheck['member_key'];
@@ -156,7 +157,7 @@ function db_getContactsStringsPrev($memberId, $contRole){
     for ($i=0; $i < count($resultCheck); $i++) {
       $previousAdmin = '('.$previousAdmin.' OR c.responsible_previous = '.$resultCheck[$i].')';
     }
-  }
+  }*/
 
   $result = [];
     $res=db_query ("SELECT c.id, c.status,c.responsible, c.notice, m.name AS member_name

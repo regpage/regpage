@@ -116,10 +116,11 @@ if ($(window).width()>=1200) {
 }
 */
 
-if (window.location.pathname === '/contacts') {
+if (window.location.pathname === '/contacts' || window.location.pathname === "/contacts.php") {
 	// меню разделов пвом
 	if ($("#menu_nav_ftt").hasClass("container-xl")) {
-		$("#leftSidepanel").parent().css("height", "0");
+		//$("#leftSidepanel").parent().css("height", "0");
+		$("#desctop_visible").css("margin-top", "60px");
 	}
 	if ($(window).height()>=550) {
 		var windowScreenHeight = $(window).height();
