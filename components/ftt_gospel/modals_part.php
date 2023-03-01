@@ -26,9 +26,9 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
         <div class="row">
           <div class="col-7">
             <div class="form-group">
-              <label for="fio_field" class="label-google">Команда *</label>
+              <!--<label for="fio_field" class="label-google">Команда *</label>-->
               <select id="fio_field" class="input-google">
-                <option value="_none_"></option>
+                <option value="_none_">Команда</option>
                 <?php
                   foreach (getGospelTeam() as $key => $value):
                     echo "<option value='{$key}'>{$value}</option>";
@@ -39,16 +39,31 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
           </div>
           <div class="col-5">
             <div class="form-group">
-              <label class="label-google" for="date_field">Дата *</label>
+              <!--<label class="label-google" for="date_field">Дата *</label>-->
               <input id="date_field" type="date" class="input-google">
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-12">
-            <div class="form-group">
-              <label for="" class="label-google" style="">Состав группы <span class="cursor-pointer" style="color: #08c;"><u id="gospelGroupNumber"></u></span></label>
-              <select id="gospel_group_field" class="select-google" style="display: none;">
+        <div class="row mb-2">
+          <div class="col-12 bg-secondary">
+              <h5 class="text-white mb-1 mt-1" style="display: inline-block;" class="d-inline-block">Группа <span id="gospelGroupNumber"></span></h5>
+                <button id="gospel_group_dropdown" class="btn btn-secondary btn-sm dropdown-toggle float-right" type="button" data-toggle="dropdown" aria-expanded="false">
+                  <i class="fa fa-bars" aria-hidden="true"></i>
+                </button>
+                <div id="gospel_group_dropdown_list" class="dropdown-menu dropdown-menu-right" style="min-width: auto;">
+                  <span class="dropdown-item cursor-pointer" data-group="1">1</span>
+                  <span class="dropdown-item cursor-pointer" data-group="2">2</span>
+                  <span class="dropdown-item cursor-pointer" data-group="3">3</span>
+                  <span class="dropdown-item cursor-pointer" data-group="4">4</span>
+                  <span class="dropdown-item cursor-pointer" data-group="5">5</span>
+                  <span class="dropdown-item cursor-pointer" data-group="6">6</span>
+                  <span class="dropdown-item cursor-pointer" data-group="7">7</span>
+                </div>
+                <!--<input id="group_members_field" class="input-google" type="text" value="">-->
+                <div id="group_members_block" class="d-none">
+
+                </div>
+              <select id="gospel_group_field" class="d-none" style="">
                 <option value="0"></option>
               <?php
                 $old_value = '';
@@ -57,15 +72,9 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
                 endforeach;
               ?>
               </select>
-              <!--<input id="group_members_field" class="input-google" type="text" value="">-->
-              <div id="group_members_block" class="">
-
-              </div>
-              <button type="button" id="show_gospel_modal_list" class="btn btn-primary btn-sm" name="button" data-toggle="modal" data-target="#gospel_modal_list"><b>+</b></button>
-            </div>
           </div>
         </div>
-        <div class="row">
+        <!--<div class="row">
           <div class="col-12">
             <div class="form-group">
               <label class="label-google" for="flyers_field">Сколько было выходов на благовестие?</label>
@@ -73,86 +82,82 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
               <input id="number_field" type="number" class="input-google short_number_field" min="0" max="1000000">
             </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-12">
-            <div class="form-group">
-              <label class="label-google" for="flyers_field">Сколько листовок вы раздали?</label>
-              <br>
-              <input id="flyers_field" type="number" class="input-google short_number_field" min="0" max="1000000">
-            </div>
+        </div>-->
+        <div class="row mb-3 mt-3">
+          <div class="col-10">
+            <label class="label-google" for="flyers_field">Сколько листовок вы раздали?</label>
+          </div>
+          <div class="col-2">
+            <input id="flyers_field" type="number" class="input-google short_number_field text-right" min="0" max="1000000">
           </div>
         </div>
-        <div class="row">
-          <div class="col-12">
-            <div class="form-group">
-              <label class="label-google" for="people_field">Скольким людям вы благовествовали?</label>
-              <br>
-              <input id="people_field" type="number" class="input-google short_number_field" min="0" max="1000000">
-            </div>
+        <div class="row mb-3">
+          <div class="col-10">
+            <label class="label-google" for="people_field">Скольким людям вы благовествовали?</label>
+          </div>
+          <div class="col-2">
+            <input id="people_field" type="number" class="input-google short_number_field text-right" min="0" max="1000000">
           </div>
         </div>
-        <div class="row">
-          <div class="col-12">
-            <div class="form-group">
-              <label class="label-google" for="prayers_field">Сколько человек помолилось с вами?</label>
-              <br>
-              <input id="prayers_field" type="number" class="input-google short_number_field" min="0" max="1000000">
-            </div>
+        <div class="row mb-3">
+          <div class="col-10">
+
+            <label class="label-google" for="prayers_field">Сколько человек помолилось с вами?</label>
+          </div>
+          <div class="col-2">
+            <input id="prayers_field" type="number" class="input-google short_number_field text-right" min="0" max="1000000">
           </div>
         </div>
-        <div class="row">
-          <div class="col-12">
-            <div class="form-group">
-              <label class="label-google" for="baptism_field">Сколько человек было крещено?</label>
-              <br>
-              <input id="baptism_field" type="number" class="input-google short_number_field" min="0" max="1000000">
-            </div>
+        <div class="row mb-3">
+          <div class="col-10">
+            <label class="label-google" for="baptism_field">Сколько человек было крещено?</label>
+          </div>
+          <div class="col-2">
+            <input id="baptism_field" type="number" class="input-google short_number_field text-right" min="0" max="1000000">
           </div>
         </div>
-        <div class="row">
-          <div class="col-12">
-            <div class="form-group">
-              <label class="label-google" for="meets_last_field">Со сколькими новичками <u>прошлых</u> семестров вы встречались?</label>
-              <input id="meets_last_field" type="number" class="input-google short_number_field" min="0" max="1000000">
-            </div>
+        <div class="row mb-3">
+          <div class="col-10">
+            <label class="label-google" for="meets_last_field">Со сколькими новичками <u>прошлых</u> семестров вы встречались?</label>
+          </div>
+          <div class="col-2 align-bottom" style="height: 48px;">
+            <input id="meets_last_field" type="number" class="input-google short_number_field mt-3 text-right" min="0" max="1000000">
           </div>
         </div>
-        <div class="row">
-          <div class="col-12">
-            <div class="form-group">
-              <label class="label-google" for="meets_current_field">Со сколькими новичками <u>текущего</u> семестра вы встречались?</label>
-              <input id="meets_current_field" type="number" class="input-google short_number_field" min="0" max="1000000">
-            </div>
+        <div class="row mb-3">
+          <div class="col-10">
+            <label class="label-google" for="meets_current_field">Со сколькими новичками <u>текущего</u> семестра вы встречались?</label>
+          </div>
+          <div class="col-2">
+            <input id="meets_current_field" type="number" class="input-google short_number_field mt-3 text-right" min="0" max="1000000">
           </div>
         </div>
-        <div class="row">
-          <div class="col-12">
-            <div class="form-group">
-              <label class="label-google" for="meetings_last_field">Сколько новичков <u>прошлых</u> семестров было на собрании?</label>
-              <input id="meetings_last_field" type="number" class="input-google short_number_field" min="0" max="1000000">
-            </div>
+        <div class="row mb-3">
+          <div class="col-10">
+            <label class="label-google" for="meetings_last_field">Сколько новичков <u>прошлых</u> семестров было на собрании?</label>
+          </div>
+          <div class="col-2">
+            <input id="meetings_last_field" type="number" class="input-google short_number_field mt-3 text-right" min="0" max="1000000">
           </div>
         </div>
-        <div class="row">
-          <div class="col-12">
-            <div class="form-group">
-              <label class="label-google" for="meets_current_field">Сколько новичков <u>текущего</u> семестра было на собрании?</label>
-              <input id="meetings_current_field" type="number" class="input-google short_number_field" min="0" max="1000000">
-            </div>
+        <div class="row mb-3">
+          <div class="col-10">
+            <label class="label-google" for="meets_current_field">Сколько новичков <u>текущего</u> семестра было на собрании?</label>
+          </div>
+          <div class="col-2">
+            <input id="meetings_current_field" type="number" class="input-google short_number_field mt-3 text-right" min="0" max="1000000">
           </div>
         </div>
-        <div class="row">
-          <div class="col-12">
-            <div class="form-group">
-              <label class="label-google" for="homes_field">Сколько домов святых вы посетили?</label>
-              <br>
-              <input id="homes_field" type="number" class="input-google short_number_field" min="0" max="1000000">
-            </div>
+        <div class="row mb-3">
+          <div class="col-10">
+            <label class="label-google" for="homes_field">Сколько домов святых вы посетили?</label>
+          </div>
+          <div class="col-2">
+            <input id="homes_field" type="number" class="input-google short_number_field text-right" min="0" max="1000000">
           </div>
         </div>
-        <h6 class="mt-2">Проект «Библия, открытая для всех»</h6>
-        <!--<div class="row">
+        <!--<h6 class="mt-2">Проект «Библия, открытая для всех»</h6>
+        <div class="row">
           <div class="col-12">
             <div class="form-group">
               <label class="label-google" for="first_contacts_field">Сколько было <u>первых</u> контактов по телефону или в переписке?</label>
@@ -168,6 +173,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
             </div>
           </div>
         </div>-->
+        <button type="button" id="show_gospel_modal_list" class="btn btn-success btn-sm mb-2 mt-1" name="button" data-toggle="modal" data-target="#gospel_modal_list">Добавить участника</button>
         <div id="comment_block" class="form-group">
           <label class="label-google">Комментарий</label>
           <textarea class="input-google" id="comment_field" rows="3" cols="20"></textarea>
@@ -540,14 +546,14 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
             <div class="col-2"><input id="semester_flyers" type="number" class="form-control form-control-sm recom_goal little_number_field" data-field="flyers"
               value="<?php echo $semester_flyers; ?>">
             </div>
-            <div class="col-1 pt-1 pl-1"> (не менее <?php echo getValueFttParamByName('min_flyers'); ?>)</div>
+            <div class="col-3 pt-1 pl-1"> (не менее <?php echo getValueFttParamByName('min_flyers'); ?>)</div>
           </div>
           <div class="row mb-2">
             <div class="col-12 mb-1"><b>Скольким людям вы хотите благовествовать в течение недели?</b></div>
             <div class="col-2"><input id="semester_people" type="number" class="form-control form-control-sm recom_goal little_number_field" data-field="people"
               value="<?php echo $semester_people; ?>">
             </div>
-            <div class="col-1 pt-1 pl-1">
+            <div class="col-3 pt-1 pl-1">
               (не менее <?php echo getValueFttParamByName('min_people'); ?>)
             </div>
           </div>
@@ -556,7 +562,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
             <div class="col-2"><input id="semester_prayers" type="number" class="form-control form-control-sm recom_goal little_number_field" data-field="prayers"
               value="<?php echo $semester_prayers; ?>">
             </div>
-            <div class="col-1 pt-1 pl-1">
+            <div class="col-3 pt-1 pl-1">
                 (не менее <?php echo getValueFttParamByName('min_prayers'); ?>)
             </div>
           </div>
@@ -565,7 +571,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
             <div class="col-2"><input id="semester_baptism" type="number" class="form-control form-control-sm recom_goal little_number_field" data-field="baptism"
               value="<?php echo $semester_baptism; ?>">
             </div>
-            <div class="col-1 pt-1 pl-1">
+            <div class="col-3 pt-1 pl-1">
                 (не менее <?php echo getValueFttParamByName('min_baptism'); ?>)
             </div>
           </div>
@@ -574,7 +580,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
             <div class="col-2"><input id="semester_fruit" type="number" class="form-control form-control-sm recom_goal little_number_field" data-field="fruit"
               value="<?php echo $semester_fruit; ?>">
             </div>
-            <div class="col-1 pt-1 pl-1">
+            <div class="col-3 pt-1 pl-1">
               (не менее <?php echo getValueFttParamByName('min_fruit'); ?>)
             </div>
           </div>
@@ -626,7 +632,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
                   </div>
                   <?php
                   foreach ($trainee_list_full as $key => $value) {
-                    echo "<div><label class='form-check-label'><input type='checkbox' ". RenderList::dataAttr($value, array('apartment', 'male', 'semester')) ." value='{$key}'> ".$value[0]."</label></div>";
+                    echo "<div><label class='form-check-label font-weight-normal'><input type='checkbox' ". RenderList::dataAttr($value, array('apartment', 'male', 'semester')) ." value='{$key}'> ".$value[0]."</label></div>";
                   } ?>
                 </div>
               </div>

@@ -7,6 +7,10 @@ if ($(window).width()<=769) {
     $("#modalFilrets .filter_range").show();
   }
 
+  $("#modalAddEdit .input-google.short_number_field").parent().css("padding-left", "0px");
+  $("#people_field").addClass("mt-3");
+
+
   $('#filters_list').attr("style", "margin-bottom: 0px !important");
   $('#filters_list').css("padding-bottom", "8px");
 
@@ -47,7 +51,7 @@ if ($(window).width()<=769) {
   $("#modalFilrets .btn-sm").removeClass("btn-sm");
   $("#modalRecommended .btn-sm").removeClass("btn-sm");
   $("#modalAddEdit .btn-sm").removeClass("btn-sm");
-  $("#modalRecommended .recom_goal").parent().addClass("mr-4");  
+  $("#modalRecommended .recom_goal").parent().addClass("mr-4");
   if ($(window).width()<=390) {
     $("#delete_extra_help").attr('style', 'margin-right: 80px;');
   } else {

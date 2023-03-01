@@ -59,12 +59,14 @@ function clear_blank() {
     let personal_block_arr = {};
     $(".personal_block").each(function () {
       if (!personal_block_arr.hasOwnProperty($(this).attr("data-member_key"))) {
-        personal_block_arr[$(this).attr("data-member_key")] = {first_contacts: "", further_contacts: ""};
+        personal_block_arr[$(this).attr("data-member_key")] = {first_contacts: "", further_contacts: "", number: ""};
       }
       if ($(this).find("input").hasClass("further_contacts_field")) {
         personal_block_arr[$(this).attr("data-member_key")]["further_contacts"] = $(this).find("input").val();
       } else if ($(this).find("input").hasClass("first_contacts_field")) {
         personal_block_arr[$(this).attr("data-member_key")]["first_contacts"] = $(this).find("input").val();
+      } else if ($(this).find("input").hasClass("number_field")) {
+        personal_block_arr[$(this).attr("data-member_key")]["number"] = $(this).find("input").val();
       }
     });
 
@@ -324,7 +326,7 @@ $('#modalAddEdit .close').click(function (e) {
   }
 });
 
-$('#modalAddEdit .btn-secondary').click(function (e) {
+$('#modalAddEdit .modal-footer .btn-secondary').click(function (e) {
   // проверка при закрытиии бланка не по кнопке сохранить
   if (($('#fio_field').val() !== $("#modalAddEdit").attr("data-gospel_team") && $('#fio_field').val() !== '_none_') ||
     $('#date_field').val() !== $("#modalAddEdit").attr("data-date") ||
@@ -402,15 +404,20 @@ $('#showModalAddEdit').click(function () {
     $("#modalAddEdit").attr("data-gospel_group", trainee_list_full[admin_id_gl]['gospel_group']);
     $('#gospel_group_field').val(trainee_list_full[admin_id_gl]['gospel_group']);
     $('#gospelGroupNumber').text(trainee_list_full[admin_id_gl]['gospel_group']);
+    $("#group_members_block").html(get_gospel_group_members());
+    $("#group_members_block input").each(function () {
+      add_remove_gospel_personal_block($(this));
+    });
   } else {
-    $('#gospelGroupNumber').text(0);
+    $('#gospelGroupNumber').text("");
     $("#modalAddEdit").attr("data-gospel_team", serving_ones_list_full[admin_id_gl]['gospel_team']);
-    $('#fio_field').val(serving_ones_list_full[admin_id_gl]['gospel_team']);
+    if (serving_ones_list_full[admin_id_gl]['gospel_team']) {
+      $('#fio_field').val(serving_ones_list_full[admin_id_gl]['gospel_team']);
+    } else {
+      $('#fio_field').val("_none_");
+    }
   }
-
-  $("#group_members_block").html(get_gospel_group_members());
   $('#info_of').hide();
-  $('#group_members_block').html();
 });
 
 // удалить доп задание
@@ -526,7 +533,6 @@ $(".list_string").click(function () {
     $("#modalAddEdit select").attr('disabled', false);
     $("#modalAddEdit textarea").attr('disabled', false);
   }
-  $('#gospel_group_field').hide();
   $('#modalUniTitle').text('Статистика благовестия');
   $('#gospelGroupNumber').text($(this).attr('data-gospel_group'));
 
@@ -545,19 +551,21 @@ $(".list_string").click(function () {
      list_group += trainee_list[group_members_one.trim()];
   }
 */
-  let group_members_list_render = $(this).attr('data-group_members');
-  group_members_list_render = group_members_list_render.split(",");
-  let group_members_list_html = "";
-  for (var i = 0; i < group_members_list_render.length; i++) {
-    // add checkbox
-    group_members_list_html += '<label class="form-check-label"><input type="checkbox" class="mr-1" value="'+group_members_list_render[i].trim()+'" data-name="'+
-    trainee_list[group_members_list_render[i].trim()]
-    +'" checked>'
-    +trainee_list[group_members_list_render[i].trim()]+'</label><br>';
-    // add block
-    add_remove_gospel_personal_block('', group_members_list_render[i].trim());
-  }
 
+  let group_members_list_html = "";
+  if ($(this).attr('data-group_members')) {
+    let group_members_list_render = $(this).attr('data-group_members');
+    group_members_list_render = group_members_list_render.split(",");
+    for (var i = 0; i < group_members_list_render.length; i++) {
+      // add checkbox
+      group_members_list_html += '<label class="form-check-label"><input type="checkbox" class="mr-1" value="'+group_members_list_render[i].trim()+'" data-name="'+
+      trainee_list[group_members_list_render[i].trim()]
+      +'" checked>'
+      +trainee_list[group_members_list_render[i].trim()]+'</label><br>';
+      // add block
+      add_remove_gospel_personal_block('', group_members_list_render[i].trim());
+    }
+  }
   $('#group_members_block').html(group_members_list_html);
   $('#number_field').val($(this).attr('data-number'));
   $('#flyers_field').val($(this).attr('data-flyers'));
@@ -586,7 +594,7 @@ $(".list_string").click(function () {
   $("#modalAddEdit").attr("data-gospel_group", $(this).attr("data-gospel_group"));
   $("#modalAddEdit").attr("data-place", $(this).attr("data-place"));
   $("#modalAddEdit").attr("data-group_members", $(this).attr("data-group_members"));
-  $("#modalAddEdit").attr("data-number", $(this).attr("data-number"));
+  //$("#modalAddEdit").attr("data-number", $(this).attr("data-number"));
   $("#modalAddEdit").attr("data-flyers", $(this).attr("data-flyers"));
   $("#modalAddEdit").attr("data-people", $(this).attr("data-people"));
   $("#modalAddEdit").attr("data-prayers", $(this).attr("data-prayers"));
@@ -595,8 +603,8 @@ $(".list_string").click(function () {
   $("#modalAddEdit").attr("data-meets_current", $(this).attr("data-meets_current"));
   $("#modalAddEdit").attr("data-meetings_last", $(this).attr("data-meetings_last"));
   $("#modalAddEdit").attr("data-meetings_current", $(this).attr("data-meetings_current"));
-  $("#modalAddEdit").attr("data-first_contacts", $(this).attr("data-first_contacts"));
-  $("#modalAddEdit").attr("data-further_contacts", $(this).attr("data-further_contacts"));
+  //$("#modalAddEdit").attr("data-first_contacts", $(this).attr("data-first_contacts"));
+  //$("#modalAddEdit").attr("data-further_contacts", $(this).attr("data-further_contacts"));
   $("#modalAddEdit").attr("data-homes", $(this).attr("data-homes"));
   $("#modalAddEdit").attr("data-place_name", $(this).attr("data-place_name"));
   $("#modalAddEdit").attr("data-fgt_place", $(this).attr("data-fgt_place"));
@@ -628,7 +636,7 @@ $(".list_string").click(function () {
     add_remove_gospel_personal_block($(this));
   });
   // save personal block
-  if (group_members_list_render.length > 0) {
+  if ($(this).attr('data-group_members')) {
     fetch("ajax/ftt_gospel_ajax.php?type=get_gospel_members&id=" + $(this).attr("data-id"))
     .then(response => response.json())
     .then(commits => {
@@ -638,6 +646,8 @@ $(".list_string").click(function () {
         + "']").find(".first_contacts_field").val(members_data[i]['first_contacts']);
         $(".personal_block[data-member_key='" + members_data[i]['member_key']
         + "']").find(".further_contacts_field").val(members_data[i]['further_contacts']);
+        $(".personal_block[data-member_key='" + members_data[i]['member_key']
+        + "']").find(".number_field").val(members_data[i]['number']);
       }
     });
   }
@@ -1119,27 +1129,21 @@ $("#info_of").click(function () {
   }
 });
 
-// edit gospel group
-$("#gospelGroupNumber").click(function () {
-  if ($("#gospel_group_field").is(":visible")) {
-    $("#gospel_group_field").hide();
-  } else {
-    $("#gospel_group_field").show();
-  }
-});
 // смена группы
 // Подстановка данных для группы благовестия
-$("#gospel_group_field").change(function () {
+// dropdown
+$("#gospel_group_dropdown_list .dropdown-item").click(function () {
+  $("#gospel_group_field").val($(this).attr("data-group"));
   $(".personal_block").each(function () {
     $(this).remove();
   });
-  $("#gospelGroupNumber").text($(this).val());
+  $("#gospelGroupNumber").text($(this).attr("data-group"));
   let gospel_group_data = '';
   let gospel_group_data_tmp;
   let i_count = 0;
   for (let i = 0; i < gospel_groups.length; i++) {
     if (gospel_groups[i]) {
-      if (gospel_groups[i]['team'] === $("#fio_field").val() && gospel_groups[i]['group'] == Number($(this).val())) {
+      if (gospel_groups[i]['team'] === $("#fio_field").val() && gospel_groups[i]['group'] == Number($(this).attr("data-group"))) {
         gospel_group_data_tmp = trainee_list[gospel_groups[i]['member_key']];
         if (gospel_group_data_tmp) {
           if (i_count > 0) {
@@ -1161,23 +1165,29 @@ $("#gospel_group_field").change(function () {
     $("#group_members_block").html('');
   }
 });
+
+// select
+$("#gospel_group_field").change(function () {
+
+});
 // смена команды
 $('#fio_field').change(function () {
-  $("#gospel_group_field").val(0);
-  $("#gospelGroupNumber").text(0);
+  $("#gospel_group_field").val(1);
+  $("#gospelGroupNumber").text("1");
   if ($(this).css('border-color') === 'rgb(255, 0, 0)') {
     $(this).css('border-color', 'lightgray');
   }
   $(".personal_block").each(function () {
     $(this).remove();
   });
+
   // Подстановка данных для группы благовестия
   let gospel_group_data = '';
   let gospel_group_data_tmp;
   let i_count = 0;
   for (let i = 0; i < gospel_groups.length; i++) {
     if (gospel_groups[i]) {
-      if (gospel_groups[i]['team'] === $("#fio_field").val() && gospel_groups[i]['group'] == Number($(this).val())) {
+      if (gospel_groups[i]['team'] === $("#fio_field").val() && gospel_groups[i]['group'] === "1" ) { //== Number($(this).val())
         gospel_group_data_tmp = trainee_list[gospel_groups[i]['member_key']];
         if (gospel_group_data_tmp) {
           if (i_count > 0) {
@@ -1215,7 +1225,6 @@ $("#modal_extra_groups input[type='checkbox']").change(function () {
     $("#group_members_block input").each(function () {
       if ($(this).val() === elem.val()) {
         $(this).parent().remove();
-        $(this).hide();
       }
     });
   }
@@ -1237,12 +1246,14 @@ function add_remove_gospel_personal_block(elem, key) {
   }
   if (checked) {
     // add block
-    $("#comment_block").before('<div class="row personal_block" data-member_key="'+ member_key
-    +'"><div class="col-12">'
-    + '<h6>'+trainee_list[member_key]+'</h6>'
-    +'<div class="form-group"><label class="label-google">Сколько было <u>первых</u> контактов по телефону или в переписке?</label><input type="number" class="input-google short_number_field first_contacts_field" min="0" max="1000000"></div></div></div>'
-    +'<div class="row personal_block" data-member_key="'+ member_key
-    +'"><div class="col-12"><div class="form-group"><label class="label-google">Сколько было <u>повторных</u> контактов по телефону или в переписке?</label> <input type="number" class="input-google short_number_field further_contacts_field" min="0" max="1000000"></div></div></div>');
+    $("#show_gospel_modal_list").before('<div class="row personal_block" data-member_key="'+ member_key
+    +'"><div class="col-12 bg-secondary pt-1 pb-1 mb-3">'
+    + '<h5 class="d-inline-block text-white mb-0">'+trainee_list[member_key]+'</h5><i class="fa fa-trash text-white" aria-hidden="true" style="cursor:pointer; float:right; font-size:18px; margin-top: 4px;"></i></div><div class="col-12"></div>'
+    +'<div class="col-10 mb-3"><label class="label-google">Сколько было выходов на благовестие?</label></div><div class="col-2"><input type="number" class="input-google short_number_field number_field text-right" min="0" max="1000000"></div></div></div>'
+    +'<div class="row personal_block mb-3" data-member_key="'+ member_key
+    +'"><div class="col-10"><label class="label-google">Сколько было <u>новых</u> контактов по телефону или в переписке?</label></div><div class="col-2"><input type="number" class="input-google short_number_field first_contacts_field mt-3 text-right" min="0" max="1000000"></div></div>'
+    +'<div class="row personal_block mb-3" data-member_key="'+ member_key
+    +'"><div class="col-10"><label class="label-google">Сколько было <u>повторных</u> контактов по телефону или в переписке?</label></div><div class="col-2"><input type="number" class="input-google short_number_field further_contacts_field mt-3 text-right" min="0" max="1000000"></div></div>');
   } else {
     $(".personal_block").each(function () {
       if ($(this).attr("data-member_key") === elem.val()) {
@@ -1250,6 +1261,21 @@ function add_remove_gospel_personal_block(elem, key) {
       }
     });
   }
+  $(".personal_block i").click(function () {
+    let member_key_dlt = $(this).parent().parent().attr("data-member_key");
+    // remove personal block
+    $(".personal_block").each(function () {
+      if ($(this).attr("data-member_key") === member_key_dlt) {
+        $(this).remove();
+      }
+    });
+    // remove checkbox
+    $("#group_members_block input").each(function () {
+      if ($(this).val() === member_key_dlt) {
+        $(this).parent().remove();
+      }
+    });
+  });
 }
 
 $("#show_gospel_modal_list").click(function () {

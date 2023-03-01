@@ -52,7 +52,7 @@ function getGospel($condition, $memberId, $sorting, $from = "", $to = "", $team 
   }
 
   $result = [];
-  $res = db_query("SELECT fg.id, fg.date, fg.gospel_team, fg.gospel_group, fg.place, fg.group_members, fg.number, fg.flyers,
+  $res = db_query("SELECT fg.id, fg.date, fg.gospel_team, fg.gospel_group, fg.place, fg.group_members, fg.flyers,
      fg.people, fg.prayers, fg.baptism, fg.meets_last, fg.meets_current, fg.meetings_last, fg.meetings_current,
      fg.homes, fg.author, fg.comment, fg.changed,
      fgt.name AS place_name, fgt.place AS fgt_place,
@@ -149,7 +149,7 @@ function addDataBlank($data){
 
   $gospel_team = $db->real_escape_string($data['fio_field']);
   $date = $db->real_escape_string($data['date_field']);
-  $number = $db->real_escape_string($data['number_field']);
+  //$number = $db->real_escape_string($data['number_field']);
   $flyers = $db->real_escape_string($data['flyers_field']);
   $people = $db->real_escape_string($data['people_field']);
   $prayers = $db->real_escape_string($data['prayers_field']);
@@ -168,8 +168,8 @@ function addDataBlank($data){
   $comment = $db->real_escape_string($data['comment_field']);
 //`place`, '$place',
   $res = db_query("INSERT INTO `ftt_gospel`(`date`, `gospel_team`, `gospel_group`, `group_members`,
-    `number`, `flyers`, `people`, `prayers`, `baptism`, `meets_last`, `meets_current`, `meetings_last`, `meetings_current`, `homes`, `author`, `comment`, `changed`)
-  VALUES ('$date','$gospel_team','$gospel_group','$group_members','$number','$flyers','$people', '$prayers', '$baptism',
+    `flyers`, `people`, `prayers`, `baptism`, `meets_last`, `meets_current`, `meetings_last`, `meetings_current`, `homes`, `author`, `comment`, `changed`)
+  VALUES ('$date','$gospel_team','$gospel_group','$group_members','$flyers','$people', '$prayers', '$baptism',
      '$meets_last', '$meets_current', '$meetings_last', '$meetings_current',
      '$homes', '$author', '$comment', 1)");
   if ($res) {
@@ -183,13 +183,14 @@ function addDataBlank($data){
       foreach ($group_members_data as $key => $value) {
         $first_contacts_resonal = $db->real_escape_string($value->first_contacts);
         $further_contacts_resonal = $db->real_escape_string($value->further_contacts);
-        db_query("INSERT INTO `ftt_gospel_members` (`blank_id`, `member_key`, `first_contacts`, `further_contacts`, `date`)
-        VALUES ('$result','$key','$first_contacts_resonal', '$further_contacts_resonal', NOW())");
+        $number = $db->real_escape_string($value->number);
+        db_query("INSERT INTO `ftt_gospel_members` (`blank_id`, `member_key`, `number`, `first_contacts`, `further_contacts`, `date`)
+        VALUES ('$result','$key', '$number', '$first_contacts_resonal', '$further_contacts_resonal', NOW())");
       }
     }
 
 
-    $res3 = db_query("SELECT fg.id, fg.date, fg.gospel_team, fg.gospel_group, fg.place, fg.group_members, fg.number, fg.flyers,
+    $res3 = db_query("SELECT fg.id, fg.date, fg.gospel_team, fg.gospel_group, fg.place, fg.group_members, fg.flyers,
        fg.people, fg.prayers, fg.baptism, fg.meets_last, fg.meets_current, fg.meetings_last, fg.meetings_current,
        fg.homes, fg.author, fg.comment, fg.changed,
        fgt.name AS place_name, fgt.place AS fgt_place,
@@ -215,7 +216,7 @@ function updateDataBlank($data){
   $gospel_group = $db->real_escape_string($data['gospel_group_field']);
   //$place = $db->real_escape_string($data['place_field']);
   $group_members = $db->real_escape_string($data['group_members_field']);
-  $number = $db->real_escape_string($data['number_field']);
+  //$number = $db->real_escape_string($data['number_field']);
   $flyers = $db->real_escape_string($data['flyers_field']);
   $people = $db->real_escape_string($data['people_field']);
   $prayers = $db->real_escape_string($data['prayers_field']);
@@ -231,7 +232,7 @@ function updateDataBlank($data){
   $comment = $db->real_escape_string($data['comment_field']);
 //`place`='$place',
   $res = db_query("UPDATE `ftt_gospel` SET `date`='$date',`gospel_team`='$gospel_team',`gospel_group`='$gospel_group',`group_members`='$group_members',
-    `number`='$number',`flyers`='$flyers',`people`='$people',`prayers`='$prayers',`baptism`='$baptism',`meets_last`='$meets_last',
+    `flyers`='$flyers',`people`='$people',`prayers`='$prayers',`baptism`='$baptism',`meets_last`='$meets_last',
     `meets_current`='$meets_current', `meetings_last`='$meetings_last',`meetings_current`='$meetings_current',
     `homes`='$homes',`author`='$author',`comment`='$comment',`changed`= 1
     WHERE `id`='$id'");
@@ -253,15 +254,17 @@ function updateDataBlank($data){
     foreach ($group_members_data as $key => $value) {
       $first_contacts_resonal = $db->real_escape_string($value->first_contacts);
       $further_contacts_resonal = $db->real_escape_string($value->further_contacts);
+      $number = $db->real_escape_string($value->number);
       $result_check = '';
       $res_check = db_query("SELECT DISTINCT `id` FROM `ftt_gospel_members` WHERE `blank_id`='$id' AND `member_key`='$key'");
       while ($row = $res_check->fetch_assoc()) $result_check = $row['id'];
 
       if ($result_check) {
-        db_query("UPDATE `ftt_gospel_members` SET `first_contacts`='$first_contacts_resonal', `further_contacts`='$further_contacts_resonal', `date`= NOW() WHERE `blank_id`='$id' AND `member_key`='$key'");
+        db_query("UPDATE `ftt_gospel_members` SET `number`='$number', `first_contacts`='$first_contacts_resonal', `further_contacts`='$further_contacts_resonal', `date`= NOW()
+        WHERE `blank_id`='$id' AND `member_key`='$key'");
       } else {
-        db_query("INSERT INTO `ftt_gospel_members` (`blank_id`, `member_key`, `first_contacts`, `further_contacts`, `date`)
-        VALUES ('$id','$key','$first_contacts_resonal', '$further_contacts_resonal', NOW())");
+        db_query("INSERT INTO `ftt_gospel_members` (`blank_id`, `member_key`, `number`, `first_contacts`, `further_contacts`, `date`)
+        VALUES ('$id', '$key', '$number', '$first_contacts_resonal', '$further_contacts_resonal', NOW())");
       }
     }
   } else {
@@ -270,7 +273,7 @@ function updateDataBlank($data){
 
   $result;
   if ($res) {
-    $res2 = db_query("SELECT fg.id, fg.date, fg.gospel_team, fg.gospel_group, fg.place, fg.group_members, fg.number, fg.flyers,
+    $res2 = db_query("SELECT fg.id, fg.date, fg.gospel_team, fg.gospel_group, fg.place, fg.group_members, fg.flyers,
        fg.people, fg.prayers, fg.baptism, fg.meets_last, fg.meets_current, fg.meetings_last, fg.meetings_current,
        fg.homes, fg.author, fg.comment, fg.changed,
        fgt.name AS place_name, fgt.place AS fgt_place,
