@@ -48,7 +48,7 @@
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_gospel.php') { ?>
     <link href="css/ftt/ftt_gospel.css?v7" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_attendance.php') { ?>
-    <link href="css/ftt/ftt_attendance.css?v16" rel="stylesheet">
+    <link href="css/ftt/ftt_attendance.css?v17" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_list.php') { ?>
     <link href="css/ftt/ftt_list.css?v5" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_announcement.php') { ?>

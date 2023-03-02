@@ -3,6 +3,19 @@ $(document).ready(function(){
 
   // текущая дата гггг.мм.дд
   date_now_gl = date_now_gl ();
+  // teams & groups
+  global_gospel_groups_unic = [];
+  for (const property in gospel_groups) {
+    if (property) {
+      if (global_gospel_groups_unic[gospel_groups[property]["team"]]) {
+        if (gospel_groups[property]["group"] > global_gospel_groups_unic[gospel_groups[property]["team"]]) {
+          global_gospel_groups_unic[gospel_groups[property]["team"]]=gospel_groups[property]["group"];
+        }
+      } else {
+        global_gospel_groups_unic[gospel_groups[property]["team"]]=gospel_groups[property]["group"];
+      }
+    }
+  }
 
 let data_strings = ['id', 'date', 'author', 'gospel_team', 'gospel_group', 'place', 'group_members', 'flyers', 'people', 'prayers', 'baptism', 'meets_last', 'meets_current', 'meetings_last', 'meetings_current', 'first_contacts', 'further_contacts', 'homes', 'place_name', 'fgt_place', 'comment'];
 
@@ -32,6 +45,7 @@ function clear_blank() {
       $(this).remove();
     });
   }
+  $(".group_block").show();
 }
 
   // получить данные полей формы
@@ -95,19 +109,35 @@ function clear_blank() {
    // валидация значений полей
    if ($("#modalAddEdit").is(":visible")) {
      if ($('#modalAddEdit #fio_field').val() === '_none_') {
-       e.stopPropagation();
-       e.preventDefault();
        showError('Заполните поля выделенные красной рамкой.');
        $('#modalAddEdit #fio_field').css('border-color', 'red');
        if ($('#modalAddEdit #date_field').val() === '') {
          $('#modalAddEdit #date_field').css('border-color', 'red');
        }
-       if ($('#modalAddEdit #reason_field').val() === '') {
-         $('#modalAddEdit #reason_field').css('border-color', 'red');
-       }
+       e.stopPropagation();
+       e.preventDefault();
        return false;
      } else {
        $('#modalAddEdit #fio_field').css('border-color', 'lightgray');
+     }
+     let check = 0, counter = 0, error;
+     $(".personal_block input").each(function () {
+       counter++;
+       check += Number($(this).val());
+       if (counter===3) {
+         if (check === 0) {
+           showError("Поля участника " + trainee_list[$(this).parent().parent().attr("data-member_key")] + " не заполнены. Заполнните или удалите этот блок участника.");
+           error = 1;
+           return;
+         }
+         check = 0;
+         counter = 0;
+       }
+     });
+     if (error === 1) {
+       e.stopPropagation();
+       e.preventDefault();
+       return false;
      }
      return true;
    }
@@ -297,13 +327,10 @@ $('#date_field').change(function () {
 });
 
 $('#modalAddEdit .close').click(function (e) {
-  // проверка при закрытиии бланка не по кнопке сохранить
-  //ПРОРАБОТАТЬ И ВЕРНУТЬ
-// $('#group_members_field').val() !== $("#modalAddEdit").attr("data-group_members") ||
+  // проверка при закрытиии бланка не по кнопке сохранить  
   if (($('#fio_field').val() !== $("#modalAddEdit").attr("data-gospel_team") && $('#fio_field').val() !== '_none_') ||
     $('#date_field').val() !== $("#modalAddEdit").attr("data-date") ||
     ($('#gospel_group_field').val() !== $("#modalAddEdit").attr("data-gospel_group") && $('#gospel_group_field').val() !== '0') ||
-    $('#number_field').val() !== $("#modalAddEdit").attr("data-number") ||
     $('#flyers_field').val() !== $("#modalAddEdit").attr("data-flyers") ||
     $('#people_field').val() !== $("#modalAddEdit").attr("data-people") ||
     $('#prayers_field').val() !== $("#modalAddEdit").attr("data-prayers") ||
@@ -331,9 +358,6 @@ $('#modalAddEdit .modal-footer .btn-secondary').click(function (e) {
   if (($('#fio_field').val() !== $("#modalAddEdit").attr("data-gospel_team") && $('#fio_field').val() !== '_none_') ||
     $('#date_field').val() !== $("#modalAddEdit").attr("data-date") ||
     ($('#gospel_group_field').val() !== $("#modalAddEdit").attr("data-gospel_group") && $('#gospel_group_field').val() !== '0') ||
-    /*$('#group_members_field').val() !== $("#modalAddEdit").attr("data-group_members") || НАСТРОИТЬ
-    */
-    $('#number_field').val() !== $("#modalAddEdit").attr("data-number") ||
     $('#flyers_field').val() !== $("#modalAddEdit").attr("data-flyers") ||
     $('#people_field').val() !== $("#modalAddEdit").attr("data-people") ||
     $('#prayers_field').val() !== $("#modalAddEdit").attr("data-prayers") ||
@@ -417,7 +441,25 @@ $('#showModalAddEdit').click(function () {
       $('#fio_field').val("_none_");
     }
   }
+
   $('#info_of').hide();
+  if (!$("#gospel_group_field").val() || $("#gospel_group_field").val() === '0') {
+    $(".group_block").hide();
+  } else if (!$(".group_block").is(":visible")) {
+    $(".group_block").show();
+  }
+
+  // dropdown
+  render_dropdown($("#fio_field").val());
+
+  $("#gospel_group_dropdown_list .dropdown-item").click(function () {
+    if ($(this).attr("data-group") === $("#gospel_group_field").val()) {
+      return;
+    }
+    if (!check_blank_data()) {
+      change_team($(this));
+    }
+  });
 });
 
 // удалить доп задание
@@ -481,45 +523,47 @@ $('#save_extra_help').click(function (e) {
     return;
   }
   // валидация значений полей
-  if ($('#modalAddEdit #fio_field').val() === '_none_' || !$('#modalAddEdit #fio_field').val()) {
-    e.stopPropagation();
-    e.preventDefault();
+  if ($('#fio_field').val() === '_none_' || !$('#modalAddEdit #fio_field').val()) {
     showError('Заполните поля выделенные красной рамкой.');
-    $('#modalAddEdit #fio_field').css('border-color', 'red');
-    if ($('#modalAddEdit #date_field').val() === '') {
-      $('#modalAddEdit #date_field').css('border-color', 'red');
-    }
-    if ($('#modalAddEdit #reason_field').val() === '') {
-      $('#modalAddEdit #reason_field').css('border-color', 'red');
+    $('#fio_field').css('border-color', 'red');
+    if ($('#date_field').val() === '') {
+      $('#date_field').css('border-color', 'red');
     }
     return;
   } else {
-    $('#modalAddEdit #fio_field').css('border-color', 'lightgray');
+    $('#fio_field').css('border-color', 'lightgray');
   }
 
-  if ($('#modalAddEdit #date_field').val() === '') {
-    e.stopPropagation();
-    e.preventDefault();
-    $('#modalAddEdit #date_field').css('border-color', 'red');
-    if ($('#modalAddEdit #reason_field').val() === '') {
-      $('#modalAddEdit #reason_field').css('border-color', 'red');
+  if ($('#date_field').val() === '') {
+    $('#date_field').css('border-color', 'red');
+    return;
+  } else {
+    $('#date_field').css('border-color', 'lightgray');
+  }
+
+  if ($('#gospel_group_field').val() || $('#gospel_group_field').val() === '0') {
+    showError('Не указана группа благовестия.');
+    return;
+  }
+
+  let check = 0, counter = 0, error;
+  $(".personal_block input").each(function () {
+    counter++;
+    check += Number($(this).val());
+    if (counter===3) {
+      if (check === 0) {
+        showError("Поля участника " + trainee_list[$(this).parent().parent().attr("data-member_key")] + " не заполнены. Заполнните или удалите этот блок участника.");
+        error = 1;
+        return;
+      }
+      check = 0;
+      counter = 0;
     }
+  });
+  if (error === 1) {
     return;
-  } else {
-    $('#modalAddEdit #date_field').css('border-color', 'lightgray');
   }
-
-  if ($('#modalAddEdit #reason_field').val() === '') {
-    e.stopPropagation();
-    e.preventDefault();
-    $('#modalAddEdit #reason_field').css('border-color', 'red');
-    return;
-  } else {
-    $('#modalAddEdit #reason_field').css('border-color', 'lightgray');
-  }
-
   save_data_blank();
-
 });
 
 // клик по строкке, загружаем форму
@@ -651,6 +695,15 @@ $(".list_string").click(function () {
       }
     });
   }
+  render_dropdown($('#fio_field').val());
+  $("#gospel_group_dropdown_list .dropdown-item").click(function () {
+    if ($(this).attr("data-group") === $("#gospel_group_field").val()) {
+      return;
+    }
+    if (!check_blank_data()) {
+      change_team($(this));
+    }
+  });
 });
 
 // список применённых фильтров
@@ -1132,18 +1185,25 @@ $("#info_of").click(function () {
 // смена группы
 // Подстановка данных для группы благовестия
 // dropdown
-$("#gospel_group_dropdown_list .dropdown-item").click(function () {
-  $("#gospel_group_field").val($(this).attr("data-group"));
+function change_team(element) {
+  $("#gospel_group_field").val(element.attr("data-group"));
+  if (!$(".group_block").is(":visible")) {
+    $(".group_block").show();
+  }
+  $(".group_block input").each(function () {
+    $(this).val("");
+  });
   $(".personal_block").each(function () {
     $(this).remove();
   });
-  $("#gospelGroupNumber").text($(this).attr("data-group"));
+
+  $("#gospelGroupNumber").text(element.attr("data-group"));
   let gospel_group_data = '';
   let gospel_group_data_tmp;
   let i_count = 0;
   for (let i = 0; i < gospel_groups.length; i++) {
     if (gospel_groups[i]) {
-      if (gospel_groups[i]['team'] === $("#fio_field").val() && gospel_groups[i]['group'] == Number($(this).attr("data-group"))) {
+      if (gospel_groups[i]['team'] === $("#fio_field").val() && gospel_groups[i]['group'] == Number(element.attr("data-group"))) {
         gospel_group_data_tmp = trainee_list[gospel_groups[i]['member_key']];
         if (gospel_group_data_tmp) {
           if (i_count > 0) {
@@ -1164,54 +1224,75 @@ $("#gospel_group_dropdown_list .dropdown-item").click(function () {
   } else {
     $("#group_members_block").html('');
   }
-});
+}
 
-// select
-$("#gospel_group_field").change(function () {
+function check_blank_data() {
 
-});
+  let check_input = 0;
+  $(".group_block input").each(function () {
+    if ($(this).val()) {
+      check_input = 1;
+      return;
+    }
+  });
+  if (check_input === 0) {
+    $(".personal_block input").each(function () {
+      if ($(this).val()) {
+        check_input = 1;
+        return;
+      }
+    });
+  }
+  if (check_input > 0) {
+    console.log("I am");
+    if (!confirm("Внимание! Данные будут удалены?")) {
+      return true;
+    }
+  }
+  return false;
+}
+
+// dropdown
+function render_dropdown(team) {
+
+  let html_dropdown = "";
+  for (var i = 1; i <= global_gospel_groups_unic[team]; i++) {
+    html_dropdown += '<span class="dropdown-item cursor-pointer" data-group="'+i+'">'+i+'</span>';
+  }
+
+  $("#gospel_group_dropdown_list").html(html_dropdown);
+}
+
 // смена команды
 $('#fio_field').change(function () {
-  $("#gospel_group_field").val(1);
-  $("#gospelGroupNumber").text("1");
+  $("#gospel_group_field").val(0);
+  $("#gospelGroupNumber").text("");
+  $(".group_block").hide();
+  render_dropdown($(this).val());
+  $("#gospel_group_dropdown_list .dropdown-item").click(function () {
+    if (!check_blank_data()) {
+      change_team($(this));
+    }
+  });
+
   if ($(this).css('border-color') === 'rgb(255, 0, 0)') {
     $(this).css('border-color', 'lightgray');
   }
   $(".personal_block").each(function () {
     $(this).remove();
   });
-
-  // Подстановка данных для группы благовестия
-  let gospel_group_data = '';
-  let gospel_group_data_tmp;
-  let i_count = 0;
-  for (let i = 0; i < gospel_groups.length; i++) {
-    if (gospel_groups[i]) {
-      if (gospel_groups[i]['team'] === $("#fio_field").val() && gospel_groups[i]['group'] === "1" ) { //== Number($(this).val())
-        gospel_group_data_tmp = trainee_list[gospel_groups[i]['member_key']];
-        if (gospel_group_data_tmp) {
-          if (i_count > 0) {
-            gospel_group_data += "<br>";
-          }
-          // checkboxes
-          gospel_group_data_tmp = gospel_group_data_tmp.split(" ");
-          gospel_group_data += '<label class="form-check-label"> <input type="checkbox" class="mr-1" checked value="'+gospel_groups[i]['member_key']+'" data-name="'
-          +trainee_list[gospel_groups[i]['member_key']]+'">'
-          +gospel_group_data_tmp[0]+" "+gospel_group_data_tmp[1][0]+'.</label>';
-          // personal blocks
-          add_remove_gospel_personal_block('',gospel_groups[i]['member_key']);
-          i_count++;
-        }
-      }
-    }
-  }
-  if (gospel_group_data) {
-    $("#group_members_block").html(gospel_group_data);
-  } else {
-    $("#group_members_block").html('');
-  }
+  $("#group_members_block").html('');
 });
 
+// смена группы
+$("#gospel_group_dropdown_list .dropdown-item").click(function () {
+  if ($(this).attr("data-group") === $("#gospel_group_field").val()) {
+    return;
+  }
+  if (!check_blank_data()) {
+    change_team($(this));
+  }
+});
 // ==== BEGIN новый блок участников в бланке отчётности ====
 $("#modal_extra_groups input[type='checkbox']").change(function () {
   let elem = $(this);
@@ -1247,7 +1328,7 @@ function add_remove_gospel_personal_block(elem, key) {
   if (checked) {
     // add block
     $("#show_gospel_modal_list").before('<div class="row personal_block" data-member_key="'+ member_key
-    +'"><div class="col-12 bg-secondary pt-1 pb-1 mb-3">'
+    +'" style="margin-left: -16px; margin-right: -16px;"><div class="col-12 bg-secondary pt-1 pb-1 mb-3">'
     + '<h5 class="d-inline-block text-white mb-0">'+trainee_list[member_key]+'</h5><i class="fa fa-trash text-white" aria-hidden="true" style="cursor:pointer; float:right; font-size:18px; margin-top: 4px;"></i></div><div class="col-12"></div>'
     +'<div class="col-10 mb-3"><label class="label-google">Сколько было выходов на благовестие?</label></div><div class="col-2"><input type="number" class="input-google short_number_field number_field text-right" min="0" max="1000000"></div></div></div>'
     +'<div class="row personal_block mb-3" data-member_key="'+ member_key

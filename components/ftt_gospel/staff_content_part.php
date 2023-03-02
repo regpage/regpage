@@ -1,4 +1,7 @@
 <div id="extra_help_staff" class="container">
+  <?php
+  print_r($global_gospel_teams_str);
+   ?>
   <!-- Nav tabs -->
   <!--<ul class="nav nav-tabs" role="tablist">
     <li class="nav-item">
@@ -190,7 +193,7 @@
           $str_meets_last = $value['meets_last'];
           $str_meets_current = $value['meets_current'];
           $str_meetings_last = $value['meetings_last'];
-          $str_meetings_current = $value['meetings_current'];          
+          $str_meetings_current = $value['meetings_current'];
           $str_homes = $value['homes'];
           $str_changed = $value['changed'];
           $str_place_name = $value['place_name'];

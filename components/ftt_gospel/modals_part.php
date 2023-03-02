@@ -44,7 +44,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
             </div>
           </div>
         </div>
-        <div class="row mb-2">
+        <div class="row mb-2" style="margin-left: -16px; margin-right: -16px;">
           <div class="col-12 bg-secondary">
               <h5 class="text-white mb-1 mt-1" style="display: inline-block;" class="d-inline-block">Группа <span id="gospelGroupNumber"></span></h5>
                 <button id="gospel_group_dropdown" class="btn btn-secondary btn-sm dropdown-toggle float-right" type="button" data-toggle="dropdown" aria-expanded="false">
@@ -59,9 +59,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
                   <span class="dropdown-item cursor-pointer" data-group="6">6</span>
                   <span class="dropdown-item cursor-pointer" data-group="7">7</span>
                 </div>
-                <!--<input id="group_members_field" class="input-google" type="text" value="">-->
                 <div id="group_members_block" class="d-none">
-
                 </div>
               <select id="gospel_group_field" class="d-none" style="">
                 <option value="0"></option>
@@ -74,16 +72,8 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
               </select>
           </div>
         </div>
-        <!--<div class="row">
-          <div class="col-12">
-            <div class="form-group">
-              <label class="label-google" for="flyers_field">Сколько было выходов на благовестие?</label>
-              <br>
-              <input id="number_field" type="number" class="input-google short_number_field" min="0" max="1000000">
-            </div>
-          </div>
-        </div>-->
-        <div class="row mb-3 mt-3">
+        <!-- GROUP BLOCK -->
+        <div class="row mb-3 mt-3 group_block">
           <div class="col-10">
             <label class="label-google" for="flyers_field">Сколько листовок вы раздали?</label>
           </div>
@@ -91,7 +81,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
             <input id="flyers_field" type="number" class="input-google short_number_field text-right" min="0" max="1000000">
           </div>
         </div>
-        <div class="row mb-3">
+        <div class="row mb-3 group_block">
           <div class="col-10">
             <label class="label-google" for="people_field">Скольким людям вы благовествовали?</label>
           </div>
@@ -99,16 +89,15 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
             <input id="people_field" type="number" class="input-google short_number_field text-right" min="0" max="1000000">
           </div>
         </div>
-        <div class="row mb-3">
+        <div class="row mb-3 group_block">
           <div class="col-10">
-
             <label class="label-google" for="prayers_field">Сколько человек помолилось с вами?</label>
           </div>
           <div class="col-2">
             <input id="prayers_field" type="number" class="input-google short_number_field text-right" min="0" max="1000000">
           </div>
         </div>
-        <div class="row mb-3">
+        <div class="row mb-3 group_block">
           <div class="col-10">
             <label class="label-google" for="baptism_field">Сколько человек было крещено?</label>
           </div>
@@ -116,7 +105,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
             <input id="baptism_field" type="number" class="input-google short_number_field text-right" min="0" max="1000000">
           </div>
         </div>
-        <div class="row mb-3">
+        <div class="row mb-3 group_block">
           <div class="col-10">
             <label class="label-google" for="meets_last_field">Со сколькими новичками <u>прошлых</u> семестров вы встречались?</label>
           </div>
@@ -124,7 +113,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
             <input id="meets_last_field" type="number" class="input-google short_number_field mt-3 text-right" min="0" max="1000000">
           </div>
         </div>
-        <div class="row mb-3">
+        <div class="row mb-3 group_block">
           <div class="col-10">
             <label class="label-google" for="meets_current_field">Со сколькими новичками <u>текущего</u> семестра вы встречались?</label>
           </div>
@@ -132,7 +121,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
             <input id="meets_current_field" type="number" class="input-google short_number_field mt-3 text-right" min="0" max="1000000">
           </div>
         </div>
-        <div class="row mb-3">
+        <div class="row mb-3 group_block">
           <div class="col-10">
             <label class="label-google" for="meetings_last_field">Сколько новичков <u>прошлых</u> семестров было на собрании?</label>
           </div>
@@ -140,7 +129,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
             <input id="meetings_last_field" type="number" class="input-google short_number_field mt-3 text-right" min="0" max="1000000">
           </div>
         </div>
-        <div class="row mb-3">
+        <div class="row mb-3 group_block">
           <div class="col-10">
             <label class="label-google" for="meets_current_field">Сколько новичков <u>текущего</u> семестра было на собрании?</label>
           </div>
@@ -148,7 +137,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
             <input id="meetings_current_field" type="number" class="input-google short_number_field mt-3 text-right" min="0" max="1000000">
           </div>
         </div>
-        <div class="row mb-3">
+        <div class="row mb-3 group_block">
           <div class="col-10">
             <label class="label-google" for="homes_field">Сколько домов святых вы посетили?</label>
           </div>
@@ -156,23 +145,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
             <input id="homes_field" type="number" class="input-google short_number_field text-right" min="0" max="1000000">
           </div>
         </div>
-        <!--<h6 class="mt-2">Проект «Библия, открытая для всех»</h6>
-        <div class="row">
-          <div class="col-12">
-            <div class="form-group">
-              <label class="label-google" for="first_contacts_field">Сколько было <u>первых</u> контактов по телефону или в переписке?</label>
-              <input id="first_contacts_field" type="number" class="input-google short_number_field" min="0" max="1000000">
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12">
-            <div class="form-group">
-              <label class="label-google" for="further_contacts_field">Сколько было <u>повторных</u> контактов по телефону или в переписке?</label>
-              <input id="further_contacts_field" type="number" class="input-google short_number_field" min="0" max="1000000">
-            </div>
-          </div>
-        </div>-->
+        <!-- PERSONAL BLOCKS -->
         <button type="button" id="show_gospel_modal_list" class="btn btn-success btn-sm mb-2 mt-1" name="button" data-toggle="modal" data-target="#gospel_modal_list">Добавить участника</button>
         <div id="comment_block" class="form-group">
           <label class="label-google">Комментарий</label>
@@ -191,7 +164,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
         <?php if (!$serving_trainee && $ftt_access['group'] !== 'trainee'): ?>
           <button id="delete_extra_help" class="btn btn-sm btn-danger" data-dismiss="modal" aria-hidden="true" style="margin-right: 260px;"><i class="fa fa-trash" aria-hidden="true"></i></button>
         <?php endif; ?>
-        <button id="save_extra_help" class="btn btn-sm btn-success" data-dismiss="modal" aria-hidden="true" style="">Сохранить</button>
+        <button id="save_extra_help" class="btn btn-sm btn-success">Сохранить</button>
         <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Закрыть</button>
       </div>
     </div>

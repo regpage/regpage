@@ -146,7 +146,7 @@ function contactsStringsLoad(x, idStr, sort) {
 
     $('#respShow').html(options);
     options[0] = '<option selected value="_all_">';
-    $('#responsibleList').html(options);
+    //$('#responsibleList').html(options);
     options.shift();
     $('#responsibleContact').html(options);
   }
@@ -2155,61 +2155,7 @@ function sendTheOrder(ua) {
         }
         blankCounter.blank_count_status = xey;
     },3000);
-/*
-// now the object announced in contacts.php
-    var blankCounter = {
-      blank_count_their: [],
-      blank_count_their_short: [],
-      blank_count_status: [],
-      get_contacts: $.get('/ajax/contacts.php?get_contacts_prev', {cont_role: data_page.admin_contacts_role})
-            .done (function(data) {
-              blankCounter.blank_count_their = data.contacts;
-            }),
-      counter: setTimeout (function () {
-        if (!blankCounter.blank_count_their[0]) {
-          console.log(blankCounter.blank_count_their);
-          return
-        }
-        var xex = [], arr = blankCounter.blank_count_their;
-          for (var i = 0; i < arr.length; i++) {
-              if (arr[i]['responsible'] in xex) {
-                xex[arr[i]['responsible']] += 1;
-              } else {
-                xex[arr[i]['responsible']] = 1;
-              }
-          }
-        blankCounter.blank_count_their_short  = xex;
-      }, 5000),
-      status_stat: setTimeout (function () {
-        if (!blankCounter.blank_count_their[0]) {
-          console.log(blankCounter.blank_count_their);
-          return
-        }
-        var xey = [];
-        arr2 = blankCounter.blank_count_their;
-        for (var ii = 0; ii < arr2.length; ii++) {
-            if (arr2[ii]['responsible'] in xey) {
-              xey[arr2[ii]['responsible']][0] += 1;
-              if (Number(arr2[ii]['status'])) {
-                xey[arr2[ii]['responsible']][Number(arr2[ii]['status'])] += 1;
-              } else {
-                xey[arr2[ii]['responsible']][8] += 1;
-              }
-            } else {
-              xey[arr2[ii]['responsible']] = [0,0,0,0,0,0,0,0,0,'0']
-              xey[arr2[ii]['responsible']][0] = 1;
-              xey[arr2[ii]['responsible']][9] = arr2[ii]['member_name'];
-              if (Number(arr2[ii]['status'])) {
-                xey[arr2[ii]['responsible']][Number(arr2[ii]['status'])] = 1;
-              } else {
-                xey[arr2[ii]['responsible']][8] = 1;
-              }
-            }
-          }
-          blankCounter.blank_count_status = xey;
-      },7000)
-    };
-*/
+
     function addNumberToComboboxes(data, update) {
       if (!data || Object.keys(data).length < 1) {
         return;

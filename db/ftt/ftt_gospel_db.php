@@ -333,7 +333,16 @@ function getGospelGroupNumber() {
   while ($row = $res->fetch_assoc()) $result[] = $row['gospel_group'];
   return $result;
 }
-
+/*
+function getGospelGroupsNumber($team_id) {
+  global $db;
+  $team_id = $db->real_escape_string($team_id);
+  $result;
+  $res = db_query("SELECT DISTINCT `gospel_group` FROM `ftt_trainee` WHERE `gospel_group` <> 0 AND `gospel_team` = '$team_id' ORDER BY `gospel_group`");
+  while ($row = $res->fetch_assoc()) $result[] = $row['gospel_group'];
+  return $result;
+}
+*/
 function get_ftt_group_members($team_id, $goup_id = '_none_')
 {
   global $db;

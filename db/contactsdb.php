@@ -147,8 +147,11 @@ function db_getContactsStringsPrev($memberId, $contRole){
   global $db;
   $memberId = $db->real_escape_string($memberId);
   $contRole = $db->real_escape_string($contRole);
-  $previousAdmin = ' c.responsible_previous = '.$memberId;
-  /* Код ниже был для админов 2 что бы им видеть больше ответственных (каких именно?)*/
+  $previousAdmin = " c.responsible_previous = '$memberId' ";
+  /* Код ниже был для админов 2 что бы им видеть больше ответственных (responsible_previous)
+  Этот код позволяет управлять контактами других админов = 1 которые
+  по какой то причине не вернули себе контакты от админов 0
+  */
   /*if ($contRole === '2') {
     $resultCheck = [];
     $resCheck=db_query ("SELECT `member_key` FROM contacts_resp WHERE `role` = '1'");
@@ -158,12 +161,37 @@ function db_getContactsStringsPrev($memberId, $contRole){
       $previousAdmin = '('.$previousAdmin.' OR c.responsible_previous = '.$resultCheck[$i].')';
     }
   }*/
+  // нововведение
+
+  if ($contRole === '2') {
+    $resultCheck = '';
+    $responsibleCondition = '';
+    $resCheck=db_query ("SELECT `group_of_admin` FROM contacts_resp WHERE `member_key` = '$memberId'");
+    while ($rowCheck = $resCheck->fetch_assoc()) $resultCheck=$rowCheck['group_of_admin'];
+    $resultCheck = explode(',', $resultCheck);
+    if (count($resultCheck) > 0) {
+      for ($i=0; $i < count($resultCheck); $i++) {
+        $responsible = trim($resultCheck[$i]);
+        if ($responsible !== $memberId) {
+          if ($responsibleCondition) {
+            $responsibleCondition .= " OR c.responsible = '$responsible' ";
+          } else {
+            $responsibleCondition .= " c.responsible = '$responsible' ";
+          }
+        }
+
+      }
+    }
+    if ($responsibleCondition) {
+      $previousAdmin = $responsibleCondition;
+    }
+  }
 
   $result = [];
     $res=db_query ("SELECT c.id, c.status,c.responsible, c.notice, m.name AS member_name
     FROM contacts AS c
     INNER JOIN member m ON m.key = c.responsible
-    WHERE $previousAdmin AND c.notice <> 2 AND c.notice <> 3 ORDER BY member_name");
+    WHERE ($previousAdmin) AND c.notice <> 2 AND c.notice <> 3 ORDER BY member_name");
     while ($row = $res->fetch_assoc()) $result[]=$row;
 
   return $result;

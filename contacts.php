@@ -1076,7 +1076,7 @@
           data_page.isDesktop = 0;
         }
     </script>
-    <script src="/js/contacts.js?v82"></script>
+    <script src="/js/contacts.js?v83"></script>
     <script src="/js/contactsupload.js?v5"></script>
 <?php
     include_once "footer2.php";
