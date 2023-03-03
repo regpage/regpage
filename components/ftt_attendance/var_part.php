@@ -60,6 +60,10 @@ if (isset($_COOKIE['flt_sevice_one_permissions']) && !empty($_COOKIE['flt_sevice
 }
 $trainee_permissions = $memberId;
 
+if (isset($_GET['pb'])) {
+  $serving_one_permissions = '_all_';
+}
+
 if (isset($_COOKIE['flt_trainee']) && !empty($_COOKIE['flt_trainee'])) {
   $trainee_permissions = $_COOKIE['flt_trainee'];
 }
@@ -72,6 +76,11 @@ if (isset($_COOKIE['flt_permission_active']) && (!empty($_COOKIE['flt_permission
 $tab_attendance_active = 'active';
 $tab_permission_active = '';
 if (isset($_COOKIE['tab_active']) && (!empty($_COOKIE['tab_active']) || $_COOKIE['tab_active'] === 'permission')) {
+  $tab_attendance_active = '';
+  $tab_permission_active = 'active';
+}
+
+if (isset($_GET['pb'])) {
   $tab_attendance_active = '';
   $tab_permission_active = 'active';
 }

@@ -71,7 +71,7 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
         <?php } ?>
           <button id="send_permission_blank" class="btn btn-sm btn-warning">Отправить</button>
           <button id="save_permission_blank" class="btn btn-sm btn-primary">Сохранить</button>
-          <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Закрыть</button>
+          <button id="close_permission_blank" class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Закрыть</button>
         </div>
       </div>
     </div>

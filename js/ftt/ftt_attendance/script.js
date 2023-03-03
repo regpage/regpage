@@ -1370,7 +1370,7 @@ function open_blank(el_this) {
         id:"",
         member_key: $("#edit_permission_blank").attr("data-member_key"),
         date: $("#edit_permission_blank").attr("data-date"),
-        date_send: $("#edit_permission_blank").attr("data-date_send"),
+        date_send: $("#edit_permission_blank").attr("data-send_date"),
         absence_date: $("#permission_modal_date").val(),
         status: status,
         serving_one: serving_one,
@@ -1419,7 +1419,11 @@ function open_blank(el_this) {
     })
     .then(response => response.text())
     .then(commits => {
-      location.reload();
+      if (link_pb && !isNaN(link_pb)) {
+          location.href = 'ftt_attendance';
+      } else {
+        location.reload();
+      }
       //console.log(commits);
     });
   }
@@ -1947,7 +1951,11 @@ function open_blank(el_this) {
       fetch("ajax/ftt_attendance_ajax.php?type=delete_permission_blank&id="+$("#edit_permission_blank").attr("data-id")).then(response => response.json())
       .then(commits => {
         if (commits) {
-          location.reload();
+          if (link_pb && !isNaN(link_pb)) {
+           location.href = "ftt_attendance";
+         } else {
+           location.reload();
+         }
         }
       });
     }
@@ -1993,5 +2001,17 @@ function open_blank(el_this) {
     }, 30);
   });
 
+  // LINK PB
+  if (link_pb && !isNaN(link_pb)) {
+      if ($("#list_permission .list_string[data-id='"+link_pb+"']")[0]) {
+        $("#edit_permission_blank").modal("show");
+        open_blank($("#list_permission .list_string[data-id='"+link_pb+"']").click());
+      }
+  }
+  $('#close_permission_blank, #edit_permission_blank .close').click(function (e) {
+    if (link_pb && !isNaN(link_pb)) {
+     location.href = "ftt_attendance";
+    }
+  });
 // DOCUMENT READY STOP
 });

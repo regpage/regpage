@@ -1,6 +1,7 @@
 <?php
 /**
  * Приводим даты к нужному виду
+ * date_convert::yyyymmdd_to_ddmmyyyy($date)
  */
 class date_convert {
   //dd.mm.yyyy_to_yyyy-mm-dd

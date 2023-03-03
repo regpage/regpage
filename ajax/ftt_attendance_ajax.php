@@ -6,6 +6,10 @@ include_once "../db/ftt/ftt_attendance_db.php";
 include_once "../db/classes/schedule_class.php";
 include_once "../db/classes/db_operations.php";
 include_once '../db/classes/date_convert.php';
+include_once '../db/classes/emailing.php';
+include_once '../db/classes/trainee_data.php';
+include_once '../db/classes/member.php';
+
 // Подключаем ведение лога
 include_once "../extensions/write_to_log/write_to_log.php";
 

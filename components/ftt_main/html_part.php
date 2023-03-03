@@ -12,7 +12,7 @@ if ($ftt_access['group'] === 'staff' || $ftt_access['group'] === 'trainee') {
       <!-- Блоки разделов  -->
         <div id="ftt_sub_container" class="container tab-pane active" style="background-color: white; min-width: 350px; padding-left: 5px; padding-right: 5px;">
           <?php
-          if ($_SERVER['REQUEST_URI'] === '/ftt_schedule' || $_SERVER['PHP_SELF'] === '/ftt_schedule.php') {
+          if ($thispage === 'ftt_schedule') {
             if ($ftt_access['staff_time_zone'] === '03') {
               ?>
               <p class="">Расписание будет включено позже.</p>
@@ -28,19 +28,19 @@ if ($ftt_access['group'] === 'staff' || $ftt_access['group'] === 'trainee') {
               <?php
               //include_once 'components/ftt_schedule/staff_content_part_2.php';
             }
-          } elseif ($_SERVER['REQUEST_URI'] === '/ftt_announcement' || $_SERVER['PHP_SELF'] === '/ftt_announcement.php') {
+          } elseif ($thispage === 'ftt_announcement') {
             // REFACTORING Перенесено в новый файл
-          } elseif ($_SERVER['REQUEST_URI'] === '/ftt_attendance' || $_SERVER['PHP_SELF'] === '/ftt_attendance.php') {
+          } elseif ($thispage === 'ftt_attendance') {
             if ($ftt_access['group'] === 'trainee') {
               include_once 'components/ftt_attendance/content_part.php';
             } elseif ($ftt_access['group'] === 'staff') {
               include_once 'components/ftt_attendance/staff_content_part.php';
             }
-          } elseif ($_SERVER['REQUEST_URI'] === '/ftt_service' || $_SERVER['PHP_SELF'] === '/ftt_service.php') {
+          } elseif ($thispage === 'ftt_service') {
             // REFACTORING Разрабатывать в новом файле
-          } elseif ($_SERVER['REQUEST_URI'] === '/ftt_gospel' || $_SERVER['PHP_SELF'] === '/ftt_gospel.php') {
+          } elseif ($thispage === 'ftt_gospel') {
             if ($ftt_access['group'] === 'staff' || $ftt_access['group'] === 'trainee') {
-              include_once 'components/ftt_gospel/staff_content_part.php';              
+              include_once 'components/ftt_gospel/staff_content_part.php';
             }/* elseif ($ftt_access['group'] === 'trainee') {
               include_once 'components/ftt_gospel/content_part.php';
             }*/
@@ -48,7 +48,7 @@ if ($ftt_access['group'] === 'staff' || $ftt_access['group'] === 'trainee') {
           } /*elseif ($_SERVER['REQUEST_URI'] === '/ftt_absence') {
             include_once 'components/ftt_attendance/content_part.php';
             // code...
-          } */elseif ($_SERVER['REQUEST_URI'] === '/ftt_extrahelp' || $_SERVER['PHP_SELF'] === '/ftt_extrahelp.php') {
+          } */elseif ($thispage === 'ftt_extrahelp') {
             if ($ftt_access['group'] === 'staff' || $serving_trainee) {
               include_once 'components/ftt_extra_help/staff_content_part.php';
             } elseif ($ftt_access['group'] === 'trainee') {

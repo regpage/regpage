@@ -38,6 +38,9 @@ for (let i = 0; i < trainee_list_tmp.length; i = i + 5) {
   trainee_list_full[trainee_list_tmp[i]] = {'name': trainee_list_tmp[i+1], 'male': trainee_list_tmp[i+2], 'semester': trainee_list_tmp[i+3], 'time_zone': trainee_list_tmp[i+4]};
 }
 
+// переход по ссылке
+let link_pb =  "<?php if (isset($_GET['pb'])) {echo $_GET['pb'];} else {echo '';}  ?>";
+
 // admin key
 let admin_id_gl = "<?php echo $memberId;?>";
 </script>

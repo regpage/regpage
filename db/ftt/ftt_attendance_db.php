@@ -405,7 +405,13 @@ function set_permission($sessions, $adminId)
   $absence_date = $db->real_escape_string($sessions->sheet->absence_date);
   $date = $db->real_escape_string($sessions->sheet->date);
   $status = $db->real_escape_string($sessions->sheet->status);
-  $date_send = $db->real_escape_string($sessions->sheet->date_send);
+  // непонятный баг если передаёт данные из пустого атрибута то свойство как бы отсутствует
+  if (isset($sessions->sheet->date_send)) {
+    $date_send = $db->real_escape_string(isset($sessions->sheet->date_send));
+  } else {
+    $date_send = '';
+  }
+
   $comment = $db->real_escape_string($sessions->sheet->comment);
   $serving_one = $db->real_escape_string($sessions->sheet->serving_one);
   $archive_sessions = $db->real_escape_string($sessions->sheet->archive_sessions);
@@ -438,15 +444,16 @@ function set_permission($sessions, $adminId)
   $archive_sessions_field = "`archive_sessions`, ";
   $archive_sessions_value = "'$archive_sessions', ";
   $archive_sessions_update = " `archive_sessions` = '$archive_sessions', ";
-
-  if ($status === '1') {
+  $is_send_blank = false;
+  if ($status === '1' && ($date_send === '0000-00-00 00:00:00' || empty($date_send))) {
     $date_send = 'NOW()';
     $date_send_update = ' `date_send`= NOW(), ';
     $date_decision = "''";
+    $is_send_blank = true;
   } elseif ($status === '2' || $status === '3') {
     $date_decision_update = ' `decision_date`= NOW(), ';
     $date_decision = 'NOW()';
-  } else {
+  } else if ($status === '0' || empty($status)) {
     $date_send = "''";
     $date_decision = "''";
   }
@@ -463,6 +470,14 @@ function set_permission($sessions, $adminId)
       WHERE `id` = '$sheet_id'");
     db_query("DELETE FROM `ftt_permission` WHERE `sheet_id` = '$sheet_id'");
   }
+
+  // EMAILING
+  if ($is_send_blank) {
+    $email_text = 'Получен новый лист отсутствия от ' . Member::get_name($member_key) . " на " . date_convert::yyyymmdd_to_ddmmyyyy($absence_date) . "<br>Ссылка на бланк: <br><br>" . "https://reg-page.ru/ftt_attendance.php?pb=" . $sheet_id . '<br><br>Отправлено ' . date("d.m.y, H:i");
+    
+    emailing::send_by_key(trainee_data::get_serving_one($member_key), 'Новый лист отсутствия', $email_text);
+  }
+
 
   // получаем attendance sheet id для бланков одобренных "Сегодня"
   $today = false;

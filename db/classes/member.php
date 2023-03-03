@@ -5,7 +5,7 @@
 class Member
 {
 
-  function get_name ($memberId)
+  static function get_name ($memberId)
   {
       global $db;
       $memberId = $db->real_escape_string($memberId);
