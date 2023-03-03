@@ -23,8 +23,8 @@ $memberId = db_getMemberIdBySessionId (session_id());
 
 // security
 if (!isset($_COOKIE['PHPSESSID']) && !isset($_SERVER['HTTP_USER_AGENT'])) {
-  write_to_log::debug($memberId, session_id());
-  write_to_log::debug($memberId, 'PHPSESSID & HTTP_USER_AGENT missing');
+  //write_to_log::debug($memberId, session_id());
+  //write_to_log::debug($memberId, 'PHPSESSID & HTTP_USER_AGENT missing');
   exit;
 }
 

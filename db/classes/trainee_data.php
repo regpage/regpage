@@ -36,7 +36,7 @@ class trainee_data {
      $res = db_query("SELECT `serving_one` FROM ftt_trainee WHERE `member_key`= '$member_key'");
      while ($row = $res->fetch_assoc()) $result = $row['serving_one'];
 
-     return get_data($result);
+     return $result;
   }
 }
 

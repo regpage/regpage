@@ -473,9 +473,9 @@ function set_permission($sessions, $adminId)
 
   // EMAILING
   if ($is_send_blank) {
-    $email_text = 'Получен новый лист отсутствия от ' . Member::get_name($member_key) . " на " . date_convert::yyyymmdd_to_ddmmyyyy($absence_date) . "<br>Ссылка на бланк: <br><br>" . "https://reg-page.ru/ftt_attendance.php?pb=" . $sheet_id . '<br><br>Отправлено ' . date("d.m.y, H:i");
-    
-    emailing::send_by_key(trainee_data::get_serving_one($member_key), 'Новый лист отсутствия', $email_text);
+    $email_text = short_name::no_middle(Member::get_name($member_key)) . ' создал(а) лист отсутствия на ' . date_convert::yyyymmdd_to_ddmmyyyy($absence_date) . "<br><br>" . "https://reg-page.ru/ftt_attendance.php?pb=" . $sheet_id . '<br><br>Лист отсутствия создан ' . date("d.m.y, H:i");
+
+    emailing::send_by_key(trainee_data::get_serving_one($member_key), 'Лист отсутствия '.short_name::no_middle(Member::get_name($member_key)), $email_text);
   }
 
 
