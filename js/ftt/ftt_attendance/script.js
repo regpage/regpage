@@ -1766,7 +1766,7 @@ function open_blank(el_this) {
   });
 
   $("#apply_permission_blank, #deny_permission_blank").click(function (e) {
-    if (valid_field()) {
+    if (valid_field() && !compare_date($("#permission_modal_date").val())) {
       return;
     }
     if (e.target.id === "apply_permission_blank") {
