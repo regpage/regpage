@@ -327,7 +327,7 @@ $('#date_field').change(function () {
 });
 
 $('#modalAddEdit .close').click(function (e) {
-  // проверка при закрытиии бланка не по кнопке сохранить  
+  // проверка при закрытиии бланка не по кнопке сохранить
   if (($('#fio_field').val() !== $("#modalAddEdit").attr("data-gospel_team") && $('#fio_field').val() !== '_none_') ||
     $('#date_field').val() !== $("#modalAddEdit").attr("data-date") ||
     ($('#gospel_group_field').val() !== $("#modalAddEdit").attr("data-gospel_group") && $('#gospel_group_field').val() !== '0') ||
@@ -1357,6 +1357,11 @@ function add_remove_gospel_personal_block(elem, key) {
       }
     });
   });
+
+  // mobile design for dynamic elements
+  if ($(window).width()<=769) {
+    $("#modalAddEdit .input-google.short_number_field").parent().css("padding-left", "0px");
+  }
 }
 
 $("#show_gospel_modal_list").click(function () {
