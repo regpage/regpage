@@ -541,7 +541,7 @@ $('#save_extra_help').click(function (e) {
     $('#date_field').css('border-color', 'lightgray');
   }
 
-  if ($('#gospel_group_field').val() || $('#gospel_group_field').val() === '0') {
+  if (!$('#gospel_group_field').val() || $('#gospel_group_field').val() === '0') {
     showError('Не указана группа благовестия.');
     return;
   }

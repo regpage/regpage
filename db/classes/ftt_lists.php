@@ -109,6 +109,12 @@ class ftt_lists {
 
   // получаем обучающихся по админу
   static function get_trainees_by_staff($serving_one_id) {
+
+    $result = [];
+    if (empty($serving_one_id)) {
+      return $result;
+    }
+
     global $db;
     $serving_one_id = $db->real_escape_string($serving_one_id);
     $condition;
@@ -117,7 +123,7 @@ class ftt_lists {
     } else {
       $condition = "tra.serving_one='$serving_one_id'";
     }
-    $result = [];
+
     $res = db_query("SELECT tra.member_key, tra.serving_one, m.name
       FROM ftt_trainee AS tra
       INNER JOIN member m ON m.key = tra.member_key

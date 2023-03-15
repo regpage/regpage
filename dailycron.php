@@ -97,5 +97,5 @@ function db_checkDeleteOldAdminActivity() {
   }
 }
 
-db_checkDeleteOldAdminActivity();
+//db_checkDeleteOldAdminActivity();
 ?>
