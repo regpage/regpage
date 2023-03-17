@@ -69,10 +69,8 @@ class statistics {
       if (count($memberId) > 0) {
         foreach ($memberId as $key => $value) {
           $key = $db->real_escape_string($key);
-          if (!empty($condition)) {
-            $condition .= " OR ";
-          }
-          $condition .= " (`member_key`='$key' AND `archive`=0) ";
+          $res = db_query("SELECT COUNT(`id`) AS total FROM `ftt_extra_help` WHERE `member_key`='$key' AND `archive`=0");
+          while ($row = $res->fetch_assoc()) $row['total'] ? $result[$key] = $row['total'] : '';
         }
       } else {
         return $result;
@@ -80,9 +78,6 @@ class statistics {
     } else {
       return $result;
     }
-    $res = db_query("SELECT * FROM `ftt_extra_help` WHERE {$condition}");
-    while ($row = $res->fetch_assoc()) $result[] = $row;
-
     return $result;
   }
 
@@ -193,22 +188,110 @@ class statistics {
       if (count($memberId) > 0) {
         foreach ($memberId as $key => $value) {
           $key = $db->real_escape_string($key);
-          if (!empty($condition)) {
-            $condition .= " OR ";
-          }
-          $condition .= " (`member_key`='$key' AND `status`=0 AND `date` != CURDATE() AND `date` >= CURDATE() - INTERVAL 4 DAY)";
+          //`date` >= CURDATE() - INTERVAL 4 DAY `date` != CURDATE() AND DATE_ADD(DATE(NOW()), INTERVAL -4 DAY)
+          $condition = " `member_key`='$key' AND `status`= 0 AND `date` <= CURDATE() - INTERVAL 4 DAY";
+          $res = db_query("SELECT DISTINCT `date` FROM ftt_attendance_sheet WHERE {$condition} ORDER BY `date` DESC");
+          while ($row = $res->fetch_assoc()) $result[$key] = $row['date'];
         }
       } else {
         $condition=0;
       }
     }
-    $res = db_query("SELECT fas.*, m.name FROM ftt_attendance_sheet AS fas
-      INNER JOIN member m ON m.key = fas.member_key
-      WHERE $condition ORDER BY m.name, fas.date");
-    while ($row = $res->fetch_assoc()) $result[] = $row;
 
     return $result;
   }
+
+  // бланки отчёта благовестия за неделю
+  static function gospelBlanksPeriod($day=7)
+  {
+    global $db;
+    $day = $db->real_escape_string($day);
+    $result = [];
+
+    foreach ($memberId as $key => $value) {
+      $condition = " `date` >= CURDATE() - INTERVAL {$day} DAY AND `date` != CURDATE()";
+      $res = db_query("SELECT `id` FROM `ftt_gospel` WHERE {$condition}");
+      while ($row = $res->fetch_assoc()) $result[] = $row['id'];
+    }
+
+    return $result;
+  }
+
+  // личная статистика по благовестию
+  static function gospelPersonal($memberId)
+  {
+    global $db;
+    $blanksId = self::gospelBlanksPeriod();
+    $result = [];
+    $conditionBlanks = '';
+    $and = '';
+    if (is_array($blanksId)) {
+      if (count($blanksId) > 0) {
+        foreach ($blanksId as $key => $value) {
+          if ($key == 0) {
+            $conditionBlanks = " (`blank_id` = '{$value}' ";
+          } else {
+            $conditionBlanks .= " OR `blank_id` = '{$value}' ";
+          }
+        }
+      }
+    }
+    if ($conditionBlanks) {
+      $and = ' AND ';
+      $conditionBlanks .= ')';
+    }
+
+    if (is_array($memberId)) {
+      if (count($memberId) > 0) {
+        foreach ($memberId as $key => $value) {
+          $key = $db->real_escape_string($key);
+          $condition = " `member_key`='$key' AND `date` >= NOW() - INTERVAL 14 DAY AND `date` != CURDATE()";
+          $res = db_query("SELECT * FROM `ftt_gospel_members` WHERE {$condition} {$and} {$conditionBlanks}");
+          while ($row = $res->fetch_assoc()) $result[] = $row;
+        }
+      } else {
+        $condition=0;
+      }
+    }
+    return $result;
+  }
+
+  // ВАРИАНТ личная статистика по благовестию
+  static function gospelPersonalSeven($memberId)
+  {
+    global $db;
+    $result = [];
+    $and = '';
+    $conditionBlanks = '';
+    if (is_array($memberId)) {
+      if (count($memberId) > 0) {
+        foreach ($memberId as $key => $value) {
+          if ($key == 0) {
+            $conditionBlanks = " (fgm.member_key = '{$value}' ";
+          } else {
+            $conditionBlanks .= " OR fgm.member_key = '{$value}' ";
+          }
+        }
+      } else {
+        return $result;
+      }
+    } else {
+      return $result;
+    }
+    if ($conditionBlanks) {
+      $and = ' AND ';
+      $conditionBlanks .= ')';
+    }
+
+    $res = db_query("SELECT fgm.*
+      FROM `ftt_gospel_members` AS fgm
+      INNER JOIN ftt_gospel fg ON fg.id = fgm.blank_id
+      WHERE fg.date >= CURDATE() - INTERVAL 7 DAY AND fg.date != CURDATE() {$and} {$conditionBlanks}");
+      while ($row = $res->fetch_assoc()) $result[] = $row;
+
+      return $result;
+  }
+
 }
 
 

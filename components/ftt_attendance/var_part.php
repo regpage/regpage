@@ -82,7 +82,18 @@ if (isset($_COOKIE['tab_active']) && (!empty($_COOKIE['tab_active']) || $_COOKIE
 
 if (isset($_GET['pb'])) {
   $tab_attendance_active = '';
-  $tab_permission_active = 'active';
+  $tab_permission_active = 'active';  
+}
+
+$serving_one_selected = $memberId;
+if (isset($_COOKIE['filter_serving_one']) && $_COOKIE['filter_serving_one']) {
+  $serving_one_selected = $_COOKIE['filter_serving_one'];
+}
+
+if (isset($_GET['my'])) {
+  $tab_attendance_active = 'active';
+  $tab_permission_active = '';
+  $serving_one_selected = $memberId;
 }
 
 // statistics

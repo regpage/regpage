@@ -76,7 +76,7 @@ if ($(window).width()<=769) {
   });
   $(".list_string .col_n_7").css("padding-left", "5px");
   $(".list_string .col_n_7_2").each(function () {
-    $(this).text('К-'+$(this).text());
+    $(this).text('Н-'+$(this).text());
   });
   $(".list_string .col_n_8").css("padding-left", "5px");
   $(".list_string .col_n_8_2").each(function () {

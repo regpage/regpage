@@ -45,7 +45,24 @@ if ($serving_trainee) {
   $serving_trainee_checked = 'checked';
   $serving_trainee_selected = 'selected';
 }
-// корректировки
+
+
+// куки
+if (isset($_GET['my']) && isset($_COOKIE['sevice_one_select'])) {
+  $_COOKIE['sevice_one_select'] = $memberId;
+}
+
+if (isset($_GET['my']) && isset($_COOKIE['trainee_select'])) {
+  $_COOKIE['trainee_select'] = '_all_';
+}
+
+if (isset($_GET['my']) && isset($_COOKIE['semesters_select'])) {
+  $_COOKIE['semesters_select'] = '_all_';
+}
+
+if (isset($_GET['my']) && isset($_COOKIE['tasks_select'])) {
+  $_COOKIE['tasks_select'] = '0';
+}
 
 //$days = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
 

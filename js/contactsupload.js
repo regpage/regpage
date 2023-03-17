@@ -122,7 +122,7 @@ $('.saveUploadItemsNew').click(function () {
     $('#uploadCountry').css('border-color', 'red');
     return
   } else if (!$('#periodOfContacts').val()) {
-    showError('Заполните поле ПЕРИОД');
+    showError('Заполните поле ГРУППА');
     return
   }
   $('#saveSpinner').show();

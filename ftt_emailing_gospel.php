@@ -20,21 +20,22 @@ require_once 'db/classes/date_convert.php';
 
 function getServiceOnesWithTrainees ()
 {
-  //global $db;
-  //$member_key = $db->real_escape_string($member_key);
+  global $db;
+
   $result = [];
   $res = db_query("SELECT DISTINCT `serving_one` FROM ftt_trainee");
   while ($row = $res->fetch_assoc()) $result[] = $row['serving_one'];
-  //print_r($result);
+  print_r($result);
   foreach ($result as $key => $value) {
-    //echo $value."<br>";
+    $value = $db->real_escape_string($value);
+    echo $value."<br>";
     $traine_list = ftt_lists::get_trainees_by_staff($value);
     // тема
-    $topic = 'Сводные данные на '.date('d.m');
+    $topic = 'Статистика благовестия на '.date('d.m');
 
     // тело письма
     // объявления
-    $announcements = '';
+    /*$announcements = '';
     $announcements_data = statistics::announcement_unread_data($value);
     if (count($announcements_data) > 0) {
       $announcements = '<b>Непрочитанные объявления:</b><br>';
@@ -73,30 +74,30 @@ function getServiceOnesWithTrainees ()
       }
       $attendance .= "<a href='https://reg-page.ru/ftt_attendance.php?my=1'>Перейти в раздел «Посещаемость»</a><br>";
     }
-
+*/
     // доп. задания
-    $extraHelp = '';
-    $extraHelpData = statistics::extra_help_data($traine_list);
+    $gospelText = '';
+    $gospelTextData = statistics::gospelPersonalSeven($traine_list);
     if (count($extraHelpData) > 0) {
       if (empty($announcements) && empty($absence) && empty($attendance)) {
-        $extraHelp = '<b>Дополнительные задания:</b><br>';
+        $extraHelp = '<b>Обучающиеся — выходов, новых контактов, повторных.</b><br>';
       } else {
-        $extraHelp = '<br><b>Дополнительные задания:</b><br>';
+        $extraHelp = '<br><b>Обучающиеся — выходов, новых контактов, повторных.</b><br>';
       }
-      foreach ($extraHelpData as $key_4 => $value_4) {
-        if ($value_4) {
-          $extraHelp .= "<span>" . short_name::no_middle(Member::get_name($key_4)) . " — " . $value_4 . "</span><br>";
+      foreach ($gospelTextData as $key_1 => $value_1) {
+        if ($value_1) {
+          $gospel_text .= "<span>" . short_name::no_middle(Member::get_name($value_1['member_key'])) . " — " . $value_1['number'] . ', '. $value_1['first_contacts']. ', '. $value_1['further_contacts'] . "</span><br>";
         }
       }
-      $extraHelp .= "<a href='https://reg-page.ru/ftt_extrahelp.php?my=1'>Перейти в раздел «Доп. задания»</a><br>";
+      //$gospel_text .= "<a href='https://reg-page.ru/ftt_extrahelp.php?my=1'>Перейти в раздел «Доп. задания»</a><br>";
     }
 
-    //Emailing::send_by_key()
+    //Emailing::send_by_key
     //Emailing::send
     //a.rudanok@gmail.com
     //info@new-constellation.ru
-    if ($announcements || $absence || $attendance || $extraHelp) {
-      Emailing::send_by_key($value, $topic, $announcements . $absence . $attendance . $extraHelp);
+    if ($gospel_text) {
+      Emailing::send('info@new-constellation.ru', $topic, $gospelText);
     } else {
       // add str to log file
     }

@@ -124,7 +124,7 @@
         <div class="col-1 cursor-pointer text-right text_grey" title="Сколько листовок раздали?"><b>Л</b></div>
         <div class="col-1 cursor-pointer text-right text_grey" title="Скольким людям благовествовали?"><b>Б</b></div>
         <div class="col-1 cursor-pointer text-right text_grey" title="Сколько человек помолилось?"><b>М</b></div>
-        <div class="col-1 cursor-pointer text-right text_grey" title="Сколько было первых контактов?"><b>К</b></div>
+        <div class="col-1 cursor-pointer text-right text_grey" title="Сколько было новых контактов?"><b>Н</b></div>
         <div class="col-1 cursor-pointer text-right text_grey" title="Сколько было повторных контактов?"><b>П</b></div>
         <div class="col-1 cursor-pointer text-right text_grey" style="max-width: 15px"></div>
       </div>

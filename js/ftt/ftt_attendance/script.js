@@ -1410,8 +1410,6 @@ function open_blank(el_this) {
     return session_str;
   }
   function save_permissions(data) {
-    // cookie
-    setCookie("tab_active", "permission");
     // fetch
     fetch("ajax/ftt_attendance_ajax.php?type=set_permission", {
       method: 'POST',
@@ -1420,7 +1418,7 @@ function open_blank(el_this) {
     .then(response => response.text())
     .then(commits => {
       if (link_pb && !isNaN(link_pb)) {
-          location.href = 'ftt_attendance';
+        location.href = 'ftt_attendance';
       } else {
         location.reload();
       }
@@ -2006,6 +2004,8 @@ function open_blank(el_this) {
       if ($("#list_permission .list_string[data-id='"+link_pb+"']")[0]) {
         $("#edit_permission_blank").modal("show");
         open_blank($("#list_permission .list_string[data-id='"+link_pb+"']").click());
+        // cookie
+        setCookie("tab_active", "permission");
       }
   }
   $('#close_permission_blank, #edit_permission_blank .close').click(function (e) {

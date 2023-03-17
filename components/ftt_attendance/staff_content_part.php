@@ -24,13 +24,7 @@
   <!-- Tab panes -->
   <div id="tab_content_extra_help" class="tab-content">
     <div id="current_extra_help" class="container tab-pane <?php echo $tab_attendance_active; ?>"><br>
-      <div id="bar_extra_help" class="btn-group mb-2">
-        <?php
-        $serving_one_selected = $memberId;
-        if (isset($_COOKIE['filter_serving_one']) && $_COOKIE['filter_serving_one']) {
-          $serving_one_selected = $_COOKIE['filter_serving_one'];
-        }
-         ?>
+      <div id="bar_extra_help" class="btn-group mb-2">        
         <select id="sevice_one_select" class="form-control form-control-sm">
           <option value="_all_">Все служащие</option>
           <?php foreach ($serving_ones_list as $key => $value):
