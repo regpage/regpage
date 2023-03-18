@@ -1813,7 +1813,7 @@ function handleAidInteraction(userId, amount, eventId, eventName){
     });
 }
 
-function getStatistics(stats, eventName, localitiesLength, countParking, countTransport, countAccomSisters, countAccomBrothers, countBrothers, countSisters, countries){
+function getStatistics(stats, eventName, localitiesLength, countParking, countTransport, countAccomSisters, countAccomBrothers, countBrothers, countSisters, countries, countFlag){
     var first = 0, second = 0, third = 0, forth = 0, fifth = 0, def  = 0, state;
     for(var i in stats){
         state = stats[i];
@@ -1831,6 +1831,7 @@ function getStatistics(stats, eventName, localitiesLength, countParking, countTr
     var responce = '<div class="statistic-block"><p>Регистрация подтверждена — '+(forth)+' чел.</p><p>Ожидание подтверждения — '+(regWait)+' чел.</p>' +
         '<p>Не зарегистрирован — '+(def)+' чел.</p>'+
         '<p><strong>Всего участников — '+(stats.length - third - fifth )+' чел.</strong></p>'+
+        '<p><strong>Фактически зарегистрировались — '+countFlag+' чел.</strong></p>'+
         '<hr>'+
         '<p>Ожидание отмены — '+(third)+' чел.</p>'+
         '<p>Регистрация отменена — '+(fifth)+' чел.</p></div>';

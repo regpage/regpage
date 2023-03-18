@@ -265,11 +265,13 @@ class statistics {
     $conditionBlanks = '';
     if (is_array($memberId)) {
       if (count($memberId) > 0) {
+        $count = 0;
         foreach ($memberId as $key => $value) {
-          if ($key == 0) {
-            $conditionBlanks = " (fgm.member_key = '{$value}' ";
+          if ($count == 0) {
+            $count++;
+            $conditionBlanks = " (fgm.member_key = '{$key}' ";
           } else {
-            $conditionBlanks .= " OR fgm.member_key = '{$value}' ";
+            $conditionBlanks .= " OR fgm.member_key = '{$key}' ";
           }
         }
       } else {
@@ -281,10 +283,9 @@ class statistics {
     if ($conditionBlanks) {
       $and = ' AND ';
       $conditionBlanks .= ')';
-    }
+    }    
 
-    $res = db_query("SELECT fgm.*
-      FROM `ftt_gospel_members` AS fgm
+    $res = db_query("SELECT fgm.* FROM ftt_gospel_members AS fgm
       INNER JOIN ftt_gospel fg ON fg.id = fgm.blank_id
       WHERE fg.date >= CURDATE() - INTERVAL 7 DAY AND fg.date != CURDATE() {$and} {$conditionBlanks}");
       while ($row = $res->fetch_assoc()) $result[] = $row;

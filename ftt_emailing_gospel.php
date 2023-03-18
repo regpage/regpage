@@ -76,16 +76,12 @@ function getServiceOnesWithTrainees ()
     }
 */
     // доп. задания
-    $gospelText = '';
+    $gospelText = 'Я ТУТ!';
     $gospelTextData = statistics::gospelPersonalSeven($traine_list);
-    if (count($extraHelpData) > 0) {
-      if (empty($announcements) && empty($absence) && empty($attendance)) {
-        $extraHelp = '<b>Обучающиеся — выходов, новых контактов, повторных.</b><br>';
-      } else {
-        $extraHelp = '<br><b>Обучающиеся — выходов, новых контактов, повторных.</b><br>';
-      }
+    if (count($gospelTextData) > 0) {
+      $extraHelp = '<b>Обучающиеся — выходов, новых контактов, повторных.</b><br>';
       foreach ($gospelTextData as $key_1 => $value_1) {
-        if ($value_1) {
+        if ($value_1['member_key']) {
           $gospel_text .= "<span>" . short_name::no_middle(Member::get_name($value_1['member_key'])) . " — " . $value_1['number'] . ', '. $value_1['first_contacts']. ', '. $value_1['further_contacts'] . "</span><br>";
         }
       }

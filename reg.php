@@ -1264,8 +1264,8 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
             states = [], localities = [], countries = [],
             countParking = 0, countTransport = 0,
             countAccomSisters = 0, countAccomBrothers = 0,
-            countBrothers = 0, countSisters = 0,
-            locality, state, male, accom, transport, parking, country;
+            countBrothers = 0, countSisters = 0, countFlag = 0,
+            locality, state, male, accom, transport, parking, country, flag;
 
         $("div.tab-pane.active .desctopVisible tr[class|='regmem'] ").each(function () {
             locality = $(this).attr("data-locality");
@@ -1275,6 +1275,7 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
             accom = $(this).attr("data-accom");
             transport = $(this).attr("data-transport");
             parking = $(this).attr("data-parking");
+            flag = $(this).attr("data-attended");
 
             if(parking === '1'){
                 countParking++;
@@ -1299,6 +1300,11 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
             if(male === '0' && state === '04'){
                 countSisters++;
             }
+
+            if(flag === '1'){
+                countFlag++;
+            }
+
             states.push($(this).attr('data-regstate'));
             if(!in_array(locality, localities) && state !== '03' && state !== '05')
                 localities.push(locality);
@@ -1307,7 +1313,7 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
                 countries.push(country);
         });
 
-        getStatistics(states, eventName, localities.length, countParking, countTransport, countAccomSisters, countAccomBrothers, countBrothers, countSisters, countries.length);
+        getStatistics(states, eventName, localities.length, countParking, countTransport, countAccomSisters, countAccomBrothers, countBrothers, countSisters, countries.length, countFlag);
     });
 
     $('.aid-statistic').click(function(){
