@@ -217,6 +217,7 @@ write_to_log::info($memberId, 'Админ зашёл в панел админи�
               <div class="col-sm-8">
                 <h3>Контакты</h3>
                 <hr>
+                <?php // include_once 'panelsource/content/contacts/category.php'; ?> 
                 <h4>Статистика по статусам</h4>
                 <div class="row">
                   <div id="InfoStatisticStatusesContainer" class="col-sm-12">

@@ -835,7 +835,7 @@ $('#citizenshipGlobalUploadVal, #localityGlobalUploadVal').change(function() {
       if (fieldsCount < 1) {
         $('#uploadMsgError').text('Файл не должен быть пустым');
         $('#uploadSpinner').hide();
-        return
+        return;
       }
       getUpdaterEditor(xlsxDataGlobal);
       //console.log(xlsxDataGlobal);

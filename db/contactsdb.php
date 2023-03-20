@@ -412,7 +412,7 @@ function db_statusMultipleSet($id, $statusNew){
 
 function db_getUniqueProjects ()
 {
-    $res=db_query ("SELECT DISTINCT project FROM contacts WHERE notice <> 2 ORDER BY project");
+    $res=db_query ("SELECT DISTINCT project FROM contacts WHERE notice <> 2 AND notice <> 3 ORDER BY project");
 
     $projects = array ();
     while ($row = $res->fetch_assoc()) $projects[]=$row['project'];

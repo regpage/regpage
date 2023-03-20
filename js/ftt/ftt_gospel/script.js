@@ -1330,7 +1330,7 @@ function add_remove_gospel_personal_block(elem, key) {
     $("#show_gospel_modal_list").before('<div class="row personal_block" data-member_key="'+ member_key
     +'" style="margin-left: -16px; margin-right: -16px;"><div class="col-12 bg-secondary pt-1 pb-1 mb-3">'
     + '<h5 class="d-inline-block text-white mb-0">'+trainee_list[member_key]+'</h5><i class="fa fa-trash text-white" aria-hidden="true" style="cursor:pointer; float:right; font-size:18px; margin-top: 4px;"></i></div><div class="col-12"></div>'
-    +'<div class="col-10 mb-3"><label class="label-google">Сколько было выходов на благовестие?</label></div><div class="col-2"><input type="number" class="input-google short_number_field number_field text-right" min="0" max="1000000"></div></div></div>'
+    +'<div class="col-10 mb-3"><label class="label-google">Сколько было выходов в город на благовестие?</label></div><div class="col-2"><input type="number" class="input-google short_number_field number_field text-right" min="0" max="1000000"></div></div></div>'
     +'<div class="row personal_block mb-3" data-member_key="'+ member_key
     +'"><div class="col-10"><label class="label-google">Сколько было <u>новых</u> контактов по телефону или в переписке?</label></div><div class="col-2"><input type="number" class="input-google short_number_field first_contacts_field mt-3 text-right" min="0" max="1000000"></div></div>'
     +'<div class="row personal_block mb-3" data-member_key="'+ member_key
