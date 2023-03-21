@@ -10,7 +10,7 @@ $schedule_filled;
 $correction_data_tmp;
 $today_day = date('N');
 $today_day_NEW = ($today_day - 1) * 86400;
-$date_start_day = date('d.m', time()-$today_day_NEW); //NEW
+$date_start_day = date('d.m', time() - $today_day_NEW); //NEW
 $ftt_schedule_start_mls = strtotime($ftt_schedule_start);
 $ftt_schedule_end_mls = strtotime($ftt_schedule_end);
 // даты корректировок приводим к нужному типу
@@ -149,13 +149,16 @@ if (count($correction_data) > 0 ) {
       $loop_schedule[] = $loop_schedule_extra[$i3];
     }
   }
+
   // Подготавливаем вспомогательный массив
   $sort_field = [];
   foreach ($loop_schedule as $key => $row) {
     $sort_field[$key] = $row[$day];
   }
+
   // Сортируем
   array_multisort($sort_field, SORT_ASC, $loop_schedule);
+
   // Сохраняем изменения
 if ($day === 'day1') {
   $schedule_day1_2 = $loop_schedule;
@@ -173,6 +176,65 @@ if ($day === 'day1') {
   $schedule_day7_2 = $loop_schedule;
 }
 }
+
+// day 1
+// Подготавливаем вспомогательный массив для сортировки
+$sort_field_1 = [];
+foreach ($schedule_day1_2 as $key => $row) {
+  $sort_field_1[$key] = $row['day1'];
+}
+
+// Сортируем
+array_multisort($sort_field_1, SORT_ASC, $schedule_day1_2);
+
+// day 2
+$sort_field_2 = [];
+foreach ($schedule_day2_2 as $key => $row) {
+  $sort_field_2[$key] = $row['day2'];
+}
+
+array_multisort($sort_field_2, SORT_ASC, $schedule_day2_2);
+
+// day 3
+$sort_field_3 = [];
+foreach ($schedule_day3_2 as $key => $row) {
+  $sort_field_3[$key] = $row['day3'];
+}
+
+array_multisort($sort_field_3, SORT_ASC, $schedule_day3_2);
+
+// day 4
+$sort_field_4 = [];
+foreach ($schedule_day4_2 as $key => $row) {
+  $sort_field_4[$key] = $row['day4'];
+}
+
+array_multisort($sort_field_4, SORT_ASC, $schedule_day4_2);
+
+// day 5
+$sort_field_5 = [];
+foreach ($schedule_day5_2 as $key => $row) {
+  $sort_field_5[$key] = $row['day5'];
+}
+
+array_multisort($sort_field_5, SORT_ASC, $schedule_day5_2);
+
+// day 6
+$sort_field_6 = [];
+foreach ($schedule_day6_2 as $key => $row) {
+  $sort_field_6[$key] = $row['day6'];
+}
+
+array_multisort($sort_field_6, SORT_ASC, $schedule_day6_2);
+
+// day 4
+$sort_field_7 = [];
+foreach ($schedule_day7_2 as $key => $row) {
+  $sort_field_7[$key] = $row['day7'];
+}
+
+array_multisort($sort_field_7, SORT_ASC, $schedule_day7_2);
+
   // Проверяем что расписание не выходит за период обучения
   if (($date_day_stamp < $ftt_schedule_start_mls) || ($date_day_stamp > $ftt_schedule_end_mls)) {
     $id_head = 'id_head_'.$i;

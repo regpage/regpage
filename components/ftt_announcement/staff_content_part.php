@@ -95,6 +95,8 @@
             } else {
               $publication_badge = "<span class='badge badge-{$badge_class}'>{$badge_text}</span>";
             }
+            $short_comment='';
+            $short_comment_mbl ='';
             if ($comment) {
               $short_comment = '<br>';
             }
@@ -107,7 +109,7 @@
               $show_string = '';
             }
 
-            echo "<div class='row list_string' {$show_string} data-id='{$id}' data-date='{$date}' data-time='{$time}' data-publication='{$publication}' data-header='{$header}' data-author='{$member_key}' data-comment='{$comment}' data-time_zone='{$time_zone}' data-archive_date='{$archive_date}'><div class='col-1 pl-1'>{$date_show}</div><div class='col-2'>{$time_zone_show}</div><div class='col-4'><span>{$short_header}</span><span class='light_text_grey'>{$short_comment}</span></div><div class='col-3'>{$recipients_groups_text}</div><div class='col-2'>{$publication_badge}</div><div class='col-12' style='display:none;'>{$short_header}</div><div class='col-12 light_text_grey' style='display:none;'>{$short_comment_mbl}</div></div>";
+            echo "<div class='row list_string' {$show_string} data-id='{$id}' data-date='{$date}' data-time='{$time}' data-publication='{$publication}' date-s_comment='{$short_comment}' data-header='{$header}' data-author='{$member_key}' data-comment='{$comment}' data-time_zone='{$time_zone}' data-archive_date='{$archive_date}'><div class='col-1 pl-1'>{$date_show}</div><div class='col-2'>{$time_zone_show}</div><div class='col-4'><span>{$short_header}</span><span class='light_text_grey'>{$short_comment}</span></div><div class='col-3'>{$recipients_groups_text}</div><div class='col-2'>{$publication_badge}</div><div class='col-12' style='display:none;'>{$short_header}</div><div class='col-12 light_text_grey' style='display:none;'>{$short_comment_mbl}</div></div>";
           }
           ?>
        </div>

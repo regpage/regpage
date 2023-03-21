@@ -156,6 +156,7 @@ if (count($correction_data) > 0 ) {
     }
   }
   }
+  // дополнительные строки
   if (count($loop_schedule_extra) > 0) {
     for ($i3=0; $i3 < count($loop_schedule_extra); $i3++) {
       $loop_schedule[] = $loop_schedule_extra[$i3];
@@ -166,25 +167,86 @@ if (count($correction_data) > 0 ) {
   foreach ($loop_schedule as $key => $row) {
     $sort_field[$key] = $row[$day];
   }
+
   // Сортируем
   array_multisort($sort_field, SORT_ASC, $loop_schedule);
+
   // Сохраняем изменения
-if ($day === 'day1') {
-  $schedule_day1 = $loop_schedule;
-} else if ($day === 'day2') {
-  $schedule_day2 = $loop_schedule;
-} else if ($day === 'day3') {
-   $schedule_day3 = $loop_schedule;
-} else if ($day === 'day4') {
-  $schedule_day4 = $loop_schedule;
-} else if ($day === 'day5') {
-  $schedule_day5 = $loop_schedule;
-} else if ($day === 'day6') {
-  $schedule_day6 = $loop_schedule;
-} else if ($day === 'day7') {
-  $schedule_day7 = $loop_schedule;
+  if ($day === 'day1') {
+    $schedule_day1 = $loop_schedule;
+  } else if ($day === 'day2') {
+    $schedule_day2 = $loop_schedule;
+  } else if ($day === 'day3') {
+    $schedule_day3 = $loop_schedule;
+ } else if ($day === 'day4') {
+    $schedule_day4 = $loop_schedule;
+  } else if ($day === 'day5') {
+    $schedule_day5 = $loop_schedule;
+  } else if ($day === 'day6') {
+    $schedule_day6 = $loop_schedule;
+  } else if ($day === 'day7') {
+    $schedule_day7 = $loop_schedule;
+  }
 }
+
+// day 1
+// Подготавливаем вспомогательный массив для сортировки
+$sort_field_1 = [];
+foreach ($schedule_day1 as $key => $row) {
+  $sort_field_1[$key] = $row['day1'];
 }
+
+// Сортируем
+array_multisort($sort_field_1, SORT_ASC, $schedule_day1);
+
+// day 2
+$sort_field_2 = [];
+foreach ($schedule_day2 as $key => $row) {
+  $sort_field_2[$key] = $row['day2'];
+}
+
+array_multisort($sort_field_2, SORT_ASC, $schedule_day2);
+
+// day 3
+$sort_field_3 = [];
+foreach ($schedule_day3 as $key => $row) {
+  $sort_field_3[$key] = $row['day3'];
+}
+
+array_multisort($sort_field_3, SORT_ASC, $schedule_day3);
+
+// day 4
+$sort_field_4 = [];
+foreach ($schedule_day4 as $key => $row) {
+  $sort_field_4[$key] = $row['day4'];
+}
+
+array_multisort($sort_field_4, SORT_ASC, $schedule_day4);
+
+// day 5
+$sort_field_5 = [];
+foreach ($schedule_day5 as $key => $row) {
+  $sort_field_5[$key] = $row['day5'];
+}
+
+array_multisort($sort_field_5, SORT_ASC, $schedule_day5);
+
+// day 6
+$sort_field_6 = [];
+foreach ($schedule_day6 as $key => $row) {
+  $sort_field_6[$key] = $row['day6'];
+}
+
+array_multisort($sort_field_6, SORT_ASC, $schedule_day6);
+
+// day 4
+$sort_field_7 = [];
+foreach ($schedule_day7 as $key => $row) {
+  $sort_field_7[$key] = $row['day7'];
+}
+
+array_multisort($sort_field_7, SORT_ASC, $schedule_day7);
+
   // Проверяем что расписание не выходит за период обучения
   if (($date_day_stamp < $ftt_schedule_start_mls) || ($date_day_stamp > $ftt_schedule_end_mls)) {
     $id_head = 'id_head_'.$i;
