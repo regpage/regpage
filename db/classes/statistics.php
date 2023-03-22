@@ -201,7 +201,7 @@ class statistics {
     return $result;
   }
 
-  // бланки отчёта благовестия за неделю
+  // ИСПОЛЬЗУЕТСЯ ТОЛЬКО МЕТОДОМ gospelPersonal() бланки отчёта благовестия за неделю
   static function gospelBlanksPeriod($day=7)
   {
     global $db;
@@ -217,7 +217,7 @@ class statistics {
     return $result;
   }
 
-  // личная статистика по благовестию
+  // НЕ ИСПОЛЬЗУЕТСЯ личная статистика по благовестию
   static function gospelPersonal($memberId)
   {
     global $db;
@@ -256,10 +256,29 @@ class statistics {
     return $result;
   }
 
-  // ВАРИАНТ личная статистика по благовестию
-  static function gospelPersonalSeven($memberId)
+  // статистика по благовестию, команда.
+  static function gospelTeamReport($memberId, $period=7)
   {
     global $db;
+    $memberId = $db->real_escape_string($memberId);
+    $team = '';
+    $blanks = [];
+
+    $res = db_query("SELECT `gospel_team` FROM `ftt_serving_one` WHERE `member_key`='$memberId'");
+    while ($row = $res->fetch_assoc()) $team = $row['gospel_team'];
+    if ($team) {
+      $res = db_query("SELECT * FROM `ftt_gospel` WHERE `gospel_team`='$team' AND `date` >= CURDATE() - INTERVAL {$period} DAY AND `date` != CURDATE() ORDER BY `gospel_group`");
+      while ($row = $res->fetch_assoc()) $blanks[] = $row;
+    }
+
+    return $blanks;
+
+  }
+  // ВАРИАНТ личная статистика по благовестию
+  static function gospelPersonalSeven($memberId, $period=7)
+  {
+    global $db;
+    $period = $db->real_escape_string($period);
     $result = [];
     $and = '';
     $conditionBlanks = '';
@@ -283,11 +302,11 @@ class statistics {
     if ($conditionBlanks) {
       $and = ' AND ';
       $conditionBlanks .= ')';
-    }    
+    }
 
     $res = db_query("SELECT fgm.* FROM ftt_gospel_members AS fgm
       INNER JOIN ftt_gospel fg ON fg.id = fgm.blank_id
-      WHERE fg.date >= CURDATE() - INTERVAL 7 DAY AND fg.date != CURDATE() {$and} {$conditionBlanks}");
+      WHERE fg.date >= CURDATE() - INTERVAL {$period} DAY AND fg.date != CURDATE() {$and} {$conditionBlanks}");
       while ($row = $res->fetch_assoc()) $result[] = $row;
 
       return $result;

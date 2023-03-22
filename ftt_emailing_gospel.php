@@ -34,71 +34,70 @@ function getServiceOnesWithTrainees ()
     $topic = 'Статистика благовестия на '.date('d.m');
 
     // тело письма
-    // объявления
-    /*$announcements = '';
-    $announcements_data = statistics::announcement_unread_data($value);
-    if (count($announcements_data) > 0) {
-      $announcements = '<b>Непрочитанные объявления:</b><br>';
-      foreach ($announcements_data as $key_1 => $value_1) {
-        $announcements .= '<span>' . $value_1['header'] . '</span><br>';
-      }
-      $announcements .= "<a href='https://reg-page.ru/ftt_announcement.php'>Перейти в раздел  «Объявления».</a><br>";
-    }
-
-    // листы отсутствия
-    $absence = '';
-    $absence_data = statistics::permissions_data($traine_list);
-    if (count($absence_data) > 0) {
-      if (empty($announcements)) {
-        $absence = '<b>Листы отсутствия:</b><br>';
-      } else {
-        $absence = '<br><b>Листы отсутствия:</b><br>';
-      }
-      foreach ($absence_data as $key_2 => $value_2) {
-        $absence .= "<a href='https://reg-page.ru/ftt_attendance.php?pb={$value_2['id']}'>".short_name::no_middle(Member::get_name($value_2['member_key'])) . "  — на " . date_convert::yyyymmdd_to_ddmm($value_2['absence_date'])."</a><br>";
-      }
-    }
-
-    // листы посещаемости
-    $attendance = '';
-    $attendance_data = statistics::attendanceFour($traine_list);
-
-    if (count($attendance_data) > 0) {
-      if (empty($announcements) && empty($absence)) {
-        $attendance .= '<b>Нет листов посещаемости за четыре дня:</b><br>';
-      } else {
-        $attendance .= '<br><b>Нет листов посещаемости за четыре дня:</b><br>';
-      }
-      foreach ($attendance_data as $key_3 => $value_3) {
-        $attendance .= "<span>" . short_name::no_middle(Member::get_name($key_3)) . " — с " . date_convert::yyyymmdd_to_ddmm($value_3) . "</span><br>";
-      }
-      $attendance .= "<a href='https://reg-page.ru/ftt_attendance.php?my=1'>Перейти в раздел «Посещаемость»</a><br>";
-    }
-*/
     // доп. задания
-    $gospelText = 'Я ТУТ!';
+    $gospelText = '';
+    $gospelTeamReportData = statistics::gospelTeamReport($value);
+
+    if (count($gospelTeamReportData) > 0) {
+      $team = $gospelTeamReportData[0]['gospel_team'];
+      $res = db_query("SELECT `name` FROM `ftt_gospel_team` WHERE `id`='$team'");
+      while ($row = $res->fetch_assoc()) $team = $row['name'];
+      $gospelText = "<b>Команда {$team}.</b><br><br>";
+      $statistic = [];
+      foreach ($gospelTeamReportData as $key_1 => $value_1) {
+        if (!isset($statistic[$value_1['gospel_group']])) {
+          $statistic[$value_1['gospel_group']] = array($value_1['ftt_gospel'], $value_1['flyers'], $value_1['people'], $value_1['prayers'], $value_1['baptism'], $value_1['meets_last'], $value_1['meets_current'], $value_1['meetings_last'], $value_1['meetings_current'], $value_1['homes']);
+        }
+
+        $statistic[$value_1['gospel_group']][0] += $value_1['flyers'];
+        $statistic[$value_1['gospel_group']][1] += $value_1['people'];
+        $statistic[$value_1['gospel_group']][2] += $value_1['prayers'];
+        $statistic[$value_1['gospel_group']][3] += $value_1['baptism'];
+        $statistic[$value_1['gospel_group']][4] += $value_1['meets_last'];
+        $statistic[$value_1['gospel_group']][5] += $value_1['meets_current'];
+        $statistic[$value_1['gospel_group']][6] += $value_1['meetings_last'];
+        $statistic[$value_1['gospel_group']][7] += $value_1['meetings_current'];
+        $statistic[$value_1['gospel_group']][8] += $value_1['homes'];
+
+        // preparing
+
+      }
+
+      foreach ($statistic as $key_1 => $value_1) {
+        $gospelText .= '<span>Группа </span>';
+         $gospelText .= '<span>'.$key_1 . ' Лист. — ' . $value_1[0] . ', Людей — ' . $value_1[1] . ', Мол. — ' . '</span>';
+         $gospelText .= $value_1[2] . ', Крес. — ' .$value_1[3] . ', Встр. — ' . $value_1[4] . ', Всрт. Тек. — ';
+         $gospelText .= $value_1[5] . ', Собр. — ' . $value_1[6] . ', Собр. Тек. — ' . $value_1[7] . ', Дом.  — ' . $value_1[8] . '</span><br>';
+      }
+
+      if (false) {
+        $gospelText .= "<span>" . short_name::no_middle(Member::get_name($value_1['member_key'])) . " — " . $value_1['number'] . ', '. $value_1['first_contacts']. ', '. $value_1['further_contacts'] . "</span><br>";
+      }
+      $gospelText .= '<br><br>';
+    }
+
     $gospelTextData = statistics::gospelPersonalSeven($traine_list);
     if (count($gospelTextData) > 0) {
-      $extraHelp = '<b>Обучающиеся — выходов, новых контактов, повторных.</b><br>';
+      $gospelText .= '<b>Выходы на благовестие и звонки</b><br><br>Обучающиеся — выходов, новых контактов, повторных.<br>';
       foreach ($gospelTextData as $key_1 => $value_1) {
         if ($value_1['member_key']) {
-          $gospel_text .= "<span>" . short_name::no_middle(Member::get_name($value_1['member_key'])) . " — " . $value_1['number'] . ', '. $value_1['first_contacts']. ', '. $value_1['further_contacts'] . "</span><br>";
+          $gospelText .= "<span>" . short_name::no_middle(Member::get_name($value_1['member_key'])) . " — " . $value_1['number'] . ', '. $value_1['first_contacts']. ', '. $value_1['further_contacts'] . "</span><br>";
         }
       }
-      //$gospel_text .= "<a href='https://reg-page.ru/ftt_extrahelp.php?my=1'>Перейти в раздел «Доп. задания»</a><br>";
+      //$gospelText .= "<a href='https://reg-page.ru/ftt_extrahelp.php?my=1'>Перейти в раздел «Доп. задания»</a><br>";
     }
-
     //Emailing::send_by_key
     //Emailing::send
     //a.rudanok@gmail.com
     //info@new-constellation.ru
-    if ($gospel_text) {
+    if ($gospelText) {
       Emailing::send('info@new-constellation.ru', $topic, $gospelText);
     } else {
       // add str to log file
     }
   }
-  echo "success";
+  $count = count($gospelTeamReportData);
+  echo "success<br>";
   return 1;
 }
 
