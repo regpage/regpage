@@ -202,6 +202,7 @@ class statistics {
   }
 
   // ИСПОЛЬЗУЕТСЯ ТОЛЬКО МЕТОДОМ gospelPersonal() бланки отчёта благовестия за неделю
+/*  
   static function gospelBlanksPeriod($day=7)
   {
     global $db;
@@ -255,7 +256,7 @@ class statistics {
     }
     return $result;
   }
-
+*/
   // статистика по благовестию, команда.
   static function gospelTeamReport($memberId, $period=7)
   {
@@ -304,8 +305,9 @@ class statistics {
       $conditionBlanks .= ')';
     }
 
-    $res = db_query("SELECT fgm.* FROM ftt_gospel_members AS fgm
-      INNER JOIN ftt_gospel fg ON fg.id = fgm.blank_id
+    $res = db_query("SELECT fgm.*, m.name FROM ftt_gospel_members AS fgm
+      INNER JOIN ftt_gospel fg ON fgm.blank_id = fg.id
+      LEFT JOIN member m ON fgm.member_key = m.key
       WHERE fg.date >= CURDATE() - INTERVAL {$period} DAY AND fg.date != CURDATE() {$and} {$conditionBlanks}");
       while ($row = $res->fetch_assoc()) $result[] = $row;
 

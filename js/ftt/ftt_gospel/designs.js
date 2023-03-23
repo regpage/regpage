@@ -62,25 +62,47 @@ if ($(window).width()<=769) {
   // list
   //$(".list_string .col_n_2").removeClass('col-4').addClass('col-8');
 
-  $(".list_string .col_n_4").css("padding-left", "5px");
+  $(".list_string .col_n_4").css("padding", "0px").removeClass('text-right');
+
   $(".list_string .col_n_4_2").each(function () {
-    $(this).text('Л-'+$(this).text());
+    if ($(this).text()) {
+      $(this).text('Л'+$(this).text());
+    } else {
+      $(this).text('Л0');
+    }
   });
-  $(".list_string .col_n_5").css("padding-left", "5px");
+  $(".list_string .col_n_5").css("padding", "0px").removeClass('text-right');
   $(".list_string .col_n_5_2").each(function () {
-    $(this).text('Б-'+$(this).text());
+    if ($(this).text()) {
+      $(this).text('Б'+$(this).text());
+    } else {
+      $(this).text('Б0');
+    }
   });
-  $(".list_string .col_n_6").css("padding-left", "5px");
+  $(".list_string .col_n_6").css("padding", "0px").removeClass('text-right');
   $(".list_string .col_n_6_2").each(function () {
-    $(this).text('М-'+$(this).text());
+    if ($(this).text()) {
+      $(this).text('М'+$(this).text());
+    } else {
+      $(this).text('М0');
+    }
+
   });
-  $(".list_string .col_n_7").css("padding-left", "5px");
+  $(".list_string .col_n_7").css("padding", "0px").removeClass('text-right');
   $(".list_string .col_n_7_2").each(function () {
-    $(this).text('Н-'+$(this).text());
+    if ($(this).text()) {
+      $(this).text('Н'+$(this).text());
+    } else {
+      $(this).text('Н0');
+    }
   });
-  $(".list_string .col_n_8").css("padding-left", "5px");
+  $(".list_string .col_n_8").css("padding", "0px").removeClass('text-right');
   $(".list_string .col_n_8_2").each(function () {
-    $(this).text('П-'+$(this).text());
+    if ($(this).text()) {
+      $(this).text('П'+$(this).text());
+    } else {
+      $(this).text('П0');
+    }
   });
 } else {
   if ($('#periods').val() === 'range') {

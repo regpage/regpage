@@ -52,5 +52,5 @@ let admin_id_gl = "<?php echo $memberId;?>";
 
 
 </script>
-<script src="/js/ftt/ftt_gospel/script.js?v41"></script>
-<script src="/js/ftt/ftt_gospel/designs.js?v9"></script>
+<script src="/js/ftt/ftt_gospel/script.js?v42"></script>
+<script src="/js/ftt/ftt_gospel/designs.js?v10"></script>
