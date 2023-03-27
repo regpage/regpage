@@ -17,15 +17,16 @@ require_once 'db/classes/ftt_lists.php';
 require_once 'db/classes/member.php';
 require_once 'db/classes/short_name.php';
 require_once 'db/classes/date_convert.php';
+require_once 'db/classes/statistic/gospel_stat.php';
 
 function getServiceOnesWithTrainees ()
 {
   global $db;
   $result = [];
+  $success = '';
   // служащие с обучающимися.
   $res = db_query("SELECT `member_key` FROM `ftt_serving_one`");
   while ($row = $res->fetch_assoc()) $result[] = $row['member_key'];
-  print_r($result);
   foreach ($result as $key => $value) {
     $value = $db->real_escape_string($value);
     // команды служащего
@@ -41,21 +42,18 @@ function getServiceOnesWithTrainees ()
     while ($row = $groupPreparing->fetch_assoc()) $sOGroups[$row['gospel_group']] = $row['gospel_group'];
     // обучающиеся служащего
     $sOTrainees = [];
-    $sOTraineesPreparing = db_query("SELECT `member_key`, `gospel_group` FROM `ftt_trainee` WHERE `serving_one` = '$value'");
+    $sOTraineesPreparing = db_query("SELECT `member_key`, `gospel_group` FROM `ftt_trainee` WHERE `gospel_team` = '$sOteam'");
     while ($row = $sOTraineesPreparing->fetch_assoc()) $sOTrainees[$row['member_key']] = $row['gospel_group'];
-
-    $traine_list = ftt_lists::get_trainees_by_staff($value);
     // тема
-    $topic = 'Статистика благовестия на '.date('d.m');
-// ДОБАВИТЬ НУЛЕВЫЕ КОМАНДЫ ГРУППЫ И ОБУЧАЮЩИХСЯ
+    $topic = 'Статистика благовестия на '.date("d.m", mktime(0, 0, 0, date("m"), date("d")-1));
+    // НУЛЕВЫЕ (по которым нет отчёта в выбраном периоде) ГРУППЫ И ОБУЧАЮЩИХСЯ
     // тело письма
-    // доп. задания
     $gospelText = '';
     $gospelTeamReportData = statistics::gospelTeamReport($value);
 
     // ГРУППЫ Найти по ключу и если нет добавить
     if (count($gospelTeamReportData) > 0 || !empty($sOteam)) {
-      $gospelText = 'Статистика благовестия за неделю с ' . date("d.m", mktime(0, 0, 0, date("m"), date("d")-7)) . ' по ' . date('d.m') .':<br><br>';
+      $gospelText = 'Статистика благовестия за неделю с ' . date("d.m", mktime(0, 0, 0, date("m"), date("d")-7)) . ' по ' . date("d.m", mktime(0, 0, 0, date("m"), date("d")-1)) .' (со среды по вторник):<br><br>';
       if (count($gospelTeamReportData) == 0) {
         foreach ($sOGroups as $key_all_group => $value_all_group) {
           $gospelTeamReportData[] = array('gospel_group' => $value_all_group, 'flyers' => 0, 'people' => 0, 'prayers' => 0, 'baptism' => 0, 'meets_last' => 0, 'meets_current' => 0, 'meetings_last' => 0, 'meetings_current' => 0, 'homes' => 0);
@@ -104,11 +102,11 @@ function getServiceOnesWithTrainees ()
 
       $gospelText .= '<br>';
     }
-
-    $gospelTextData = statistics::gospelPersonalSeven($traine_list);
+    $trainee_list_team = GospelStatistic::traineesByTeamName($sOteam);
+    $gospelTextData = statistics::gospelPersonalSeven($trainee_list_team);
     if (count($gospelTextData) > 0 || count($sOTrainees) > 0) {
       if (empty($gospelText)) {
-        $gospelText = 'Статистика благовестия за неделю с ' . date("d.m", mktime(0, 0, 0, date("m"), date("d")-7)) . ' по ' . date('d.m') . ':<br><br>';
+        $gospelText = 'Статистика благовестия за неделю с ' . date("d.m", mktime(0, 0, 0, date("m"), date("d")-7)) . ' по ' . date("d.m", mktime(0, 0, 0, date("m"), date("d")-1)) . ' (со среды по вторник):<br><br>';
       }
       $trainePrepare = [];
       foreach ($gospelTextData as $key_1 => $value_1) {
@@ -153,14 +151,19 @@ function getServiceOnesWithTrainees ()
     //Emailing::send
     //a.rudanok@gmail.com
     //info@new-constellation.ru
+    //Emailing::send_by_key($value, $topic, $gospelText);
+    //Emailing::send('info@new-constellation.ru', $topic, $gospelText);
+
     if ($gospelText) {
-      Emailing::send('a.rudanok@gmail.com', $topic, $gospelText);
+      $success .= "$value - статистика благовестия - success<br>";
+      //Emailing::send('info@new-constellation.ru', $topic, $gospelText);
+      Emailing::send_by_key($value, $topic, $gospelText);
     } else {
-      // add str to log file
+      $success .= "$value - статистика благовестия - failure<br>";
     }
   }
 
-  echo "<br>success";
+  echo $success;
   return 1;
 }
 

@@ -201,74 +201,24 @@ class statistics {
     return $result;
   }
 
-  // ИСПОЛЬЗУЕТСЯ ТОЛЬКО МЕТОДОМ gospelPersonal() бланки отчёта благовестия за неделю
-/*  
-  static function gospelBlanksPeriod($day=7)
-  {
-    global $db;
-    $day = $db->real_escape_string($day);
-    $result = [];
 
-    foreach ($memberId as $key => $value) {
-      $condition = " `date` >= CURDATE() - INTERVAL {$day} DAY AND `date` != CURDATE()";
-      $res = db_query("SELECT `id` FROM `ftt_gospel` WHERE {$condition}");
-      while ($row = $res->fetch_assoc()) $result[] = $row['id'];
-    }
-
-    return $result;
-  }
-
-  // НЕ ИСПОЛЬЗУЕТСЯ личная статистика по благовестию
-  static function gospelPersonal($memberId)
-  {
-    global $db;
-    $blanksId = self::gospelBlanksPeriod();
-    $result = [];
-    $conditionBlanks = '';
-    $and = '';
-    if (is_array($blanksId)) {
-      if (count($blanksId) > 0) {
-        foreach ($blanksId as $key => $value) {
-          if ($key == 0) {
-            $conditionBlanks = " (`blank_id` = '{$value}' ";
-          } else {
-            $conditionBlanks .= " OR `blank_id` = '{$value}' ";
-          }
-        }
-      }
-    }
-    if ($conditionBlanks) {
-      $and = ' AND ';
-      $conditionBlanks .= ')';
-    }
-
-    if (is_array($memberId)) {
-      if (count($memberId) > 0) {
-        foreach ($memberId as $key => $value) {
-          $key = $db->real_escape_string($key);
-          $condition = " `member_key`='$key' AND `date` >= NOW() - INTERVAL 14 DAY AND `date` != CURDATE()";
-          $res = db_query("SELECT * FROM `ftt_gospel_members` WHERE {$condition} {$and} {$conditionBlanks}");
-          while ($row = $res->fetch_assoc()) $result[] = $row;
-        }
-      } else {
-        $condition=0;
-      }
-    }
-    return $result;
-  }
-*/
   // статистика по благовестию, команда.
   static function gospelTeamReport($memberId, $period=7)
   {
     global $db;
     $memberId = $db->real_escape_string($memberId);
+    $period = $db->real_escape_string($period);
     $team = '';
     $blanks = [];
-
+    if ($period === '_all_') {
+      $condition = '';
+    } else {
+      $condition = " AND `date` >= CURDATE() - INTERVAL {$period} DAY AND `date` != CURDATE() ";
+    }
     $res = db_query("SELECT `gospel_team` FROM `ftt_serving_one` WHERE `member_key`='$memberId'");
     while ($row = $res->fetch_assoc()) $team = $row['gospel_team'];
     if ($team) {
-      $res = db_query("SELECT * FROM `ftt_gospel` WHERE `gospel_team`='$team' AND `date` >= CURDATE() - INTERVAL {$period} DAY AND `date` != CURDATE() ORDER BY `gospel_group`");
+      $res = db_query("SELECT * FROM `ftt_gospel` WHERE `gospel_team`='$team' {$condition} ORDER BY `gospel_group`");
       while ($row = $res->fetch_assoc()) $blanks[] = $row;
     }
 
