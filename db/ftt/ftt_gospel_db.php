@@ -381,6 +381,13 @@ function get_gospel_members($blankId) {
   return $result;
 }
 
+function get_all_gospel_members() {
+  $result = [];
+  $res = db_query("SELECT * FROM `ftt_gospel_members`");
+  while ($row = $res->fetch_assoc()) $result[] = $row;
+  return $result;
+}
+
 // СТАТИСТИКА БЛАГОВЕСТИЯ
 function gospelStatFun($team, $teamsList)
 {

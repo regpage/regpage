@@ -164,6 +164,18 @@
           foreach (getGospel($periods_cookie, $traineeId, $sort_cookie, $period_from_cookie, $period_to_cookie) as $key => $value):
           //$short_name_service_one = short_name::no_middle($serving_ones_list[$value['serving_one']]);
 
+          $str_number = 0;
+          $str_first = 0;
+          $str_further = 0;
+
+          foreach ($gospelMembersList as $key_1 => $value_1) {
+            if ($value_1['blank_id'] === $value['id']) {              
+              $str_number += $value_1['number'];
+              $str_first += $value_1['first_contacts'];
+              $str_further += $value_1['further_contacts'];
+            }
+          }
+
           $str_id = $value['id'];
           $str_date = $value['date'];
           $str_date_short = date_convert::yyyymmdd_to_ddmm($str_date);
@@ -186,7 +198,7 @@
             }
             //$group_members_text .= $str_pieces[$i]."&#8239;".$str_pieces[$i+1];
           }
-          $str_number = $value['number'];
+
           $str_flyers = $value['flyers'];
           $str_people = $value['people'];
           $str_prayers = $value['prayers'];
@@ -238,8 +250,8 @@
             <div class='col-1 col_n_4 text-right'><span class='col_n_4_2'>{$str_flyers}</span></div>
             <div class='col-1 col_n_5 text-right'><span class='col_n_5_2'>{$str_people}</span></div>
             <div class='col-1 col_n_6 text-right'><span class='col_n_6_2'>{$str_prayers}</span></div>
-            <div class='col-1 col_n_7 text-right'><span class='col_n_7_2'></span></div>
-            <div class='col-1 col_n_8 text-right'><span class='col_n_8_2'></span></div>
+            <div class='col-1 col_n_7 text-right'><span class='col_n_7_2'>{$str_first}</span></div>
+            <div class='col-1 col_n_8 text-right'><span class='col_n_8_2'>{$str_further}</span></div>
             <div class='col-1 col_n_9 text-right'><span class='col_n_9_2 {$str_comment_hide}' title='{$str_comment}'><i class='fa fa-sticky-note' aria-hidden='true'></i></span></div>
             <div class='col-12 col_n_11 pl-1 hide_element'><span class='col_n_11_2' style='font-size: 14px; color: #AAA;'>{$str_gospel_group}: {$group_members_text}</span></div>
           </div>";

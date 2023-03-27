@@ -53,9 +53,8 @@ if ($serving_trainee) {
 }
 // команды
 $teamsList = getGospelTeam();
-// корректировки
 
-//$days = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
+$gospelMembersList = get_all_gospel_members();
 
-// ПОСЕЩАЕМОСТЬ СТОП
+// GOSPEL СТОП
 ?>
