@@ -71,12 +71,12 @@ class GospelStatistic
       $condition = '';
     } else {
       $condition = " AND `date` >= ('$from' - INTERVAL $period DAY) AND `date` < '$from' ";
-    }   
+    }
 
     $res = db_query("SELECT *
       FROM `ftt_gospel`
       WHERE `gospel_team`='$team' {$condition}
-      ORDER BY `gospel_group`");
+      ORDER BY `gospel_group`, `date`");
     while ($row = $res->fetch_assoc()) $blanks[] = $row;
 
     return $blanks;

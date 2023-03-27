@@ -381,4 +381,88 @@ function get_gospel_members($blankId) {
   return $result;
 }
 
+// СТАТИСТИКА БЛАГОВЕСТИЯ
+function gospelStatFun($team, $teamsList)
+{
+  // список обучающиеся в команде
+  $traineesList = GospelStatistic::traineesByTeam($team);
+  // группы команды
+  $groupsList = getGospelGroups($team);
+
+  // html
+
+  $date_day = date('w');
+  $remainder = $date_day - 2;
+  $gospelTeamReportData = [];
+  $date_current_report = date_create(date('Y-m-d'));
+
+  // дней с начала семестра.
+  $date1 = date('Y-m-d');
+  $date2 = date_convert::ddmmyyyy_to_yyyymmdd(getValueFttParamByName('attendance_start'));
+  $reportLength = DatesCompare::diff(date('Y-m-d'), date_convert::ddmmyyyy_to_yyyymmdd(getValueFttParamByName('attendance_start')));
+
+  if ($remainder > 0) {
+    // подготавлеваем даты периода
+    $datePeriodWeek = date_create(date('Y-m-d'));
+    date_sub($datePeriodWeek,date_interval_create_from_date_string("{$remainder} days"));
+    $key_date = date_format($datePeriodWeek,"Y-m-d") . ' — ' . date('Y-m-d');
+    // получаем данные по команде за период
+    $gospelTeamReportData[$key_date] = GospelStatistic::teamReport($team, date('Y-m-d'), $remainder);
+    // задаём дату для следующей итерации
+    date_sub($date_current_report,date_interval_create_from_date_string("{$remainder} days"));
+  } elseif ($remainder < 0) {
+    $remainder = 7 + $remainder;
+    // подготавлеваем даты периода
+    $datePeriodWeek = date_create(date('Y-m-d'));
+    date_sub($datePeriodWeek,date_interval_create_from_date_string("{$remainder} days"));
+    $key_date = date_format($datePeriodWeek,"Y-m-d") . ' — ' . date('Y-m-d');
+    // получаем данные по команде за период
+    $gospelTeamReportData[$key_date] = GospelStatistic::teamReport($team, date('Y-m-d'), $remainder);
+    // задаём дату для следующей итерации
+    date_sub($date_current_report,date_interval_create_from_date_string("{$remainder} days"));
+  }
+
+  for ($i=0; $i < $reportLength; $i=$i+7) {
+    // подготавлеваем даты периода
+    $datePeriodWeek = date_create(date_format($date_current_report,"Y-m-d"));
+    date_modify($datePeriodWeek,"-7 days");
+    //date_sub($datePeriodWeek,date_interval_create_from_date_string("7 days"));
+    $key_date = date_format($datePeriodWeek,"Y-m-d") . ' — ' . date_format($date_current_report,"Y-m-d");
+    // получаем данные по команде за период
+    $gospelTeamReportData[$key_date] = GospelStatistic::teamReport($team, date_format($date_current_report,"Y-m-d"));
+    // задаём дату для следующей итерации
+    date_sub($date_current_report,date_interval_create_from_date_string("7 days"));
+  }
+  // ДОБАВИТЬ ГРУППЫ СУЩЕСТВУЮЩИЕ ГРУППЫ ОТСУТСТВУЮЩИЕ В ОТЧЁТЕ
+  $countForGTRDLoop = 0;
+  foreach ($gospelTeamReportData as $key => $value) {
+    if ($countForGTRDLoop == 0) {
+      echo "<h5>{$teamsList[$team]}</h5>";
+      $count = count($gospelTeamReportData);
+    }
+    $block = 0;
+
+    foreach ($value as $key_1 => $value_1) {
+      if (!$block) {
+        echo "<b>НЕДЕЛЯ {$count} {$key}</b><br>";
+      }
+
+      $value_1['meets_last'] += $value_1['meets_current'];
+      $value_1['meetings_last'] += $value_1['meetings_current'];
+
+      echo "<b>Группа {$value_1['gospel_group']}</b><br>";
+      echo $value_1['date'].', Л'.$value_1['flyers'].', Б'.$value_1['people'] .', М'. $value_1['prayers'] .', К';
+      echo $value_1['baptism'] .', В'. $value_1['meets_last'] .', С'. $value_1['meetings_last'] .', Д'. $value_1['homes'];
+      echo '.<br>';
+
+      $block = 1;
+    }
+    $count--;
+    $countForGTRDLoop++;
+  }
+  if (count($gospelTeamReportData) > 0) {
+    echo "<hr>";
+  }
+}
+
 ?>

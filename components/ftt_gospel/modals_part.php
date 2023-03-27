@@ -635,7 +635,11 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
         <div class="container">
           <div class="row">
             <div class="col">
-              <?php gospelStatFun(); ?>
+              <?php
+                foreach ($teamsList as $key => $value){
+                  gospelStatFun($key, $teamsList);
+                }
+              ?>
             </div>
           </div>
         </div>
@@ -650,76 +654,6 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
 
 <?php
 
-// hundler START
-// служащие
-function gospelStatFun()
-{
-  // список обучающиеся в команде
-  $traineesList = GospelStatistic::traineesByTeam($team);
-  // группы команды
-  $groupsList = getGospelGroups($team);
-  // команды
-  $teamsList = getGospelTeam();
-  $team = '04';
-
-  // html
-
-  $date_day = date('w');
-  $remainder = $date_day - 2;
-  $gospelTeamReportData = [];
-  $date_current_report = date_create(date('Y-m-d'));
-
-  // дней с начала семестра.
-  $date1 = date('Y-m-d');
-  $date2 = date_convert::ddmmyyyy_to_yyyymmdd(getValueFttParamByName('attendance_start'));
-  $reportLength = DatesCompare::diff(date('Y-m-d'), date_convert::ddmmyyyy_to_yyyymmdd(getValueFttParamByName('attendance_start')));
-
-  if ($remainder > 0) {
-    $gospelTeamReportData[] = GospelStatistic::teamReport($team, date('Y-m-d') , $remainder);
-    date_sub($date_current_report,date_interval_create_from_date_string("{$remainder} days"));
-  } elseif ($remainder < 0) {
-    $remainder = 7 + $remainder;
-    $gospelTeamReportData[] = GospelStatistic::teamReport($team, date('Y-m-d'), $remainder);
-    date_sub($date_current_report,date_interval_create_from_date_string("{$remainder} days"));
-  }
-
-  // создать массив и в каждый элемент положить статисику за каждую неделю ()и за текущую неполную).
-  // if ($w > 3) $x = $w - 3 ($x это текущий период);
-  // else ($w =< 3) ???
-
-  // вычисляем предыдущие периоды
-  // from date("d.m", mktime(0, 0, 0, date("m"), date("d")-$x))
-  // to date('d.m')
-
-  for ($i=0; $i < $reportLength; $i=$i+7) {
-    $gospelTeamReportData[] = GospelStatistic::teamReport($team, date_format($date_current_report,"Y-m-d"));
-    date_sub($date_current_report,date_interval_create_from_date_string("7 days"));
-    // from date("d.m", mktime(0, 0, 0, date("m"), date("d")-(x+7+$i)))
-    // to date("d.m", mktime(0, 0, 0, date("m"), date("d")-(x+$i)))
-  }
-
-  foreach ($gospelTeamReportData as $key => $value) {
-    if ($key == 0) {
-      echo "<h5>$teamsList[$team]</h5>";
-      $count = count($gospelTeamReportData);
-    }
-    $block = 0;
-    foreach ($value as $key_1 => $value_1) {
-      if (!$block) {
-        echo "<b>НЕДЕЛЯ {$count}</b><br>";
-      }
-      echo "<b>Группа {$value_1['gospel_group']}</b><br>";
-      echo $value_1['date'].', Л'.$value_1['flyers'].'.<br>';
-      $block = 1;
-    }
-    if ($key != 0) {
-      echo "<br>";
-    }
-    $count--;
-  }
-}
-
-// hundler STOP
 function getServiceOnesWithTraineesss ()
 {
   foreach ($result as $key => $value) {

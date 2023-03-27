@@ -5,7 +5,7 @@
   include_once 'db/classes/short_name.php';
   include_once 'db/classes/ftt_lists.php';
   include_once 'db/classes/date_convert.php';
-  include_once 'db/classes/DatesCompare.php';  
+  include_once 'db/classes/DatesCompare.php';
   include_once 'db/classes/statistic/gospel_stat.php';
   // Classes components
   include_once 'components/ftt_blocks/RenderList.php';
@@ -51,6 +51,8 @@ if ($serving_trainee) {
   $serving_trainee_checked = 'checked';
   $serving_trainee_selected = 'selected';
 }
+// команды
+$teamsList = getGospelTeam();
 // корректировки
 
 //$days = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];

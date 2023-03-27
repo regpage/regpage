@@ -1006,14 +1006,14 @@ $(document).ready(function(){
                 }
 
                 desctopEvent = '<div '+eventAttrs+'>'+
-                            '<span class="span5 event-name">'+ event.name + ', ' + event.locality_name + '</span>'+
+                            '<span class="span5 event-name">'+ event.name + '</span>'+
                             '<span style="display: none;" class="span3">'+ event.locality_name + '</span>'+
                             '<span class="span2 event-date" style="display: none;">'+ formatDDMM(event.start_date) + ' - ' + formatDDMM(event.end_date)+'</span>'+
                             '<span class="span2 event-icons"  style="width: 190px";>'+ (regstateClass == "" ?  "" : '<span style="margin-top:5px; margin-left: 0px; margin-right: 19px; display: inline;" class="label label-'+regstateClass+'">'+ regstateText + '</span>') +((regstateText) ? ((regstateText === 'регистрация подтверждена' || regstateText === 'ожидание подтверждения') ? '<span style="padding-left: 0px;"><a style="padding-left: 0px; font-size: 12px; display: none;" class="handleRegistrationFast editEventMember" title="Редактировать данные"> Изменить</a></span><span><a class="rejectRegistrationFast" title="Отменить регистрацию" style=" margin-right: 12px; font-size: 12px; display: none;"> Отменить</a></span>':''):'<span style="margin-top:5px; margin-left: 0px; margin-right: 1px; padding-left:0px;"><a class="handleRegistrationFast addEventMember" style="display: none;">Отправить</a></span>')+ icons +'</span>'+
                             '</div>';
 
                 tabletEvent = '<div '+eventAttrs+'>'+
-                            '<div class="event-name"><strong>'+ event.name + ' , '+ event.locality_name +'</strong><span class="event-name"></div>'+
+                            '<div class="event-name"><strong>'+ event.name + '</strong><span class="event-name"></div>'+
                             '<div><span style="margin-top:5px; margin-right:5px;" class="label label-'+regstateClass+'">'+ regstateText + '</span>' + icons+ '</div>'+
                         '</div>';
                 /* Сейчас для private мероприятий действует одно правило, на мероприятие саморегистрация открыта
