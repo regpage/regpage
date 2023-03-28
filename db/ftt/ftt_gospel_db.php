@@ -34,8 +34,20 @@ function getGospel($condition, $memberId, $sorting, $from = "", $to = "", $team 
       $condition = "fg.gospel_team=" . "'$team'" . ' AND ' . $condition;
     }
   }
-
-  if ($sorting === 'sort__team-desc') {
+    
+  if ($sorting === 'sort__meetings-desc') {
+    $order_by = 'meetings DESC';
+  } elseif ($sorting === 'sort__meetings-asc') {
+    $order_by = 'meetings ASC';
+  } elseif ($sorting === 'sort__meets-desc') {
+    $order_by = 'meets DESC';
+  } elseif ($sorting === 'sort__meets-asc') {
+    $order_by = 'meets ASC';
+  } elseif ($sorting === 'sort__first-asc' || $sorting === 'sort__further-asc') {
+    $order_by = 'date ASC';
+  } elseif ($sorting === 'sort__first-desc' || $sorting === 'sort__further-desc') {
+    $order_by = 'date DESC';
+  } elseif ($sorting === 'sort__team-desc') {
     $order_by = 'place_name DESC, fg.gospel_group';
   } elseif ($sorting === 'sort__team-asc') {
     $order_by = 'place_name ASC, fg.gospel_group';
@@ -49,12 +61,13 @@ function getGospel($condition, $memberId, $sorting, $from = "", $to = "", $team 
     }
   } else {
     $order_by = 'fg.date DESC';
-  }  
+  }
 
   $result = [];
   $res = db_query("SELECT fg.id, fg.date, fg.gospel_team, fg.gospel_group, fg.place, fg.group_members, fg.flyers,
      fg.people, fg.prayers, fg.baptism, fg.meets_last, fg.meets_current, fg.meetings_last, fg.meetings_current,
      fg.homes, fg.author, fg.comment, fg.changed,
+     fg.meets_last + fg.meets_current AS meets, fg.meetings_last + fg.meetings_current AS meetings,
      fgt.name AS place_name, fgt.place AS fgt_place,
      m.name AS m_name, m.male
     FROM ftt_gospel AS fg
@@ -63,6 +76,7 @@ function getGospel($condition, $memberId, $sorting, $from = "", $to = "", $team 
     WHERE {$condition}
     ORDER BY {$order_by}");
   while ($row = $res->fetch_assoc()) $result[] = $row;
+
   return $result;
 }
 

@@ -82,6 +82,27 @@ class GospelStatistic
     return $blanks;
   }
 
+  // данные бланков благовестия обучающихся
+  static function membersBlanksStatistic()
+  {
+    $statistic = [];
+    $statisticPreparing = db_query("SELECT * FROM `ftt_gospel_members`");
+    while ($row = $statisticPreparing->fetch_assoc()) $statistic[] = $row;
+
+    $statisticResult = [];
+    foreach ($statistic as $key => $value) {
+      if (isset($statisticResult[$value['blank_id']])) {
+        $statisticResult[$value['blank_id']]['number'] += $value['number'];
+        $statisticResult[$value['blank_id']]['first_contacts'] += $value['first_contacts'];
+        $statisticResult[$value['blank_id']]['further_contacts'] += $value['further_contacts'];
+      } else {
+        $statisticResult[$value['blank_id']] = $value;
+      }
+    }
+
+    return $statisticResult;
+  }
+
   // check
   static function check($strOrNumer)
   {

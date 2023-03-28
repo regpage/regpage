@@ -1415,11 +1415,11 @@ function fillEditMember (memberId, info, localities, newMemberBlank) {
     $(".emAccom").change(function(){
         var val = $(this).val();
         // Блокировка выбора служащего если не требуется размещения
-          if(val == 0 && $('.tab-pane.active') !== 'SCC'){
+          /*if(val == 0 && $('.tab-pane.active') !== 'SCC'){
             $(".emMate").val('_none_').attr('disabled', true);
           } else {
             $(".emMate").val('_none_').attr('disabled', false);
-          }
+          }*/
     });
 
     if ($(".emMate").length){
