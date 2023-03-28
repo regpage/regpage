@@ -35,21 +35,21 @@ function getGospel($condition, $memberId, $sorting, $from = "", $to = "", $team 
     }
   }
 
-  if ($sorting === 'sort_date-desc') {
-    $order_by = 'fg.date DESC';
-  } elseif ($sorting === 'sort_date-asc') {
-    $order_by = 'fg.date ASC';
-  } elseif ($sorting === 'sort_team-desc') {
+  if ($sorting === 'sort__team-desc') {
     $order_by = 'place_name DESC, fg.gospel_group';
-  } elseif ($sorting === 'sort_team-asc') {
+  } elseif ($sorting === 'sort__team-asc') {
     $order_by = 'place_name ASC, fg.gospel_group';
-  } elseif ($sorting === 'sort_group-desc') {
-    $order_by = 'fg.gospel_group DESC';
-  } elseif ($sorting === 'sort_group-asc') {
-    $order_by = 'fg.gospel_group ASC';
+  } elseif (!empty($sorting)) {
+    $sorting = explode('__', $sorting);
+    if (count($sorting)>1) {
+      $sorting = explode('-', $sorting[1]);
+      $order_by = "fg.{$sorting[0]} {$sorting[1]}";
+    } else {
+      $order_by = 'fg.date DESC';
+    }
   } else {
     $order_by = 'fg.date DESC';
-  }
+  }  
 
   $result = [];
   $res = db_query("SELECT fg.id, fg.date, fg.gospel_team, fg.gospel_group, fg.place, fg.group_members, fg.flyers,
@@ -443,15 +443,24 @@ function gospelStatFun($team, $teamsList)
   // ДОБАВИТЬ ГРУППЫ СУЩЕСТВУЮЩИЕ ГРУППЫ ОТСУТСТВУЮЩИЕ В ОТЧЁТЕ
   $countForGTRDLoop = 0;
   foreach ($gospelTeamReportData as $key => $value) {
+    $block = 0;
+
     if ($countForGTRDLoop == 0) {
       echo "<h5>{$teamsList[$team]}</h5>";
       $count = count($gospelTeamReportData);
     }
-    $block = 0;
-
+    if (empty($value) && $countForGTRDLoop == 0) {
+      echo "<b>НЕДЕЛЯ {$count} {$key}</b><br>";
+    } elseif(empty($value)) {
+      echo "<b style='display: inline-block; padding-top: 10px;'>НЕДЕЛЯ {$count} {$key}</b><br>";
+    }
     foreach ($value as $key_1 => $value_1) {
       if (!$block) {
-        echo "<b>НЕДЕЛЯ {$count} {$key}</b><br>";
+        if ($countForGTRDLoop != 0) {
+          echo "<b style='display: inline-block; padding-top: 10px;'>НЕДЕЛЯ {$count} {$key}</b><br>";
+        } else {
+          echo "<b>НЕДЕЛЯ {$count} {$key}</b><br>";
+        }
       }
 
       $value_1['meets_last'] += $value_1['meets_current'];

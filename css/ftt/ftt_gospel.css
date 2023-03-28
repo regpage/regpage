@@ -13,9 +13,7 @@ button {
   padding-left: 0px !important;
   padding-right: 0px !important;
 }
-.sort_date, .sort_team, .sort_group, #add_comment {
-  color: #08c;
-}
+
 #extra_help_staff {
   padding-left: 0px;
   padding-right: 0px;
@@ -106,6 +104,14 @@ button {
 
 #list_content .col_n_9 {
   max-width: 15px;
+}
+
+#list_content .col_w_60, #list_header .col_w_60 {
+  max-width: 60px;
+}
+
+#list_content .col_w_80, #list_header .col_w_80 {
+  max-width: 80px;
 }
 
 #list_content .col_n_10 {

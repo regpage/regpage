@@ -1379,45 +1379,27 @@ $("#show_gospel_modal_list").click(function () {
 // ==== END новый блок участников в бланке отчётности ====
 
 // ==== СОРТИРОВКА ====
-$(".sort_date, .sort_team, .sort_group").click(function (e) {
-
-  $(".sort_date i, .sort_team i, .sort_group i").addClass("hide_element");
-  if ($(this).hasClass("sort_date")) {
-    $(".sort_team i").removeClass("fa");
-    $(".sort_team i").removeClass("fa-sort-desc");
-    $(".sort_team i").removeClass("fa-sort-asc");
-    $(".sort_group i").removeClass("fa");
-    $(".sort_group i").removeClass("fa-sort-desc");
-    $(".sort_group i").removeClass("fa-sort-asc");
-  } else if ($(this).hasClass("sort_team")) {
-    $(".sort_date i").removeClass("fa");
-    $(".sort_date i").removeClass("fa-sort-desc");
-    $(".sort_date i").removeClass("fa-sort-asc");
-    $(".sort_group i").removeClass("fa");
-    $(".sort_group i").removeClass("fa-sort-desc");
-    $(".sort_group i").removeClass("fa-sort-asc");
-  } else if ($(this).hasClass("sort_group")) {
-    $(".sort_team i").removeClass("fa");
-    $(".sort_team i").removeClass("fa-sort-desc");
-    $(".sort_team i").removeClass("fa-sort-asc");
-    $(".sort_date i").removeClass("fa");
-    $(".sort_date i").removeClass("fa-sort-desc");
-    $(".sort_date i").removeClass("fa-sort-asc");
-  }
-
-  $(this).find("i").removeClass("hide_element");
-
-  if ($(this).find("i").hasClass("fa-sort-desc")) {
-    $(this).find("i").removeClass("fa-sort-desc").addClass("fa-sort-asc");
-    setCookie('sorting', e.target.className + "-desc", 356);
-  } else if ($(this).find("i").hasClass("fa-sort-asc")) {
-    $(this).find("i").removeClass("fa-sort-asc").addClass("fa-sort-desc");
-    setCookie('sorting', e.target.className + "-asc", 356);
+$(".sort_col").click(function (e) {
+  let classes = e.target.className;
+  classes = classes.split(" ");
+  if ($(this).find("i").hasClass("fa")) {
+    if ($(this).find("i").hasClass("fa-sort-desc")) {
+      $(this).find("i").removeClass("fa-sort-desc").addClass("fa-sort-asc");
+      setCookie('sorting', classes[1] + "-desc", 356);
+    } else if ($(this).find("i").hasClass("fa-sort-asc")) {
+      $(this).find("i").removeClass("fa-sort-asc").addClass("fa-sort-desc");
+      setCookie('sorting', classes[1] + "-asc", 356);
+    }
   } else {
+    $(".sort_col i").removeClass("fa");
+    $(".sort_col i").removeClass("fa-sort-desc");
+    $(".sort_col i").addClass("hide_element");
+    $(this).find("i").removeClass("hide_element");
     $(this).find("i").addClass("fa");
     $(this).find("i").addClass("fa-sort-desc");
-    setCookie('sorting', e.target.className + "-asc", 356);
+    setCookie('sorting', classes[1] + "-asc", 356);
   }
+
   setTimeout(function () {
     location.reload();
   }, 30);

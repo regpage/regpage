@@ -88,29 +88,44 @@
         </select>-->
       </div>
       <?php
-      $date_sort = '';
-      $team_sort = '';
+
       $sort_date_ico = 'hide_element';
       $sort_team_ico = 'hide_element';
       $sort_group_ico = 'hide_element';
+      $sort_flyers_ico = 'hide_element';
+      $sort_people_ico = 'hide_element';
+      $sort_prayers_ico = 'hide_element';
+      $sort_homes_ico = 'hide_element';
 
       if (isset($_COOKIE['sorting'])) {
-        if ($_COOKIE['sorting'] === 'sort_date-desc') {
+        if ($_COOKIE['sorting'] === 'sort__date-desc') {
           $sort_date_ico = 'fa fa-sort-asc';
-          //$sort_cookie = $_COOKIE['sorting'];
-        } elseif ($_COOKIE['sorting'] === 'sort_date-asc') {
+        } elseif ($_COOKIE['sorting'] === 'sort__date-asc') {
           $sort_date_ico = 'fa fa-sort-desc';
-          //$sort_cookie = 'sort_date-desc';
-        } elseif ($_COOKIE['sorting'] === 'sort_team-desc') {
+        } elseif ($_COOKIE['sorting'] === 'sort__team-desc') {
           $sort_team_ico = 'fa fa-sort-asc';
-          //$sort_cookie = 'sort_date-desc';
-        } elseif ($_COOKIE['sorting'] === 'sort_team-asc') {
+        } elseif ($_COOKIE['sorting'] === 'sort__team-asc') {
           $sort_team_ico = 'fa fa-sort-desc';
-          //$sort_cookie = 'sort_date-desc';
-        } elseif ($_COOKIE['sorting'] === 'sort_group-desc') {
+        } elseif ($_COOKIE['sorting'] === 'sort__gospel_group-desc') {
           $sort_group_ico = 'fa fa-sort-asc';
-        } elseif ($_COOKIE['sorting'] === 'sort_group-asc') {
+        } elseif ($_COOKIE['sorting'] === 'sort__gospel_group-asc') {
           $sort_group_ico = 'fa fa-sort-desc';
+        } elseif ($_COOKIE['sorting'] === 'sort__flyers-asc') {
+          $sort_flyers_ico = 'fa fa-sort-desc';
+        } elseif ($_COOKIE['sorting'] === 'sort__flyers-desc') {
+          $sort_flyers_ico = 'fa fa-sort-asc';
+        } elseif ($_COOKIE['sorting'] === 'sort__people-asc') {
+          $sort_people_ico = 'fa fa-sort-desc';
+        } elseif ($_COOKIE['sorting'] === 'sort__people-desc') {
+          $sort_people_ico = 'fa fa-sort-asc';
+        } elseif ($_COOKIE['sorting'] === 'sort__prayers-asc') {
+          $sort_prayers_ico = 'fa fa-sort-desc';
+        } elseif ($_COOKIE['sorting'] === 'sort__prayers-desc') {
+          $sort_prayers_ico = 'fa fa-sort-asc';
+        } elseif ($_COOKIE['sorting'] === 'sort__homes-asc') {
+          $sort_homes_ico = 'fa fa-sort-desc';
+        } elseif ($_COOKIE['sorting'] === 'sort__homes-desc') {
+          $sort_homes_ico = 'fa fa-sort-asc';
         } else {
           $sort_date_ico = 'fa fa-sort-asc';
         }
@@ -119,15 +134,17 @@
       } ?>
       <div class="row"><span class="col-12 text_grey font-weight-bold text-muted mt-3 mb-3" id="filters_list"></span></div>
       <div id="list_header" class="row">
-        <div class="col-2 pl-1 cursor-pointer" style="max-width: 85px !important;"><b class="sort_date">Дата <i class="<?php echo $sort_date_ico; ?>"></i></b></div>
-        <div class="col-2 cursor-pointer" style="max-width: 150px !important;"><b class="sort_team">Команда<i class="<?php echo $sort_team_ico; ?>"></i></b></div>
-        <div class="col-2 cursor-pointer" style="min-width: 300px !important;"><b class="sort_group">Состав группы<i class="<?php echo $sort_group_ico; ?>"></i></b></div>
-        <div class="col-1 cursor-pointer text-right text_grey" title="Сколько листовок раздали?"><b>Л</b></div>
-        <div class="col-1 cursor-pointer text-right text_grey" title="Скольким людям благовествовали?"><b>Б</b></div>
-        <div class="col-1 cursor-pointer text-right text_grey" title="Сколько человек помолилось?"><b>М</b></div>
-        <div class="col-1 cursor-pointer text-right text_grey" title="Сколько было новых контактов?"><b>Н</b></div>
-        <div class="col-1 cursor-pointer text-right text_grey" title="Сколько было повторных контактов?"><b>П</b></div>
-        <div class="col-1 cursor-pointer text-right text_grey" style="max-width: 15px"></div>
+        <div class="col-2 pl-1" style="max-width: 85px !important;"><b class="sort_col sort__date">Дата <i class="<?php echo $sort_date_ico; ?>"></i></b></div>
+        <div class="col-2" style="max-width: 150px !important;"><b class="sort_col sort__team">Команда<i class="<?php echo $sort_team_ico; ?>"></i></b></div>
+        <div class="col-2" style="min-width: 300px !important;"><b class="sort_col sort__gospel_group">Состав группы<i class="<?php echo $sort_group_ico; ?>"></i></b></div>
+        <div class="col-1 text-left col_w_60" title="Сколько листовок раздали?"><b class="sort_col sort__flyers">Л<i class="<?php echo $sort_flyers_ico; ?>"></i></b></div>
+        <div class="col-1 text-left text_grey col_w_60" title="Скольким людям благовествовали?"><b class="sort_col sort__people">Б<i class="<?php echo $sort_people_ico; ?>"></i></b></div>
+        <div class="col-1 text-left text_grey col_w_60" title="Сколько человек помолилось?"><b class="sort_col sort__prayers">М<i class="<?php echo $sort_prayers_ico; ?>"></i></b></div>
+        <div class="col-1 text-left text_grey col_w_60" title="Сколько было новых контактов?"><b>Н</b></div>
+        <div class="col-1 text-left text_grey col_w_60" title="Сколько было повторных контактов?"><b>П</b></div>
+        <div class="col-1 text-left text_grey col_w_60" title="сумма двух видов встреч"><b>В</b></div>
+        <div class="col-1 text-left text_grey col_w_60" title="сумма двух видов собраний"><b>С</b></div>
+        <div class="col-1 text-left text_grey col_w_60" title="Сколько домов святых вы посетили?"><b class="sort_col sort__homes">Д<i class="<?php echo $sort_homes_ico; ?>"></i></b></div>
       </div>
       <div id="list_content">
         <?php
@@ -147,7 +164,7 @@
           if (isset($_COOKIE['sorting'])) {
             $sort_cookie = $_COOKIE['sorting'];
           } else {
-            $sort_cookie = 'sort_date-desc';
+            $sort_cookie = 'sort__date-desc';
           }
 
           $period_from_cookie = '';
@@ -169,7 +186,7 @@
           $str_further = 0;
 
           foreach ($gospelMembersList as $key_1 => $value_1) {
-            if ($value_1['blank_id'] === $value['id']) {              
+            if ($value_1['blank_id'] === $value['id']) {
               $str_number += $value_1['number'];
               $str_first += $value_1['first_contacts'];
               $str_further += $value_1['further_contacts'];
@@ -205,8 +222,10 @@
           $str_baptism = $value['baptism'];
           $str_meets_last = $value['meets_last'];
           $str_meets_current = $value['meets_current'];
+          $str_meets_sum = $value['meets_last'] + $value['meets_current'];
           $str_meetings_last = $value['meetings_last'];
           $str_meetings_current = $value['meetings_current'];
+          $str_meetings_sum = $value['meetings_last'] + $value['meets_current'];
           $str_homes = $value['homes'];
           $str_changed = $value['changed'];
           $str_place_name = $value['place_name'];
@@ -244,15 +263,17 @@
           data-meets_last='{$str_meets_last}' data-meets_current='{$str_meets_current}' data-meetings_last='{$str_meetings_last}' data-meetings_current='{$str_meetings_current}'
           data-homes='{$str_homes}' data-place_name='{$str_place_name}' data-fgt_place='{$str_fgt_place}' data-comment='{$str_comment}'
           data-toggle='modal' data-target='#modalAddEdit'>
-            <div class='col-2 pl-1 col_n_1'><span class='col_n_1_2'>{$str_date_short}</span></div>
-            <div class='col-2 col_n_2'><span class='col_n_2_2'>{$str_place_name}</span><span class='col_n_2_3'></span><br><span class='col_n_2_3' style='font-size: 12px; color: #AAA;'></span></div>
-            <div class='col-2 col_n_10'><span class='col_n_10_2'>{$str_gospel_group}: {$group_members_text}</span></div>
-            <div class='col-1 col_n_4 text-right'><span class='col_n_4_2'>{$str_flyers}</span></div>
-            <div class='col-1 col_n_5 text-right'><span class='col_n_5_2'>{$str_people}</span></div>
-            <div class='col-1 col_n_6 text-right'><span class='col_n_6_2'>{$str_prayers}</span></div>
-            <div class='col-1 col_n_7 text-right'><span class='col_n_7_2'>{$str_first}</span></div>
-            <div class='col-1 col_n_8 text-right'><span class='col_n_8_2'>{$str_further}</span></div>
-            <div class='col-1 col_n_9 text-right'><span class='col_n_9_2 {$str_comment_hide}' title='{$str_comment}'><i class='fa fa-sticky-note' aria-hidden='true'></i></span></div>
+            <div class='col-1 pl-1 col_n_1'><span class='col_n_1_2'>{$str_date_short}</span></div>
+            <div class='col-1 col_n_2' style='min-width: 150px !important;'><span class='col_n_2_2'>{$str_place_name}</span><span class='col_n_2_3'></span><br><span class='col_n_2_3' style='font-size: 12px; color: #AAA;'></span></div>
+            <div class='col-1 col_n_10'><span class='col_n_10_2'>{$str_gospel_group}: {$group_members_text}</span></div>
+            <div class='col-1 col_n_4 col_w_60 text-left'><span class='col_n_4_2'>{$str_flyers}</span></div>
+            <div class='col-1 col_n_5 col_w_60 text-left'><span class='col_n_5_2'>{$str_people}</span></div>
+            <div class='col-1 col_n_6 col_w_60 text-left'><span class='col_n_6_2'>{$str_prayers}</span></div>
+            <div class='col-1 col_n_7 col_w_60 text-left'><span class='col_n_7_2'>{$str_first}</span></div>
+            <div class='col-1 col_n_8 col_w_60 col_w_40 text-left'><span class='col_n_8_2'>{$str_further}</span></div>
+            <div class='col-1 col_w_60 text-left' ><span class=''>{$str_meets_sum}</span></div>
+            <div class='col-1 col_w_60 text-left'><span class=''>{$str_meetings_sum}</span></div>
+            <div class='col-1 text-left'>{$str_homes}<span class='{$str_comment_hide} float-right' title='{$str_comment}'><i class='fa fa-sticky-note' aria-hidden='true'></i></span></div>
             <div class='col-12 col_n_11 pl-1 hide_element'><span class='col_n_11_2' style='font-size: 14px; color: #AAA;'>{$str_gospel_group}: {$group_members_text}</span></div>
           </div>";
         endforeach; ?>
