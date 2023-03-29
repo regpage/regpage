@@ -34,7 +34,7 @@ function getGospel($condition, $memberId, $sorting, $from = "", $to = "", $team 
       $condition = "fg.gospel_team=" . "'$team'" . ' AND ' . $condition;
     }
   }
-    
+
   if ($sorting === 'sort__meetings-desc') {
     $order_by = 'meetings DESC';
   } elseif ($sorting === 'sort__meetings-asc') {
@@ -409,7 +409,10 @@ function gospelStatFun($team, $teamsList)
   $traineesList = GospelStatistic::traineesByTeam($team);
   // группы команды
   $groupsList = getGospelGroups($team);
-
+  $groupsList_temp = [];
+  foreach ($groupsList as $key_2 => $value_2) {
+    $groupsList_temp[] = $value_2['gospel_group'];
+  }
   // html
 
   $date_day = date('w');
@@ -429,6 +432,18 @@ function gospelStatFun($team, $teamsList)
     $key_date = date_format($datePeriodWeek,"Y-m-d") . ' — ' . date('Y-m-d');
     // получаем данные по команде за период
     $gospelTeamReportData[$key_date] = GospelStatistic::teamReport($team, date('Y-m-d'), $remainder);
+    // добавляем недостающие группы группу
+    $tempCheck = addMissingGroups($groupsList_temp, $gospelTeamReportData[$key_date]);
+
+    if (count($tempCheck) > 0) {
+      for ($ii=0; $ii < count($tempCheck); $ii++) {
+        $gospelTeamReportData[$key_date][] = array('id'=>0,'date'=>'−−.−−','gospel_team'=>$team, 'gospel_group'=>$tempCheck[$ii],'place'=>0, 'group_members'=>0,'number'=>0,'ftt_gospel'=>0, 'flyers'=>0,'people'=>0,'prayers'=>0,'baptism'=>0,'meets_last'=>0,'meets_current'=>0,'meetings_last'=>0, 'meetings_current'=>0,'first_contacts'=>0,'further_contacts'=>0,'homes'=>0,'comment'=>0);
+      }
+    }
+
+    // Сортируем
+    $nameSort  = array_column($gospelTeamReportData[$key_date], 'gospel_group');
+    array_multisort($nameSort, SORT_ASC, $gospelTeamReportData[$key_date]);
     // задаём дату для следующей итерации
     date_sub($date_current_report,date_interval_create_from_date_string("{$remainder} days"));
   } elseif ($remainder < 0) {
@@ -439,6 +454,18 @@ function gospelStatFun($team, $teamsList)
     $key_date = date_format($datePeriodWeek,"Y-m-d") . ' — ' . date('Y-m-d');
     // получаем данные по команде за период
     $gospelTeamReportData[$key_date] = GospelStatistic::teamReport($team, date('Y-m-d'), $remainder);
+    // добавляем недостающие группы группу
+    $tempCheck = addMissingGroups($groupsList_temp, $gospelTeamReportData[$key_date]);
+
+    if (count($tempCheck) > 0) {
+      for ($ii=0; $ii < count($tempCheck); $ii++) {
+        $gospelTeamReportData[$key_date][] = array('id'=>0,'date'=>'−−.−−','gospel_team'=>$team, 'gospel_group'=>$tempCheck[$ii],'place'=>0, 'group_members'=>0,'number'=>0,'ftt_gospel'=>0, 'flyers'=>0,'people'=>0,'prayers'=>0,'baptism'=>0,'meets_last'=>0,'meets_current'=>0,'meetings_last'=>0, 'meetings_current'=>0,'first_contacts'=>0,'further_contacts'=>0,'homes'=>0,'comment'=>0);
+      }
+    }
+
+    // Сортируем
+    $nameSort  = array_column($gospelTeamReportData[$key_date], 'gospel_group');
+    array_multisort($nameSort, SORT_ASC, $gospelTeamReportData[$key_date]);
     // задаём дату для следующей итерации
     date_sub($date_current_report,date_interval_create_from_date_string("{$remainder} days"));
   }
@@ -451,37 +478,59 @@ function gospelStatFun($team, $teamsList)
     $key_date = date_format($datePeriodWeek,"Y-m-d") . ' — ' . date_format($date_current_report,"Y-m-d");
     // получаем данные по команде за период
     $gospelTeamReportData[$key_date] = GospelStatistic::teamReport($team, date_format($date_current_report,"Y-m-d"));
+    // добавляем недостающие группы группу
+    $tempCheck = addMissingGroups($groupsList_temp, $gospelTeamReportData[$key_date]);
+    if (count($tempCheck) > 0) {
+      for ($ii=0; $ii < count($tempCheck); $ii++) {
+        $gospelTeamReportData[$key_date][] = array('id'=>0,'date'=>'−−.−−','gospel_team'=>$team, 'gospel_group'=>$tempCheck[$ii],'place'=>0, 'group_members'=>0,'number'=>0,'ftt_gospel'=>0, 'flyers'=>0,'people'=>0,'prayers'=>0,'baptism'=>0,'meets_last'=>0,'meets_current'=>0,'meetings_last'=>0, 'meetings_current'=>0,'first_contacts'=>0,'further_contacts'=>0,'homes'=>0,'comment'=>0);
+      }
+    }
+    // Сортируем
+    $nameSort  = array_column($gospelTeamReportData[$key_date], 'gospel_group');
+    array_multisort($nameSort, SORT_ASC, $gospelTeamReportData[$key_date]);
+
     // задаём дату для следующей итерации
     date_sub($date_current_report,date_interval_create_from_date_string("7 days"));
   }
-  // ДОБАВИТЬ ГРУППЫ СУЩЕСТВУЮЩИЕ ГРУППЫ ОТСУТСТВУЮЩИЕ В ОТЧЁТЕ
+
   $countForGTRDLoop = 0;
   foreach ($gospelTeamReportData as $key => $value) {
     $block = 0;
 
     if ($countForGTRDLoop == 0) {
-      echo "<h5>{$teamsList[$team]}</h5>";
+      echo "<div><h5>{$teamsList[$team]}</h5>";
       $count = count($gospelTeamReportData);
     }
     if (empty($value) && $countForGTRDLoop == 0) {
-      echo "<b>НЕДЕЛЯ {$count} {$key}</b><br>";
+      $keyTemp = explode(' — ', $key);
+      $keyTemp = date_convert::yyyymmdd_to_ddmm($keyTemp[0]) . ' — ' . date_convert::yyyymmdd_to_ddmm($keyTemp[1]);
+      echo "<b>НЕДЕЛЯ {$count} {$keyTemp}</b><br>";
     } elseif(empty($value)) {
-      echo "<b style='display: inline-block; padding-top: 10px;'>НЕДЕЛЯ {$count} {$key}</b><br>";
+      $keyTemp = explode(' — ', $key);
+      $keyTemp = date_convert::yyyymmdd_to_ddmm($keyTemp[0]) . ' — ' . date_convert::yyyymmdd_to_ddmm($keyTemp[1]);
+      echo "<b style='display: inline-block; padding-top: 10px;'>НЕДЕЛЯ {$count} {$keyTemp}</b><br>";
     }
     foreach ($value as $key_1 => $value_1) {
       if (!$block) {
         if ($countForGTRDLoop != 0) {
-          echo "<b style='display: inline-block; padding-top: 10px;'>НЕДЕЛЯ {$count} {$key}</b><br>";
+          $keyTemp = explode(' — ', $key);
+          $keyTemp = date_convert::yyyymmdd_to_ddmm($keyTemp[0]) . ' — ' . date_convert::yyyymmdd_to_ddmm($keyTemp[1]);
+          echo "<b style='display: inline-block; padding-top: 10px;'>НЕДЕЛЯ {$count} {$keyTemp}</b><br>";
         } else {
-          echo "<b>НЕДЕЛЯ {$count} {$key}</b><br>";
+          $keyTemp = explode(' — ', $key);
+          $keyTemp = date_convert::yyyymmdd_to_ddmm($keyTemp[0]) . ' — ' . date_convert::yyyymmdd_to_ddmm($keyTemp[1]);
+          echo "<b>НЕДЕЛЯ {$count} {$keyTemp}</b><br>";
         }
       }
 
       $value_1['meets_last'] += $value_1['meets_current'];
       $value_1['meetings_last'] += $value_1['meetings_current'];
-
+      $dateEcho = '−−.−−';
+      if ($value_1['date'] !== '−−.−−') {
+        $dateEcho = date_convert::yyyymmdd_to_ddmm($value_1['date']);
+      }
       echo "<b>Группа {$value_1['gospel_group']}</b><br>";
-      echo $value_1['date'].', Л'.$value_1['flyers'].', Б'.$value_1['people'] .', М'. $value_1['prayers'] .', К';
+      echo $dateEcho . ' — Л'.$value_1['flyers'].', Б'.$value_1['people'] .', М'. $value_1['prayers'] .', К';
       echo $value_1['baptism'] .', В'. $value_1['meets_last'] .', С'. $value_1['meetings_last'] .', Д'. $value_1['homes'];
       echo '.<br>';
 
@@ -491,8 +540,20 @@ function gospelStatFun($team, $teamsList)
     $countForGTRDLoop++;
   }
   if (count($gospelTeamReportData) > 0) {
-    echo "<hr>";
+    echo "<hr></div>";
   }
+}
+
+function addMissingGroups($arr1, $arr2)
+{
+  $temp = [];
+  $tempCheck = [];
+  foreach ($arr2 as $key => $value) {
+    $temp[$value['gospel_group']] = $value['gospel_group'];
+  }
+  $tempCheck = array_diff($arr1, $temp);
+
+  return $tempCheck;
 }
 
 ?>

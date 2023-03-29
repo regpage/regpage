@@ -6,12 +6,7 @@
  */
 
  // classes
- require_once 'db/classes/statistics.php';
- require_once 'db/classes/emailing.php';
- require_once 'db/classes/ftt_lists.php';
- require_once 'db/classes/member.php';
- require_once 'db/classes/short_name.php';
- require_once 'db/classes/date_convert.php';
+ require_once 'db/classes/short_name.php'; 
 
 class GospelStatistic
 {
