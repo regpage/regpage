@@ -405,6 +405,7 @@ function get_all_gospel_members() {
 // СТАТИСТИКА БЛАГОВЕСТИЯ
 function gospelStatFun($team, $teamsList)
 {
+  $membersBlanksStatistic = GospelStatistic::membersBlanksStatistic();
   // список обучающиеся в команде
   $traineesList = GospelStatistic::traineesByTeam($team);
   // группы команды
@@ -502,23 +503,19 @@ function gospelStatFun($team, $teamsList)
       $count = count($gospelTeamReportData);
     }
     if (empty($value) && $countForGTRDLoop == 0) {
-      $keyTemp = explode(' — ', $key);
-      $keyTemp = date_convert::yyyymmdd_to_ddmm($keyTemp[0]) . ' — ' . date_convert::yyyymmdd_to_ddmm($keyTemp[1]);
+      $keyTemp = periodDateConvert($key);
       echo "<b>НЕДЕЛЯ {$count} {$keyTemp}</b><br>";
     } elseif(empty($value)) {
-      $keyTemp = explode(' — ', $key);
-      $keyTemp = date_convert::yyyymmdd_to_ddmm($keyTemp[0]) . ' — ' . date_convert::yyyymmdd_to_ddmm($keyTemp[1]);
+      $keyTemp = periodDateConvert($key);
       echo "<b style='display: inline-block; padding-top: 10px;'>НЕДЕЛЯ {$count} {$keyTemp}</b><br>";
     }
     foreach ($value as $key_1 => $value_1) {
       if (!$block) {
         if ($countForGTRDLoop != 0) {
-          $keyTemp = explode(' — ', $key);
-          $keyTemp = date_convert::yyyymmdd_to_ddmm($keyTemp[0]) . ' — ' . date_convert::yyyymmdd_to_ddmm($keyTemp[1]);
+          $keyTemp = periodDateConvert($key);
           echo "<b style='display: inline-block; padding-top: 10px;'>НЕДЕЛЯ {$count} {$keyTemp}</b><br>";
         } else {
-          $keyTemp = explode(' — ', $key);
-          $keyTemp = date_convert::yyyymmdd_to_ddmm($keyTemp[0]) . ' — ' . date_convert::yyyymmdd_to_ddmm($keyTemp[1]);
+          $keyTemp = periodDateConvert($key);
           echo "<b>НЕДЕЛЯ {$count} {$keyTemp}</b><br>";
         }
       }
@@ -529,9 +526,20 @@ function gospelStatFun($team, $teamsList)
       if ($value_1['date'] !== '−−.−−') {
         $dateEcho = date_convert::yyyymmdd_to_ddmm($value_1['date']);
       }
+      $numberGospels = 0;
+      $firstConact = 0;
+      $furtherConact = 0;
+      if (isset($membersBlanksStatistic[$value_1['id']])) {
+        $numberGospels = $membersBlanksStatistic[$value_1['id']]['number'];
+        $firstConact = $membersBlanksStatistic[$value_1['id']]['first_contacts'];
+        $furtherConact = $membersBlanksStatistic[$value_1['id']]['further_contacts'];
+
+      }
+
       echo "<b>Группа {$value_1['gospel_group']}</b><br>";
-      echo $dateEcho . ' — Л'.$value_1['flyers'].', Б'.$value_1['people'] .', М'. $value_1['prayers'] .', К';
-      echo $value_1['baptism'] .', В'. $value_1['meets_last'] .', С'. $value_1['meetings_last'] .', Д'. $value_1['homes'];
+      echo $dateEcho . ' — Л'.$value_1['flyers'].', Б'.$value_1['people'] .', М'. $value_1['prayers'];
+      echo ', Г' . $numberGospels .', Н' . $firstConact .', П' . $furtherConact;
+      echo ', К' . $value_1['baptism'] .', В'. $value_1['meets_last'] .', С'. $value_1['meetings_last'] .', Д'. $value_1['homes'];
       echo '.<br>';
 
       $block = 1;
@@ -554,6 +562,17 @@ function addMissingGroups($arr1, $arr2)
   $tempCheck = array_diff($arr1, $temp);
 
   return $tempCheck;
+}
+
+function periodDateConvert($period)
+{
+  global $db;
+  $period = $db->real_escape_string($period);
+
+  $keyTemp = explode(' — ', $period);
+  $keyTemp = date_convert::yyyymmdd_to_ddmm($keyTemp[0]) . ' — ' . date_convert::yyyymmdd_to_ddmm($keyTemp[1]);
+
+  return $keyTemp;
 }
 
 ?>
