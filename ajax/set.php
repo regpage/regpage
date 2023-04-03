@@ -26,7 +26,7 @@ if (isset ($_POST ['message']) && isset ($_POST ['event']) && isset ($_POST ['na
     $email = db_getTeamEmail ($_POST ['event']);
     $adminId = db_getMemberIdBySessionId (session_id());
     $locality = db_getMemberLocality($adminId);
-    $locality = $locality ? "\r\n\r\nНаселённый пункт отправителя: $locality" : "";
+    $locality = $locality ? "<br><br>Населённый пункт отправителя: $locality" : "";
     $error = null;
 
     $message = stripslashes ($_POST ['message']).$locality;
@@ -60,7 +60,7 @@ if (isset ($_POST ['message']) && isset($_POST ['event']) && isset ($_POST ['nam
     if (!isset ($_POST ['guest']))
     {
         $locality = db_getMemberLocality(db_getMemberIdBySessionId (session_id()));
-        if ($locality) $locality = "\r\n\r\nНаселённый пункт отправителя: $locality";
+        if ($locality) $locality = "<br><br>nНаселённый пункт отправителя: $locality";
     }
     else{
         $locality ="";

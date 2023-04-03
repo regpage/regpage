@@ -34,12 +34,13 @@
         <?php } ?>
         <div class="btn-group">
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                <i class="fa fa-envelop" title="Отправить сообщение"></i> <span class="hide-name">Отправить сообщение</span>
+                <i class="fa fa-envelop" title="Отправить сообщение"></i> <span class="hide-name">Сообщение</span>
                 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-                <li><a class="chk-send-letter disabled chk-dep role-send-msg" tabindex="-1" href="#">Сообщение участникам</a></li>
-                <li><a class="chk-send-invitation disabled chk-dep role-send-msg" tabindex="-1" href="#">Персональное приглашение</a></li>
+                <li><a class="chk-send-letter disabled chk-dep role-send-msg" tabindex="-1" href="#">Выбранным участникам</a></li>
+                <!--<li><a class="chk-send-invitation disabled chk-dep role-send-msg" tabindex="-1" href="#">Персональное приглашение</a></li>-->
+                <li><a class="role-send-msg" tabindex="-1" href="#" data-toggle="modal" data-target="#modalEventSendMsg">Команде регистрации</a></li>
             </ul>
         </div>
     </div>
@@ -116,12 +117,13 @@
             <a class="btn statService" type="button"><i class="fa fa-bar-chart"></i> <span class="hide-name">Статистика</span></a>
             <div class="btn-group">
                 <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="icon-envelope"></i> <span class="hide-name">Отправить</span>
+                    <i class="icon-envelope"></i> <span class="hide-name">Сообщение</span>
                     <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
                     <li><a class="chk-send-letter disabled chk-dep role-send-msg" tabindex="-1" href="#">Сообщение участникам</a></li>
-                    <li><a class="chk-send-invitation disabled chk-dep role-send-msg" tabindex="-1" href="#">Персональное приглашение</a></li>
+                    <!--<li><a class="chk-send-invitation disabled chk-dep role-send-msg" tabindex="-1" href="#">Персональное приглашение</a></li>-->
+                    <li><a class="role-send-msg" tabindex="-1" href="#" data-toggle="modal" data-target="#modalEventSendMsg">Команде регистрации</a></li>
                 </ul>
             </div>
             <div class="btn-group">
@@ -2683,7 +2685,8 @@ function checkStopEventRegistration(eventId){
         $.ajax({type: "POST", url: "/ajax/set.php", data: {event: eventId, message: $("#sendMsgText").val(), name:$("#sendMsgName").val(), email:$("#sendMsgEmail").val()}})
          .done (function(data) {
             if (data.result){
-                messageBox ('Ваше сообщение отправлено команде регистрации', $('#modalEventSendMsg'));
+                //messageBox ('Ваше сообщение отправлено команде регистрации', $('#modalEventSendMsg'));
+                showHint('Ваше сообщение отправлено команде регистрации');
                 closeMessageBox();
                 setTimeout(closePopup, 3000);
             }

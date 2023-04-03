@@ -892,10 +892,12 @@ function handleFieldsByAdminRole(adminRole, isEventPrivate, regstate){
     $("#forAdminRegNotice").text('');
     $("#btnDoRegisterMember").hide ();
     if(adminRole === 0){
-        $(".role-send-msg, .role-admin, .role-edit").css('display','none');
+        //$(".role-send-msg").css('display','none');
+        $(".role-admin, .role-edit").css('display','none');
     }
     else if(adminRole === 1 && isEventPrivate){
-        $(".role-send-msg, .role-admin").css('display','none');
+        //$(".role-send-msg").css('display','none');
+        $(".role-admin").css('display','none');
         $(".role-edit").css('display','inline-block');
         if (!regstate) {
           $("#forAdminRegNotice").text('Заявку на регистрацию на это мероприятие отправит ответственный за регистрацию в вашем регионе.');
