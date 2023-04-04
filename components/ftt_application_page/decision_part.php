@@ -5,11 +5,8 @@
   </div>
   <!-- -->
   <div class="row serviceone_block">
-    <div class="col-5">
-      <span>Этап заявления</span>
-    </div>
-    <div class="col-5">
-      <?php
+    <div class="col-5 title_point">Этап заявления</div>
+    <div class="col-5 decision_service_point"><?php
         $swith_status = '';
         switch ($request_data['stage']) {
           case '1':
@@ -34,20 +31,17 @@
           echo 'черновик';
             break;
         }
-      ?>
-    </div>
+      ?></div>
   </div>
   <!-- -->
   <div class="row serviceone_block">
-    <div class="col-5">
-      требуется рекомендация
-    </div>
+    <div class="col-5 title_point">требуется рекомендация</div>
     <div class="col-5">
       <input type="checkbox" id="point_need_recommend" class="form-check-input input-request ml-1" data-table="ftt_request" data-field="need_recommend" <?php oneToChecked($request_data['need_recommend']); ?>>
     </div>
   </div>
   <div class="row serviceone_block">
-    <div class="col-5">
+    <div class="col-5 title_point">
       требуется собеседование
     </div>
     <div class="col-5">
@@ -56,7 +50,7 @@
   </div>
   <!-- -->
   <div class="row serviceone_block">
-    <div class="col-5"><span class="span-label-width-210">Решение служащих ПВОМ: </span></div>
+    <div class="col-5"><span class="span-label-width-210 title_point">Решение служащих ПВОМ: </span></div>
       <div class="col-5">
         <?php
         if ($gl_gender_candidate) {
@@ -78,7 +72,7 @@
   <!-- -->
   <div class="row serviceone_block">
     <div class="col-5">
-      <span>Дата принятия решения: </span>
+      <span class="title_point">Дата принятия решения: </span>
     </div>
     <div class="col-5">
       <?php
@@ -93,7 +87,7 @@
   </div>
   <!-- -->
   <div class="row serviceone_block">
-    <div class="col-5 m-b-15px"><span>Комментарий к принятому решению (виден только служащим): </span></div>
+    <div class="col-5 m-b-15px"><span class="title_point">Комментарий к принятому решению (виден только служащим): </span></div>
     <div class="col-5">
       <textarea id="point_decision_info" rows="4" cols="50" class="input-request t-width-long" data-table="ftt_request" data-field="decision_info" data-value="<?php echo $request_data['decision_info']; ?>"><?php echo $request_data['decision_info']; ?></textarea>
     </div>

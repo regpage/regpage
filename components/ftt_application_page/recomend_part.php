@@ -6,7 +6,7 @@
 
   <!-- -->
   <div class="row serviceone_block">
-    <div class="col-5">
+    <div class="col-5 title_point">
       Ответственный за рекомендацию:
     </div>
     <div class="col-5">
@@ -34,7 +34,7 @@
 
   <!-- -->
   <div class="row serviceone_block">
-    <div class="col-5">
+    <div class="col-5 title_point">
       Рекомендация:
     </div>
     <div class="col-5">
@@ -60,7 +60,7 @@
 
   <!-- -->
   <div class="row serviceone_block">
-    <div class="col-5">
+    <div class="col-5 title_point">
       Комментарий к рекомендации:
     </div>
     <div class="col-5">

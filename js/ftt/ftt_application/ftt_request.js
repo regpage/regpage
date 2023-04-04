@@ -1428,6 +1428,7 @@ $(document).ready(function(){
     // дата выгрузки
     let copytext = "Дата выгрузки — " + dateStrToddmmyyyyToyyyymmdd(date_now_gl(), true) + "\n";
     let file_name = $("#point_name").val();
+    file_name = file_name.replace("'", '"');
     $("#main_container .container").each(function () {
       // check
       if (($(this).find("h4").text().trim() === "Рекомендация" && (!$("#point_need_recommend").prop("checked")
@@ -1439,6 +1440,7 @@ $(document).ready(function(){
       } else {
         // get text for file
         copytext += "\n" + $(this).find("h4").text().trim() + "\n\n";
+        copytext = copytext.replace("'", '"');
         $(this).find(".row").each(function () {
 
             if ($(this).find(".title_point").is(":visible")) {
@@ -1453,7 +1455,8 @@ $(document).ready(function(){
               copytext += " — " + $(this).find("input[type='radio']").parent().parent().parent().attr("data-value") + "\n";
             } else if ($(this).find("input[type='checkbox']").is(":visible")) {
               copytext += " — ";
-              if ($(this).find("input[type='checkbox']").parent().text()) {
+              // ниже проверить
+              if ($(this).find("input[type='checkbox']").parent().text() && !$(this).hasClass("row serviceone_block")) {
                 $(this).find("input[type='checkbox']:checked").parent().each(function (i) {
                   if (i > 0) {
                     copytext += ", ";
@@ -1461,8 +1464,9 @@ $(document).ready(function(){
                   copytext += $(this).text();
                 });
                 copytext += ".\n";
+                // выше проверить
               } else {
-                if ($(this).find("input[type='checkbox']:checked")) {
+                if ($(this).find("input[type='checkbox']").prop("checked")) {
                   copytext += "Да\n"
                 } else {
                   copytext += "Нет\n"
@@ -1498,11 +1502,21 @@ $(document).ready(function(){
           } else if ($(this).find("input[type='date']").is(":visible")) {
             copytext += " — " + $(this).find("input[type='date']").val() + "\n";
           } else {
-            //copytext += "\n";
+            $(this).find("span:visible").each(function() {
+              if ($(this).attr("data-date")) {
+                copytext += " — " + $(this).text() + "\n";
+              }
+            });
+            $(this).find("div:visible").each(function() {
+              if ($(this).hasClass('decision_service_point')) {
+                copytext += " — " + $(this).text() + "\n";
+              }
+            });
           }
         });
       }
     });
+    copytext = copytext.replace("'", '"');
     downloadSys(copytext.trim(), file_name)
   });
 

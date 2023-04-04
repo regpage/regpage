@@ -7,7 +7,7 @@
 
   <!-- -->
   <div class="row serviceone_block">
-    <div class="col-5">
+    <div class="col-5 title_point">
       <span>Ответственный за собеседование</span>
     </div>
     <div class="col-5">
@@ -24,9 +24,7 @@
 
   <!-- -->
   <div class="row serviceone_block">
-    <div class="col-5">
-      Результат собеседования
-    </div>
+    <div class="col-5 title_point">Результат собеседования</div>
     <div class="col-5">
       <select id="point_interview_status" class="i-width-280-px mr-3" data-table="ftt_request" data-field="interview_status" value="<?php echo $request_data['interview_status']; ?>" required>
         <?php
@@ -49,7 +47,7 @@
   </div>
   <!-- -->
   <div class="row serviceone_block">
-    <div class="col-5">
+    <div class="col-5 title_point">
       Комментарий к собеседованию
     </div>
     <div class="col-5">
