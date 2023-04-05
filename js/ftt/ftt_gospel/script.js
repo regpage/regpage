@@ -566,7 +566,7 @@ $('#save_extra_help').click(function (e) {
   save_data_blank();
 });
 
-// клик по строкке, загружаем форму
+// клик по строке, загружаем форму
 $(".list_string").click(function () {
   if ($(this).attr("data-author") !== admin_id_gl) {
     $("#modalAddEdit input").attr('disabled', false);
@@ -606,8 +606,10 @@ $(".list_string").click(function () {
       trainee_list[group_members_list_render[i].trim()]
       +'" checked>'
       +trainee_list[group_members_list_render[i].trim()]+'</label><br>';
-      // add block
-      add_remove_gospel_personal_block('', group_members_list_render[i].trim());
+      // add block      
+      if (group_members_list_render[i].trim()) {
+        add_remove_gospel_personal_block('', group_members_list_render[i].trim());
+      }
     }
   }
   $('#group_members_block').html(group_members_list_html);

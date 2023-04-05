@@ -1,4 +1,5 @@
 <?php
+
 // Ежедневная рассылка статистики для служащих.
 
 header('Content-Type: text/html; charset=utf-8');
@@ -15,7 +16,7 @@ require_once 'db/classes/statistics.php';
 require_once 'db/classes/emailing.php';
 require_once 'db/classes/ftt_lists.php';
 require_once 'db/classes/member.php';
-//require_once 'db/classes/short_name.php';
+require_once 'db/classes/short_name.php';
 require_once 'db/classes/date_convert.php';
 require_once 'db/classes/statistic/gospel_stat.php';
 
@@ -60,11 +61,50 @@ function getServiceOnesWithTrainees ()
         }
       }
 
-      $res = db_query("SELECT `name` FROM `ftt_gospel_team` WHERE `id`='$team'");
-      while ($row = $res->fetch_assoc()) $team = $row['name'];
-      $gospelText .= "<b>Команда {$team}</b><br>";
+      /*$res = db_query("SELECT `name` FROM `ftt_gospel_team` WHERE `id`='$team'");
+      while ($row = $res->fetch_assoc()) $team = $row['name'];*/
+      $gospelText .= "<b>Команда {$team}:</b><br>";
       $statistic = [];
+      // обучающиеся
+      $trainee_list_team = GospelStatistic::traineesByTeamName($sOteam);
+      $gospelTextData = statistics::gospelPersonalSeven($trainee_list_team);
+
+      if (count($gospelTextData) > 0 || count($sOTrainees) > 0) {
+        if (empty($gospelText)) {
+          $gospelText = 'Статистика благовестия за неделю с ' . date("d.m", mktime(0, 0, 0, date("m"), date("d")-7)) . ' по ' . date("d.m", mktime(0, 0, 0, date("m"), date("d")-1)) . ' (со среды по вторник):<br><br>';
+        }
+        $trainePrepare = [];
+        foreach ($gospelTextData as $key_1 => $value_1) {
+          $trainePrepare[$value_1['member_key']] = $value_1['member_key'];
+        }
+
+        $trainees_missing = array_diff_key($sOTrainees, $trainePrepare);
+
+        if (count($trainees_missing) > 0) {
+          foreach ($trainees_missing as $key_1 => $value_1) {
+            $gospelTextData[] = array('member_key' => $key_1, 'number' => 0, 'first_contacts' => 0, 'further_contacts' => 0, 'name' => Member::get_name($key_1), 'gospel_group' => $value_1);
+          }
+          // Сортируем
+          $nameSort  = array_column($gospelTextData, 'name');
+          array_multisort($nameSort, SORT_ASC, $gospelTextData);
+        }
+        $statisticPersonal = [];
+        // обучающиеся data
+        foreach ($gospelTextData as $key_2 => $value_2) {
+          if ($value_2['member_key']) {
+            if (!isset($statisticPersonal[$value_2['member_key']])) {
+              $statisticPersonal[$value_2['member_key']] = array($value_2['number'], $value_2['first_contacts'], $value_2['further_contacts'], $sOTrainees[$value_2['member_key']]);
+            } else {
+              $statisticPersonal[$value_2['member_key']][0] += $value_2['number'];
+              $statisticPersonal[$value_2['member_key']][1] += $value_2['first_contacts'];
+              $statisticPersonal[$value_2['member_key']][2] += $value_2['further_contacts'];
+            }
+          }
+        }
+      }
+
       foreach ($gospelTeamReportData as $key_1 => $value_1) {
+        // группы
         if (!isset($statistic[$value_1['gospel_group']])) {
           $statistic[$value_1['gospel_group']] = array($value_1['flyers'], $value_1['people'], $value_1['prayers'], $value_1['baptism'], $value_1['meets_last'], $value_1['meets_current'], $value_1['meetings_last'], $value_1['meetings_current'], $value_1['homes']);
         } else {
@@ -90,63 +130,38 @@ function getServiceOnesWithTrainees ()
       }
 
       foreach ($statistic as $key_1 => $value_1) {
+        // группы
         $colorRedGrp = '';
         if (!$value_1[0] && !$value_1[1] && !$value_1[2] && !$value_1[3] && !$value_1[4] && !$value_1[5] && !$value_1[6] && !$value_1[7] && !$value_1[8]) {
           $colorRedGrp = 'style="color: red;"';
         }
-        $gospelText .= "<span {$colorRedGrp}>Группа ";
+        $gospelText .= "<br><span {$colorRedGrp}>Группа ";
          $gospelText .= $key_1 . ': Л' . $value_1[0] . ', Б' . $value_1[1] . ', М' . $value_1[2];
          $gospelText .= ', К' .$value_1[3] . ', В' . (intval($value_1[4]) + intval($value_1[5]));
          $gospelText .= ', С' . (intval($value_1[6]) + intval($value_1[7])) . ', Д' . $value_1[8] . '</span><br>';
+
+         // обучающиеся html
+         foreach ($statisticPersonal as $key_2 => $value_2) {
+           if ($key_1 == $value_2[3]) {
+             $colorRed = '';
+             if (!$value_2[0] && !$value_2[1] && !$value_2[2]) {
+               $colorRed = 'color: red;';
+             }
+             $gospelText .= "<span style='padding-left: 20px; {$colorRed}'>" . short_name::no_middle(Member::get_name($key_2)) . ": В" . $value_2[0] . ', Н'. $value_2[1]. ', П'. $value_2[2];
+             $gospelText .= "</span><br>";
+           }
+         }
       }
 
       $gospelText .= '<br>';
+      $gospelText .= '<b>Сокращения:</b><br><br>Л — сколько <b>л</b>истовок раздали<br>Б — скольким людям <b>б</b>лаговествовали<br>М — сколько человек по<b>м</b>олились<br>';
+      $gospelText .= 'В — сколько было <b>в</b>стреч с новичками<br>Д — сколько <b>д</b>омов святых посетили<br>';
+      $gospelText .= '<br>В — сколько было <b>в</b>ыходов на благовестие<br>Н — сколько <b>н</b>овых контактов по телефону<br>П — сколько <b>п</b>овторных контактов по телефону<br>';
+
     }
-    $trainee_list_team = GospelStatistic::traineesByTeamName($sOteam);
-    $gospelTextData = statistics::gospelPersonalSeven($trainee_list_team);
-    if (count($gospelTextData) > 0 || count($sOTrainees) > 0) {
-      if (empty($gospelText)) {
-        $gospelText = 'Статистика благовестия за неделю с ' . date("d.m", mktime(0, 0, 0, date("m"), date("d")-7)) . ' по ' . date("d.m", mktime(0, 0, 0, date("m"), date("d")-1)) . ' (со среды по вторник):<br><br>';
-      }
-      $trainePrepare = [];
-      foreach ($gospelTextData as $key_1 => $value_1) {
-        $trainePrepare[$value_1['member_key']] = $value_1['member_key'];
-      }
 
-      $trainees_missing = array_diff_key($sOTrainees, $trainePrepare);
+    //$gospelText .= "<a href='https://reg-page.ru/ftt_extrahelp.php?my=1'>Перейти в раздел «Доп. задания»</a><br>";
 
-      if (count($trainees_missing) > 0) {
-        foreach ($trainees_missing as $key_1 => $value_1) {
-          $gospelTextData[] = array('member_key' => $key_1, 'number' => 0, 'first_contacts' => 0, 'further_contacts' => 0, 'name' => Member::get_name($key_1));
-        }
-        // Сортируем
-        $nameSort  = array_column($gospelTextData, 'name');
-        array_multisort($nameSort, SORT_ASC, $gospelTextData);
-      }
-      $statisticPersonal = [];
-      $gospelText .= '<b>Выходы на благовестие и звонки</b><br>';
-      foreach ($gospelTextData as $key_1 => $value_1) {
-        if ($value_1['member_key']) {
-          if (!isset($statisticPersonal[$value_1['member_key']])) {
-            $statisticPersonal[$value_1['member_key']] = array($value_1['number'], $value_1['first_contacts'], $value_1['further_contacts']);
-          } else {
-            $statisticPersonal[$value_1['member_key']][0] += $value_1['number'];
-            $statisticPersonal[$value_1['member_key']][1] += $value_1['first_contacts'];
-            $statisticPersonal[$value_1['member_key']][2] += $value_1['further_contacts'];
-
-          }
-        }
-      }
-      foreach ($statisticPersonal as $key_1 => $value_1) {
-        $colorRed = '';
-        if (!$value_1[0] && !$value_1[1] && !$value_1[2]) {
-          $colorRed = 'style="color: red;"';
-        }
-        $gospelText .= "<span {$colorRed}>" . short_name::no_middle(Member::get_name($key_1)) . " (группа " . $sOTrainees[$key_1] . "): В" . $value_1[0] . ', Н'. $value_1[1]. ', П'. $value_1[2];
-        $gospelText .= "</span><br>";
-      }
-      //$gospelText .= "<a href='https://reg-page.ru/ftt_extrahelp.php?my=1'>Перейти в раздел «Доп. задания»</a><br>";
-    }
     //Emailing::send_by_key
     //Emailing::send
     //a.rudanok@gmail.com

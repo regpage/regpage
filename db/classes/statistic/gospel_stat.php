@@ -5,9 +5,6 @@
  * html, bd, hundler
  */
 
- // classes
- require_once 'db/classes/short_name.php'; 
-
 class GospelStatistic
 {
 
