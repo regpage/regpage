@@ -235,7 +235,7 @@ function gospelStatFunPersonal($team,$teamName)
     // подготавливаем даты периода
     $key_date = getDatePeriodText($remainder);
     // получаем данные по команде за период
-    $gospelTextData[$key_date] = statistics::gospelPersonalSeven($trainee_list_team, date('Y-m-d'), $remainder);
+    $gospelTextData[$key_date] = statistics::gospelPersonalSeven($trainee_list_team,  $remainder);
     // добавляем недостающихся обучающихся и сортируем
     addTraineeAndSort($gospelTextData, $key_date, addMissingTrainees($trainee_list_team, $gospelTextData[$key_date]));
     // задаём дату для следующей итерации
@@ -245,7 +245,7 @@ function gospelStatFunPersonal($team,$teamName)
     // подготавлеваем даты периода
     $key_date = getDatePeriodText($remainder);
     // получаем данные по команде за период
-    $gospelTextData[$key_date] = GospelStatistic::teamReport($team, date('Y-m-d'), $remainder);
+    $gospelTextData[$key_date] = statistics::gospelPersonalSeven($team, $remainder);
     // добавляем недостающихся обучающихся и сортируем
     addTraineeAndSort($gospelTextData, $key_date, addMissingTrainees($trainee_list_team, $gospelTextData[$key_date]));
     // задаём дату для следующей итерации
@@ -263,7 +263,7 @@ function gospelStatFunPersonal($team,$teamName)
     $key_date = date_format($datePeriodWeek,"Y-m-d") . ' — ' . date_format($date_current_report,"Y-m-d");
 
     // получаем данные по команде за период
-    $gospelTextData[$key_date] = statistics::gospelPersonalSeven($trainee_list_team, date_format($date_current_report,"Y-m-d"));
+    $gospelTextData[$key_date] = GospelStatistic::personalReport($trainee_list_team, 7,  date_format($date_current_report,"Y-m-d"));
 
     // добавляем недостающихся обучающихся и сортируем
     addTraineeAndSort($gospelTextData, $key_date, addMissingTrainees($trainee_list_team, $gospelTextData[$key_date]));
@@ -296,7 +296,7 @@ function gospelStatFunPersonal($team,$teamName)
     foreach ($statisticPersonal as $key_2 => $value_2) {
       if ($counterPeriods > 0) {
         $gospelText .= '<br>';
-      }      
+      }
       $gospelText .= "<b>Период {$key_2}</b><br>";
       foreach ($value_2 as $key_3 => $value_3) {
         $colorRed = '';

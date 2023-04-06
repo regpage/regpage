@@ -74,6 +74,49 @@ class GospelStatistic
     return $blanks;
   }
 
+  // личная статистика по благовестию
+  static function personalReport($memberId, $period=7, $from='CURDATE()')
+  {
+    global $db;
+    $period = $db->real_escape_string($period);
+    $from = $db->real_escape_string($from);
+    $result = [];
+    $and = '';
+    $conditionBlanks = '';
+    if (is_array($memberId)) {
+      if (count($memberId) > 0) {
+        $count = 0;
+        foreach ($memberId as $key => $value) {
+          if ($count == 0) {
+            $count++;
+            $conditionBlanks = " (fgm.member_key = '{$key}' ";
+          } else {
+            $conditionBlanks .= " OR fgm.member_key = '{$key}' ";
+          }
+        }
+      } else {
+        return $result;
+      }
+    } else {
+      return $result;
+    }
+    if ($from!=='CURDATE()') {
+      $from = "'$from'";
+    }
+    if ($conditionBlanks) {
+      $and = ' AND ';
+      $conditionBlanks .= ')';
+    }
+
+    $res = db_query("SELECT fgm.*, m.name FROM ftt_gospel_members AS fgm
+      INNER JOIN ftt_gospel fg ON fgm.blank_id = fg.id
+      LEFT JOIN member m ON fgm.member_key = m.key
+      WHERE fg.date >= {$from} - INTERVAL {$period} DAY AND fg.date < {$from} {$and} {$conditionBlanks}");
+      while ($row = $res->fetch_assoc()) $result[] = $row;
+
+      return $result;
+  }
+
   // данные бланков благовестия обучающихся
   static function membersBlanksStatistic()
   {
