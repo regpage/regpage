@@ -197,6 +197,20 @@ function getDatePeriodText($remainder=7)
   return date_format($datePeriodWeek,"Y-m-d") . ' — ' . date('Y-m-d');
 }
 
+function addTraineeAndSort(&$arr, $keyArr, $check)
+{
+  if (count($check) > 0) {
+    // добавляем
+    foreach ($check as $key => $value) {
+      $arr[$keyArr][] = array(
+        'id'=>0,'date'=>'−−.−−', 'member_key'=>$key,
+        'name'=>$value,'first_contacts'=>0,'further_contacts'=>0,'number'=>0);
+    }
+    // Сортируем
+    array_multisort(array_column($arr[$keyArr], 'name'), SORT_ASC, $arr[$keyArr]);
+  }
+}
+
 function gospelStatFunPersonal($team,$teamName)
 {
   echo "<div><h5>{$teamName[$team]}</h5></div>";
@@ -222,21 +236,8 @@ function gospelStatFunPersonal($team,$teamName)
     $key_date = getDatePeriodText($remainder);
     // получаем данные по команде за период
     $gospelTextData[$key_date] = statistics::gospelPersonalSeven($trainee_list_team, date('Y-m-d'), $remainder);
-
-    // добавляем недостающихся обучающихся
-    $tempCheck = addMissingTrainees($trainee_list_team, $gospelTextData[$key_date]);
-
-    if (count($tempCheck) > 0) {
-      for ($ii=0; $ii < count($tempCheck); $ii++) {
-        $gospelTextData[$key_date][] = array(
-          'id'=>0,'date'=>'−−.−−', 'member_key'=>$tempCheck[$i]['member_key'],
-          'name'=>$tempCheck[$i]['name'],'first_contacts'=>0,'further_contacts'=>0,'number'=>0);
-      }
-    }
-    // Сортируем
-    $nameSort  = array_column($gospelTextData[$key_date], 'name');
-    array_multisort($nameSort, SORT_ASC, $gospelTextData[$key_date]);
-    print_r($gospelTextData[$key_date]);
+    // добавляем недостающихся обучающихся и сортируем
+    addTraineeAndSort($gospelTextData, $key_date, addMissingTrainees($trainee_list_team, $gospelTextData[$key_date]));
     // задаём дату для следующей итерации
     date_sub($date_current_report,date_interval_create_from_date_string("{$remainder} days"));
   } elseif ($remainder < 0) {
@@ -245,46 +246,27 @@ function gospelStatFunPersonal($team,$teamName)
     $key_date = getDatePeriodText($remainder);
     // получаем данные по команде за период
     $gospelTextData[$key_date] = GospelStatistic::teamReport($team, date('Y-m-d'), $remainder);
-    // добавляем недостающие группы группу
-    $tempCheck = addMissingTrainees($trainee_list_team, $gospelTextData[$key_date]);
-
-    if (count($tempCheck) > 0) {
-      for ($ii=0; $ii < count($tempCheck); $ii++) {
-        $gospelTextData[$key_date][] = array(
-          'id'=>0,'date'=>'−−.−−', 'member_key'=>$tempCheck['member_key'],
-          'name'=>$tempCheck['name'],'first_contacts'=>0,'further_contacts'=>0,'number'=>0);
-      }
-    }
-
-    // Сортируем
-    $nameSort  = array_column($gospelTextData[$key_date], 'name');
-    array_multisort($nameSort, SORT_ASC, $gospelTextData[$key_date]);
+    // добавляем недостающихся обучающихся и сортируем
+    addTraineeAndSort($gospelTextData, $key_date, addMissingTrainees($trainee_list_team, $gospelTextData[$key_date]));
     // задаём дату для следующей итерации
     date_sub($date_current_report,date_interval_create_from_date_string("{$remainder} days"));
   }
 
   // ЗДЕСЬ С ВЫЧИТАНИЕМ 7 ДНЕЙ
   for ($i=0; $i < $reportLength; $i=$i+7) {
+
     // подготавлеваем даты периода
     $datePeriodWeek = date_create(date_format($date_current_report,"Y-m-d"));
     date_modify($datePeriodWeek,"-7 days");
+
     //date_sub($datePeriodWeek,date_interval_create_from_date_string("7 days"));
     $key_date = date_format($datePeriodWeek,"Y-m-d") . ' — ' . date_format($date_current_report,"Y-m-d");
+
     // получаем данные по команде за период
     $gospelTextData[$key_date] = statistics::gospelPersonalSeven($trainee_list_team, date_format($date_current_report,"Y-m-d"));
 
-    // добавляем недостающие группы группу
-    $tempCheck = addMissingTrainees($trainee_list_team, $gospelTextData[$key_date]);
-    if (count($tempCheck) > 0) {
-      for ($ii=0; $ii < count($tempCheck); $ii++) {
-        $gospelTextData[$key_date][] = array(
-          'id'=>0,'date'=>'−−.−−', 'member_key'=>$tempCheck['member_key'],
-          'name'=>$tempCheck['name'],'first_contacts'=>0,'further_contacts'=>0,'number'=>0);
-      }
-    }
-    // Сортируем
-    $nameSort  = array_column($gospelTextData[$key_date], 'name');
-    array_multisort($nameSort, SORT_ASC, $gospelTextData[$key_date]);
+    // добавляем недостающихся обучающихся и сортируем
+    addTraineeAndSort($gospelTextData, $key_date, addMissingTrainees($trainee_list_team, $gospelTextData[$key_date]));
 
     // задаём дату для следующей итерации
     date_sub($date_current_report,date_interval_create_from_date_string("7 days"));
@@ -292,53 +274,41 @@ function gospelStatFunPersonal($team,$teamName)
 
   if (count($gospelTextData) > 0 || count($trainee_list_team) > 0) {
 
-    if (empty($gospelText)) {
-      $gospelText = 'Статистика благовестия за неделю с ' . date("d.m", mktime(0, 0, 0, date("m"), date("d")-7)) . ' по ' . date("d.m", mktime(0, 0, 0, date("m"), date("d")-1)) . ' (со среды по вторник):<br><br>';
-    }
-    /*
-    $trainePrepare = [];
-    foreach ($gospelTextData as $key_1 => $value_1) {
-      $trainePrepare[$value_1['member_key']] = $value_1['member_key'];
-    }
-
-    $trainees_missing = array_diff_key($sOTrainees, $trainePrepare);
-
-    if (count($trainees_missing) > 0) {
-      foreach ($trainees_missing as $key_1 => $value_1) {
-        $gospelTextData[] = array('member_key' => $key_1, 'number' => 0, 'first_contacts' => 0, 'further_contacts' => 0, 'name' => Member::get_name($key_1), 'gospel_group' => $value_1);
-      }
-      // Сортируем
-      $nameSort  = array_column($gospelTextData, 'name');
-      array_multisort($nameSort, SORT_ASC, $gospelTextData);
-    }
-
-    */
     $statisticPersonal = [];
     // обучающиеся data
     foreach ($gospelTextData as $key_2 => $value_2) {
       foreach ($value_2 as $key_3 => $value_3) {
-        if ($value_3[$key_2]['member_key']) {
-          if (!isset($statisticPersonal[$key_2][$value_3['member_key']])) {
-            $statisticPersonal[$key_2][$value_3['member_key']] = array($value_3['number'], $value_3['first_contacts'], $value_3['further_contacts']);
-          } else {
-            $statisticPersonal[$key_2][$value_3['member_key']][0] += $value_3['number'];
-            $statisticPersonal[$key_2][$value_3['member_key']][1] += $value_3['first_contacts'];
-            $statisticPersonal[$key_2][$value_3['member_key']][2] += $value_3['further_contacts'];
-          }
+        if (!isset($value_3[$key_2])) {
+            $value_3[$key_2] = [];
+        }
+        if (!isset($statisticPersonal[$key_2][$value_3['member_key']])) {
+          $statisticPersonal[$key_2][$value_3['member_key']] = array($value_3['number'], $value_3['first_contacts'], $value_3['further_contacts']);
+        } else {
+          $statisticPersonal[$key_2][$value_3['member_key']][0] += $value_3['number'];
+          $statisticPersonal[$key_2][$value_3['member_key']][1] += $value_3['first_contacts'];
+          $statisticPersonal[$key_2][$value_3['member_key']][2] += $value_3['further_contacts'];
         }
       }
     }
+
     // обучающиеся html
+    $counterPeriods = 0;
     foreach ($statisticPersonal as $key_2 => $value_2) {
+      if ($counterPeriods > 0) {
+        $gospelText .= '<br>';
+      }      
+      $gospelText .= "<b>Период {$key_2}</b><br>";
       foreach ($value_2 as $key_3 => $value_3) {
         $colorRed = '';
         if (!$value_3[0] && !$value_3[1] && !$value_3[2]) {
           $colorRed = 'color: red;';
         }
-        $gospelText .= "<span style='padding-left: 20px; {$colorRed}'>" . short_name::no_middle(Member::get_name($key_2)) . ": В" . $value_3[0] . ', Н'. $value_3[1]. ', П'. $value_3[2];
+        $gospelText .= "<span style='{$colorRed}'>" . short_name::no_middle($trainee_list_team[$key_3]) . ": В" . $value_3[0] . ', Н'. $value_3[1]. ', П'. $value_3[2];
         $gospelText .= "</span><br>";
       }
+      $counterPeriods++;
     }
+    $gospelText .= '<hr>';
   }
   echo $gospelText;
 }

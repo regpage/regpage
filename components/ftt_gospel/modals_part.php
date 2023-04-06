@@ -635,10 +635,13 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
         <div class="container">
           <div class="row">
             <div class="col">
+              <b>Понедельная статистика благовестия по группам (со среды по вторник):</b><br><br>
               <?php
+              if ($ftt_access['group'] === 'staff') {
                 foreach ($teamsList as $key => $value){
                   gospelStatFun($key, $teamsList);
                 }
+              }
               ?>
             </div>
           </div>
@@ -666,10 +669,13 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
         <div class="container">
           <div class="row">
             <div class="col">
+              <b>Понедельная статистика благовестия персональная(со среды по вторник):</b><br><br>
               <?php
+              if ($ftt_access['group'] === 'staff') {
                 foreach ($teamsList as $key => $value){
                   gospelStatFunPersonal($key, $teamsList);
                 }
+              }
               ?>
             </div>
           </div>
