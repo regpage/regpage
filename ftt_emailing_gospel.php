@@ -66,7 +66,7 @@ function getServiceOnesWithTrainees ()
       $gospelText .= "<b>Команда {$team}:</b><br>";
       $statistic = [];
       // обучающиеся
-      $trainee_list_team = GospelStatistic::traineesByTeamName($sOteam);
+      $trainee_list_team = GospelStatistic::traineesByTeamWithName($sOteam);
       $gospelTextData = statistics::gospelPersonalSeven($trainee_list_team);
 
       if (count($gospelTextData) > 0 || count($sOTrainees) > 0) {
@@ -155,7 +155,7 @@ function getServiceOnesWithTrainees ()
 
       $gospelText .= '<br>';
       $gospelText .= '<b>Сокращения:</b><br><br>Л — сколько <b>л</b>истовок раздали<br>Б — скольким людям <b>б</b>лаговествовали<br>М — сколько человек по<b>м</b>олились<br>';
-      $gospelText .= 'В — сколько было <b>в</b>стреч с новичками<br>Д — сколько <b>д</b>омов святых посетили<br>';
+      $gospelText .= 'К — сколько человек <b>к</b>рещено<br>В — сколько было <b>в</b>стреч с новичками<br>С — сколько новичков было на <b>с</b>обрании<br>Д — сколько <b>д</b>омов святых посетили<br>';
       $gospelText .= '<br>В — сколько было <b>в</b>ыходов на благовестие<br>Н — сколько <b>н</b>овых контактов по телефону<br>П — сколько <b>п</b>овторных контактов по телефону<br>';
 
     }

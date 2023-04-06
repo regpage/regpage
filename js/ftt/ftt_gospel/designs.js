@@ -45,7 +45,7 @@ if ($(window).width()<=769) {
   $(".col_n_1").removeClass("col-2").removeClass("col_n_1");
   //$(".col_n_2").attr("style", "min-width: 60px !important");
   $(".col_n_2").removeClass("col-2").addClass("col-4");
-  $(".col_n_2").attr("style", "max-width: 100px");
+  $(".col_n_2").attr("style", "max-width: 90px !important; padding-right: 0px;");
 
   // бланк
   $("#modalFilrets .btn-sm").removeClass("btn-sm");
@@ -102,6 +102,21 @@ if ($(window).width()<=769) {
       $(this).text('П'+$(this).text());
     } else {
       $(this).text('П0');
+    }
+  });
+
+  $(".list_string .col_n_8").next().css("padding", "0px").removeClass('text-right');
+  $(".list_string .col_n_8").next().find('span').each(function () {
+    $(this).text('В'+$(this).text());
+  });
+  $(".list_string .col_n_8").next().next().css("padding", "0px").removeClass('text-right');
+  $(".list_string .col_n_8").next().next().find('span').each(function () {
+    $(this).text('С'+$(this).text());
+  });
+  $(".list_string .col_n_8").next().next().next().css("padding", "0px").removeClass('text-right');
+  $(".list_string .col_n_8").next().next().next().find('span').each(function () {
+    if (!$(this).hasClass("float-right")) {
+      $(this).text('Д'+$(this).text());
     }
   });
 } else {

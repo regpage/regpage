@@ -225,8 +225,8 @@ class statistics {
     return $blanks;
 
   }
-  // ВАРИАНТ личная статистика по благовестию
-  static function gospelPersonalSeven($memberId, $period=7)
+  // личная статистика по благовестию
+  static function gospelPersonalSeven($memberId, $period=7, $start='CURDATE()')
   {
     global $db;
     $period = $db->real_escape_string($period);
@@ -250,6 +250,7 @@ class statistics {
     } else {
       return $result;
     }
+
     if ($conditionBlanks) {
       $and = ' AND ';
       $conditionBlanks .= ')';
@@ -258,7 +259,7 @@ class statistics {
     $res = db_query("SELECT fgm.*, m.name FROM ftt_gospel_members AS fgm
       INNER JOIN ftt_gospel fg ON fgm.blank_id = fg.id
       LEFT JOIN member m ON fgm.member_key = m.key
-      WHERE fg.date >= CURDATE() - INTERVAL {$period} DAY AND fg.date != CURDATE() {$and} {$conditionBlanks}");
+      WHERE fg.date >= {$start} - INTERVAL {$period} DAY AND fg.date != CURDATE() {$and} {$conditionBlanks}");
       while ($row = $res->fetch_assoc()) $result[] = $row;
 
       return $result;

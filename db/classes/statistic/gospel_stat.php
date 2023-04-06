@@ -38,11 +38,11 @@ class GospelStatistic
     return $trainees;
   }
 
-  static function traineesByTeamName($team) {
+  static function traineesByTeamWithName($team) {
 
     $team = self::check($team);
     $trainees = [];
-    $traineesPreparing = db_query("SELECT ft.member_key
+    $traineesPreparing = db_query("SELECT ft.member_key, m.name
        FROM ftt_trainee AS ft
        INNER JOIN member m ON ft.member_key = m.key
        WHERE ft.gospel_team = '$team'");
