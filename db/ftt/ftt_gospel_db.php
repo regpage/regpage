@@ -17,6 +17,7 @@ function getGospel($condition, $memberId, $sorting, $from = "", $to = "", $team 
   $from = $db->real_escape_string($from);
   $to = $db->real_escape_string($to);
   $team = $db->real_escape_string($team);
+  $membersStat = gospelPersonalStatByDates($team, $condition, $from, $to);
 
   $order_by = '';
   if ($condition === 'month') {
@@ -75,7 +76,13 @@ function getGospel($condition, $memberId, $sorting, $from = "", $to = "", $team 
     INNER JOIN member m ON m.key = fg.author
     WHERE {$condition}
     ORDER BY {$order_by}");
-  while ($row = $res->fetch_assoc()) $result[] = $row;
+  while ($row = $res->fetch_assoc()){
+    if (isset($membersStat[$row['id']])) {
+      $result[] = array_merge($row, $membersStat[$row['id']]);
+    } else {
+      $result[] = array_merge($row, array('number' => 0, 'first_contacts' => 0, 'further_contacts' => 0));
+    }
+  }
 
   return $result;
 }
@@ -400,4 +407,50 @@ function get_all_gospel_members() {
   $res = db_query("SELECT * FROM `ftt_gospel_members`");
   while ($row = $res->fetch_assoc()) $result[] = $row;
   return $result;
+}
+
+// личная статистика по благовестию
+function gospelPersonalStatByDates($team, $period, $from, $to)
+{
+  global $db;
+  $team = $db->real_escape_string($team);
+  $period = $db->real_escape_string($period);
+  $from = $db->real_escape_string($from);
+  $to = $db->real_escape_string($to);
+  $result = [];
+  $statistic = [];
+
+  $condition = '1';
+
+  if ($period === 'month') {
+    $condition = 'DATE(fg.date) >= (NOW() - INTERVAL 1 MONTH) ';
+  } elseif ($period === 'range') {
+    $condition = " fg.date >= '{$from}' AND fg.date <= '{$to}' ";
+  }
+
+  $conditionTeam = " fg.gospel_team = '{$team}' ";
+  if ($team !== '_all_') {
+    if ($condition) {
+      $condition .= ' AND ' . $conditionTeam;
+    } else {
+      $condition .= $conditionTeam;
+    }
+  }
+
+  $res = db_query("SELECT fgm.blank_id, fgm.number, fgm.first_contacts, fgm.further_contacts FROM ftt_gospel_members AS fgm
+    INNER JOIN ftt_gospel fg ON fgm.blank_id = fg.id
+    WHERE {$condition}");
+    while ($row = $res->fetch_assoc()) $result[] = $row;
+
+    foreach ($result as $key => $value) {
+      if (isset($statistic[$value['blank_id']])) {
+        $statistic[$value['blank_id']]['number'] += $value['number'];
+        $statistic[$value['blank_id']]['first_contacts'] += $value['first_contacts'];
+        $statistic[$value['blank_id']]['further_contacts'] += $value['further_contacts'];
+      } else {
+        $statistic[$value['blank_id']] = $value;
+      }
+    }
+
+    return $statistic;
 }

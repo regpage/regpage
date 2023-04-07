@@ -36,6 +36,9 @@ if ($ftt_access['group'] === 'staff' || $ftt_access['group'] === 'trainee') {
           } elseif ($thispage === 'ftt_gospel') {
             include_once 'components/ftt_gospel/staff_content_part.php';
             // code...
+          } elseif ($thispage === 'ftt_gospel_statistic') {
+            include_once 'components/ftt_gospel/stat_content_part.php';
+            // code...
           } /*elseif ($_SERVER['REQUEST_URI'] === '/ftt_absence') {
             include_once 'components/ftt_attendance/content_part.php';
             // code...

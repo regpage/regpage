@@ -1,6 +1,6 @@
 <?php
 // СТАТИСТИКА БЛАГОВЕСТИЯ
-function gospelStatFun($team, $teamsList)
+function gospelStatFun($team, $teamsList, $html=true)
 {
   $membersBlanksStatistic = GospelStatistic::membersBlanksStatistic();
   // список обучающиеся в команде
@@ -91,13 +91,86 @@ function gospelStatFun($team, $teamsList)
     // задаём дату для следующей итерации
     date_sub($date_current_report,date_interval_create_from_date_string("7 days"));
   }
+  if ($html) {
+    gospelStatGroupsHtml($membersBlanksStatistic, $teamsList, $gospelTeamReportData, $team);
+  } else {
+    gospelStatСolumn($membersBlanksStatistic, $teamsList, $gospelTeamReportData, $team);
+  }
+}
 
+function gospelStatGroupsHtml($membersBlanksStatistic, $teamsList, $gospelTeamReportData)
+{
+    $countForGTRDLoop = 0;
+    foreach ($gospelTeamReportData as $key => $value) {
+      $block = 0;
+
+      if ($countForGTRDLoop == 0) {
+        echo "<div><h5>{$teamsList[$team]}</h5>";
+        $count = count($gospelTeamReportData);
+      }
+      if (empty($value) && $countForGTRDLoop == 0) {
+        $keyTemp = periodDateConvert($key);
+        echo "<b>НЕДЕЛЯ {$count} {$keyTemp}</b><br>";
+      } elseif(empty($value)) {
+        $keyTemp = periodDateConvert($key);
+        echo "<b style='display: inline-block; padding-top: 10px;'>НЕДЕЛЯ {$count} {$keyTemp}</b><br>";
+      }
+      foreach ($value as $key_1 => $value_1) {
+        if (!$block) {
+          if ($countForGTRDLoop != 0) {
+            $keyTemp = periodDateConvert($key);
+            echo "<b style='display: inline-block; padding-top: 10px;'>НЕДЕЛЯ {$count} {$keyTemp}</b><br>";
+          } else {
+            $keyTemp = periodDateConvert($key);
+            echo "<b>НЕДЕЛЯ {$count} {$keyTemp}</b><br>";
+          }
+        }
+
+        $value_1['meets_last'] += $value_1['meets_current'];
+        $value_1['meetings_last'] += $value_1['meetings_current'];
+        $dateEcho = '−−.−−';
+        $colorRed = '';
+        if ($value_1['date'] !== '−−.−−') {
+          $dateEcho = date_convert::yyyymmdd_to_ddmm($value_1['date']);
+        } else {
+          $colorRed = 'color: red;';
+        }
+        $numberGospels = 0;
+        $firstConact = 0;
+        $furtherConact = 0;
+        if (isset($membersBlanksStatistic[$value_1['id']])) {
+          $numberGospels = $membersBlanksStatistic[$value_1['id']]['number'];
+          $firstConact = $membersBlanksStatistic[$value_1['id']]['first_contacts'];
+          $furtherConact = $membersBlanksStatistic[$value_1['id']]['further_contacts'];
+
+        }
+
+        echo "<span style='{$colorRed}'><b>Группа {$value_1['gospel_group']}</b><br>";
+        echo $dateEcho . ' — Л'.$value_1['flyers'].', Б'.$value_1['people'] .', М'. $value_1['prayers'];
+        echo ', Г' . $numberGospels .', Н' . $firstConact .', П' . $furtherConact;
+        echo ', К' . $value_1['baptism'] .', В'. $value_1['meets_last'] .', С'. $value_1['meetings_last'] .', Д'. $value_1['homes'];
+        echo '.</span><br>';
+
+        $block = 1;
+      }
+      $count--;
+      $countForGTRDLoop++;
+    }
+    if (count($gospelTeamReportData) > 0) {
+      echo "<hr></div>";
+    }
+}
+
+// ГРАФИК СТОЛБИКИ СТАТИСТИКА БЛАГОВЕСТИЯ
+function gospelStatСolumn($membersBlanksStatistic, $teamsList, $gospelTeamReportData, $team)
+{
   $countForGTRDLoop = 0;
   foreach ($gospelTeamReportData as $key => $value) {
     $block = 0;
 
     if ($countForGTRDLoop == 0) {
-      echo "<div><h5>{$teamsList[$team]}</h5>";
+      echo "<h5>{$teamsList[$team]}</h5>";
+      echo "<div class='d-flex'>";
       $count = count($gospelTeamReportData);
     }
     if (empty($value) && $countForGTRDLoop == 0) {
@@ -107,7 +180,11 @@ function gospelStatFun($team, $teamsList)
       $keyTemp = periodDateConvert($key);
       echo "<b style='display: inline-block; padding-top: 10px;'>НЕДЕЛЯ {$count} {$keyTemp}</b><br>";
     }
+
     foreach ($value as $key_1 => $value_1) {
+      if (!$value_1['gospel_group']) {
+        continue;
+      }
       if (!$block) {
         if ($countForGTRDLoop != 0) {
           $keyTemp = periodDateConvert($key);
@@ -127,6 +204,7 @@ function gospelStatFun($team, $teamsList)
       } else {
         $colorRed = 'color: red;';
       }
+      /*
       $numberGospels = 0;
       $firstConact = 0;
       $furtherConact = 0;
@@ -142,14 +220,20 @@ function gospelStatFun($team, $teamsList)
       echo ', Г' . $numberGospels .', Н' . $firstConact .', П' . $furtherConact;
       echo ', К' . $value_1['baptism'] .', В'. $value_1['meets_last'] .', С'. $value_1['meetings_last'] .', Д'. $value_1['homes'];
       echo '.</span><br>';
+      */
+      echo "<span style='{$colorRed}'><b>Группа {$value_1['gospel_group']}</b></span><br>";
+      $statColumn = ['М'=>$value_1['prayers'], 'Л'=>$value_1['flyers'], 'Б'=>$value_1['people']];
+      $plot = new SimplePlot($statColumn, 150); //Создать диаграмму
+      $plot->show(); //И показать её
 
       $block = 1;
     }
+
     $count--;
     $countForGTRDLoop++;
   }
   if (count($gospelTeamReportData) > 0) {
-    echo "<hr></div>";
+    echo "</div>";
   }
 }
 
@@ -312,3 +396,68 @@ function gospelStatFunPersonal($team,$teamName)
   }
   echo $gospelText;
 }
+
+// ДИАГРАММА
+class SimplePlot {
+  private $data = array(), $headers=array(), $percent = array(), $pixels = array();
+  private $width, $sum, $count;
+
+  function __construct ($data,$width=100) {
+   $this->width = $width;
+   $this->headers = array_keys($data);
+   $this->data = array_values($data);
+   $this->count = count($this->data);
+   $this->sum = array_sum($data);
+   for ($i=0; $i<$this->count; $i++) {
+    if ($this->sum) $this->percent[$i] = $this->data[$i];
+    else $this->percent[$i] = 0;
+    $this->pixels[$i] = $this->percent[$i];
+   }
+
+  }
+
+  function getStyle() {
+   return '<style type="text/css">
+    .plotTable {
+     display: flex;
+     margin: 0;
+     padding: 2px;
+    }
+    .plotHeaderCell {
+     text-align: center;
+     width: 2em;
+    }
+    .plotDataCell {
+     text-align: center;
+     min-height: '.$this->width.'px;
+     width: 2em;
+    }
+    .plotItemInCell {
+     display: inline-block;
+     width: 1em;
+     background-color: blue;
+    }
+    .plotCountCell {
+     text-align: center;
+     vertical-align: middle;
+     width: 2em;
+    }
+   </style>'."\n";
+  }
+
+  function get () {
+   $string = $this->getStyle().'<div class="plotTable">'."\n";
+   for ($i=0; $i<$this->count; $i++) {
+    $string .= '<div><div class="plotCountCell">'.$this->data[$i].$this->headers[$i].'</div>';
+    $string .= '<div class="plotDataCell"><div class="plotItemInCell" style="min-height: '.
+     $this->pixels[$i].'px;"></div></div><div class="plotHeaderCell">'.$this->headers[$i].'</div>';
+    $string .= '</div>';
+   }
+   $string .= '</div>';
+   return $string;
+  }
+
+  function show () {
+   echo $this->get();
+  }
+ }

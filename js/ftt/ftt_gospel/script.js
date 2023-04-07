@@ -606,7 +606,7 @@ $(".list_string").click(function () {
       trainee_list[group_members_list_render[i].trim()]
       +'" checked>'
       +trainee_list[group_members_list_render[i].trim()]+'</label><br>';
-      // add block      
+      // add block
       if (group_members_list_render[i].trim()) {
         add_remove_gospel_personal_block('', group_members_list_render[i].trim());
       }
@@ -758,8 +758,8 @@ filters_list_show();
           meets_current += Number(stat[i].meets_current);
           meetings_last += Number(stat[i].meetings_last);
           meetings_current += Number(stat[i].meetings_current);
-          //first_contacts += Number(stat[i].first_contacts);
-          //further_contacts += Number(stat[i].further_contacts);
+          first_contacts += Number(stat[i].first_contacts);
+          further_contacts += Number(stat[i].further_contacts);
           homes += Number(stat[i].homes);
           // periods
           let date_str = new Date(stat[i].date);
@@ -772,8 +772,8 @@ filters_list_show();
             range_meets_current += Number(stat[i].meets_current);
             range_meetings_last += Number(stat[i].meetings_last);
             range_meetings_current += Number(stat[i].meetings_current);
-            //range_first_contacts += Number(stat[i].first_contacts);
-            //range_further_contacts += Number(stat[i].further_contacts);
+            range_first_contacts += Number(stat[i].first_contacts);
+            range_further_contacts += Number(stat[i].further_contacts);
             range_homes += Number(stat[i].homes);
           }
         }
@@ -789,8 +789,8 @@ filters_list_show();
               group_stat[stat[i].gospel_group]["meets_current"] = 0;
               group_stat[stat[i].gospel_group]["meetings_last"] = 0;
               group_stat[stat[i].gospel_group]["meetings_current"] = 0;
-              //group_stat[stat[i].gospel_group]["first_contacts"] = 0;
-              //group_stat[stat[i].gospel_group]["further_contacts"] = 0;
+              group_stat[stat[i].gospel_group]["first_contacts"] = 0;
+              group_stat[stat[i].gospel_group]["further_contacts"] = 0;
               group_stat[stat[i].gospel_group]["homes"] = 0;
             }
             let date_str_group = new Date(stat[i].date);
@@ -803,8 +803,8 @@ filters_list_show();
               group_stat[stat[i].gospel_group]["meets_current"] += Number(stat[i].meets_current);
               group_stat[stat[i].gospel_group]["meetings_last"] += Number(stat[i].meetings_last);
               group_stat[stat[i].gospel_group]["meetings_current"] += Number(stat[i].meetings_current);
-              //group_stat[stat[i].gospel_group]["first_contacts"] += Number(stat[i].first_contacts);
-              //group_stat[stat[i].gospel_group]["further_contacts"] += Number(stat[i].further_contacts);
+              group_stat[stat[i].gospel_group]["first_contacts"] += Number(stat[i].first_contacts);
+              group_stat[stat[i].gospel_group]["further_contacts"] += Number(stat[i].further_contacts);
               group_stat[stat[i].gospel_group]["homes"] += Number(stat[i].homes);
             }
           }
@@ -816,8 +816,8 @@ filters_list_show();
           meets_current += Number(stat[i].meets_current);
           meetings_last += Number(stat[i].meetings_last);
           meetings_current += Number(stat[i].meetings_current);
-          //first_contacts += Number(stat[i].first_contacts);
-          //further_contacts += Number(stat[i].further_contacts);
+          first_contacts += Number(stat[i].first_contacts);
+          further_contacts += Number(stat[i].further_contacts);
           homes += Number(stat[i].homes);
           // periods
           let date_str = new Date(stat[i].date);
@@ -830,8 +830,8 @@ filters_list_show();
             range_meets_current += Number(stat[i].meets_current);
             range_meetings_last += Number(stat[i].meetings_last);
             range_meetings_current += Number(stat[i].meetings_current);
-            //range_first_contacts += Number(stat[i].first_contacts);
-            //range_further_contacts += Number(stat[i].further_contacts);
+            range_first_contacts += Number(stat[i].first_contacts);
+            range_further_contacts += Number(stat[i].further_contacts);
             range_homes += Number(stat[i].homes);
           }
         }
@@ -894,8 +894,8 @@ filters_list_show();
       $("#meets_current_all").text(meets_current);
       $("#meetings_last_all").text(meetings_last);
       $("#meetings_current_all").text(meetings_current);
-      //$("#first_contacts_all").text(first_contacts);
-      //$("#further_contacts_all").text(further_contacts);
+      $("#first_contacts_all").text(first_contacts);
+      $("#further_contacts_all").text(further_contacts);
       $("#homes_all").text(homes);
 
       $("#range_flyers").text(range_flyers);
@@ -906,8 +906,8 @@ filters_list_show();
       $("#range_meets_current").text(range_meets_current);
       $("#range_meetings_last").text(range_meetings_last);
       $("#range_meetings_current").text(range_meetings_current);
-      //$("#range_first_contacts").text(range_first_contacts);
-      //$("#range_further_contacts").text(range_further_contacts);
+      $("#range_first_contacts").text(range_first_contacts);
+      $("#range_further_contacts").text(range_further_contacts);
       $("#range_homes").text(range_homes);
     });
   }

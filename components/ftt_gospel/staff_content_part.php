@@ -14,9 +14,7 @@
         <button id="modalRecommended_open" type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modalRecommended">Цели</button>
         <?php if ($ftt_access['group'] === 'staff' || $serving_trainee) { ?>
           <!--<button id="sort_button" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalSort" style="display: none;">Порядок</button>-->
-          <button id="print_modal_open" type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modalPrint" >Отчёт</button>
-          <button id="report_modal_open" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#gospel_modal_statistic">Отчёт2</button>
-          <button id="report_modal_open" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#gospel_modal_statistic_personal">Отчёт3</button>
+          <button id="print_modal_open" type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modalPrint" >Отчёт</button>          
         <!--<select id="sort_select" class="form-control form-control-sm" style="display: none;">
           <option value="">По дате</option>
           <option value="">По команде</option>
