@@ -1,0 +1,25 @@
+ .plotTable {
+   display: flex;
+   margin: 0;
+   padding: 2px;
+ }
+ .plotHeaderCell {
+   text-align: center;
+   width: 2em;
+ }
+ .plotDataCell {
+   position: relative;
+   width: 2em;
+ }
+ .plotItemInCell {
+   position: absolute;
+   bottom: 0;
+   margin-left: 8px;
+   width: 1em;
+   background-color: blue;
+ }
+ .plotCountCell {
+   text-align: center;
+   vertical-align: middle;
+   width: 2em;
+ }

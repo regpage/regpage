@@ -47,6 +47,8 @@
     <link href="css/ftt/ftt_extra_help.css?v2" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_gospel.php') { ?>
     <link href="css/ftt/ftt_gospel.css?v8" rel="stylesheet">
+<?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_gospel_statistic.php') { ?>    
+    <link href="css/ftt/diagrams.css?v1" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_attendance.php') { ?>
     <link href="css/ftt/ftt_attendance.css?v17" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_list.php') { ?>

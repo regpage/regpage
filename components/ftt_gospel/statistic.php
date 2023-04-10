@@ -94,7 +94,26 @@ function gospelStatFun($team, $teamsList, $html=true)
   if ($html) {
     gospelStatGroupsHtml($membersBlanksStatistic, $teamsList, $gospelTeamReportData, $team);
   } else {
-    gospelStatСolumn($membersBlanksStatistic, $teamsList, $gospelTeamReportData, $team);
+    $diagramsReportData = [];
+    foreach ($gospelTeamReportData as $key => $value) {
+      foreach ($value as $key_1 => $value_1) {
+
+        $value_1['key_date'] = $key;
+        if (isset($value_1['gospel_group'])) { // && isset($diagramsReportData[$value_1['gospel_group']])
+          $diagramsReportData[$value['gospel_group']][] = $value_1;
+        } elseif(isset($value_1['gospel_group'])) {
+          $diagramsReportData[$value['gospel_group']] = [];
+          $diagramsReportData[$value['gospel_group']][] = $value_1;
+        }
+      }
+    }
+
+    foreach ($diagramsReportData as $key_3 => $value_3) {
+      $nameSort = array_column($diagramsReportData[$key_3], 'gospel_group');
+      array_multisort($nameSort, SORT_ASC, $diagramsReportData[$key_3]);
+    }
+    
+    gospelStatСolumn(array(), $teamsList, $diagramsReportData, $team);
   }
 }
 
@@ -204,23 +223,7 @@ function gospelStatСolumn($membersBlanksStatistic, $teamsList, $gospelTeamRepor
       } else {
         $colorRed = 'color: red;';
       }
-      /*
-      $numberGospels = 0;
-      $firstConact = 0;
-      $furtherConact = 0;
-      if (isset($membersBlanksStatistic[$value_1['id']])) {
-        $numberGospels = $membersBlanksStatistic[$value_1['id']]['number'];
-        $firstConact = $membersBlanksStatistic[$value_1['id']]['first_contacts'];
-        $furtherConact = $membersBlanksStatistic[$value_1['id']]['further_contacts'];
 
-      }
-
-      echo "<span style='{$colorRed}'><b>Группа {$value_1['gospel_group']}</b><br>";
-      echo $dateEcho . ' — Л'.$value_1['flyers'].', Б'.$value_1['people'] .', М'. $value_1['prayers'];
-      echo ', Г' . $numberGospels .', Н' . $firstConact .', П' . $furtherConact;
-      echo ', К' . $value_1['baptism'] .', В'. $value_1['meets_last'] .', С'. $value_1['meetings_last'] .', Д'. $value_1['homes'];
-      echo '.</span><br>';
-      */
       echo "<span style='{$colorRed}'><b>Группа {$value_1['gospel_group']}</b></span><br>";
       $statColumn = ['М'=>$value_1['prayers'], 'Л'=>$value_1['flyers'], 'Б'=>$value_1['people']];
       $plot = new SimplePlot($statColumn, 150); //Создать диаграмму
@@ -396,68 +399,3 @@ function gospelStatFunPersonal($team,$teamName)
   }
   echo $gospelText;
 }
-
-// ДИАГРАММА
-class SimplePlot {
-  private $data = array(), $headers=array(), $percent = array(), $pixels = array();
-  private $width, $sum, $count;
-
-  function __construct ($data,$width=100) {
-   $this->width = $width;
-   $this->headers = array_keys($data);
-   $this->data = array_values($data);
-   $this->count = count($this->data);
-   $this->sum = array_sum($data);
-   for ($i=0; $i<$this->count; $i++) {
-    if ($this->sum) $this->percent[$i] = $this->data[$i];
-    else $this->percent[$i] = 0;
-    $this->pixels[$i] = $this->percent[$i];
-   }
-
-  }
-
-  function getStyle() {
-   return '<style type="text/css">
-    .plotTable {
-     display: flex;
-     margin: 0;
-     padding: 2px;
-    }
-    .plotHeaderCell {
-     text-align: center;
-     width: 2em;
-    }
-    .plotDataCell {
-     text-align: center;
-     min-height: '.$this->width.'px;
-     width: 2em;
-    }
-    .plotItemInCell {
-     display: inline-block;
-     width: 1em;
-     background-color: blue;
-    }
-    .plotCountCell {
-     text-align: center;
-     vertical-align: middle;
-     width: 2em;
-    }
-   </style>'."\n";
-  }
-
-  function get () {
-   $string = $this->getStyle().'<div class="plotTable">'."\n";
-   for ($i=0; $i<$this->count; $i++) {
-    $string .= '<div><div class="plotCountCell">'.$this->data[$i].$this->headers[$i].'</div>';
-    $string .= '<div class="plotDataCell"><div class="plotItemInCell" style="min-height: '.
-     $this->pixels[$i].'px;"></div></div><div class="plotHeaderCell">'.$this->headers[$i].'</div>';
-    $string .= '</div>';
-   }
-   $string .= '</div>';
-   return $string;
-  }
-
-  function show () {
-   echo $this->get();
-  }
- }
