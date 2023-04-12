@@ -20,16 +20,14 @@ class SimplePlot {
   function get () {
    $string = '<div class="plotTable">';
    for ($i=0; $i<$this->count; $i++) {
-     if ($this->headers[$i] === 'Л') {
-      $height = $this->pixels[$i] / 5;
-    } else {
-      $height = $this->pixels[$i];
-    }
+     $height = $this->pixels[$i];
+     /*if ($this->headers[$i] === 'Л') {
+      //$height = $this->pixels[$i] / 5;
+    }*/
 
-
-     $string .= '<div><div class="plotCountCell">'.$this->headers[$i].$this->data[$i].'</div>';
-     $string .= '<div class="plotDataCell" style="min-height: '. $this->width .'px;"><div class="plotItemInCell" style="min-height: '.
-     $height.'px;"></div></div><div class="plotHeaderCell">'.$this->headers[$i].'</div>';
+     $string .= '<div>'; //<div class="plotCountCell"></div>
+     $string .= '<div class="plotDataCell" style="min-height: ' . $this->width . 'px;"><div class="plotItemInCell" style="min-height: ' . $height . 'px;"></div><div style="width:2em; text-align: center; position: absolute; top: ' . (80-$height) . 'px;">' . $this->data[$i] . '</div></div>';
+     $string .= '<div class="plotHeaderCell">' . $this->headers[$i] . '</div>';
      $string .= '</div>';
    }
    $string .= '</div>';

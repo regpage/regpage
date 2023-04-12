@@ -217,9 +217,10 @@ function gospelStatСolumn($membersBlanksStatistic, $teamsList, $gospelTeamRepor
   echo "<h5 class='pt-3 cursor-pointer'>{$teamsList[$team]} +</h5>";
   echo "<div class='d-none'>";
 
+  unset($gospelTeamReportData[0]);
+
   foreach ($gospelTeamReportData as $key => $value) {
     $block = 0;
-
     $prevGroup = '';
     $counter = 0;
     foreach ($value as $key_1 => $value_1) {
@@ -236,7 +237,13 @@ function gospelStatСolumn($membersBlanksStatistic, $teamsList, $gospelTeamRepor
 
       if ($prevGroup !== $value_1['gospel_group']) {
         $prevGroup = $value_1['gospel_group'];
-        echo "</div>";
+
+        if ($firstZero) {
+          $firstZero = fasle;
+        } else {
+          echo "</div>";
+        }
+
         echo "<div><b>Группа {$value_1['gospel_group']}</b><br></div>";
         echo "<div class='d-flex overflow-auto mb-3'>";
 
@@ -259,11 +266,11 @@ function gospelStatСolumn($membersBlanksStatistic, $teamsList, $gospelTeamRepor
         $colorRed = 'color: red;';
       }
       $period_dates = periodDateConvert($value_1['key_date'], '-');
-      echo "<div style='{$colorRed} min-width: 100px;'><b style='padding-left: 7px;'>{$period_dates}</b>";
-      $statColumn = ['Л'=>$value_1['flyers'], 'Б'=>$value_1['people'], 'М'=>$value_1['prayers']];
-      $plot = new SimplePlot($statColumn, 150); //Создать диаграмму
+      echo "<div style='{$colorRed} min-width: 100px;'>";
+      $statColumn = ['Б'=>$value_1['people'], 'М'=>$value_1['prayers'], 'В'=>$value_1['meets_last']];
+      $plot = new SimplePlot($statColumn, 100); //Создать диаграмму
       $plot->show(); //И показать её
-      echo "</div>";
+      echo "<b style='padding-left: 7px;'>{$period_dates}</b></div>";
       $block = 1;
       $counter++;
     }
