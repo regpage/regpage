@@ -15,16 +15,22 @@ class SimplePlot {
     else $this->percent[$i] = 0;
     $this->pixels[$i] = $this->percent[$i];
    }
-
   }
 
   function get () {
    $string = '<div class="plotTable">';
    for ($i=0; $i<$this->count; $i++) {
-    $string .= '<div><div class="plotCountCell">'.$this->data[$i].$this->headers[$i].'</div>';
-    $string .= '<div class="plotDataCell" style="min-height: '.$this->width.'px;"><div class="plotItemInCell" style="min-height: '.
-     $this->pixels[$i].'px;"></div></div><div class="plotHeaderCell">'.$this->headers[$i].'</div>';
-    $string .= '</div>';
+     if ($this->headers[$i] === 'Л') {
+      $height = $this->pixels[$i] / 5;
+    } else {
+      $height = $this->pixels[$i];
+    }
+
+
+     $string .= '<div><div class="plotCountCell">'.$this->headers[$i].$this->data[$i].'</div>';
+     $string .= '<div class="plotDataCell" style="min-height: '. $this->width .'px;"><div class="plotItemInCell" style="min-height: '.
+     $height.'px;"></div></div><div class="plotHeaderCell">'.$this->headers[$i].'</div>';
+     $string .= '</div>';
    }
    $string .= '</div>';
    return $string;

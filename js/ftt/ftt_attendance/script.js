@@ -106,6 +106,9 @@ $(document).ready(function(){
    } else*/ if (trainee_access && $("#modalAddEdit").attr("data-status") === "1") {
      showError('Нельзя сохранить.');
      return;
+   } else if ($("#modalAddEdit").attr("data-status") === "2") {
+     showError('Бланк не был отправлен. Нельзя сохранить.');
+     return;
    }
 //
    // валидация значений полей
@@ -218,6 +221,8 @@ function open_blank(el_this) {
         date_time = date_time[0] + ":" + date_time[1];
       }
      text_stts_for_blank = "<span class='badge badge-success text-right' style='font-size: 100%;'>отправлен "+date_date+" "+date_time+"</span>";
+   } else if (status_sheet === "2") {
+     text_stts_for_blank = "<span class='badge badge-warning text-right' style='font-size: 100%;'>не был отправлен</span>";
    }
    $("#status_of_blank").html(text_stts_for_blank);
    if (status_sheet === "0") {
@@ -417,7 +422,7 @@ function open_blank(el_this) {
     // customs select
     $(".dropdown-toggle-split").click(function (e) {
       let text = $(this).prev().prev().prev().prev().text();
-      if ((status_sheet === "1" && trainee_access) || (status_sheet !== "1" && !trainee_access)) {
+      if ((status_sheet === "1" && trainee_access) || (status_sheet !== "1" && !trainee_access) || status_sheet === "2") {
         e.stopPropagation(); //|| (text.charAt(text.length-4) !== ":" && $(this).text() === "С")
       }
     });
@@ -544,7 +549,16 @@ function open_blank(el_this) {
 
       $('#add_attendance_str').attr("disabled", false);
       $('#add_attendance_str').show();
-    } else {
+    } else if (status_sheet === "2") {
+      $('#modalAddEdit input').attr("disabled", true);
+      $('#modalAddEdit select').attr("disabled", true);
+       $("#undo_attendance_str").prop("disabled", true);
+       $("#undo_attendance_str").hide();
+       $('#send_blank').hide();
+       $('#send_blank').prop("disabled", true);
+       $('#add_attendance_str').attr("disabled", true);
+       $('#add_attendance_str').hide();
+     } else {
      if (status_sheet === "1" && !trainee_access) {
        $('#send_blank').hide();
        $("#undo_attendance_str").prop("disabled", false);
@@ -579,6 +593,10 @@ function open_blank(el_this) {
 */
     // change fields
     $('#modalAddEdit input').change(function () { //, #modalAddEdit select
+      if (($("#modalAddEdit").attr("data-status") === "1" && trainee_access) || ($("#modalAddEdit").attr("data-status") !== "1" && !trainee_access) || $("#modalAddEdit").attr("data-status") === "2") {
+        showError("Данные не будут сохранены.");
+        return;
+      }
       let element, field, value, id, data;
       element = $(this);
       field = $(this).attr("data-field");
@@ -1014,7 +1032,14 @@ function open_blank(el_this) {
        let day_number = getNameDayOfWeekByDayNumber(res[i].date, false, false, true);
        let sunday_back, done_string;
        day_number === 0 ? sunday_back = "font-weight-bold" : sunday_back = "";
-       res[i].status === '1' ? done_string = "green_string" : done_string = "";
+       if (res[i].status === '1') {
+         done_string = "green_string"
+       } else if (res[i].status === '2') {
+         done_string = "bg-warning";
+       } else {
+         done_string = "";
+       }
+
        res[i].mark === '1' ? mark_string = "text-danger" : mark_string = "";
        if (!res[i]) {
          day = "";
@@ -1197,8 +1222,11 @@ function open_blank(el_this) {
       });
       // пакетные операции вкл/выкл мероприятий в бланке
       $(".select_all_session").change(function () {
-        if ($("#modalAddEdit").attr("data-status") === 1) {
+        if ($("#modalAddEdit").attr("data-status") === '1') {
           showError("Этот лист посещаемости отправлен. Радактирование невозможено.");
+          return;
+        } else if ($("#modalAddEdit").attr("data-status") === '2') {
+          showError("Этот лист посещаемости не был отправлен. Радактирование невозможено.");
           return;
         }
 
@@ -1275,8 +1303,11 @@ function open_blank(el_this) {
       return;
     }
     // Условия
-    if ($("#modalAddEdit").attr("data-status") === 0) {
+    if ($("#modalAddEdit").attr("data-status") === '0') {
       showError("Этот лист посещаемости не отправлен. Откат невозможен.");
+      return;
+    } else if ($("#modalAddEdit").attr("data-status") === '2') {
+      showError("Этот лист посещаемости не был отправлен. Откат невозможен.");
       return;
     }
     let date_blank_str = $("#modalAddEdit").attr("data-date");

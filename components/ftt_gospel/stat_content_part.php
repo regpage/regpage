@@ -5,12 +5,24 @@
  // Группы
  if ($ftt_access['group'] === 'staff') {
    foreach ($teamsList as $key => $value){
-     echo '<div class="flex">';
+     echo '<div class="">';
      gospelStatFun($key, $teamsList, false);
      echo '</div>';
    }
  }
 
 ?>
+<script>
+  $("h5").click(function () {
+    let text = $(this).text();
+    if ($(this).next().hasClass("d-none")) {
+      $(this).next().removeClass("d-none");
+      $(this).text(text.replace("+","-"));      
+    } else {
+      $(this).next().addClass("d-none");
+      $(this).text(text.replace("-","+"));
+    }
+  });
+</script>
 
 </div>

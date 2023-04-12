@@ -112,8 +112,38 @@ function gospelStatFun($team, $teamsList, $html=true)
       $nameSort = array_column($diagramsReportData[$key_3], 'gospel_group');
       array_multisort($nameSort, SORT_ASC, $diagramsReportData[$key_3]);
     }
-    
-    gospelStatСolumn(array(), $teamsList, $diagramsReportData, $team);
+
+    $diagramsReportDataStat = [];
+    $prevKeyDate;
+    foreach ($diagramsReportData as $key_4 => $value_4) {
+      foreach ($value_4 as $key_5 => $value_5) {
+        if ($value_5['gospel_group'] !== $prevKeyDate) {
+          $prevKeyDate = $value_5['gospel_group'];
+          if (!isset($diagramsReportDataStat[$value_5['gospel_group']])) {
+            $diagramsReportDataStat[$value_5['gospel_group']] = [];
+            $diagramsReportDataStat[$value_5['gospel_group']][$value_5['key_date']] = $value_5;
+          } else {
+            if (!isset($diagramsReportDataStat[$value_5['gospel_group']][$value_5['key_date']])) {
+              $diagramsReportDataStat[$value_5['gospel_group']][$value_5['key_date']] = $value_5;
+            } else {
+              $diagramsReportDataStat[$value_5['gospel_group']][$value_5['key_date']]['prayers'] += $value_5['prayers'];
+              $diagramsReportDataStat[$value_5['gospel_group']][$value_5['key_date']]['flyers'] += $value_5['flyers'];
+              $diagramsReportDataStat[$value_5['gospel_group']][$value_5['key_date']]['people'] += $value_5['people'];
+            }
+          }
+        } else {
+          if (!isset($diagramsReportDataStat[$value_5['gospel_group']][$value_5['key_date']])) {
+            $diagramsReportDataStat[$value_5['gospel_group']][$value_5['key_date']] = $value_5;
+          } else {
+            $diagramsReportDataStat[$value_5['gospel_group']][$value_5['key_date']]['prayers'] += $value_5['prayers'];
+            $diagramsReportDataStat[$value_5['gospel_group']][$value_5['key_date']]['flyers'] += $value_5['flyers'];
+            $diagramsReportDataStat[$value_5['gospel_group']][$value_5['key_date']]['people'] += $value_5['people'];
+          }
+        }
+      }
+    }
+    //print_r($diagramsReportDataStat);
+    gospelStatСolumn(array(), $teamsList, $diagramsReportDataStat, $team);
   }
 }
 
@@ -184,33 +214,38 @@ function gospelStatGroupsHtml($membersBlanksStatistic, $teamsList, $gospelTeamRe
 function gospelStatСolumn($membersBlanksStatistic, $teamsList, $gospelTeamReportData, $team)
 {
   $countForGTRDLoop = 0;
+  echo "<h5 class='pt-3 cursor-pointer'>{$teamsList[$team]} +</h5>";
+  echo "<div class='d-none'>";
+
   foreach ($gospelTeamReportData as $key => $value) {
     $block = 0;
 
-    if ($countForGTRDLoop == 0) {
-      echo "<h5>{$teamsList[$team]}</h5>";
-      echo "<div class='d-flex'>";
-      $count = count($gospelTeamReportData);
-    }
-    if (empty($value) && $countForGTRDLoop == 0) {
-      $keyTemp = periodDateConvert($key);
-      echo "<b>НЕДЕЛЯ {$count} {$keyTemp}</b><br>";
-    } elseif(empty($value)) {
-      $keyTemp = periodDateConvert($key);
-      echo "<b style='display: inline-block; padding-top: 10px;'>НЕДЕЛЯ {$count} {$keyTemp}</b><br>";
-    }
-
+    $prevGroup = '';
+    $counter = 0;
     foreach ($value as $key_1 => $value_1) {
-      if (!$value_1['gospel_group']) {
+
+      if (!$value_1['gospel_group'] || $value_1['gospel_group'] == 0) {
         continue;
+      }
+
+      if ($counter === 0) {
+        $prevGroup = $value_1['gospel_group'];
+        echo "<div><b>Группа {$value_1['gospel_group']}</b><br></div>";
+        echo "<div class='d-flex overflow-auto mb-3'>";
+      }
+
+      if ($prevGroup !== $value_1['gospel_group']) {
+        $prevGroup = $value_1['gospel_group'];
+        echo "</div>";
+        echo "<div><b>Группа {$value_1['gospel_group']}</b><br></div>";
+        echo "<div class='d-flex overflow-auto mb-3'>";
+
       }
       if (!$block) {
         if ($countForGTRDLoop != 0) {
-          $keyTemp = periodDateConvert($key);
-          echo "<b style='display: inline-block; padding-top: 10px;'>НЕДЕЛЯ {$count} {$keyTemp}</b><br>";
+
         } else {
-          $keyTemp = periodDateConvert($key);
-          echo "<b>НЕДЕЛЯ {$count} {$keyTemp}</b><br>";
+
         }
       }
 
@@ -223,21 +258,21 @@ function gospelStatСolumn($membersBlanksStatistic, $teamsList, $gospelTeamRepor
       } else {
         $colorRed = 'color: red;';
       }
-
-      echo "<span style='{$colorRed}'><b>Группа {$value_1['gospel_group']}</b></span><br>";
-      $statColumn = ['М'=>$value_1['prayers'], 'Л'=>$value_1['flyers'], 'Б'=>$value_1['people']];
+      $period_dates = periodDateConvert($value_1['key_date'], '-');
+      echo "<div style='{$colorRed} min-width: 100px;'><b style='padding-left: 7px;'>{$period_dates}</b>";
+      $statColumn = ['Л'=>$value_1['flyers'], 'Б'=>$value_1['people'], 'М'=>$value_1['prayers']];
       $plot = new SimplePlot($statColumn, 150); //Создать диаграмму
       $plot->show(); //И показать её
-
+      echo "</div>";
       $block = 1;
+      $counter++;
     }
-
-    $count--;
+    echo "</div>";
     $countForGTRDLoop++;
   }
-  if (count($gospelTeamReportData) > 0) {
-    echo "</div>";
-  }
+
+  echo "</div>";
+
 }
 
 function addMissingGroups($arr1, $arr2)
@@ -263,13 +298,13 @@ function addMissingTrainees($arr1, $arr2)
   return array_diff($arr1, $temp);
 }
 
-function periodDateConvert($period)
+function periodDateConvert($period, $separator=' — ')
 {
   global $db;
   $period = $db->real_escape_string($period);
-
+  $separator = $db->real_escape_string($separator);
   $keyTemp = explode(' — ', $period);
-  $keyTemp = date_convert::yyyymmdd_to_ddmm($keyTemp[0]) . ' — ' . date_convert::yyyymmdd_to_ddmm($keyTemp[1]);
+  $keyTemp = date_convert::yyyymmdd_to_ddmm($keyTemp[0]) . $separator . date_convert::yyyymmdd_to_ddmm($keyTemp[1]);
 
   return $keyTemp;
 }

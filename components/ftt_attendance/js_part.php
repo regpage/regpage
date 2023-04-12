@@ -44,5 +44,5 @@ let link_pb =  "<?php if (isset($_GET['pb'])) {echo $_GET['pb'];} else {echo '';
 // admin key
 let admin_id_gl = "<?php echo $memberId;?>";
 </script>
-<script src="/js/ftt/ftt_attendance/script.js?v106"></script>
+<script src="/js/ftt/ftt_attendance/script.js?v107"></script>
 <script src="/js/ftt/ftt_attendance/design.js?v20"></script>

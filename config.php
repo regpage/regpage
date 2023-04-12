@@ -26,6 +26,12 @@
         $gl_db_user = 'u0654_admin';
         $gl_db_pass = 'K9z?n0c1';
         $appRootPath = 'https://test.new-constellation.ru/';
+      } elseif (substr($host, 0,3) !== 'reg') {
+        $gl_db_name = 'ch59248_regpage';
+        $gl_db_user = 'ch59248_regpage';
+        $gl_db_pass = 'dCKY46xu';
+        $appRootPath = 'https://churchinspb.online/';
+
       }
     }
     $db = new mysqli('localhost', $gl_db_user, $gl_db_pass, $gl_db_name);

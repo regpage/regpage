@@ -24,7 +24,7 @@
   <!-- Tab panes -->
   <div id="tab_content_extra_help" class="tab-content">
     <div id="current_extra_help" class="container tab-pane <?php echo $tab_attendance_active; ?>"><br>
-      <div id="bar_extra_help" class="btn-group mb-2">        
+      <div id="bar_extra_help" class="btn-group mb-2">
         <select id="sevice_one_select" class="form-control form-control-sm">
           <option value="_all_">Все служащие</option>
           <?php foreach ($serving_ones_list as $key => $value):
@@ -196,6 +196,9 @@
           if ($archive = $value['status'] === '1') {
             $checked_string = '';
             $done_string = 'green_string';
+          } else if ($archive = $value['status'] === '2') {
+            $checked_string = '';
+            $done_string = 'bg-warning';
           } else {
             $archive = '0';
             $done_string = '';

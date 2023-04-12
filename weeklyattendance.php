@@ -20,6 +20,7 @@ function db_checkweeklyAttendance () {
     while ($row = $res_2->fetch_assoc()) $check=true;
 
     if ($check) {
+      db_query("UPDATE `ftt_attendance_sheet` SET `status` = 2 WHERE `id` = '{$id}'");
       $member_key = $value['member_key'];
       $date_for_msg = date_convert::yyyymmdd_to_ddmm($value['date']);
       $reason = "Не отправлен вовремя лист посещаемости от {$date_for_msg}";
