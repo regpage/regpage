@@ -140,9 +140,11 @@ function gospelStatFun($team, $teamsList, $html=true)
             $diagramsReportDataStat[$value_5['gospel_group']][$value_5['key_date']]['people'] += $value_5['people'];
           }
         }
+        $nameSort  = array_column($diagramsReportDataStat[$value_5['gospel_group']], 'key_date');
+        array_multisort($nameSort, SORT_ASC, $diagramsReportDataStat[$value_5['gospel_group']]);
       }
     }
-    //print_r($diagramsReportDataStat);
+
     gospelStatСolumn(array(), $teamsList, $diagramsReportDataStat, $team);
   }
 }

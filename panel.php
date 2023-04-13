@@ -54,8 +54,11 @@ write_to_log::info($memberId, 'Админ зашёл в панел админи�
           <li class="nav-item">
             <a class="nav-link <?php echo $active_ftt; ?>" data-toggle="tab" href="#menu7">ПВОМ</a>
           </li>
-          <li class="nav-item">
+          <!--<li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#menu2">Практики</a>
+          </li>-->
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#menu2">BFA</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#menu3">Ещё</a>
@@ -205,19 +208,20 @@ write_to_log::info($memberId, 'Админ зашёл в панел админи�
             </div>
           </div>
           <div id="menu2" class="container tab-pane fade"><br>
-            <h3>Practices</h3>
+            <?php include('panelsource/bfa/apipanel.php'); ?>
+            <!--<h3>Practices</h3>
             <div class="" style="margin: 7px;">
               <input type="button" class="btn btn-danger btn-sm" id="onPracticesForStudentsPVOM" name="" value="Включить учёт практик для обучающихся ПВОМ">
             </div>
             <div class="" style="margin: 7px;" id="noticeForAddPractices">
             </div>
-          </div>
+          </div>-->
           <div id="menu4" class="container tab-pane fade"><br>
             <div class="row">
               <div class="col-sm-8">
                 <h3>Контакты</h3>
                 <hr>
-                <?php // include_once 'panelsource/content/contacts/category.php'; ?> 
+                <?php // include_once 'panelsource/content/contacts/category.php'; ?>
                 <h4>Статистика по статусам</h4>
                 <div class="row">
                   <div id="InfoStatisticStatusesContainer" class="col-sm-12">
