@@ -31,7 +31,6 @@
         $gl_db_user = 'ch59248_regpage';
         $gl_db_pass = 'dCKY46xu';
         $appRootPath = 'https://churchinspb.online/';
-
       }
     }
     $db = new mysqli('localhost', $gl_db_user, $gl_db_pass, $gl_db_name);

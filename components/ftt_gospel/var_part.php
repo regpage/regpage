@@ -11,7 +11,7 @@
   include_once 'components/ftt_gospel/statistic.php';
   // Classes components
   include_once 'components/ftt_blocks/RenderList.php';
-  include_once 'components/ftt_blocks/diagrams/diagram_column.php';
+  include_once 'components/ftt_blocks/diagrams/diagram_column.php';  
 // ПОСЕЩАЕМОСТЬ
 // access
 // данные обучающегося

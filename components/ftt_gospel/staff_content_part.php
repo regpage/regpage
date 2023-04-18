@@ -14,7 +14,7 @@
         <button id="modalRecommended_open" type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modalRecommended">Цели</button>
         <?php if ($ftt_access['group'] === 'staff' || $serving_trainee) { ?>
           <!--<button id="sort_button" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalSort" style="display: none;">Порядок</button>-->
-          <button id="print_modal_open" type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modalPrint" >Отчёт</button>          
+          <button id="print_modal_open" type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modalPrint" >Отчёт</button>
         <!--<select id="sort_select" class="form-control form-control-sm" style="display: none;">
           <option value="">По дате</option>
           <option value="">По команде</option>
@@ -150,9 +150,9 @@
       } ?>
       <div class="row"><span class="col-12 text_grey font-weight-bold text-muted mt-3 mb-3" id="filters_list"></span></div>
       <div id="list_header" class="row">
-        <div class="col-2 pl-1" style="max-width: 85px !important;"><b class="sort_col sort__date">Дата <i class="<?php echo $sort_date_ico; ?>"></i></b></div>
-        <div class="col-2" style="max-width: 150px !important;"><b class="sort_col sort__team">Команда <i class="<?php echo $sort_team_ico; ?>"></i></b></div>
-        <div class="col-2" style="min-width: 300px !important;"><b class="sort_col sort__gospel_group">Состав группы <i class="<?php echo $sort_group_ico; ?>"></i></b></div>
+        <div class="col-2 pl-1" style="max-width: 90px !important;"><b class="sort_col sort__date">Дата <i class="<?php echo $sort_date_ico; ?>"></i></b></div>
+        <div class="col-2" style="max-width: 120px !important;"><b class="sort_col sort__team">Команда <i class="<?php echo $sort_team_ico; ?>"></i></b></div>
+        <div class="col-2" style="min-width: 260px !important;"><b class="sort_col sort__gospel_group">Состав группы <i class="<?php echo $sort_group_ico; ?>"></i></b></div>
         <div class="col-1 text-right col_w_60" title="Сколько листовок раздали?"><b class="sort_col sort__flyers">Л <i class="<?php echo $sort_flyers_ico; ?>"></i></b></div>
         <div class="col-1 text-right text_grey col_w_60" title="Скольким людям благовествовали?"><b class="sort_col sort__people">Б <i class="<?php echo $sort_people_ico; ?>"></i></b></div>
         <div class="col-1 text-right text_grey col_w_60" title="Сколько человек помолилось?"><b class="sort_col sort__prayers">М <i class="<?php echo $sort_prayers_ico; ?>"></i></b></div>
@@ -302,13 +302,13 @@
               $show_string = "style='display: none;'";
             }
           }
-
+          $dayOfTheWeek = date_convert::week_days($str_date, true);
           echo "<div class='row list_string {$done_string}' {$show_string} data-id='{$str_id}' data-date='{$str_date}' data-author='{$str_author}' data-gospel_team='{$str_gospel_team}' data-gospel_group='{$str_gospel_group}' data-place='{$str_place}' data-group_members='{$str_group_members}' data-number='{$str_number}' data-flyers='{$str_flyers}' data-people='{$str_people}' data-prayers='{$str_prayers}' data-baptism='{$str_baptism}'
           data-meets_last='{$str_meets_last}' data-meets_current='{$str_meets_current}' data-meetings_last='{$str_meetings_last}' data-meetings_current='{$str_meetings_current}'
           data-homes='{$str_homes}' data-place_name='{$str_place_name}' data-fgt_place='{$str_fgt_place}' data-comment='{$str_comment}'
           data-toggle='modal' data-target='#modalAddEdit'>
-            <div class='col-1 pl-1 col_n_1'><span class='col_n_1_2'>{$str_date_short}</span></div>
-            <div class='col-1 col_n_2' style='min-width: 150px !important;'><span class='col_n_2_2'>{$str_place_name}</span><span class='col_n_2_3'></span><br><span class='col_n_2_3' style='font-size: 12px; color: #AAA;'></span></div>
+            <div class='col-1 pl-1 col_n_1'><span class='col_n_1_2'>{$str_date_short} {$dayOfTheWeek}</span></div>
+            <div class='col-1 col_n_2' style='min-width: 120px !important;'><span class='col_n_2_2'>{$str_place_name}</span><span class='col_n_2_3'></span><br><span class='col_n_2_3' style='font-size: 12px; color: #AAA;'></span></div>
             <div class='col-1 col_n_10'><span class='col_n_10_2'>{$str_gospel_group}: {$group_members_text}</span></div>
             <div class='col-1 col_n_4 col_w_60 text-right'><span class='col_n_4_2'>{$str_flyers}</span></div>
             <div class='col-1 col_n_5 col_w_60 text-right'><span class='col_n_5_2'>{$str_people}</span></div>

@@ -5,9 +5,9 @@ if (!isset($_GET['msg'])) {
 
 # to
 if (isset($_GET['debug'])) {
-	$men = 'zhichkinroman@gmail.com, info@zhichkinroman.ru, info@new-constellation.ru';
+	$men = 'zhichkinroman@gmail.com, info@zhichkinroman.ru';
 } else {
-	$men = 'zhichkinroman@gmail.com, info@zhichkinroman.ru, info@new-constellation.ru'; //a.rudanok@gmail.com, and1ievsky@gmail.com
+	$men = 'zhichkinroman@gmail.com, and1ievsky@gmail.com'; //a.rudanok@gmail.com, info@new-constellation.ru zhichkinroman@gmail.com,  info@zhichkinroman.ru
 }
 # topic
 //$subject = 'Проверка почтовых отправлений';
@@ -17,7 +17,7 @@ $subject = '=?utf-8?B?'.base64_encode('Проверка почтовых отп�
 //bibleforall.ru
 //'Content-Type: text/html; charset=utf-8' . "\r\n" .
 //'Content-Type: text/plain; charset=utf-8' . "\r\n" .
-$headers = 'From: noreply@reg.new-constellation.ru' . "\r\n" .
+$headers = 'From: noreply@reg-page.ru' . "\r\n" .
 'Content-Type: text/html; charset=utf-8' . "\r\n" .
 'Reply-To: zhichkinroman@gmail.com' . "\r\n" .
 'X-Mailer: PHP/' . phpversion();

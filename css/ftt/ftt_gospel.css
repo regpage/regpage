@@ -94,8 +94,8 @@ button {
 /* ширина колонок*/
 
 #list_content .col_n_1 {
-  max-width: 85px !important;
-  min-width: 85px !important;
+  max-width: 90px !important;
+  min-width: 90px !important;
 }
 
 #list_content .col_n_2 {
@@ -115,7 +115,7 @@ button {
 }
 
 #list_content .col_n_10 {
-  min-width: 300px !important;
+  min-width: 260px !important;
 }
 /*
 #list_content .col_n_3 {
