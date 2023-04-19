@@ -55,7 +55,7 @@
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_list.php') { ?>
     <link href="css/ftt/ftt_list.css?v5" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_announcement.php') { ?>
-    <link href="css/ftt/ftt_announcement.css?v1" rel="stylesheet">
+    <link href="css/ftt/ftt_announcement.css?v2" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/attend.php') { ?>
     <link href="css/regpage/attend.css?v2" rel="stylesheet">
 <?php } ?>

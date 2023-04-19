@@ -88,10 +88,30 @@ else if (isset ($_SESSION["logged-in"])){
     <div id="eventTabs">
       <!-- ПВОМ ОБУЧАЮЩИЕСЯ -->
       <?php if ($memberId == '000005716' || $ftt_access['group'] === 'trainee' || $ftt_access['group'] === 'staff'):?>
-        <?php if ($ftt_access['group'] === 'trainee'):
+        <?php
           include_once 'db/classes/statistics.php';
+          $announcement_unread_count = statistics::announcement_unread($memberId);
+          if ($announcement_unread_count == 0) {
+            $announcement_unread_count = '';
+          }
+        ?>
+        <?php if ($ftt_access['group'] === 'trainee'):
           $extra_help_count = statistics::extra_help_count($memberId);
+          $permission_stat_count_main = statistics::permission_count($memberId);
         endif; ?>
+        <?php if ($ftt_access['group'] === 'staff'):
+          include_once 'db/classes/ftt_lists.php';
+          $gl_trainees_by_staff = ftt_lists::get_trainees_by_staff($memberId);
+          $extra_help_count = statistics::extra_help_count($gl_trainees_by_staff);
+          $permission_stat_count_main = statistics::permission_count($gl_trainees_by_staff);
+        endif;
+        if ($permission_stat_count_main == 0) {
+          $permission_stat_count_main = '';
+        }
+        if ($extra_help_count == 0) {
+          $extra_help_count = '';
+        }
+        ?>
       <div id="ftt_trainee_block" class="tab-content" style="margin-bottom: 10px; padding-bottom: 10px; padding-top: 10px; padding-bottom: 19px;">
           <div class="">
             <div class="" style="">
@@ -109,7 +129,7 @@ else if (isset ($_SESSION["logged-in"])){
 
 
                 <span><a class="ftt_menu_a" href="/ftt_schedule">Расписание</a></span>
-                <span><a class="ftt_menu_a" href="/ftt_announcement">Объявления</a></span>
+                <span><a class="ftt_menu_a" href="/ftt_announcement">Объявления<?php echo "<sup style='color: red;'><b>{$announcement_unread_count}</b></sup>"; ?></a></span>
                 <span><a class="ftt_menu_a" href="/ftt_attendance">Посещаемость</a></span>
                 <span><a class="ftt_menu_a" href="/ftt_service">Служение</a></span>
                 <span><a class="ftt_menu_a" href="/ftt_gospel">Благовестие</a></span>

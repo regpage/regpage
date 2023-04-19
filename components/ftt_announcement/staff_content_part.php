@@ -67,9 +67,11 @@
               }
               if ($value['to_coordinators']) {
                 $recipients_groups_text ? $recipients_groups_text .= ', координаторы' : $recipients_groups_text .= 'координаторы';
-              } elseif ($value['to_servingones']) {
+              }
+              if ($value['to_servingones']) {
                 $recipients_groups_text ? $recipients_groups_text .= ', служащие' : $recipients_groups_text .= 'служащие';
-              } elseif ($value['by_list']) {
+              }
+              if ($value['by_list']) {
                 $recipients_groups_text ? $recipients_groups_text .= ', по списку' : $recipients_groups_text .= 'по списку';
               }
 
