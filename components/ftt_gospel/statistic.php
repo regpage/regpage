@@ -233,7 +233,7 @@ function gospelStatСolumn($membersBlanksStatistic, $teamsList, $gospelTeamRepor
 
       if ($counter === 0) {
         $prevGroup = $value_1['gospel_group'];
-        echo "<div><b>Группа {$value_1['gospel_group']}</b><br></div>";
+        echo "<div><b class='group_number' data-group='{$value_1['gospel_group']}'>Группа {$value_1['gospel_group']}</b><br></div>";
         echo "<div class='diagram_line'></div>";
         echo "<div class='d-flex overflow-auto mb-3'>";
       }
@@ -247,7 +247,7 @@ function gospelStatСolumn($membersBlanksStatistic, $teamsList, $gospelTeamRepor
           echo "</div>";
         }
 
-        echo "<div class='group_number'><b>Группа {$value_1['gospel_group']}</b><br></div>";
+        echo "<div><b class='group_number' data-group='{$value_1['gospel_group']}'>Группа {$value_1['gospel_group']}</b><br></div>";
         echo "<div class='diagram_line'></div>";
         echo "<div class='d-flex overflow-auto mb-3'>";
 
@@ -270,7 +270,7 @@ function gospelStatСolumn($membersBlanksStatistic, $teamsList, $gospelTeamRepor
         $colorRed = 'color: red;';
       }
       $period_dates = periodDateConvert($value_1['key_date'], '-');
-      echo "<div class='one_chart' style='{$colorRed} min-width: 100px;' data-period='{$period_dates}' data-flyers='{$value_1['flyers']}'>";
+      echo "<div class='one_chart' style='{$colorRed} min-width: 100px;' data-period='{$period_dates}' data-flyers='{$value_1['flyers']}' data-group='{$value_1['gospel_group']}'>";
       $statColumn = ['Б'=>$value_1['people'], 'М'=>$value_1['prayers'], 'В'=>$value_1['meets_last']];
       $plot = new SimplePlot($statColumn, 100); //Создать диаграмму
       $plot->show(); //И показать её
