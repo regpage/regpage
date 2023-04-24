@@ -26,7 +26,7 @@ class schedule_class {
       $semester_range = " `semester_range`= '$semester_range'";
     }
     $result = [];
-    $res = db_query("SELECT `id`, `$day`, `session_name`, `attendance`, `duration`, `semester_range`, `comment`, `time_zone`, `visit`, `end_time`
+    $res = db_query("SELECT `id`, `$day`, `session_name`, `attendance`, `duration`, `semester_range`, `comment`, `time_zone`, `visit`, `end_time`, `class`
       FROM ftt_session
       WHERE (`semester_range`= 0 OR {$semester_range}) {$time_zone}
       ORDER BY `$day`");
@@ -130,7 +130,8 @@ class schedule_class {
               'duration' => $correction_data[$iii]['duration'],
               'attendance' => $correction_data[$iii]['attendance'],
               'comment' => $correction_data[$iii]['comment'],
-              'color' => 1
+              'color' => 1,
+              'class' => $correction_data[$iii]['class']
             ];
             $correction_data[$iii]['cancel_id'] = 'break';
           }
@@ -142,6 +143,7 @@ class schedule_class {
             $loop_schedule[$key]['comment'] = $correction_data[$iii]['comment'];
             $loop_schedule[$key]['semester_range'] = $correction_data[$iii]['semester_range'];
             $loop_schedule[$key]['time_zone'] = $correction_data[$iii]['time_zone'];
+            $loop_schedule[$key]['class'] = $correction_data[$iii]['class'];
             $loop_schedule[$key]['id'] = '';
           }
         }

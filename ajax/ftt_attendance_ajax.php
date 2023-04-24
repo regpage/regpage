@@ -10,6 +10,7 @@ include_once '../db/classes/emailing.php';
 include_once '../db/classes/trainee_data.php';
 include_once '../db/classes/member.php';
 include_once '../db/classes/short_name.php';
+include_once '../db/classes/CutString.php';
 
 // Подключаем ведение лога
 include_once "../extensions/write_to_log/write_to_log.php";
@@ -32,6 +33,7 @@ if (isset($_GET['type']) && $_GET['type'] === 'updade_data_blank') {
     if (isset($_GET['value_late'])) {
       echo json_encode(["result"=>set_attendance_time($_GET['id'], $_GET['field'], $_GET['value'], $_GET['value_late'], $_GET['value_absence'])]);
     } else {
+      setMissedClasses($_GET['id']);
       echo json_encode(["result"=>set_attendance($_GET['id'], $_GET['field'], $_GET['value'], $_GET['header'])]);
       if (isset($_GET['reason']) && $_GET['reason'] === '1') {
         set_attendance($_GET['id'], 'late', 0, 0);

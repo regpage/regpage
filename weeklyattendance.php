@@ -1,7 +1,7 @@
 <?php
 //
 // строку ниже заменить на config.php
-include_once 'db.php';
+include_once 'config.php';
 include_once 'logWriter.php';
 include_once 'db/classes/date_convert.php';
 
@@ -21,6 +21,7 @@ function db_checkweeklyAttendance () {
 
     if ($check) {
       db_query("UPDATE `ftt_attendance_sheet` SET `status` = 2 WHERE `id` = '{$id}'");
+      // extrahelp
       $member_key = $value['member_key'];
       $date_for_msg = date_convert::yyyymmdd_to_ddmm($value['date']);
       $reason = "Не отправлен вовремя лист посещаемости от {$date_for_msg}";
@@ -28,9 +29,45 @@ function db_checkweeklyAttendance () {
       db_query("INSERT INTO ftt_extra_help (`date`, `member_key`, `reason`, `serving_one`, `changed`)
       VALUES (NOW(), '$member_key', '$reason', '$serving_one', 1)");
       echo "{$member_key}, ";
+      // missed class
+      setMissedClasses($id);
     }
   }
 }
 
+/* MISSED CLASS */
+function checkMissedSessions($sheet_id)
+{
+  global $db;
+  $sheet_id = $db->real_escape_string($sheet_id);
+  $result = [];
+
+  $res = db_query("SELECT * FROM `ftt_attendance` WHERE `sheet_id` = '$sheet_id' AND `class` = '1' AND (`reason` != '' OR `absence` = '1')");
+  while ($row = $res->fetch_assoc()) $result[] = $row;
+
+  return $result;
+}
+
+function setMissedClasses($sheet_id='')
+{
+  global $db;
+  $sheet_id = $db->real_escape_string($sheet_id);
+  $check = checkMissedSessions($sheet_id);
+
+  if ($sheet_id === '') {
+    write_to_log::error('', 'Нет ID бланка. Пропущенные занятия не проверены');
+    return 'Error. No ID.';
+  }
+
+  foreach ($check as $key => $value) {
+    $id_attendance = $value['id'];
+    $id_attendance_sheet = $value['sheet_id'];
+    $res = db_query("INSERT INTO `ftt_skip` (`id_attendance`, `id_attendance_sheet`, `comment`, `changed`)
+    VALUES ('{$id_attendance}', '{$id_attendance_sheet}', 'Бланк не сдан во время, обратитесь к служащему.', 1)");
+  }
+}
+/* MISSED CLASS */
+
 db_checkweeklyAttendance ();
+
 ?>

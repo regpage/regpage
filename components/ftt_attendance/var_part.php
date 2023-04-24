@@ -75,14 +75,21 @@ if (isset($_COOKIE['flt_permission_active']) && (!empty($_COOKIE['flt_permission
 
 $tab_attendance_active = 'active';
 $tab_permission_active = '';
-if (isset($_COOKIE['tab_active']) && (!empty($_COOKIE['tab_active']) || $_COOKIE['tab_active'] === 'permission')) {
+$tab_missed_class_active = '';
+if (isset($_COOKIE['tab_active']) && $_COOKIE['tab_active'] === 'permission') {
   $tab_attendance_active = '';
   $tab_permission_active = 'active';
+  $tab_missed_class_active = '';
+} elseif (isset($_COOKIE['tab_active']) && $_COOKIE['tab_active'] === 'missed_class') {
+  $tab_attendance_active = '';
+  $tab_permission_active = '';
+  $tab_missed_class_active = 'active';
 }
 
 if (isset($_GET['pb'])) {
   $tab_attendance_active = '';
-  $tab_permission_active = 'active';  
+  $tab_permission_active = 'active';
+  $tab_missed_class_active = '';
 }
 
 $serving_one_selected = $memberId;
@@ -93,6 +100,7 @@ if (isset($_COOKIE['filter_serving_one']) && $_COOKIE['filter_serving_one']) {
 if (isset($_GET['my'])) {
   $tab_attendance_active = 'active';
   $tab_permission_active = '';
+  $tab_missed_class_active = '';
   $serving_one_selected = $memberId;
 }
 

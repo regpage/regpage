@@ -115,6 +115,7 @@ function db_newDailyAttendance () {
               $visit_corr = $value_corr['visit'];
               $end_time_corr = $value_corr['end_time'];
               $duration_corr = $value_corr['duration'];
+              $class_corr = $value_corr['class'];
 
               // разрешения для корректируемых строк
               $reason ='';
@@ -148,10 +149,10 @@ function db_newDailyAttendance () {
                 //}
                 }
                 if ($value_corr['attendance'] === '1') {
-                  db_query("INSERT INTO ftt_attendance (`sheet_id`, `session_name`, `session_time`, `reason`, `permission_sheet_id`, `visit`, `duration`, `end_time`)
-                  VALUES ('$max_id', '$session_name_corr', '$time_start_corr', '$reason', '$permission_sheet_id', '$visit_corr', '$duration_corr', '$end_time_corr')");
-              }
-            }
+                  db_query("INSERT INTO ftt_attendance (`sheet_id`, `session_name`, `session_time`, `reason`, `permission_sheet_id`, `visit`, `duration`, `end_time`, `class`)
+                  VALUES ('$max_id', '$session_name_corr', '$time_start_corr', '$reason', '$permission_sheet_id', '$visit_corr', '$duration_corr', '$end_time_corr', '$class_corr')");
+                }
+             }
           }
           $correction_stop = 1;
         }
@@ -161,6 +162,7 @@ function db_newDailyAttendance () {
         $comment_extra = '';
         $duration = $value['duration'];
         $session_id = $value['id'];
+        $class = $value['class'];
         if ($value['duration'] && $value['duration'] > 0) {
           $session_name = $session_name.", ".$value['duration']."&nbsp;мин.";
         }
@@ -168,7 +170,9 @@ function db_newDailyAttendance () {
           $session_name = $session_name . ' <i class="fa fa-sticky-note" title="'.$value['comment'].'" data-toggle="tooltip" aria-hidden="true"></i> ';
         }
         if (!in_array($value['id'], $canceled_session)) {
-          db_query("INSERT INTO ftt_attendance (`session_id`,`sheet_id`, `session_name`, `session_time`, `reason`, `permission_sheet_id`, `visit`, `duration`, `end_time`) VALUES ('$session_id','$max_id', '$session_name', '$time_start', '$reason', '$permission_sheet_id', '$visit_field', '$duration', '$end_time')");
+          db_query("INSERT INTO ftt_attendance
+            (`session_id`,`sheet_id`, `session_name`, `session_time`, `reason`, `permission_sheet_id`, `visit`, `duration`, `end_time`, `class`)
+            VALUES ('$session_id','$max_id', '$session_name', '$time_start', '$reason', '$permission_sheet_id', '$visit_field', '$duration', '$end_time', '$class')");
         }
       }
     }

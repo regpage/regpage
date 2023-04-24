@@ -18,6 +18,11 @@ $(document).ready(function(){
       setTimeout(function () {
         location.reload();
       }, 30);
+    } else if ($(this).attr("href") === "#missed_class_tab") {
+      setCookie("tab_active", "missed_class");
+      setTimeout(function () {
+        location.reload();
+      }, 30);
     } else {
       setCookie("tab_active", "");
       setTimeout(function () {

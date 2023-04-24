@@ -26,7 +26,9 @@ class write_to_log {
     $logMemberId ? $logAdminRole = db_getAdminRole($logMemberId) : $logAdminRole = 'SUPERVISOR';
     $logMemberId ? '' : $logMemberId = 'none';
 
-    $file = 'logFile_'.date("d-m-Y").'.log'; //
+    //$file = 'logFile_'.date("d-m-Y").'.log'; //
+    //$file = realpath('.').DIRECTORY_SEPARATOR.'logs'. DIRECTORY_SEPARATOR.'logFile_'.date("d-m-Y").'.log';
+    $file = realpath('.') . DIRECTORY_SEPARATOR . 'logFile_' . date("d-m-Y") . '.log';
     //Добавим разделитель, чтобы мы смогли отличить каждую запись
     $text = $type.' ==================================================='.PHP_EOL;
     $text .=  date('d-m-Y H:i:s') .PHP_EOL; //Добавим актуальную дату после текста или дампа массива
@@ -53,8 +55,8 @@ class write_to_log {
 	}
 
 	# 'ERRORS'
-	static function errors($logMemberId, $msg=false) {
-		self::writer($logMemberId, $msg, 'ERRORS');
+	static function error($logMemberId, $msg=false) {
+		self::writer($logMemberId, $msg, 'ERROR');
 	}
 
 	# 'FATAL'

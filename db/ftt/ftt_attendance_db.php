@@ -545,4 +545,35 @@ function get_permission_archive($sheet_id)
   return $result;
 }
 
-?>
+/* MISSED CLASS */
+function checkMissedSessions($sheet_id)
+{
+  global $db;
+  $sheet_id = $db->real_escape_string($sheet_id);
+  $result = [];
+
+  $res = db_query("SELECT * FROM `ftt_attendance` WHERE `sheet_id` = '$sheet_id' AND `class` = '1' AND (`reason` != '' OR `absence` = '1')");
+  while ($row = $res->fetch_assoc()) $result[] = $row;
+
+  return $result;
+}
+
+function setMissedClasses($sheet_id='')
+{
+  global $db;
+  $sheet_id = $db->real_escape_string($sheet_id);
+  $check = checkMissedSessions($sheet_id);
+
+  if ($sheet_id === '') {
+    write_to_log::error('', 'Нет ID бланка. Пропущенные занятия не проверены');
+    return 'Error. No ID.';
+  }
+
+  foreach ($check as $key => $value) {
+    $id_attendance = $value['id'];
+    $id_attendance_sheet = $value['sheet_id'];
+    $res = db_query("INSERT INTO `ftt_skip` (`id_attendance`, `id_attendance_sheet`, `changed`)
+    VALUES ('{$id_attendance}', '{$id_attendance_sheet}', 1)");
+  }
+}
+/* MISSED CLASS */

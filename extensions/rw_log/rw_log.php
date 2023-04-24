@@ -16,7 +16,7 @@ class RWLog {
   static function writer($logMemberId, $info, $type='INFO') {
 	$logAdminName = '';
 	$logAdminRole = '';
-		global $globalPathes;
+		//global $globalPathes;
     $file = realpath('.').DIRECTORY_SEPARATOR.'logs'. DIRECTORY_SEPARATOR.'logFile_'.date("d-m-Y").'.log'; // __DIR__ OR realpath('.'). DIRECTORY_SEPARATOR;
     //Добавим разделитель, чтобы мы смогли отличить каждую запись
     $text = ' ==================================================='.PHP_EOL;
