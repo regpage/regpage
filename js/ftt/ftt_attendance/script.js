@@ -2049,5 +2049,28 @@ function open_blank(el_this) {
      location.href = "ftt_attendance";
     }
   });
+
+  /*** SKIP TAB ***/
+  // open blank by click on the string
+  $(".skip_string").click(function () {
+    $("#edit_skip_blank").modal("show");
+  });
+
+  // filters
+  $("#flt_skip_done, #flt_sevice_one_skip, #ftr_trainee_skip").change(function () {
+    filterSkip();    
+  });
+  function filterSkip() {
+    $("#list_skip .skip_string").each(function () {
+      if (($('#flt_sevice_one_skip').val() === "_all_" || $('#flt_sevice_one_skip').val() === $(this).attr("data-serving_one"))
+      && ($('#ftr_trainee_skip').val() === "_all_" || $('#ftr_trainee_skip').val() === $(this).attr("data-member_key"))
+      && ($("#flt_skip_done").val() === "_all_" || $("#flt_skip_done").val() === $(this).attr("data-status"))) {
+        $(this).show();
+      } else {
+        $(this).hide();
+      }
+    });
+  }
+  /*** SKIP TAB STOP ***/
 // DOCUMENT READY STOP
 });

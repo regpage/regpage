@@ -140,3 +140,4 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
 </div>
 
 <?php include 'components/ftt_attendance/modal_permission.php'; ?>
+<?php include 'components/ftt_attendance/modal_skip.php'; ?>

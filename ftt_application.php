@@ -17,7 +17,7 @@ $member_categories = db_getCategories();
 
   <div class="" style="padding-top: 20px;">
   <!-- TAB APPLICATION CONTAINER -->
-    <?php include_once 'components/ftt_application_list/applications_part.php'; ?>  
+    <?php include_once 'components/ftt_application_list/applications_part.php'; ?>
   </div>
 </div>
 

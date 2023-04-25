@@ -194,14 +194,14 @@ label {
 }
 
 /* Строки */
-.list_string, .ftt_late_string {
+.list_string, .ftt_late_string, .skip_string {
   cursor: pointer;
   padding-bottom: 5px;
   padding-top: 5px;
   border-bottom: 1px lightgray solid;
 }
 
-.ftt_late_string:hover {
+.ftt_late_string:hover, .skip_string:hover {
   background-color: #eee;
 }
 
@@ -314,3 +314,5 @@ input[type='time'] {
     min-width: 125px;
     max-width: 125px;
 }
+
+/*skip*/

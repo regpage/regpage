@@ -3,6 +3,7 @@
 include_once "ajax.php";
 // подключаем запросы
 include_once "../db/ftt/ftt_attendance_db.php";
+include_once "../db/ftt/ftt_attendance_skip_db.php";
 include_once "../db/classes/schedule_class.php";
 include_once "../db/classes/db_operations.php";
 include_once '../db/classes/date_convert.php';
@@ -140,6 +141,9 @@ if (isset($_GET['type']) && $_GET['type'] === 'undo_status') {
 
   // EXTRAHELP with 3 LATES
   $echo_lates_in_extrahelp = undo_extrahelp_lates($_GET['id']);
+
+  // MISSED CLASS
+  $echo_skip = dltMissedClass($_GET['id']);
 
   // Echo result
   echo json_encode([

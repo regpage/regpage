@@ -7,6 +7,7 @@
   include_once 'db/classes/ftt_permissions.php';
   include_once 'db/classes/statistics.php';
   include_once 'db/ftt/ftt_attendance_db.php';
+  include_once 'db/ftt/ftt_attendance_skip_db.php';
 
 // ПОСЕЩАЕМОСТЬ
 // access
@@ -117,4 +118,5 @@ if ($permission_stat_count > 0) {
 }
 
 $status_list = array(0 => ['secondary','не отправлен'], 1 => ['warning','на рассмотрении'], 2 => ['success','одобрен'], 3 => ['danger','отклонён']);
+$skip_status_list = array(0 => ['secondary','не отправлен'], 1 => ['warning','на рассмотрении'], 2 => ['success','одобрен'], 3 => ['danger','отклонён']);
 ?>
