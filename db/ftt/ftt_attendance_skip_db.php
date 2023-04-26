@@ -47,7 +47,7 @@ function getMissedClasses($sort='', $status='_all_')
 
   }
 
-  $res = db_query("SELECT fs.*, fas.date AS date_blank, fas.member_key, fa.session_name, m.name, tr.serving_one
+  $res = db_query("SELECT fs.*, fas.date AS date_blank, fas.member_key, fa.session_name, fa.session_time, m.name, tr.serving_one
     FROM ftt_skip AS fs
     LEFT JOIN ftt_attendance fa ON fa.id = fs.id_attendance
     LEFT JOIN ftt_attendance_sheet fas ON fas.id = fs.id_attendance_sheet
@@ -68,5 +68,25 @@ function dltMissedClass($id)
   $res = db_query("DELETE FROM `ftt_skip` WHERE `id_attendance_sheet` = '$id' AND `status` <> 1 AND `status` <> 2");
 
   return $res;
+}
+
+function setSkipBlank($data, $file)
+{
+  global $db;
+  $data = json_decode($data);
+  $id = $db->real_escape_string($data->id);
+  $topic = $db->real_escape_string($data->topic);
+  $status = $db->real_escape_string($data->status);
+  $comment = $db->real_escape_string($data->comment);
+  if ($file === '_none_') {
+    $file = '';
+  } else {
+    $file = $db->real_escape_string($file);
+    $file = " `file` = '$file', ";
+  }
+
+  $res = db_query("UPDATE `ftt_skip` SET `topic` = '{$topic}', `status` = '{$status}', `comment` = '{$comment}', {$file} `changed` = 1  WHERE `id` = '$id'");
+
+
 }
 /* MISSED CLASS */

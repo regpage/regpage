@@ -2052,13 +2052,16 @@ function open_blank(el_this) {
 
   /*** SKIP TAB ***/
   // open blank by click on the string
-  $(".skip_string").click(function () {
+  $(".skip_string").click(function (e) {
+    clear_skip_blank();
+    fill_skip_blank($(this))
     $("#edit_skip_blank").modal("show");
+
   });
 
   // filters
   $("#flt_skip_done, #flt_sevice_one_skip, #ftr_trainee_skip").change(function () {
-    filterSkip();    
+    filterSkip();
   });
   function filterSkip() {
     $("#list_skip .skip_string").each(function () {
@@ -2071,6 +2074,128 @@ function open_blank(el_this) {
       }
     });
   }
+
+  function clear_skip_blank() {
+    // fields
+    $("#edit_skip_blank input").val("");
+    $("#edit_skip_blank input[type='checkbox']").prop("checked", false);
+    $("#edit_skip_blank select").val("");
+    $("#show_status_in_skip_blank").removeClass("badge-secondary").removeClass("badge-danger").removeClass("badge-warning").removeClass("badge-success").text("");
+    $("#skip_pic").attr("src", "");
+    $("#skip_pic").parent().attr("href", "");
+    // data
+    $("#edit_skip_blank").attr("data-id", "");
+    $("#edit_skip_blank").attr("data-member_key", "");
+    $("#edit_skip_blank").attr("data-serving_one", "");
+    $("#edit_skip_blank").attr("data-status", "");
+    //info
+    $('#author_of_skip').parent().hide();
+    $('#author_of_skip').text("");
+    $("#send_date_of_skip").text("");
+    $("#sevice_one_of_skip").text("");
+    $("#allow_date_of_skip").text("");
+    // buttons
+    $("#send_skip_blank").show();
+    $("#save_skip_blank").show();
+  }
+
+  function fill_skip_blank(elem) {
+    // data
+    $("#edit_skip_blank").attr("data-id", elem.attr("data-id"));
+    $("#edit_skip_blank").attr("data-member_key", elem.attr("data-member_key"));
+    $("#edit_skip_blank").attr("data-serving_one", elem.attr("data-serving_one"));
+    $("#edit_skip_blank").attr("data-status", elem.attr("data-status"));
+    $("#edit_skip_blank").attr("data-file", elem.attr("data-file"));
+
+    // fields
+    $("#trainee_select_skip").val(elem.attr("data-member_key"));
+    $("#skip_modal_date").val(elem.attr("data-date"));
+    $("#skip_modal_topic").val(elem.attr("data-topic"));
+    $("#skip_modal_comment").val(elem.attr("data-comment"));
+
+    // IDEA: перенести в инфо и оформить в <span>, но отображать над полями
+    $("#skip_modal_session").val(elem.attr("data-session_name"));
+    $("#skip_modal_time").val(elem.attr("data-session_time"));
+
+    // pic
+    $("#skip_pic").attr("src", elem.attr("data-file"));
+    $("#skip_pic").parent().attr("href", elem.attr("data-file"));
+
+    // buttons & behavior
+    $("#send_skip_blank").hide();
+    $("#save_skip_blank").show();
+    if (elem.attr("data-status") === '0') {
+      $("#send_skip_blank").show();
+    } else if (elem.attr("data-status") === '1') {
+      $("#save_skip_blank").show();
+    } else if (elem.attr("data-status") === '2') {
+      $("#save_skip_blank").show();
+      $("#skip_modal_done").prop("checked", true);
+    } else if (elem.attr("data-status") === '3') {
+      $("#skip_modal_done").prop("checked", true);
+    }
+    // badge
+    $("#show_status_in_skip_blank").removeClass("badge-secondary").removeClass("badge-danger").removeClass("badge-warning").removeClass("badge-success").text("");
+    status_choisen($("#show_status_in_skip_blank"),elem.attr("data-status"));
+
+    // info
+    if (elem.attr("data-status") === '0') {
+      $("#send_date_of_skip").text("Дата создания " + elem.attr("data-create_send"));
+    } else {
+      $("#send_date_of_skip").text("Дата отправки " + elem.attr("data-create_send"));
+    }
+
+    /*$('#author_of_skip').parent().hide();
+    $('#author_of_skip').text("");
+    $("#sevice_one_of_skip").text("");
+    $("#allow_date_of_skip").text("");*/
+  }
+  // save
+  $("#save_skip_blank").click(function () {
+    save_skip_blank();
+    $("#edit_skip_blank").modal("hide");
+  });
+  $("#info_of_skip").click(function () {
+    if ($("#author_of_skip").is(":visible")) {
+      $("#author_of_skip").parent().hide();
+    } else {
+      $("#author_of_skip").parent().show();
+    }
+  });
+  function save_skip_blank(send) {
+    let skip_data_blank = new FormData();
+    skip_data_blank_val = {};
+    skip_data_blank_val["id"] = $("#edit_skip_blank").attr("data-id");
+    skip_data_blank_val["topic"] = $("#skip_modal_topic").val();
+    skip_data_blank_val["comment"] = $("#skip_modal_comment").val();
+    if ($("#skip_modal_done").prop("checked")) {
+      skip_data_blank_val["status"] = 2;
+    } else if(send) {
+      skip_data_blank_val["status"] = 1;
+    } else {
+      if ($("#edit_skip_blank").attr("data-status") === '2') {
+        skip_data_blank_val["status"] = 1;
+      } else {
+        skip_data_blank_val["status"] = $("#edit_skip_blank").attr("data-status");
+      }
+    }
+    if ($("#skip_modal_file")[0].files[0]) {
+      skip_data_blank.set("blob", $("#skip_modal_file")[0].files[0]);
+    }
+    skip_data_blank.set("data", JSON.stringify(skip_data_blank_val));
+    fetch("ajax/ftt_attendance_ajax.php?type=set_skip_blank", {
+      method: 'POST',
+      body: skip_data_blank
+    })
+    .then(response => response.text())
+    .then(commits => {
+      console.log(commits);
+      setTimeout(function () {
+        // location.reload();
+      }, 50);
+    });
+  }
   /*** SKIP TAB STOP ***/
+
 // DOCUMENT READY STOP
 });

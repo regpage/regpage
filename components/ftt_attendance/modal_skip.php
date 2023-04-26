@@ -1,6 +1,6 @@
 <!-- РАЗРЕШЕНИЯ -->
 <div id="edit_skip_blank" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true"
-data-id="" data-date="" data-author="" data-date_send="" data-comment="">
+data-id="" data-member_key="" data-serving_one="" data-status="">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -9,7 +9,7 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
       </div>
       <div class="modal-body">
         <?php if ($ftt_access['group'] === 'staff') { ?>
-          <select id="trainee_select_permission" class="form-control form-control-sm mt-2 mb-2" disabled>
+          <select id="trainee_select_skip" class="form-control form-control-sm mt-2 mb-2" disabled>
             <?php foreach ($trainee_list as $key => $value):
               echo "<option value='{$key}'>{$value}</option>";
             endforeach; ?>
@@ -18,17 +18,17 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
         <div class="row">
           <div class="col-4" style="max-width: 150px;">
             <label class="required-for-label" style="min-width: 130px;">Дата пропуска</label>
-            <input type="date" id="permission_modal_date" class="form-control form-control-sm mb-2" value="" disabled>
+            <input type="date" id="skip_modal_date" class="form-control form-control-sm mb-2" value="" disabled>
           </div>
-          <div class="col-5 pr-1" style="margin-top:30px;">
-            <span id="show_status_in_blank" class="float-right badge badge-secondary">не отправлен</span>
+          <div class="col-8 pr-1" style="margin-top:30px;">
+            <span id="show_status_in_skip_blank" class="float-right badge badge-secondary">не отправлен</span>
           </div>
         </div>
         <div class="">
-          <input type="text" id="skip_modal_session" class="form-control form-control-sm mt-2" value="" placeholder="Мероприятие">
+          <input type="text" id="skip_modal_session" class="form-control form-control-sm mt-2" placeholder="Мероприятие" disabled>
         </div>
         <div class="">
-          <input type="text" id="skip_modal_time" class="form-control form-control-sm mt-2" value="" placeholder="Время">
+          <input type="text" id="skip_modal_time" class="form-control form-control-sm mt-2" placeholder="Время" disabled>
         </div>
         <div class="">
           <input type="text" id="skip_modal_topic" class="form-control form-control-sm mt-2" value="" placeholder="Тема">
@@ -38,6 +38,11 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
           <input type="file" id="skip_modal_file" class="" accept="image/*" value="">
         </div>
         <div class="">
+          <a href="#" target="_blank">
+            <img id="skip_pic" src="" alt="" width="466">
+          </a>
+        </div>
+        <div class="mb-3">
           <input type="text" id="skip_modal_comment" class="form-control form-control-sm mt-2" value="" placeholder="Комментарий">
         </div>
         <?php if ($ftt_access['group'] === 'staff') { ?>

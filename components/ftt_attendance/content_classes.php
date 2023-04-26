@@ -69,7 +69,9 @@ foreach (getMissedClasses() as $key => $value) {
   $skip_checked_string = "<span class='badge badge-".$status_list[$value['status']][0]."'>".$status_list[$value['status']][1]."</span>";
   $nameTrainee = short_name::no_middle($value['name']);
   $dateBlank = date_convert::yyyymmdd_to_ddmm($value['date_blank']);
-  echo "<div class='row skip_string ml-0' data-id='{$value['id']}' data-member_key='{$value['member_key']}' data-serving_one='{$value['serving_one']}' data-comment='{$value['comment']}' data-status='{$value['status']}' data-file='{$value['file']}'><div class='col-1 pl-1'>{$dateBlank}</div><div class='col-3'>{$nameTrainee}</div><div class='col-3'>{$value['session_name']}<br>{$value['session_time']}</div><div class='col-3'>{$value['comment']}</div><div class='col-2'>{$skip_checked_string}</div></div>";
+  echo "<div class='row skip_string ml-0' data-id='{$value['id']}' data-date='{$value['date_blank']}' data-member_key='{$value['member_key']}' data-serving_one='{$value['serving_one']}'";
+  echo " data-comment='{$value['comment']}' data-status='{$value['status']}' data-session_time='{$value['session_time']}' data-session_name='{$value['session_name']}' data-topic='{$value['topic']}' data-file='{$value['file']}' data-create_send='{$value['date']}'>";
+  echo "<div class='col-1 pl-1'>{$dateBlank}</div><div class='col-3'>{$nameTrainee}</div><div class='col-3'>{$value['session_name']}<br>{$value['session_time']}</div><div class='col-3'>{$value['comment']}</div><div class='col-2'>{$skip_checked_string}</div></div>";
 }
 ?>
 </div>

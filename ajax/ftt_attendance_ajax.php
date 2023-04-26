@@ -198,4 +198,18 @@ if (isset($_GET['type']) && $_GET['type'] === 'delete_permission_blank') {
   echo DbOperation::operation($db_data_str->get());
   exit();
 }
+
+// SKIP
+if (isset($_GET['type']) && $_GET['type'] === 'set_skip_blank') {
+  if (isset($_FILES['blob'])) {
+    $target_file = 'img/'.basename($_FILES['blob']['name']);
+    move_uploaded_file($_FILES['blob']['tmp_name'],$target_file);
+    $file = 'ajax/'.$target_file;
+  } else {
+    $file = '_none_';
+  }
+  setSkipBlank($_POST['data'], $file);
+  exit();
+}
+
 ?>

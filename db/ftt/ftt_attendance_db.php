@@ -157,8 +157,7 @@ function setFttStringsById($data) {
   $reason = $db->real_escape_string($data['reason']);
   $late = $db->real_escape_string($data['late']);
 
-  $res = db_query("INSERT INTO `ftt_attendance` (`session_name`, `session_time`, `attend_time`, `reason`, `late`, `changed`) VALUES ('$session_name', '$session_time','$attend_time', '$reason','$late', 1)");
-  while ($row = $res->fetch_assoc()) $result[] = $row;
+  $res = db_query("INSERT INTO `ftt_attendance` (`session_name`, `session_time`, `attend_time`, `reason`, `late`, `changed`) VALUES ('$session_name', '$session_time','$attend_time', '$reason','$late', 1)");  
 
   return $res;
 }
