@@ -4,7 +4,7 @@ data-id="" data-member_key="" data-serving_one="" data-status="">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="mb-0">Задание</h5>
+        <h5 class="mb-0">Пропущенное занятие</h5>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
       </div>
       <div class="modal-body">
@@ -28,25 +28,22 @@ data-id="" data-member_key="" data-serving_one="" data-status="">
           <input type="text" id="skip_modal_session" class="form-control form-control-sm mt-2" placeholder="Мероприятие" disabled>
         </div>
         <div class="">
-          <input type="text" id="skip_modal_time" class="form-control form-control-sm mt-2" placeholder="Время" disabled>
-        </div>
-        <div class="">
           <input type="text" id="skip_modal_topic" class="form-control form-control-sm mt-2" value="" placeholder="Тема">
         </div>
         <div class="">
-          <label for="skip_modal_file">Файл с заданием (фотография)</label>
+          <input type="text" id="skip_modal_comment" class="form-control form-control-sm mt-2" value="" placeholder="Комментарий">
+        </div>
+        <div class="mt-2">
+          <label for="skip_modal_file">Приложить файл</label><br>
           <input type="file" id="skip_modal_file" class="" accept="image/*" value="">
         </div>
-        <div class="">
+        <div class="mt-2">
           <a href="#" target="_blank">
             <img id="skip_pic" src="" alt="" width="466">
           </a>
         </div>
-        <div class="mb-3">
-          <input type="text" id="skip_modal_comment" class="form-control form-control-sm mt-2" value="" placeholder="Комментарий">
-        </div>
         <?php if ($ftt_access['group'] === 'staff') { ?>
-          <div class="">
+          <div class="mt-2">
             <label for="skip_modal_done">Проверено</label>
             <input type="checkbox" id="skip_modal_done" class="align-middle" value="">
           </div>

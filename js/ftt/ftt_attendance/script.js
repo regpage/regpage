@@ -2115,7 +2115,7 @@ function open_blank(el_this) {
 
     // IDEA: перенести в инфо и оформить в <span>, но отображать над полями
     $("#skip_modal_session").val(elem.attr("data-session_name"));
-    $("#skip_modal_time").val(elem.attr("data-session_time"));
+    //$("#skip_modal_time").val(elem.attr("data-session_time"));
 
     // pic
     $("#skip_pic").attr("src", elem.attr("data-file"));
@@ -2195,6 +2195,24 @@ function open_blank(el_this) {
       }, 50);
     });
   }
+  // отметка в списке
+  $(".skip_done").click(function(e) {
+    e.stopPropagation();
+  });
+  $(".skip_done").change(function(e) {
+    let id = $(this).parent().parent().attr("data-id");
+    let status;
+    if ($(this).prop("checked")) {
+      status = 2;
+    } else {
+      status = 1;
+    }
+    fetch("ajax/ftt_attendance_ajax.php?type=set_done_skip_blank&status="+status+"&id="+id)
+    .then(response => response.text())
+    .then(commits => {
+      $("div[data-id='"+ id +"']").attr("data-status", status);
+    });
+  });
   /*** SKIP TAB STOP ***/
 
 // DOCUMENT READY STOP

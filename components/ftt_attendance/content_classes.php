@@ -56,22 +56,43 @@ if (isset($_COOKIE['skip_sorting'])) {
 <div class="pl-0">
   <div class="row row_corr">
     <div class="col-1 pl-1 text_blue"><b class="skip_sort_date cursor-pointer">Дата<i class="<?php echo $skip_sort_date_ico; ?>"></i></b></div>
+    <div class="col-1"><b>Время</b></div>
     <div class="col-3 text_blue"><b class="skip_sort_trainee cursor-pointer">Обучающийся<i class="<?php echo $skip_sort_trainee_ico; ?>"></i></b></div>
-    <div class="col-3"><b>Занятие</b></div>
-    <div class="col-3"><b>Комментарий</b></div>
-    <div class="col-2"><b>Статус</b></div>
+    <div class="col-6"><b>Мероприятие</b></div>
+    <div class="col-1"><b>Выполнено</b></div>
   </div>
 </div>
 <hr id="hight_line" style="margin-left: 0px; margin-right: -15px; margin-top: 0px; margin-bottom: 0px; border-color: lightgray;">
 <div id="list_skip" class="">
 <?php
 foreach (getMissedClasses() as $key => $value) {
+  if (isset($value['session_name']) && mb_substr(trim($value['session_name']), -1) === ')' && mb_substr($value['session_name'], -7, -6) === '(') {
+    $session_time_echo = mb_substr(trim($value['session_name']), -6, -1);
+  } else {
+    $session_time_echo = $value['session_time'];
+  }
+  if (strlen($value['comment']) > 80) {
+    $short_comment = mb_substr($value['comment'], 0, 80).'...';
+  } else {
+    $short_comment = $value['comment'];
+  }
+  $disabled = '';
+  $checked = '';
+  if ($value['status'] == 0) {
+    $disabled = 'disabled';
+  } elseif ($value['status'] == 1) {
+
+  } elseif ($value['status'] == 2) {
+    $checked = 'checked';
+  } else {
+    $disabled = 'disabled';
+  }
   $skip_checked_string = "<span class='badge badge-".$status_list[$value['status']][0]."'>".$status_list[$value['status']][1]."</span>";
   $nameTrainee = short_name::no_middle($value['name']);
   $dateBlank = date_convert::yyyymmdd_to_ddmm($value['date_blank']);
   echo "<div class='row skip_string ml-0' data-id='{$value['id']}' data-date='{$value['date_blank']}' data-member_key='{$value['member_key']}' data-serving_one='{$value['serving_one']}'";
   echo " data-comment='{$value['comment']}' data-status='{$value['status']}' data-session_time='{$value['session_time']}' data-session_name='{$value['session_name']}' data-topic='{$value['topic']}' data-file='{$value['file']}' data-create_send='{$value['date']}'>";
-  echo "<div class='col-1 pl-1'>{$dateBlank}</div><div class='col-3'>{$nameTrainee}</div><div class='col-3'>{$value['session_name']}<br>{$value['session_time']}</div><div class='col-3'>{$value['comment']}</div><div class='col-2'>{$skip_checked_string}</div></div>";
+  echo "<div class='col-1 pl-1'>{$dateBlank}</div><div class='col-1'>{$session_time_echo}</div><div class='col-3'>{$nameTrainee}</div><div class='col-6'>{$value['session_name']}<br><span class='grey_text'>{$short_comment}</span></div><div class='col-1'><input type='checkbox' class='skip_done' {$checked} {$disabled}></div></div>";
 }
 ?>
 </div>

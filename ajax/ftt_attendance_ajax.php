@@ -212,4 +212,15 @@ if (isset($_GET['type']) && $_GET['type'] === 'set_skip_blank') {
   exit();
 }
 
+if (isset($_GET['type']) && $_GET['type'] === 'set_done_skip_blank') {
+  // готовим данные
+  $db_data = new DbData('set', 'ftt_skip');
+  $db_data->set('field', 'status');
+  $db_data->set('value', $_GET['status']);
+  $db_data->set('condition_field', 'id');
+  $db_data->set('condition_value', $_GET['id']);
+  echo DbOperation::operation($db_data->get());
+  exit();
+}
+
 ?>
