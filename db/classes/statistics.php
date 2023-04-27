@@ -264,8 +264,44 @@ class statistics {
 
       return $result;
   }
-
+  // Количество занятий на проверке
+  static function missed_class_count ($memberId)
+  {
+    global $db;
+    $result = '';
+    $trainee = false;
+    $condition = '';
+    if (is_array($memberId)) {
+      if (count($memberId) > 0) {
+        foreach ($memberId as $key => $value) {
+          $key = $db->real_escape_string($key);
+          if (!empty($condition)) {
+            $condition .= " OR ";
+          }
+          $condition .= " (fas.member_key = '$key' AND (fs.status = 0 OR fs.status = 1)) ";
+        }
+      } else {
+        $condition=0;
+      }
+    } else {
+      $trainee = true;
+      $memberId = $db->real_escape_string($memberId);
+    }
+    if ($trainee) {
+      $res = db_query("SELECT COUNT(fs.id) AS total
+      FROM ftt_skip AS fs
+      LEFT JOIN ftt_attendance_sheet fas ON fas.id = fs.id_attendance_sheet
+      WHERE fas.member_key = '$memberId' AND fas.status = 0");
+      while ($row = $res->fetch_assoc()) $result = $row['total'];
+    } else {
+      $res = db_query("SELECT COUNT(fs.id) AS total
+      FROM ftt_skip AS fs
+      LEFT JOIN ftt_attendance_sheet fas ON fas.id = fs.id_attendance_sheet
+      WHERE {$condition}");
+      while ($row = $res->fetch_assoc()) $result = $row['total'];
+    }
+    return $result;
+  }
 }
-
 
 ?>

@@ -108,13 +108,20 @@ if (isset($_GET['my'])) {
 // statistics
 $permission_stat_count;
 $permission_statistics = '';
+$missed_class_statistics = '';
 if ($ftt_access['group'] === 'staff') {
   $permission_stat_count = statistics::permission_count(ftt_lists::get_trainees_by_staff($serving_one_permissions));
+  $missed_class_count = statistics::missed_class_count(ftt_lists::get_trainees_by_staff($memberId));
 } else {
   $permission_stat_count = statistics::permission_count($memberId);
+  $missed_class_count = statistics::missed_class_count($memberId);
 }
 if ($permission_stat_count > 0) {
   $permission_statistics = "<sup style='color: red;'> <b> {$permission_stat_count}</b></sup>";
+}
+
+if ($missed_class_count > 0) {
+  $missed_class_statistics = "<sup style='color: red;'> <b> {$missed_class_count}</b></sup>";
 }
 
 $status_list = array(0 => ['secondary','не отправлен'], 1 => ['warning','на рассмотрении'], 2 => ['success','одобрен'], 3 => ['danger','отклонён']);
