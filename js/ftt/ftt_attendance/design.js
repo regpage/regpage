@@ -106,9 +106,11 @@ if ($(window).width()<=769) {
   // skip
   $("#missed_class_tab .row_corr").hide();
   $("#day_of_week_skip_blank").parent().removeClass("col-2").addClass("col-1");
-  $(".skip_string .col-3").addClass("pr-1").addClass("pl-4");
+  $(".skip_string div:nth-child(2)").addClass("pl-3");
+  $(".skip_string .col-3").removeClass("col-3").addClass("col-4").addClass("pr-1").addClass("pl-5");
+  $(".skip_string div:nth-child(4)").removeClass("col-6").addClass("col-4").addClass("pl-2");
   $(".skip_done").parent().addClass("pl-0");
-
+  $(".skip_string .col-8").removeClass("col-8").addClass("col-6").addClass("pr-1").addClass("pl-5");
 } else if ($(window).width()<=991 && $(window).width()>769) {
   $("#current_extra_help").css("min-width", $(window).width()+"px");
   $(".card_header button").css("width", "180px");

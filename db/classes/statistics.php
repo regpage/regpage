@@ -291,7 +291,7 @@ class statistics {
       $res = db_query("SELECT COUNT(fs.id) AS total
       FROM ftt_skip AS fs
       LEFT JOIN ftt_attendance_sheet fas ON fas.id = fs.id_attendance_sheet
-      WHERE fas.member_key = '$memberId' AND fas.status = 0");
+      WHERE fas.member_key = '$memberId' AND fs.status = 0");
       while ($row = $res->fetch_assoc()) $result = $row['total'];
     } else {
       $res = db_query("SELECT COUNT(fs.id) AS total

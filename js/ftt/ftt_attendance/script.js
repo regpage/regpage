@@ -2126,14 +2126,28 @@ function open_blank(el_this) {
     $("#send_skip_blank").hide();
     $("#save_skip_blank").show();
     $("#skip_modal_done").attr("disabled", false);
+    $("#skip_modal_topic").attr("disabled", false);
+    $("#skip_modal_comment").attr("disabled", false);
+    $("#skip_modal_file").attr("disabled", false);
     if (elem.attr("data-status") === '0') {
       $("#skip_modal_done").attr("disabled", true);
       $("#send_skip_blank").show();
     } else if (elem.attr("data-status") === '1') {
-      $("#save_skip_blank").show();
+      if (trainee_access) {
+        $("#save_skip_blank").hide();
+        $("#pic_skip_delete").hide();
+        $("#skip_modal_topic").attr("disabled", true);
+        $("#skip_modal_comment").attr("disabled", true);
+        $("#skip_modal_file").attr("disabled", true);
+      }
     } else if (elem.attr("data-status") === '2') {
-      $("#save_skip_blank").show();
-      $("#skip_modal_done").prop("checked", true);
+        $("#save_skip_blank").hide();
+        $("#pic_skip_delete").hide();
+        $("#skip_modal_topic").attr("disabled", true);
+        $("#skip_modal_comment").attr("disabled", true);
+        $("#skip_modal_file").attr("disabled", true);
+        $("#skip_modal_done").attr("disabled", true);
+        $("#skip_modal_done").prop("checked", true);
     } else if (elem.attr("data-status") === '3') {
       $("#skip_modal_done").prop("checked", true);
     }
@@ -2179,9 +2193,9 @@ function open_blank(el_this) {
         $("#skip_pic").attr("src", commits.result);
         $("#skip_pic").parent().attr("href", commits.result);
         $("div[data-id='" + id + "']").attr("data-file",commits.result);
-        if ($("#skip_modal_topic").val()) {
+        /*if ($("#skip_modal_topic").val()) {
           $("#skip_modal_topic").css("border-color", "lightgrey");
-        }
+        }*/
         $("#skip_modal_file").parent().css("border", "none");
       });
     }
@@ -2195,15 +2209,15 @@ function open_blank(el_this) {
 
   $("#send_skip_blank").click(function () {
     if (!$("#skip_modal_topic").val()) {
-      showError("Заполните поле тема.");
+      /*showError("Заполните поле тема.");
       $("#skip_modal_topic").css("border-color", "red");
-      return;
+      return;*/
     } else if(!$("#skip_pic").attr("src")) {
       showError("Прикрепите файл.");
       $("#skip_modal_file").parent().css("border", "1px solid red");
       return;
     }
-    $("#skip_modal_topic").css("border-color", "lightgrey");
+    //$("#skip_modal_topic").css("border-color", "lightgrey");
     $("#skip_modal_file").parent().css("border", "none");
 
     save_skip_blank(1);

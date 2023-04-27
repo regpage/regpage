@@ -31,12 +31,12 @@ function setMissedClasses($sheet_id='')
   }
 }
 
-function getMissedClasses($sort='', $status='_all_')
+function getMissedClasses($sort='', $member='_all_')
 {
 
   global $db;
   $sort = $db->real_escape_string($sort);
-  $status = $db->real_escape_string($status);
+  $member = $db->real_escape_string($member);
   $result = [];
   $condition = ' 1 ';
   $order = ' fas.date, m.name ';
@@ -49,13 +49,11 @@ function getMissedClasses($sort='', $status='_all_')
       $order = ' m.name DESC, fas.date DESC ';
     }
   }
-/*
-  if ($status === 'done') {
 
-  } elseif ($status === 'panding') {
-
+  if ($member !== '_all_') {
+    $condition = " fas.member_key = '{$member}'";
   }
-*/
+
   $res = db_query("SELECT fs.*, fas.date AS date_blank, fas.member_key, fa.session_name, fa.session_time, m.name, tr.serving_one
     FROM ftt_skip AS fs
     LEFT JOIN ftt_attendance fa ON fa.id = fs.id_attendance
@@ -86,7 +84,7 @@ function setSkipBlank($data)
   $id = $db->real_escape_string($data->id);
   $topic = $db->real_escape_string($data->topic);
   $status = $db->real_escape_string($data->status);
-  $comment = $db->real_escape_string($data->comment);  
+  $comment = $db->real_escape_string($data->comment);
 
   $res = db_query("UPDATE `ftt_skip` SET `topic` = '{$topic}', `status` = '{$status}', `comment` = '{$comment}', `changed` = 1  WHERE `id` = '$id'");
 

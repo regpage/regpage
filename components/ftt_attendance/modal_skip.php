@@ -43,7 +43,7 @@ data-id="" data-member_key="" data-serving_one="" data-status="">
         </div>
         <div class="mt-2">
           <a href="#" target="_blank">
-            <img id="skip_pic" src="" alt="" width="466">
+            <img id="skip_pic" src="" alt="" width="100%">
           </a>
         </div>
         <?php if ($ftt_access['group'] === 'staff') { ?>

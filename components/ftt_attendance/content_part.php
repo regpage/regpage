@@ -10,6 +10,11 @@
         Листы отсутствия <?php echo $permission_statistics; ?>
       </a>
     </li>
+    <li class="nav-item">
+      <a class="nav-link <?php echo $tab_missed_class_active; ?>" data-toggle="tab" href="#missed_class_tab">
+        Пропущенные занятия <?php echo $missed_class_statistics; ?>
+      </a>
+    </li>
   </ul>
   <!-- Tab panes -->
   <div id="tab_content_extra_help" class="tab-content">
@@ -198,6 +203,9 @@
     <!-- PERMISSION TAB -->
     <div id="permission_tab" class="tab-pane container <?php echo $tab_permission_active; ?>">
       <?php include 'components/ftt_attendance/content_part_permission.php'; ?>
+    </div>
+    <div id="missed_class_tab" class="tab-pane container <?php echo $tab_missed_class_active; ?>">
+      <?php include 'components/ftt_attendance/content_classes_trainee.php'; ?>
     </div>
   </div>
 </div>
