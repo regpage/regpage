@@ -40,13 +40,22 @@ function getMissedClasses($sort='', $status='_all_')
   $result = [];
   $condition = ' 1 ';
   $order = ' fas.date, m.name ';
-
+  if (!empty($sort)) {
+    if ($sort === 'skip_sort_date-desc') {
+      $order = ' fas.date DESC, m.name DESC ';
+    } elseif ($sort === 'skip_sort_trainee-asc') {
+      $order = ' m.name, fas.date ';
+    } elseif ($sort === 'skip_sort_trainee-desc') {
+      $order = ' m.name DESC, fas.date DESC ';
+    }
+  }
+/*
   if ($status === 'done') {
 
   } elseif ($status === 'panding') {
 
   }
-
+*/
   $res = db_query("SELECT fs.*, fas.date AS date_blank, fas.member_key, fa.session_name, fa.session_time, m.name, tr.serving_one
     FROM ftt_skip AS fs
     LEFT JOIN ftt_attendance fa ON fa.id = fs.id_attendance
@@ -70,22 +79,16 @@ function dltMissedClass($id)
   return $res;
 }
 
-function setSkipBlank($data, $file)
+function setSkipBlank($data)
 {
   global $db;
   $data = json_decode($data);
   $id = $db->real_escape_string($data->id);
   $topic = $db->real_escape_string($data->topic);
   $status = $db->real_escape_string($data->status);
-  $comment = $db->real_escape_string($data->comment);
-  if ($file === '_none_') {
-    $file = '';
-  } else {
-    $file = $db->real_escape_string($file);
-    $file = " `file` = '$file', ";
-  }
+  $comment = $db->real_escape_string($data->comment);  
 
-  $res = db_query("UPDATE `ftt_skip` SET `topic` = '{$topic}', `status` = '{$status}', `comment` = '{$comment}', {$file} `changed` = 1  WHERE `id` = '$id'");
+  $res = db_query("UPDATE `ftt_skip` SET `topic` = '{$topic}', `status` = '{$status}', `comment` = '{$comment}', `changed` = 1  WHERE `id` = '$id'");
 
 
 }

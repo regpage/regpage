@@ -103,6 +103,12 @@ if ($(window).width()<=769) {
   // footer
   $("#edit_permission_blank .modal-footer .btn").css("font-size", "17px");
 
+  // skip
+  $("#missed_class_tab .row_corr").hide();
+  $("#day_of_week_skip_blank").parent().removeClass("col-2").addClass("col-1");
+  $(".skip_string .col-3").addClass("pr-1").addClass("pl-4");
+  $(".skip_done").parent().addClass("pl-0");
+
 } else if ($(window).width()<=991 && $(window).width()>769) {
   $("#current_extra_help").css("min-width", $(window).width()+"px");
   $(".card_header button").css("width", "180px");

@@ -2060,20 +2060,10 @@ function open_blank(el_this) {
   });
 
   // filters
-  $("#flt_skip_done, #flt_sevice_one_skip, #ftr_trainee_skip").change(function () {
+  $("#flt_skip_done, #flt_sevice_one_skip, #ftr_trainee_skip").change(function (e) {
+    setCookie(e.target.id, $(this).val(), 1);
     filterSkip();
   });
-  function filterSkip() {
-    $("#list_skip .skip_string").each(function () {
-      if (($('#flt_sevice_one_skip').val() === "_all_" || $('#flt_sevice_one_skip').val() === $(this).attr("data-serving_one"))
-      && ($('#ftr_trainee_skip').val() === "_all_" || $('#ftr_trainee_skip').val() === $(this).attr("data-member_key"))
-      && ($("#flt_skip_done").val() === "_all_" || $("#flt_skip_done").val() === $(this).attr("data-status"))) {
-        $(this).show();
-      } else {
-        $(this).hide();
-      }
-    });
-  }
 
   function clear_skip_blank() {
     // fields
@@ -2083,6 +2073,8 @@ function open_blank(el_this) {
     $("#show_status_in_skip_blank").removeClass("badge-secondary").removeClass("badge-danger").removeClass("badge-warning").removeClass("badge-success").text("");
     $("#skip_pic").attr("src", "");
     $("#skip_pic").parent().attr("href", "");
+    $("#day_of_week_skip_blank").text("");
+
     // data
     $("#edit_skip_blank").attr("data-id", "");
     $("#edit_skip_blank").attr("data-member_key", "");
@@ -2097,6 +2089,9 @@ function open_blank(el_this) {
     // buttons
     $("#send_skip_blank").show();
     $("#save_skip_blank").show();
+    // colors
+    $("#skip_modal_topic").css("border-color", "lightgrey");
+    $("#skip_modal_file").parent().css("border", "none");
   }
 
   function fill_skip_blank(elem) {
@@ -2116,15 +2111,23 @@ function open_blank(el_this) {
     // IDEA: перенести в инфо и оформить в <span>, но отображать над полями
     $("#skip_modal_session").val(elem.attr("data-session_name"));
     //$("#skip_modal_time").val(elem.attr("data-session_time"));
+    $("#day_of_week_skip_blank").text(getNameDayOfWeekByDayNumber(elem.attr("data-date")));
 
     // pic
+    if (elem.attr("data-file")) {
+      $("#pic_skip_delete").show();
+    } else {
+      $("#pic_skip_delete").hide();
+    }
     $("#skip_pic").attr("src", elem.attr("data-file"));
     $("#skip_pic").parent().attr("href", elem.attr("data-file"));
 
     // buttons & behavior
     $("#send_skip_blank").hide();
     $("#save_skip_blank").show();
+    $("#skip_modal_done").attr("disabled", false);
     if (elem.attr("data-status") === '0') {
+      $("#skip_modal_done").attr("disabled", true);
       $("#send_skip_blank").show();
     } else if (elem.attr("data-status") === '1') {
       $("#save_skip_blank").show();
@@ -2150,11 +2153,8 @@ function open_blank(el_this) {
     $("#sevice_one_of_skip").text("");
     $("#allow_date_of_skip").text("");*/
   }
-  // save
-  $("#save_skip_blank").click(function () {
-    save_skip_blank();
-    $("#edit_skip_blank").modal("hide");
-  });
+
+  // поведение
   $("#info_of_skip").click(function () {
     if ($("#author_of_skip").is(":visible")) {
       $("#author_of_skip").parent().hide();
@@ -2162,6 +2162,54 @@ function open_blank(el_this) {
       $("#author_of_skip").parent().show();
     }
   });
+
+  // pic
+  $("#skip_modal_file").change(function () {
+    let id = $("#edit_skip_blank").attr("data-id");
+    let skip_data_blank = new FormData();
+    if ($("#skip_modal_file")[0].files[0]) {
+      skip_data_blank.set("blob", $("#skip_modal_file")[0].files[0]);
+      fetch("ajax/ftt_attendance_ajax.php?type=set_pic&id=" + id, {
+        method: 'POST',
+        body: skip_data_blank
+      })
+      .then(response => response.json())
+      .then(commits => {
+        $("#pic_skip_delete").show();
+        $("#skip_pic").attr("src", commits.result);
+        $("#skip_pic").parent().attr("href", commits.result);
+        $("div[data-id='" + id + "']").attr("data-file",commits.result);
+        if ($("#skip_modal_topic").val()) {
+          $("#skip_modal_topic").css("border-color", "lightgrey");
+        }
+        $("#skip_modal_file").parent().css("border", "none");
+      });
+    }
+  });
+
+  // save
+  $("#save_skip_blank").click(function () {
+    save_skip_blank();
+    $("#edit_skip_blank").modal("hide");
+  });
+
+  $("#send_skip_blank").click(function () {
+    if (!$("#skip_modal_topic").val()) {
+      showError("Заполните поле тема.");
+      $("#skip_modal_topic").css("border-color", "red");
+      return;
+    } else if(!$("#skip_pic").attr("src")) {
+      showError("Прикрепите файл.");
+      $("#skip_modal_file").parent().css("border", "1px solid red");
+      return;
+    }
+    $("#skip_modal_topic").css("border-color", "lightgrey");
+    $("#skip_modal_file").parent().css("border", "none");
+
+    save_skip_blank(1);
+    $("#edit_skip_blank").modal("hide");
+  });
+
   function save_skip_blank(send) {
     let skip_data_blank = new FormData();
     skip_data_blank_val = {};
@@ -2179,9 +2227,7 @@ function open_blank(el_this) {
         skip_data_blank_val["status"] = $("#edit_skip_blank").attr("data-status");
       }
     }
-    if ($("#skip_modal_file")[0].files[0]) {
-      skip_data_blank.set("blob", $("#skip_modal_file")[0].files[0]);
-    }
+
     skip_data_blank.set("data", JSON.stringify(skip_data_blank_val));
     fetch("ajax/ftt_attendance_ajax.php?type=set_skip_blank", {
       method: 'POST',
@@ -2189,9 +2235,8 @@ function open_blank(el_this) {
     })
     .then(response => response.text())
     .then(commits => {
-      console.log(commits);
       setTimeout(function () {
-        // location.reload();
+        location.reload();
       }, 50);
     });
   }
@@ -2211,6 +2256,66 @@ function open_blank(el_this) {
     .then(response => response.text())
     .then(commits => {
       $("div[data-id='"+ id +"']").attr("data-status", status);
+    });
+  });
+
+  // сортировка
+  $(".skip_sort_date, .skip_sort_trainee").click(function (e) {
+    if (e.target.id === "skip_sort_date" || e.target.id === "skip_sort_trainee") {
+      setCookie('skip_sorting', e.target.id + "-asc", 356);
+      if (e.target.id === "skip_sort_date") {
+        $("#skip_sort_trainee").prop("checked", false)
+      } else {
+        $("#skip_sort_date").prop("checked", false);
+      }
+    } else {
+      let sorting_name = e.target.className;
+      $(".skip_sort_date i, .skip_sort_trainee i").addClass("hide_element");
+      if ($(this).hasClass("skip_sort_date")) {
+        $(".skip_sort_trainee i").removeClass("fa");
+        $(".skip_sort_trainee i").removeClass("fa-sort-desc");
+        $(".skip_sort_trainee i").removeClass("fa-sort-asc");
+      } else if ($(this).hasClass("skip_sort_traine")) {
+        $(".skip_sort_date i").removeClass("fa");
+        $(".skip_sort_date i").removeClass("fa-sort-desc");
+        $(".skip_sort_date i").removeClass("fa-sort-asc");
+      }
+
+      $(this).find("i").removeClass("hide_element");
+      if ($(this).find("i").hasClass("fa-sort-desc")) {
+        $(this).find("i").removeClass("fa-sort-desc").addClass("fa-sort-asc");
+        setCookie('skip_sorting', sorting_name + "-desc", 356);
+      } else if ($(this).find("i").hasClass("fa-sort-asc")) {
+        $(this).find("i").removeClass("fa-sort-asc").addClass("fa-sort-desc");
+        setCookie('skip_sorting', sorting_name + "-asc", 356);
+      } else {
+        $(this).find("i").addClass("fa");
+        $(this).find("i").addClass("fa-sort-asc");
+        setCookie('skip_sorting', sorting_name + "-desc", 356);
+      }
+    }
+    setTimeout(function () {
+      location.reload();
+    }, 30);
+  });
+
+  $("#pic_skip_delete").click(function () {
+    if (!$("#skip_pic").attr("src")) {
+      return;
+    }
+    let id = $("#edit_skip_blank").attr("data-id");
+    let element = $(this);
+    let patch = $("#skip_pic").attr("src");
+    // УДАЛЕНИЕ КАРТИНКИ
+    fetch("ajax/ftt_attendance_ajax.php?type=delete_pic&id=" + id + "&patch=" + patch)
+    .then(response => response.json())
+    .then(data => {
+      if (data) {
+        element.hide();
+        $("#skip_pic").attr("src","");
+        $("#skip_pic").parent().attr("href","");
+        $("div[data-id='" + id + "']").attr("data-file","");
+      }
     });
   });
   /*** SKIP TAB STOP ***/

@@ -20,7 +20,10 @@ data-id="" data-member_key="" data-serving_one="" data-status="">
             <label class="required-for-label" style="min-width: 130px;">Дата пропуска</label>
             <input type="date" id="skip_modal_date" class="form-control form-control-sm mb-2" value="" disabled>
           </div>
-          <div class="col-8 pr-1" style="margin-top:30px;">
+          <div class="col-2 pr-1" style="margin-top:30px;">
+            <span id="day_of_week_skip_blank"></span>
+          </div>
+          <div class="col-6 pr-1" style="margin-top:30px;">
             <span id="show_status_in_skip_blank" class="float-right badge badge-secondary">не отправлен</span>
           </div>
         </div>
@@ -36,6 +39,7 @@ data-id="" data-member_key="" data-serving_one="" data-status="">
         <div class="mt-2">
           <label for="skip_modal_file">Приложить файл</label><br>
           <input type="file" id="skip_modal_file" class="" accept="image/*" value="">
+          <div class="float-right"><i id="pic_skip_delete" class="fa fa-trash text-danger cursor-pointer" aria-hidden="true" style="font-size: 1.5rem;"></i></div>
         </div>
         <div class="mt-2">
           <a href="#" target="_blank">

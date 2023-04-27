@@ -43,6 +43,18 @@ let link_pb =  "<?php if (isset($_GET['pb'])) {echo $_GET['pb'];} else {echo '';
 
 // admin key
 let admin_id_gl = "<?php echo $memberId;?>";
+function filterSkip() {
+  $("#list_skip .skip_string").each(function () {
+    if (($('#flt_sevice_one_skip').val() === "_all_" || $('#flt_sevice_one_skip').val() === $(this).attr("data-serving_one"))
+    && ($('#ftr_trainee_skip').val() === "_all_" || $('#ftr_trainee_skip').val() === $(this).attr("data-member_key"))
+    && ($("#flt_skip_done").val() === "_all_" || $("#flt_skip_done").val() === $(this).attr("data-status"))) {
+      $(this).show();
+    } else {
+      $(this).hide();
+    }
+  });
+}
+filterSkip();
 </script>
-<script src="/js/ftt/ftt_attendance/script.js?v109"></script>
+<script src="/js/ftt/ftt_attendance/script.js?v111"></script>
 <script src="/js/ftt/ftt_attendance/design.js?v20"></script>

@@ -31,10 +31,12 @@ if (isset($_GET['type']) && $_GET['type'] === 'get_sessions') {
 
 // Обновляем строки
 if (isset($_GET['type']) && $_GET['type'] === 'updade_data_blank') {
+    if ($_GET['field'] === 'status' && $_GET['value'] === '1') {
+      setMissedClasses($_GET['id']);
+    }
     if (isset($_GET['value_late'])) {
       echo json_encode(["result"=>set_attendance_time($_GET['id'], $_GET['field'], $_GET['value'], $_GET['value_late'], $_GET['value_absence'])]);
     } else {
-      setMissedClasses($_GET['id']);
       echo json_encode(["result"=>set_attendance($_GET['id'], $_GET['field'], $_GET['value'], $_GET['header'])]);
       if (isset($_GET['reason']) && $_GET['reason'] === '1') {
         set_attendance($_GET['id'], 'late', 0, 0);
@@ -201,14 +203,7 @@ if (isset($_GET['type']) && $_GET['type'] === 'delete_permission_blank') {
 
 // SKIP
 if (isset($_GET['type']) && $_GET['type'] === 'set_skip_blank') {
-  if (isset($_FILES['blob'])) {
-    $target_file = 'img/'.basename($_FILES['blob']['name']);
-    move_uploaded_file($_FILES['blob']['tmp_name'],$target_file);
-    $file = 'ajax/'.$target_file;
-  } else {
-    $file = '_none_';
-  }
-  setSkipBlank($_POST['data'], $file);
+  setSkipBlank($_POST['data']);
   exit();
 }
 
@@ -220,6 +215,43 @@ if (isset($_GET['type']) && $_GET['type'] === 'set_done_skip_blank') {
   $db_data->set('condition_field', 'id');
   $db_data->set('condition_value', $_GET['id']);
   echo DbOperation::operation($db_data->get());
+  exit();
+}
+
+if (isset($_GET['type']) && $_GET['type'] === 'set_pic') {
+  // file
+  if (isset($_FILES['blob'])) {
+    $prefix = date('His');
+    $target_file = 'img/' . $prefix . basename($_FILES['blob']['name']);
+    move_uploaded_file($_FILES['blob']['tmp_name'], $target_file);
+    $file = 'ajax/' . $target_file;
+  } else {
+    $file = '';
+  }
+  // готовим данные
+  $db_data = new DbData('set', 'ftt_skip');
+  $db_data->set('field', 'file');
+  $db_data->set('value', $file);
+  $db_data->set('condition_field', 'id');
+  $db_data->set('condition_value', $_GET['id']);
+  // выполняем
+  DbOperation::operation($db_data->get());
+  echo json_encode(["result"=>$file]);
+  exit();
+}
+
+if (isset($_GET['type']) && $_GET['type'] === 'delete_pic') {
+  // готовим данные
+  $db_data = new DbData('set', 'ftt_skip');
+  $db_data->set('field', 'file');
+  $db_data->set('value', '');
+  $db_data->set('condition_field', 'id');
+  $db_data->set('condition_value', $_GET['id']);
+  // выполняем
+  echo DbOperation::operation($db_data->get());
+  // file
+  $hi = explode('ajax/', $_GET['patch']);
+  unlink($hi[1]);
   exit();
 }
 
