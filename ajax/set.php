@@ -2,13 +2,38 @@
 include_once "ajax.php";
 
 /* ПОДДЕРЖКА 20 БРАТЬЕВ В ПОЕЗДКЕ В МАНИЛ */
-function db_brothersDotationCheck()
+function db_brothersDotationExist($memberKey)
 {
+  global $db;
+  $memberKey = $db->real_escape_string($memberKey);
+  $isExist='';
+
+  $res = db_query("SELECT `member_key` FROM `brothers_dotation` WHERE member_key = '$memberKey'");
+  while ($row = $res->fetch_assoc()) $isExist = $row['member_key'];
+
+  return $isExist;
+}
+
+
+function db_brothersDotationCheck($memberKey=false)
+{
+  global $db;
+  $memberKey = $db->real_escape_string($memberKey);
+  $isExist = '';
+  if ($memberKey) {
+    $isExist = db_brothersDotationExist($memberKey);
+  }
   $isFilled = 0;
-  $res = db_query("SELECT count(`member_key`) AS total FROM `brothers_dotation`");
-  while ($row = $res->fetch_assoc()) $isFilled = $row['total'];
+  if (empty($isExist)) {
+    $res = db_query("SELECT count(`member_key`) AS total FROM `brothers_dotation`");
+    while ($row = $res->fetch_assoc()) $isFilled = $row['total'];
+  } else {
+    $isFilled = 'exist';
+  }
+
   return $isFilled;
 }
+
 function db_brothersDotation($memberKey, $ticket, $eventId)
 {
   global $db;
@@ -16,10 +41,8 @@ function db_brothersDotation($memberKey, $ticket, $eventId)
   $ticket = $db->real_escape_string($ticket);
   $eventId = $db->real_escape_string($eventId);
   $isFilled = '';
-  $isExist = '';
+  $isExist = db_brothersDotationExist($memberKey);  
 
-  $res = db_query("SELECT `member_key` FROM `brothers_dotation` WHERE member_key = '$memberKey'");
-  while ($row = $res->fetch_assoc()) $isExist = $row['member_key'];
   if (!empty($isExist) && empty($ticket)) {
     db_query("DELETE FROM `brothers_dotation` WHERE `member_key`='$memberKey'");
     return db_brothersDotationCheck();
@@ -36,7 +59,12 @@ function db_brothersDotation($memberKey, $ticket, $eventId)
   }
 }
 if (isset($_GET['type']) && $_GET['type'] === 'get_brothers_dotation') {
-  echo json_encode(["result"=> db_brothersDotationCheck()]);
+  if (isset($_GET['member_key'])) {
+    echo json_encode(["result"=> db_brothersDotationCheck($_GET['member_key'])]);
+  } else {
+    echo json_encode(["result"=> db_brothersDotationCheck()]);
+  }
+
   exit;
 }
 if (isset($_GET['type']) && $_GET['type'] === 'brothers_dotation') {

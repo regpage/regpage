@@ -1029,13 +1029,37 @@ $(document).ready(function(){
                             '<span class="span5 event-name">'+ event.name + '</span>'+
                             '<span style="display: none;" class="span3">'+ event.locality_name + '</span>'+
                             '<span class="span2 event-date" style="display: none;">'+ formatDDMM(event.start_date) + ' - ' + formatDDMM(event.end_date)+'</span>'+
-                            '<span class="span2 event-icons"  style="width: 190px";>'+ (regstateClass == "" ?  "" : '<span style="margin-top:5px; margin-left: 0px; margin-right: 19px; display: inline;" class="label label-'+regstateClass+'">'+ regstateText + '</span>') +((regstateText) ? ((regstateText === 'регистрация подтверждена' || regstateText === 'ожидание подтверждения') ? '<span style="padding-left: 0px;"><a style="padding-left: 0px; font-size: 12px; display: none;" class="handleRegistrationFast editEventMember" title="Редактировать данные"> Изменить</a></span><span><a class="rejectRegistrationFast" title="Отменить регистрацию" style=" margin-right: 12px; font-size: 12px; display: none;"> Отменить</a></span>':''):'<span style="margin-top:5px; margin-left: 0px; margin-right: 1px; padding-left:0px;"><a class="handleRegistrationFast addEventMember" style="display: none;">Отправить</a></span>')+ icons +'</span>'+
-                            '</div>';
+                            '<span class="span2 event-icons"  style="width: 190px";>'+ (regstateClass == "" ?  "" : '<span style="margin-top:5px; margin-left: 0px; margin-right: 19px; display: inline;" class="label label-'+regstateClass+'">'+ regstateText + '</span>') +((regstateText) ? ((regstateText === 'регистрация подтверждена' || regstateText === 'ожидание подтверждения') ? '<span style="padding-left: 0px;"><a style="padding-left: 0px; font-size: 12px; display: none;" class="handleRegistrationFast editEventMember" title="Редактировать данные"> Изменить</a></span><span><a class="rejectRegistrationFast" title="Отменить регистрацию" style=" margin-right: 12px; font-size: 12px; display: none;"> Отменить</a></span>':''):'<span style="margin-top:5px; margin-left: 0px; margin-right: 1px; padding-left:0px;"><a class="handleRegistrationFast addEventMember" style="display: none;">Отправить</a></span>')+ icons +'</span>'
+                            +'</div>';
 
                 tabletEvent = '<div '+eventAttrs+'>'+
                             '<div class="event-name"><strong>'+ event.name + '</strong><span class="event-name"></div>'+
                             '<div><span style="margin-top:5px; margin-right:5px;" class="label label-'+regstateClass+'">'+ regstateText + '</span>' + icons+ '</div>'+
                         '</div>';
+
+                        /* BEGIN Дотация для 20 участников на Манилы */
+                        if (event.id === "20222028") {
+                          fetch("/ajax/set.php?type=get_brothers_dotation&member_key=" + window.adminId)
+                          .then(response => response.json())
+                          .then(commits => {
+                            let datation_manil = "";
+                            if (commits.result === "exist") {
+                              datation_manil = "<br><span class='example' style='margin-left: 0;'>У вас место с дотацией</span>";
+                            } else {
+                              datation_manil = "<br><span class='example' style='margin-left: 0;'>Осталось мест с дотацией — "
+                              + (20 - Number(commits.result)
+                              + "</span>");
+                            }
+
+                             if ($(window).width() > 768) {
+                              $(".event-row[data-id='20222028'] .event-name").html(event.name + datation_manil);
+                            } else {
+                              $(".event-row[data-id='20222028'] .event-name").html("<strong>"
+                              + event.name + "</strong>" + datation_manil);
+                            }
+                          });
+                        }
+                        /* END */
                 /* Сейчас для private мероприятий действует одно правило, на мероприятие саморегистрация открыта
                 только для ответственных и полновременно служащих братьев.
                 нужно добавить правила для всех мероприятий */
@@ -1651,7 +1675,7 @@ console.log('stop is ', stopRegistration, 'close is ', closeRegistration, modalW
               // переделать на стороне сервера
               fetch("/ajax/set.php?type=brothers_dotation&member_key="+window.adminId+"&event_id="+eventId+"&ticket")
               .then(response => response.json())
-              .then(commits => {                
+              .then(commits => {
               });
           }
           setTimeout(function () {

@@ -240,15 +240,15 @@
 </div>
 <div class="controls flight-info" style="display: none">
     <div class="control-group row-fluid">
-        <label class="span12">Информация о приезде (если куплен билет)</label>
+        <label class="span12">Информация о приезде (заполняется после покупки билета)</label>
         <input class="span12 emFlightNumArr" placeholder="Авиакомпания и рейс(ы)" type="text" maxlength="30" >
     </div>
     <div class="control-group row-fluid">
-        <label class="span12">Информация об отъезде (если куплен билет)</label>
+        <label class="span12">Информация об отъезде (заполняется после покупки билета)</label>
         <input class="span12 emFlightNumDep" placeholder="Авиакомпания и рейс(ы)" type="text" maxlength="30" >
     </div>
     <div class="control-group row-fluid">
-        <label class="span12">Название гостиницы<a href="#" rel="tooltip" data-placement="right" data-toggle="tooltip" tabindex="-1"><i class="icon-question-sign"></i></a></label>
+        <label class="span12">Название гостиницы<a href="#" rel="tooltip" data-placement="right" data-toggle="tooltip" tabindex="-1"></a></label>
         <input class="span12 emFlightNote" type="text" maxlength="100">
     </div>
 </div>
@@ -269,7 +269,7 @@
         <select class="span12 emVisa" valid="required">
             <option value="_none_" selected>&nbsp;</option>
             <option value="1">Не требуется</option>
-            <option value="2">Уже есть или получу для другой поездки</option>
+            <option value="2">Уже имеется</option>
             <option value="3">Получу для этой поездки</option>
         </select>
     </div>
