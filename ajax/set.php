@@ -1,6 +1,49 @@
 <?php
 include_once "ajax.php";
 
+/* ПОДДЕРЖКА 20 БРАТЬЕВ В ПОЕЗДКЕ В МАНИЛ */
+function db_brothersDotationCheck()
+{
+  $isFilled = 0;
+  $res = db_query("SELECT count(`member_key`) AS total FROM `brothers_dotation`");
+  while ($row = $res->fetch_assoc()) $isFilled = $row['total'];
+  return $isFilled;
+}
+function db_brothersDotation($memberKey, $ticket, $eventId)
+{
+  global $db;
+  $memberKey = $db->real_escape_string($memberKey);
+  $ticket = $db->real_escape_string($ticket);
+  $eventId = $db->real_escape_string($eventId);
+  $isFilled = '';
+  $isExist = '';
+
+  $res = db_query("SELECT `member_key` FROM `brothers_dotation` WHERE member_key = '$memberKey'");
+  while ($row = $res->fetch_assoc()) $isExist = $row['member_key'];
+  if (!empty($isExist) && empty($ticket)) {
+    db_query("DELETE FROM `brothers_dotation` WHERE `member_key`='$memberKey'");
+    return db_brothersDotationCheck();
+  } elseif (!empty($isExist) && !empty($ticket)) {
+    return 'no changes';
+  } else {
+    $isFilled = db_brothersDotationCheck();
+    if ($isFilled < 20 && !empty($ticket)) {
+      db_query("INSERT INTO brothers_dotation (`member_key`) VALUES ('$memberKey')");
+      return db_brothersDotationCheck();
+    } else {
+      return 'no changes';
+    }
+  }
+}
+if (isset($_GET['type']) && $_GET['type'] === 'get_brothers_dotation') {
+  echo json_encode(["result"=> db_brothersDotationCheck()]);
+  exit;
+}
+if (isset($_GET['type']) && $_GET['type'] === 'brothers_dotation') {
+    echo json_encode(["result"=> db_brothersDotation($_GET['member_key'], $_GET['ticket'], $_GET['event_id'])]);
+    exit;
+}
+
 if (isset ($_GET['sort_field']))
 {
     $_SESSION['sort_field_'.$_GET ['event']]=$_GET ['sort_field'];

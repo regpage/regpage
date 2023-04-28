@@ -154,7 +154,7 @@
                 <input class="span12 emDocumentNumTp" type="text" maxlength="20" <?php e('valid="required"');?>>
         </div>
         <div class="control-group row-fluid">
-            <label class="span12">Страна, которой выдан паспорт. Укажите название страны по-английски<?php e('<sup>*</sup>'); ?></label>
+            <label class="span12">Страна, которой выдан паспорт (латинскими буквами)<?php e('<sup>*</sup>'); ?></label>
                 <input class="span12 emDocumentAuthTp" type="text" maxlength="20" valid="<?php e('required, ');?>">
         </div>
         <div class="control-group row-fluid">
@@ -240,15 +240,15 @@
 </div>
 <div class="controls flight-info" style="display: none">
     <div class="control-group row-fluid">
-        <label class="span12">Информация о приезде</label>
-        <input class="span12 emFlightNumArr" placeholder="Номер поезда или авиарейс и авиакомпания" type="text" maxlength="30" >
+        <label class="span12">Информация о приезде (если куплен билет)</label>
+        <input class="span12 emFlightNumArr" placeholder="Авиакомпания и рейс(ы)" type="text" maxlength="30" >
     </div>
     <div class="control-group row-fluid">
-        <label class="span12">Информация об отъезде</label>
-        <input class="span12 emFlightNumDep" placeholder="Номер поезда или авиарейс и авиакомпания" type="text" maxlength="30" >
+        <label class="span12">Информация об отъезде (если куплен билет)</label>
+        <input class="span12 emFlightNumDep" placeholder="Авиакомпания и рейс(ы)" type="text" maxlength="30" >
     </div>
     <div class="control-group row-fluid">
-        <label class="span12">Гостиница и количество мест в гостинице.<a href="#" rel="tooltip" data-placement="right" data-toggle="tooltip" title="Пример: 'Sachsen Park Hotel (2-мест.)'" tabindex="-1"><i class="icon-question-sign"></i></a></label>
+        <label class="span12">Название гостиницы<a href="#" rel="tooltip" data-placement="right" data-toggle="tooltip" tabindex="-1"><i class="icon-question-sign"></i></a></label>
         <input class="span12 emFlightNote" type="text" maxlength="100">
     </div>
 </div>

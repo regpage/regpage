@@ -10,6 +10,17 @@
 // вормирования Гридов и прочих представлений данных для основного списка
 // вормирования Гридов и прочих представлений данных для вспомогательных списков
 
+// Дотации для 20 участников на манил
+if ($("#events-list").val() === "20222028") {
+  fetch("/ajax/set.php?type=get_brothers_dotation")
+  .then(response => response.json())
+  .then(commits => {
+    $(".brothers_dotation_text").html(20 - Number(commits.result));
+  });
+  $(".brothers_dotation_text").parent().show();
+} else {
+  $(".brothers_dotation_text").parent().hide();
+}
 
 // скрыть колонку дату и убратьпроверку дат для онлайн мероприя
   if ($('.tab-pane.active').attr('data-online_event') === '1') {

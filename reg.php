@@ -180,8 +180,9 @@
             </div>-->
             </div>
         </div>
+        <span style="text-align: left; color: grey; font-weight: bold; padding-top: 15px; display: inline-block;"> Осталось мест с дотацией — <span class="brothers_dotation_text"></span>
+        </span>
         <span class="counterForResponseble" style="text-align: left; color: red; font-weight: bold; padding-top: 15px; display: inline-block;">
-
         </span>
         <div class="desctopVisible">
             <div id="statReg">
@@ -797,6 +798,7 @@
 </div>
 
 <script>
+
 let gl_members_brothers_p_v, gl_localities_brothers_p_v, gl_events_brothers_p_v;
 var globalSingleCity = "<?php echo $singleCity; ?>";
     $(document).ready (function (){
@@ -1210,6 +1212,17 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
             } else if (counterForAdmin === 0 && $('.filter-regstate').val() === "01") {
               $('.tab-pane.active').find('.counterForResponseble').html('<span style="text-decoration: underline; cursor: pointer;" title="Кликните, что бы отобразить всех участников.">Показать всех участников</span>');
               $('.tab-pane.active').find('.counterForResponseble').show();
+            }
+            // Дотаци для 20 участников на манилы
+            if ($("#events-list").val() === "20222028") {
+              fetch("/ajax/set.php?type=get_brothers_dotation")
+              .then(response => response.json())
+              .then(commits => {
+                $(".brothers_dotation_text").html(20 - Number(commits.result));
+              });
+              $(".brothers_dotation_text").parent().show();
+            } else {
+              $(".brothers_dotation_text").parent().hide();
             }
         });
         $('.tab-pane.active').find('.counterForResponseble span').click(function() {
@@ -1888,11 +1901,12 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
             showError("Необходимо указать сумму требуемой помощи");
             return;
         }
-
+        // dotation
+        let member_id_dotation = $("#modalEditMember").attr("data-member_id");
+        let emFlightNumArr = $("#modalEditMember .emFlightNumArr").val();
         var eventId = $("#events-list").val();
         var create = elem.hasClass('create') ? "&create="+eventId+"&event="+eventId :  "&event="+eventId ;
         var request = getRequestFromFilters(setFiltersForRequest(eventId));
-
         var data = getValuesRegformFields(el);
 
         $.post("/ajax/set.php?member="+window.currentEditMemberId + request + create + (doRegister?"&register=yes":""), data)
@@ -1901,6 +1915,14 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
             $('#modalEditMember').modal('hide');
             elem.removeClass('create');
             $('.emName ').removeClass('create');
+            // Дотации для 20 участников на манил
+            if (eventId === '20222028') {
+              fetch("/ajax/set.php?type=brothers_dotation&member_key="+member_id_dotation+"&event_id="+eventId+"&ticket="+emFlightNumArr)
+              .then(response => response.json())
+              .then(commits => {
+                console.log(commits.result);
+              });
+            }
         });
     }
 
@@ -1983,6 +2005,17 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
     });
 
     $("#events-list").change(function(){
+      // Дотаци для 20 участников на манилы
+      if ($("#events-list").val() === "20222028") {
+        fetch("/ajax/set.php?type=get_brothers_dotation")
+        .then(response => response.json())
+        .then(commits => {
+          $(".brothers_dotation_text").html(20 - Number(commits.result));
+        });
+        $(".brothers_dotation_text").parent().show();
+      } else {
+        $(".brothers_dotation_text").parent().hide();
+      }
         var eventId = $(this).val(), eventIdCurrent = $('.tab-pane.active').attr('id').replace(/^eventTab-/,'');
         if(eventId !== eventIdCurrent){
             $('.tab-pane.active').removeClass('active');
@@ -2042,7 +2075,6 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
           $(".emDepDate").parent().show();
           $(".emArrTime").parent().show();
           $(".emDepTime").parent().show();
-
         }
     });
 
@@ -2541,6 +2573,17 @@ function checkStopEventRegistration(eventId){
             var eventId = $("#events-list").val();
             $.getJSON('/ajax/set.php', { event: eventId, remove_members: ids.join(',') })
             .done (function(data) {
+              // Дотации для 20 участников на манил
+              if (eventId === '20222028') {
+                for (var i = 0; i < ids.length; i++) {
+                  // переделать на стороне сервера
+                  fetch("/ajax/set.php?type=brothers_dotation&member_key="+ids[i]+"&event_id="+eventId+"&ticket")
+                  .then(response => response.json())
+                  .then(commits => {
+                    //console.log(commits.result);
+                  });
+                }
+              }
                 refreshEventMembers (eventId, data.members, data.localities);
             });
         }
@@ -2776,7 +2819,7 @@ function checkStopEventRegistration(eventId){
   });
     // END Romans Code
 </script>
-<script src="/js/reg.js?v73"></script>
+<script src="/js/reg.js?v74"></script>
 <script src="/js/regupload.js?v5"></script>
 <?php
     include_once "footer.php";

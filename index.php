@@ -1643,10 +1643,20 @@ console.log('stop is ', stopRegistration, 'close is ', closeRegistration, modalW
     });
 
     $('.rejectEventRegistration').click(function(){
+      let eventId = $("#modalShowEventInfo").attr("data-event-id");
         $('#modalRejectMember').modal('hide');
         $.getJSON('/ajax/event.php', { eventIdReject: window.currentEventId})
         .done (function(){
+          if (eventId === '20222028') {
+              // переделать на стороне сервера
+              fetch("/ajax/set.php?type=brothers_dotation&member_key="+window.adminId+"&event_id="+eventId+"&ticket")
+              .then(response => response.json())
+              .then(commits => {                
+              });
+          }
+          setTimeout(function () {
             window.location = '/index';
+          }, 100);
         });
     });
 
@@ -1666,9 +1676,18 @@ console.log('stop is ', stopRegistration, 'close is ', closeRegistration, modalW
         }
         var isnew;
         $(self).hasClass('edit') ? isnew = 0 : isnew = 1;
-
+        let eventId = $("#modalShowEventInfo").attr("data-event-id");
+        let emFlightNumArr = $("#modalEditMember .emFlightNumArr").val();
         $.post("/ajax/guest.php?isnew="+isnew, fieldsValue)
         .done (function(data){
+          // Дотации для 20 участников на манил
+          if (eventId === '20222028') {
+            fetch("/ajax/set.php?type=brothers_dotation&member_key="+window.adminId+"&event_id="+eventId+"&ticket="+emFlightNumArr)
+            .then(response => response.json())
+            .then(commits => {
+              console.log(commits.result);
+            });
+          }
             form.addClass('hide').modal('hide');
             if($(self).hasClass('edit')){
                 $('#btnDoRegisterGuest').removeClass('edit').removeClass('guest');
