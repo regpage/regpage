@@ -1,7 +1,18 @@
 <?php
 include_once "ajax.php";
 
-/* ПОДДЕРЖКА 20 БРАТЬЕВ В ПОЕЗДКЕ В МАНИЛ */
+/* BEGIN ПОДДЕРЖКА 20 БРАТЬЕВ В ПОЕЗДКЕ В МАНИЛ */
+// список братьев с дотацией
+function db_brothersDotationList()
+{
+  $list = [];
+
+  $res = db_query("SELECT `member_key` FROM `brothers_dotation`");
+  while ($row = $res->fetch_assoc()) $list[$row['member_key']] = $row['member_key'];
+
+  return $list;
+}
+// проверка существующей записи
 function db_brothersDotationExist($memberKey)
 {
   global $db;
@@ -13,8 +24,7 @@ function db_brothersDotationExist($memberKey)
 
   return $isExist;
 }
-
-
+// количество записей
 function db_brothersDotationCheck($memberKey=false)
 {
   global $db;
@@ -33,7 +43,7 @@ function db_brothersDotationCheck($memberKey=false)
 
   return $isFilled;
 }
-
+// добавление / удаление дотации
 function db_brothersDotation($memberKey, $ticket, $eventId)
 {
   global $db;
@@ -41,7 +51,7 @@ function db_brothersDotation($memberKey, $ticket, $eventId)
   $ticket = $db->real_escape_string($ticket);
   $eventId = $db->real_escape_string($eventId);
   $isFilled = '';
-  $isExist = db_brothersDotationExist($memberKey);  
+  $isExist = db_brothersDotationExist($memberKey);
 
   if (!empty($isExist) && empty($ticket)) {
     db_query("DELETE FROM `brothers_dotation` WHERE `member_key`='$memberKey'");
@@ -58,6 +68,7 @@ function db_brothersDotation($memberKey, $ticket, $eventId)
     }
   }
 }
+
 if (isset($_GET['type']) && $_GET['type'] === 'get_brothers_dotation') {
   if (isset($_GET['member_key'])) {
     echo json_encode(["result"=> db_brothersDotationCheck($_GET['member_key'])]);
@@ -71,7 +82,11 @@ if (isset($_GET['type']) && $_GET['type'] === 'brothers_dotation') {
     echo json_encode(["result"=> db_brothersDotation($_GET['member_key'], $_GET['ticket'], $_GET['event_id'])]);
     exit;
 }
-
+if (isset($_GET['type']) && $_GET['type'] === 'get_brothers_dotation_list') {
+    echo json_encode(["result"=> db_brothersDotationList()]);
+    exit;
+}
+/* END */
 if (isset ($_GET['sort_field']))
 {
     $_SESSION['sort_field_'.$_GET ['event']]=$_GET ['sort_field'];

@@ -180,7 +180,7 @@
             </div>-->
             </div>
         </div>
-        <span style="text-align: left; color: grey; font-weight: bold; padding-top: 15px; display: inline-block;"> Осталось мест с дотацией — <span class="brothers_dotation_text"></span>
+        <span style="text-align: left; color: grey; font-weight: bold; padding-top: 15px; margin-right: 25px; display: inline-block;"> Осталось мест с дотацией — <span class="brothers_dotation_text"></span>
         </span>
         <span class="counterForResponseble" style="text-align: left; color: red; font-weight: bold; padding-top: 15px; display: inline-block;">
         </span>
@@ -1213,7 +1213,7 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
               $('.tab-pane.active').find('.counterForResponseble').html('<span style="text-decoration: underline; cursor: pointer;" title="Кликните, что бы отобразить всех участников.">Показать всех участников</span>');
               $('.tab-pane.active').find('.counterForResponseble').show();
             }
-            // Дотаци для 20 участников на манилы
+            // Дотации для 20 участников на манилы
             if ($("#events-list").val() === "20222028") {
               fetch("/ajax/set.php?type=get_brothers_dotation")
               .then(response => response.json())
@@ -1920,7 +1920,7 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
               fetch("/ajax/set.php?type=brothers_dotation&member_key="+member_id_dotation+"&event_id="+eventId+"&ticket="+emFlightNumArr)
               .then(response => response.json())
               .then(commits => {
-                console.log(commits.result);
+                
               });
             }
         });
@@ -2013,6 +2013,21 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
           $(".brothers_dotation_text").html(20 - Number(commits.result));
         });
         $(".brothers_dotation_text").parent().show();
+        setTimeout(function () {
+          $("#eventTab-20222028 tbody tr").each(function() {
+            let temp = $(this).attr("class");
+            if (temp) {
+              temp = temp.split(" ");
+              if (!temp[1]) {
+                temp = temp[0].split("-");
+                if (brothers_dotation_list[temp[1]]) {
+                  $(this).attr("style", "background-color: lightyellow;");
+                }
+              }
+            }
+          });
+        }, 2000);
+
       } else {
         $(".brothers_dotation_text").parent().hide();
       }
@@ -2580,7 +2595,7 @@ function checkStopEventRegistration(eventId){
                   fetch("/ajax/set.php?type=brothers_dotation&member_key="+ids[i]+"&event_id="+eventId+"&ticket")
                   .then(response => response.json())
                   .then(commits => {
-                    //console.log(commits.result);
+                    $(".brothers_dotation_text").html(20 - Number(commits.result));
                   });
                 }
               }
@@ -2819,7 +2834,7 @@ function checkStopEventRegistration(eventId){
   });
     // END Romans Code
 </script>
-<script src="/js/reg.js?v74"></script>
+<script src="/js/reg.js?v75"></script>
 <script src="/js/regupload.js?v5"></script>
 <?php
     include_once "footer.php";

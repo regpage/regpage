@@ -2001,3 +2001,7 @@ input.error, .control-group.error select, textarea.error {
   color: #004997;
   text-decoration: underline;
 }
+
+.bg_yellow {
+  background-color: lightyellow;
+}

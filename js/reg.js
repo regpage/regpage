@@ -11,6 +11,28 @@
 // вормирования Гридов и прочих представлений данных для вспомогательных списков
 
 // Дотации для 20 участников на манил
+// список братьев с дотацией
+let brothers_dotation_list = [];
+fetch("/ajax/set.php?type=get_brothers_dotation_list")
+.then(response => response.json())
+.then(commits => {
+  brothers_dotation_list = commits.result;
+  if ($("#events-list").val() === "20222028") {
+    setTimeout(function () {
+      $(".tab-pane.active tbody tr").each(function() {
+        let temp = $(this).attr("class");
+        if (temp) {
+          temp = temp.split("-");
+          if (brothers_dotation_list[temp[1]]) {
+            $(this).attr("style", "background-color: lightyellow;");
+          }
+        }
+      });
+    }, 700);
+  }
+});
+
+// количество свободных датаций
 if ($("#events-list").val() === "20222028") {
   fetch("/ajax/set.php?type=get_brothers_dotation")
   .then(response => response.json())
