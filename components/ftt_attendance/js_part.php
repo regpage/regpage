@@ -57,5 +57,5 @@ function filterSkip() {
 }
 filterSkip();
 </script>
-<script src="/js/ftt/ftt_attendance/script.js?v112"></script>
+<script src="/js/ftt/ftt_attendance/script.js?v113"></script>
 <script src="/js/ftt/ftt_attendance/design.js?v21"></script>

@@ -47,27 +47,27 @@ data-id="" data-member_key="" data-serving_one="" data-status="">
           </a>
         </div>
         <?php if ($ftt_access['group'] === 'staff') { ?>
-          <div class="mt-2">
-            <label for="skip_modal_done">Проверено</label>
-            <input type="checkbox" id="skip_modal_done" class="align-middle" value="">
+        <div class="row">
+          <div class="col-6 mt-2">
+            <input type="checkbox" id="skip_modal_done" class="align-middle">
+            <label class="align-middle" for="skip_modal_done">Проверено</label>
           </div>
-        <?php } ?>
-        <?php if ($ftt_access['group'] === 'staff') { ?>
-        <div class="">
-          <label class="">
-          <span id="info_of_skip" class="cursor-pointer" style="border-bottom: 1px dashed lightgrey; font-size: 12px; margin-left: 420px;">Инфо</span>
-          <div class="text-right" style="font-size: 12px; display: none;">
-            <span id="author_of_skip">Отправлено </span>
-            <span id="send_date_of_skip"></span>
-            <br>
-            <span id="sevice_one_of_skip">Проверено </span>
-            <span id="allow_date_of_skip"></span>
+          <div class="col-6 mt-2 text-right">
+            <span id="info_of_skip" class="cursor-pointer" style="border-bottom: 1px dashed lightgrey; font-size: 12px;">Инфо</span>
+            <div class="text-right" style="font-size: 12px; display: none;">
+              <span id="author_of_skip">Отправлено </span>
+              <span id="send_date_of_skip"></span>
+              <br>
+              <span id="sevice_one_of_skip">Проверено </span>
+              <span id="allow_date_of_skip"></span>
+            </div>
           </div>
         </div>
         <?php } ?>
       </div>
       <div class="modal-footer">
         <div class="text-right w-100">
+          <button id="delete_skip_blank" class="btn btn-sm btn-secondary float-left"><i class="fa fa-trash"></i></button>
           <button id="send_skip_blank" class="btn btn-sm btn-warning">Отправить</button>
           <button id="save_skip_blank" class="btn btn-sm btn-primary">Сохранить</button>
           <button id="close_skip_blank" class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Закрыть</button>

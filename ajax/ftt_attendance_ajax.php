@@ -255,4 +255,14 @@ if (isset($_GET['type']) && $_GET['type'] === 'delete_pic') {
   exit();
 }
 
+if (isset($_GET['type']) && $_GET['type'] === 'delete_skip') {
+  // готовим данные
+  $db_data = new DbData('dlt', 'ftt_skip');
+  $db_data->set('condition_field', 'id');
+  $db_data->set('condition_value', $_GET['id']);
+  // выполняем
+  echo DbOperation::operation($db_data->get());  
+  exit();
+}
+
 ?>

@@ -2209,9 +2209,9 @@ function open_blank(el_this) {
 
   $("#send_skip_blank").click(function () {
     if (!$("#skip_modal_topic").val()) {
-      /*showError("Заполните поле тема.");
+      showError("Заполните поле тема.");
       $("#skip_modal_topic").css("border-color", "red");
-      return;*/
+      return;
     } else if(!$("#skip_pic").attr("src")) {
       showError("Прикрепите файл.");
       $("#skip_modal_file").parent().css("border", "1px solid red");
@@ -2332,6 +2332,17 @@ function open_blank(el_this) {
       }
     });
   });
+  // delete skip blank
+  $("#delete_skip_blank").click(function () {    
+    if (confirm("Удалить бланк?")) {
+      fetch("ajax/ftt_attendance_ajax.php?type=delete_skip&id=" + $("#edit_skip_blank").attr("data-id"))
+      .then(response => response.json())
+      .then(data => {
+        location.reload();
+      });
+    }
+  });
+
   /*** SKIP TAB STOP ***/
 
 // DOCUMENT READY STOP
