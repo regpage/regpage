@@ -99,21 +99,21 @@ if ($(window).width()<=769) {
   $("#show_day_in_blank").parent().parent().prev().removeClass("col-4").addClass("col-5");
   $("#show_day_in_blank").parent().parent().next().removeClass("col-4").addClass("col-6");
 
-
   // footer
   $("#edit_permission_blank .modal-footer .btn").css("font-size", "17px");
-
   // skip
   $("#missed_class_tab .row_corr").hide();
   $("#day_of_week_skip_blank").parent().removeClass("col-2").addClass("col-1");
   // list
-  $(".skip_done").parent().addClass("pl-0");
   if (trainee_access) {
-    $(".skip_string div:nth-child(2)").removeClass("col-9").addClass("col-7").addClass("pl-4").addClass("pr-2");
-    $(".skip_string div:nth-child(3)").addClass("pl-0");
+    $(".skip_string div:nth-child(1)").removeClass("col-1").addClass("col-3").addClass("pr-1").attr("style","max-width: 77px;");
+    $(".skip_string div:nth-child(2)").removeClass("col-9").addClass("col-5").addClass("pl-0").addClass("pr-2");
+    $(".skip_string div:nth-child(3)").removeClass("col-2").addClass("col-4").addClass("pl-0").addClass("pr-1");
   } else {
-    $(".skip_string div:nth-child(2)").removeClass("col-3").addClass("col-5").addClass("pl-4");
-    $(".skip_string div:nth-child(3)").removeClass("col-7").addClass("col-5").addClass("pl-0").addClass("pr-2");
+    $(".skip_string div:nth-child(1)").removeClass("col-1").addClass("col-3").attr("style","max-width: 85px;");
+    $(".skip_string div:nth-child(2)").removeClass("col-3").addClass("col-9").addClass("pl-0");
+    $(".skip_string div:nth-child(3)").removeClass("col-7").addClass("col-8").addClass("pl-1");
+    $(".skip_done").removeClass("col-2").addClass("col-4").addClass("pl-1").addClass("pr-1");
   }
 
   /*
