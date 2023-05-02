@@ -2051,6 +2051,24 @@ function open_blank(el_this) {
   });
 
   /*** SKIP TAB ***/
+  // get cookie
+
+  if (!trainee_access) {
+    setCookie("skip_sorting_true", '');
+    if (getCookie("flt_sevice_one_skip") !== window.adminId) {
+      setCookie("flt_sevice_one_skip", window.adminId);
+    }
+    setCookie("ftr_trainee_skip", "_all_");
+    if (getCookie("flt_skip_done") !== "0") {
+      setCookie("flt_skip_done", 0);
+    }
+  } else {
+    setCookie("skip_sorting_true", '');
+    if (getCookie("flt_skip_done") !== "0") {
+      setCookie("flt_skip_done", 0);
+    }
+  }
+
   // open blank by click on the string
   $(".skip_string").click(function (e) {
     clear_skip_blank();
@@ -2061,7 +2079,6 @@ function open_blank(el_this) {
 
   // filters
   $("#flt_skip_done, #flt_sevice_one_skip, #ftr_trainee_skip").change(function (e) {
-    setCookie(e.target.id, $(this).val(), 1);
     filterSkip();
   });
 
@@ -2254,27 +2271,16 @@ function open_blank(el_this) {
       }, 50);
     });
   }
-  // отметка в списке
-  $(".skip_done").click(function(e) {
-    e.stopPropagation();
-  });
-  $(".skip_done").change(function(e) {
-    let id = $(this).parent().parent().attr("data-id");
-    let status;
-    if ($(this).prop("checked")) {
-      status = 2;
-    } else {
-      status = 1;
-    }
-    fetch("ajax/ftt_attendance_ajax.php?type=set_done_skip_blank&status="+status+"&id="+id)
-    .then(response => response.text())
-    .then(commits => {
-      $("div[data-id='"+ id +"']").attr("data-status", status);
-    });
-  });
 
   // сортировка
   $(".skip_sort_date, .skip_sort_trainee").click(function (e) {
+    setCookie("skip_sorting_true", 1, 1);
+    setCookie("flt_skip_done", $("#flt_skip_done").val(), 1);
+    if (!trainee_access) {
+      setCookie("flt_sevice_one_skip", $("#flt_sevice_one_skip").val(), 1);
+      setCookie("ftr_trainee_skip", $("#ftr_trainee_skip").val(), 1);
+    }
+
     if (e.target.id === "skip_sort_date" || e.target.id === "skip_sort_trainee") {
       setCookie('skip_sorting', e.target.id + "-asc", 356);
       if (e.target.id === "skip_sort_date") {
@@ -2333,7 +2339,7 @@ function open_blank(el_this) {
     });
   });
   // delete skip blank
-  $("#delete_skip_blank").click(function () {    
+  $("#delete_skip_blank").click(function () {
     if (confirm("Удалить бланк?")) {
       fetch("ajax/ftt_attendance_ajax.php?type=delete_skip&id=" + $("#edit_skip_blank").attr("data-id"))
       .then(response => response.json())

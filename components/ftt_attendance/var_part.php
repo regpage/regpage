@@ -125,5 +125,5 @@ if ($missed_class_count > 0) {
 }
 
 $status_list = array(0 => ['secondary','не отправлен'], 1 => ['warning','на рассмотрении'], 2 => ['success','одобрен'], 3 => ['danger','отклонён']);
-$skip_status_list = array(0 => ['secondary','не отправлен'], 1 => ['warning','на рассмотрении'], 2 => ['success','одобрен'], 3 => ['danger','отклонён']);
+$skip_status_list = array(0 => ['secondary','не отправлен'], 1 => ['warning','на рассмотрении'], 2 => ['success','выполнено'], 3 => ['danger','отклонён']);
 ?>

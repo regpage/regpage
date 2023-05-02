@@ -50,7 +50,7 @@ data-id="" data-member_key="" data-serving_one="" data-status="">
         <div class="row">
           <div class="col-6 mt-2">
             <input type="checkbox" id="skip_modal_done" class="align-middle">
-            <label class="align-middle" for="skip_modal_done">Проверено</label>
+            <label class="align-middle" for="skip_modal_done">выполнено</label>
           </div>
           <div class="col-6 mt-2 text-right">
             <span id="info_of_skip" class="cursor-pointer" style="border-bottom: 1px dashed lightgrey; font-size: 12px;">Инфо</span>

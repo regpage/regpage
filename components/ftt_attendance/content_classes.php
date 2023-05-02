@@ -9,7 +9,6 @@ if (isset($_COOKIE['flt_skip_done'])) {
 if (isset($_COOKIE['flt_sevice_one_skip'])) {
   $flt_sevice_one_skip = $_COOKIE['flt_sevice_one_skip'];
 }
-
 if (isset($_COOKIE['ftr_trainee_skip'])) {
   $ftr_trainee_skip = $_COOKIE['ftr_trainee_skip'];
 }
@@ -42,7 +41,7 @@ if (isset($_COOKIE['skip_sorting'])) {
   <button type="button" id="skip_flt_modal_o" class="btn btn-primary btn-sm rounded mr-2" data-toggle="modal" data-target="#skip_ftr_modal" style="display: none;">Фильтры</button>
   <select id="flt_skip_done" class="form-control form-control-sm mr-2">
   <?php
-  $skip_done_list = array('_all_' => 'Все', '0' =>'Не выполнены', '1' =>'На проверке', '2' =>'Выполнены');
+  $skip_done_list = array('0' =>'Текущие', '2' =>'Выполненные');
   foreach ($skip_done_list as $key => $value) {
     $sel = '';
     if (trim($key) === $flt_skip_done) {
@@ -78,8 +77,8 @@ if (isset($_COOKIE['skip_sorting'])) {
   <div class="row row_corr">
     <div class="col-1 pl-1 text_blue"><b class="skip_sort_date" style="cursor: pointer;">Дата<i class="<?php echo $skip_sort_date_ico; ?>"></i></b></div>
     <div class="col-3 text_blue"><b class="skip_sort_trainee" style="cursor: pointer;">Обучающийся<i class="<?php echo $skip_sort_trainee_ico; ?>"></i></b></div>
-    <div class="col-7"><b>Мероприятие</b></div>
-    <div class="col-1"><b>Выполнено</b></div>
+    <div class="col-6"><b>Мероприятие</b></div>
+    <div class="col-2"><b></b></div>
   </div>
 </div>
 <hr id="hight_line" style="margin-left: 0px; margin-right: -15px; margin-top: 0px; margin-bottom: 0px; border-color: lightgray;">
@@ -116,23 +115,15 @@ foreach (getMissedClasses($skip_curent_sorting) as $key => $value) {
   } else {
     $short_comment = $value['comment'];
   }
-  $disabled = '';
-  $checked = '';
-  if ($value['status'] == 0) {
-    $disabled = 'disabled';
-  } elseif ($value['status'] == 1) {
+  // badges
+  $skip_badge_status = "<span class='float-right badge badge-".$status_list[$value['status']][0]."'>".$status_list[$value['status']][1]."</span>";
 
-  } elseif ($value['status'] == 2) {
-    $checked = 'checked';
-  } else {
-    $disabled = 'disabled';
-  }
   $skip_checked_string = "<span class='badge badge-".$status_list[$value['status']][0]."'>".$status_list[$value['status']][1]."</span>";
   $nameTrainee = short_name::no_middle($value['name']);
   $dateBlank = date_convert::yyyymmdd_to_ddmm($value['date_blank']);
   echo "<div class='row skip_string ml-0' data-id='{$value['id']}' data-date='{$value['date_blank']}' data-member_key='{$value['member_key']}' data-serving_one='{$value['serving_one']}'";
   echo " data-comment='{$value['comment']}' data-status='{$value['status']}' data-session_time='{$value['session_time']}' data-session_name='{$value['session_name']}' data-topic='{$value['topic']}' data-file='{$value['file']}' data-create_send='{$value['date']}'>";
-  echo "<div class='col-1 pl-1'>{$dateBlank} {$dayOfTheWeek}</div><div class='col-3'>{$nameTrainee}</div><div class='col-7'>{$session_name_echo}<br><span class='grey_text'>{$short_comment}</span></div><div class='col-1'><input type='checkbox' class='skip_done' {$checked} {$disabled}></div></div>";
+  echo "<div class='col-1 pl-1'>{$dateBlank} {$dayOfTheWeek}</div><div class='col-3'>{$nameTrainee}</div><div class='col-6'>{$session_name_echo}<br><span class='grey_text'>{$short_comment}</span></div><div class='col-2 skip_done'>{$skip_badge_status}</div></div>";
 }
 ?>
 </div>

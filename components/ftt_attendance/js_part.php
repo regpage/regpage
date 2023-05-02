@@ -39,16 +39,23 @@ for (let i = 0; i < trainee_list_tmp.length; i = i + 5) {
 }
 
 // переход по ссылке
-let link_pb =  "<?php if (isset($_GET['pb'])) {echo $_GET['pb'];} else {echo '';}  ?>";
+let link_pb = "<?php if (isset($_GET['pb'])) {echo $_GET['pb'];} else {echo '';}  ?>";
 
 // admin key
 let admin_id_gl = "<?php echo $memberId;?>";
 
 function filterSkip() {
   $("#list_skip .skip_string").each(function () {
+    let status = '';
+    if ($("#flt_skip_done").val() === "0" && ($(this).attr("data-status") === "0" || $(this).attr("data-status") === "1")) {
+      status = '0';
+    } else if ($("#flt_skip_done").val() === "2" && $(this).attr("data-status") === "2") {
+      status = '2';
+    }
+
     if ((($('#flt_sevice_one_skip').val() === "_all_" || !$('#flt_sevice_one_skip').val()) || $('#flt_sevice_one_skip').val() === $(this).attr("data-serving_one"))
     && (($('#ftr_trainee_skip').val() === "_all_" || !$('#ftr_trainee_skip').val()) || $('#ftr_trainee_skip').val() === $(this).attr("data-member_key"))
-    && ($("#flt_skip_done").val() === "_all_" || $("#flt_skip_done").val() === $(this).attr("data-status"))) {
+    && ($("#flt_skip_done").val() === status)) {
       $(this).show();
     } else {
       $(this).hide();
@@ -57,5 +64,5 @@ function filterSkip() {
 }
 filterSkip();
 </script>
-<script src="/js/ftt/ftt_attendance/script.js?v113"></script>
+<script src="/js/ftt/ftt_attendance/script.js?v117"></script>
 <script src="/js/ftt/ftt_attendance/design.js?v21"></script>
