@@ -326,8 +326,9 @@ $('#date_field').change(function () {
   }
 });
 
+// проверка при закрытиии бланка не по кнопке сохранить
+// НОВЫЙ БЛАНК БЛАГОВЕСТИЯ.
 $('#modalAddEdit .close').click(function (e) {
-  // проверка при закрытиии бланка не по кнопке сохранить
   if (($('#fio_field').val() !== $("#modalAddEdit").attr("data-gospel_team") && $('#fio_field').val() !== '_none_') ||
     $('#date_field').val() !== $("#modalAddEdit").attr("data-date") ||
     ($('#gospel_group_field').val() !== $("#modalAddEdit").attr("data-gospel_group") && $('#gospel_group_field').val() !== '0') ||
@@ -353,8 +354,9 @@ $('#modalAddEdit .close').click(function (e) {
   }
 });
 
-$('#modalAddEdit .modal-footer .btn-secondary').click(function (e) {
+$('#modalAddEdit .modal-footer .close_modal_gospel').click(function (e) {
   // проверка при закрытиии бланка не по кнопке сохранить
+  // НЕ ПРОВЕРЯЕТ ПЕРСОНАЛЬНУЮ СТАТИСТИКУ
   if (($('#fio_field').val() !== $("#modalAddEdit").attr("data-gospel_team") && $('#fio_field').val() !== '_none_') ||
     $('#date_field').val() !== $("#modalAddEdit").attr("data-date") ||
     ($('#gospel_group_field').val() !== $("#modalAddEdit").attr("data-gospel_group") && $('#gospel_group_field').val() !== '0') ||
@@ -378,6 +380,7 @@ $('#modalAddEdit .modal-footer .btn-secondary').click(function (e) {
   } else {
     clear_blank();
   }
+
 });
 // подобный код дублируется в $("#gospel_group_field").change() и в $('#fio_field').change()
 function get_gospel_group_members() {
@@ -463,7 +466,7 @@ $('#showModalAddEdit').click(function () {
 });
 
 // удалить доп задание
-$('#modalAddEdit .btn-danger').click(function () {
+$('#delete_blank_gospel').click(function () {
   if (!$('#modalAddEdit').attr('data-id')) {
     showError('Бланк не сохранён. Его нельзя удалить.');
     return;

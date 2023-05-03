@@ -260,7 +260,12 @@
 
             if ($comment_ico_str) {
               if (!$pause_from) {
-                $comment_str = "<span class='desk_show'>{$comment_str} с {$date_start_ico} по {$date_stop_ico}</span>";
+                if (mb_strlen($comment_str) > 30) {
+                  $comment_temp = mb_substr($comment_str, 0, 30).'...';
+                  $comment_str = "<span class='desk_show' title='{$comment_str} с {$date_start_ico} по {$date_stop_ico}'>с {$date_start_ico} по {$date_stop_ico} {$comment_temp}</span>";
+                } else {
+                  $comment_str = "<span class='desk_show'>{$comment_str} с {$date_start_ico} по {$date_stop_ico}</span>";
+                }
               }
               $comment_ico_str = "<i class='fa fa-sticky-note mbl_show hide_element' aria-hidden='true' title='{$comment_ico_str} с {$date_start_ico} по {$date_stop_ico}'></i>";
             } else {
@@ -298,7 +303,12 @@
 
               if ($comm_ico_str) {
                 if (!$f_pause_from) {
-                  $comm_str = "<span class='desk_show'>{$comm_str} с {$date_strt_ico} по {$date_stp_ico}</span>";
+                  if (mb_strlen($comm_str) > 30) {
+                    $comment_temp = mb_substr($comm_str, 0, 30).'...';
+                    $comm_str = "<span class='desk_show' title='{$comm_str} с {$date_start_ico} по {$date_stop_ico}'>с {$date_start_ico} по {$date_stop_ico} {$comment_temp}</span>";
+                  } else {
+                    $comm_str = "<span class='desk_show'>{$comm_str} с {$date_strt_ico} по {$date_stp_ico}</span>";
+                  }
                 }
                 $comm_ico_str = "<i class='fa fa-sticky-note mbl_show hide_element' aria-hidden='true' title='{$comm_ico_str} с {$date_strt_ico} по {$date_stp_ico}'></i>";
               } else {

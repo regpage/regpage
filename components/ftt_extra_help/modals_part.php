@@ -92,11 +92,13 @@
         </div>
       </div>
       <div class="modal-footer" style="">
+        <div class="w-100 text-right" >
         <?php if (!$serving_trainee && $ftt_access['group'] !== 'trainee'): ?>
-          <button id="delete_extra_help" class="btn btn-sm btn-secondary" style="margin-right: 260px;"><i class="fa fa-trash" aria-hidden="true"></i></button>
+            <button id="delete_extra_help" class="btn btn-sm btn-secondary float-left"><i class="fa fa-trash" aria-hidden="true"></i></button>
         <?php endif; ?>
-        <button id="save_extra_help" class="btn btn-sm btn-success" data-dismiss="modal" aria-hidden="true" style="">Сохранить</button>
-        <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Закрыть</button>
+          <button id="save_extra_help" class="btn btn-sm btn-success" data-dismiss="modal" aria-hidden="true" style="">Сохранить</button>
+          <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Закрыть</button>
+        </div>
       </div>
     </div>
   </div>
@@ -201,11 +203,13 @@
         </div>
       </div>
       <div class="modal-footer" style="">
-        <button id="save_late" class="btn btn-sm btn-success" data-dismiss="modal" aria-hidden="true" style="">Сохранить</button>
-        <?php if (!$serving_trainee && $ftt_access['group'] !== 'trainee'): ?>
-          <button id="delete_late" class="btn btn-sm btn-danger" data-dismiss="modal" aria-hidden="true" style="">Удалить</button>
-        <?php endif; ?>
-        <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Закрыть</button>
+        <div class="w-100 text-right" >
+          <?php if (!$serving_trainee && $ftt_access['group'] !== 'trainee'): ?>
+            <button id="delete_late" class="btn btn-sm btn-secondary float-left"><i class="fa fa-trash" aria-hidden="true"></i></button>
+          <?php endif; ?>
+          <button id="save_late" class="btn btn-sm btn-success" data-dismiss="modal" aria-hidden="true" style="">Сохранить</button>
+          <button id="close_modal_late" class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Закрыть</button>
+        </div>
       </div>
     </div>
   </div>

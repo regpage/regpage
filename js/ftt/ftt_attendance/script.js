@@ -512,7 +512,7 @@ function open_blank(el_this) {
           // сбрасываем и сохраняем мероприятие в изначальном состоянии
           let str_session_name = $(this).parent().parent().prev().prev().text();
           let session_text_change = $(this).parent().prev().prev().prev().prev().prev().attr("data-text").trim();
-          if (session_text_change[session_text_change.length - 1] === ">") {            
+          if (session_text_change[session_text_change.length - 1] === ">") {
             session_text_change = session_text_change.split("<");
             session_text_change = session_text_change[0];
           }

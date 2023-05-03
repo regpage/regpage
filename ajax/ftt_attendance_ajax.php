@@ -143,7 +143,7 @@ if (isset($_GET['type']) && $_GET['type'] === 'undo_status') {
 
   // EXTRAHELP with 3 LATES
   $echo_lates_in_extrahelp = undo_extrahelp_lates($_GET['id']);
-
+  write_to_log::info($adminId, 'Откат бланка '.$_GET['id']);
   // MISSED CLASS
   $echo_skip = dltMissedClass($_GET['id']);
 

@@ -1040,7 +1040,7 @@ $('#modalAddEditLate .close').click(function (e) {
 });
 
 // check 2
-$('#modalAddEditLate .btn-secondary').click(function (e) {
+$('#close_modal_late').click(function (e) {
   if ($(this).attr("data-dismiss") !== "modal") {
     return;
   }
@@ -1197,7 +1197,7 @@ filters_list_show_late();
 
 // delete_late
 // удалить доп задание
-$('#modalAddEditLate .btn-danger').click(function () {
+$('#delete_late').click(function () {
   if (!$('#modalAddEditLate').attr('data-id')) {
     showError('Бланк не сохранён. Его нельзя удалить.');
     return;
@@ -1207,6 +1207,7 @@ $('#modalAddEditLate .btn-danger').click(function () {
     .then(response => response.json())
     .then(commits => {
       $('.ftt_late_string[data-id='+$('#modalAddEditLate').attr('data-id')+']').slideUp(300).removeClass('ftt_late_string').hide();
+      $('#modalAddEditLate').modal("hide");
       clear_blank();
     });
   }

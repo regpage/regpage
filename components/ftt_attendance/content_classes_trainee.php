@@ -77,7 +77,7 @@ foreach (getMissedClasses($skip_curent_sorting, $memberId) as $key => $value) {
   $minutes = $total_minutes % 60;
   $session_name_echo = $session_name_echo . ' ('. $session_time_echo . ' – ' . sprintf('%02d:%02d', $hours, $minutes). ')';
   // short comment
-  if (strlen($value['comment']) > 80) {
+  if (mb_strlen($value['comment']) > 80) {
     $short_comment = mb_substr($value['comment'], 0, 80).'...';
   } else {
     $short_comment = $value['comment'];
