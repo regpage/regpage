@@ -113,7 +113,7 @@ if ($(window).width()<=769) {
     $(".skip_string div:nth-child(1)").removeClass("col-1").addClass("col-3").attr("style","max-width: 85px;");
     $(".skip_string div:nth-child(2)").removeClass("col-3").addClass("col-9").addClass("pl-0");
     $(".skip_string div:nth-child(3)").removeClass("col-7").addClass("col-8").addClass("pl-1");
-    $(".skip_done").removeClass("col-2").addClass("col-4").addClass("pl-1").addClass("pr-1");
+    $(".skip_done").removeClass("col-2").addClass("col-4").addClass("pl-1");
   }
 
   /*

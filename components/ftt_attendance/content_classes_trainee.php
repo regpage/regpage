@@ -83,7 +83,7 @@ foreach (getMissedClasses($skip_curent_sorting, $memberId) as $key => $value) {
     $short_comment = $value['comment'];
   }
 
-  $skip_badge_status = "<span class='float-right badge badge-".$status_list[$value['status']][0]."'>".$status_list[$value['status']][1]."</span>";
+  $skip_badge_status = "<span class='float-right badge badge-".$skip_status_list[$value['status']][0]."'>".$skip_status_list[$value['status']][1]."</span>";
 
   $nameTrainee = short_name::no_middle($value['name']);
   $dateBlank = date_convert::yyyymmdd_to_ddmm($value['date_blank']);

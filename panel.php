@@ -214,8 +214,8 @@ write_to_log::info($memberId, 'Админ зашёл в панел админи�
               <input type="button" class="btn btn-danger btn-sm" id="onPracticesForStudentsPVOM" name="" value="Включить учёт практик для обучающихся ПВОМ">
             </div>
             <div class="" style="margin: 7px;" id="noticeForAddPractices">
-            </div>
-          </div>-->
+            </div>-->
+          </div>
           <div id="menu4" class="container tab-pane fade"><br>
             <div class="row">
               <div class="col-sm-8">
@@ -342,13 +342,13 @@ write_to_log::info($memberId, 'Админ зашёл в панел админи�
             <hr>
           </div>
           <div id="menu5" class="container tab-pane fade"><br>
-            <?php require_once 'panelsource/content/applications/application_trash.php' ?>
+            <?php require_once 'panelsource/content/applications/application_trash.php'; ?>
           </div>
           <div id="menu6" class="container tab-pane fade"><br>
-            <?php require_once 'panelsource/content/applications/application_drafts.php' ?>
+            <?php require_once 'panelsource/content/applications/application_drafts.php'; ?>
           </div>
           <div id="menu7" class="container tab-pane <?php echo $active_ftt; ?>"><br>
-            <?php require_once 'panelsource/content/ftt/ftt_reset.php' ?>
+            <?php require_once 'panelsource/content/ftt/ftt_reset.php'; ?>
           </div>
         </div>
       </div>

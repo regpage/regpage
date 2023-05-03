@@ -179,7 +179,8 @@ $(document).ready(function(){
             $(this).next().val("О");
             $(this).next().next().html('О');
             // Добавляем отсутствия в массив
-            reason = $("#modalAddEdit").attr("data-date") + " " + $(this).parent().parent().find("h6").text() + " – отсутствие без разрешения.";
+            let session_text = $(this).parent().parent().find("h6").text();
+            reason = $("#modalAddEdit").attr("data-date") + " " + session_text + " – отсутствие без разрешения.";
             create_extrahelp.push("&id="+$(this).parent().parent().parent().attr("data-id")
             +"&reason="+reason+"&date="+$("#modalAddEdit").attr("data-date")
             +"&member_key="+$("#modalAddEdit").attr("data-member_key")
@@ -510,15 +511,20 @@ function open_blank(el_this) {
           }
           // сбрасываем и сохраняем мероприятие в изначальном состоянии
           let str_session_name = $(this).parent().parent().prev().prev().text();
+          let session_text_change = $(this).parent().prev().prev().prev().prev().prev().attr("data-text").trim();
+          if (session_text_change[session_text_change.length - 1] === ">") {            
+            session_text_change = session_text_change.split("<");
+            session_text_change = session_text_change[0];
+          }
           if (str_session_name.charAt(str_session_name.length-4) === ":") {
-            save_select_field($(this).parent().prev().prev().prev().prev().prev(), $(this).parent().prev().prev().prev().prev().prev().attr("data-text"));
+            save_select_field($(this).parent().prev().prev().prev().prev().prev(), session_text_change);
             $(this).parent().prev().prev().prev().prev().val($(this).parent().prev().prev().prev().prev().attr("data-val"));
             save_select_field($(this).parent().prev().prev().prev().prev(), $(this).parent().prev().prev().prev().prev().attr("data-val"));
           }
           $(this).parent().prev().prev().prev().prev().attr("disabled", true);
           $(this).parent().prev().prev().prev().prev().addClass("bg-light");
-          $(this).parent().prev().prev().prev().prev().prev().text($(this).parent().prev().prev().prev().prev().prev().attr("data-text"));
-          $(this).parent().parent().prev().prev().text($(this).parent().prev().prev().prev().prev().prev().attr("data-text"));
+          $(this).parent().prev().prev().prev().prev().prev().text(session_text_change);
+          $(this).parent().parent().prev().prev().text(session_text_change);
           $(this).parent().parent().prev().addClass("hide_element");
 
           // сбрасываем и сохраняем время прихода
@@ -2220,11 +2226,15 @@ function open_blank(el_this) {
 
   // save
   $("#save_skip_blank").click(function () {
-    save_skip_blank();
+    cookie_filters();
+    setTimeout(function () {
+      save_skip_blank();
+    }, 30);
     $("#edit_skip_blank").modal("hide");
   });
 
   $("#send_skip_blank").click(function () {
+    cookie_filters();
     if (!$("#skip_modal_topic").val()) {
       showError("Заполните поле тема.");
       $("#skip_modal_topic").css("border-color", "red");
@@ -2236,8 +2246,9 @@ function open_blank(el_this) {
     }
     //$("#skip_modal_topic").css("border-color", "lightgrey");
     $("#skip_modal_file").parent().css("border", "none");
-
-    save_skip_blank(1);
+    setTimeout(function () {
+      save_skip_blank(1);
+    }, 30);
     $("#edit_skip_blank").modal("hide");
   });
 
@@ -2271,16 +2282,17 @@ function open_blank(el_this) {
       }, 50);
     });
   }
-
-  // сортировка
-  $(".skip_sort_date, .skip_sort_trainee").click(function (e) {
+  function cookie_filters() {
     setCookie("skip_sorting_true", 1, 1);
     setCookie("flt_skip_done", $("#flt_skip_done").val(), 1);
     if (!trainee_access) {
       setCookie("flt_sevice_one_skip", $("#flt_sevice_one_skip").val(), 1);
       setCookie("ftr_trainee_skip", $("#ftr_trainee_skip").val(), 1);
     }
-
+  }
+  // сортировка
+  $(".skip_sort_date, .skip_sort_trainee").click(function (e) {
+    cookie_filters();
     if (e.target.id === "skip_sort_date" || e.target.id === "skip_sort_trainee") {
       setCookie('skip_sorting', e.target.id + "-asc", 356);
       if (e.target.id === "skip_sort_date") {

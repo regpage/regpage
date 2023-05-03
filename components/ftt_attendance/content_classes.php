@@ -116,9 +116,8 @@ foreach (getMissedClasses($skip_curent_sorting) as $key => $value) {
     $short_comment = $value['comment'];
   }
   // badges
-  $skip_badge_status = "<span class='float-right badge badge-".$status_list[$value['status']][0]."'>".$status_list[$value['status']][1]."</span>";
-
-  $skip_checked_string = "<span class='badge badge-".$status_list[$value['status']][0]."'>".$status_list[$value['status']][1]."</span>";
+  $skip_badge_status = "<span class='float-right badge badge-".$skip_status_list[$value['status']][0]."'>".$skip_status_list[$value['status']][1]."</span>";
+  
   $nameTrainee = short_name::no_middle($value['name']);
   $dateBlank = date_convert::yyyymmdd_to_ddmm($value['date_blank']);
   echo "<div class='row skip_string ml-0' data-id='{$value['id']}' data-date='{$value['date_blank']}' data-member_key='{$value['member_key']}' data-serving_one='{$value['serving_one']}'";

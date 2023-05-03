@@ -5,7 +5,7 @@ include_once "components/ftt_blocks/FTTRenderPoints.php";
 include_once 'db/classes/ftt_lists.php';
 include_once 'db/classes/date_convert.php';
 // служащий ПВОМ
-$accessToPage = 0;
+/*$accessToPage = 0;
 // Права
 include_once "db/modules/ftt_page_access.php";
 
@@ -15,7 +15,7 @@ if ($accessToPage === 3 || $accessToPage === 4) {
   echo '<h1 style="margin-top: 70px; margin-left: 70px;">Пожалуйста, выберите другой раздел.</h1>';
   die();
 }
-
+*/
 /**** Р О Л И  ****/
 // Массив с данными заявления
 $request_data;
