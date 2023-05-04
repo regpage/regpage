@@ -207,26 +207,35 @@ if (isset($_GET['type']) && $_GET['type'] === 'set_skip_blank') {
   exit();
 }
 
-if (isset($_GET['type']) && $_GET['type'] === 'set_pic') {
-  // file
-  if (isset($_FILES['blob'])) {
+if (isset($_GET['type']) && $_GET['type'] === 'set_pic') {  
+  if (isset($_FILES['blob']) && $_FILES['blob']['error'] === UPLOAD_ERR_OK) {
     // file
     $prefix = date('His');
     $target_file = 'img/' . $prefix . basename($_FILES['blob']['name']);
     move_uploaded_file($_FILES['blob']['tmp_name'], $target_file);
     $file = 'ajax/' . $target_file;
+    // check
+    $target_file_temp = explode(".", $target_file);
+    $fileExtension = strtolower(end($target_file_temp));
+    $allowedfileExtensions = array('jpg', 'jpeg', 'gif', 'png', 'webp', 'bmp', 'zip', 'rar', '7z', 'txt', 'xls', 'xlsx', 'doc', 'docx', 'odt', 'ods', 'rtf', 'pdf');
+    if (!in_array($fileExtension, $allowedfileExtensions)) {
+      echo json_encode(["result"=>'Неизвестный формат файла.']);
+      exit();
+    }
     //compress
-    $imagick = new Imagick(__DIR__ . '/' . $target_file);
-
-    $data = $imagick->identifyImage();
-    if ($data['mimetype'] === 'image/jpeg' && $imagick->getImageLength() > 900000 && $imagick->getImageLength() < 5000000){
-      $imagick->setCompression(Imagick::COMPRESSION_JPEG);
-      $imagick->setImageCompressionQuality(75);
-      $imagick->writeImage(__DIR__ . '/' . $target_file);
-    } elseif ($data['mimetype'] === 'image/jpeg' && $imagick->getImageLength() > 5000000) {
-      $imagick->setCompression(Imagick::COMPRESSION_JPEG);
-      $imagick->setImageCompressionQuality(60);
-      $imagick->writeImage(__DIR__ . '/' . $target_file);
+    $allowedfileExtensions = array('jpg', 'jpeg', 'gif', 'png', 'webp', 'bmp');
+    if (in_array($fileExtension, $allowedfileExtensions)) {
+      $imagick = new Imagick(__DIR__ . '/' . $target_file);
+      $data = $imagick->identifyImage();
+      if ($data['mimetype'] === 'image/jpeg' && $imagick->getImageLength() > 900000 && $imagick->getImageLength() < 5000000){
+        $imagick->setCompression(Imagick::COMPRESSION_JPEG);
+        $imagick->setImageCompressionQuality(75);
+        $imagick->writeImage(__DIR__ . '/' . $target_file);
+      } elseif ($data['mimetype'] === 'image/jpeg' && $imagick->getImageLength() > 5000000) {
+        $imagick->setCompression(Imagick::COMPRESSION_JPEG);
+        $imagick->setImageCompressionQuality(60);
+        $imagick->writeImage(__DIR__ . '/' . $target_file);
+      }
     }
   } else {
     $file = '';

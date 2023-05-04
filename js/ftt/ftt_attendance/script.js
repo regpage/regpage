@@ -2214,14 +2214,18 @@ function open_blank(el_this) {
       })
       .then(response => response.json())
       .then(commits => {
-        $("#pic_skip_delete").show();
-        $("#skip_pic").attr("href", commits.result);
-        $("#skip_pic").text("скачать файл");
-        $("div[data-id='" + id + "']").attr("data-file",commits.result);
+        if (commits.result[0] === "Н") {
+          showError(commits.result);
+        } else {
+          $("#pic_skip_delete").show();
+          $("#skip_pic").attr("href", commits.result);
+          $("#skip_pic").text("скачать файл");
+          $("div[data-id='" + id + "']").attr("data-file",commits.result);
+          $("#skip_modal_file").parent().css("border", "none");
+        }
         /*if ($("#skip_modal_topic").val()) {
           $("#skip_modal_topic").css("border-color", "lightgrey");
         }*/
-        $("#skip_modal_file").parent().css("border", "none");
       });
     }
   });
