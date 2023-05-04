@@ -91,6 +91,10 @@ if (isset($_GET['pb'])) {
   $tab_attendance_active = '';
   $tab_permission_active = 'active';
   $tab_missed_class_active = '';
+} elseif (isset($_GET['mc'])) {
+  $tab_attendance_active = '';
+  $tab_permission_active = '';
+  $tab_missed_class_active = 'active';
 }
 
 $serving_one_selected = $memberId;

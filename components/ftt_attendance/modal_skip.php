@@ -42,9 +42,7 @@ data-id="" data-member_key="" data-serving_one="" data-status="">
           <div class="float-right"><i id="pic_skip_delete" class="fa fa-trash text-danger cursor-pointer" aria-hidden="true" style="font-size: 1.5rem;"></i></div>
         </div>
         <div class="mt-2">
-          <a href="#" target="_blank">
-            <img id="skip_pic" src="" alt="" width="100%">
-          </a>
+          <a id="skip_pic" href="#" target="_blank"></a>
         </div>
         <?php if ($ftt_access['group'] === 'staff') { ?>
         <div class="row">

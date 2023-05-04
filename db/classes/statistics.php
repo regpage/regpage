@@ -302,6 +302,51 @@ class statistics {
     }
     return $result;
   }
+  // Количество занятий поимённо
+  static function missed_class_count_name ($memberId)
+  {
+    global $db;
+    $result = [];
+    $trainee = false;
+    $condition = '';
+    if (is_array($memberId)) {
+      if (count($memberId) > 0) {
+        foreach ($memberId as $key => $value) {
+          $key = $db->real_escape_string($key);
+          if (!empty($condition)) {
+            $condition .= " OR ";
+          }
+          $condition .= " (fas.member_key = '$key' AND (fs.status = 0 OR fs.status = 1)) ";
+        }
+      } else {
+        $condition=0;
+      }
+    } else {
+      $trainee = true;
+      $memberId = $db->real_escape_string($memberId);
+    }
+    if ($trainee) {
+      $res = db_query("SELECT fs.*, fas.*
+      FROM ftt_skip AS fs
+      LEFT JOIN ftt_attendance_sheet fas ON fas.id = fs.id_attendance_sheet
+      WHERE fas.member_key = '$memberId' AND fs.status = 0");
+      while ($row = $res->fetch_assoc()) $result[] = $row;
+    } else {
+      $res = db_query("SELECT fs.*, fas.*
+      FROM ftt_skip AS fs
+      LEFT JOIN ftt_attendance_sheet fas ON fas.id = fs.id_attendance_sheet
+      WHERE {$condition}");
+      while ($row = $res->fetch_assoc()) {
+        if (isset($result[$row['member_key']])) {
+          $result[$row['member_key']]++;
+        } else {
+          $result[$row['member_key']] = 1;
+        }
+        //$result['count']++;
+      }
+    }
+    return $result;
+  }
 }
 
 ?>

@@ -2094,8 +2094,8 @@ function open_blank(el_this) {
     $("#edit_skip_blank input[type='checkbox']").prop("checked", false);
     $("#edit_skip_blank select").val("");
     $("#show_status_in_skip_blank").removeClass("badge-secondary").removeClass("badge-danger").removeClass("badge-warning").removeClass("badge-success").text("");
-    $("#skip_pic").attr("src", "");
-    $("#skip_pic").parent().attr("href", "");
+    $("#skip_pic").attr("href", "");
+    $("#skip_pic").text("");
     $("#day_of_week_skip_blank").text("");
 
     // data
@@ -2142,8 +2142,10 @@ function open_blank(el_this) {
     } else {
       $("#pic_skip_delete").hide();
     }
-    $("#skip_pic").attr("src", elem.attr("data-file"));
-    $("#skip_pic").parent().attr("href", elem.attr("data-file"));
+    if (elem.attr("data-file")) {
+      $("#skip_pic").attr("href", elem.attr("data-file"));
+      $("#skip_pic").text("скачать файл");
+    }
 
     // buttons & behavior
     $("#send_skip_blank").hide();
@@ -2213,8 +2215,8 @@ function open_blank(el_this) {
       .then(response => response.json())
       .then(commits => {
         $("#pic_skip_delete").show();
-        $("#skip_pic").attr("src", commits.result);
-        $("#skip_pic").parent().attr("href", commits.result);
+        $("#skip_pic").attr("href", commits.result);
+        $("#skip_pic").text("скачать файл");
         $("div[data-id='" + id + "']").attr("data-file",commits.result);
         /*if ($("#skip_modal_topic").val()) {
           $("#skip_modal_topic").css("border-color", "lightgrey");
@@ -2239,7 +2241,7 @@ function open_blank(el_this) {
       showError("Заполните поле тема.");
       $("#skip_modal_topic").css("border-color", "red");
       return;
-    } else if(!$("#skip_pic").attr("src")) {
+    } else if(!$("#skip_pic").attr("href")) {
       showError("Прикрепите файл.");
       $("#skip_modal_file").parent().css("border", "1px solid red");
       return;
@@ -2332,20 +2334,20 @@ function open_blank(el_this) {
   });
 
   $("#pic_skip_delete").click(function () {
-    if (!$("#skip_pic").attr("src")) {
+    if (!$("#skip_pic").attr("href")) {
       return;
     }
     let id = $("#edit_skip_blank").attr("data-id");
     let element = $(this);
-    let patch = $("#skip_pic").attr("src");
+    let patch = $("#skip_pic").attr("href");
     // УДАЛЕНИЕ КАРТИНКИ
     fetch("ajax/ftt_attendance_ajax.php?type=delete_pic&id=" + id + "&patch=" + patch)
     .then(response => response.json())
     .then(data => {
       if (data) {
         element.hide();
-        $("#skip_pic").attr("src","");
-        $("#skip_pic").parent().attr("href","");
+        $("#skip_pic").attr("href","");
+        $("#skip_pic").text("");
         $("div[data-id='" + id + "']").attr("data-file","");
       }
     });

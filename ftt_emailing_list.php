@@ -91,16 +91,35 @@ function getServiceOnesWithTrainees ()
       $extraHelp .= "<a href='https://reg-page.ru/ftt_extrahelp.php?my=1'>Перейти в раздел «Доп. задания»</a><br>";
     }
 
+    // пропущенные занятия
+    $missingClass = '';
+    $missingClassData = statistics::missed_class_count_name($traine_list);
+    if (count($extraHelpData) > 0) {
+      if (empty($announcements) && empty($absence) && empty($attendance)) {
+        $missingClass = '<b>Пропущенные занятия:</b><br>';
+      } else {
+        $missingClass = '<br><b>Пропущенные занятия:</b><br>';
+      }
+      foreach ($missingClassData as $key_5 => $value_5) {
+        if ($value_5) {
+          $missingClass .= "<span>" . short_name::no_middle(Member::get_name($key_5)) . " — " . $value_5 . "</span><br>";
+        }
+      }
+      $missingClass .= "<a href='https://reg-page.ru/ftt_attendance.php?mc'>Перейти в раздел «Пропущенные занятия»</a><br>";
+    }
+
     //Emailing::send_by_key()
     //Emailing::send
     //a.rudanok@gmail.com
-    //info@new-constellation.ru
-    if ($announcements || $absence || $attendance || $extraHelp) {
-      Emailing::send_by_key($value, $topic, $announcements . $absence . $attendance . $extraHelp);
+    //info@zhichkinroman.ru
+    //
+    if ($announcements || $absence || $attendance || $extraHelp || $missingClass) {
+      Emailing::send_by_key($value, $topic, $announcements . $absence . $attendance . $extraHelp . $missingClass);
     } else {
       // add str to log file
     }
   }
+
   echo "success";
   return 1;
 }

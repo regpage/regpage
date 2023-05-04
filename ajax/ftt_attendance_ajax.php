@@ -210,10 +210,24 @@ if (isset($_GET['type']) && $_GET['type'] === 'set_skip_blank') {
 if (isset($_GET['type']) && $_GET['type'] === 'set_pic') {
   // file
   if (isset($_FILES['blob'])) {
+    // file
     $prefix = date('His');
     $target_file = 'img/' . $prefix . basename($_FILES['blob']['name']);
     move_uploaded_file($_FILES['blob']['tmp_name'], $target_file);
     $file = 'ajax/' . $target_file;
+    //compress
+    $imagick = new Imagick(__DIR__ . '/' . $target_file);
+
+    $data = $imagick->identifyImage();
+    if ($data['mimetype'] === 'image/jpeg' && $imagick->getImageLength() > 900000 && $imagick->getImageLength() < 5000000){
+      $imagick->setCompression(Imagick::COMPRESSION_JPEG);
+      $imagick->setImageCompressionQuality(75);
+      $imagick->writeImage(__DIR__ . '/' . $target_file);
+    } elseif ($data['mimetype'] === 'image/jpeg' && $imagick->getImageLength() > 5000000) {
+      $imagick->setCompression(Imagick::COMPRESSION_JPEG);
+      $imagick->setImageCompressionQuality(60);
+      $imagick->writeImage(__DIR__ . '/' . $target_file);
+    }
   } else {
     $file = '';
   }
