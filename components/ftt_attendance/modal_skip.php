@@ -38,11 +38,10 @@ data-id="" data-member_key="" data-serving_one="" data-status="">
         </div>
         <div class="mt-2">
           <label for="skip_modal_file">Приложить файл</label><br>
-          <input type="file" id="skip_modal_file" class="" accept="image/*" value="">
-          <div class="float-right"><i id="pic_skip_delete" class="fa fa-trash text-danger cursor-pointer" aria-hidden="true" style="font-size: 1.5rem;"></i></div>
+          <input type="file" id="skip_modal_file" class="" accept="image/*" multiple>
         </div>
-        <div class="mt-2">
-          <a id="skip_pic" href="#" target="_blank"></a>
+        <div id="skip_pic" class="row mt-2">
+
         </div>
         <?php if ($ftt_access['group'] === 'staff') { ?>
         <div class="row">

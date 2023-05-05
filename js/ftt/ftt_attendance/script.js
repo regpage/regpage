@@ -2094,8 +2094,7 @@ function open_blank(el_this) {
     $("#edit_skip_blank input[type='checkbox']").prop("checked", false);
     $("#edit_skip_blank select").val("");
     $("#show_status_in_skip_blank").removeClass("badge-secondary").removeClass("badge-danger").removeClass("badge-warning").removeClass("badge-success").text("");
-    $("#skip_pic").attr("href", "");
-    $("#skip_pic").text("");
+    $("#skip_pic").html("");
     $("#day_of_week_skip_blank").text("");
 
     // data
@@ -2143,8 +2142,8 @@ function open_blank(el_this) {
       $("#pic_skip_delete").hide();
     }
     if (elem.attr("data-file")) {
-      $("#skip_pic").attr("href", elem.attr("data-file"));
-      $("#skip_pic").text("скачать файл");
+      $(".skip_pic").attr("href", elem.attr("data-file"));
+      $(".skip_pic").text("скачать файл");
     }
 
     // buttons & behavior
@@ -2207,7 +2206,10 @@ function open_blank(el_this) {
     let id = $("#edit_skip_blank").attr("data-id");
     let skip_data_blank = new FormData();
     if ($("#skip_modal_file")[0].files[0]) {
-      skip_data_blank.set("blob", $("#skip_modal_file")[0].files[0]);
+      for (var i = 0; i < $("#skip_modal_file")[0].files.length; i++) {
+        skip_data_blank.set("blob"+i, $("#skip_modal_file")[0].files[i]);
+      }
+
       fetch("ajax/ftt_attendance_ajax.php?type=set_pic&id=" + id, {
         method: 'POST',
         body: skip_data_blank
@@ -2216,12 +2218,18 @@ function open_blank(el_this) {
       .then(commits => {
         if (commits.result[0] === "Н") {
           showError(commits.result);
-        } else {
-          $("#pic_skip_delete").show();
-          $("#skip_pic").attr("href", commits.result);
-          $("#skip_pic").text("скачать файл");
-          $("div[data-id='" + id + "']").attr("data-file",commits.result);
+        } else if (commits.result) {
+          $("div[data-id='" + id + "']").attr("data-file", commits.result);
           $("#skip_modal_file").parent().css("border", "none");
+          let result_arr = commits.result;
+          result_arr = result_arr.split(";")          
+          for (var i = 0; i < result_arr.length; i++) {
+            $("#skip_pic").append('<div class="col-10"><a href="' + result_arr[i] + '" target="_blank">скачать файл</a></div>'
+            + '</div><div class="col-2 text-right"><i class="fa fa-trash text-danger cursor-pointer pic_skip_delete mr-3" aria-hidden="true" style="font-size: 1.5rem;"></i></div>');
+          }
+          $(".pic_skip_delete").click(function () {
+            skip_pic_delete($(this));
+          });
         }
         /*if ($("#skip_modal_topic").val()) {
           $("#skip_modal_topic").css("border-color", "lightgrey");
@@ -2245,7 +2253,7 @@ function open_blank(el_this) {
       showError("Заполните поле тема.");
       $("#skip_modal_topic").css("border-color", "red");
       return;
-    } else if(!$("#skip_pic").attr("href")) {
+    } else if(!$(".skip_pic").attr("href")) {
       showError("Прикрепите файл.");
       $("#skip_modal_file").parent().css("border", "1px solid red");
       return;
@@ -2336,25 +2344,26 @@ function open_blank(el_this) {
       location.reload();
     }, 30);
   });
-
-  $("#pic_skip_delete").click(function () {
-    if (!$("#skip_pic").attr("href")) {
+  function skip_pic_delete(elem) {
+    let patch = elem.parent().prev().find(".skip_pic").attr("href");
+    if (!patch) {
       return;
     }
     let id = $("#edit_skip_blank").attr("data-id");
-    let element = $(this);
-    let patch = $("#skip_pic").attr("href");
+    let element = elem.parent();
     // УДАЛЕНИЕ КАРТИНКИ
     fetch("ajax/ftt_attendance_ajax.php?type=delete_pic&id=" + id + "&patch=" + patch)
     .then(response => response.json())
     .then(data => {
       if (data) {
         element.hide();
-        $("#skip_pic").attr("href","");
-        $("#skip_pic").text("");
+        element.prev().hide();
         $("div[data-id='" + id + "']").attr("data-file","");
       }
     });
+  }
+  $(".pic_skip_delete").click(function () {
+    skip_pic_delete($(this));
   });
   // delete skip blank
   $("#delete_skip_blank").click(function () {
