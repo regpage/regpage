@@ -47,7 +47,10 @@ class DbOperation {
     } elseif ($operation === 'set') {
       $res = db_query("UPDATE `{$table}` SET `{$field}` = '{$value}' {$changed_field}{$equal}{$changed} WHERE `{$condition_field}` = '{$condition_value}'");
     } elseif ($operation === 'get') {
+      $result_get = '';
       $res = db_query("SELECT {$field} FROM {$table} WHERE {$condition_field} = '{$condition_value}' {$order_by}");
+      while ($row = $res->fetch_assoc()) $result_get = $row[$field];
+      $res = $result_get;
     } elseif ($operation === 'insert') {
       $res = db_query("INSERT INTO `{$table}` (`{$field}` {$equal}{$changed_field}) VALUES ('$value' {$equal}{$changed})");
     }

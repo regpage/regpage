@@ -2137,14 +2137,26 @@ function open_blank(el_this) {
 
     // pic
     if (elem.attr("data-file")) {
+      let result_arr = elem.attr("data-file");
+      result_arr = result_arr.split(";")
+      for (var i = 0; i < result_arr.length; i++) {
+        $("#skip_pic").append('<div class="col-10"><a class="skip_pic" href="' + result_arr[i] + '" target="_blank">скачать файл</a></div>'
+        + '</div><div class="col-2 text-right"><i class="fa fa-trash text-danger cursor-pointer pic_skip_delete mr-3" aria-hidden="true" style="font-size: 1.5rem;"></i></div>');
+      }
+      $(".pic_skip_delete").click(function () {
+        skip_pic_delete($(this));
+      });
+    }
+
+    /*if (elem.attr("data-file")) {
       $("#pic_skip_delete").show();
     } else {
       $("#pic_skip_delete").hide();
     }
     if (elem.attr("data-file")) {
-      $(".skip_pic").attr("href", elem.attr("data-file"));
+      $(".skip_pic").attr("href", );
       $(".skip_pic").text("скачать файл");
-    }
+    }*/
 
     // buttons & behavior
     $("#send_skip_blank").hide();
@@ -2222,9 +2234,9 @@ function open_blank(el_this) {
           $("div[data-id='" + id + "']").attr("data-file", commits.result);
           $("#skip_modal_file").parent().css("border", "none");
           let result_arr = commits.result;
-          result_arr = result_arr.split(";")          
+          result_arr = result_arr.split(";")
           for (var i = 0; i < result_arr.length; i++) {
-            $("#skip_pic").append('<div class="col-10"><a href="' + result_arr[i] + '" target="_blank">скачать файл</a></div>'
+            $("#skip_pic").append('<div class="col-10"><a class="skip_pic" href="' + result_arr[i] + '" target="_blank">скачать файл</a></div>'
             + '</div><div class="col-2 text-right"><i class="fa fa-trash text-danger cursor-pointer pic_skip_delete mr-3" aria-hidden="true" style="font-size: 1.5rem;"></i></div>');
           }
           $(".pic_skip_delete").click(function () {

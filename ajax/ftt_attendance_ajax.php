@@ -275,7 +275,7 @@ if (isset($_GET['type']) && $_GET['type'] === 'delete_pic') {
   // выполняем
   $check = DbOperation::operation($db_data_get->get());
 
-  $check = explode($check);
+  $check = explode(';', $check);
   $files = '';
   foreach ($check as $key => $value) {
     if ($value !== $_GET['patch']) {
