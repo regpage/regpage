@@ -241,11 +241,11 @@
 <div class="controls flight-info" style="display: none">
     <div class="control-group row-fluid">
         <label class="span12">Информация о приезде (заполняется после покупки билета)</label>
-        <input class="span12 emFlightNumArr" placeholder="Авиакомпания и рейс(ы)" type="text" maxlength="30" >
+        <input class="span12 emFlightNumArr" placeholder="Авиакомпания и рейс(ы)" type="text" maxlength="40" >
     </div>
     <div class="control-group row-fluid">
         <label class="span12">Информация об отъезде (заполняется после покупки билета)</label>
-        <input class="span12 emFlightNumDep" placeholder="Авиакомпания и рейс(ы)" type="text" maxlength="30" >
+        <input class="span12 emFlightNumDep" placeholder="Авиакомпания и рейс(ы)" type="text" maxlength="40" >
     </div>
     <div class="control-group row-fluid">
         <label class="span12">Название гостиницы<a href="#" rel="tooltip" data-placement="right" data-toggle="tooltip" tabindex="-1"></a></label>

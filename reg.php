@@ -1392,7 +1392,7 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
             var editors = (m.mem_admin_key ? m.mem_admin_name : '') +
                           (m.mem_admin_key && m.reg_admin_key && m.mem_admin_key != m.reg_admin_key ? ' и ' : '') +
                           (m.reg_admin_key && m.mem_admin_key != m.reg_admin_key ? m.reg_admin_name : '');
-            var htmlEditor = notMe ? '<i class="icon-user" title="Последние изменения: '+editors+'"></i>': '';
+            var htmlEditor = notMe ? 'Последние изменения: '+editors: '';
 
             // *** changes processed
             var htmlChanged = (m.changed > 0 ? '<i class="icon-pencil" title="Изменения еще не обработаны командой регистрации"></i>' : '');
@@ -1440,6 +1440,12 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
               // m.region += ', ';
               // m.region += m.country;
             }
+            let short_admin_comment = '';
+            if (m.admin_comment.length > 20) {
+              short_admin_comment = m.admin_comment.substr(0,20) + '...';
+            } else {
+              short_admin_comment = m.admin_comment;
+            }
             // счетчик участников с неотправленными данными
             /*
             if (!m.regstate || m.regstate == "" || m.regstate == " ") {
@@ -1468,9 +1474,10 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
                + '</td>'
                + (!isOnline ? '<td class="style-date"><span class="arrival" data-date="' + he(m.arr_date) + '" data-time="' + he(m.arr_time) + '">' : "") + formatDDMM( m.arr_date) + '</span> - '+
                 '<span class="departure" data-date="' + he(m.dep_date) + '" data-time="' + he(m.dep_time) + '">'+ formatDDMM(m.dep_date) + '</span><br>'+htmlPlace + ' ' +htmlPlaceFlag+'</td>'+
-                '<td>' + htmlLabelByRegState(m.regstate, m.web) +
+                '<td>' + htmlLabelByRegState(m.regstate, m.web, htmlEditor) +
                 (!isOnline ? '<ul class="regstate-list-handle">'+ htmlListItemsByRegstate(m.regstate, m.attended) + '</ul>' : "")+
-                "<div class='regmem-icons'>"+ htmlEmail + htmlChanged + htmlEditor + '<span style="font-size: 16px;">'+(m.admin_comment ? '<i class="fa fa-commenting" aria-hidden="true" title="'+m.admin_comment+'"></i>' : "" ) + '</span></div></td>'
+                "<span class='regmem-icons' style='padding-left: 8px;'>"+ htmlEmail + htmlChanged + '<span style="font-size: 16px;">'+(m.admin_comment ? '</span><br><span class="user_setting_span" title="'
+                + m.admin_comment + '">'+short_admin_comment+'</span>' : "" ) + '</span></td>'
                 + '</tr>'
             );
 
@@ -1494,7 +1501,7 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
                     m.dep_date) + '</span>' : "") + htmlPlace + ' ' +htmlPlaceFlag + '</div>'+
                 '<span>' + htmlLabelByRegState(m.regstate, m.web) +
                 (!isOnline ? '<ul class="regstate-list-handle">'+ htmlListItemsByRegstate(m.regstate, m.attended) + '</ul>' : "")+
-                " <span class='regmem-icons'>" + coordFlag + htmlService + htmlEmail + htmlChanged + htmlEditor + '</span><span>'+(m.admin_comment ? '<i class="fa fa-commenting show-comment-mbl" aria-hidden="true" title="'+m.admin_comment+'" style="font-size: 16px;"></i>' : "" )+'</span></span>'
+                " <span class='regmem-icons'>" + coordFlag + htmlService + htmlEmail + htmlChanged + htmlEditor + '</span><span>'+(m.admin_comment ? '<br><span class="show-comment-mbl user_setting_span" title="'+m.admin_comment+'">'+short_admin_comment+'</span>' : "" )+'</span></span>'
                 + '</td></tr>');
         }
 
@@ -1920,7 +1927,7 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
               fetch("/ajax/set.php?type=brothers_dotation&member_key="+member_id_dotation+"&event_id="+eventId+"&ticket="+emFlightNumArr)
               .then(response => response.json())
               .then(commits => {
-                
+
               });
             }
         });

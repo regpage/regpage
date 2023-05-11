@@ -845,7 +845,10 @@ $(this).keydown(function(e){
     }
 });
 
-function htmlLabelByRegState (regstate, web) {
+function htmlLabelByRegState (regstate, web, extra_title) {
+  if (!extra_title) {
+    extra_title = "";
+  }
     var labelClass="", labelText="данные не отправлены";
     if (regstate){
         switch (regstate){
@@ -856,7 +859,7 @@ function htmlLabelByRegState (regstate, web) {
             case '05': labelText='регистрация отменена';labelClass='label-important';break;
         }
     }
-    return '<span  class="'+ ( web == '1' ? " btnHandleRegstate " : "") + ' label '+labelClass+'" data-regstate="'+(regstate || 0 )+'">' + labelText + '</span>';
+    return '<span class="'+ ( web == '1' ? " btnHandleRegstate " : "") + ' label '+labelClass+'" data-regstate="'+(regstate || 0 )+'" title="'+extra_title+'">' + labelText + '</span>';
 }
 
 function htmlListItemsByRegstate (regstate, attended){
