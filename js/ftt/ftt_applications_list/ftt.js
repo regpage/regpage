@@ -28,7 +28,7 @@ $(document).ready(function() {
        // подготавливаем данные
        let request_status = "";
        if (list[i].stage == 0) {
-         request_status = "Черновик";
+         request_status = '<span class="badge badge-secondary">Черновик</span>';
        } else if (list[i].stage > 0 ) {
          request_status = "Отправлен";
        }
@@ -141,7 +141,7 @@ $(document).ready(function() {
       return;
     }
     let member_key = $("#select_member_new_application_list option[value='"
-    + $("#select_member_new_application").val() + "']").attr("data-id");    
+    + $("#select_member_new_application").val() + "']").attr("data-id");
 
     if (!member_key) {
       showError("Пожалуйста, выберите кандидата из списка.");
@@ -152,16 +152,17 @@ $(document).ready(function() {
     .then(response => response.json())
     .then(commits => {
       if (commits.result) {
-        $("#member_new_application_list").prepend('<div class="row mb-3" data-id="'
+        showHint("Заявление для кандидата " + $("#select_member_new_application").val() + " добавлено на сайт.");
+        /*$("#member_new_application_list").prepend('<div class="row mb-3" data-id="'
         + member_key
         + '"><div class="col-11">' + $("#select_member_new_application").val()
-        + '</div><div class="col-1"><i class="fa fa-trash cursor-pointer" style="font-size:18px;" aria-hidden="true"></i></div></div>');
+        + '</div><div class="col-1"><i class="fa fa-trash cursor-pointer" style="font-size:18px;" aria-hidden="true"></i></div></div>');*/
       } else {
         showError("Заявление уже было добавлено.");
       }
     });
   });
-  $("#member_new_application_list .fa-trash").click(function () {
+  /*$(".fa-trash").click(function () {
     let elem = $(this).parent().parent();
     if (confirm("Удалить заявление " + $(this).parent().prev().find("div").text())) {
       fetch("ajax/ftt_ajax.php?type=dlt_application&member_key="+elem.attr("data-id"))
@@ -174,7 +175,13 @@ $(document).ready(function() {
         }
       });
     }
+  });*/
+  $("#modal_dlt_add_new_application .btn-secondary").click(function () {
+    setTimeout(function () {
+      location.reload();
+    }, 100);
   });
+
 
 /*** DOCUMENT READY END ***/
 });

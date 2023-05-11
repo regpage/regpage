@@ -10,9 +10,9 @@ function db_getAllRequests ($adminId, $role, $guest, $sorting){
   $result = [];
   $condition = '';
   if ($guest == 1) {
-    $condition .= " AND fr.guest = 1";
+    $condition .= " fr.guest = 1";
   } else {
-    $condition .= " AND fr.guest = 0";
+    $condition .= " fr.guest = 0";
   }
   if ($sorting === 'sort_fio-desc') {
     $order_by = 'm.name DESC';
@@ -31,7 +31,7 @@ function db_getAllRequests ($adminId, $role, $guest, $sorting){
     FROM ftt_request AS fr
     INNER JOIN member m ON m.key = fr.member_key
     INNER JOIN locality l ON l.key = m.locality_key
-    WHERE fr.stage > 0 {$condition} ORDER BY {$order_by}");
+    WHERE {$condition} ORDER BY {$order_by}");
     while ($row = $res->fetch_assoc()) $result[]=$row;
     // для коректного запроса все ключевые поля для выборки из присоединяемых таблиц должны быть заполнены
 

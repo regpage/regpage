@@ -18,12 +18,7 @@
           <button id="btn_add_new_application" type="button" class="btn btn-sm btn-success float-right">Добавить</button>
         </div>
         <hr>
-        <div id="member_new_application_list" class="">
-          <?php
-          foreach (FttCandidates::list() as $key => $value):
-            echo "<div class='row mb-3' data-id='{$key}'><div class='col-11'>{$value}</div><div class='col-1'><i class='fa fa-trash cursor-pointer' style='font-size:18px;' aria-hidden='true'></i></div></div>";
-          endforeach;
-          ?>
+        <div id="member_new_application_list" class="">          
         </div>
       </div>
       <div class="modal-footer">
