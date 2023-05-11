@@ -208,11 +208,14 @@ else if (isset ($_SESSION["logged-in"])){
             <div style="font-weight: bold;" class='empty-meeting-list-info'>Сейчас нет мероприятий, открытых для самостоятельной регистрации.</div>
         </div>
 
-        <?php if ((count($application_data) > 0 || count($application_data_interview) > 0) && substr($memberId, 0, 2) !== '99' || FttCandidates::check($memberId)): //$ftt_access['group'] !== 'trainee' false ?>
+        <?php
+        $isApplicant = FttCandidates::check($memberId);
+        if ((count($application_data) > 0 || count($application_data_interview) > 0) && substr($memberId, 0, 2) !== '99' || $isApplicant): //$ftt_access['group'] !== 'trainee' false ?>
           <!-- СПИСОК ЗАЯВЛЕНИЙ РЕКОМЕНДАТОРЫ И СОБЕСЕДУЮЩИЕ || $memberId == '000005716' || $memberId == '000002634'  || ($memberId == '000001679') || ($memberId == '000001679' ) -->
+
           <!-- ИНТЕРВЬЮ И СОБЕСЕДОВАНИЕ -->
           <div class="tab-content" style="margin-top:10px; <?php echo $not_for_show_application; ?>">
-          <?php if ((count($application_data) > 0 || count($application_data_interview) > 0) && substr($memberId, 0, 2) !== '99'): ?>
+          <?php if (count($application_data) > 0 || count($application_data_interview) > 0): ?>
             <?php
             $status_arr = [
               'черновик','рассмотрения заявления служащими','этап рекомендации','рассмотрения рекомендации служащими','на собеседовании','принятие решения', 'решение принято'];
@@ -250,7 +253,7 @@ else if (isset ($_SESSION["logged-in"])){
         <!-- Desktop Заявление на ПВОМ $accessToPage === 3 || $accessToPage === 4 || $memberId == '000012559' || $memberId ==  '000001680'-->
 
           <!-- КАНДИДАТЫ -->
-          <?php if (FttCandidates::check($memberId)): ?>
+          <?php if ($isApplicant): ?>
           <div class="desctopVisible">
           <?php $requestData = isExistrRequest($memberId);
             $isExistrRequest;
@@ -329,7 +332,7 @@ else if (isset ($_SESSION["logged-in"])){
         <!-- Mobile Заявление на ПВОМ -->
         <div class="show-phone">
           <!-- ИНТЕРВЬЮ И СОБЕСЕДОВАНИЕ -->
-          <?php if ((count($application_data) > 0 || count($application_data_interview) > 0) && substr($memberId, 0, 2) !== '99'): ?>
+          <?php if (count($application_data) > 0 || count($application_data_interview) > 0): ?>
             <?php
             $status_arr = [
               'черновик','рассмотрения заявления служащими','этап рекомендации','рассмотрения рекомендации служащими','на собеседовании','принятие решения', 'решение принято'];
@@ -365,7 +368,7 @@ else if (isset ($_SESSION["logged-in"])){
             <?php endif; ?>
           <?php endif; ?>
           <!-- КАНДИДАТЫ -->
-          <?php if (FttCandidates::check($memberId)): //true?>
+          <?php if ($isApplicant): //true?>
           <h3>Полновременное обучение</h3>
           <h5><?php echo getValueFttParamByName("application_title"); ?></h5>
           <div class="ftt-request-list">

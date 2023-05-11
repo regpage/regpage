@@ -17,7 +17,7 @@ class FttCandidates
     $res = db_query("SELECT fr.member_key, m.name
       FROM ftt_request AS fr
       LEFT JOIN member m ON m.key=fr.member_key
-      WHERE stage = 0");
+      WHERE stage >= 0");
     while ($row = $res->fetch_assoc()) $result[] = $row['member_key'];
 
     return $result;
