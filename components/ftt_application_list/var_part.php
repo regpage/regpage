@@ -3,6 +3,9 @@ require_once "preheader.php";
 include_once "header2.php";
 include_once "nav2.php";
 include_once "db/ftt/ftt_db.php";
+include_once 'db/classes/ftt_applications/ftt_candidates.php';
+// Classes components
+include_once 'components/ftt_blocks/RenderList.php';
 
 // Проверка прав пользователя.
 // служащий ПВОМ

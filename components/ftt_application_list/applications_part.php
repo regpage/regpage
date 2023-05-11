@@ -1,7 +1,12 @@
 <div id="list_requests" class="container tab-pane active" style="background-color: white;" data-role="<?php echo $accessToPage; ?>">
 <!-- МЕНЮ СПИСКА ЗАЯВЛЕНИЙ -->
 <?php // include_once 'menu_applications_part.php'; ?>
-
+  <!-- Кнопки и фильтры -->
+  <div class="row btn-group mb-2">
+    <button type="button" class="btn btn-sm btn-primary mr-3" data-toggle="modal" data-target="#modal_dlt_add_new_application">
+      Добавить/удалить заявление
+    </button>
+  </div>
   <!-- Список заявлений -->
   <!-- К А Н Д И Д А Т Ы -->
   <div class="row align-center"><div class="col mr-1 pl-1"><h3>Кандидаты</h3></div></div>
@@ -41,3 +46,4 @@
   </div>
   <div id="requests-guest-list"><span>З А Г Р У З К А</span></div>
 </div>
+<?php require_once 'components/ftt_application_list/modal_part.php'; ?>

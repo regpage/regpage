@@ -1,5 +1,6 @@
 <?php
 // Доступ до раздела ЗАЯВЛЕНИЯ
+// Служащие
 include_once 'db/classes/ftt_lists.php';
 $serviceones_pvom = ftt_lists::serving_ones();
 foreach ($serviceones_pvom as $key => $value) {
