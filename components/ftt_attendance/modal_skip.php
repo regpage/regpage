@@ -40,6 +40,10 @@ data-id="" data-member_key="" data-serving_one="" data-status="">
           <label for="skip_modal_file">Приложить файл</label><br>
           <input type="file" id="skip_modal_file" class="" accept="image/*" multiple>
         </div>
+        <div id="spinner_upload" class="mt-2" style="display: none;">
+          <div class="spinner-border spinner-border-sm text-info"></div><span> Загружаем... </span>
+        </div>
+
         <div id="skip_pic" class="row mt-2">
 
         </div>

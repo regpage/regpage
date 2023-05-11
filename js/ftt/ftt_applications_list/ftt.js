@@ -136,17 +136,25 @@ $(document).ready(function() {
   });
 
   $("#btn_add_new_application").click(function () {
-    if (!$("#member_new_application").val() || !$("#member_new_application option:selected").text()) {
+    if (!$("#select_member_new_application").val()) {
+      showError("Пожалуйста, выберите кандидата из списка.")
+      return;
+    }
+    let member_key = $("#select_member_new_application_list option[value='"
+    + $("#select_member_new_application").val() + "']").attr("data-id");    
+
+    if (!member_key) {
       showError("Пожалуйста, выберите кандидата из списка.");
+      return;
     }
     let guest = $("#new_guest_application").prop("checked") ? 1 : 0;
-    fetch("ajax/ftt_ajax.php?type=add_application&guest="+guest+"&member_key="+$("#member_new_application").val())
+    fetch("ajax/ftt_ajax.php?type=add_application&guest="+guest+"&member_key="+member_key)
     .then(response => response.json())
     .then(commits => {
       if (commits.result) {
         $("#member_new_application_list").prepend('<div class="row mb-3" data-id="'
-        + $("#member_new_application").val()
-        + '"><div class="col-11">' + $("#member_new_application option:selected").text()
+        + member_key
+        + '"><div class="col-11">' + $("#select_member_new_application").val()
         + '</div><div class="col-1"><i class="fa fa-trash cursor-pointer" style="font-size:18px;" aria-hidden="true"></i></div></div>');
       } else {
         showError("Заявление уже было добавлено.");

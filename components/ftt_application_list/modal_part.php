@@ -3,15 +3,16 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 id=""></h5>
+        <h5>Добавить заявление на ПВОМ</h5>
       </div>
       <div class="modal-body">
         <div class="">
-          <select id="member_new_application" class="form-control form-control-sm mb-3">
+          <input id="select_member_new_application" class="form-control form-control-sm mb-3" list="select_member_new_application_list" placeholder="Выберите кандидата">
+          <datalist id="select_member_new_application_list">
             <?php foreach (FttCandidates::members() as $key => $value):
-              echo "<option value='{$key}'>{$value}</option>";
+              echo "<option data-id='{$key}' value='{$value}'>";
             endforeach; ?>
-          </select>
+          </datalist>
           <input id="new_guest_application" class="align-middle" type="checkbox">
           <label class="align-middle" for="new_guest_application"> гостевое</label>
           <button id="btn_add_new_application" type="button" class="btn btn-sm btn-success float-right">Добавить</button>

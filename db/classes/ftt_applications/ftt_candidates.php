@@ -2,7 +2,11 @@
 /**
  * get() получить кандидатов
  * исключены статусы: принят, отклонён
- * set() обновить кандидатов
+ * add() добавить кандидата
+ * dlt() удалить кандидата
+ * check() проверка наличия заявления у кандидата по ключу участника
+ * list() список кандидатов (участников с заявлениями)
+ * members() список администраторов сайта
  */
 
 class FttCandidates
@@ -43,10 +47,10 @@ class FttCandidates
         return false;
       }
   }
-  static function check($list)
+  static function check($member_key)
   {
-      self::get();
-      if (!in_array($member_key, $list)) {
+      $list = self::get();
+      if (in_array($member_key, $list)) {
         return true;
       } else {
         return false;
@@ -70,6 +74,7 @@ class FttCandidates
         FROM admin AS a
         LEFT JOIN member m ON m.key=a.member_key
         LEFT JOIN locality l ON l.key=m.locality_key
+        WHERE a.member_key NOT LIKE '99%'
         ORDER BY m.name");
       while ($row = $res->fetch_assoc()) $result[$row['member_key']] = $row['name'];
       return $result;

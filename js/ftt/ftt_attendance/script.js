@@ -2221,13 +2221,14 @@ function open_blank(el_this) {
       for (var i = 0; i < $("#skip_modal_file")[0].files.length; i++) {
         skip_data_blank.set("blob"+i, $("#skip_modal_file")[0].files[i]);
       }
-
+      $("#spinner_upload").show();
       fetch("ajax/ftt_attendance_ajax.php?type=set_pic&id=" + id, {
         method: 'POST',
         body: skip_data_blank
       })
       .then(response => response.json())
       .then(commits => {
+        $("#spinner_upload").hide();
         if (commits.result[0] === "Н") {
           showError(commits.result);
         } else if (commits.result) {
