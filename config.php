@@ -21,11 +21,11 @@
       if (substr($host, 0,3) === 'dev') {
         $gl_db_name = 'regpager_dev';
         $appRootPath = 'https://dev.reg-page.ru/';
-      } elseif (substr($host, 0,4) === 'test') {
-        $gl_db_name = 'u0654376_regpage';
-        $gl_db_user = 'u0654_admin';
-        $gl_db_pass = 'K9z?n0c1';
-        $appRootPath = 'https://test.new-constellation.ru/';
+      } elseif (substr($host, 0,3) === 'new') {
+        $gl_db_name = 'ch59248_regpage';
+        $gl_db_user = 'ch59248_regpage';
+        $gl_db_pass = 'dCKY46xu';
+        $appRootPath = 'https://new-constellation.ru/';
       } elseif (substr($host, 0,3) !== 'reg') {
         $gl_db_name = 'ch59248_regpage';
         $gl_db_user = 'ch59248_regpage';

@@ -154,6 +154,9 @@ $(document).ready(function(){
          }
          let data_ddmm = dateStrFromyyyymmddToddmm($("#modalAddEdit").attr("data-date"));
          reason = data_ddmm + " " + $(this).parent().parent().find("h6").text() + " – "+text_msg+" на " + $(this).next().next().next().next().val() + " мин.";
+         if ($(this).next().next().next().next().val() == 0) {
+           reason = data_ddmm+" "+$(this).parent().parent().find("h6").text()+" – отсутствие без разрешения";
+         }
          create_extrahelp.push("&id="+$(this).parent().parent().parent().attr("data-id")
          +"&reason="+reason+"&date="+$("#modalAddEdit").attr("data-date")
          +"&member_key="+$("#modalAddEdit").attr("data-member_key")
@@ -180,7 +183,8 @@ $(document).ready(function(){
             $(this).next().next().html('О');
             // Добавляем отсутствия в массив
             let session_text = $(this).parent().parent().find("h6").text();
-            reason = $("#modalAddEdit").attr("data-date") + " " + session_text + " – отсутствие без разрешения.";
+            let data_ddmm = dateStrFromyyyymmddToddmm($("#modalAddEdit").attr("data-date"));
+            reason = data_ddmm + " " + session_text + " – отсутствие без разрешения.";
             create_extrahelp.push("&id="+$(this).parent().parent().parent().attr("data-id")
             +"&reason="+reason+"&date="+$("#modalAddEdit").attr("data-date")
             +"&member_key="+$("#modalAddEdit").attr("data-member_key")
