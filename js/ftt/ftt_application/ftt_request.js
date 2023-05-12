@@ -1076,6 +1076,8 @@ $(document).ready(function(){
 
       } else if ($(this).parent().parent().parent().attr("data-display_condition") === "guest = 0 & semester = 1" && !$("#radio_point_semester_0").prop("checked")) {
 
+      } else if ($(this).parent().parent().parent().attr("data-display_condition") === "guest = 0" && $("#main_container").attr("data-guest") === "1") {
+
       } else if ($(this).parent().parent().parent().attr("required")) {
         let arr_radio = $(this).parent().parent().parent().find("input[type='radio']:checked");
         if (arr_radio.length === 0) {
@@ -1619,7 +1621,7 @@ $(document).ready(function(){
    });
  }
  if ($("#main_container").attr("data-guest") === "1") {
-   $("#point_how_many_explanation").parent().parent().show();
+   $("#point_how_many_explanation").parent().parent().addClass("hide_element");
  }
 
  // Новый бланк, указать ключ пользователя.
