@@ -549,6 +549,11 @@ $('#save_extra_help').click(function (e) {
     return;
   }
 
+  if (!$('#modalAddEdit .personal_block').attr("data-member_key")) {
+    showError('Добавьте участников в бланк.');
+    return;
+  }
+
   let check = 0, counter = 0, error;
   $(".personal_block input").each(function () {
     counter++;
@@ -1426,6 +1431,7 @@ if (!trainee_access) {
 }
 // team
 $("#team_goal_select").change(function () {
+  $("#modalRecommended").find("input").attr("disabled", true);
 // формируем группы
   fetch("ajax/ftt_gospel_ajax.php?type=get_ftt_gospel_groups&gospel_team="+$(this).val())
   .then(response => response.json())
@@ -1458,11 +1464,14 @@ $("#team_goal_select").change(function () {
 
 // group select
 $("#group_goal_select").change(function () {
+// блокировка полей
+  $("#modalRecommended").find("input").attr("disabled", true);
 // подставляем значения
   if ($(this).val() !== "_all_") {
     fetch("ajax/ftt_gospel_ajax.php?type=get_ftt_gospel_goals&gospel_team="+$("#team_goal_select").val()+"&gospel_group="+$("#group_goal_select").val())
     .then(response => response.json())
     .then(commits => {
+      $("#modalRecommended").find("input").attr("disabled", false);
       if (commits.result["gospel_team"]) {
         $("#semester_flyers").val(commits.result.flyers);
         $("#semester_people").val(commits.result.people);
@@ -1483,13 +1492,13 @@ $("#group_goal_select").change(function () {
       .then(response => response.json())
       .then(commits => {
         let flyers = 0, people = 0, prayers = 0, baptism = 0, fruit = 0;
-        for (var i = 0; i < commits.result.length; i++) {
-          if (commits.result["gospel_team"]) {
-            flyers += goals.flyers;
-            people += goals.people;
-            prayers += goals.prayers;
-            baptism += goals.baptism;
-            fruit += goals.fruit;
+        for (let i = 0; i < commits.result.length; i++) {
+          if (commits.result[i].gospel_team) {
+            flyers += Number(commits.result[i].flyers);
+            people += Number(commits.result[i].people);
+            prayers += Number(commits.result[i].prayers);
+            baptism += Number(commits.result[i].baptism);
+            fruit += Number(commits.result[i].fruit);
           }
         }
         $("#semester_flyers").val(flyers);
