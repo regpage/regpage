@@ -414,7 +414,15 @@ $("#add_comment").click(function () {
 
 // ГОТОВО
 // открыть бланк для добавления правки
-$('#showModalAddEdit').click(function () {
+$('#showModalAddEdit').click(function () {  
+  if (trainee_list_full[admin_id_gl] && !trainee_list_full[admin_id_gl]['gospel_team']) {
+    showError("Не назначена команда благовестия");
+    return;
+  } else if (trainee_list_full[admin_id_gl] && trainee_list_full[admin_id_gl]['gospel_group'] == 0) {
+    showError("Не назначена группа благовестия");
+    return;
+  }
+  $("#modalAddEdit").modal("show");
   $("#add_comment").show();
   $("#comment_block").hide();
   $("#modalAddEdit input").attr('disabled', false);
