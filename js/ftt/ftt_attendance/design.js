@@ -115,7 +115,10 @@ if ($(window).width()<=769) {
     $(".skip_string div:nth-child(3)").removeClass("col-7").addClass("col-8").addClass("pl-1");
     $(".skip_done").removeClass("col-2").addClass("col-4").addClass("pl-1");
   }
-
+  $("#modal_filters_skip_open").show();
+  $("#flt_skip_done").hide();
+  $("#flt_sevice_one_skip").hide();
+  $("#ftr_trainee_skip").hide();
   /*
   $(".skip_string .col-3").removeClass("col-3").addClass("col-4").addClass("pr-1").addClass("pl-5");
   $(".skip_string div:nth-child(3)").removeClass("col-7").addClass("col-4").addClass("pl-2");

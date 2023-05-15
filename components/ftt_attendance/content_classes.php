@@ -38,7 +38,7 @@ if (isset($_COOKIE['skip_sorting'])) {
 <br>
 <!-- Кнопки и фильтры -->
 <div id="skip_list_header" class="btn-group mb-2">
-  <button type="button" id="skip_flt_modal_o" class="btn btn-primary btn-sm rounded mr-2" data-toggle="modal" data-target="#skip_ftr_modal" style="display: none;">Фильтры</button>
+  <button type="button" id="modal_filters_skip_open" class="btn btn-primary btn-sm rounded mr-2" data-toggle="modal" data-target="#modal_filters_skip" style="display: none;">Фильтры</button>
   <select id="flt_skip_done" class="form-control form-control-sm mr-2">
   <?php
   $skip_done_list = array('0' =>'Текущие', '2' =>'Выполненные');
@@ -117,7 +117,7 @@ foreach (getMissedClasses($skip_curent_sorting) as $key => $value) {
   }
   // badges
   $skip_badge_status = "<span class='float-right badge badge-".$skip_status_list[$value['status']][0]."'>".$skip_status_list[$value['status']][1]."</span>";
-  
+
   $nameTrainee = short_name::no_middle($value['name']);
   $dateBlank = date_convert::yyyymmdd_to_ddmm($value['date_blank']);
   echo "<div class='row skip_string ml-0' data-id='{$value['id']}' data-date='{$value['date_blank']}' data-member_key='{$value['member_key']}' data-serving_one='{$value['serving_one']}'";

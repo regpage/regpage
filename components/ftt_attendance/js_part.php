@@ -60,9 +60,9 @@ function filterSkip() {
     } else {
       $(this).hide();
     }
-  });
+  });  
 }
 filterSkip();
 </script>
-<script src="/js/ftt/ftt_attendance/script.js?v126"></script>
+<script src="/js/ftt/ftt_attendance/script.js?v127"></script>
 <script src="/js/ftt/ftt_attendance/design.js?v27"></script>

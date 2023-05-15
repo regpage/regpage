@@ -1,6 +1,5 @@
 /* ==== MAIN & ATTENDANCE START ==== */
 $(document).ready(function(){
-
   // текущая дата гггг-мм-дд
   date_now_gl = date_now_gl ();
 
@@ -2393,7 +2392,20 @@ function open_blank(el_this) {
     }
   });
 
-  /*** SKIP TAB STOP ***/
+  $('#ftr_trainee_skip_mbl, #flt_sevice_one_skip_mbl').change(function (e) {
+    if (e.target.id === "ftr_trainee_skip_mbl" && $(this).val() !== "_all_") {
+      $('#flt_sevice_one_skip_mbl').val("_all_");
+    } else if (e.target.id === "flt_sevice_one_skip_mbl" && $(this).val() !== "_all_") {
+      $('#ftr_trainee_skip_mbl').val("_all_");
+    }
+  });
 
+  $("#apply_filters_mbl").click(function () {
+    $("#flt_skip_done").val($("#flt_skip_done_mbl").val());
+    $('#flt_sevice_one_skip').val($('#flt_sevice_one_skip_mbl').val());
+    $('#ftr_trainee_skip').val($('#ftr_trainee_skip_mbl').val());
+    filterSkip();
+  });
+  /*** SKIP TAB STOP ***/
 // DOCUMENT READY STOP
 });

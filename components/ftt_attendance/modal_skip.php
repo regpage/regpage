@@ -119,3 +119,52 @@ data-id="" data-member_key="" data-serving_one="" data-status="">
     </div>
   </div>
 </div>
+
+<!-- Фильтры -->
+<div id="modal_filters_skip" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 id="">Фильтры</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+      </div>
+      <div class="modal-body">
+        <select id="flt_skip_done_mbl" class="form-control form-control-sm mr-2 mb-2">
+        <?php
+        $skip_done_list = array('0' =>'Текущие', '2' =>'Выполненные');
+        foreach ($skip_done_list as $key => $value) {
+          $sel = '';
+          if (trim($key) === $flt_skip_done) {
+            $sel = 'selected';
+          }
+          echo "<option value='{$key}' {$sel}>{$value}";
+        }
+        ?>
+        </select>
+        <select id="flt_sevice_one_skip_mbl" class="form-control form-control-sm mr-2 mb-2">
+          <option value="_all_">Все служащие</option>
+          <?php foreach ($serving_ones_list as $key => $value):
+            $selected = '';
+            if ($key === $flt_sevice_one_skip) {
+              $selected = 'selected';
+            }
+            echo "<option value='{$key}' {$selected}>{$value}</option>";
+          endforeach; ?>
+        </select>
+        <select id="ftr_trainee_skip_mbl" class="form-control form-control-sm mr-2">
+          <option value="_all_">Все обучающиеся</option>
+          <?php foreach ($trainee_list as $key => $value):
+            $selected = '';
+            if ($key === $ftr_trainee_skip) {
+              $selected = 'selected';
+            }
+            echo "<option value='{$key}' {$selected}>{$value}</option>";
+          endforeach; ?>
+        </select>
+      </div>
+      <div class="modal-footer" style="">
+        <button id="apply_filters_mbl" class="btn btn-sm btn-info" data-dismiss="modal" aria-hidden="true" style="">Применить</button>
+      </div>
+    </div>
+  </div>
+</div>
