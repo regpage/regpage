@@ -2,10 +2,19 @@
 <!-- МЕНЮ СПИСКА ЗАЯВЛЕНИЙ -->
 <?php // include_once 'menu_applications_part.php'; ?>
   <!-- Кнопки и фильтры -->
-  <div class="row btn-group mb-2">
-    <button type="button" class="btn btn-sm btn-primary mr-3" data-toggle="modal" data-target="#modal_dlt_add_new_application">
-      Добавить/удалить заявление
-    </button>
+  <div class="row btn-group mb-2 mr-2">
+    <div class="">
+      <button type="button" class="btn btn-sm btn-primary mr-3" data-toggle="modal" data-target="#modal_dlt_add_new_application">
+        Добавить/удалить заявление
+      </button>
+    </div>
+    <div class="">
+      <select id="flt_allow_deny" class="form-control form-control-sm">
+        <option value="_all_">Все</option>
+        <option value="badge-success">принят</option>
+        <option value="badge-danger">отклонён</option>
+      </select>
+    </div>
   </div>
   <!-- Список заявлений -->
   <!-- К А Н Д И Д А Т Ы -->

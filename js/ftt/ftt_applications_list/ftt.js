@@ -182,6 +182,28 @@ $(document).ready(function() {
     }, 100);
   });
 
-
+  function flt_allow_deny() {
+    let deny, allow;
+    $("#requests-list .request-string").each(function () {
+      allow = $(this).find(".badge-success").hasClass("badge") && $("#flt_allow_deny").val() === "badge-success";
+      deny = $(this).find(".badge-danger").hasClass("badge") && $("#flt_allow_deny").val() === "badge-danger";
+      if ($("#flt_allow_deny").val() === "_all_" || allow || deny) {
+        $(this).show();
+      } else {
+        $(this).hide();
+      }
+    });
+    
+    $("#requests-guest-list .request-string").each(function () {
+      if ($("#flt_allow_deny").val() === "_all_" || allow || deny) {
+        $(this).show();
+      } else {
+        $(this).hide();
+      }
+    });
+  }
+  $("#flt_allow_deny").change(function () {
+    flt_allow_deny();
+  });
 /*** DOCUMENT READY END ***/
 });
