@@ -112,6 +112,19 @@
     //print_r($membersList);
      foreach ($membersList as $key => $value):
       // print_r($value);
+      if (!empty($value->editors) && strlen($value->editors) > 9) {
+        $editorsKeys = explode(',',$value->editors);
+        if (isset($editorsKeys[1])) {
+          $editorsText = 'Редакторы — ' . short_name::short(Member::get_name($editorsKeys[0])) . ', ' . short_name::short(Member::get_name($editorsKeys[1]));
+        } else {
+          $editorsText = 'Редактор — ' . short_name::short(Member::get_name($editorsKeys[0]));
+        }
+      } elseif(!empty($value->editors)) {
+        $editorsText = 'Редактор — '. short_name::short(Member::get_name($value->editors));
+      } else {
+        $editorsText = '';
+      }
+
        ?>
       <div class="row attend_str pl-1" data-member_key="<?php echo $value->id; ?>"
         data-locality_key="<?php echo $value->locality_key; ?>"
@@ -146,9 +159,8 @@
         <div class="col-1 pl-1 pr-1" style="min-width: 220px;">
           <input maxlength="25" type="text" class="form-control form-control-sm vt_comment_field"
           value="<?php echo $value->at_comment; ?>"
-          title="<?php if($value->editors) echo "Редактор ".short_name::short(Member::get_name($value->editors)); ?>"
           style="display: none;" data-field="comment" data-editors="<?php echo $value->editors; ?>">
-          <span class="vt_comment_text" style="display: inline-block; width: 100%; height: 100%;"><?php echo $value->at_comment; ?></span>
+          <span class="vt_comment_text" title="<?php if($value->editors) echo $editorsText; ?>" style="display: inline-block; width: 100%; height: 100%;"><?php echo $value->at_comment; ?></span>
         </div> <!-- style="display: none;" -->
         <div class="col-1">
           <span class="data_age">

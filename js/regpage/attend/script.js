@@ -34,14 +34,32 @@ $(document).ready(function(){
     fetch("ajax/attend_ajax.php?type=change_checkbox&id="
     + key + "&table=attendance&field="
     + $(this).attr("data-field") + "&value=" + $(this).val())
-    $(this).parent().find("i").attr("title", $(this).val());
+    //$(this).parent().find("i").attr("title", $(this).val());
     /*.then(response => response.text())
     .then(commits => );*/
     // записываем текущего редактора
+    let editors_keys;
+    let editors_exist = "";
+    if ($(this).attr("data-editors")) {
+      editors_exist = $(this).attr("data-editors");
+    }
+
+    if (editors_exist.length > 9) {
+      editors_keys = editors_exist.split(",");
+      if (editors_keys[1]) {
+        editors_keys = String(editors_keys[1]) + "," + String(window.adminId);
+      } else {
+        editors_keys = window.adminId;
+      }
+    } else if (editors_exist && editors_exist.length < 10) {
+      editors_keys = editors_exist + "," + window.adminId;
+    } else {
+      editors_keys = window.adminId;
+    }
     setTimeout(function () {
       fetch("ajax/attend_ajax.php?type=change_checkbox&id="
       + key + "&table=attendance&field=editors"
-      + "&value=" + window.adminId)
+      + "&value=" + editors_keys)
       /*.then(response => response.text())
       .then(commits => );*/
     }, 10);
