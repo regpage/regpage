@@ -180,8 +180,6 @@
             </div>-->
             </div>
         </div>
-        <span style="text-align: left; color: grey; font-weight: bold; padding-top: 15px; margin-right: 25px; display: inline-block;"> Осталось мест с дотацией — <span class="brothers_dotation_text"></span>
-        </span>
         <span class="counterForResponseble" style="text-align: left; color: red; font-weight: bold; padding-top: 15px; display: inline-block;">
         </span>
         <div class="desctopVisible">
@@ -1213,7 +1211,9 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
               $('.tab-pane.active').find('.counterForResponseble').html('<span style="text-decoration: underline; cursor: pointer;" title="Кликните, что бы отобразить всех участников.">Показать всех участников</span>');
               $('.tab-pane.active').find('.counterForResponseble').show();
             }
-            // Дотации для 20 участников на манилы
+
+            // #ПОДДЕРЖКА Дотации для 20 участников на манилы
+            /*
             if ($("#events-list").val() === "20222028") {
               fetch("/ajax/set.php?type=get_brothers_dotation")
               .then(response => response.json())
@@ -1224,6 +1224,7 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
             } else {
               $(".brothers_dotation_text").parent().hide();
             }
+            */
         });
         $('.tab-pane.active').find('.counterForResponseble span').click(function() {
           if ($('.filter-regstate').val() === "01") {
@@ -1922,7 +1923,9 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
             $('#modalEditMember').modal('hide');
             elem.removeClass('create');
             $('.emName ').removeClass('create');
-            // Дотации для 20 участников на манил
+
+            // #ПОДДЕРЖКА Дотации для 20 участников на манил
+            /*
             if (eventId === '20222028') {
               fetch("/ajax/set.php?type=brothers_dotation&member_key="+member_id_dotation+"&event_id="+eventId+"&ticket="+emFlightNumArr)
               .then(response => response.json())
@@ -1930,6 +1933,7 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
 
               });
             }
+            */
         });
     }
 
@@ -2012,7 +2016,8 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
     });
 
     $("#events-list").change(function(){
-      // Дотаци для 20 участников на манилы
+      // #ПОДДЕРЖКА Дотаци для 20 участников на манилы
+      /*
       if ($("#events-list").val() === "20222028") {
         fetch("/ajax/set.php?type=get_brothers_dotation")
         .then(response => response.json())
@@ -2038,6 +2043,7 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
       } else {
         $(".brothers_dotation_text").parent().hide();
       }
+      */
         var eventId = $(this).val(), eventIdCurrent = $('.tab-pane.active').attr('id').replace(/^eventTab-/,'');
         if(eventId !== eventIdCurrent){
             $('.tab-pane.active').removeClass('active');
@@ -2595,7 +2601,8 @@ function checkStopEventRegistration(eventId){
             var eventId = $("#events-list").val();
             $.getJSON('/ajax/set.php', { event: eventId, remove_members: ids.join(',') })
             .done (function(data) {
-              // Дотации для 20 участников на манил
+              // #ПОДДЕРЖКА Дотации для 20 участников на манил
+              /*
               if (eventId === '20222028') {
                 for (var i = 0; i < ids.length; i++) {
                   // переделать на стороне сервера
@@ -2606,6 +2613,7 @@ function checkStopEventRegistration(eventId){
                   });
                 }
               }
+              */
                 refreshEventMembers (eventId, data.members, data.localities);
             });
         }
@@ -2841,7 +2849,7 @@ function checkStopEventRegistration(eventId){
   });
     // END Romans Code
 </script>
-<script src="/js/reg.js?v75"></script>
+<script src="/js/reg.js?v76"></script>
 <script src="/js/regupload.js?v5"></script>
 <?php
     include_once "footer.php";

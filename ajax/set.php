@@ -1,8 +1,9 @@
 <?php
 include_once "ajax.php";
 
-/* BEGIN ПОДДЕРЖКА 20 БРАТЬЕВ В ПОЕЗДКЕ В МАНИЛ */
+/* BEGIN #ПОДДЕРЖКА 20 БРАТЬЕВ В ПОЕЗДКЕ В МАНИЛ */
 // список братьев с дотацией
+/*
 function db_brothersDotationList()
 {
   $list = [];
@@ -86,6 +87,7 @@ if (isset($_GET['type']) && $_GET['type'] === 'get_brothers_dotation_list') {
     echo json_encode(["result"=> db_brothersDotationList()]);
     exit;
 }
+*/
 /* END */
 if (isset ($_GET['sort_field']))
 {

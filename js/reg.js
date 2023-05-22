@@ -10,8 +10,9 @@
 // вормирования Гридов и прочих представлений данных для основного списка
 // вормирования Гридов и прочих представлений данных для вспомогательных списков
 
-// Дотации для 20 участников на манил
+// #ПОДДЕРЖКА Дотации для 20 участников на манил
 // список братьев с дотацией
+/*
 let brothers_dotation_list = [];
 fetch("/ajax/set.php?type=get_brothers_dotation_list")
 .then(response => response.json())
@@ -31,8 +32,9 @@ fetch("/ajax/set.php?type=get_brothers_dotation_list")
     }, 700);
   }
 });
-
-// количество свободных датаций
+*/
+// #ПОДДЕРЖКА количество свободных датаций
+/*
 if ($("#events-list").val() === "20222028") {
   fetch("/ajax/set.php?type=get_brothers_dotation")
   .then(response => response.json())
@@ -43,8 +45,8 @@ if ($("#events-list").val() === "20222028") {
 } else {
   $(".brothers_dotation_text").parent().hide();
 }
-
-// скрыть колонку дату и убратьпроверку дат для онлайн мероприя
+*/
+// скрыть колонку дату и убрать проверку дат для онлайн мероприя
   if ($('.tab-pane.active').attr('data-online_event') === '1') {
     $('.date_th').hide();
     $('.filter-arrived').hide();

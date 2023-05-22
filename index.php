@@ -1078,7 +1078,8 @@ $(document).ready(function(){
                             '<div><span style="margin-top:5px; margin-right:5px;" class="label label-'+regstateClass+'">'+ regstateText + '</span>' + icons+ '</div>'+
                         '</div>';
 
-                        /* BEGIN Дотация для 20 участников на Манилы */
+                        /* BEGIN #ПОДДЕРЖКА Дотация для 20 участников на Манилы */
+                        /*
                         if (event.id === "20222028") {
                           fetch("/ajax/set.php?type=get_brothers_dotation&member_key=" + window.adminId)
                           .then(response => response.json())
@@ -1099,7 +1100,7 @@ $(document).ready(function(){
                               + event.name + "</strong>" + datation_manil);
                             }
                           });
-                        }
+                        }*/
                         /* END */
                 /* Сейчас для private мероприятий действует одно правило, на мероприятие саморегистрация открыта
                 только для ответственных и полновременно служащих братьев.
@@ -1712,13 +1713,14 @@ console.log('stop is ', stopRegistration, 'close is ', closeRegistration, modalW
         $('#modalRejectMember').modal('hide');
         $.getJSON('/ajax/event.php', { eventIdReject: window.currentEventId})
         .done (function(){
-          if (eventId === '20222028') {
+          // #ПОДДЕРЖКА
+          /*if (eventId === '20222028') {
               // переделать на стороне сервера
               fetch("/ajax/set.php?type=brothers_dotation&member_key="+window.adminId+"&event_id="+eventId+"&ticket")
               .then(response => response.json())
               .then(commits => {
               });
-          }
+          }*/
           setTimeout(function () {
             window.location = '/index';
           }, 100);
@@ -1745,14 +1747,15 @@ console.log('stop is ', stopRegistration, 'close is ', closeRegistration, modalW
         let emFlightNumArr = $("#modalEditMember .emFlightNumArr").val();
         $.post("/ajax/guest.php?isnew="+isnew, fieldsValue)
         .done (function(data){
-          // Дотации для 20 участников на манил
+          // #ПОДДЕРЖКА Дотации для 20 участников на манил
+          /*
           if (eventId === '20222028') {
             fetch("/ajax/set.php?type=brothers_dotation&member_key="+window.adminId+"&event_id="+eventId+"&ticket="+emFlightNumArr)
             .then(response => response.json())
             .then(commits => {
-              console.log(commits.result);
             });
           }
+          */
             form.addClass('hide').modal('hide');
             if($(self).hasClass('edit')){
                 $('#btnDoRegisterGuest').removeClass('edit').removeClass('guest');

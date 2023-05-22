@@ -2143,11 +2143,14 @@ function open_blank(el_this) {
       let result_arr = elem.attr("data-file");
       result_arr = result_arr.split(";")
       for (var i = 0; i < result_arr.length; i++) {
-        $("#skip_pic").append('<div class="col-10"><a class="skip_pic" href="' + result_arr[i] + '" target="_blank">скачать файл</a></div>'
+        $("#skip_pic").append('<div class="col-10"><button type="button" data-toggle="modal" class="skip_modal_pic_preview_open btn btn-primary btn-sm mr-2 mb-2" data-target="#skip_modal_pic_preview">Просмотр</button><a class="skip_pic" href="' + result_arr[i] + '" target="_blank">скачать файл</a></div>'
         + '</div><div class="col-2 text-right"><i class="fa fa-trash text-danger cursor-pointer pic_skip_delete mr-3" aria-hidden="true" style="font-size: 1.5rem;"></i></div>');
       }
       $(".pic_skip_delete").click(function () {
         skip_pic_delete($(this));
+      });
+      $(".skip_modal_pic_preview_open").click(function () {
+        show_pic_preview($(this));
       });
     }
 
@@ -2240,11 +2243,14 @@ function open_blank(el_this) {
           let result_arr = commits.result;
           result_arr = result_arr.split(";")
           for (var i = 0; i < result_arr.length; i++) {
-            $("#skip_pic").append('<div class="col-10"><a class="skip_pic" href="' + result_arr[i] + '" target="_blank">скачать файл</a></div>'
+            $("#skip_pic").append('<div class="col-10"><button type="button" data-toggle="modal" class="btn btn-primary btn-sm mr-2 mb-2 skip_modal_pic_preview_open" data-target="#skip_modal_pic_preview">Просмотр</button><a class="skip_pic" href="' + result_arr[i] + '" target="_blank">скачать файл</a></div>'
             + '</div><div class="col-2 text-right"><i class="fa fa-trash text-danger cursor-pointer pic_skip_delete mr-3" aria-hidden="true" style="font-size: 1.5rem;"></i></div>');
           }
           $(".pic_skip_delete").click(function () {
             skip_pic_delete($(this));
+          });
+          $(".skip_modal_pic_preview_open").click(function () {
+            show_pic_preview($(this));
           });
         }
         /*if ($("#skip_modal_topic").val()) {
@@ -2381,6 +2387,9 @@ function open_blank(el_this) {
   $(".pic_skip_delete").click(function () {
     skip_pic_delete($(this));
   });
+  $(".skip_modal_pic_preview_open").click(function () {
+    show_pic_preview($(this));
+  });
   // delete skip blank
   $("#delete_skip_blank").click(function () {
     if (confirm("Удалить бланк?")) {
@@ -2406,6 +2415,10 @@ function open_blank(el_this) {
     $('#ftr_trainee_skip').val($('#ftr_trainee_skip_mbl').val());
     filterSkip();
   });
+
+  function show_pic_preview(elem) {
+    $("#skip_modal_pic_preview_container").attr("src", elem.next().attr("href"));
+  }
   /*** SKIP TAB STOP ***/
 // DOCUMENT READY STOP
 });
