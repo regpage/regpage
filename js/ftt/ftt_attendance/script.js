@@ -1574,6 +1574,8 @@ function open_blank(el_this) {
         if ($(window).width()<=769) {
           $("#apply_permission_blank").text("Одоб");
           $("#deny_permission_blank").text("Откл");
+          $("#save_permission_blank").text("Сохр");
+          $("#close_permission_blank").text("Закр");
         }
         // buttons
         $("#deny_permission_blank").prop("disabled", false).show();

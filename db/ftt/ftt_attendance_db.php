@@ -157,7 +157,7 @@ function setFttStringsById($data) {
   $reason = $db->real_escape_string($data['reason']);
   $late = $db->real_escape_string($data['late']);
 
-  $res = db_query("INSERT INTO `ftt_attendance` (`session_name`, `session_time`, `attend_time`, `reason`, `late`, `changed`) VALUES ('$session_name', '$session_time','$attend_time', '$reason','$late', 1)");  
+  $res = db_query("INSERT INTO `ftt_attendance` (`session_name`, `session_time`, `attend_time`, `reason`, `late`, `changed`) VALUES ('$session_name', '$session_time','$attend_time', '$reason','$late', 1)");
 
   return $res;
 }
@@ -445,7 +445,7 @@ function set_permission($sessions, $adminId)
   $archive_sessions_value = "'$archive_sessions', ";
   $archive_sessions_update = " `archive_sessions` = '$archive_sessions', ";
   $is_send_blank = false;
-  if ($status === '1' && ($date_send === '0000-00-00 00:00:00' || empty($date_send))) {
+  if ($status === '1') {
     $date_send = 'NOW()';
     $date_send_update = ' `date_send`= NOW(), ';
     $date_decision = "''";
