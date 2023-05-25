@@ -218,7 +218,7 @@ else if (isset ($_SESSION["logged-in"])){
           <?php if (count($application_data) > 0 || count($application_data_interview) > 0): ?>
             <?php
             $status_arr = [
-              'черновик','рассмотрения заявления служащими','этап рекомендации','рассмотрения рекомендации служащими','на собеседовании','принятие решения', 'решение принято'];
+              'черновик','рассмотрение заявления служащими','этап рекомендации','рассмотрение рекомендации служащими','на собеседовании','принятие решения', 'решение принято'];
             $status_color = [
               'label-secondary','label-warning','label-warning','label-warning','label-warning','label-warning', 'label-success'];
             if (count($application_data) > 0): ?>
@@ -335,7 +335,7 @@ else if (isset ($_SESSION["logged-in"])){
           <?php if (count($application_data) > 0 || count($application_data_interview) > 0): ?>
             <?php
             $status_arr = [
-              'черновик','рассмотрения заявления служащими','этап рекомендации','рассмотрения рекомендации служащими','на собеседовании','принятие решения', 'решение принято'];
+              'черновик','рассмотрение заявления служащими','этап рекомендации','рассмотрение рекомендации служащими','на собеседовании','принятие решения', 'решение принято'];
             $status_color = [
               'label-secondary','label-warning','label-warning','label-warning','label-warning','label-warning', 'label-success'];
             if (count($application_data) > 0): ?>

@@ -311,4 +311,11 @@ if (isset($_GET['type']) && $_GET['type'] === 'delete_skip') {
   exit();
 }
 
+// COMMUNICATION
+if (isset($_GET['type']) && $_GET['type'] === 'get_communication_list') {
+  echo json_encode(["result"=>get_communication_list()]);
+  exit();
+}
+
+
 ?>

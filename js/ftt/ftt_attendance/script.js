@@ -22,6 +22,11 @@ $(document).ready(function(){
       setTimeout(function () {
         location.reload();
       }, 30);
+    } else if ($(this).attr("href") === "#meet_tab") {
+      setCookie("tab_active", "meet");
+      setTimeout(function () {
+        location.reload();
+      }, 30);
     } else {
       setCookie("tab_active", "");
       setTimeout(function () {
@@ -2422,5 +2427,43 @@ function open_blank(el_this) {
     $("#skip_modal_pic_preview_container").attr("src", elem.next().attr("href"));
   }
   /*** SKIP TAB STOP ***/
+  /*** COMMUNICATION TAB START ***/
+  $("#meet_add").click(function () {
+    get_communication_list();
+  });
+
+  function get_communication_list() {
+    fetch("ajax/ftt_attendance_ajax.php?type=get_communication_list")
+    .then(response => response.json())
+    .then(commits => {
+      console.log(commits.result);
+      render_communication_list(commits.result);
+    });
+  }
+
+  function render_communication_list(data) {
+    let html = "";
+    for (let variable in data) {
+      html += '<div>' + serving_ones_list[variable] + '<br>';
+      if (data.hasOwnProperty(variable)) {
+        let obj = data[variable];
+          console.log(obj);
+        for (let key in obj) {
+          if (obj.hasOwnProperty(key)) {
+            let str = obj[key];
+            let bg = "";
+            if (str["trainee"]) {
+              bg = " bg-secondary text-white ";
+            }
+            html += '<span class="cursor-pointer d-inline-block p-1 mt-1 mb-1 mr-2 border rounded ' + bg + '">' + str["date"] + ' — ' + str["time"] + '</span>';
+          }
+        }
+      }
+      html += '</div>';
+    }
+
+    $("#edit_meet_blank .modal-body").html(html);
+  }
+  /*** COMMUNICATION TAB STOP ***/
 // DOCUMENT READY STOP
 });
