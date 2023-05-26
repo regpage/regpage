@@ -544,26 +544,3 @@ function get_permission_archive($sheet_id)
   while ($row = $res->fetch_assoc()) $result = $row['archive_sessions'];
   return $result;
 }
-
-// COMMUNICATION
-function get_communication_list($past=0)
-{
-  global $db;
-  $past = $db->real_escape_string($past);
-
-  $result = [];
-  $res = db_query("SELECT *
-    FROM `ftt_communication`
-    WHERE `past` = '$past'
-    ORDER BY `date`, `time`");
-  while ($row = $res->fetch_assoc()) {
-    if (isset($result[$row['serving_one']])) {
-      $result[$row['serving_one']][] = $row;
-    } else {
-      $result[$row['serving_one']] = [];
-      $result[$row['serving_one']][] = $row;
-    }
-
-  }
-  return $result;
-}

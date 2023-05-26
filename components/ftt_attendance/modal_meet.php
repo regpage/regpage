@@ -1,4 +1,4 @@
-<!-- РАЗРЕШЕНИЯ -->
+<!-- ОБЩЕНИЕ СПИСОК-->
 <div id="edit_meet_blank" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" data-id="" data-member_key="" data-serving_one="" data-status="">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -18,16 +18,13 @@
   </div>
 </div>
 
-<!-- РАЗРЕШЕНИЯ -->
-<div id="edit_meet_blank_confirm" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" data-id="" data-member_key="" data-serving_one="" data-status="">
-  <div class="modal-dialog modal-lg">
+<!-- ОБЩЕНИЕ ПОДТВЕРЖДЕНИЕ -->
+<div id="edit_meet_blank_confirm" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" data-id="" data-trainee="">
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="mb-0">Записаться на общение?</h5>
+        <h5 class="mb-0"></h5>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="font-size: 1.5rem;">x</button>
-      </div>
-      <div class="modal-body">
-
       </div>
       <div class="modal-footer">
         <div class="text-right w-100">
@@ -39,20 +36,18 @@
   </div>
 </div>
 
-<!-- РАЗРЕШЕНИЯ -->
+<!-- ОБЩЕНИЕ ОТМЕНА-->
 <div id="edit_meet_blank_record" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" data-id="" data-member_key="" data-serving_one="" data-status="">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="mb-0">Запись на общение</h5>
+        <h5 class="mb-0">Отменить запись на общение?</h5>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="font-size: 1.5rem;">x</button>
       </div>
-      <div class="modal-body">
 
-      </div>
       <div class="modal-footer">
         <div class="text-right w-100">
-          <button id="undo_meet_blank" class="btn btn-sm btn-warning">Отменить</button>
+          <button id="undo_meet_blank" class="btn btn-sm btn-danger">Отменить</button>
           <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Закрыть</button>
         </div>
       </div>

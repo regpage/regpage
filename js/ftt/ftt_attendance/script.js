@@ -2455,7 +2455,9 @@ function open_blank(el_this) {
             if (str["trainee"]) {
               bg = " bg-secondary text-white ";
             }
-            html += '<span class="cursor-pointer d-inline-block p-1 mt-1 mb-1 mr-2 border rounded ' + bg + '">' + str["date"] + ' — ' + str["time"] + '</span>';
+            html += '<span class="communication_str cursor-pointer d-inline-block p-1 mt-1 mb-1 mr-2 border rounded '
+            + bg + '" data-id="' + str["id"] + '" data-trainee="' + str["trainee"] + '">'
+            + dateStrFromyyyymmddToddmm(str["date"]) + ' — ' + str["time"] + '</span>';
           }
         }
       }
@@ -2463,7 +2465,59 @@ function open_blank(el_this) {
     }
 
     $("#edit_meet_blank .modal-body").html(html);
+
+    // open blank
+    $(".communication_str").click(function () {
+      if (!$(this).attr("data-trainee")) {
+        $("#edit_meet_blank_confirm h5").text("Записаться на общение "
+        + $(this).text() + "?");
+        $("#edit_meet_blank_confirm").attr("data-trainee", window.adminId);
+        $("#edit_meet_blank_confirm").attr("data-id", $(this).attr("data-id"));
+        $("#edit_meet_blank_confirm").modal("show");
+      } else {
+        showError("Время не доступно для записи");
+      }
+    });
+
+    // record
+    $("#send_meet_blank").click(function () {
+      if ($("#edit_meet_blank_confirm").attr("data-trainee") && $("#edit_meet_blank_confirm").attr("data-id")) {
+        fetch("ajax/ftt_attendance_ajax.php?type=set_communication_record&trainee="
+        +$("#edit_meet_blank_confirm").attr("data-trainee") + "&id="
+        + $("#edit_meet_blank_confirm").attr("data-id"))
+        .then(response => response.json())
+        .then(commits => {
+          console.log(commits.result);
+          showHint("Запись успешно добавлена");
+          setTimeout(function () {
+            location.reload();
+          }, 1500);
+        });
+      } else {
+        showError("Что то пошло не так, обратитесь к администратору.");
+      }
+    });
   }
+  // open record
+  $(".str_record").click(function () {
+    $("#edit_meet_blank_record").attr("data-id", $(this).attr("data-id"));
+    $("#edit_meet_blank_record").modal("show");
+  });
+
+  $("#undo_meet_blank").click(function () {
+    fetch("ajax/ftt_attendance_ajax.php?type=set_communication_record&trainee="
+    + "&id="
+    + $("#edit_meet_blank_record").attr("data-id"))
+    .then(response => response.json())
+    .then(commits => {
+      console.log(commits.result);
+      showHint("Запись успешно отменена");
+      setTimeout(function () {
+        location.reload();
+      }, 1500);
+    });
+  });
+
   /*** COMMUNICATION TAB STOP ***/
 // DOCUMENT READY STOP
 });

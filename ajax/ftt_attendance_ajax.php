@@ -4,6 +4,7 @@ include_once "ajax.php";
 // подключаем запросы
 include_once "../db/ftt/ftt_attendance_db.php";
 include_once "../db/ftt/ftt_attendance_skip_db.php";
+include_once "../db/ftt/ftt_attendance_meet_db.php";
 include_once "../db/classes/schedule_class.php";
 include_once "../db/classes/db_operations.php";
 include_once '../db/classes/date_convert.php';
@@ -312,8 +313,15 @@ if (isset($_GET['type']) && $_GET['type'] === 'delete_skip') {
 }
 
 // COMMUNICATION
+// get list
 if (isset($_GET['type']) && $_GET['type'] === 'get_communication_list') {
   echo json_encode(["result"=>get_communication_list()]);
+  exit();
+}
+
+// set record
+if (isset($_GET['type']) && $_GET['type'] === 'set_communication_record') {
+  echo json_encode(["result"=>set_communication_record($_GET['trainee'], $_GET['id'])]);
   exit();
 }
 

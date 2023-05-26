@@ -14,14 +14,11 @@
             endforeach; ?>
           </datalist>
           <input id="new_guest_application" class="align-middle" type="checkbox">
-          <label class="align-middle" for="new_guest_application"> гостевое</label>
-          <button id="btn_add_new_application" type="button" class="btn btn-sm btn-success float-right">Добавить</button>
-        </div>
-        <hr>
-        <div id="member_new_application_list" class="">          
-        </div>
+          <label class="align-middle" for="new_guest_application"> гость</label>
+        </div>        
       </div>
       <div class="modal-footer">
+        <button id="btn_add_new_application" type="button" class="btn btn-sm btn-success float-right">Добавить</button>
         <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true">Закрыть</button>
       </div>
     </div>

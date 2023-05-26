@@ -5,7 +5,7 @@
   <div class="row btn-group mb-2 mr-2">
     <div class="">
       <button type="button" class="btn btn-sm btn-primary mr-3" data-toggle="modal" data-target="#modal_dlt_add_new_application">
-        Добавить/удалить заявление
+        Добавить заявление
       </button>
     </div>
     <div class="">

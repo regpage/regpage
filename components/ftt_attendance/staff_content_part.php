@@ -25,11 +25,13 @@
         Пропущенные занятия <?php echo $missed_class_statistics; ?>
       </a>
     </li>
+    <?php if ($memberId === '000001679'): ?>
     <li class="nav-item">
       <a class="nav-link <?php echo $tab_meet_active; ?>" data-toggle="tab" href="#meet_tab">
         Запись на общение <?php echo $meet_statistics; ?>
       </a>
     </li>
+    <?php endif; ?>
   </ul>
   <!-- Tab panes -->
   <div id="tab_content_extra_help" class="tab-content">
