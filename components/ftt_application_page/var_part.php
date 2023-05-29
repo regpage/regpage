@@ -134,6 +134,8 @@ if ($request_data['interview_name']) {
 // Payment data
 $ftt_monthly_pay = getValueFttParamByName('monthly_pay');
 $ftt_min_pay = getValueFttParamByName('min_pay');
+$ftt_monthly_pay_eu = getValueFttParamByName('monthly_pay_dlr');
+$ftt_min_pay_eu = getValueFttParamByName('min_pay_dlr');
 $ftt_consecration = getValueFttParamByName('consecration');
 
 /**** П Р А В И Л А ****/

@@ -2230,6 +2230,8 @@ function open_blank(el_this) {
   $("#skip_modal_file").change(function () {
     let id = $("#edit_skip_blank").attr("data-id");
     let skip_data_blank = new FormData();
+    $("#send_skip_blank").attr("disabled", true);
+    $("#save_skip_blank").attr("disabled", true);
     if ($("#skip_modal_file")[0].files[0]) {
       for (var i = 0; i < $("#skip_modal_file")[0].files.length; i++) {
         skip_data_blank.set("blob"+i, $("#skip_modal_file")[0].files[i]);
@@ -2241,6 +2243,8 @@ function open_blank(el_this) {
       })
       .then(response => response.json())
       .then(commits => {
+        $("#send_skip_blank").attr("disabled", false);
+        $("#save_skip_blank").attr("disabled", false);
         $("#spinner_upload").hide();
         if (commits.result[0] === "Н") {
           showError(commits.result);

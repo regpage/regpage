@@ -272,6 +272,19 @@ $(document).ready(function(){
     } else {
       $("#radio_point_health_question50_1").parent().parent().parent().parent().parent().hide();
     }
+    /*
+    $("#radio_point_ftt_place_1, #radio_point_ftt_place_0").change(function () {
+      if ($(this).attr("id") === "radio_point_ftt_place_1" && $(this).prop("checked")) {
+        $(this).parent().parent().parent().parent().parent().next().hide();
+        $(this).parent().parent().parent().parent().parent().next().next().show();
+      }
+
+      if ($(this).attr("id") === "radio_point_ftt_place_0" && $(this).prop("checked")) {
+        $(this).parent().parent().parent().parent().parent().next().show();
+        $(this).parent().parent().parent().parent().parent().next().next().hide();
+      }
+    });
+    */
     andOrCondition();
   }
 
@@ -281,6 +294,17 @@ $(document).ready(function(){
     } else {
       $("#radio_point_will_be_two_years_0").parent().parent().parent().parent().parent().hide();
     }
+
+     if ($("#radio_point_ftt_place_0").prop("checked")) {
+       $("#radio_point_ftt_place_0").parent().parent().parent().parent().parent().next().show();
+       $("#radio_point_ftt_place_0").parent().parent().parent().parent().parent().next().next().hide();
+     } else if ($("#radio_point_ftt_place_1").prop("checked")) {
+       $("#radio_point_ftt_place_1").parent().parent().parent().parent().parent().next().hide();
+       $("#radio_point_ftt_place_1").parent().parent().parent().parent().parent().next().next().show();
+     } else {
+       $("#radio_point_ftt_place_0").parent().parent().parent().parent().parent().next().hide();
+       $("#radio_point_ftt_place_0").parent().parent().parent().parent().parent().next().next().hide();
+     }
   }
 
   function select_behavior() {
@@ -1628,4 +1652,15 @@ $(document).ready(function(){
  if (!$("#point_member_key").attr("data-value") && !$("#main_container").attr("data-id")) {
    $("#point_member_key").attr("data-value", window.adminId);
  }
+
+ if ($("#point_locality_key").val()) {
+   // Получаем страну
+   fetch("ajax/ftt_request_ajax.php?type=get_country_by_locality&locality_key="+$("#point_locality_key").val())
+   .then(response => response.json())
+   .then(result => {
+     //$("#request_country_key").val(result.result);
+     $("#point_country_key").val(result.result);     
+   });
+ }
+
 }); // END document ready
