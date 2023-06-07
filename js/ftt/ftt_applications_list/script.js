@@ -28,9 +28,9 @@ $(document).ready(function() {
        // подготавливаем данные
        let request_status = "";
        if (list[i].stage == 0) {
-         request_status = '<span class="badge badge-secondary">Черновик</span>';
+         request_status = '<span class="badge badge-secondary">черновик</span>';
        } else if (list[i].stage > 0 ) {
-         request_status = "Отправлен";
+         request_status = '<span class="badge badge-info">отправлен</span>';
        }
        let decision_text = "";
        if (list[i].decision === "deny") {
@@ -41,8 +41,8 @@ $(document).ready(function() {
 
        //Рендорим список
        list_desk.push("<div class='row request-string' data-member_key='"+ list[i].member_key +"'><div class='col-3 pl-1'><span>"+list[i].name+
-       "</span><br><span>"+ data_page.category[list[i].category_key] +"</span></div><div class='col'>"+list[i].locality_name+"</div><div class='col'><span>"+list[i].cell_phone+"</span><br><span>"+list[i].email+
-       "</span></div><div class='col-2'><span>"+request_status+"</span><br><span>"+list[i].send_date+"</span></div><div class='col-2'>"+decision_text+"</div></div>");
+       "</span><br><span class='grey_text'>"+ data_page.category[list[i].category_key] +"</span></div><div class='col'>"+list[i].locality_name+"</div><div class='col'><span>"+list[i].cell_phone+"</span><br><span class='grey_text'>"+list[i].email+
+       "</span></div><div class='col-2'><span>"+request_status+"</span><br><span class='grey_text'>"+list[i].send_date+"</span></div><div class='col-2'>"+decision_text+"</div></div>");
        //<div class='col-1 request-trash'>🗑</div>
      }
      $(list_id).html(list_desk);
@@ -54,6 +54,21 @@ $(document).ready(function() {
        window.location = query;
 
      });
+     if ($(window).width()<=769) {
+       $(".request-string div:nth-child(1)").removeClass("col-3").addClass("col-7");
+       $(".request-string div:nth-child(2)").removeClass("col-2").addClass("col-5");
+       $(".request-string div:nth-child(3)").removeClass("col").addClass("col-7").addClass("pl-1");
+       $(".request-string div:nth-child(4)").removeClass("col-2").addClass("col-5");
+       $(".request-string div:nth-child(5)").addClass("pl-1");
+
+       $("#header_candidate div:nth-child(3)").hide();
+       $("#header_candidate div:nth-child(4)").hide();
+       $("#header_candidate div:nth-child(5)").hide();
+
+       $("#header_guest div:nth-child(3)").hide();
+       $("#header_guest div:nth-child(4)").hide();
+       $("#header_guest div:nth-child(5)").hide();
+     }
    }
 
   // Получаем заявления
@@ -193,7 +208,7 @@ $(document).ready(function() {
         $(this).hide();
       }
     });
-    
+
     $("#requests-guest-list .request-string").each(function () {
       if ($("#flt_allow_deny").val() === "_all_" || allow || deny) {
         $(this).show();
@@ -205,5 +220,6 @@ $(document).ready(function() {
   $("#flt_allow_deny").change(function () {
     flt_allow_deny();
   });
+
 /*** DOCUMENT READY END ***/
 });

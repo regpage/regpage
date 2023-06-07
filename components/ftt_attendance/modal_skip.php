@@ -68,7 +68,9 @@ data-id="" data-member_key="" data-serving_one="" data-status="">
       </div>
       <div class="modal-footer">
         <div class="text-right w-100">
+          <?php if ($ftt_access['group'] === 'staff') { ?>
           <button id="delete_skip_blank" class="btn btn-sm btn-secondary float-left"><i class="fa fa-trash"></i></button>
+          <?php } ?>
           <button id="send_skip_blank" class="btn btn-sm btn-warning">Отправить</button>
           <button id="save_skip_blank" class="btn btn-sm btn-primary">Сохранить</button>
           <button id="close_skip_blank" class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Закрыть</button>
