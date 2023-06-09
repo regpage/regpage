@@ -100,8 +100,8 @@ function setRequestField($adminId, $field, $data, $id, $table, $isGuest, $blob=f
 }
 // удалить заявление из базы
 function db_deleteRequest($id) {
+  // Удаление сканов из бланка
   $res = db_query("DELETE FROM ftt_request WHERE `id` = '$id'");
-  // Добавить удаление картинок
 
   return $res;
 }
@@ -110,7 +110,7 @@ function db_setTrashForRequest($id) {
   $res = db_query("UPDATE ftt_request SET `notice` = 2 WHERE `id` = '$id'");
   return $res;
 }
-// Удаление сканов из бланка
+
 function db_deletePicFromRequest($id, $field) {
   global $db;
   $field = $db->real_escape_string($field);

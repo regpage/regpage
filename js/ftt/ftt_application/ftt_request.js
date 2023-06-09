@@ -919,7 +919,9 @@ $(document).ready(function(){
   // удаление картинок
   $(".pic-delete").click(function () {
     let id = $("#main_container").attr("data-id");
-    let field;
+    let field, patch_pic;
+    patch_pic = $(this).prev().attr("href");
+
     if ($(this).parent().parent().find("input[type='file']").attr("data-field")) {
       field = $(this).parent().parent().find("input[type='file']").attr("data-field");
     } else {
@@ -933,7 +935,7 @@ $(document).ready(function(){
       field += "_3";
     }
 
-    fetch("ajax/ftt_request_ajax.php?type=delete_pic&field="+field+"&id="+id)
+    fetch("ajax/ftt_request_ajax.php?type=delete_pic&field="+field+"&id="+id+"&patch="+patch_pic)
     .then(response => response.json())
     .then(data => {
       showSaveIcon();

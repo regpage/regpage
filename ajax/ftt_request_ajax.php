@@ -34,7 +34,7 @@ if(isset($_GET['type']) && $_GET['type'] === 'set') {
 
 // Сохранение полей с картинками при заполнении заявления
 if(isset($_GET['type']) && $_GET['type'] === 'set_blob') {
-    if (isset($_FILES['blob'])) {        
+    if (isset($_FILES['blob'])) {
 		    $target_file = 'img/'.time().basename($_FILES['blob']['name']);
 	      move_uploaded_file($_FILES['blob']['tmp_name'],$target_file);
 	       $blo = 'ajax/'.$target_file;
@@ -63,6 +63,8 @@ if(isset($_GET['type']) && $_GET['type'] === 'to_trash_request') {
 
 // Удалить картику из заявления
 if(isset($_GET['type']) && $_GET['type'] === 'delete_pic') {
+    $file = explode('ajax/', $_GET['patch']);
+    unlink($file[1]);    
     echo json_encode(["result"=>db_deletePicFromRequest($_GET['id'],$_GET['field'])]);
     exit();
 }
