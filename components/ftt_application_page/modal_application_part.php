@@ -32,13 +32,11 @@
 <div id="modalDeleteMyRequest" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header pb-2 pl-2 pt-2 pr-2">
+      <div class="modal-header">
+        <h5 class="mb-0">Удалить заявление?</h5>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
       </div>
-      <div class="modal-body">
-        <h5>Удалить заявление?</h5>
-      </div>
-      <div class="modal-footer pb-2 pl-2 pt-2 pr-2">
+      <div class="modal-footer">
         <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true">ОТМЕНА</button>
         <button class="btn btn-sm btn-danger" id="btnMdlDeleteMyRequest" data-dismiss="modal" aria-hidden="true">УДАЛИТЬ</button>
       </div>

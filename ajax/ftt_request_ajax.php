@@ -34,8 +34,8 @@ if(isset($_GET['type']) && $_GET['type'] === 'set') {
 
 // Сохранение полей с картинками при заполнении заявления
 if(isset($_GET['type']) && $_GET['type'] === 'set_blob') {
-    if (isset($_FILES['blob'])) {
-		    $target_file = 'img/'.basename($_FILES['blob']['name']);
+    if (isset($_FILES['blob'])) {        
+		    $target_file = 'img/'.time().basename($_FILES['blob']['name']);
 	      move_uploaded_file($_FILES['blob']['tmp_name'],$target_file);
 	       $blo = 'ajax/'.$target_file;
 	  } else {

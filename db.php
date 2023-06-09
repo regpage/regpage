@@ -643,6 +643,7 @@ function db_registerMembers ($adminId, $eventId, $memberIds)
         $row=$res->fetch_array();
 
         if (!$row['regstate_key'] || $row['regstate_key'] =='05' || $row['regstate_key'] =='03'){
+          // OR (e.min_age > 0) AND (e.min_age >= CONVERT((YEAR(e.end_date) - YEAR(m.birth_date)), CHAR))        
             $rs=db_query ("SELECT m.name FROM reg r
                        INNER JOIN member m ON r.member_key=m.key
                        INNER JOIN event e ON r.event_key=e.key
@@ -654,7 +655,7 @@ function db_registerMembers ($adminId, $eventId, $memberIds)
                        OR (NULLIF (m.locality_key,'') IS NULL AND NULLIF (m.new_locality,'') IS NULL)
                        OR NULLIF (m.category_key,'') IS NULL
                        OR NULLIF (m.birth_date,'') IS NULL OR m.birth_date LIKE '0000-00-00'
-                       OR (e.min_age > 0) AND (e.min_age >= CONVERT((YEAR(e.start_date) - YEAR(m.birth_date)), CHAR))
+                       OR (e.min_age > 0) AND ((e.min_age*365.3) >= DATEDIFF(e.end_date, m.birth_date))
                        OR (e.max_age > 0) AND (e.max_age <= CONVERT((YEAR(e.start_date) - YEAR(m.birth_date)), CHAR))
                        OR ( e.need_parking > 0 AND (r.parking IS NULL))
 

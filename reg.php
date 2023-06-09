@@ -1991,7 +1991,7 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
 
     $("#btnDoSaveMember").click (function (){
         if (!$(this).hasClass('disabled')){
-          if (checkAgeLimit(".tab-pane.active","data-start", false)) {
+          if (checkAgeLimit(".tab-pane.active","data-end", false)) {
               saveMember(false);
             }
         }
@@ -2005,7 +2005,7 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
       var btn = $(this).attr('id');
 
       if (!$(this).hasClass('disabled')) {
-        if (checkAgeLimit(".tab-pane.active","data-start", false)) {
+        if (checkAgeLimit(".tab-pane.active","data-end", false)) {
           if (checkForRegEnd(btn)) {
               saveMember (true);
             }

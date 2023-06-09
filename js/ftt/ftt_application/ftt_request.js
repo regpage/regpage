@@ -788,21 +788,81 @@ $(document).ready(function(){
     let field = $(this).attr('data-field');
     let id;
     let is_guest = $("#main_container").attr("data-guest");
-    let next_blob = "";
+    let next_blob = "", num_blob;
 
     if (!$(this)[0].files[0]) {
       console.log('Blob empty');
-      return
+      return;
     }
     for (var i = 0; i < $(this)[0].files.length; i++) {
       // Показать иконку сохранения
       showSaveIcon(1);
-      // второй и третий блоб для загрузки
-      if (i === 1) {
-        next_blob = 1;
-      } else if (i === 2) {
-        next_blob = 2;
+
+      if ($(this)[0].files.length === 1 && field === "passport_scan") {
+        if (!$("#point_passport_scan_2").next().find("img").attr("src")) {
+          // replace first
+        } else if (!$("#point_passport_scan_2").next().next().find("img").attr("src")) {
+          // replace second
+          next_blob = 1;
+        } else if (!$("#point_passport_scan_2").next().next().next().find("img").attr("src")) {
+          // replace third
+          next_blob = 2;
+        } else {
+          console.log("Error");
+        }
       }
+
+      if ($(this)[0].files.length === 2 && field === "passport_scan") {
+        /*if ($("#point_passport_scan_2").next().find("img").attr("src")
+        && $("#point_passport_scan_2").next().next().find("img").attr("src")
+        && $("#point_passport_scan_2").next().next().next().find("img").attr("src")) {
+          // replace first
+        } */
+        if (i === 0) {
+          if (!$("#point_passport_scan_2").next().find("img").attr("src")) {
+            // replace first
+            num_blob = 1;
+          } else if (!$("#point_passport_scan_2").next().next().find("img").attr("src")) {
+            // replace second
+            next_blob = 1;
+            num_blob = 2;
+          } else if (!$("#point_passport_scan_2").next().next().next().find("img").attr("src")) {
+            // replace third
+            next_blob = 2;
+            num_blob = 3;
+          } else {
+            num_blob = 1;
+          }
+        } else if (i === 1) {
+          if (!$("#point_passport_scan_2").next().find("img").attr("src") && num_blob !== 1) {
+            // replace first
+          } else if (!$("#point_passport_scan_2").next().next().find("img").attr("src") && num_blob !== 2) {
+            // replace second
+            next_blob = 1;
+          } else if (!$("#point_passport_scan_2").next().next().next().find("img").attr("src") && num_blob !== 3) {
+            // replace third
+            next_blob = 2;
+          } else {
+            if (num_blob === 1) {
+              next_blob = 1;
+            } else if (num_blob === 2) {
+              next_blob = 2;
+            } else if (num_blob === 3) {
+              next_blob = "";
+            }
+          }
+        }
+      }
+
+      if ($(this)[0].files.length === 3 && field === "passport_scan") {
+        // второй и третий блоб для загрузки
+        if (i === 1) {
+          next_blob = 1;
+        } else if (i === 2) {
+          next_blob = 2;
+        }
+      }
+
       // если бланк не существует пытаемся получить id на второй итерации
       id = $("#main_container").attr("data-id");
       formData.append('blob', $(this)[0].files[i]);
@@ -1659,7 +1719,7 @@ $(document).ready(function(){
    .then(response => response.json())
    .then(result => {
      //$("#request_country_key").val(result.result);
-     $("#point_country_key").val(result.result);     
+     $("#point_country_key").val(result.result);
    });
  }
 

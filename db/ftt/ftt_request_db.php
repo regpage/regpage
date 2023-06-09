@@ -101,6 +101,8 @@ function setRequestField($adminId, $field, $data, $id, $table, $isGuest, $blob=f
 // удалить заявление из базы
 function db_deleteRequest($id) {
   $res = db_query("DELETE FROM ftt_request WHERE `id` = '$id'");
+  // Добавить удаление картинок
+
   return $res;
 }
 // отправить заявление в корзину
