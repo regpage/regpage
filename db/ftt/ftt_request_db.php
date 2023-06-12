@@ -101,6 +101,19 @@ function setRequestField($adminId, $field, $data, $id, $table, $isGuest, $blob=f
 // удалить заявление из базы
 function db_deleteRequest($id) {
   // Удаление сканов из бланка
+  $paths = [];
+  $resPath=db_query("SELECT `passport_scan`, `passport_scan_2`, `passport_scan_3`, `photo`, `spouse_consent` FROM ftt_request WHERE `id` = '$id'");
+  while ($row = $resPath->fetch_assoc()) $paths=[$row['passport_scan'],$row['passport_scan_2'],$row['passport_scan_3'],$row['photo'],$row['spouse_consent']];
+
+  foreach ($paths as $key => $value) {
+    if (!empty($value)) {
+      $file = explode('ajax/', $value);
+      if (isset($file[1]) && !empty($file[1])) {
+        unlink($file[1]);
+      }
+    }
+  }
+
   $res = db_query("DELETE FROM ftt_request WHERE `id` = '$id'");
 
   return $res;

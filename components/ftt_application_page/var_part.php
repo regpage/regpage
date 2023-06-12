@@ -79,7 +79,9 @@ if (isset($_GET['member_key']) && $_GET['member_key'] !== $memberId) { // Есл
   $request_data = getMemberData($member_key);
   // если по КЛЮЧУ не найдено данных
   if (!$request_data['id']) {
-    $request_data = getStartMemberData($member_key);
+    echo '<div><br><br><br><h5>Ваше заявление не найдено, отправьте заявку с главной страницы или обратитесь к служащим.</h5><a href="index">ВЕРНУТЬСЯ НА ГЛАВНУЮ</a></div>';
+    die();
+    // $request_data = getStartMemberData($member_key);
   }
 }
 

@@ -964,8 +964,8 @@ $(document).ready(function(){
       $("#modalDeleteMyRequest h5").text("Бланк заявления будет удалён безвозвратно. Продолжить?").css("background-color", "red").css("padding", "8px").addClass("rounded");
       $("#btnMdlDeleteMyRequest").attr("disabled", false);
     }
-
   });
+
     // Удалние заявления из модального окна
   $("#btnMdlDeleteMyRequest").click(function () {
     setCookie("wizard_step", 'wizard_step_1');
@@ -973,9 +973,9 @@ $(document).ready(function(){
     setCookie("application_check", '');
     showSaveIcon(1);
     let type_dlt = "dlt";
-    if ($("#main_container").attr("data-status") && $("#main_container").attr("data-status") > 0) {
+    /*if ($("#main_container").attr("data-status") && $("#main_container").attr("data-status") > 0) {
       type_dlt = "trash";
-    }
+    }*/
     fetch("ajax/ftt_request_ajax.php?type=to_trash_request&type_dlt="+ type_dlt +"&id="+$("#main_container").attr("data-id"))
     .then(response => response.json())
     .then(data => {
