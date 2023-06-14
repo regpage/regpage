@@ -297,8 +297,13 @@ hideShowPVOMBlock($("#hideShowPVOMBlock"), localStorage.getItem('pvom_block'));
 hideShowPVOMBlock($("#hideShowPVOMBlock"), localStorage.getItem('pvom_block'));
 
 // запрос заявления на ПВОМ
-$("#send_request_for_pvom").click(function () {
-  fetch("ajax/ftt_ajax.php?type=add_request_for")
+$("#send_request_for_pvom, #send_request_for_pvom_guest").click(function () {
+  let guest = 0;
+  if ($(this).attr("id") === "send_request_for_pvom_guest") {
+    guest = 1
+  }
+
+  fetch("ajax/ftt_ajax.php?type=add_request_for&guest="+guest)
   .then(response => response.json())
   .then(data => {
     window.location = 'index';

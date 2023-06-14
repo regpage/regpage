@@ -51,3 +51,10 @@ if (isset($_COOKIE['sorting_g'])) {
 } else {
   $sort_fio_g_ico = 'fa fa-sort-desc';
 }
+
+$activeList = 'active';
+$activeRequestFor = '';
+if (isset($_COOKIE['tap_request_for']) && $_COOKIE['tap_request_for'] === 'active') {
+  $activeList = '';
+  $activeRequestFor = 'active';
+}

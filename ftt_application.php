@@ -15,7 +15,7 @@ $member_categories = db_getCategories();
 <!-- раздел заявлений на ПВОМ -->
 <div class="container-xl" style="max-width: 1170px; margin-top: 10px; padding-bottom: 10px; background-color: white;">
 
-  <div class="" style="padding-top: 20px;">
+  <div id="application_list_cont" class="" style="padding-top: 20px;">
   <!-- TAB APPLICATION CONTAINER -->
     <?php include_once 'components/ftt_application_list/applications_part.php'; ?>
   </div>

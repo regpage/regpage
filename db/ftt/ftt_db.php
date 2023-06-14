@@ -31,7 +31,7 @@ function db_getAllRequests ($adminId, $role, $guest, $sorting){
     FROM ftt_request AS fr
     INNER JOIN member m ON m.key = fr.member_key
     INNER JOIN locality l ON l.key = m.locality_key
-    WHERE {$condition} ORDER BY {$order_by}");
+    WHERE {$condition} AND fr.notice != 2 ORDER BY {$order_by}");
     while ($row = $res->fetch_assoc()) $result[]=$row;
     // для коректного запроса все ключевые поля для выборки из присоединяемых таблиц должны быть заполнены
 
@@ -74,13 +74,15 @@ function db_getRecommender($adminId) {
   return $access;
 }
 
-function sentRequestToPVOM($adminId)
+function sentRequestToPVOM($adminId, $guest)
 {
   global $db;
+  $adminId = $db->real_escape_string($adminId);
+  $guest = $db->real_escape_string($guest);
   $check = checkRequestToPVOM($adminId);
   if (!$check) {
     $adminId = $db->real_escape_string($adminId);
-    $res = db_query("INSERT INTO `ftt_request` (`member_key`, `notice`) VALUES ('$adminId', 2)");
+    $res = db_query("INSERT INTO `ftt_request` (`member_key`, `notice`, `guest`) VALUES ('$adminId', 2, '$guest')");
   }
 }
 
@@ -92,6 +94,50 @@ function checkRequestToPVOM($adminId)
   $res=db_query("SELECT `id` FROM `ftt_request` WHERE `member_key` = '$adminId' AND `notice` = 2");
   while ($row = $res->fetch_assoc()) return $row['id'];
 
+}
+
+// get requests
+function db_getRequestForApplication ($adminId, $trash=''){
+  global $db;
+  $adminId = $db->real_escape_string($adminId);
+  $trash = $db->real_escape_string($trash);
+  $result = [];
+  if ($trash) {
+    $condition = " fr.notice = 2 ";
+  } else {
+    $condition = " fr.stage = 0 AND fr.notice <> 2 ";
+  }
+  $res=db_query ("SELECT fr.*,
+    m.name, m.male, m.locality_key, m.cell_phone, m.email, m.category_key, l.name AS locality_name
+  FROM ftt_request AS fr
+  INNER JOIN member m ON m.key = fr.member_key
+  INNER JOIN locality l ON l.key = m.locality_key
+  WHERE {$condition}
+  ORDER BY fr.stage, m.name");
+  while ($row = $res->fetch_assoc()) $result[]=$row;
+
+  return $result;
+}
+
+function createApplicationByRequest($id, $guest=0)
+{
+  global $db;
+  $id = $db->real_escape_string($id);
+  $guest = $db->real_escape_string($guest);
+
+  $res = db_query("UPDATE `ftt_request` SET `notice` = 0, `guest` = '$guest' WHERE  `id` = '$id'");
+
+  return $res;
+}
+
+function dltRequestFor($id)
+{
+  global $db;
+  $id = $db->real_escape_string($id);
+
+  $res = db_query("DELETE FROM `ftt_request` WHERE  `id` = '$id'");
+
+  return $res;
 }
 
 // получаем собеседующего

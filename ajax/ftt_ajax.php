@@ -36,9 +36,22 @@ if(isset($_GET['type']) && $_GET['type'] === 'dlt_application'){
 */
 
 // Отправляем запрос заявления на ПВОМ
-if(isset($_GET['type']) && $_GET['type'] === 'add_request_for'){
-    echo json_encode(["result"=>sentRequestToPVOM($adminId)]);
+if (isset($_GET['type']) && $_GET['type'] === 'add_request_for'){
+    echo json_encode(["result"=>sentRequestToPVOM($adminId, $_GET['guest'])]);
     exit();
 }
+
+// Одобряем запрос заявления на ПВОМ
+if (isset($_GET['type']) && $_GET['type'] === 'approve_request_for'){
+    echo json_encode(["result"=>createApplicationByRequest($_GET['id'], $_GET['guest'])]);
+    exit();
+}
+
+// Одобряем запрос заявления на ПВОМ
+if (isset($_GET['type']) && $_GET['type'] === 'dlt_request_for'){
+    echo json_encode(["result"=>dltRequestFor($_GET['id'])]);
+    exit();
+}
+
 
 ?>

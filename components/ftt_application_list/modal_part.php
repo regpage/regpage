@@ -40,3 +40,34 @@
     </div>
   </div>
 </div>
+
+<!-- ADD APPLICATION  -->
+<div id="modal_add_request_for" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>Создать заявление</h5>
+      </div>
+      <div class="modal-footer">
+        <button id="mdl_btn_approve_request" class="btn btn-sm btn-success" data-dismiss="modal" aria-hidden="true">Основное</button>
+        <button id="mdl_btn_approve_request_guest" class="btn btn-sm btn-primary" data-dismiss="modal" aria-hidden="true">В качестве гостя</button>
+        <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE APPLICATION  -->
+<div id="modal_dlt_request_for" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>Удалить запрос на заявление?</h5>
+      </div>
+      <div class="modal-footer">
+        <button id="mdl_btn_delete_request" class="btn btn-sm btn-danger">Удалить</button>
+        <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>

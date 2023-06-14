@@ -15,3 +15,7 @@
 .request-string:hover {
   background-color: #eee;
 }
+
+#application_list_cont .nav-link {
+  border: 1px lightgray solid;
+}

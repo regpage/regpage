@@ -217,7 +217,8 @@ else if (isset ($_SESSION["logged-in"])){
         if ($isOpen && !$isApplicant && empty($ftt_access['group'])) {
         echo '<div class="tab-content" style="margin-top:10px;">';
 
-        if (!$checkRequestToPVOM) echo '<button type="button" id="send_request_for_pvom" class="btn btn-primary btn-sm">Запрос заявления на ПВОМ</button>';
+        if (!$checkRequestToPVOM) echo '<button type="button" id="send_request_for_pvom" class="btn btn-primary btn-sm">Запрос заявления на ПВОМ</button><br>';
+        if (!$checkRequestToPVOM) echo '<button type="button" id="send_request_for_pvom_guest" class="btn btn-info btn-sm" style="margin-top: 10px;">Запрос заявления на ПВОМ в качестве ГОСТЯ</button>';
 
         if (!empty($checkRequestToPVOM)) echo '<div>Запрос заявления на ПВОМ отправлен служащим.</div>';
 

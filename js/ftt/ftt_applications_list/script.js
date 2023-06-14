@@ -2,7 +2,12 @@
 $(document).ready(function() {
   // Переменная в которой будут храниться данные запросов. НО, возможно, это плохая идея
   // потому что необходимо постаянно перезапрашивать данные и обнавлять её содержимое
-  console.log(data_page);
+
+  if (getCookie("tap_request_for") === "active") {
+    setCookie("tap_request_for", "");
+    showHint("Заявление добавлено на сайт.");
+  }
+
   // Нужно додумать
   let requests = {};
 
@@ -219,6 +224,51 @@ $(document).ready(function() {
   }
   $("#flt_allow_deny").change(function () {
     flt_allow_deny();
+  });
+
+  $(".btn_approve_request").click(function () {
+    $("#modal_add_request_for").modal("show");
+    $("#modal_add_request_for").attr("data-id", $(this).parent().parent().attr("data-id"));
+    $("#modal_add_request_for").attr("data-guest", $(this).parent().parent().attr("data-guest"));
+    if ($(this).parent().parent().attr("data-guest") === "1") {
+      $("#modal_add_request_for h5").text("Создать заявление в качестве ГОСТЯ");
+    } else {
+      $("#modal_add_request_for h5").text("Создать заявление");
+    }
+
+  });
+
+  $("#mdl_btn_approve_request, #mdl_btn_approve_request_guest").click(function () {
+    let id = $("#modal_add_request_for").attr("data-id");
+    let guest = $("#modal_add_request_for").attr("data-guest");
+    if ($(this).attr("id") === 'mdl_btn_approve_request') {
+      guest = 0;
+    } else {
+      guest = 1;
+    }
+    fetch("ajax/ftt_ajax.php?type=approve_request_for&guest="+guest+"&id="+id)
+    .then(response => response.json())
+    .then(result => {
+      setCookie("tap_request_for", "active");
+      setTimeout(function () {
+        location.reload();
+      }, 30);
+    });
+  });
+
+  $(".btn_delete_request").click(function () {
+    $("#modal_dlt_request_for").modal("show");
+    $("#modal_dlt_request_for").attr("data-id", $(this).parent().parent().attr("data-id"));
+  });
+
+  $("#mdl_btn_delete_request").click(function () {
+    let id = $("#modal_dlt_request_for").attr("data-id");
+    fetch("ajax/ftt_ajax.php?type=dlt_request_for&id="+id)
+    .then(response => response.json())
+    .then(result => {
+      $("#tab_request_for .str_of_list[data-id='"+id+"']").hide();
+      $("#modal_dlt_request_for").modal("hide");
+    });
   });
 
 /*** DOCUMENT READY END ***/
