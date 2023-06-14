@@ -4,6 +4,7 @@ include_once "ajax.php";
 // подключаем запросы
 include_once "../db/ftt/ftt_db.php";
 include_once "../db/classes/ftt_applications/ftt_candidates.php";
+include_once "../db/classes/ftt_param.php";
 // Подключаем ведение лога
 //include_once "../extensions/write_to_log/write_to_log.php";
 
@@ -53,5 +54,10 @@ if (isset($_GET['type']) && $_GET['type'] === 'dlt_request_for'){
     exit();
 }
 
+// Открыть / закрыть приём заявок на заявления на ПВОМ
+if (isset($_GET['type']) && $_GET['type'] === 'recruit_status'){
+    echo json_encode(["result"=>fttParam::set('acceptance_of_applications', $_GET['status'])]);
+    exit();
+}
 
 ?>

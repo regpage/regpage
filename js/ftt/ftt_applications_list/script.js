@@ -271,5 +271,29 @@ $(document).ready(function() {
     });
   });
 
+  $("#mdl_open_recruit").click(function () {
+    if ($(this).text().trim() === "Остановить приём заявлений") {
+      $("#btn_open_recruit").hide();
+      $("#btn_stop_recruit").show();
+      $("#modal_open_recruit h5").text("Остановить приём заявлений?")
+    } else {
+      $("#btn_open_recruit").show();
+      $("#btn_stop_recruit").hide();
+      $("#modal_open_recruit h5").text("Открыть приём заявлений?")
+    }
+  });
+
+  $("#btn_open_recruit, #btn_stop_recruit").click(function () {
+    let status = 1;
+    if ($(this).attr("id") === "btn_stop_recruit") {
+      status = "";
+    }
+    fetch("ajax/ftt_ajax.php?type=recruit_status&status="+status)
+    .then(response => response.json())
+    .then(result => {
+      location.reload();
+    });
+  });
+
 /*** DOCUMENT READY END ***/
 });

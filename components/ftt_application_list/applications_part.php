@@ -26,8 +26,8 @@
         <button type="button" class="btn btn-sm btn-primary mr-1" data-toggle="modal" data-target="#modal_dlt_add_new_application">
           Добавить заявление
         </button>
-        <button type="button" class="btn btn-sm btn-warning mr-2" data-toggle="modal" data-target="#modal_open_recruit">
-          Открыть/остановить набор
+        <button id="mdl_open_recruit" type="button" class="btn btn-sm btn-warning mr-2" data-toggle="modal" data-target="#modal_open_recruit">
+          <?php echo $acceptanceOfApplications; ?>
         </button>
       </div>
       <div class="">

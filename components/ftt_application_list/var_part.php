@@ -4,6 +4,7 @@ include_once "header2.php";
 include_once "nav2.php";
 include_once "db/ftt/ftt_db.php";
 include_once 'db/classes/ftt_applications/ftt_candidates.php';
+include_once 'db/classes/ftt_param.php';
 // Classes components
 include_once 'components/ftt_blocks/RenderList.php';
 
@@ -57,4 +58,9 @@ $activeRequestFor = '';
 if (isset($_COOKIE['tap_request_for']) && $_COOKIE['tap_request_for'] === 'active') {
   $activeList = '';
   $activeRequestFor = 'active';
+}
+
+$acceptanceOfApplications = 'Открыть приём заявлений';
+if (fttParam::get('acceptance_of_applications')) {
+  $acceptanceOfApplications = 'Остановить приём заявлений';
 }

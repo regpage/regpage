@@ -211,7 +211,7 @@ else if (isset ($_SESSION["logged-in"])){
 
         <?php
         $isApplicant = FttCandidates::check($memberId);
-        $isOpen = true;
+        $isOpen = getValueFttParamByName("acceptance_of_applications");
         $checkRequestToPVOM = checkRequestToPVOM($memberId);
         // проверка запроса заявления на ПВОМ (кнопка или оповещение)
         if ($isOpen && !$isApplicant && empty($ftt_access['group'])) {
