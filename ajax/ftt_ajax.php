@@ -28,8 +28,16 @@ if(isset($_GET['type']) && $_GET['type'] === 'add_application'){
 }
 
 // Удаляем заявление
+/*
 if(isset($_GET['type']) && $_GET['type'] === 'dlt_application'){
     echo json_encode(["result"=>FttCandidates::dlt($_GET['member_key'])]);
+    exit();
+}
+*/
+
+// Отправляем запрос заявления на ПВОМ
+if(isset($_GET['type']) && $_GET['type'] === 'add_request_for'){
+    echo json_encode(["result"=>sentRequestToPVOM($adminId)]);
     exit();
 }
 

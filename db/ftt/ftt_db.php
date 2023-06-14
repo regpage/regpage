@@ -74,6 +74,26 @@ function db_getRecommender($adminId) {
   return $access;
 }
 
+function sentRequestToPVOM($adminId)
+{
+  global $db;
+  $check = checkRequestToPVOM($adminId);
+  if (!$check) {
+    $adminId = $db->real_escape_string($adminId);
+    $res = db_query("INSERT INTO `ftt_request` (`member_key`, `notice`) VALUES ('$adminId', 2)");
+  }
+}
+
+function checkRequestToPVOM($adminId)
+{
+  global $db;
+  $adminId = $db->real_escape_string($adminId);
+
+  $res=db_query("SELECT `id` FROM `ftt_request` WHERE `member_key` = '$adminId' AND `notice` = 2");
+  while ($row = $res->fetch_assoc()) return $row['id'];
+
+}
+
 // получаем собеседующего
 /*
 function db_getInterviewer($adminId) {

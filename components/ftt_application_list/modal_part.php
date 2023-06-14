@@ -15,10 +15,26 @@
           </datalist>
           <input id="new_guest_application" class="align-middle" type="checkbox">
           <label class="align-middle" for="new_guest_application"> гость</label>
-        </div>        
+        </div>
       </div>
       <div class="modal-footer">
         <button id="btn_add_new_application" type="button" class="btn btn-sm btn-success float-right">Добавить</button>
+        <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OPEN RECRUIT  -->
+<div id="modal_open_recruit" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>Открыть приём заявок на заявления?</h5>
+      </div>
+      <div class="modal-footer">
+        <button id="btn_open_recruit" class="btn btn-sm btn-success" data-dismiss="modal" aria-hidden="true">Открыть</button>
+        <button id="btn_stop_recruit" class="btn btn-sm btn-danger" data-dismiss="modal" aria-hidden="true">Остановить</button>
         <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true">Закрыть</button>
       </div>
     </div>

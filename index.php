@@ -160,6 +160,7 @@ else if (isset ($_SESSION["logged-in"])){
       }
       include_once "db/modules/ftt_page_access.php";
       //$accessToPage === 3 || $accessToPage === 4  || $memberId == '000012559' || $memberId ==  '000001680'
+      // ?????????
       if (true) {
         $not_for_show_application = '';
       }
@@ -210,6 +211,18 @@ else if (isset ($_SESSION["logged-in"])){
 
         <?php
         $isApplicant = FttCandidates::check($memberId);
+        $isOpen = true;
+        $checkRequestToPVOM = checkRequestToPVOM($memberId);
+        // проверка запроса заявления на ПВОМ (кнопка или оповещение)
+        if ($isOpen && !$isApplicant && empty($ftt_access['group'])) {
+        echo '<div class="tab-content" style="margin-top:10px;">';
+
+        if (!$checkRequestToPVOM) echo '<button type="button" id="send_request_for_pvom" class="btn btn-primary btn-sm">Запрос заявления на ПВОМ</button>';
+
+        if (!empty($checkRequestToPVOM)) echo '<div>Запрос заявления на ПВОМ отправлен служащим.</div>';
+
+        echo '</div>';
+        }
         if ((count($application_data) > 0 || count($application_data_interview) > 0) && substr($memberId, 0, 2) !== '99' || $isApplicant): //$ftt_access['group'] !== 'trainee' false ?>
           <!-- СПИСОК ЗАЯВЛЕНИЙ РЕКОМЕНДАТОРЫ И СОБЕСЕДУЮЩИЕ || $memberId == '000005716' || $memberId == '000002634'  || ($memberId == '000001679') || ($memberId == '000001679' ) -->
 

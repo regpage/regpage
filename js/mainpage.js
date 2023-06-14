@@ -295,3 +295,12 @@ $("#hideShowPVOMBlock, .hideShowPVOMBlock").click(function () {
 });
 hideShowPVOMBlock($("#hideShowPVOMBlock"), localStorage.getItem('pvom_block'));
 hideShowPVOMBlock($("#hideShowPVOMBlock"), localStorage.getItem('pvom_block'));
+
+// запрос заявления на ПВОМ
+$("#send_request_for_pvom").click(function () {
+  fetch("ajax/ftt_ajax.php?type=add_request_for")
+  .then(response => response.json())
+  .then(data => {
+    window.location = 'index';
+  });
+});

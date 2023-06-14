@@ -7,6 +7,9 @@
       <button type="button" class="btn btn-sm btn-primary mr-3" data-toggle="modal" data-target="#modal_dlt_add_new_application">
         Добавить заявление
       </button>
+      <button type="button" class="btn btn-sm btn-warning mr-3" data-toggle="modal" data-target="#modal_open_recruit">
+        Открыть/остановить набор
+      </button>
     </div>
     <div class="">
       <select id="flt_allow_deny" class="form-control form-control-sm">

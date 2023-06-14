@@ -972,10 +972,7 @@ $(document).ready(function(){
     setCookie("application_prepare", '');
     setCookie("application_check", '');
     showSaveIcon(1);
-    let type_dlt = "dlt";
-    /*if ($("#main_container").attr("data-status") && $("#main_container").attr("data-status") > 0) {
-      type_dlt = "trash";
-    }*/
+    let type_dlt = "dlt";    
     fetch("ajax/ftt_request_ajax.php?type=to_trash_request&type_dlt="+ type_dlt +"&id="+$("#main_container").attr("data-id"))
     .then(response => response.json())
     .then(data => {
