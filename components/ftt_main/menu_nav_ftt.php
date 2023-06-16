@@ -40,8 +40,16 @@ if ($announcement_unread_count == 0) {
 }
 $announcement_unread_count_text .= "<sup style='color: red;'> <b> {$announcement_unread_count}</b></sup>";
 
+// счётчик запросов заявлений на ПВОМ
+$requests_for_application_text = 'Заявления';
+$requests_for_application_count = statistics::requests();
+if ($requests_for_application_count == 0) {
+  $requests_for_application_count = '';
+}
+$requests_for_application_text .= "<sup style='color: red;'> <b> {$requests_for_application_count}</b></sup>";
+
 $ftt_devisions = array('ftt_schedule' => 'Расписание', 'ftt_announcement' => $announcement_unread_count_text,
-'ftt_attendance' => $permission_stat_count_main_text, 'ftt_service' => 'Служение','ftt_gospel' => 'Благовестие', 'contacts' => 'Контакты', 'ftt_extrahelp' => $extra_help_text,'ftt_application' => 'Заявления'); //'ftt_absence' => 'Отсутствие',
+'ftt_attendance' => $permission_stat_count_main_text, 'ftt_service' => 'Служение','ftt_gospel' => 'Благовестие', 'contacts' => 'Контакты', 'ftt_extrahelp' => $extra_help_text,'ftt_application' => $requests_for_application_text);
 if ($ftt_access['group'] === 'staff') { //
 
 }

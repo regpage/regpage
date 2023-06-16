@@ -1,8 +1,10 @@
 <?php
 /**  Статистики
-*  statistics::extra_help_count($memberId) - Количество активных допзаданий
-*  statistics::extra_help_count($memberId, true) - поимённый список активных допзаданий
-*  Разрешения колво активных
+* Количество активных допзаданий - statistics::extra_help_count($memberId);
+* Поимённый список активных допзаданий - statistics::extra_help_count($memberId, true);
+* Кол-во активных листов отсутствия по ключу участника - statistics::permission_count($memberId)
+* Кол-во непрочитанных объявлений участника - statistics::announcement_unread($memberId)
+* Кол-во запросов заявлений на ПВОМ - statistics::requests();
 **/
 class statistics {
   // Количество активных допзаданий
@@ -346,6 +348,17 @@ class statistics {
       }
     }
     return $result;
+  }
+
+  // кол-во запросов заявлений на ПВОМ.
+  static function requests()
+  {
+    $result = [];
+    $res = db_query("SELECT `id` FROM `ftt_request` WHERE `notice`= 2");
+    while ($row = $res->fetch_assoc()) $result[] = $row['id'];
+
+    return count($result);
+
   }
 }
 

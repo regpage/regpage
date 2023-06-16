@@ -5,6 +5,9 @@ include_once "ajax.php";
 include_once "../db/ftt/ftt_db.php";
 include_once "../db/classes/ftt_applications/ftt_candidates.php";
 include_once "../db/classes/ftt_param.php";
+require_once '../db/classes/emailing.php';
+require_once '../db/classes/member.php';
+
 // Подключаем ведение лога
 //include_once "../extensions/write_to_log/write_to_log.php";
 

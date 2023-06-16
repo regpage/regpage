@@ -122,13 +122,13 @@ class FTTParsing
         $res_array[$key] = $ftt_min_pay;
       } elseif ($value === 'ftt_param.min_pay x 4') {
         $res_array[$key] = $ftt_min_pay * 4;
-      } elseif ($value === 'ftt_param.monthly_pay_eu') {
+      } elseif ($value === 'ftt_param.monthly_pay_dlr') {
         $res_array[$key] = $ftt_monthly_pay_eu;
-      } elseif ($value === 'ftt_param.monthly_pay_eu x 4') {
+      } elseif ($value === 'ftt_param.monthly_pay_dlr x 4') {
         $res_array[$key] = $ftt_monthly_pay_eu * 4;
-      } elseif ($value === 'ftt_param.min_pay_eu') {
+      } elseif ($value === 'ftt_param.min_pay_dlr') {
         $res_array[$key] = $ftt_min_pay_eu;
-      } elseif ($value === 'ftt_param.min_pay_eu x 4') {
+      } elseif ($value === 'ftt_param.min_pay_dlr x 4') {
         $res_array[$key] = $ftt_min_pay_eu * 4;
       }
 

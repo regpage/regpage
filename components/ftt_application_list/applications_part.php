@@ -10,7 +10,7 @@
   </li> -->
   <li class="nav-item">
     <a class="nav-link <?php echo $activeRequestFor; ?>" data-toggle="tab" href="#tab_request_for">
-      Запросы <?php //echo $missed_class_statistics; ?>
+      Запросы <?php echo $requests_for_application_count_tab; ?>
     </a>
   </li>
 </ul>
@@ -21,8 +21,8 @@
   <?php // include_once 'menu_applications_part.php'; ?>
     <!-- Кнопки и фильтры -->
     <br>
-    <div class="row btn-group mb-2 mr-2">
-      <div class="">
+    <div id="group_btn_applications" class="row btn-group mb-2 mr-2">
+      <div>
         <button type="button" class="btn btn-sm btn-primary mr-1" data-toggle="modal" data-target="#modal_dlt_add_new_application">
           Добавить заявление
         </button>

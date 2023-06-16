@@ -105,12 +105,16 @@ else if (isset ($_SESSION["logged-in"])){
           $gl_trainees_by_staff = ftt_lists::get_trainees_by_staff($memberId);
           $extra_help_count = statistics::extra_help_count($gl_trainees_by_staff);
           $permission_stat_count_main = statistics::permission_count($gl_trainees_by_staff);
+          $requests_stat_count_main = statistics::requests();
         endif;
         if ($permission_stat_count_main == 0) {
           $permission_stat_count_main = '';
         }
         if ($extra_help_count == 0) {
           $extra_help_count = '';
+        }
+        if ($requests_stat_count_main == 0) {
+          $requests_stat_count_main = '';
         }
         ?>
       <div id="ftt_trainee_block" class="tab-content" style="margin-bottom: 10px; padding-bottom: 10px; padding-top: 10px; padding-bottom: 19px;">
@@ -130,15 +134,15 @@ else if (isset ($_SESSION["logged-in"])){
 
 
                 <span><a class="ftt_menu_a" href="/ftt_schedule">Расписание</a></span>
-                <span><a class="ftt_menu_a" href="/ftt_announcement">Объявления<?php echo "<sup style='color: red;'><b>{$announcement_unread_count}</b></sup>"; ?></a></span>
+                <span><a class="ftt_menu_a" href="/ftt_announcement">Объявления<?php echo "<sup style='color: red;'><b> {$announcement_unread_count}</b></sup>"; ?></a></span>
                 <span><a class="ftt_menu_a" href="/ftt_attendance">Посещаемость</a></span>
                 <span><a class="ftt_menu_a" href="/ftt_service">Служение</a></span>
                 <span><a class="ftt_menu_a" href="/ftt_gospel">Благовестие</a></span>
                 <span><a class="ftt_menu_a" href="/contacts">Контакты</a></span>
                 <!--<span><a class="ftt_menu_a" href="ftt_absence">Отсутствие</a></span>-->
-                <span><a class="ftt_menu_a" href="/ftt_extrahelp">Доп. задания<?php echo "<sup style='color: red;'><b>{$extra_help_count}</b></sup>"; ?></a></span>
+                <span><a class="ftt_menu_a" href="/ftt_extrahelp">Доп. задания<?php echo "<sup style='color: red;'><b> {$extra_help_count}</b></sup>"; ?></a></span>
               <?php if ($ftt_access['group'] === 'staff') { ?>
-                <span><a class="ftt_menu_a" href="/ftt_application">Заявления</a></span>
+                <span><a class="ftt_menu_a" href="/ftt_application">Заявления<?php echo "<sup style='color: red;'><b> {$requests_stat_count_main}</b></sup>"; ?></a></span>
               <?php }?>
               </p>
             </div>
@@ -214,15 +218,17 @@ else if (isset ($_SESSION["logged-in"])){
         $isOpen = getValueFttParamByName("acceptance_of_applications");
         $checkRequestToPVOM = checkRequestToPVOM($memberId);
         // проверка запроса заявления на ПВОМ (кнопка или оповещение)
-        if ($isOpen && !$isApplicant && empty($ftt_access['group'])) {
-        echo '<div class="tab-content" style="margin-top:10px;">';
+        if ($isOpen && !$isApplicant && empty($ftt_access['group']) && substr($memberId, 0, 2) !== '99') {
+          echo '<div class="tab-content" style="margin-top:10px;">';
+            if (!$checkRequestToPVOM) echo '<button type="button" id="send_request_for_pvom" class="btn btn-primary btn-sm">Запрос заявления на ПВОМ</button><br>';
+            if (!$checkRequestToPVOM) echo '<button type="button" id="send_request_for_pvom_guest" class="btn btn-info btn-sm" style="margin-top: 10px;">Запрос заявления на ПВОМ в качестве ГОСТЯ</button>';
+            if (!empty($checkRequestToPVOM)) echo '<div>Запрос заявления на ПВОМ отправлен служащим.</div>';
+          echo '</div>';
 
-        if (!$checkRequestToPVOM) echo '<button type="button" id="send_request_for_pvom" class="btn btn-primary btn-sm">Запрос заявления на ПВОМ</button><br>';
-        if (!$checkRequestToPVOM) echo '<button type="button" id="send_request_for_pvom_guest" class="btn btn-info btn-sm" style="margin-top: 10px;">Запрос заявления на ПВОМ в качестве ГОСТЯ</button>';
-
-        if (!empty($checkRequestToPVOM)) echo '<div>Запрос заявления на ПВОМ отправлен служащим.</div>';
-
-        echo '</div>';
+        } elseif($isOpen && substr($memberId, 0, 2) === '99') {
+          echo '<div class="tab-content" style="margin-top:10px;">';
+          echo '<span>Запрос заявления на ПВОМ будет доступен после подтверждения аккаунта.</span>';
+          echo '</div>';
         }
         if ((count($application_data) > 0 || count($application_data_interview) > 0) && substr($memberId, 0, 2) !== '99' || $isApplicant): //$ftt_access['group'] !== 'trainee' false ?>
           <!-- СПИСОК ЗАЯВЛЕНИЙ РЕКОМЕНДАТОРЫ И СОБЕСЕДУЮЩИЕ || $memberId == '000005716' || $memberId == '000002634'  || ($memberId == '000001679') || ($memberId == '000001679' ) -->

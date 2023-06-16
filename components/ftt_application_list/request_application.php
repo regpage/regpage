@@ -1,6 +1,6 @@
 <br>
 <div id="tab_request_for" class="container tab-pane  <?php echo $activeRequestFor; ?>" style="background-color: white;" data-role="<?php // echo $accessToPage; ?>">
-  <div class="row">
+  <div id="header_list_reguest_for" class="row">
     <div class="col-2">
       <strong>Дата</strong>
     </div>
@@ -18,7 +18,7 @@
     </div>
   </div>
 
-  <?php foreach (db_getRequestForApplication('', true) as $key => $value): ?>    
+  <?php foreach (db_getRequestForApplication('', true) as $key => $value): ?>
       <div class="row str_of_list border-top pt-2" data-member_key="<?php echo $value['member_key']; ?>" data-id="<?php echo $value['id']; ?>" data-guest="<?php echo $value['guest']; ?>">
         <div class="col-2">
           <?php echo $value['request_date']; ?>

@@ -5,6 +5,7 @@ include_once "nav2.php";
 include_once "db/ftt/ftt_db.php";
 include_once 'db/classes/ftt_applications/ftt_candidates.php';
 include_once 'db/classes/ftt_param.php';
+include_once 'db/classes/statistics.php';
 // Classes components
 include_once 'components/ftt_blocks/RenderList.php';
 
@@ -55,7 +56,7 @@ if (isset($_COOKIE['sorting_g'])) {
 
 $activeList = 'active';
 $activeRequestFor = '';
-if (isset($_COOKIE['tap_request_for']) && $_COOKIE['tap_request_for'] === 'active') {
+if ((isset($_COOKIE['tap_request_for']) && $_COOKIE['tap_request_for'] === 'active') || (isset($_GET['tab']) || $_GET['tab'] === 'request')) {
   $activeList = '';
   $activeRequestFor = 'active';
 }
@@ -63,4 +64,13 @@ if (isset($_COOKIE['tap_request_for']) && $_COOKIE['tap_request_for'] === 'activ
 $acceptanceOfApplications = 'Открыть приём заявлений';
 if (fttParam::get('acceptance_of_applications')) {
   $acceptanceOfApplications = 'Остановить приём заявлений';
+}
+
+// счётчик запросов заявлений на ПВОМ для вкладки
+
+$requests_for_application_count_tab = statistics::requests();
+if ($requests_for_application_count_tab == 0) {
+  $requests_for_application_count_tab = '';
+} else {
+  $requests_for_application_count_tab = "<sup style='color: red;'><b>{$requests_for_application_count_tab}</b></sup>";
 }

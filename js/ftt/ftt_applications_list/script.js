@@ -5,7 +5,7 @@ $(document).ready(function() {
 
   if (getCookie("tap_request_for") === "active") {
     setCookie("tap_request_for", "");
-    showHint("Заявление добавлено на сайт.");
+    //showHint("Заявление добавлено на сайт.");
   }
 
   // Нужно додумать
@@ -249,6 +249,7 @@ $(document).ready(function() {
     fetch("ajax/ftt_ajax.php?type=approve_request_for&guest="+guest+"&id="+id)
     .then(response => response.json())
     .then(result => {
+      $("#modal_add_request_for").hide();
       setCookie("tap_request_for", "active");
       setTimeout(function () {
         location.reload();
@@ -266,8 +267,11 @@ $(document).ready(function() {
     fetch("ajax/ftt_ajax.php?type=dlt_request_for&id="+id)
     .then(response => response.json())
     .then(result => {
-      $("#tab_request_for .str_of_list[data-id='"+id+"']").hide();
       $("#modal_dlt_request_for").modal("hide");
+      setCookie("tap_request_for", "active");
+      setTimeout(function () {
+        location.reload();
+      }, 30);
     });
   });
 

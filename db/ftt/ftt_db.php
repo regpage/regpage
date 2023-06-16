@@ -81,8 +81,15 @@ function sentRequestToPVOM($adminId, $guest)
   $guest = $db->real_escape_string($guest);
   $check = checkRequestToPVOM($adminId);
   if (!$check) {
-    $adminId = $db->real_escape_string($adminId);
     $res = db_query("INSERT INTO `ftt_request` (`member_key`, `notice`, `guest`) VALUES ('$adminId', 2, '$guest')");
+    if ($res) {
+      $topic = 'Новый запрос заявлениия на ПВОМ';
+      $emailText = 'Поступил запрос на заявление на ПВОМ от ' . Member::get_name($adminId) . ' ' . date('d.m.Y G:i') . '<br><br><a href="https://reg-page.ru/ftt_application?tab=request">https://reg-page.ru/ftt_application?tab=request</a>';
+      //Emailing::send('A.rudanok@gmail.com', $topic, $emailText);
+      Emailing::send('kristalenkoserg@gmail.com', $topic, $emailText);
+      Emailing::send('info@zhichkinroman.ru', $topic, $emailText);
+      //Emailing::send_by_key($memberId, $topic, $emailText);
+    }
   }
 }
 
