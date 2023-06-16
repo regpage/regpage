@@ -240,7 +240,7 @@ $(document).ready(function(){
     $("#radio_point_semester_0").parent().parent().parent().parent().parent().hide();
     $("#radio_point_will_be_two_years_0").parent().parent().parent().parent().parent().hide();
     $("#point_semester_pay").parent().parent().prev().prev().hide();
-    $("#point_how_many_semesters").parent().parent().hide();
+    //$("#point_how_many_semesters").parent().parent().hide();
   }
 
   function hide_for_candidate() {
@@ -249,13 +249,13 @@ $(document).ready(function(){
 
   function radio_buttons_behavior() {
     if ($("#radio_point_will_be_two_years_0").prop("checked")) {
-      $("#point_how_many_semesters").parent().parent().hide();
+      //$("#point_how_many_semesters").parent().parent().hide();
       $("#point_how_many_explanation").parent().parent().hide();
     } else if ($("#radio_point_will_be_two_years_1").prop("checked")) {
-      $("#point_how_many_semesters").parent().parent().show();
+      //$("#point_how_many_semesters").parent().parent().show();
       $("#point_how_many_explanation").parent().parent().show();
     } else {
-      $("#point_how_many_semesters").parent().parent().hide();
+      //$("#point_how_many_semesters").parent().parent().hide();
       $("#point_how_many_explanation").parent().parent().hide();
     }
     if ($("#radio_point_health_question40_0").prop("checked")) {
@@ -972,7 +972,7 @@ $(document).ready(function(){
     setCookie("application_prepare", '');
     setCookie("application_check", '');
     showSaveIcon(1);
-    let type_dlt = "dlt";    
+    let type_dlt = "dlt";
     fetch("ajax/ftt_request_ajax.php?type=to_trash_request&type_dlt="+ type_dlt +"&id="+$("#main_container").attr("data-id"))
     .then(response => response.json())
     .then(data => {
@@ -1721,5 +1721,10 @@ $(document).ready(function(){
      $("#point_country_key").val(result.result);
    });
  }
-
+ // высота поля 8.2
+ let point_health_problems_l = $("#point_health_problems").val();
+ if (!$("#point_health_problems").val() || point_health_problems_l.length < 146) {
+   $("#point_health_problems").removeClass("field_height_400px");
+   $("#point_health_problems").addClass("field_height_90px");
+ }
 }); // END document ready

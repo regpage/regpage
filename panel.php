@@ -329,7 +329,7 @@ write_to_log::info($memberId, 'Админ зашёл в панел админи�
                   <option>Канада
                 </select><br>
                 <input type="text" id="name" name="name" value="" placeholder="Name"><br>
-                <input type="text" id="name" name="phone" value="" placeholder="Phone"><br>
+                <input type="text" id="" name="phone" value="" placeholder="Phone"><br>
                 <input type="text" id="" name="value2" value="" placeholder="Комментарий"><br>
                 <input type="text" id="" name="value4" value="" placeholder="Область"><br>
                 <input type="text" id="" name="value5" value="" placeholder="Район"><br>

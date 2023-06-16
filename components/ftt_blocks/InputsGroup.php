@@ -31,7 +31,8 @@
         if (in_array($value, $seleted_options_value)) {
           $checked = 'checked';
         }
-        echo "<div><label class='form-check-label'><input type='checkbox' class='form-check-input' id='checkbox_point{$key}' value='{$value}' {$default} {$checked}>{$value}</label></div>";
+        $valueLen = strlen($value);
+        echo "<div><label class='form-check-label'><input type='checkbox' class='form-check-input' id='checkbox_point{$key}{$valueLen}' value='{$value}' {$default} {$checked}>{$value}</label></div>";
       }
     }
   }
