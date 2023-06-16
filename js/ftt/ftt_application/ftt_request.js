@@ -1727,4 +1727,53 @@ $(document).ready(function(){
    $("#point_health_problems").removeClass("field_height_400px");
    $("#point_health_problems").addClass("field_height_90px");
  }
+
+ // новая местность
+ function extraSatField(elem) {
+   let table = elem.attr("data-table");
+   let field = elem.attr("data-field");
+   let value = elem.val();
+   let id = window.adminId;
+   let is_guest = $("#main_container").attr("data-guest");
+   fetch("ajax/ftt_request_ajax.php?type=set&table="+table+"&field="+field+"&data="+value+"&id="+id+"&guest="+is_guest)
+   .then(response => response.json())
+   .then(result => {
+
+   });
+ }
+ $("#point_locality_key").after("<div><span id='point_new_locality_text' class='text-primary cursor-pointer'>Вашей местности нет в списке?</span></div>");
+ $("#point_new_locality_text").click(function() {
+   $(this).hide();
+   let data_list_localities = "<datalist id='point_new_locality_list'>";
+   $("#point_locality_key option").each(function() {
+     data_list_localities += "<option value='" + $(this).text() + "'>";
+   });
+   data_list_localities += "</datalist>";
+
+   setTimeout(function () {
+     $("#point_new_locality_text").after(data_list_localities);
+     $("#point_new_locality_text").after("<div><input type='text' id='point_new_locality_field' class='mt-2 input-request i-width-280-px' list='point_new_locality_list' data-table='member' data-field='new_locality' placeholder='введите вашу местность сюда'></div>");
+
+     $("#point_locality_key").change(function() {
+       $("#point_new_locality_field").val('');
+     });
+     $("#point_new_locality_field").change(function() {
+       $("#point_locality_key").val("");
+       let locality_choisen = $(this).val();
+       let locality_select_unset = 0;
+       $("#point_locality_key option").each(function() {
+         if ($(this).text().trim() === locality_choisen.trim()) {
+           $("#point_locality_key").val($(this).val());
+           extraSatField($("#point_locality_key"));
+           locality_select_unset = 1
+         }
+       });
+       if (locality_select_unset === 0) {
+         extraSatField($("#point_locality_key"));
+       }
+       extraSatField($(this));
+     });
+   }, 10);
+ });
+
 }); // END document ready
