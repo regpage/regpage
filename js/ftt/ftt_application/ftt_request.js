@@ -1745,6 +1745,17 @@ $(document).ready(function(){
    });
  }
 
+ function requiredOption(first_required) {
+   let locality = $("#point_locality_key").attr("required") ? true : false;
+   let new_locality = $("#point_new_locality_field").attr("required") ? true : false;
+   if (locality !== first_required) {
+     $("#point_locality_key").attr("required", first_required);
+   }
+   if (new_locality === first_required) {
+     $("#point_new_locality_field").attr("required", !first_required);
+   }
+ }
+
  let point_new_locality_text_show = "";
  if ($("#point_locality_key").attr("disabled")) {
    point_new_locality_text_show = "style='display: none;'";
@@ -1755,6 +1766,7 @@ $(document).ready(function(){
    setTimeout(function () {
      $("#point_new_locality_field").val($("#main_container").attr("data-new_locality"));
      $("#point_new_locality_field").show();
+     requiredOption(false);
      if ($("#point_locality_key").attr("disabled")) {
        $("#point_new_locality_field").attr("disabled", true);
      }
@@ -1780,12 +1792,17 @@ $(document).ready(function(){
      $("#point_locality_key").after("<div><input type='text' id='point_new_locality_field' class='mt-2 input-request i-width-280-px' list='point_new_locality_list' data-table='member' data-field='new_locality' placeholder='введите вашу местность сюда'></div>");
 
      $("#point_locality_key").change(function() {
+       requiredOption(true);
        $("#point_new_locality_field").val('');
        extraSatField($("#point_new_locality_field"));
      });
      $("#point_new_locality_field").change(function() {
        if ($("#point_new_locality_field").val()) {
-        $("#point_locality_key").val("");
+         requiredOption(false);
+         $("#point_locality_key").val("");
+         $("#point_locality_key").removeClass("required_field");
+       } else {
+         requiredOption(true);
        }
        let locality_choisen = $(this).val();
        let locality_select_unset = 0;
