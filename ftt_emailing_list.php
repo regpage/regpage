@@ -6,7 +6,12 @@ session_start ();
 
 // config
 require_once 'config.php';
+require_once 'db/classes/ftt_info.php';
 
+if (ftt_info::pause()) {
+  echo "Вне периода проведения обучения";
+  exit();
+}
 // logs
 include_once 'extensions/write_to_log/write_to_log.php';
 
