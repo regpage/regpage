@@ -21,17 +21,26 @@ function getMemberData($adminId) {
   //write_to_log::debug('000005716', 'Запрошены данные пользователя '.$adminId);//$adminId
 
   $result = [];
+  $checkLocality;
+  $res=db_query ("SELECT `locality_key` FROM `member` WHERE `key` = '$adminId'");
+  while ($row = $res->fetch_assoc()) $checkLocality=$row['locality_key'];
+
+  if (empty($checkLocality)) {
+    $localityQuery = '';
+    $localityTables = '';
+  } else {
+    $localityQuery = ', l.name AS locality_name, c.name AS country_name, r.country_key AS r_country_key';
+    $localityTables = 'INNER JOIN locality l ON l.key = m.locality_key INNER JOIN region r ON r.key = l.region_key INNER JOIN country c ON c.key = r.country_key';
+  }
 
   $res=db_query ("SELECT fr.*,
     m.key AS m_key, m.name, m.male, m.locality_key, m.citizenship_key, m.baptized, m.document_auth, m.birth_date,
-    DATEDIFF(CURRENT_DATE, STR_TO_DATE(m.birth_date, '%Y-%m-%d'))/365 as age, m.document_num, m.document_date, m.tp_num, m.tp_date, m.tp_name,
-    m.email, m.address, m.cell_phone, m.document_dep_code, m.tp_auth,
-    l.name AS locality_name, c.name AS country_name, r.country_key AS r_country_key
+    DATEDIFF(CURRENT_DATE, STR_TO_DATE(m.birth_date, '%Y-%m-%d'))/365 as age, m.document_num, m.document_date,
+    m.tp_num, m.tp_date, m.tp_name, m.email, m.address, m.cell_phone, m.document_dep_code, m.tp_auth, m.new_locality
+    {$localityQuery}
   FROM ftt_request AS fr
   INNER JOIN member m ON m.key = fr.member_key
-  INNER JOIN locality l ON l.key = m.locality_key
-  INNER JOIN region r ON r.key = l.region_key
-  INNER JOIN country c ON c.key = r.country_key
+  {$localityTables}
   WHERE fr.member_key = '$adminId' AND fr.notice <> 2");
   while ($row = $res->fetch_assoc()) $result[]=$row;
   // для коректного запроса все ключевые поля для выборки из присоединяемых таблиц должны быть заполнены
@@ -46,7 +55,7 @@ function getStartMemberData($adminId) {
   global $db;
   $adminId = $db->real_escape_string($adminId);
   $res=db_query ("SELECT m.key AS m_key , m.name, m.male, m.locality_key, m.citizenship_key, m.baptized, m.birth_date,
-    DATEDIFF(CURRENT_DATE, STR_TO_DATE(m.birth_date, '%Y-%m-%d'))/365 as age, m.document_num, m.document_auth,
+    DATEDIFF(CURRENT_DATE, STR_TO_DATE(m.birth_date, '%Y-%m-%d'))/365 as age, m.document_num, m.document_auth, m.new_locality,
     m.document_date, m.document_dep_code, m.tp_num, m.tp_date, m.tp_auth, m.email, m.address, m.cell_phone,
     l.name AS locality_name, c.name AS country_name, r.country_key
   FROM member AS m

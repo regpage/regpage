@@ -1502,7 +1502,7 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
                     m.dep_date) + '</span>' : "") + htmlPlace + ' ' +htmlPlaceFlag + '</div>'+
                 '<span>' + htmlLabelByRegState(m.regstate, m.web) +
                 (!isOnline ? '<ul class="regstate-list-handle">'+ htmlListItemsByRegstate(m.regstate, m.attended) + '</ul>' : "")+
-                " <span class='regmem-icons'>" + coordFlag + htmlService + htmlEmail + htmlChanged + htmlEditor + '</span><span>'+(m.admin_comment ? '<br><span class="show-comment-mbl user_setting_span" title="'+m.admin_comment+'">'+short_admin_comment+'</span>' : "" )+'</span></span>'
+                " <span class='regmem-icons'>" + coordFlag + htmlService + htmlEmail + htmlChanged + /*htmlEditor +*/ '</span><span>'+(m.admin_comment ? '<br><span class="show-comment-mbl user_setting_span" title="'+m.admin_comment+'">'+short_admin_comment+'</span>' : "" )+'</span></span>'
                 + '</td></tr>');
         }
 

@@ -992,11 +992,14 @@ $(document).ready(function(){
       /*if ($("#main_container").attr("data-status") === "2" && $("#service_recommendation_name").val() !== window.adminId) {
 
       }*/
+      $("#point_new_locality_text").show();
+
     } else {
       $("input").attr("disabled", true);
       $("textarea").attr("disabled", true);
       $("select").attr("disabled", true);
       $(".serviceone_block button").attr("disabled", true);
+      $("#point_new_locality_text").hide();
     }
 
   });
@@ -1733,7 +1736,7 @@ $(document).ready(function(){
    let table = elem.attr("data-table");
    let field = elem.attr("data-field");
    let value = elem.val();
-   let id = window.adminId;
+   let id = $("#point_member_key").attr("data-value");
    let is_guest = $("#main_container").attr("data-guest");
    fetch("ajax/ftt_request_ajax.php?type=set&table="+table+"&field="+field+"&data="+value+"&id="+id+"&guest="+is_guest)
    .then(response => response.json())
@@ -1741,24 +1744,49 @@ $(document).ready(function(){
 
    });
  }
- $("#point_locality_key").after("<div><span id='point_new_locality_text' class='text-primary cursor-pointer'>Вашей местности нет в списке?</span></div>");
- $("#point_new_locality_text").click(function() {
-   $(this).hide();
+
+ let point_new_locality_text_show = "";
+ if ($("#point_locality_key").attr("disabled")) {
+   point_new_locality_text_show = "style='display: none;'";
+ }
+
+ if ($("#main_container").attr("data-new_locality")) {
+   renderNewLocality();
+   setTimeout(function () {
+     $("#point_new_locality_field").val($("#main_container").attr("data-new_locality"));
+     $("#point_new_locality_field").show();
+     if ($("#point_locality_key").attr("disabled")) {
+       $("#point_new_locality_field").attr("disabled", true);
+     }
+   }, 20);
+ } else {
+   $("#point_locality_key").after("<div><span id='point_new_locality_text' class='text-primary cursor-pointer'" +
+   point_new_locality_text_show +">Вашей местности нет в списке?</span></div>");
+
+   $("#point_new_locality_text").click(function() {
+     $(this).hide();
+     renderNewLocality();
+   });
+ }
+
+ function renderNewLocality() {
    let data_list_localities = "<datalist id='point_new_locality_list'>";
    $("#point_locality_key option").each(function() {
      data_list_localities += "<option value='" + $(this).text() + "'>";
    });
    data_list_localities += "</datalist>";
-
    setTimeout(function () {
-     $("#point_new_locality_text").after(data_list_localities);
-     $("#point_new_locality_text").after("<div><input type='text' id='point_new_locality_field' class='mt-2 input-request i-width-280-px' list='point_new_locality_list' data-table='member' data-field='new_locality' placeholder='введите вашу местность сюда'></div>");
+     $("#point_locality_key").after(data_list_localities);
+     $("#point_locality_key").after("<div><input type='text' id='point_new_locality_field' class='mt-2 input-request i-width-280-px' list='point_new_locality_list' data-table='member' data-field='new_locality' placeholder='введите вашу местность сюда'></div>");
 
      $("#point_locality_key").change(function() {
        $("#point_new_locality_field").val('');
+       extraSatField($("#point_new_locality_field"));
      });
      $("#point_new_locality_field").change(function() {
-       $("#point_locality_key").val("");
+       if ($("#point_new_locality_field").val()) {
+        $("#point_locality_key").val("");
+       }
        let locality_choisen = $(this).val();
        let locality_select_unset = 0;
        $("#point_locality_key option").each(function() {
@@ -1774,6 +1802,6 @@ $(document).ready(function(){
        extraSatField($(this));
      });
    }, 10);
- });
+ }
 
 }); // END document ready

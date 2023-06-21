@@ -45,9 +45,9 @@ if (isset($_GET['member_key']) && $_GET['member_key'] !== $memberId) { // Есл
   $member_key = $_GET['member_key'];
   // get data
   $request_data = getMemberData($member_key);
+
   // если по КЛЮЧУ не найдено данных
-  if (!$request_data['id']) {
-    ?>
+  if (!$request_data['id']) { ?>
     <div><br><br><br><h5>Заявление не найдено</h5><a href="index">ВЕРНУТЬСЯ НА ГЛАВНУЮ</a></div>
     <?php
     die();
