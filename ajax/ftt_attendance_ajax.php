@@ -304,6 +304,20 @@ if (isset($_GET['type']) && $_GET['type'] === 'delete_pic') {
 
 if (isset($_GET['type']) && $_GET['type'] === 'delete_skip') {
   // готовим данные
+  $db_data_get = new DbData('get', 'ftt_skip');
+  $db_data_get->set('field', 'file');
+  $db_data_get->set('condition_field', 'id');
+  $db_data_get->set('condition_value', $_GET['id']);
+  // выполняем
+  $check = DbOperation::operation($db_data_get->get());
+
+  $check = explode(';', $check);
+
+  foreach ($check as $key => $value) {
+    $file = explode('ajax/', $value);
+    unlink($file[1]);
+  }
+  // готовим данные
   $db_data = new DbData('dlt', 'ftt_skip');
   $db_data->set('condition_field', 'id');
   $db_data->set('condition_value', $_GET['id']);

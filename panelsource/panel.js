@@ -166,12 +166,12 @@ $(document).ready(function(){
         if (result == 1) {
           $('#noticePlace .alert-success').addClass("show");
           setTimeout(function () {
-            location.reload();
+            //location.reload();
           }, 1000);
         } else {
           $('#noticePlace .alert-danger').addClass("show");
           setTimeout(function () {
-            location.reload();
+            //location.reload();
           }, 1000);
         }
       });

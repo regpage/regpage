@@ -224,18 +224,40 @@ function db_getApplicationsPanel ($adminId, $trash=''){
 
 function resetSemester(){
 
-  $tables = array('ftt_announcement', 'ftt_announcement_recipients', 'ftt_attendance', 	'ftt_attendance_sheet', 'ftt_extra_help', 'ftt_gospel', 'ftt_gospel_goals', 'ftt_late', 'ftt_permission', 'ftt_permission_sheet', 'ftt_session', 'ftt_session_correction', 'ftt_trainee');
+  // ftt_skip prepare
+  $pathsToFiles = [];
+  $res=db_query ("SELECT `file` FROM `ftt_skip`");
+  while ($row = $res->fetch_assoc()) $pathsToFiles[]=$row['file'];
+
+  foreach ($pathsToFiles as $paths) {
+    if (empty($paths)) {
+      continue;
+    }
+    $paths = explode(';', $paths);
+// ТЕСТИРОВАТЬ УДАЛЕНИЕ ФАЙЛОВ !!!
+    foreach ($paths as $file) {
+      $root = __DIR__;
+      $root = explode('panelsource', $root);
+      if (file_exists($root[0].$file)) {
+        unlink($root[0].$file);
+      }
+    }
+  }
+
+  $tables = array('ftt_announcement', 'ftt_announcement_recipients', 'ftt_attendance', 	'ftt_attendance_sheet', 'ftt_extra_help', 'ftt_gospel', 'ftt_gospel_goals', 'ftt_late', 'ftt_permission', 'ftt_permission_sheet', 'ftt_session', 'ftt_session_correction', 'ftt_trainee', 'ftt_skip', 'ftt_communication');
   $result;
 
   foreach ($tables as $value) {
     $result = db_query ("DELETE FROM {$value}");
   }
+
+
   write_to_log::warning(db_getMemberIdBySessionId (session_id()), "Данные таблиц ПВОМ удалены администратором. Результат: {$result}");
   return $result;
 }
 
 function resetApplications(){
-
+// не удаляет фотографии с диска
   $tables = array('ftt_request');
   $result;
 
@@ -247,7 +269,7 @@ function resetApplications(){
 }
 
 function checkDataSemester(){
-    $tables = array('ftt_announcement', 'ftt_announcement_recipients', 'ftt_attendance', 	'ftt_attendance_sheet', 'ftt_extra_help', 'ftt_gospel', 'ftt_gospel_goals', 'ftt_late', 'ftt_permission', 'ftt_permission_sheet', 'ftt_session', 'ftt_session_correction', 'ftt_trainee');
+    $tables = array('ftt_announcement', 'ftt_announcement_recipients', 'ftt_attendance', 	'ftt_attendance_sheet', 'ftt_extra_help', 'ftt_gospel', 'ftt_gospel_goals', 'ftt_late', 'ftt_permission', 'ftt_permission_sheet', 'ftt_session', 'ftt_session_correction', 'ftt_trainee', 'ftt_skip', 'ftt_communication');
     $result = array();
     foreach ($tables as $key => $value) {
       $result[$value] = db_query ("SELECT * FROM {$value} limit 1");
