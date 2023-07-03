@@ -298,7 +298,10 @@ if (isset($_GET['type']) && $_GET['type'] === 'delete_pic') {
   echo DbOperation::operation($db_data->get());
   // file
   $hi = explode('ajax/', $_GET['patch']);
-  unlink($hi[1]);
+  if (isset($hi[1]) && !empty($hi[1])) {
+    unlink($hi[1]);
+  }
+
   exit();
 }
 
@@ -315,7 +318,9 @@ if (isset($_GET['type']) && $_GET['type'] === 'delete_skip') {
 
   foreach ($check as $key => $value) {
     $file = explode('ajax/', $value);
-    unlink($file[1]);
+    if (isset($file[1]) && !empty($file[1])) {
+      unlink($file[1]);
+    }
   }
   // готовим данные
   $db_data = new DbData('dlt', 'ftt_skip');

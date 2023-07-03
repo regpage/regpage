@@ -219,10 +219,17 @@ else if (isset ($_SESSION["logged-in"])){
         $checkRequestToPVOM = checkRequestToPVOM($memberId);
         // проверка запроса заявления на ПВОМ (кнопка или оповещение)
         if ($isOpen && !$isApplicant && empty($ftt_access['group']) && substr($memberId, 0, 2) !== '99') {
-          echo '<div class="tab-content" style="margin-top:10px;">';
-            if (!$checkRequestToPVOM) echo '<button type="button" id="send_request_for_pvom" class="btn btn-primary btn-sm">Запрос заявления на ПВОМ</button><br>';
-            if (!$checkRequestToPVOM) echo '<button type="button" id="send_request_for_pvom_guest" class="btn btn-info btn-sm" style="margin-top: 10px;">Запрос заявления на ПВОМ в качестве ГОСТЯ</button>';
-            if (!empty($checkRequestToPVOM)) echo '<div>Запрос заявления на ПВОМ отправлен служащим.</div>';
+          echo '<div class="tab-content" style="margin-top:10px;"><h4 style="margin-top:0px;">Полновременное обучение</h4>';
+            if (!$checkRequestToPVOM) {
+              echo getValueFttParamByName("ftt_text");
+            }
+            if (!$checkRequestToPVOM) {
+              echo '<br><br><button type="button" id="send_request_for_pvom_modal" class="btn btn-primary btn-sm">Запросить бланк заявления</button>';
+            }
+            if (!$checkRequestToPVOM) {
+               echo '<button type="button" id="send_request_for_pvom_guest_modal" class="btn btn-info btn-sm" style="margin-left: 10px;">Запросить бланк заявления ГОСТЯ</button>';
+             }
+            if (!empty($checkRequestToPVOM)) echo '<div>Запрос отправлен служащим Полновременного обучения. После создания бланка заявления здесь появится ссылка для его заполнения. Вы получите уведомление об этом по электронной почте.</div>';
           echo '</div>';
 
         } elseif($isOpen && substr($memberId, 0, 2) === '99') {
@@ -244,7 +251,6 @@ else if (isset ($_SESSION["logged-in"])){
             if (count($application_data) > 0): ?>
             <div class="desctopVisible">
               <h4 style="margin-left: 10px;">Заявления для рекомендаций</h4>
-              <h5 style="border-bottom: 1px solid #DDD; margin-bottom: 0px; margin-left: 10px; padding-bottom: 10px;"><?php echo getValueFttParamByName("application_title"); ?></h5>
             <?php
             foreach ($application_data as $key => $value) {
               $label = '';
@@ -257,8 +263,8 @@ else if (isset ($_SESSION["logged-in"])){
             <?php endif; ?>
             <?php if (count($application_data_interview) > 0): ?>
             <div class="desctopVisible">
-              <h4 style="margin-left: 10px;">Заявления для собеседований</h4>
-              <h5 style="border-bottom: 1px solid #DDD; margin-bottom: 0px; margin-left: 10px; padding-bottom: 10px;"><?php echo getValueFttParamByName("application_title"); ?></h5>
+              <h4 style="margin-left: 10px;">Полновременное обучение</h4>
+              <?php // echo getValueFttParamByName("ftt_text"); ?>
             <?php foreach ($application_data_interview as $key => $value) {
               $label = '';
               if ($value['interview_name'] == $memberId) {
@@ -318,7 +324,6 @@ else if (isset ($_SESSION["logged-in"])){
 
             ?>
             <h4 style="margin-left: 10px;">Заявления для участия в ПВОМ</h4>
-            <h5 style="margin-left: 10px;"><?php echo getValueFttParamByName("application_title"); ?></h5>
             <div class="ftt-request-list" style="border-top: 1px solid #DDD;">
               <?php if (($requestData === 'does not exist' || $isExistrRequest !== '1') && substr($memberId, 0, 2) !== '99'): ?>
               <div class="request-row">
@@ -361,7 +366,6 @@ else if (isset ($_SESSION["logged-in"])){
             if (count($application_data) > 0): ?>
             <div class="">
               <h4 style="">Заявления для рекомендаций</h4>
-              <h5 style="border-bottom: 1px solid #DDD; margin-bottom: 0px; padding-bottom: 10px;"><?php echo getValueFttParamByName("application_title"); ?></h5>
             <?php
             foreach ($application_data as $key => $value) {
               $label = '';
@@ -375,7 +379,7 @@ else if (isset ($_SESSION["logged-in"])){
             <?php if (count($application_data_interview) > 0): ?>
             <div class="">
               <h4 style="margin-left: 10px;">Заявления для собеседований</h4>
-              <h5 style="border-bottom: 1px solid #DDD; margin-bottom: 0px; margin-left: 10px; padding-bottom: 10px;"><?php echo getValueFttParamByName("application_title"); ?></h5>
+              <?php // echo getValueFttParamByName("ftt_text"); ?>
             <?php foreach ($application_data_interview as $key => $value) {
               $label = '';
               if ($value['interview_name'] == $memberId) {
@@ -390,7 +394,6 @@ else if (isset ($_SESSION["logged-in"])){
           <!-- КАНДИДАТЫ -->
           <?php if ($isApplicant): //true?>
           <h3>Полновременное обучение</h3>
-          <h5><?php echo getValueFttParamByName("application_title"); ?></h5>
           <div class="ftt-request-list">
             <?php if (($requestData === 'does not exist' || $isExistrRequest !== '1') && substr($memberId, 0, 2) !== '99'): ?>
               <div class="request-row">
@@ -834,6 +837,19 @@ else if (isset ($_SESSION["logged-in"])){
     <div class="modal-footer">
         <button class="btn btn-primary btnHandleEventForm">Сохранить</button>
         <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Отмена</button>
+    </div>
+</div>
+
+<!-- Заявление на ПВОП подтврждение -->
+<div id="sendApplicationToFTT" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        <h3>Внимание!</h3>
+    </div>
+    <div class="modal-body">Ваш запрос будет отправлен служащим Полновременного обучения. Вам могут написать или позвонить для уточнения информации.</div>
+    <div class="modal-footer">
+        <button id="send_request_for_pvom" class="btn btn-success" data-dismiss="modal" aria-hidden="true">Отправить</button>
+        <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Отменить</button>
     </div>
 </div>
 
@@ -1904,7 +1920,7 @@ console.log('stop is ', stopRegistration, 'close is ', closeRegistration, modalW
 var adminRole = '<?php echo db_getAdminRole($memberId); ?>';
 
 </script>
-<script src="/js/mainpage.js?v31"></script>
+<script src="/js/mainpage.js?v33"></script>
 
 <?php
 }

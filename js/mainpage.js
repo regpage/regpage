@@ -38,6 +38,9 @@ if ($(window).width()<=769) {
   $(".ftt_menu_a").css("font-size", "16px");
   $("#ftt_trainee_block span").css("font-size", "16px");
   $("#ftt_trainee_block").attr("style", "margin-bottom: 10px; padding: 10px 11px 2px 10px;");
+  // ПВОМ КНОПКИ
+  //$("#send_request_for_pvom_modal")
+  $("#send_request_for_pvom_guest_modal").css("margin-left", "0").css("margin-top", "15px");
 } else {
   if ($("body").height() < $(window).height()) {
     //console.log($(window).height());
@@ -297,13 +300,17 @@ hideShowPVOMBlock($("#hideShowPVOMBlock"), localStorage.getItem('pvom_block'));
 hideShowPVOMBlock($("#hideShowPVOMBlock"), localStorage.getItem('pvom_block'));
 
 // запрос заявления на ПВОМ
-$("#send_request_for_pvom, #send_request_for_pvom_guest").click(function () {
-  let guest = 0;
-  if ($(this).attr("id") === "send_request_for_pvom_guest") {
-    guest = 1
+$("#send_request_for_pvom_modal, #send_request_for_pvom_guest_modal").click(function () {
+  if ($(this).attr("id") === "send_request_for_pvom_guest_modal") {
+    $("#sendApplicationToFTT").attr("data-guest", 1);
+  } else {
+    $("#sendApplicationToFTT").attr("data-guest", 0);
   }
+  $("#sendApplicationToFTT").modal("show");
+});
 
-  fetch("ajax/ftt_ajax.php?type=add_request_for&guest="+guest)
+$("#send_request_for_pvom").click(function () {
+  fetch("ajax/ftt_ajax.php?type=add_request_for&guest=" + $("#sendApplicationToFTT").attr("data-guest"))
   .then(response => response.json())
   .then(data => {
     window.location = 'index';

@@ -234,7 +234,7 @@ function resetSemester(){
       continue;
     }
     $paths = explode(';', $paths);
-// ТЕСТИРОВАТЬ УДАЛЕНИЕ ФАЙЛОВ !!!
+
     foreach ($paths as $file) {
       $root = __DIR__;
       $root = explode('panelsource', $root);
@@ -250,7 +250,6 @@ function resetSemester(){
   foreach ($tables as $value) {
     $result = db_query ("DELETE FROM {$value}");
   }
-
 
   write_to_log::warning(db_getMemberIdBySessionId (session_id()), "Данные таблиц ПВОМ удалены администратором. Результат: {$result}");
   return $result;

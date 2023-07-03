@@ -64,7 +64,9 @@ if(isset($_GET['type']) && $_GET['type'] === 'to_trash_request') {
 // Удалить картику из заявления
 if(isset($_GET['type']) && $_GET['type'] === 'delete_pic') {
     $file = explode('ajax/', $_GET['patch']);
-    unlink($file[1]);    
+    if (isset($file[1]) && !empty($file[1])) {
+      unlink($file[1]);
+    }
     echo json_encode(["result"=>db_deletePicFromRequest($_GET['id'],$_GET['field'])]);
     exit();
 }

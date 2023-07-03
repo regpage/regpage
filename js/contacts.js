@@ -50,6 +50,7 @@ function contactsStringsLoad(x, idStr, sort) {
   }
 
   var newString, prevAdm, dateorder, datesending, idStrMbl = '', idStrDsk = '',respChange = false;
+  data_page.responsible_previous = [];
   for (var i = 0; i < x.length; i++) {
 
     idStrMbl = '';
@@ -60,6 +61,8 @@ function contactsStringsLoad(x, idStr, sort) {
     } else {
       idStrMbl = idStr;
     }
+
+    data_page.responsible_previous[x[i].responsible_previous] = x[i].responsible_previous;
     if (data_page.admin_contacts_role > 0) {
       !data_page.full_admin_list[x[i].responsible_previous] ? prevAdm = data_page.full_admin_list[x[i].responsible_previous] : prevAdm = data_page.full_admin_list[x[i].responsible_previous][0];
     } else {
@@ -2174,10 +2177,22 @@ function sendTheOrder(ua) {
       if (update === true) {
         var html = [];
         for (var key in data) {
+          // Добавляем ответственного, которого нет в списке, но он есть, как предыдущий ответственный в карточках
+          // удаляем существующих
+          if (data_page.responsible_previous[key]) {
+            delete data_page.responsible_previous[key];
+          }
           if (data.hasOwnProperty(key)) {
              html.push('<option value="'+key+'">'+fullNameToNoMiddleName(data[key][0])+ ' - '+data[key][1]);
           }
         }
+        // Добавляем недостающих ответственных
+        for (let variable in data_page.responsible_previous) {
+          if (data_page.responsible_previous.hasOwnProperty(variable)) {
+            html.push('<option value="'+variable+'">'+fullNameToNoMiddleName(data_page.full_admin_list[variable][0])+'</option>');
+          }
+        }
+
         let filterValue = $('#respShow').val();
         $('#responsibleContact').html(html);
         html.unshift('<option value="_all_">Все ответственные');
@@ -2476,12 +2491,14 @@ function sendTheOrder(ua) {
           }
           for (var i = 0; i < arr.length; i++) {
             arrRespOptionsForCombo.push('<option value="'+arr[i]+'">'+fullNameToNoMiddleName(data_page.full_admin_list[arr[i]][0])+'</option>');
-          }
+          }          
+
           $('#respShow').html(arrRespOptionsForCombo);
           arrRespOptionsForCombo[0] = '<option value="_all_"></option>';
           $('#responsibleList').html(arrRespOptionsForCombo);
           arrRespOptionsForCombo.splice(0,1);
           $('#responsibleContact').html(arrRespOptionsForCombo);
+
           /*$('#respShow option').each(function () {
             if (data_page.my_responsibles.indexOf($(this).val()) === -1 && $(this).val() !== '_all_') {
               $(this).hide();
