@@ -47,7 +47,7 @@ if (isset($_GET['type']) && $_GET['type'] === 'add_request_for'){
 
 // Одобряем запрос заявления на ПВОМ
 if (isset($_GET['type']) && $_GET['type'] === 'approve_request_for'){
-    echo json_encode(["result"=>createApplicationByRequest($_GET['id'], $_GET['guest'])]);
+    echo json_encode(["result"=>createApplicationByRequest($_GET['id'], $_GET['member_key'], $_GET['guest'])]);
     exit();
 }
 

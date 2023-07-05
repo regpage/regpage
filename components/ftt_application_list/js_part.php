@@ -10,5 +10,5 @@
 };
 </script>
 
-<script src="js/ftt/ftt_applications_list/script.js?v11"></script>
+<script src="js/ftt/ftt_applications_list/script.js?v12"></script>
 <script src="js/ftt/ftt_applications_list/design.js?v2"></script>

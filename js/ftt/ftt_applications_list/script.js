@@ -226,10 +226,12 @@ $(document).ready(function() {
     flt_allow_deny();
   });
 
+  // создпть заявление по запросу
   $(".btn_approve_request").click(function () {
     $("#modal_add_request_for").modal("show");
     $("#modal_add_request_for").attr("data-id", $(this).parent().parent().attr("data-id"));
     $("#modal_add_request_for").attr("data-guest", $(this).parent().parent().attr("data-guest"));
+    $("#modal_add_request_for").attr("data-member_key", $(this).parent().parent().attr("data-member_key"));
     if ($(this).parent().parent().attr("data-guest") === "1") {
       $("#modal_add_request_for h5").text("Создать заявление в качестве ГОСТЯ");
     } else {
@@ -241,12 +243,13 @@ $(document).ready(function() {
   $("#mdl_btn_approve_request, #mdl_btn_approve_request_guest").click(function () {
     let id = $("#modal_add_request_for").attr("data-id");
     let guest = $("#modal_add_request_for").attr("data-guest");
+    let member_key = $("#modal_add_request_for").attr("data-member_key");
     if ($(this).attr("id") === 'mdl_btn_approve_request') {
       guest = 0;
     } else {
       guest = 1;
     }
-    fetch("ajax/ftt_ajax.php?type=approve_request_for&guest="+guest+"&id="+id)
+    fetch("ajax/ftt_ajax.php?type=approve_request_for&guest="+guest+"&id="+id+"&member_key="+member_key)
     .then(response => response.json())
     .then(result => {
       $("#modal_add_request_for").hide();
@@ -257,6 +260,7 @@ $(document).ready(function() {
     });
   });
 
+  // удалить запрос
   $(".btn_delete_request").click(function () {
     $("#modal_dlt_request_for").modal("show");
     $("#modal_dlt_request_for").attr("data-id", $(this).parent().parent().attr("data-id"));
@@ -275,6 +279,7 @@ $(document).ready(function() {
     });
   });
 
+  // Приём заявлений остановить/начать
   $("#mdl_open_recruit").click(function () {
     if ($(this).text().trim() === "Остановить приём заявлений") {
       $("#btn_open_recruit").hide();

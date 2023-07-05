@@ -126,13 +126,24 @@ function db_getRequestForApplication ($adminId, $trash=''){
   return $result;
 }
 
-function createApplicationByRequest($id, $guest=0)
+function createApplicationByRequest($id, $member_key, $guest=0)
 {
   global $db;
   $id = $db->real_escape_string($id);
   $guest = $db->real_escape_string($guest);
+  $member_key = $db->real_escape_string($member_key);
 
   $res = db_query("UPDATE `ftt_request` SET `notice` = 0, `guest` = '$guest' WHERE  `id` = '$id'");
+
+  if ($res) {
+    $topic = 'Для вас создан бланк заявления ПВОМ';
+    $guest_text = '.';
+    if ($guest == 1) {
+      $guest_text = ' в качестве гостя';
+    }
+    $emailText = "На сайте reg-page.ru для вас создан бланк заявления для поступления на Полновременное обучение{$guest_text}<br><br> Служащие Полновременного обучения";
+    Emailing::send_by_key($member_key, $topic, $emailText);
+  }
 
   return $res;
 }

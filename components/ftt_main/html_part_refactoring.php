@@ -8,10 +8,10 @@ if ($ftt_access['group'] === 'staff' || $ftt_access['group'] === 'trainee') {
 <div id="main_container" class="container-xl" style="margin-top: 10px; padding-left: 20px; padding-bottom: 25px; background-color: white; max-width: 1170px;">
           <?php
           if ($thispage === 'ftt_schedule') {
-            if ($ftt_access['group'] === 'trainee') {
-              include_once 'components/ftt_schedule/content_part.php';
-            } elseif ($ftt_access['group'] === 'staff') {
+            if ($ftt_access['group'] === 'staff') {
               include_once 'components/ftt_schedule/staff_content_part.php';
+            } elseif ($ftt_access['group'] === 'trainee') {
+              include_once 'components/ftt_schedule/content_part.php';
             }
           } elseif ($thispage === 'ftt_announcement') {
             if ($ftt_access['group'] === 'staff') {
@@ -24,10 +24,10 @@ if ($ftt_access['group'] === 'staff' || $ftt_access['group'] === 'trainee') {
             // HTML модальные окна страниц
             include_once "components/ftt_announcement/modals_part.php";
           } elseif ($thispage === 'ftt_attendance') {
-            if ($ftt_access['group'] === 'trainee') {
-              include_once 'components/ftt_attendance/content_part.php';
-            } elseif ($ftt_access['group'] === 'staff') {
+            if ($ftt_access['group'] === 'staff') {
               include_once 'components/ftt_attendance/staff_content_part.php';
+            } elseif ($ftt_access['group'] === 'trainee') {
+              include_once 'components/ftt_attendance/content_part.php';
             }
           } elseif ($thispage === 'ftt_service') {
             echo "В разработке.";

@@ -21,7 +21,7 @@
         <button id="showModalShortStatistics" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalShortStatistics">Печать</button>
         <button id="filters_button" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalFilrets" style="display: none;">Фильтры</button>
         <button id="sort_button" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalSort" style="display: none;">Порядок</button>
-        <?php if ($trainee_data['coordinator'] !== '1'): ?>
+        <?php // if ($trainee_data['coordinator'] !== '1'): ?>
         <select id="trainee_select" class="form-control form-control-sm" style="width: 158px;">
           <option value="_all_">Все обучающиеся</option>
           <?php foreach ($trainee_list as $key => $value):
@@ -55,7 +55,7 @@
             echo "<option value='{$key}' $selected>{$value}</option>";
           endforeach; ?>
         </select>
-        <?php endif; ?>
+        <?php // endif; ?>
         <select id="tasks_select" class="form-control form-control-sm ">
           <?php
           $selected = '';

@@ -19,22 +19,22 @@ if ($ftt_access['group'] === 'staff' || $ftt_access['group'] === 'trainee') {
               <?php
               return;
             }
-            if ($ftt_access['group'] === 'trainee') {
-              include_once 'components/ftt_schedule/content_part.php';
-            } elseif ($ftt_access['group'] === 'staff') {
+            if ($ftt_access['group'] === 'staff') {
               include_once 'components/ftt_schedule/staff_content_part.php';
               ?>
               <!--<br><br><a id="show_my_5_6" href="#show_my_5_6" style="margin-left: 20px;" title='Кликните по ссылке, что бы увидеть расписание.'>Расписание семестров 5-6</a>-->
               <?php
               //include_once 'components/ftt_schedule/staff_content_part_2.php';
+            } elseif ($ftt_access['group'] === 'trainee') {
+              include_once 'components/ftt_schedule/content_part.php';
             }
           } elseif ($thispage === 'ftt_announcement') {
             // REFACTORING Перенесено в новый файл
           } elseif ($thispage === 'ftt_attendance') {
-            if ($ftt_access['group'] === 'trainee') {
-              include_once 'components/ftt_attendance/content_part.php';
-            } elseif ($ftt_access['group'] === 'staff') {
+            if ($ftt_access['group'] === 'staff') {
               include_once 'components/ftt_attendance/staff_content_part.php';
+            } elseif ($ftt_access['group'] === 'trainee') {
+              include_once 'components/ftt_attendance/content_part.php';
             }
           } elseif ($thispage === 'ftt_service') {
             // REFACTORING Разрабатывать в новом файле
