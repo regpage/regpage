@@ -26,10 +26,13 @@
   <!-- БЛОК ЗАЯВЛЕНИЯ -->
   <?php if ($application_prepare === '1' || $request_data['stage'] > 0) {
     $points_head =[];
+    $notForRecommendHeader = [];
     for ($i=0; $i <count($points); $i++) {
       if ($points[$i]['display_type'] === 'header' && $points[$i]['group_position'] !== '0') {
         if ($points[$i]['not_for_recommend'] == 1 && $is_recommendator == 1 && $serviceone_role != 3) {
-          continue;
+          // Нумерация групп для рекоммендатора, иначе нумерация не соответствует.
+          $notForRecommendHeader[] = $points[$i]['group'];
+          // continue;
         }
         $points_head[$points[$i]['group_position']] = $points[$i]['group'];
       }
@@ -40,7 +43,7 @@
         $other = array('localities' => $gl_localities, 'countries1' => $countries1, 'countries2' => $countries2);
       }
 
-      FTTRenderPoints::rendering($points, $value_group, $request_data, $other);
+      FTTRenderPoints::rendering($points, $value_group, $request_data, $other, $notForRecommendHeader);
     }
 
     echo "<div class='col'>{$status_phrase}</div>";

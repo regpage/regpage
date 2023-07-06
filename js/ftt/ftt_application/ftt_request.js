@@ -1636,17 +1636,23 @@ $(document).ready(function(){
   function numQuestionsForStaff() {
     $("#main_container .text-white.bg-secondary").each(function (i) {
       $(this).find("h4").text(i+1 + ". " + $(this).find("h4").text());
+      let counter = 0;
       $(this).parent().find(".title_point").each(function (ii) {
-        $(this).text((i+1) + "." + (ii+1) + ". " + $(this).text());
+        if ($(this).parent().parent().attr("style") !== "display: none;") {
+          counter++;
+          $(this).text((i+1) + "." + (counter) + ". " + $(this).text());
+        }
       });
     });
   }
 
-  // numeric
-  if (data_page.role > 1) {
+  // нумерация вопросов для всех после отправки
+  if ($("#main_container").attr("data-status") !== "0" && data_page.recommendator !== "1") { //data_page.role > 1
     numQuestionsForStaff();
+  } else if ($("#main_container").attr("data-status") !== "0" && data_page.recommendator === "1") {
+    numQuestionsForStaff();
+    $(".recommend_not_visible").parent().remove();
   }
-
   // type of application
  $("#type_of_application").click(function () {
    if ($("#main_container").attr("data-guest") === "1") {

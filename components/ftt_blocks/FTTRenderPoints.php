@@ -9,14 +9,18 @@ include_once "components/ftt_blocks/InputsGroup.php";
 include_once "components/ftt_blocks/FTTParsing.php";
 
 class FttRenderpoints {
-  static function rendering ($points, $section, $data, $lists = []) {
+  static function rendering ($points, $section, $data, $lists = [], $notForRecommendHeader=[]) {
     global $is_recommendator;
     global $serviceone_role;
     $localities = $lists['localities'];
     $countries1 = $lists['countries1'];
     $countries2 = $lists['countries2'];
     $except = [];
-    echo "<div class='container'><div class='row text-white bg-secondary rounded mb-4 mt-3'><h4 class='pl-3 mb-1 mt-1'>{$section}</h4></div>";
+    $notForRecommendHeaderClass = '';
+    if (in_array($section, $notForRecommendHeader)) {
+      $notForRecommendHeaderClass = 'recommend_not_visible';
+    }
+    echo "<div class='container'><div class='row text-white bg-secondary rounded mb-4 mt-3 {$notForRecommendHeaderClass}'><h4 class='pl-3 mb-1 mt-1'>{$section}</h4></div>";
     for ($i=0; $i < count($points); $i++) {
       if ($points[$i]['group'] === $section) {
         if ($points[$i]['not_for_recommend'] == 1 && $is_recommendator == 1 && $serviceone_role != 3) {

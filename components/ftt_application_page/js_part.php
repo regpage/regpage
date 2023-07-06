@@ -3,6 +3,7 @@ let data_page = {"applicant":""};
 data_page.applicant = "<?php echo $applicant;?>";
 data_page.role = "<?php echo $serviceone_role;?>";
 //data_page.viewer = "<?php //echo $serviceones_pvom;?>";
+data_page.recommendator = "<?php echo $is_recommendator;?>";
 // блокировка полей
 function blockApplicationFields() {
   $("input").attr("disabled","disabled");
@@ -67,5 +68,5 @@ if (!data_page.applicant) {
 
 <script src="extensions/rw_log/rw_log.js?v1"></script>
 <script src="js/modules/date.js?v1"></script>
-<script src="js/ftt/ftt_application/ftt_request.js?v45"></script>
+<script src="js/ftt/ftt_application/ftt_request.js?v47"></script>
 <script src="js/ftt/ftt_application/design.js?v3"></script>
