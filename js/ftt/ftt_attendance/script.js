@@ -385,7 +385,7 @@ function open_blank(el_this) {
       // visit
       let visit_field = commits.result[i]['visit'], option_visit = '', drop_visit = '';
 
-      if (commits.result[i]['visit'] === "1") {
+      if (commits.result[i]['visit'] === "1" || commits.result[i]['session_name'] === "Отбой") {
         option_visit = "<option value='П' "+v+">П</option>";
         drop_visit = "<span class='dropdown-item cursor-pointer' data-val='П'>Посещение (П)</span>"
       }
@@ -454,7 +454,19 @@ function open_blank(el_this) {
       } else if ($(this).parent().prev().hasClass("btn-success")) {
         $(this).parent().prev().removeClass("btn-success").addClass("btn-secondary");
       }
-
+      // ночёвка
+      if ($(this).attr("data-val") === "П" && $(this).parent().parent().find(".name_session").text() === "Отбой") {        
+        fetch("ajax/ftt_attendance_ajax.php?type=overnight&member_key=" + $("#modalAddEdit").attr("data-member_key")+"&date=" + $("#modalAddEdit").attr("data-date"))
+        .then(response => response.json())
+        .then(commits => {
+          if (commits.result) {
+            $(this).parent().prev().prev().val("");
+            $(this).parent().prev().text("...")
+            save_select_field($(this).parent().prev().prev(), "");
+            showError("В этом месяце уже была ночёвка у святых " + dateStrFromyyyymmddToddmm(commits.result) + ".");
+          }
+        });
+      }
       if (!$(this).parent().prev().prev().prop("disabled")) {
         let prev_val = $(this).parent().prev().prev().val();
         $(this).parent().prev().prev().val($(this).attr("data-val"));

@@ -395,6 +395,29 @@ function undo_extrahelp_lates($id)
   return $result;
 }
 
+// Ночёвка у святых
+function db_overnight($member_key, $date)
+{
+  global $db;
+  $member_key = $db->real_escape_string($member_key);
+  $date = $db->real_escape_string($date);
+  if (!empty($date)) {
+    $date = explode('.', $date);
+    if (isset($date[1]) && !empty($date)) {
+      $date = intval($date[1]);
+    }
+  }
+
+  $result = '';
+  $res = db_query("SELECT fa.reason, fas.date, fas.member_key
+    FROM ftt_attendance_sheet AS fas
+    LEFT JOIN ftt_attendance fa ON fa.sheet_id = fas.id
+    WHERE MONTH(fas.date) = '$date' AND fas.member_key = '$member_key' AND fa.reason = 'П'");
+  while ($row = $res->fetch_assoc()) $result = $row['date'];
+
+  return $result;
+}
+
 // PERMISSIONS
 function set_permission($sessions, $adminId)
 {

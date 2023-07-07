@@ -344,5 +344,9 @@ if (isset($_GET['type']) && $_GET['type'] === 'set_communication_record') {
   exit();
 }
 
+if (isset($_GET['type']) && $_GET['type'] === 'overnight') {
+  echo json_encode(["result"=>db_overnight($_GET['member_key'], $_GET['date'])]);
+  exit();
+}
 
 ?>

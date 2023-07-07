@@ -4,9 +4,7 @@
     <div class="col pl-3">
       <!-- ЗАГОЛОВОК -->
       <h5 class="pl-3">Заявление для участия в Полновременном обучении <?php echo $guest_text_h; ?></h5>
-      <h6 class="pl-3"><?php echo getValueFttParamByName("application_title"); ?>
-      <?php echo $status_application_label; ?>
-      </h6>
+      <h6 class="pl-3"><?php echo $status_application_label; ?></h6>
     </div>
     <div class="col-5">
       <button type="button" class="btn btn-primary btn-sm mr-2" data-toggle="modal" data-target="#modalStartInfo">Информация</button>
