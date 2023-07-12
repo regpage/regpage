@@ -5,6 +5,32 @@ include_once "modals.php";
 include_once "db/meetingsdb.php";
 
 $localities = db_getAdminMeetingLocalities ($memberId);
+/*
+// Добавить районы Москвы к тем у кого доступ только до одного района.
+// Не получается нужно работать со списками.
+$moscow = ['001009','001163','001164','001165','001166','001167','001168'];
+$localitiesMoscow = [];
+if (array_key_exists($moscow[0], $localities) && array_key_exists($moscow[1], $localities)
+&& array_key_exists($moscow[2], $localities) && array_key_exists($moscow[3], $localities)
+&& array_key_exists($moscow[4], $localities) && array_key_exists($moscow[5], $localities)
+&& array_key_exists($moscow[6], $localities)) {
+  // miss
+} elseif (array_key_exists('001009', $localities) || array_key_exists('001163', $localities)
+|| array_key_exists('001168', $localities) || array_key_exists('001164', $localities)
+|| array_key_exists('001165', $localities) || array_key_exists('001166', $localities)
+|| array_key_exists('001167', $localities)) {
+  $moscow = ['001009'=>'Москва','001163'=>'Москва: 1-й район','001164'=>'Москва: 3-й район','001165'=>'Москва: 4/7-й район','001166'=>'Москва: 5-й район','001167'=>'Москва: 8-й район','001168'=>'Москва: 10-й район'];
+  foreach ($moscow as $key => $value) {
+    if (!isset($localities[$value])) {
+      $localitiesMoscow[$key] = $value;
+    }
+  }
+  if (count($localitiesMoscow) > 0) {
+    $localities = $localities + $localitiesMoscow;
+    asort($localities);
+  }
+}
+*/
 $localitiesWithFilters = db_getAdminLocalitiesNotRegTbl($adminId);
 $meetingsTypes = db_getMeetingsTypes();
 $isSingleCity = db_isSingleCityAdmin($memberId);

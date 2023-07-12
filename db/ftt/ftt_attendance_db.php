@@ -113,6 +113,7 @@ function getFttAttendanceSheetAndStrings($list_access, $condition, $admin_id = '
   $strings = [];
   $res = db_query("SELECT fas.id, fas.member_key, fas.date, fas.comment, fas.status, fas.date_send, fas.bible,
      fas.morning_revival, fas.personal_prayer, fas.common_prayer, fas.bible_reading, fas.ministry_reading, fas.mark,
+     fas.bible_book, fas.bible_chapter,
      m.name, tra.serving_one, tra.pause_start, tra.pause_stop, tra.pause_comment
     FROM ftt_attendance_sheet AS fas
     INNER JOIN member m ON m.key = fas.member_key
@@ -414,6 +415,22 @@ function db_overnight($member_key, $date)
     LEFT JOIN ftt_attendance fa ON fa.sheet_id = fas.id
     WHERE MONTH(fas.date) = '$date' AND fas.member_key = '$member_key' AND fa.reason = 'П'");
   while ($row = $res->fetch_assoc()) $result = $row['date'];
+
+  return $result;
+}
+
+// получаем книги библии
+function get_bible_books($book='')
+{
+  global $db;
+  $book = $db->real_escape_string($book);
+  $condition = '';
+  if (!empty($book)) {
+    $condition = " WHERE `book`='{$book}' " ;
+  }
+  $result = [];
+  $res = db_query("SELECT `book`, `chapter` FROM `bible` {$condition}");
+  while ($row = $res->fetch_assoc()) $result[] = [$row['book'], $row['chapter']];
 
   return $result;
 }

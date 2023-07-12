@@ -160,6 +160,12 @@ if (isset($_GET['type']) && $_GET['type'] === 'undo_status') {
   exit();
 }
 
+// bible book & chapter
+if (isset($_GET['type']) && $_GET['type'] === 'get_bible_chapter') {
+  echo json_encode(["result"=>get_bible_books($_GET['book'])]);
+  exit();
+}
+
 // PERMISSIONS
 // save permission.
 if (isset($_GET['type']) && $_GET['type'] === 'set_permission') {

@@ -177,6 +177,8 @@
           } else {
             $bible_reading_text = 'Нет';
           }
+          $book = $value['bible_book'];
+          $chapter = $value['bible_chapter'];
 
           if ($mark_string === '1') {
             $mark_string = 'text-danger';
@@ -334,14 +336,15 @@
             $start = false;
             echo "<div data-member_key='{$member_key}' style='margin-top: 2px;'>
                     <div class='card_header cursor-pointer'>
-				                <button class='btn btn-link'>{$name_trainee} ({$semester_number})</button> <span class='list_string link_day {$sunday_class} {$done_string}' data-id='{$id}' data-date='{$date}' data-member_key='{$member_key}' data-status='{$status}' data-date_send='{$date_send}' data-bible='{$bible}' data-morning_revival='{$morning_revival}' data-personal_prayer='{$personal_prayer}' data-common_prayer='{$common_prayer}' data-bible_reading='{$bible_reading}' data-ministry_reading='{$ministry_reading}' data-serving_one='{$serving_one}' data-comment='{$comment}' data-toggle='modal' data-target='#modalAddEdit'> {$short_date} {$short_day_of_week} </span>";
+				                <button class='btn btn-link'>{$name_trainee} ({$semester_number})</button> <span class='list_string link_day {$sunday_class} {$done_string}' data-id='{$id}' data-date='{$date}' data-member_key='{$member_key}' data-status='{$status}' data-date_send='{$date_send}' data-bible='{$bible}' data-morning_revival='{$morning_revival}' data-personal_prayer='{$personal_prayer}'
+                        data-common_prayer='{$common_prayer}' data-bible_reading='{$bible_reading}' data-ministry_reading='{$ministry_reading}' data-serving_one='{$serving_one}' data-bible_book='{$book}' data-bible_chapter='{$chapter}' data-comment='{$comment}' data-toggle='modal' data-target='#modalAddEdit'> {$short_date} {$short_day_of_week} </span>";
           } else {
             /*if ($counter_periods === 8) {
               echo "</div><div id='collapse_{$id_head_start}' class='collapse' data-parent='#accordion_attendance'>
               <div class='row card-body' data-toggle='modal' data-target='#modalAddEdit' {$show_string}>
               <span class='list_string link_day {$sunday_class}' data-id='{$id}' data-date='{$date}' data-member_key='{$member_key}' data-status='{$status}' data-date_send='{$date_send}' data-bible='{$bible}' data-morning_revival='{$morning_revival}' data-personal_prayer='{$personal_prayer}' data-common_prayer='{$common_prayer}' data-bible_reading='{$bible_reading}' data-ministry_reading='{$ministry_reading}' data-serving_one='{$serving_one}' data-comment='{$comment}' data-toggle='modal' data-target='#modalAddEdit'> {$short_date} {$short_day_of_week} </span>";
             } else {*/
-              echo "<span class='list_string link_day {$sunday_class} {$done_string} {$mark_string}' data-id='{$id}' data-date='{$date}' data-member_key='{$member_key}' data-status='{$status}' data-date_send='{$date_send}' data-bible='{$bible}' data-morning_revival='{$morning_revival}' data-personal_prayer='{$personal_prayer}' data-common_prayer='{$common_prayer}' data-bible_reading='{$bible_reading}' data-ministry_reading='{$ministry_reading}' data-serving_one='{$serving_one}' data-comment='{$comment}' data-toggle='modal' data-target='#modalAddEdit'> {$short_date} {$short_day_of_week}</span>";
+              echo "<span class='list_string link_day {$sunday_class} {$done_string} {$mark_string}' data-id='{$id}' data-date='{$date}' data-member_key='{$member_key}' data-status='{$status}' data-date_send='{$date_send}' data-bible='{$bible}' data-morning_revival='{$morning_revival}' data-personal_prayer='{$personal_prayer}' data-common_prayer='{$common_prayer}' data-bible_reading='{$bible_reading}' data-ministry_reading='{$ministry_reading}' data-serving_one='{$serving_one}' data-bible_book='{$book}' data-bible_chapter='{$chapter}' data-comment='{$comment}' data-toggle='modal' data-target='#modalAddEdit'> {$short_date} {$short_day_of_week}</span>";
             /*}*/
           } // || $counter % $counter_days[$member_key] === 0
           if ($counter % $counter_days[$member_key] === 0 || $counter_days[$member_key] === 1) {

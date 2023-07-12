@@ -48,6 +48,16 @@ $(document).ready(function(){
     });
  }
 
+ function save_select_field_extra(field, value, header) {
+   id = $("#modalAddEdit").attr("data-id");
+   data = "&field="+field+"&value="+value+"&id="+id+"&header="+header;
+   fetch('ajax/ftt_attendance_ajax.php?type=updade_data_blank' + data)
+   .then(response => response.json())
+   .then(commits => {
+     //console.log(commits.result);
+   });
+}
+
  // send data
  function send_data_blank(id, late, extrahelp) {
    $("#modalAddEdit").modal("hide");
@@ -212,6 +222,30 @@ $(document).ready(function(){
      return;
    }
   send_data_blank($("#modalAddEdit").attr("data-id"), create_late, create_extrahelp);
+ });
+
+ $('#modalAddEdit select').change(function (e) {
+   let id = $("#modalAddEdit").attr("data-id");
+   let value = $(this).val();
+   if (e.target.id === "bible_book") {
+     setTimeout(function () {
+       fetch("ajax/ftt_attendance_ajax.php?type=get_bible_chapter&book=" + value)
+       .then(response => response.json())
+       .then(commits => {
+         let options = "";
+         for (let i = 1; i <= commits.result[0][1]; i++) {
+           options += "<option value='" + i + "'>" + i;
+         }
+         $("#bible_chapter").html(options);
+         save_select_field_extra("bible_chapter", 1, 1);
+         $("#accordion_attendance .list_string[data-id='"+id+"']").attr("data-bible_book", value);
+         $("#accordion_attendance .list_string[data-id='"+id+"']").attr("data-bible_chapter", 1);
+       });
+     }, 10);
+   } else {
+     $("#accordion_attendance .list_string[data-id='"+id+"']").attr("data-bible_chapter", value);
+   }
+   save_select_field_extra($(this).attr("data-field"), value, 1);
  });
 
 function open_blank(el_this) {
@@ -455,7 +489,7 @@ function open_blank(el_this) {
         $(this).parent().prev().removeClass("btn-success").addClass("btn-secondary");
       }
       // ночёвка
-      if ($(this).attr("data-val") === "П" && $(this).parent().parent().find(".name_session").text() === "Отбой") {        
+      if ($(this).attr("data-val") === "П" && $(this).parent().parent().find(".name_session").text() === "Отбой") {
         fetch("ajax/ftt_attendance_ajax.php?type=overnight&member_key=" + $("#modalAddEdit").attr("data-member_key")+"&date=" + $("#modalAddEdit").attr("data-date"))
         .then(response => response.json())
         .then(commits => {
@@ -879,7 +913,6 @@ function open_blank(el_this) {
         .then(commits => {
           element.parent().parent().attr("data-absence", absence);
           element.parent().parent().attr("data-late", late);
-          console.log(commits.result);
         });
       } else {
         console.log("ERROR. EMPTY FIELDS");
@@ -888,12 +921,30 @@ function open_blank(el_this) {
         $(this).css('border-color', 'lightgray');
       }
     });
+    if (el_this.attr("data-member_key") === admin_id_gl) {
+      $("#bible_book").attr('disabled', true);
+    }
   });
+
     $("#morning_revival").val(el_this.attr("data-morning_revival"));
     $("#personal_prayer").val(el_this.attr("data-personal_prayer"));
     $("#common_prayer").val(el_this.attr("data-common_prayer"));
     $("#bible_reading").val(el_this.attr("data-bible_reading"));
+    $("#bible_book").val(el_this.attr("data-bible_book"));
+    $("#bible_chapter").val(el_this.attr("data-bible_chapter"));
     $("#ministry_reading").val(el_this.attr("data-ministry_reading"));
+    // книга и глава библии
+    // bible
+
+    /*fetch("ajax/ftt_attendance_ajax.php?type=get_bible_data&member_key="
+    + el_this.attr("data-member_key") + "&date=" + el_this.attr("data-date"))
+    .then(response => response.json())
+    .then(commits => {
+      if (commits.result) {
+        $("#bible_book").val(commits.result[0]);
+        $("#bible_chapter").val(commits.result[1]);
+      }
+    });*/
 
     // desabled
     if (el_this.attr("data-member_key") !== admin_id_gl) {
@@ -1076,7 +1127,7 @@ function open_blank(el_this) {
          day = "";
          date = "";
        }
-       let html_part_span = "<span class='list_string list_string_archive link_day "+sunday_back+" "+done_string+" "+mark_string+"' data-id='"+res[i].id+"' data-date='"+date+"' data-member_key='"+res[i].member_key+"' data-status='"+res[i].status+"' data-date_send='"+res[i].date_send+"' data-bible='"+res[i].bible+"' data-morning_revival='"+res[i].morning_revival+"' data-personal_prayer='"+res[i].personal_prayer+"' data-common_prayer='"+res[i].common_prayer+"' data-bible_reading='"+res[i].bible_reading+"' data-ministry_reading='"+res[i].ministry_reading+"' data-serving_one='"+res[i].serving_one+"' data-comment='"+res[i].comment+"'>"+date+" "+day+"</span>";
+       let html_part_span = "<span class='list_string list_string_archive link_day "+sunday_back+" "+done_string+" "+mark_string+"' data-id='"+res[i].id+"' data-date='"+date+"' data-member_key='"+res[i].member_key+"' data-status='"+res[i].status+"' data-date_send='"+res[i].date_send+"' data-bible='"+res[i].bible+"' data-morning_revival='"+res[i].morning_revival+"' data-personal_prayer='"+res[i].personal_prayer+"' data-common_prayer='"+res[i].common_prayer+"' data-bible_reading='"+res[i].bible_reading+"' data-ministry_reading='"+res[i].ministry_reading+"' data-serving_one='"+res[i].serving_one+"' data-bible_book='"+res[i].bible_book+"' data-bible_chapter='"+res[i].bible_chapter+"' data-comment='"+res[i].comment+"'>"+date+" "+day+"</span>";
        if (i % 7 === 0) {
         html.push("<div class='row archive_str' style='margin-bottom: 2px;' data-member_key='member_key'>"+html_part_span);
       } else {

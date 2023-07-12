@@ -7,6 +7,7 @@ include_once 'db/classes/schedule_class.php';
 include_once 'db/classes/date_convert.php';
 include_once 'db/classes/ftt_info.php';
 include_once 'db/classes/ftt_permissions.php';
+include_once 'db/classes/ftt_attendance/bible.php';
 
 function db_newDailyAttendance () {
   // Проверяем даты семестра
@@ -14,11 +15,12 @@ function db_newDailyAttendance () {
 
   if (ftt_info::pause()) {
     echo "Вне периода проведения обучения";
-    exit();
+    //exit();
   }
   // получаем разрешения на сегодня (permissions)
   $todayDate = date("Y-m-d");
   $permissions = FttPermissions::get_by_date($todayDate);
+  $bibleBooks = new Bible;
   // step 1 получаем правила
   $rules = [];
   $res_rules = db_query("SELECT `member_key`, `pause_start`, `pause_stop`
@@ -61,7 +63,23 @@ function db_newDailyAttendance () {
       }
       echo "{$id_member}, ";
       $max_id;
-      $id_new_string = db_query("INSERT INTO ftt_attendance_sheet (`date`, `member_key`) VALUES (NOW(), '$id_member')");
+
+      // ADD BIBLE READING
+      $prev_reading;
+      $res_bible=db_query("SELECT `bible_book`, `bible_chapter` FROM ftt_attendance_sheet WHERE `member_key` = '{$aa['member_key']}' AND `date` = (NOW() - INTERVAL 1 DAY)");
+      while ($rows = $res_bible->fetch_assoc()) $prev_reading=[$rows['bible_book'], $rows['bible_chapter']];
+      if (isset($prev_reading[0]) && isset($prev_reading[1]) && !empty($prev_reading[0]) && !empty($prev_reading[1])) {
+        $nextReading = Bible->nextChapter($prev_reading[0],$prev_reading[1]);
+        $bible_book = $nextReading[0];
+        $bible_chapter = $nextReading[1];
+      } else {
+        $res_bible=db_query("SELECT `bible_book`, `bible_chapter` FROM ftt_trainee WHERE `member_key` = '{$aa['member_key']}'");
+        while ($rows = $res_bible->fetch_assoc()) $prev_reading=[$rows['bible_book'], $rows['bible_chapter']];
+        $bible_book = $prev_reading[0];
+        $bible_chapter = $prev_reading[1];
+      }
+
+      $id_new_string = db_query("INSERT INTO ftt_attendance_sheet (`date`, `member_key`, `bible_book`, `bible_chapter`) VALUES (NOW(), '$id_member', '$bible_book', '$bible_chapter')");
       // лучшие варианты получения ID
       // $db->insert_id;
       // ИЛИ

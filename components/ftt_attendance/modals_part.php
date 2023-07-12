@@ -63,13 +63,35 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
               <div class="col-12">
                 <h6 class="hide_element">Чтение Библии</h6>
                 <div class="input-group mb-3">
-                  <span class="align-self-center name_session">Чтение Библии</span>
+                  <span class="mt-2 name_session">Чтение Библии</span>
                   <input type="number" id="bible_reading" class="form-control practice_field short_number_field text-right" data-field="bible_reading" value="" min="0" max="30" style="font-size: 14px; max-width: 95px !important;">
-                  <span class="align-self-center pl-2">мин. (<?php if ($ftt_access['group'] === 'staff' || (isset($trainee_data['semester']) && $trainee_data['semester'] < 5)) { ?>15
+                  <span class="align-self-center pl-2 mt-2">мин. (<?php if ($ftt_access['group'] === 'staff' || (isset($trainee_data['semester']) && $trainee_data['semester'] < 5)) { ?>15
                     <?php } else { ?>
                       30
                     <?php } ?>
-                    мин. в день)</span>
+                    мин. в день)
+                    <br>
+                  <span>Название книг Библии</span>
+                  <br>
+                  <select id="bible_book" class="" data-field="bible_book">
+                    <?php
+                    $bible_books = get_bible_books();
+                    foreach ($bible_books as $key => $value) {
+                      echo "<option value='{$value[0]}'>{$value[0]}";
+                    }
+                    ?>
+                  </select>
+                  <br>
+                  <span>глава</span>
+                  <br>
+                  <select id="bible_chapter" class="" data-field="bible_chapter">
+                    <?php
+                    for ($i=1; $i <= $bible_books[0][1]; $i++) {
+                      echo "<option value='{$i}'>{$i}";
+                    }
+                    ?>
+                  </select>
+                  </span>
                 </div>
               </div>
             </div>
