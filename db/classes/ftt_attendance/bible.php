@@ -33,18 +33,20 @@ class Bible
 
   function nextChapter($book, $chapter)
   {
-    $i=0;
-    array_filter($this->books,function($a){
-      $i++;
-      if ($a[0]==$book) {
-        if ($chapter < $a[1]) {
-          return [$book, $chapter++];
-        } elseif($chapter == $a[1]) {
-          return [$this->books[$i++][0], 1];           
+    for ($i=0; $i < count($this->books); $i++) {
+      if ($book === $this->books[$i][0]) {
+        if ($chapter < $this->books[$i][1]) {
+          return [$book, $chapter+1];
+        } elseif($chapter === $this->books[$i][1]) {
+          if (isset($this->books[$i+1])) {
+            return [$this->books[$i+1][0], 1];
+          } else {
+            return [$this->books[0][0], 1];
+          }
         } else {
           // error
         }
       }
-    });
+    }
   }
 }

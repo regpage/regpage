@@ -161,5 +161,28 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
   </div>
 </div>
 
+<!-- Архивный список листков посещаемости -->
+<div class="modal fade" id="mdl_bible_statistic">
+  <div class="modal-dialog">
+    <div class="modal-content" style="width: 600px;">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title">Статистика чтения Библии</h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div id="" class="container">
+
+        </div>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <?php include 'components/ftt_attendance/modal_permission.php'; ?>
 <?php include 'components/ftt_attendance/modal_skip.php'; ?>

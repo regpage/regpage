@@ -15,7 +15,7 @@ function db_newDailyAttendance () {
 
   if (ftt_info::pause()) {
     echo "Вне периода проведения обучения";
-    //exit();
+    exit();
   }
   // получаем разрешения на сегодня (permissions)
   $todayDate = date("Y-m-d");
@@ -65,11 +65,15 @@ function db_newDailyAttendance () {
       $max_id;
 
       // ADD BIBLE READING
-      $prev_reading;
-      $res_bible=db_query("SELECT `bible_book`, `bible_chapter` FROM ftt_attendance_sheet WHERE `member_key` = '{$aa['member_key']}' AND `date` = (NOW() - INTERVAL 1 DAY)");
+      $prev_reading = [];
+      $res_bible=db_query("SELECT `bible_book`, `bible_chapter` FROM ftt_attendance_sheet WHERE `member_key` = '{$aa['member_key']}' AND `date` = (CURDATE() - INTERVAL 1 DAY)");
       while ($rows = $res_bible->fetch_assoc()) $prev_reading=[$rows['bible_book'], $rows['bible_chapter']];
+
+
       if (isset($prev_reading[0]) && isset($prev_reading[1]) && !empty($prev_reading[0]) && !empty($prev_reading[1])) {
-        $nextReading = Bible->nextChapter($prev_reading[0],$prev_reading[1]);
+        $nextReading = $bibleBooks->nextChapter($prev_reading[0],$prev_reading[1]);
+        echo "<br>{$nextReading[0]}<br>";
+        echo "<br>{$nextReading[1]}<br>";
         $bible_book = $nextReading[0];
         $bible_chapter = $nextReading[1];
       } else {
