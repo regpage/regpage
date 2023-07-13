@@ -419,22 +419,6 @@ function db_overnight($member_key, $date)
   return $result;
 }
 
-// получаем книги библии
-function get_bible_books($book='')
-{
-  global $db;
-  $book = $db->real_escape_string($book);
-  $condition = '';
-  if (!empty($book)) {
-    $condition = " WHERE `book`='{$book}' " ;
-  }
-  $result = [];
-  $res = db_query("SELECT `book`, `chapter` FROM `bible` {$condition}");
-  while ($row = $res->fetch_assoc()) $result[] = [$row['book'], $row['chapter']];
-
-  return $result;
-}
-
 // PERMISSIONS
 function set_permission($sessions, $adminId)
 {

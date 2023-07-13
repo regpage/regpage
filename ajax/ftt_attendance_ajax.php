@@ -13,6 +13,7 @@ include_once '../db/classes/trainee_data.php';
 include_once '../db/classes/member.php';
 include_once '../db/classes/short_name.php';
 include_once '../db/classes/CutString.php';
+include_once '../db/classes/ftt_attendance/bible.php';
 
 // Подключаем ведение лога
 include_once "../extensions/write_to_log/write_to_log.php";
@@ -162,7 +163,8 @@ if (isset($_GET['type']) && $_GET['type'] === 'undo_status') {
 
 // bible book & chapter
 if (isset($_GET['type']) && $_GET['type'] === 'get_bible_chapter') {
-  echo json_encode(["result"=>get_bible_books($_GET['book'])]);
+  $bible_books = new Bible;
+  echo json_encode(["result"=>$bible_books->getBook($_GET['book'])]);
   exit();
 }
 

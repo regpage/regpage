@@ -11,6 +11,11 @@ class Bible
     $this->books = $this->getBooks();
   }
 
+  function get()
+  {
+    return $this->books;
+  }
+
   function getBooks($book='')
   {
     global $db;

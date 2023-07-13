@@ -75,7 +75,7 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
                   <br>
                   <select id="bible_book" class="" data-field="bible_book">
                     <?php
-                    $bible_books = get_bible_books();
+                    $bible_books = $bible_obj->get();
                     foreach ($bible_books as $key => $value) {
                       echo "<option value='{$value[0]}'>{$value[0]}";
                     }

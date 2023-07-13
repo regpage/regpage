@@ -9,8 +9,10 @@
   include_once 'db/ftt/ftt_attendance_db.php';
   include_once 'db/ftt/ftt_attendance_skip_db.php';
   include_once 'db/ftt/ftt_attendance_meet_db.php';
+  include_once 'db/classes/ftt_attendance/bible.php';
 
 // ПОСЕЩАЕМОСТЬ
+$bible_obj = new Bible;
 // access
 // данные обучающегося
 $trainee_data = trainee_data::get_data($memberId);
