@@ -46,8 +46,7 @@
             }
             echo "<option value='{$key}' $selected>{$value}</option>";
           endforeach; ?>
-        </select>
-        <button id="" type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#mdl_bible_statistic">Статистика</button>
+        </select>        
         <!--<button id="showModalAddEditExtraHelp" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAddEdit">Добавить</button>-->
         <!--<select id="author_select" class="form-control form-control-sm" style="width: 200px;">-->
           <!--<option value="_all_">Все обучающиеся</option>-->

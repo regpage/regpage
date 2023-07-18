@@ -14,6 +14,7 @@ include_once '../db/classes/member.php';
 include_once '../db/classes/short_name.php';
 include_once '../db/classes/CutString.php';
 include_once '../db/classes/ftt_attendance/bible.php';
+include_once '../db/classes/statistic/biblereading.php';
 
 // Подключаем ведение лога
 include_once "../extensions/write_to_log/write_to_log.php";
@@ -165,6 +166,11 @@ if (isset($_GET['type']) && $_GET['type'] === 'undo_status') {
 if (isset($_GET['type']) && $_GET['type'] === 'get_bible_chapter') {
   $bible_books = new Bible;
   echo json_encode(["result"=>$bible_books->getBook($_GET['book'])]);
+  exit();
+}
+
+if (isset($_GET['type']) && $_GET['type'] === 'get_bible_statistic') {
+  echo json_encode(["result"=>BibleReading::get_readed($_GET['trainee_id'])]);
   exit();
 }
 

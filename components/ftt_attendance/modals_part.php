@@ -77,6 +77,9 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
                     <?php
                     $bible_books = $bible_obj->get();
                     foreach ($bible_books as $key => $value) {
+                      if ($value[0] === 'Мф.') {
+                        echo "<option disabled>----------";
+                      }
                       echo "<option value='{$value[0]}'>{$value[0]}";
                     }
                     ?>
@@ -92,6 +95,7 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
                     ?>
                   </select>
                   </span>
+                  <button type="button" class="btn btn-warning btn-sm bible_statistic_btn" data-toggle="modal" data-target="#mdl_bible_statistic" style="height: 30px;">Статистика</button>
                 </div>
               </div>
             </div>
@@ -161,7 +165,7 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
   </div>
 </div>
 
-<!-- Архивный список листков посещаемости -->
+<!-- Статистика чтения Библии -->
 <div class="modal fade" id="mdl_bible_statistic">
   <div class="modal-dialog">
     <div class="modal-content" style="width: 600px;">
@@ -172,8 +176,10 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
       </div>
       <!-- Modal body -->
       <div class="modal-body">
-        <div id="" class="container">
-
+        <div id="bible_statistic_list" class="container">
+          <div>
+            <canvas></canvas>
+        </div>
         </div>
       </div>
       <!-- Modal footer -->
