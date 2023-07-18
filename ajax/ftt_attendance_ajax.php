@@ -168,9 +168,14 @@ if (isset($_GET['type']) && $_GET['type'] === 'get_bible_chapter') {
   echo json_encode(["result"=>$bible_books->getBook($_GET['book'])]);
   exit();
 }
-
+// bible statistic
 if (isset($_GET['type']) && $_GET['type'] === 'get_bible_statistic') {
   echo json_encode(["result"=>BibleReading::get_readed($_GET['trainee_id'])]);
+  exit();
+}
+// bible statistic
+if (isset($_GET['type']) && $_GET['type'] === 'get_bible_statistic_dates') {
+  echo json_encode(["result"=>BibleReading::get_by_dates($_GET['trainee_id'])]);
   exit();
 }
 

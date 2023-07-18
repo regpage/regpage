@@ -65,5 +65,5 @@ function filterSkip() {
 filterSkip();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
-<script src="/js/ftt/ftt_attendance/script.js?v133"></script>
+<script src="/js/ftt/ftt_attendance/script.js?v134"></script>
 <script src="/js/ftt/ftt_attendance/design.js?v27"></script>

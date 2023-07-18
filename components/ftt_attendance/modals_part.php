@@ -177,9 +177,10 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
       <!-- Modal body -->
       <div class="modal-body">
         <div id="bible_statistic_list" class="container">
-          <div>
-            <canvas></canvas>
+          <canvas></canvas>
         </div>
+        <div id="bible_statistic_list_dates" class="container">          
+          <canvas></canvas>
         </div>
       </div>
       <!-- Modal footer -->
