@@ -38,6 +38,15 @@ class ftt_lists {
       return $result;
   }
 
+  static function kbk_brothers()  {
+    $result = [];
+    //OR `key` = '' OR `key` = ''
+    $res = db_query("SELECT `key`, `name` FROM `member` WHERE `key` = '000002178' ORDER BY `name`");
+      while ($row = $res->fetch_assoc()) $result[$row['key']]=short_name::no_middle($row['name']);
+
+      return $result;
+  }
+
   static function serving_ones_full()  {
     $result = [];
 

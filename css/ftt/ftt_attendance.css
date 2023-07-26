@@ -316,3 +316,9 @@ input[type='time'] {
 }
 
 /*skip*/
+
+/*meet*/
+.str_record:hover {
+  background-color: #eee;
+}
+/*meet*/

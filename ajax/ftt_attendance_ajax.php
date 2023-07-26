@@ -15,6 +15,7 @@ include_once '../db/classes/short_name.php';
 include_once '../db/classes/CutString.php';
 include_once '../db/classes/ftt_attendance/bible.php';
 include_once '../db/classes/statistic/biblereading.php';
+require_once '../db/classes/ftt_lists.php';
 
 // Подключаем ведение лога
 include_once "../extensions/write_to_log/write_to_log.php";
@@ -353,7 +354,7 @@ if (isset($_GET['type']) && $_GET['type'] === 'delete_skip') {
 // COMMUNICATION
 // get list
 if (isset($_GET['type']) && $_GET['type'] === 'get_communication_list') {
-  echo json_encode(["result"=>get_communication_list()]);
+  echo json_encode(["result"=>get_communication_list($_GET['member_id'], $_GET['serving_ones'], $_GET['sort'], $_GET['canceled'])]);
   exit();
 }
 
@@ -363,6 +364,7 @@ if (isset($_GET['type']) && $_GET['type'] === 'set_communication_record') {
   exit();
 }
 
+// overnight
 if (isset($_GET['type']) && $_GET['type'] === 'overnight') {
   echo json_encode(["result"=>db_overnight($_GET['member_key'], $_GET['date'])]);
   exit();

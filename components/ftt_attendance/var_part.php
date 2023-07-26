@@ -10,6 +10,7 @@
   include_once 'db/ftt/ftt_attendance_skip_db.php';
   include_once 'db/ftt/ftt_attendance_meet_db.php';
   include_once 'db/classes/ftt_attendance/bible.php';
+  include_once 'db/classes/CutString.php';  
 
 // ПОСЕЩАЕМОСТЬ
 $bible_obj = new Bible;

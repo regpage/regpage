@@ -2609,8 +2609,8 @@ function open_blank(el_this) {
     get_communication_list();
   });
 
-  function get_communication_list() {
-    fetch("ajax/ftt_attendance_ajax.php?type=get_communication_list")
+  function get_communication_list(serving_ones) {
+    fetch("ajax/ftt_attendance_ajax.php?type=get_communication_list&member_id=_all_&serving_ones="+serving_ones+"&sort=meet_sort_date-asc&canceled=0")
     .then(response => response.json())
     .then(commits => {
       console.log(commits.result);
@@ -2641,7 +2641,7 @@ function open_blank(el_this) {
       html += '</div>';
     }
 
-    $("#edit_meet_blank .modal-body").html(html);
+    $("#list_staff_pvom").html(html);
 
     // open blank
     $(".communication_str").click(function () {
@@ -2693,6 +2693,48 @@ function open_blank(el_this) {
         location.reload();
       }, 1500);
     });
+  });
+
+  // сортировка
+  $("#meet_sort_date, #meet_sort_servingone").click(function (e) {
+    //cookie_filters();
+
+    if (!$(this).find("i").is(":visible") || ($(this).find("i").is(":visible") && $(this).find("i").hasClass("fa-sort-desc"))) {
+      setCookie('meet_sorting', e.target.id + "-asc", 356);
+    } else if ($(this).find("i").is(":visible") && $(this).find("i").hasClass("fa-sort-asc")) {
+      setCookie('meet_sorting', e.target.id + "-desc", 356);
+    }
+    /*
+    else {
+      let sorting_name = e.target.className;
+      $(".meet_sort_date i, .meet_sort_servingone i").addClass("hide_element");
+      if ($(this).hasClass("meet_sort_date")) {
+        $(".meet_sort_servingone i").removeClass("fa");
+        $(".meet_sort_servingone i").removeClass("fa-sort-desc");
+        $(".meet_sort_servingone i").removeClass("fa-sort-asc");
+      } else if ($(this).hasClass("meet_sort_servingone")) {
+        $(".meet_sort_date i").removeClass("fa");
+        $(".meet_sort_date i").removeClass("fa-sort-desc");
+        $(".meet_sort_date i").removeClass("fa-sort-asc");
+      }
+
+      $(this).find("i").removeClass("hide_element");
+      if ($(this).find("i").hasClass("fa-sort-desc")) {
+        $(this).find("i").removeClass("fa-sort-desc").addClass("fa-sort-asc");
+        setCookie('skip_sorting', sorting_name + "-desc", 356);
+      } else if ($(this).find("i").hasClass("fa-sort-asc")) {
+        $(this).find("i").removeClass("fa-sort-asc").addClass("fa-sort-desc");
+        setCookie('skip_sorting', sorting_name + "-asc", 356);
+      } else {
+        $(this).find("i").addClass("fa");
+        $(this).find("i").addClass("fa-sort-asc");
+        setCookie('skip_sorting', sorting_name + "-desc", 356);
+      }
+    }
+    */
+    setTimeout(function () {
+      location.reload();
+    }, 30);
   });
 
   /*** COMMUNICATION TAB STOP ***/

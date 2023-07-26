@@ -7,11 +7,81 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="font-size: 1.5rem;">x</button>
       </div>
       <div class="modal-body">
+        <h5>Служащие ПВОМ</h5>
+        <div id="list_staff_pvom">
 
+        </div>
+        <h5>Служащие КБК</h5>
+        <div id="list_staff_kbk">
+
+        </div>
       </div>
       <div class="modal-footer">
         <div class="text-right w-100">
           <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Закрыть</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ОБЩЕНИЕ ЗАПИСЬ -->
+<div id="mdl_edit_fellowship_staff" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" data-id="" data-member_key="" data-serving_one="" data-date="" data-time="">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="mb-0">Запись на общение</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="font-size: 1.5rem;">x</button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="row mb-2">
+            <div class="col">
+              <select id="mdl_meet_trainee_list" class="form-control form-control-sm">
+                <?php foreach ($trainee_list as $key => $value):
+                  echo "<option value='{$key}'>{$value}</option>";
+                endforeach; ?>
+              </select>
+            </div>
+          </div>
+          <div class="row mb-2">
+            <div class="col">
+              <select id="mdl_meet_serving_ones_list" class="form-control form-control-sm">
+                <?php foreach ($serving_ones_list as $key => $value):
+                  echo "<option value='{$key}'>{$value}</option>";
+                endforeach; ?>
+              </select>
+            </div>
+          </div>
+          <div class="row mb-2">
+            <div class="col-6">
+              <input type="date" id="mdl_meet_date" class="form-control form-control-sm">
+            </div>
+            <div class="col-6">
+              <input type="time" id="mdl_meet_time" class="form-control form-control-sm" style="max-width: 100% !important;">
+            </div>
+          </div>
+          <div class="row mb-2">
+            <div class="col">
+              <textarea id="mdl_meet_comment_trainee" class="form-control form-control-sm" rows="4" placeholder="Комментарий обучающегося" style="width: 100%;"></textarea>
+            </div>
+          </div>
+          <div class="row mb-2">
+            <div class="col">
+              <textarea id="mdl_meet_comment_serving_one" class="form-control form-control-sm" rows="4" placeholder="Комментарий служащего" style="width: 100%;"></textarea>
+            </div>
+          </div>
+          <div class="row mb-2">
+            <div class="col">
+              <label for="meet_cancel"><input id="meet_cancel" type="checkbox" class=""> Общение отменено</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="text-right w-100">
+          <button id="mdl_btn_meet_ok" class="btn btn-sm btn-success">Записать</button>
+          <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Отмена</button>
         </div>
       </div>
     </div>

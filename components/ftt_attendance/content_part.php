@@ -15,6 +15,11 @@
         Пропущенные занятия <?php echo $missed_class_statistics; ?>
       </a>
     </li>
+    <li class="nav-item">
+      <a class="nav-link <?php echo $tab_meet_active; ?>" data-toggle="tab" href="#meet_tab">
+        Общение <?php echo $meet_statistics; ?>
+      </a>
+    </li>
   </ul>
   <!-- Tab panes -->
   <div id="tab_content_extra_help" class="tab-content">
@@ -208,6 +213,9 @@
     </div>
     <div id="missed_class_tab" class="tab-pane container <?php echo $tab_missed_class_active; ?>">
       <?php include 'components/ftt_attendance/content_classes_trainee.php'; ?>
+    </div>
+    <div id="meet_tab" class="tab-pane container <?php echo $tab_meet_active; ?>">
+      <?php include 'components/ftt_attendance/content_meet.php'; ?>
     </div>
   </div>
 </div>

@@ -25,13 +25,11 @@
         Пропущенные занятия <?php echo $missed_class_statistics; ?>
       </a>
     </li>
-    <?php if ($memberId === '000001679'): ?>
     <li class="nav-item">
       <a class="nav-link <?php echo $tab_meet_active; ?>" data-toggle="tab" href="#meet_tab">
-        Запись на общение <?php echo $meet_statistics; ?>
+        Общение <?php echo $meet_statistics; ?>
       </a>
     </li>
-    <?php endif; ?>
   </ul>
   <!-- Tab panes -->
   <div id="tab_content_extra_help" class="tab-content">
@@ -46,7 +44,7 @@
             }
             echo "<option value='{$key}' $selected>{$value}</option>";
           endforeach; ?>
-        </select>        
+        </select>
         <!--<button id="showModalAddEditExtraHelp" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAddEdit">Добавить</button>-->
         <!--<select id="author_select" class="form-control form-control-sm" style="width: 200px;">-->
           <!--<option value="_all_">Все обучающиеся</option>-->
@@ -369,7 +367,7 @@
       <?php include 'components/ftt_attendance/content_classes.php'; ?>
     </div>
     <div id="meet_tab" class="tab-pane container <?php echo $tab_meet_active; ?>">
-      <?php include 'components/ftt_attendance/content_meet.php'; ?>
+      <?php include 'components/ftt_attendance/content_meet_staff.php'; ?>
     </div>
   </div>
 </div>

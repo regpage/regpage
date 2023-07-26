@@ -2188,8 +2188,10 @@ function sendTheOrder(ua) {
         }
         // Добавляем недостающих ответственных
         for (let variable in data_page.responsible_previous) {
-          if (data_page.responsible_previous.hasOwnProperty(variable)) {
-            html.push('<option value="'+variable+'">'+fullNameToNoMiddleName(data_page.full_admin_list[variable][0])+'</option>');
+          if (data_page.responsible_previous.hasOwnProperty(variable)) {    
+            if (variable[0] !== undefined) {
+              html.push('<option value="'+variable+'">'+fullNameToNoMiddleName(data_page.full_admin_list[variable][0])+'</option>');
+            }
           }
         }
 
@@ -2491,7 +2493,7 @@ function sendTheOrder(ua) {
           }
           for (var i = 0; i < arr.length; i++) {
             arrRespOptionsForCombo.push('<option value="'+arr[i]+'">'+fullNameToNoMiddleName(data_page.full_admin_list[arr[i]][0])+'</option>');
-          }          
+          }
 
           $('#respShow').html(arrRespOptionsForCombo);
           arrRespOptionsForCombo[0] = '<option value="_all_"></option>';
