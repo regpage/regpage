@@ -1,6 +1,6 @@
 <!-- ОБЩЕНИЕ СПИСОК-->
 <div id="edit_meet_blank" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" data-id="" data-member_key="" data-serving_one="" data-status="">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="mb-0">Запись на общение</h5>
@@ -50,6 +50,11 @@
                 <?php foreach ($serving_ones_list as $key => $value):
                   echo "<option value='{$key}'>{$value}</option>";
                 endforeach; ?>
+                <option disabled>----КБК----</option>";
+                <?php foreach ($kbk_list as $key => $value):
+                  echo "<option value='{$key}'>{$value}</option>";
+                endforeach; ?>
+
               </select>
             </div>
           </div>
@@ -81,6 +86,29 @@
       <div class="modal-footer">
         <div class="text-right w-100">
           <button id="mdl_btn_meet_ok" class="btn btn-sm btn-success">Записать</button>
+          <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Отмена</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ОБЩЕНИЕ ЗАПИСЬ 2 -->
+<div id="mdl_meet_trainee_to_record" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" data-id="" data-member_key="" data-serving_one="">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="mb-0">Запись на общение</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="font-size: 1.5rem;">x</button>
+      </div>
+      <div class="modal-body">
+        <div id="list_possible_records">
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="text-right w-100">
+          <!--<button id="" class="btn btn-sm btn-success">Записаться</button>-->
           <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Отмена</button>
         </div>
       </div>

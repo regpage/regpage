@@ -2604,44 +2604,98 @@ function open_blank(el_this) {
     $("#skip_modal_pic_preview_container").attr("src", elem.next().attr("href"));
   }
   /*** SKIP TAB STOP ***/
-  /*** COMMUNICATION TAB START ***/
+
+  /*** FELLOWSHIP TAB START ***/
   $("#meet_add").click(function () {
-    get_communication_list();
+    if (trainee_list_full[window.adminId]["male"] === "1" && trainee_access === "1") {
+      get_communication_list("pvom_br");
+    } else {
+      get_communication_list("_all_");
+    }
   });
 
-  function get_communication_list(serving_ones) {
-    fetch("ajax/ftt_attendance_ajax.php?type=get_communication_list&member_id=_all_&serving_ones="+serving_ones+"&sort=meet_sort_date-asc&canceled=0")
+  function get_communication_list(pvom_br) {
+    fetch("ajax/ftt_attendance_ajax.php?type=get_communication_list&member_id=_all_&serving_ones="+pvom_br+"&sort=meet_sort_date-asc&canceled=0")
     .then(response => response.json())
     .then(commits => {
-      console.log(commits.result);
       render_communication_list(commits.result);
     });
+    setTimeout(function () {
+      fetch("ajax/ftt_attendance_ajax.php?type=get_communication_list&member_id=_all_&serving_ones=kbk&sort=meet_sort_date-asc&canceled=0")
+      .then(response => response.json())
+      .then(commits => {
+        render_communication_list(commits.result, true);
+      });
+    }, 10);
   }
 
-  function render_communication_list(data) {
-    let html = "";
+  function render_communication_list(data, kbk) {
+    let html = "", weeks = [], blocks = {};
+
+    // получаем дату
+    let d = new Date();
+
+    // получаем даты на 4 недели от полученного понедельника
+    weeks = get_curr_week_dates(4);
+
     for (let variable in data) {
-      html += '<div>' + serving_ones_list[variable] + '<br>';
+      html += '<div class="d-flex meet_serving_one" data-serving_one="' + variable + '"><span style="align-self: center; min-width: 150px;">'
+      + serving_ones_list[variable] + '</span>';
       if (data.hasOwnProperty(variable)) {
-        let obj = data[variable];
-          console.log(obj);
+        blocks[variable] = {1:[], 2:[], 3:[], 4:[]};
+        let obj = data[variable], weeks_active;
         for (let key in obj) {
           if (obj.hasOwnProperty(key)) {
             let str = obj[key];
             let bg = "";
-            if (str["trainee"]) {
-              bg = " bg-secondary text-white ";
+            let key_week = weeks.indexOf(str["date"]);
+            weeks_active = {first: "text-danger", second: "text-danger", third: "text-danger", fourth: "text-danger"};
+            // block
+            // date
+            if (key_week < 7) {
+              blocks[variable][1].push({id: str["id"], serving_one: str["serving_one"], category: str["category"],
+              date: str["date"], time: str["time"], duration: str["duration"], trainee: str["trainee"],
+              comment_train: str["comment_train"], comment_serv: str["comment_serv"], canceled: str["canceled"]});
+              weeks_active.first = "text-success";
+            } else if (key_week > 6 && key_week < 14) {
+              blocks[variable][2].push({id: str["id"], serving_one: str["serving_one"], category: str["category"],
+              date: str["date"], time: str["time"], duration: str["duration"], trainee: str["trainee"],
+              comment_train: str["comment_train"], comment_serv: str["comment_serv"], canceled: str["canceled"]});
+              weeks_active.second = "text-success";
+            } else if (key_week > 13 && key_week < 21) {
+              blocks[variable][3].push({id: str["id"], serving_one: str["serving_one"], category: str["category"],
+              date: str["date"], time: str["time"], duration: str["duration"], trainee: str["trainee"],
+              comment_train: str["comment_train"], comment_serv: str["comment_serv"], canceled: str["canceled"]});
+              weeks_active.third = "text-success";
+            } else if (key_week > 20) {
+              blocks[variable][4].push({id: str["id"], serving_one: str["serving_one"], category: str["category"],
+              date: str["date"], time: str["time"], duration: str["duration"], trainee: str["trainee"],
+              comment_train: str["comment_train"], comment_serv: str["comment_serv"], canceled: str["canceled"]});
+              weeks_active.fourth = "text-success";
             }
-            html += '<span class="communication_str cursor-pointer d-inline-block p-1 mt-1 mb-1 mr-2 border rounded '
-            + bg + '" data-id="' + str["id"] + '" data-trainee="' + str["trainee"] + '">'
-            + dateStrFromyyyymmddToddmm(str["date"]) + ' — ' + str["time"] + '</span>';
           }
         }
+        // квадратики
+        let week_class = "week_records";
+        if (kbk) {
+          week_class = "week_records_kbk";
+        }
+
+        // цвет на данных
+        html += '<i class="fa fa-square cursor-pointer ml-3 mr-3 '+weeks_active.first+' ' + week_class + ' " data-week="1" style="font-size:48px; align-self: center;"></i>'
+        +'<i class="fa fa-square cursor-pointer mr-3 '+weeks_active.second+' ' + week_class + '" data-week="2" style="font-size:48px; align-self: center;"></i>'
+        +'<i class="fa fa-square cursor-pointer mr-3 '+weeks_active.third+' ' + week_class + '" data-week="3" style="font-size:48px; align-self: center;"></i>'
+        +'<i class="fa fa-square cursor-pointer '+weeks_active.fourth+' ' + week_class + '" data-week="4" style="font-size:48px; align-self: center;"></i><br>';
       }
+
       html += '</div>';
     }
+    if (kbk) {
+      $("#list_staff_kbk").html(html);
+    } else {
+      $("#list_staff_pvom").html(html);
+    }
 
-    $("#list_staff_pvom").html(html);
 
     // open blank
     $(".communication_str").click(function () {
@@ -2656,25 +2710,119 @@ function open_blank(el_this) {
       }
     });
 
-    // record
-    $("#send_meet_blank").click(function () {
-      if ($("#edit_meet_blank_confirm").attr("data-trainee") && $("#edit_meet_blank_confirm").attr("data-id")) {
-        fetch("ajax/ftt_attendance_ajax.php?type=set_communication_record&trainee="
-        +$("#edit_meet_blank_confirm").attr("data-trainee") + "&id="
-        + $("#edit_meet_blank_confirm").attr("data-id"))
-        .then(response => response.json())
-        .then(commits => {
-          console.log(commits.result);
-          showHint("Запись успешно добавлена");
-          setTimeout(function () {
-            location.reload();
-          }, 1500);
-        });
-      } else {
-        showError("Что то пошло не так, обратитесь к администратору.");
+    // to record
+    if (kbk) {
+      // открываем выбранную неделю
+      $(".week_records_kbk").click(function () {
+        // рендерим список записей служащего
+        set_communication_record_check($(this), blocks, 1);
+
+      });
+    } else {
+      $(".week_records").click(function () {
+        // рендерим список записей служащего
+        set_communication_record_check($(this), blocks);
+      });
+    }
+  }
+
+  function set_communication_record_check(elem, blocks, kbk) {
+    if (elem.hasClass("text-danger")) {
+      return;
+    }
+    if (kbk) {
+      kbk = "_kbk";
+    } else {
+      kbk = "";
+    }
+    let html_time = "", str, date_prev;
+    str = blocks[String(elem.parent().attr("data-serving_one"))][elem.attr("data-week")];
+
+    for (let i = 0; i < str.length; i++) {
+      if (date_prev !== str[i]["date"]) {
+        if (html_time) {
+          html_time += '<br><br><strong class="pt-2 pb-2">' + dateStrFromyyyymmddToddmm(str[i]["date"]) + '</strong><br>';
+        } else {
+          html_time += '<strong class="pb-2">' + serving_ones_list[str[i]["serving_one"]] + '</strong><br>';
+          html_time += '<strong class="pt-2 pb-2">' + dateStrFromyyyymmddToddmm(str[i]["date"]) + '</strong><br>';
+        }
       }
+
+      let disabled = "", checked = "", hidden = "display: none !important;";
+      if (str[i]["trainee"] && str[i]["trainee"] === window.adminId) {
+        checked = "checked";
+        hidden = "";
+      } else if (str[i]["trainee"]) {
+        disabled = "disabled";
+        checked = "checked";
+      }
+
+      html_time += '<span style="vertical-align: middle;">' + str[i]["time"]
+      + " — " + time_plus_minutes(str[i]["time"], str[i]["duration"])
+      + '</span><input type="checkbox" class="meet_checked' + kbk + ' ml-2 mr-3" data-id="' + str[i]["id"]
+      + '" data-from="' + str[i]["time"] + '" data-to="' + time_plus_minutes(str[i]["time"], str[i]["duration"])
+      + '" data-date="'+str[i]["date"]+'" style="vertical-align: middle;" ' + checked + ' ' + disabled
+      + '><input type="text" class="meet_comment_trainee_time form-control form-control-sm d-inline-block" value="'
+      + str[i]["comment_train"] + '" style="max-width: 72%; ' + hidden + '">';
+    }
+    // Добавляем контент
+    $("#list_possible_records").html(html_time);
+
+    // Сохраняем значение
+    $(".meet_checked" + kbk).change(function () {
+      let trainee = window.adminId;
+      let checked_time = 0;
+      if ($(this).prop("checked")) {
+        checked_time = 1;
+        if (!$(this).next().hasClass("d-inline-block")) {
+          $(this).next().addClass("d-inline-block");
+        }
+        $(this).next().show();
+      } else {
+        $(this).next().removeClass("d-inline-block");
+        $(this).next().hide();
+        $(this).next().val("");
+      }
+      fetch("ajax/ftt_attendance_ajax.php?type=set_communication_record&id="
+      + $(this).attr("data-id") + "&trainee=" + trainee + "&checked=" + checked_time + "&time_from=" + $(this).attr("data-from") + "&time_to=" + $(this).attr("data-to") + "&date=" + $(this).attr("data-date"))
+      .then(response => response.json())
+      .then(commits => {
+        if ($(this).prop("checked")) {
+          if (commits.result !== true) {
+            showError("На это время и дату уже назначена встреча с " + serving_ones_list[commits.result] + ". Запись не сохранена.");
+            $(this).prop("checked", false);
+          } else {
+            showHint("Запись на общение сохранена.");
+          }
+        } else {
+          showHint("Запись на общение отменена.");
+        }
+      });
+    });
+
+    $(".meet_comment_trainee_time").change(function () {
+      meet_comment_change($(this));
+    });
+
+    // открываем окно
+    $("#mdl_meet_trainee_to_record").modal("show");
+  }
+
+  function meet_comment_change(elem) {
+    fetch("ajax/ftt_attendance_ajax.php?type=set_communication_comment_trainee&comment=" + elem.val()
+    + "&id=" + elem.prev().attr("data-id"))
+    .then(response => response.json())
+    .then(commits => {
+
     });
   }
+
+  $("#mdl_meet_trainee_to_record").on("hide.bs.modal", function () {
+    setTimeout(function () {
+      $("body").addClass("modal-open");
+    }, 500);
+  });
+
   // open record
   $(".str_record").click(function () {
     $("#edit_meet_blank_record").attr("data-id", $(this).attr("data-id"));
@@ -2684,10 +2832,10 @@ function open_blank(el_this) {
   $("#undo_meet_blank").click(function () {
     fetch("ajax/ftt_attendance_ajax.php?type=set_communication_record&trainee="
     + "&id="
-    + $("#edit_meet_blank_record").attr("data-id"))
+    + $("#edit_meet_blank_record").attr("data-id")
+    + "&checked&date&time_from&time_to")
     .then(response => response.json())
     .then(commits => {
-      console.log(commits.result);
       showHint("Запись успешно отменена");
       setTimeout(function () {
         location.reload();
@@ -2695,10 +2843,14 @@ function open_blank(el_this) {
     });
   });
 
+  $("#edit_meet_blank").on("hide.bs.modal", function () {
+    setTimeout(function () {
+      location.reload();
+    }, 50);
+  });
   // сортировка
   $("#meet_sort_date, #meet_sort_servingone").click(function (e) {
     //cookie_filters();
-
     if (!$(this).find("i").is(":visible") || ($(this).find("i").is(":visible") && $(this).find("i").hasClass("fa-sort-desc"))) {
       setCookie('meet_sorting', e.target.id + "-asc", 356);
     } else if ($(this).find("i").is(":visible") && $(this).find("i").hasClass("fa-sort-asc")) {

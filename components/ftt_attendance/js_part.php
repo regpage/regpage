@@ -9,7 +9,15 @@ let trainee_access = false;
 trainee_access = "<?php if ($ftt_access['group'] === 'trainee') { echo "1"; } ?>";
 
 // serving ones list
-let serving_ones_list_tmp = "<?php foreach ($serving_ones_list as $id => $name) echo $id.'_'.$name.'_'; ?>";
+let serving_ones_list_tmp;
+if (getCookie("tab_active") === "meet") {
+  serving_ones_list_tmp = "<?php
+  $kbk_list = array_merge($serving_ones_list, $kbk_list);
+  foreach ($kbk_list as $id => $name) echo $id.'_'.$name.'_'; ?>";
+} else {
+  serving_ones_list_tmp = "<?php foreach ($serving_ones_list as $id => $name) echo $id.'_'.$name.'_'; ?>";
+}
+
 serving_ones_list_tmp = serving_ones_list_tmp ? serving_ones_list_tmp.split('_') : [];
 let serving_ones_list = [];
 for (let i = 0; i < serving_ones_list_tmp.length; i = i + 2) {
@@ -67,3 +75,6 @@ filterSkip();
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
 <script src="/js/ftt/ftt_attendance/script.js?v134"></script>
 <script src="/js/ftt/ftt_attendance/design.js?v27"></script>
+<script src="/js/modules/week.js?v1"></script>
+<script src="/js/modules/time.js?v1"></script>
+<script src="/js/modules/date.js?v1"></script>

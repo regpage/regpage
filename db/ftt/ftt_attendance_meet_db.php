@@ -121,11 +121,28 @@ function get_communication_records($trainee, $sort='meet_sort_servingone-asc')
   return $result;
 }
 
-function set_communication_record($trainee, $id)
+function set_communication_record($trainee, $id, $checked=0, $date='', $time_from='', $time_to='')
 {
   global $db;
   $trainee = $db->real_escape_string($trainee);
   $id = $db->real_escape_string($id);
+  $checked = $db->real_escape_string($checked);
+  $date = $db->real_escape_string($date);
+  $time_from = $db->real_escape_string($time_from);
+  $time_to = $db->real_escape_string($time_to);
+  $result = [];
+  if ($checked == 1) {
+    // проверка времени SELECT * FROM `ftt_fellowship` WHERE `time` BETWEEN '11:00' AND '12:00'
+    $res_extra = db_query("SELECT `serving_one` FROM `ftt_fellowship` WHERE (`trainee` = '$trainee' AND `date` = '$date') AND (`time` BETWEEN '$time_from' AND '$time_to')");
+    while ($row = $res_extra->fetch_assoc()) $result[] = $row['serving_one'];
+    if (count($result) > 0) {
+      return $result[0];
+    }
+    // запрос
+    $res = db_query("UPDATE `ftt_fellowship` SET `trainee`= '$trainee', `changed`= 1 WHERE `id` = '$id'");
+  } else {
+    $res = db_query("UPDATE `ftt_fellowship` SET `trainee`= '', `comment_train`='', `changed`= 1 WHERE `id` = '$id'");
+  }
 
-  $res = db_query("UPDATE `ftt_fellowship` SET `trainee`= '$trainee', `changed`= 1 WHERE `id` = $id");
+  return $res;
 }

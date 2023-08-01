@@ -236,6 +236,7 @@ $(document).ready(function(){
   }
 
   // ПОВЕДЕНИЕ БЛОКОВ
+  // !!!!!!!!!!!!!
   function hide_for_guest() {
     $("#radio_point_semester_0").parent().parent().parent().parent().parent().hide();
     $("#radio_point_will_be_two_years_0").parent().parent().parent().parent().parent().hide();
@@ -296,16 +297,16 @@ $(document).ready(function(){
       $("#radio_point_will_be_two_years_0").parent().parent().parent().parent().parent().hide();
     }
 
-     if ($("#radio_point_ftt_place_0").prop("checked")) {
-       $("#radio_point_ftt_place_0").parent().parent().parent().parent().parent().next().show();
-       $("#radio_point_ftt_place_0").parent().parent().parent().parent().parent().next().next().hide();
-     } else if ($("#radio_point_ftt_place_1").prop("checked")) {
-       $("#radio_point_ftt_place_1").parent().parent().parent().parent().parent().next().hide();
-       $("#radio_point_ftt_place_1").parent().parent().parent().parent().parent().next().next().show();
-     } else {
-       $("#radio_point_ftt_place_0").parent().parent().parent().parent().parent().next().hide();
-       $("#radio_point_ftt_place_0").parent().parent().parent().parent().parent().next().next().hide();
-     }
+    if ($("#radio_point_ftt_place_0").prop("checked") && !$("#main_container").attr("data-guest")) {
+      $("#radio_point_ftt_place_0").parent().parent().parent().parent().parent().next().show();
+      $("#radio_point_ftt_place_0").parent().parent().parent().parent().parent().next().next().hide();
+    } else if ($("#radio_point_ftt_place_1").prop("checked") && !$("#main_container").attr("data-guest")) {
+      $("#radio_point_ftt_place_1").parent().parent().parent().parent().parent().next().hide();
+      $("#radio_point_ftt_place_1").parent().parent().parent().parent().parent().next().next().show();
+    } else {
+      $("#radio_point_ftt_place_0").parent().parent().parent().parent().parent().next().hide();
+      $("#radio_point_ftt_place_0").parent().parent().parent().parent().parent().next().next().hide();
+    }
   }
 
   function select_behavior() {

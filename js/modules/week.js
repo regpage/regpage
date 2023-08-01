@@ -44,4 +44,60 @@ function getNameDayOfWeekByDayNumber(date, short, no_capital, number) {
   }
   return weekday[dayNumber];
 }
+
+
+function get_curr_week_begin_end () {
+  let d = get_current_monday();
+  let result = [];
+  result.push(d.toISOString().split('T')[0]);
+  d.setDate(d.getDate() + 6);
+  result.push(d.toISOString().split('T')[0]);
+
+  return result;
+}
+
+
+function get_curr_week_dates (week) {
+  if (!week || isNaN(week)) {
+    week = 1;
+  }
+  let count = week * 7;
+  let d = get_current_monday();
+  let weeks = [], temp;
+  for (let i = 0; i < count; i++) {
+    if (i === 0) {
+      temp = d.toISOString().split('T')[0];
+    } else {
+      d.setDate(d.getDate() + 1);
+      temp = d.toISOString().split('T')[0];
+    }
+    weeks.push(temp);
+  }
+  return weeks;
+}
+
+
+function get_current_monday (yyyymmdd) {
+
+  let d = new Date();
+  let week_day = d.getDay();
+
+  // получаем понедельник текущей недели
+  if (week_day === 1) {
+    week_day = 0;
+  } else if (week_day === 0) {
+    week_day = 6;
+  } else {
+    week_day = week_day-1;
+  }
+
+  if (yyyymmdd) {
+    d.setDate(d.getDate() - week_day);
+    return d.toISOString().split('T')[0];
+  } else {
+    d.setDate(d.getDate() - week_day);
+    return d;
+  }
+}
+
 /* ==== STOP WEEK ==== */

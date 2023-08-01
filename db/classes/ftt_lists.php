@@ -38,15 +38,6 @@ class ftt_lists {
       return $result;
   }
 
-  static function kbk_brothers()  {
-    $result = [];
-    //OR `key` = '' OR `key` = ''
-    $res = db_query("SELECT `key`, `name` FROM `member` WHERE `key` = '000002178' ORDER BY `name`");
-      while ($row = $res->fetch_assoc()) $result[$row['key']]=short_name::no_middle($row['name']);
-
-      return $result;
-  }
-
   static function serving_ones_full()  {
     $result = [];
 
@@ -71,6 +62,15 @@ class ftt_lists {
       WHERE 1
       ORDER BY m.name");
       while ($row = $res->fetch_assoc()) $result[$row['member_key']]=$row;
+
+      return $result;
+  }
+  // братья из КБК
+  static function kbk_brothers() {
+    $result = [];
+    //OR `key` = '' OR `key` = ''
+    $res = db_query("SELECT `key`, `name` FROM `member` WHERE `key` = '000002178' ORDER BY `name`");
+      while ($row = $res->fetch_assoc()) $result[$row['key']]=short_name::no_middle($row['name']);
 
       return $result;
   }

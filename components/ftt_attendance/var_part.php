@@ -10,7 +10,7 @@
   include_once 'db/ftt/ftt_attendance_skip_db.php';
   include_once 'db/ftt/ftt_attendance_meet_db.php';
   include_once 'db/classes/ftt_attendance/bible.php';
-  include_once 'db/classes/CutString.php';  
+  include_once 'db/classes/CutString.php';
 
 // ПОСЕЩАЕМОСТЬ
 $bible_obj = new Bible;
@@ -34,7 +34,7 @@ if ($ftt_access['group'] === 'staff' || $serving_trainee) {
   $trainee_list_full = ftt_lists::trainee_full();
   $serving_ones_list = ftt_lists::serving_ones();
   $trainee_list = ftt_lists::trainee();
-
+  $trainee_list = ftt_lists::trainee();
 } elseif ($ftt_access['group'] === 'trainee') {
   // СЛУЖАЩИЕ
   $serving_ones_list = ftt_lists::serving_ones();
@@ -97,6 +97,7 @@ if (isset($_COOKIE['tab_active']) && $_COOKIE['tab_active'] === 'permission') {
   $tab_permission_active = '';
   $tab_missed_class_active = '';
   $tab_meet_active = 'active';
+  $kbk_list = ftt_lists::kbk_brothers();
 }
 
 if (isset($_GET['pb'])) {
