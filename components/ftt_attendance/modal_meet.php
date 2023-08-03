@@ -26,7 +26,7 @@
 </div>
 
 <!-- ОБЩЕНИЕ ЗАПИСЬ -->
-<div id="mdl_edit_fellowship_staff" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" data-id="" data-member_key="" data-serving_one="" data-date="" data-time="">
+<div id="mdl_edit_fellowship_staff" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" data-id="" data-date="" data-duration="" data-cancel="">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -38,6 +38,7 @@
           <div class="row mb-2">
             <div class="col">
               <select id="mdl_meet_trainee_list" class="form-control form-control-sm">
+                <option value="_none_"></option>
                 <?php foreach ($trainee_list as $key => $value):
                   echo "<option value='{$key}'>{$value}</option>";
                 endforeach; ?>
@@ -47,14 +48,14 @@
           <div class="row mb-2">
             <div class="col">
               <select id="mdl_meet_serving_ones_list" class="form-control form-control-sm">
-                <?php foreach ($serving_ones_list as $key => $value):
+                <option value="_none_"></option>
+                <?php foreach ($serving_ones_list_meet as $key => $value):
                   echo "<option value='{$key}'>{$value}</option>";
                 endforeach; ?>
                 <option disabled>----КБК----</option>";
                 <?php foreach ($kbk_list as $key => $value):
                   echo "<option value='{$key}'>{$value}</option>";
                 endforeach; ?>
-
               </select>
             </div>
           </div>
@@ -109,7 +110,7 @@
       <div class="modal-footer">
         <div class="text-right w-100">
           <!--<button id="" class="btn btn-sm btn-success">Записаться</button>-->
-          <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Отмена</button>
+          <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Закрыть</button>
         </div>
       </div>
     </div>

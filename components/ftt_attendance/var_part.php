@@ -98,6 +98,8 @@ if (isset($_COOKIE['tab_active']) && $_COOKIE['tab_active'] === 'permission') {
   $tab_missed_class_active = '';
   $tab_meet_active = 'active';
   $kbk_list = ftt_lists::kbk_brothers();
+  $serving_ones_list_meet = $serving_ones_list;
+  $serving_ones_list = array_merge($serving_ones_list, $kbk_list);
 }
 
 if (isset($_GET['pb'])) {

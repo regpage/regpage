@@ -2889,6 +2889,77 @@ function open_blank(el_this) {
     }, 30);
   });
 
+  // meet staff
+  $(".str_record_staff").click(function () {
+    $("#mdl_edit_fellowship_staff").modal("show");
+    fill_meet_staff_blank($(this));
+  });
+
+  $("#mdl_edit_fellowship_staff").on("hide.bs.modal",function () {
+    reset_meet_staff_blank($(this));
+  });
+
+  $("#mdl_btn_meet_ok").click(function () {
+    save_meet_staff_blank();
+  });
+
+  function fill_meet_staff_blank(elem) {
+    // data
+    $("#mdl_edit_fellowship_staff").attr("data-id", elem.attr("data-id"));
+    $("#mdl_edit_fellowship_staff").attr("data-date", elem.attr("data-date"));
+    $("#mdl_edit_fellowship_staff").attr("data-duration", elem.attr("data-duration"));
+    // fields
+    $("#mdl_meet_trainee_list").val(elem.attr("data-trainee"));
+    $("#mdl_meet_serving_ones_list").val(elem.attr("data-serving_one"));
+    $("#mdl_meet_date").val(elem.attr("data-date"));
+
+    $("#mdl_meet_time").val(elem.attr("data-time"));
+    $("#mdl_meet_comment_trainee").val(elem.attr("data-comment_train"));
+    $("#mdl_meet_comment_serving_one").val(elem.attr("data-comment_serv"));
+    if (elem.attr("data-cancel") === "1") {
+      $("#meet_cancel").prop("checked", true);
+    }
+  }
+
+  function reset_meet_staff_blank(elem) {
+    elem.attr("data-duration", "");
+    elem.attr("data-cancel", "");
+    $("#meet_cancel").prop("checked", false);
+    module_blank_clear(elem);
+  }
+
+  function save_meet_staff_blank() {
+    let data_temp = {};
+    let data = new FormData();
+    data_temp["id"] = $("#mdl_edit_fellowship_staff").attr("data-id");
+    data_temp["date"] = $("#mdl_meet_date").val();
+    data_temp["time"] = $("#mdl_meet_time").val();
+    data_temp["duration"] = $("#mdl_edit_fellowship_staff").attr("data-duration");
+    data_temp["serving_one"] = $("#mdl_meet_serving_ones_list").val();
+    data_temp["trainee"] = $("#mdl_meet_trainee_list").val();
+    data_temp["comment_train"] = $("#mdl_meet_comment_trainee").val();
+    data_temp["comment_serv"] = $("#mdl_meet_comment_serving_one").val();
+    if ($("#meet_cancel").prop("checked")) {
+      data_temp["cancel"] = 1;
+    } else {
+      data_temp["cancel"] = 0;
+    }
+    console.log(data_temp);
+    data.set("data", JSON.stringify(data_temp));
+
+    fetch("ajax/ftt_attendance_ajax.php?type=set_meet_staff_blank", {
+      method: 'POST',
+      body: data
+    })
+    .then(response => response.text())
+    .then(commits => {
+      $("#mdl_edit_fellowship_staff").modal("hide");
+      showHint("Данные сохранены");
+      setTimeout(function () {
+        location.reload();
+      }, 500);
+    });
+  }
   /*** COMMUNICATION TAB STOP ***/
 // DOCUMENT READY STOP
 });

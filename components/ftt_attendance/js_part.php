@@ -78,3 +78,4 @@ filterSkip();
 <script src="/js/modules/week.js?v1"></script>
 <script src="/js/modules/time.js?v1"></script>
 <script src="/js/modules/date.js?v1"></script>
+<script src="/js/modules/blank.js?v1"></script>

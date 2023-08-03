@@ -318,7 +318,7 @@ input[type='time'] {
 /*skip*/
 
 /*meet*/
-.str_record:hover {
+.str_record:hover, .str_record_staff:hover {
   background-color: #eee;
 }
 /*meet*/

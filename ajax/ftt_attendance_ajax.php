@@ -363,6 +363,12 @@ if (isset($_GET['type']) && $_GET['type'] === 'set_communication_record') {
   echo json_encode(["result"=>set_communication_record($_GET['trainee'], $_GET['id'], $_GET['checked'], $_GET['date'], $_GET['time_from'], $_GET['time_to'])]);
   exit();
 }
+
+// set record
+if (isset($_GET['type']) && $_GET['type'] === 'set_meet_staff_blank') {
+  echo json_encode(["result"=>set_meet_staff_blank($_POST['data'])]);
+  exit();
+}
 /*
 if (isset($_GET['type']) && $_GET['type'] === 'set_communication_record_check') {
   // готовим данные

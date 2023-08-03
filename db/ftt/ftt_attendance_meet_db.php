@@ -93,6 +93,36 @@ function get_communication_list($member_id = '_all_', $serving_ones = '_all_', $
 }
 
 // список записей обучающегося
+function get_communication_records_staff($serving_one, $trainee, $sort='meet_sort_servingone-asc')
+{
+  global $db;
+  $serving_one = $db->real_escape_string($serving_one);
+  $trainee = $db->real_escape_string($trainee);
+  $sort = $db->real_escape_string($sort);
+
+  // Сортировка
+  $order_by = 'ff.date, ff.time';
+  if (!empty($sort) && $sort !== 'meet_sort_date-asc') {
+    if ($sort === 'meet_sort_date-desc') {
+      $order_by = ' ff.date DESC, ff.time DESC ';
+    } elseif ($sort === 'meet_sort_servingone-asc') {
+      $order_by = ' m.name, ff.date DESC ';
+    } elseif ($sort === 'meet_sort_servingone-desc') {
+      $order_by = ' m.name DESC, ff.date DESC ';
+    }
+  }
+
+  $result = [];
+  $res = db_query("SELECT ff.*, m.name
+    FROM ftt_fellowship AS ff
+    LEFT JOIN member m ON m.key = ff.serving_one
+    WHERE ff.date >= CURDATE()
+    ORDER BY {$order_by}");
+  while ($row = $res->fetch_assoc()) $result[] = $row;
+  return $result;
+}
+
+// список записей обучающегося
 function get_communication_records($trainee, $sort='meet_sort_servingone-asc')
 {
   global $db;
@@ -145,4 +175,24 @@ function set_communication_record($trainee, $id, $checked=0, $date='', $time_fro
   }
 
   return $res;
+}
+
+function set_meet_staff_blank($data)
+{
+  global $db;
+  $data = json_decode($data);
+  $id = $db->real_escape_string($data->id);
+  $serving_one = $db->real_escape_string($data->serving_one);
+  $trainee = $db->real_escape_string($data->trainee);
+  $date = $db->real_escape_string($data->date);
+  $time = $db->real_escape_string($data->time);
+  $duration = $db->real_escape_string($data->duration);
+  $comment_train = $db->real_escape_string($data->comment_train);
+  $comment_serv = $db->real_escape_string($data->comment_serv);
+  $cancel = $db->real_escape_string($data->cancel);
+
+  $res = db_query("UPDATE `ftt_fellowship`
+    SET `serving_one`='$serving_one', `trainee`= '$trainee', `date`='$date', `time`='$time', `duration`='$duration', `comment_train`='$comment_train', `comment_serv`='$comment_serv', `cancel`='$cancel', `changed`= 1
+    WHERE `id` = '$id'");
+   return $res;
 }
