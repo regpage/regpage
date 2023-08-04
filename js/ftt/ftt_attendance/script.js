@@ -2849,7 +2849,7 @@ function open_blank(el_this) {
     }, 50);
   });
   // сортировка
-  $("#meet_sort_date, #meet_sort_servingone").click(function (e) {
+  $("#meet_sort_date, #meet_sort_servingone, #meet_sort_trainee, #meet_sort_time").click(function (e) {
     //cookie_filters();
     if (!$(this).find("i").is(":visible") || ($(this).find("i").is(":visible") && $(this).find("i").hasClass("fa-sort-desc"))) {
       setCookie('meet_sorting', e.target.id + "-asc", 356);
@@ -2957,9 +2957,36 @@ function open_blank(el_this) {
       showHint("Данные сохранены");
       setTimeout(function () {
         location.reload();
-      }, 500);
+      }, 300);
     });
   }
+
+  $("#meet_serving_ones_list, #meet_trainee_select").change(function (e) {
+    if (e.target.id === "meet_serving_ones_list") {
+      setCookie('meet_flt_staff', $(this).val(), 356);
+      setTimeout(function () {
+        location.reload();
+      }, 50);
+    } else if (e.target.id === "meet_trainee_select") {
+      setCookie('meet_flt_trainee', $(this).val(), 356);
+      setTimeout(function () {
+        location.reload();
+      }, 50);
+    }
+    //flt_fellowship($(this));
+  });
+  // фильтры
+  /*
+  function flt_fellowship(elem) {
+    $("").each(function () {
+      if ($(this)) {
+
+      } else {
+
+      }
+    });
+  }
+  */
   /*** COMMUNICATION TAB STOP ***/
 // DOCUMENT READY STOP
 });

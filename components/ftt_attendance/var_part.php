@@ -100,6 +100,7 @@ if (isset($_COOKIE['tab_active']) && $_COOKIE['tab_active'] === 'permission') {
   $kbk_list = ftt_lists::kbk_brothers();
   $serving_ones_list_meet = $serving_ones_list;
   $serving_ones_list = array_merge($serving_ones_list, $kbk_list);
+  $trainee_serving_one = ftt_lists::trainee_serving_one();
 }
 
 if (isset($_GET['pb'])) {

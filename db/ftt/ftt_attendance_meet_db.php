@@ -99,24 +99,47 @@ function get_communication_records_staff($serving_one, $trainee, $sort='meet_sor
   $serving_one = $db->real_escape_string($serving_one);
   $trainee = $db->real_escape_string($trainee);
   $sort = $db->real_escape_string($sort);
+  $condition = '';
+
+  // Условия
+  if ($serving_one !== '_all_' && !empty($serving_one)) {
+    $condition = " AND ff.serving_one = '{$serving_one}'";
+  }
+
+  if ($trainee !== '_all_' && !empty($trainee)) {
+    $condition .= " AND ff.trainee = '{$trainee}'";
+  }
 
   // Сортировка
-  $order_by = 'ff.date, ff.time';
+  $order_by = 'ff.date, ff.time, m.name';
   if (!empty($sort) && $sort !== 'meet_sort_date-asc') {
     if ($sort === 'meet_sort_date-desc') {
-      $order_by = ' ff.date DESC, ff.time DESC ';
+      $order_by = ' ff.date DESC, ff.time DESC, m.name DESC';
     } elseif ($sort === 'meet_sort_servingone-asc') {
       $order_by = ' m.name, ff.date DESC ';
     } elseif ($sort === 'meet_sort_servingone-desc') {
       $order_by = ' m.name DESC, ff.date DESC ';
+    } elseif ($sort === 'meet_sort_trainee-asc') {
+      $order_by = ' m.name, ff.date DESC ';
+    } elseif ($sort === 'meet_sort_trainee-desc') {
+      $order_by = ' m.name DESC, ff.date DESC ';
+    } elseif ($sort === 'meet_sort_time-asc') {
+      $order_by = ' ff.time, ff.date DESC ';
+    } elseif ($sort === 'meet_sort_time-desc') {
+      $order_by = ' ff.time DESC, ff.date DESC ';
     }
+  }
+
+  $join = 'ff.serving_one';
+  if ($sort === 'meet_sort_trainee-asc' || $sort === 'meet_sort_trainee-desc') {
+    $join = 'ff.trainee';
   }
 
   $result = [];
   $res = db_query("SELECT ff.*, m.name
     FROM ftt_fellowship AS ff
-    LEFT JOIN member m ON m.key = ff.serving_one
-    WHERE ff.date >= CURDATE()
+    LEFT JOIN member m ON m.key = {$join}
+    WHERE ff.date >= CURDATE() {$condition}
     ORDER BY {$order_by}");
   while ($row = $res->fetch_assoc()) $result[] = $row;
   return $result;

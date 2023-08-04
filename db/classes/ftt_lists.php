@@ -75,6 +75,14 @@ class ftt_lists {
       return $result;
   }
 
+  static function trainee_serving_one()  {
+    $result = [];
+
+    $res = db_query("SELECT `member_key`, `serving_one` FROM `ftt_trainee`");
+      while ($row = $res->fetch_assoc()) $result[$row['member_key']] = $row['serving_one'];
+
+      return $result;
+  }
   // получаем обучающихся
   static function trainee()  {
     $result = [];
@@ -87,6 +95,7 @@ class ftt_lists {
 
       return $result;
   }
+
   static function trainee_full()  {
     $result = [];
 
