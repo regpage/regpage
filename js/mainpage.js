@@ -316,3 +316,10 @@ $("#send_request_for_pvom").click(function () {
     window.location = 'index';
   });
 });
+
+$(".fellowship_link").click(function () {
+  setCookie("tab_active", "meet");
+  setTimeout(function () {
+    window.location = 'ftt_attendance';
+  }, 30);
+});

@@ -113,7 +113,12 @@ if (isset($_GET['pb'])) {
   $tab_permission_active = '';
   $tab_missed_class_active = 'active';
   $tab_meet_active = '';
-}
+} /*elseif (isset($_GET['meet'])) {
+  $tab_attendance_active = '';
+  $tab_permission_active = '';
+  $tab_missed_class_active = '';
+  $tab_meet_active = 'active';
+}*/
 
 $serving_one_selected = $memberId;
 if (isset($_COOKIE['filter_serving_one']) && $_COOKIE['filter_serving_one']) {

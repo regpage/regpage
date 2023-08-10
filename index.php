@@ -104,10 +104,37 @@ else if (isset ($_SESSION["logged-in"])){
           // Общение на сегодня
           $fellowship_today = Fellowship::now_trainee($memberId);
           $fellowship_text = '';
+          $fellowship_text_name = '';
+          $fellowship_link = "<span class='link_custom fellowship_link' href='https://churchinspb.online/ftt_attendance.php?meet=1' style='display: inline-block; padding-top: 10px; font-weight: normal;'>перейти в раздел</span>";
+          // Добавить отменённые, добавить для служащих. Продублировать в меню раздела пвом
           foreach ($fellowship_today as $key => $value) {
-            $name_f = short_name::no_middle($value['name']);
-            $fellowship_text .= "<strong class='fellowship_today' style='color: red; padding-left: 16px;'>Сегодня общение:  {$name_f} в {$value['time']}</strong><br>";
+            $name_f = short_name::short($value['name']);
+            if (empty($fellowship_text_name)) {
+              $fellowship_text_name .= $name_f;
+            } else {
+              $fellowship_text_name .= ', ' . $name_f;
+            }
           }
+          if (count($fellowship_today) > 0) {
+            $fellowship_text = "<strong class='fellowship_today' style='color: red; padding-left: 16px;  padding-right: 5px; padding-top: 10px; display: inline-block;'>Сегодня общение:  {$fellowship_text_name} </strong>";
+          }
+
+          $fellowship_cancel_today = Fellowship::canceled_trainee($memberId);
+          $fellowship_cancel_text = '';
+          $fellowship_cancel_text_name = '';
+
+          foreach ($fellowship_cancel_today as $key => $value) {
+            $name_c = short_name::short($value['name']);
+            if (empty($fellowship_cancel_text_name)) {
+              $fellowship_cancel_text_name .= $name_c;
+            } else {
+              $fellowship_cancel_text_name .= ', ' . $name_c;
+            }
+          }
+          if (count($fellowship_cancel_today) > 0) {
+            $fellowship_cancel_text = "<strong class='fellowship_today' style='color: red; padding-left: 16px; padding-right: 5px;  padding-top: 10px; display: inline-block;'>Отменено общение:  {$fellowship_cancel_text_name} </strong>";
+          }
+
         endif; ?>
         <?php if ($ftt_access['group'] === 'staff'):
           include_once 'db/classes/ftt_lists.php';
@@ -157,6 +184,16 @@ else if (isset ($_SESSION["logged-in"])){
               <?php
               if (!empty($fellowship_text)) {
                 echo $fellowship_text;
+              }
+
+              if (!empty($fellowship_cancel_text)) {
+                if (!empty($fellowship_text)) {
+                  echo '<br>';
+                }
+                echo $fellowship_cancel_text;
+              }
+              if (!empty($fellowship_cancel_text) || !empty($fellowship_text)) {
+                echo $fellowship_link;
               }
               ?>
             </div>

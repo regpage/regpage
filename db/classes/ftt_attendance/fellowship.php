@@ -14,7 +14,22 @@ class Fellowship
     $res = db_query("SELECT ff.time, m.name
       FROM ftt_fellowship ff
       LEFT JOIN member m ON m.key = ff.serving_one
-      WHERE ff.trainee = '$trainee_id' AND ff.date = CURDATE()
+      WHERE ff.trainee = '$trainee_id' AND ff.date = CURDATE() AND ff.cancel != 1
+      ORDER BY ff.time");
+    while ($row = $res->fetch_assoc()) $result[] = $row;
+
+    return $result;
+  }
+
+  function canceled_trainee($trainee_id)
+  {
+    $result=[];
+    global $db;
+    $trainee_id = $db->real_escape_string($trainee_id);
+    $res = db_query("SELECT ff.time, m.name
+      FROM ftt_fellowship ff
+      LEFT JOIN member m ON m.key = ff.serving_one
+      WHERE ff.trainee = '$trainee_id' AND ff.date = CURDATE() AND ff.cancel = 1
       ORDER BY ff.time");
     while ($row = $res->fetch_assoc()) $result[] = $row;
 
