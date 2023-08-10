@@ -2,6 +2,7 @@
     include_once "header.php";
     include_once "db/ftt/ftt_db.php";
     include_once "db/classes/ftt_applications/ftt_candidates.php";
+    include_once 'db/classes/short_name.php';
     $application_data = db_getApplications($memberId);
     $application_data_interview = db_getApplications($memberId, true);
     global $appRootPath;
@@ -91,6 +92,7 @@ else if (isset ($_SESSION["logged-in"])){
       <?php if ($memberId == '000005716' || $ftt_access['group'] === 'trainee' || $ftt_access['group'] === 'staff'):?>
         <?php
           include_once 'db/classes/statistics.php';
+          include_once 'db/classes/ftt_attendance/fellowship.php';
           $announcement_unread_count = statistics::announcement_unread($memberId);
           if ($announcement_unread_count == 0) {
             $announcement_unread_count = '';
@@ -99,6 +101,13 @@ else if (isset ($_SESSION["logged-in"])){
         <?php if ($ftt_access['group'] === 'trainee'):
           $extra_help_count = statistics::extra_help_count($memberId);
           $permission_stat_count_main = statistics::permission_count($memberId);
+          // Общение на сегодня
+          $fellowship_today = Fellowship::now_trainee($memberId);
+          $fellowship_text = '';
+          foreach ($fellowship_today as $key => $value) {
+            $name_f = short_name::no_middle($value['name']);
+            $fellowship_text .= "<strong class='fellowship_today' style='color: red; padding-left: 16px;'>Сегодня общение:  {$name_f} в {$value['time']}</strong><br>";
+          }
         endif; ?>
         <?php if ($ftt_access['group'] === 'staff'):
           include_once 'db/classes/ftt_lists.php';
@@ -145,6 +154,11 @@ else if (isset ($_SESSION["logged-in"])){
                 <span><a class="ftt_menu_a" href="/ftt_application">Заявления<?php echo "<sup style='color: red;'><b> {$requests_stat_count_main}</b></sup>"; ?></a></span>
               <?php }?>
               </p>
+              <?php
+              if (!empty($fellowship_text)) {
+                echo $fellowship_text;
+              }
+              ?>
             </div>
         </div>
       </div>

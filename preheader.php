@@ -2,6 +2,12 @@
 /* настройки */
 header('Content-Type: text/html; charset=utf-8');
 
+/* API */
+// BFA подписка --> контакты.
+if (isset($_GET['method']) && $_GET['method'] === 'contacts.add_member' && $_GET['api_key'] === 'f3db58b7cb4baa82ea5321d08b6f0ff9') {
+  require_once 'api_v1.php';
+  exit;
+}
 /* переадресации */
 // Redirect to service page like SORRY THE WEBSIE NOT AVAILABLE........
 // header("Location: /attention.html"); // redirect to service page

@@ -265,7 +265,7 @@ function db_getChurchLifeBrothers() { // управлять зависимо о�
   $res=db_query("SELECT m.key, m.name, m.locality_key, l.name AS locality
     FROM member m
     INNER JOIN locality l ON l.key = m.locality_key
-    WHERE male = 1 AND (m.category_key = 'ST' OR m.category_key = 'RB' OR m.category_key = 'FS' OR m.category_key = 'FT') ORDER BY m.name");
+    WHERE male = 1 AND (m.category_key = 'SN' OR m.category_key = 'RB' OR m.category_key = 'FS' OR m.category_key = 'FT') ORDER BY m.name");
     while ($row = $res->fetch_assoc()) $result[$row['key']] = $row['name'].' ('.$row['locality'].')';
   return $result;
 }
