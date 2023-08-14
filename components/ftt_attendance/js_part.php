@@ -1,3 +1,16 @@
+<?php
+// redirect
+if (isset($_GET['meet'])) {
+?>
+<script>
+setTimeout(function () {
+  setCookie("tab_active", "meet");
+  location.href = "ftt_attendance";
+}, 10);
+</script>
+<?php
+}
+?>
 <script>
 let ftt_access_trainee = "<?php echo strval($ftt_access['ftt_service']); ?>";
 ftt_access_trainee === 6 ? ftt_access_trainee = true : ftt_access_trainee = false;

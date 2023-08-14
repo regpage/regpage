@@ -22,6 +22,7 @@ require_once 'db/classes/ftt_lists.php';
 require_once 'db/classes/member.php';
 require_once 'db/classes/short_name.php';
 require_once 'db/classes/date_convert.php';
+include_once 'db/classes/ftt_attendance/fellowship.php';
 
 function getServiceOnesWithTrainees ()
 {
@@ -113,13 +114,66 @@ function getServiceOnesWithTrainees ()
       $missingClass .= "<a href='https://reg-page.ru/ftt_attendance.php?mc'>Перейти в раздел «Пропущенные занятия»</a><br>";
     }
 
+    // общения на сегодня
+    $fellowship_today = Fellowship::now_serving_one($value);
+    $fellowship_text = '';
+    $fellowship_text_name = '';
+    if (count($fellowship_today) > 0) {
+      if (empty($announcements) && empty($absence) && empty($attendance) && empty($extraHelpData)) {
+        $fellowship_text = '<b>Общение сегодня: </b>';
+      } else {
+        $fellowship_text = '<br><b>Общение сегодня: </b>';
+      }
+
+      foreach ($fellowship_today as $key_5 => $value_5) {
+        if ($value_5) {
+          $name_f = short_name::no_middle($value_5['name']);
+          if (empty($fellowship_text_name)) {
+            $fellowship_text_name .= $name_f;
+          } else {
+            $fellowship_text_name .= ', ' . $name_f;
+          }
+        }
+      }
+      if (count($fellowship_today) > 0) {
+        $fellowship_text .= "<span> {$fellowship_text_name} </span><br>";
+      }
+    }
+
+    $fellowship_cancel_today = Fellowship::canceled_serving_one($value);
+    $fellowship_cancel_text_name = '';
+    if (count($fellowship_cancel_today) > 0) {
+      if (empty($announcements) && empty($absence) && empty($attendance) && empty($extraHelpData) && empty($fellowship_text)) {
+        $fellowship_text = '<b>Отменено общение сегодня:</b>';
+      } else {
+        $fellowship_text .= '<br><b>Отменено общение сегодня:</b>';
+      }
+      foreach ($fellowship_cancel_today as $key_6 => $value_6) {
+        $name_c = short_name::no_middle($value_6['name']);
+        if (empty($fellowship_cancel_text_name)) {
+          $fellowship_cancel_text_name .= $name_c;
+        } else {
+          $fellowship_cancel_text_name .= ', ' . $name_c;
+        }
+      }
+      if (count($fellowship_cancel_today) > 0) {
+        $fellowship_text .= "<span> {$fellowship_cancel_text_name} </span><br>";
+      }
+    }
+
+    if (!empty($fellowship_text)) {
+      $fellowship_text .= "<a href='https://reg-page.ru/ftt_attendance.php?meet=1'>Перейти в раздел «Общение»</span>";
+    }
+
+    /***  ОТПРАВКА ПИСЬМА  **/
     //Emailing::send_by_key()
     //Emailing::send
     //a.rudanok@gmail.com
-    //info@zhichkinroman.ru
+    //info@zhichkinroman.ru '000005716'
     //
-    if ($announcements || $absence || $attendance || $extraHelp || $missingClass) {
-      Emailing::send_by_key($value, $topic, $announcements . $absence . $attendance . $extraHelp . $missingClass);
+    if ($announcements || $absence || $attendance || $extraHelp || $missingClass || $fellowship_text) {
+      $body = $announcements . $absence . $attendance . $extraHelp . $missingClass . $fellowship_text;
+      Emailing::send_by_key($value, $topic, $body);
     } else {
       // add str to log file
     }

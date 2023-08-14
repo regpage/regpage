@@ -1,7 +1,9 @@
 <?php
 /**
- * now_trainee($trainee_id) Возвращает список встреч на сегодня для обучающегося
- * now_serving_one($serving_one_id) Возвращает список встреч на сегодня для служащего
+ * now_trainee($trainee_id) Возвращает список актуальных встреч на сегодня для обучающегося
+ * canceled_trainee($trainee_id) Возвращает список отменённых встреч на сегодня для обучающегося
+ * now_serving_one($serving_one_id) Возвращает список актуальных встреч на сегодня для служащего
+ * canceled__serving_one($serving_one_id) Возвращает список отменённых встреч на сегодня для служащего
  */
 
 class Fellowship
@@ -42,7 +44,20 @@ class Fellowship
     $res = db_query("SELECT ff.time, m.name
       FROM ftt_fellowship ff
       LEFT JOIN member m ON m.key = ff.trainee
-      WHERE ff.serving_one = '$serving_one_id' AND ff.date = CURDATE()
+      WHERE ff.serving_one = '$serving_one_id' AND ff.date = CURDATE() AND ff.cancel != 1
+      ORDER BY ff.time");
+    while ($row = $res->fetch_assoc()) $result[] = $row;
+
+    return $result;
+  }
+
+  function canceled_serving_one($serving_one_id)
+  {
+    $result=[];
+    $res = db_query("SELECT ff.time, m.name
+      FROM ftt_fellowship ff
+      LEFT JOIN member m ON m.key = ff.trainee
+      WHERE ff.serving_one = '$serving_one_id' AND ff.date = CURDATE() AND ff.cancel = 1
       ORDER BY ff.time");
     while ($row = $res->fetch_assoc()) $result[] = $row;
 
