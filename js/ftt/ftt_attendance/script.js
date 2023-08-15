@@ -2639,7 +2639,7 @@ function open_blank(el_this) {
     weeks = get_curr_week_dates(4);
 
     for (let variable in data) {
-      html += '<div class="d-flex meet_serving_one" data-serving_one="' + variable + '"><span style="align-self: center; min-width: 150px;">'
+      html += '<div class="d-flex meet_serving_one" data-serving_one="' + variable + '"><span style="align-self: center; max-width: 100px;">'
       + serving_ones_list[variable] + '</span>';
       if (data.hasOwnProperty(variable)) {
         blocks[variable] = {1:[], 2:[], 3:[], 4:[]};

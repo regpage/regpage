@@ -65,12 +65,31 @@ class ftt_lists {
 
       return $result;
   }
+
+  // получаем служащих c fellowship=1
+  static function get_fellowship_list() {
+    $result = [];
+
+    $res = db_query("SELECT fso.member_key, m.key, m.name
+      FROM ftt_serving_one fso
+      INNER JOIN member m ON m.key = fso.member_key
+      WHERE fso.fellowship = 1
+      ORDER BY m.name");
+      while ($row = $res->fetch_assoc()) $result[$row['key']]=short_name::no_middle($row['name']);
+
+      return $result;
+  }
+
   // братья из КБК
   static function kbk_brothers() {
     $result = [];
-    //OR `key` = '' OR `key` = ''
-    $res = db_query("SELECT `key`, `name` FROM `member` WHERE `key` = '000002178' ORDER BY `name`");
-      while ($row = $res->fetch_assoc()) $result[$row['key']]=short_name::no_middle($row['name']);
+    $res = db_query("SELECT bbd.member_key, m.name
+      FROM ftt_bbd bbd
+      INNER JOIN member m ON m.key = bbd.member_key
+      WHERE 1
+      ORDER BY m.name");
+      while ($row = $res->fetch_assoc()) $result[$row['member_key']]=short_name::no_middle($row['name']);    
+      //000002178
 
       return $result;
   }

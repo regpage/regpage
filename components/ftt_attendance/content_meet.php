@@ -45,7 +45,7 @@ if (isset($_COOKIE['meet_sorting'])) {
     $date = yyyymmdd_to_ddmm($value['date']);
     $comment_short = CutString::cut($value['comment_train']);
 
-    echo "<div class='row mt-1 mb-1 cursor-pointer str_record' data-id='{$value['id']}' ";
+    echo "<div class='row str_record' data-id='{$value['id']}' ";
     echo "data-duration='{$value['duration']}' data-trainee='{$value['trainee']}' data-serving_one='{$value['serving_one']}' data-time='{$value['time']}' data-date='{$value['date']}' data-comment='{$value['comment_train']}' data-cancel='{$value['cancel']}'>";
     echo "<div class='col-2 pl-1'>{$date}</div>";;
     echo "<div class='col-2'>{$value['time']}</div>";

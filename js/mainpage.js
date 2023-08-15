@@ -41,6 +41,8 @@ if ($(window).width()<=769) {
   // ПВОМ КНОПКИ
   //$("#send_request_for_pvom_modal")
   $("#send_request_for_pvom_guest_modal").css("margin-left", "0").css("margin-top", "15px");
+  // Напоминание об общении
+  $(".fellowship_today").css("padding-left", "3px");
 } else {
   if ($("body").height() < $(window).height()) {
     //console.log($(window).height());

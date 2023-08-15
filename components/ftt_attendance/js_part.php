@@ -84,10 +84,13 @@ function filterSkip() {
   });
 }
 filterSkip();
+if ($(window).width()<=769) {
+  $(".row_meet").hide();
+}
 </script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
-<script src="/js/ftt/ftt_attendance/script.js?v134"></script>
-<script src="/js/ftt/ftt_attendance/design.js?v27"></script>
+<script src="/js/ftt/ftt_attendance/script.js?v137"></script>
+<script src="/js/ftt/ftt_attendance/design.js?v28"></script>
 <script src="/js/modules/week.js?v1"></script>
 <script src="/js/modules/time.js?v1"></script>
 <script src="/js/modules/date.js?v1"></script>
