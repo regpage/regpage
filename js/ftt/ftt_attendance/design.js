@@ -124,16 +124,7 @@ if ($(window).width()<=769) {
   $(".skip_string div:nth-child(3)").removeClass("col-7").addClass("col-4").addClass("pl-2");
 
   $(".skip_string .col-8").removeClass("col-8").addClass("col-6").addClass("pr-1").addClass("pl-5");*/
-
-  // **** FELLOWSHIP ****
-  $(".row_meet").hide();
-  $(".fellowship_today").css("padding-left", "0px");
-  $(".str_record_staff div:nth-child(1)").addClass("pl-0").css("min-width", "50px");
-  $(".str_record_staff div:nth-child(2)").addClass("pl-0").css("min-width", "50px");
-  $(".str_record_staff div:nth-child(3)").addClass("pl-0").css("min-width", "50px");
-  $(".str_record_staff div:nth-child(4)").addClass("pl-0").addClass("pr-2").removeClass("col-2").addClass("col-4").css("max-width", "110px");
-  $(".str_record_staff div:nth-child(5)").addClass("pl-0").addClass("pr-1").removeClass("col-2").addClass("col-3").css("min-width", "120px");
-  $(".str_record_staff div:nth-child(6)").removeClass("col-5").addClass("col-12").addClass("pl-1");
+  
 } else if ($(window).width()<=991 && $(window).width()>769) {
   $("#current_extra_help").css("min-width", $(window).width()+"px");
   $(".card_header button").css("width", "180px");

@@ -168,10 +168,10 @@ else if (isset ($_SESSION["logged-in"])){
                 <span class="ftt_menu_a ftt_menu_s" data-link="ftt_application">Заявления</span>
                https://test.new-constellation.ru/-->
 
-
                 <span><a class="ftt_menu_a" href="/ftt_schedule">Расписание</a></span>
                 <span><a class="ftt_menu_a" href="/ftt_announcement">Объявления<?php echo "<sup style='color: red;'><b> {$announcement_unread_count}</b></sup>"; ?></a></span>
                 <span><a class="ftt_menu_a" href="/ftt_attendance">Посещаемость</a></span>
+                <span><a class="ftt_menu_a" href="/ftt_fellowship">Общение</a></span>
                 <span><a class="ftt_menu_a" href="/ftt_service">Служение</a></span>
                 <span><a class="ftt_menu_a" href="/ftt_gospel">Благовестие</a></span>
                 <span><a class="ftt_menu_a" href="/contacts">Контакты</a></span>

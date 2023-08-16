@@ -7,8 +7,7 @@
   include_once 'db/classes/ftt_permissions.php';
   include_once 'db/classes/statistics.php';
   include_once 'db/ftt/ftt_attendance_db.php';
-  include_once 'db/ftt/ftt_attendance_skip_db.php';
-  include_once 'db/ftt/ftt_attendance_meet_db.php';
+  include_once 'db/ftt/ftt_attendance_skip_db.php';  
   include_once 'db/classes/ftt_attendance/bible.php';
   include_once 'db/classes/CutString.php';
 
@@ -33,7 +32,6 @@ if ($ftt_access['group'] === 'staff' || $serving_trainee) {
   $serving_ones_list_full = ftt_lists::serving_ones_full();
   $trainee_list_full = ftt_lists::trainee_full();
   $serving_ones_list = ftt_lists::serving_ones();
-  $trainee_list = ftt_lists::trainee();
   $trainee_list = ftt_lists::trainee();
 } elseif ($ftt_access['group'] === 'trainee') {
   // СЛУЖАЩИЕ
@@ -81,43 +79,24 @@ if (isset($_COOKIE['flt_permission_active']) && (!empty($_COOKIE['flt_permission
 $tab_attendance_active = 'active';
 $tab_permission_active = '';
 $tab_missed_class_active = '';
-$tab_meet_active = '';
 if (isset($_COOKIE['tab_active']) && $_COOKIE['tab_active'] === 'permission') {
   $tab_attendance_active = '';
   $tab_permission_active = 'active';
   $tab_missed_class_active = '';
-  $tab_meet_active = '';
 } elseif (isset($_COOKIE['tab_active']) && $_COOKIE['tab_active'] === 'missed_class') {
   $tab_attendance_active = '';
   $tab_permission_active = '';
   $tab_missed_class_active = 'active';
-  $tab_meet_active = '';
-} elseif (isset($_COOKIE['tab_active']) && $_COOKIE['tab_active'] === 'meet') {
-  $tab_attendance_active = '';
-  $tab_permission_active = '';
-  $tab_missed_class_active = '';
-  $tab_meet_active = 'active';
-  $kbk_list = ftt_lists::kbk_brothers();
-  $serving_ones_list_meet = ftt_lists::get_fellowship_list();
-  $serving_ones_list = array_merge($serving_ones_list_meet, $kbk_list);
-  $trainee_serving_one = ftt_lists::trainee_serving_one();
 }
 
 if (isset($_GET['pb'])) {
   $tab_attendance_active = '';
   $tab_permission_active = 'active';
   $tab_missed_class_active = '';
-  $tab_meet_active = '';
 } elseif (isset($_GET['mc'])) {
   $tab_attendance_active = '';
   $tab_permission_active = '';
   $tab_missed_class_active = 'active';
-  $tab_meet_active = '';
-} elseif (isset($_GET['meet'])) {
-  $tab_attendance_active = '';
-  $tab_permission_active = '';
-  $tab_missed_class_active = '';
-  $tab_meet_active = 'active';
 }
 
 $serving_one_selected = $memberId;
@@ -129,7 +108,6 @@ if (isset($_GET['my'])) {
   $tab_attendance_active = 'active';
   $tab_permission_active = '';
   $tab_missed_class_active = '';
-  $tab_meet_active = '';
   $serving_one_selected = $memberId;
 }
 

@@ -1,0 +1,13 @@
+
+/*meet*/
+.str_record, .str_record_staff {
+  cursor: pointer;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  border-bottom: 1px lightgray solid;
+}
+
+.str_record:hover, .str_record_staff:hover {
+  background-color: #eee;
+}
+/*meet*/

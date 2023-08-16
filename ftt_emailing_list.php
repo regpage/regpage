@@ -162,7 +162,7 @@ function getServiceOnesWithTrainees ()
     }
 
     if (!empty($fellowship_text)) {
-      $fellowship_text .= "<a href='https://reg-page.ru/ftt_attendance.php?meet=1'>Перейти в раздел «Общение»</span>";
+      $fellowship_text .= "<a href='https://reg-page.ru/ftt_fellowship.php'>Перейти в раздел «Общение»</span>";
     }
 
     /***  ОТПРАВКА ПИСЬМА  **/
