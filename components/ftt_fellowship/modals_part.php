@@ -7,14 +7,33 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="font-size: 1.5rem;">x</button>
       </div>
       <div class="modal-body">
-        <h5>Служащие ПВОМ</h5>
+        <select id="meet_serving_ones_list_calendar" class="form-control form-control-sm mr-2">
+          <option value="_all_">Все служащие</option>
+          <?php foreach ($serving_ones_list_meet as $key => $value):
+            $selected = "";
+            if ($serving_ones_flt === $key) {
+              $selected = "selected";
+            }
+            echo "<option value='{$key}' {$selected}>{$value}</option>";
+          endforeach; ?>
+          <option disabled>----КБК----</option>";
+          <?php foreach ($kbk_list as $key => $value):
+            echo "<option value='{$key}'>{$value}</option>";
+          endforeach; ?>
+        </select>
+        <div class="calendar-wrapper">
+    		  <button id="btnPrev" type="button">Предыдущий</button>
+    		  <button id="btnNext" type="button">Следующий</button>
+			    <div id="divCal"></div>
+		    </div>
+        <!-- <h5>Служащие ПВОМ</h5>
         <div id="list_staff_pvom">
 
         </div>
         <h5>Служащие КБК</h5>
         <div id="list_staff_kbk">
 
-        </div>
+        </div>-->
       </div>
       <div class="modal-footer">
         <div class="text-right w-100">
@@ -72,11 +91,11 @@
               <textarea id="mdl_meet_comment_trainee" class="form-control form-control-sm" rows="4" placeholder="Комментарий обучающегося" style="width: 100%;"></textarea>
             </div>
           </div>
-          <div class="row mb-2">
+          <!--<div class="row mb-2">
             <div class="col">
               <textarea id="mdl_meet_comment_serving_one" class="form-control form-control-sm" rows="4" placeholder="Комментарий служащего" style="width: 100%;"></textarea>
             </div>
-          </div>
+          </div>-->
           <div class="row mb-2">
             <div class="col">
               <label for="meet_cancel"><input id="meet_cancel" type="checkbox" class=""> Общение отменено</label>
@@ -170,7 +189,7 @@
           <option value="_all_">Все служащие</option>
           <?php foreach ($serving_ones_list as $key => $value):
             $selected = '';
-            if ($key === $flt_sevice_one_skip) {
+            if ($key === $serving_ones_flt) {
               $selected = 'selected';
             }
             echo "<option value='{$key}' {$selected}>{$value}</option>";
@@ -180,7 +199,7 @@
           <option value="_all_">Все обучающиеся</option>
           <?php foreach ($trainee_list as $key => $value):
             $selected = '';
-            if ($key === $ftr_trainee_skip) {
+            if ($key === $trainee_flt) {
               $selected = 'selected';
             }
             echo "<option value='{$key}' {$selected}>{$value}</option>";

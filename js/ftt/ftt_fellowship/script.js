@@ -2,13 +2,29 @@
 $(document).ready(function(){
   /*** FELLOWSHIP TAB START ***/
   $("#meet_add").click(function () {
-    if (trainee_list_full[window.adminId]["male"] === "1" && trainee_access === "1") {
+    if ($("#meet_serving_ones_list_calendar") !== '_all_') {
+      get_records_cal($("#meet_serving_ones_list_calendar").val());
+    } else if (trainee_list_full[window.adminId]["male"] === "1" && trainee_access === "1") {
       get_communication_list("pvom_br");
+      get_records_cal("pvom_br");
     } else {
       get_communication_list("_all_");
+      get_records_cal("_all_");
     }
   });
 
+  // получаем данные
+  function get_records_cal(pvom_br) {
+    fetch("ajax/ftt_fellowship_ajax.php?type=get_communication_list&serving_ones="+pvom_br+"&sort=meet_sort_servingone-asc&canceled=0")
+    .then(response => response.json())
+    .then(commits => {
+      console.log(commits.result);
+      calendar(commits.result);
+    });
+  }
+
+  // страрый вариант получаем данные
+  /*
   function get_communication_list(pvom_br) {
     fetch("ajax/ftt_fellowship_ajax.php?type=get_communication_list&member_id=_all_&serving_ones="+pvom_br+"&sort=meet_sort_date-asc&canceled=0")
     .then(response => response.json())
@@ -23,7 +39,9 @@ $(document).ready(function(){
       });
     }, 10);
   }
-
+*/
+/*
+  // старый вариант рендерим
   function render_communication_list(data, kbk) {
     let html = "", weeks = [], blocks = {};
 
@@ -120,7 +138,7 @@ $(document).ready(function(){
       });
     }
   }
-
+*/
   function set_communication_record_check(elem, blocks, kbk) {
     if (elem.hasClass("text-danger")) {
       return;
@@ -333,7 +351,7 @@ $(document).ready(function(){
     data_temp["serving_one"] = $("#mdl_meet_serving_ones_list").val();
     data_temp["trainee"] = $("#mdl_meet_trainee_list").val();
     data_temp["comment_train"] = $("#mdl_meet_comment_trainee").val();
-    data_temp["comment_serv"] = $("#mdl_meet_comment_serving_one").val();
+    data_temp["comment_serv"] = ""; //$("#mdl_meet_comment_serving_one").val()
     if ($("#meet_cancel").prop("checked")) {
       data_temp["cancel"] = 1;
     } else {
@@ -383,125 +401,161 @@ $(document).ready(function(){
   }
   */
   // CALENDAR
-  /*
-  let html = '<div class="calendar-wrapper">
-    	<button id="btnPrev" type="button">Предыдущий</button>
-    	<button id="btnNext" type="button">Следующий</button>
-		<div id="divCal"></div>';
-  let Cal = function(divId) {
-    //Сохраняем идентификатор div
-    this.divId = divId;
-    // Дни недели с понедельника
-    this.DaysOfWeek = [
-      'Пн',
-      'Вт',
-      'Ср',
-      'Чт',
-      'Пт',
-      'Сб',
-      'Вс'
-    ];
-    // Месяцы начиная с января
-    this.Months =['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
-    //Устанавливаем текущий месяц, год
-    let d = new Date();
-    this.currMonth = d.getMonth();
-    this.currYear = d.getFullYear();
-    this.currDay = d.getDate();
-  };
-  // Переход к следующему месяцу
-  Cal.prototype.nextMonth = function() {
-    if ( this.currMonth == 11 ) {
-      this.currMonth = 0;
-      this.currYear = this.currYear + 1;
-    }
-    else {
-      this.currMonth = this.currMonth + 1;
-    }
-    this.showcurr();
-  };
-  // Переход к предыдущему месяцу
-  Cal.prototype.previousMonth = function() {
-    if ( this.currMonth == 0 ) {
-      this.currMonth = 11;
-      this.currYear = this.currYear - 1;
-    }
-    else {
-      this.currMonth = this.currMonth - 1;
-    }
-    this.showcurr();
-  };
-  // Показать текущий месяц
-  Cal.prototype.showcurr = function() {
-    this.showMonth(this.currYear, this.currMonth);
-  };
-  // Показать месяц (год, месяц)
-  Cal.prototype.showMonth = function(y, m) {
-    let d = new Date()
-    // Первый день недели в выбранном месяце
-    , firstDayOfMonth = new Date(y, m, 7).getDay()
-    // Последний день выбранного месяца
-    , lastDateOfMonth =  new Date(y, m+1, 0).getDate()
-    // Последний день предыдущего месяца
-    , lastDayOfLastMonth = m == 0 ? new Date(y-1, 11, 0).getDate() : new Date(y, m, 0).getDate();
-    let html = '<table>';
-    // Запись выбранного месяца и года
-    html += '<thead><tr>';
-    html += '<td colspan="7">' + this.Months[m] + ' ' + y + '</td>';
-    html += '</tr></thead>';
-    // заголовок дней недели
-    html += '<tr class="days">';
-    for(let i=0; i < this.DaysOfWeek.length;i++) {
-      html += '<td>' + this.DaysOfWeek[i] + '</td>';
-    }
-    html += '</tr>';
-    // Записываем дни
-    let i=1;
-    do {
-      let dow = new Date(y, m, i).getDay();
-      // Начать новую строку в понедельник
-      if ( dow == 1 ) {
-        html += '<tr>';
+  function calendar(records) {
+
+    let html = '<div class="calendar-wrapper"><button id="btnPrev" type="button">Предыдущий</button><button id="btnNext" type="button">Следующий</button><div id="divCal"></div>';
+    let Cal = function(divId) {
+      //Сохраняем идентификатор div
+      this.divId = divId;
+      // Дни недели с понедельника
+      this.DaysOfWeek = [
+        'Пн',
+        'Вт',
+        'Ср',
+        'Чт',
+        'Пт',
+        'Сб',
+        'Вс'
+      ];
+      // Месяцы начиная с января
+      this.Months =['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+      //Устанавливаем текущий месяц, год
+      let d = new Date();
+      this.currMonth = d.getMonth();
+      this.currYear = d.getFullYear();
+      this.currDay = d.getDate();
+    };
+    // Переход к следующему месяцу
+    Cal.prototype.nextMonth = function() {
+      if ( this.currMonth == 11 ) {
+        this.currMonth = 0;
+        this.currYear = this.currYear + 1;
       }
-      // Если первый день недели не понедельник показать последние дни предыдущего месяца
-      else if ( i == 1 ) {
-        html += '<tr>';
-        let k = lastDayOfLastMonth - firstDayOfMonth+1;
-        for(let j=0; j < firstDayOfMonth; j++) {
-          html += '<td class="not-current">' + k + '</td>';
-          k++;
+      else {
+        this.currMonth = this.currMonth + 1;
+      }
+      this.showcurr();
+    };
+    // Переход к предыдущему месяцу
+    Cal.prototype.previousMonth = function() {
+      if ( this.currMonth == 0 ) {
+        this.currMonth = 11;
+        this.currYear = this.currYear - 1;
+      }
+      else {
+        this.currMonth = this.currMonth - 1;
+      }
+      this.showcurr();
+    };
+    // Показать текущий месяц
+    Cal.prototype.showcurr = function() {
+      this.showMonth(this.currYear, this.currMonth);
+    };
+    // Показать месяц (год, месяц)
+    Cal.prototype.showMonth = function(y, m) {
+      let d = new Date()
+      // Первый день недели в выбранном месяце
+      , firstDayOfMonth = new Date(y, m, 7).getDay()
+      // Последний день выбранного месяца
+      , lastDateOfMonth =  new Date(y, m+1, 0).getDate()
+      // Последний день предыдущего месяца
+      , lastDayOfLastMonth = m == 0 ? new Date(y-1, 11, 0).getDate() : new Date(y, m, 0).getDate();
+      let html = '<table>';
+      // Запись выбранного месяца и года
+      html += '<thead><tr>';
+      html += '<td colspan="7">' + this.Months[m] + ' ' + y + '</td>';
+      html += '</tr></thead>';
+      // заголовок дней недели
+      html += '<tr class="days">';
+      for(let i=0; i < this.DaysOfWeek.length;i++) {
+        html += '<td>' + this.DaysOfWeek[i] + '</td>';
+      }
+      html += '</tr>';
+      // Записываем дни
+      let i=1;
+      do {
+        let dow = new Date(y, m, i).getDay();
+        // Начать новую строку в понедельник
+        if ( dow == 1 ) {
+          html += '<tr>';
         }
-      }
-      // Записываем текущий день в цикл
-      let chk = new Date();
-      let chkY = chk.getFullYear();
-      let chkM = chk.getMonth();
-      if (chkY == this.currYear && chkM == this.currMonth && i == this.currDay) {
-        html += '<td class="today record_available" data-date="' + chkY + '-' + (chkM < 10 ? '0' + String(chkM) : chkM)  + '-' + i + '">' + i + '</td>';
-      } else {
-        html += '<td class="normal" data-date="' + chkY + '-' + (chkM < 10 ? '0' + String(chkM) : chkM) + '-' + i + '">' + i + '</td>';
-      }
-      // закрыть строку в воскресенье
-      if (dow == 0) {
-        html += '</tr>';
-      }
-      // Если последний день месяца не воскресенье, показать первые дни следующего месяца
-      else if ( i == lastDateOfMonth ) {
-        let k=1;
-        for(dow; dow < 7; dow++) {
-          html += '<td class="not-current">' + k + '</td>';
-          k++;
+        // Если первый день недели не понедельник показать последние дни предыдущего месяца
+        else if ( i == 1 ) {
+          html += '<tr>';
+          let k = lastDayOfLastMonth - firstDayOfMonth+1;
+          for(let j=0; j < firstDayOfMonth; j++) {
+            html += '<td class="not-current">' + k + '</td>';
+            k++;
+          }
         }
-      }
-      i++;
-    }while(i <= lastDateOfMonth);
-    // Конец таблицы
-    html += '</table>';
-    // Записываем HTML в div
-    document.getElementById(this.divId).innerHTML = html;
-  };
-  // При загрузке окна
-  window.onload = function() {
+        // Записываем текущий день в цикл
+        let chk = new Date();
+        let chkY = chk.getFullYear();
+        let chkM = chk.getMonth();
+        if (chkY == this.currYear && chkM == this.currMonth && i == this.currDay) {
+          let record_available = "";
+          let date_record = chkY + '-' + (chkM < 10 ? '0' + String(chkM+1) : chkM)  + '-' + i;
+          // проверка, добавление класса
+          for (let variable in records) {
+            if (records.hasOwnProperty(variable)) {
+              let value_records = records[variable];
+              // работает
+              // попробовать в форыч
+              //let str_id = value_records.find(str => str.date === date_record);
+              //console.log(str_id);
+              for (let variable_1 in value_records) {
+                if (value_records.hasOwnProperty(variable_1)) {
+                  let value_record = value_records[variable_1];
+                  if (value_record["date"] === date_record) {
+                    record_available = "record_available";
+                    break;
+                  }
+                }
+              }
+            }
+          }
+
+          html += '<td class="today ' + record_available + '" data-date="' + date_record + '">' + i + '</td>';
+        } else {
+          // проверка, добавление класса
+          let record_available = "", day_date = i;
+          let date_record = chkY + '-' + (chkM < 10 ? '0' + String(chkM+1) : chkM)  + '-' + (i < 10 ? '0' + String(day_date) : day_date);
+          for (let variable in records) {
+            if (records.hasOwnProperty(variable)) {
+              let value_records = records[variable];
+              for (let variable_1 in value_records) {
+                if (value_records.hasOwnProperty(variable_1)) {
+                  let value_record = value_records[variable_1];
+                  if (value_record["date"] === date_record) {
+                    record_available = "record_available";
+                    break;
+                  }
+                }
+              }
+            }
+          }
+          html += '<td class="normal ' + record_available + '" data-date="' + date_record + '">' + i + '</td>';
+        }
+        // закрыть строку в воскресенье
+        if (dow == 0) {
+          html += '</tr>';
+        }
+        // Если последний день месяца не воскресенье, показать первые дни следующего месяца
+        else if ( i == lastDateOfMonth ) {
+          let k=1;
+          for(dow; dow < 7; dow++) {
+            html += '<td class="not-current">' + k + '</td>';
+            k++;
+          }
+        }
+        i++;
+      }while(i <= lastDateOfMonth);
+      // Конец таблицы
+      html += '</table>';
+      // Записываем HTML в div
+      document.getElementById(this.divId).innerHTML = html;
+    };
+
     // Начать календарь
     let c = new Cal("divCal");
     c.showcurr();
@@ -512,11 +566,100 @@ $(document).ready(function(){
     getId('btnPrev').onclick = function() {
       c.previousMonth();
     };
+
+    // Получить элемент по id
+    function getId(id) {
+      return document.getElementById(id);
+    }
+
+    // open time list
+    $(".normal, .today").click(function () {
+      if (!$(this).hasClass("record_available")) {
+        return;
+      }
+      let html_checkboxes = "", first = 1;
+      // рендерим время
+      for (let variable in records) {
+        if (records.hasOwnProperty(variable)) {
+          let value_records = records[variable];
+          let str_id = value_records.find(str => str.date === $(this).attr("data-date"));
+          if (str_id !== undefined) {
+            if (first) {
+              html_checkboxes = '<div class="mb-2"><strong class="pt-2 pb-2">' + dateStrFromyyyymmddToddmm($(this).attr("data-date")) + '</strong><br>';
+              html_checkboxes += '<strong class="pb-2">' + serving_ones_list[variable] + '</strong></div>';
+            } else {
+              html_checkboxes += '<div class="mt-3 mb-2"><strong class="pb-2">' + serving_ones_list[variable] + '</strong></div>';
+            }
+            first = 0;
+          }
+
+          for (let variable_1 in value_records) {
+            if (value_records.hasOwnProperty(variable_1)) {
+              let value_record = value_records[variable_1];
+              if (value_record["date"] === $(this).attr("data-date")) {
+                let disabled = "", checked = "", hidden = "display: none !important;";
+                if (value_record["trainee"] && value_record["trainee"] === window.adminId) {
+                  checked = "checked";
+                  hidden = "";
+                } else if (value_record["trainee"]) {
+                  disabled = "disabled";
+                  checked = "checked";
+                }
+                html_checkboxes += '<div class="mb-2"><label class="d-inline-block font-weight-normal pt-2 pb-2" for="checkbox_time_' + value_record["id"] + '" style="vertical-align: -middle; width: 105px;">' + value_record["time"]
+                + " — " + time_plus_minutes(value_record["time"], value_record["duration"])
+                + '</label><input id="checkbox_time_' + value_record["id"] + '" type="checkbox" class="pl-2 pb-2 meet_checked ml-2 mr-3" data-id="' + value_record["id"]
+                + '" data-from="' + value_record["time"] + '" data-to="' + time_plus_minutes(value_record["time"], value_record["duration"])
+                + '" data-date="'+value_record["date"]+'" style="vertical-align: middle;" ' + checked + ' ' + disabled
+                + '><input type="text" class="meet_comment_trainee_time form-control form-control-sm d-inline-block" value="'
+                + value_record["comment_train"] + '" style="max-width: 67%; vertical-align: middle; ' + hidden + '"></div>';
+              }
+            }
+          }
+        }
+      }
+      $("#list_possible_records").html(html_checkboxes);
+      // Сохраняем значение
+      $(".meet_checked").change(function () { // + kbk
+        console.log("I an here");
+        let trainee = window.adminId;
+        let checked_time = 0;
+        if ($(this).prop("checked")) {
+          checked_time = 1;
+          if (!$(this).next().hasClass("d-inline-block")) {
+            $(this).next().addClass("d-inline-block");
+          }
+          $(this).next().show();
+        } else {
+          $(this).next().removeClass("d-inline-block");
+          $(this).next().hide();
+          $(this).next().val("");
+        }
+        fetch("ajax/ftt_fellowship_ajax.php?type=set_communication_record&id="
+        + $(this).attr("data-id") + "&trainee=" + trainee + "&checked=" + checked_time + "&time_from=" + $(this).attr("data-from") + "&time_to=" + $(this).attr("data-to") + "&date=" + $(this).attr("data-date"))
+        .then(response => response.json())
+        .then(commits => {
+          if ($(this).prop("checked")) {
+            if (commits.result !== true) {
+              let check_error = commits.result.split("_");
+              if (check_error[0] === "error" && check_error[1] === "busy") {
+                showError("К сожалению это время уже занято.");
+              } else if (check_error[0] === "error" && check_error[1] === "intersection") {
+                showError("На это время и дату уже назначена встреча с " + serving_ones_list[String(check_error[2])] + ". Запись не сохранена.");
+              }
+              $(this).prop("checked", false);
+            } else {
+              showHint("Запись на общение сохранена.");
+            }
+          } else {
+            showHint("Запись на общение отменена.");
+          }
+        });
+      });
+      // открываем окно
+      $("#mdl_meet_trainee_to_record").modal("show");
+    });
+
   }
-  // Получить элемент по id
-  function getId(id) {
-    return document.getElementById(id);
-  }
-  */
+
   /*** FELLOWSHIP TAB STOP ***/
 });

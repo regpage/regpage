@@ -13,7 +13,7 @@ $adminId = db_getMemberIdBySessionId (session_id());
 // COMMUNICATION
 // get list
 if (isset($_GET['type']) && $_GET['type'] === 'get_communication_list') {
-  echo json_encode(["result"=>get_communication_list($_GET['member_id'], $_GET['serving_ones'], $_GET['sort'], $_GET['canceled'])]);
+  echo json_encode(["result"=>get_communication_list($_GET['serving_ones'], $_GET['sort'], $_GET['canceled'])]);
   exit();
 }
 

@@ -80,6 +80,18 @@ class ftt_lists {
       return $result;
   }
 
+  static function serving_ones_fellowship_brothers()  {
+    $result = [];
+
+    $res = db_query("SELECT fso.member_key, m.key, m.name, m.male
+      FROM ftt_serving_one fso
+      INNER JOIN member m ON m.key = fso.member_key
+      WHERE m.male = 1 AND fso.fellowship = 1 ORDER BY m.name");
+      while ($row = $res->fetch_assoc()) $result[$row['key']]=short_name::no_middle($row['name']);
+
+      return $result;
+  }
+
   // братья из КБК
   static function kbk_brothers() {
     $result = [];
@@ -88,7 +100,7 @@ class ftt_lists {
       INNER JOIN member m ON m.key = bbd.member_key
       WHERE 1
       ORDER BY m.name");
-      while ($row = $res->fetch_assoc()) $result[$row['member_key']]=short_name::no_middle($row['name']);    
+      while ($row = $res->fetch_assoc()) $result[$row['member_key']]=short_name::no_middle($row['name']);
       //000002178
 
       return $result;

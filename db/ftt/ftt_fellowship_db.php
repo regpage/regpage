@@ -1,6 +1,6 @@
 <?php
 // COMMUNICATION
-function get_communication_list($member_id = '_all_', $serving_ones = '_all_', $sort='meet_sort_date-asc', $canceled=0)
+function get_communication_list($serving_ones = '_all_', $sort='meet_sort_servingone-asc', $canceled=0)
 {
   // # для братьев не выводятся служащие сёстры
   // # Уточнить список КБК !!! служащие пвом и братья из КБК (как определить братьев из КБК.)
@@ -13,7 +13,6 @@ function get_communication_list($member_id = '_all_', $serving_ones = '_all_', $
   // # 6. прибавить 28 дней (использовать >= при сравнении).
 
   global $db;
-  $member_id = $db->real_escape_string($member_id);
   $serving_ones = $db->real_escape_string($serving_ones);
   $canceled = $db->real_escape_string($canceled);
   $sort = $db->real_escape_string($sort);
@@ -21,7 +20,7 @@ function get_communication_list($member_id = '_all_', $serving_ones = '_all_', $
   // Сортировка
   // сортировка по name бывает по обучающимся и по служащим
   // менять поле в строке JOIN на нужное
-  $order_by = ' ff.date, ff.time ';
+  $order_by = ' ff.name, ff.date ';
   if (!empty($sort) && $sort !== 'meet_sort_date-asc') {
     if ($sort === 'meet_sort_date-desc') {
       $order_by = ' ff.date DESC, m.name DESC ';
@@ -41,17 +40,18 @@ function get_communication_list($member_id = '_all_', $serving_ones = '_all_', $
   $date_current = getdate();
   $days_to_future = 28 - $date_current['wday'];
   if ($date_current['wday'] > 0) {
-    $order_period = " ((ff.date >= (CURDATE() - INTERVAL {$date_current['wday']} DAY)) AND (ff.date <= (CURDATE() + INTERVAL {$days_to_future} DAY))) ";
+    //$order_period = " ((ff.date >= (CURDATE() - INTERVAL {$date_current['wday']} DAY)) AND (ff.date <= (CURDATE() + INTERVAL {$days_to_future} DAY))) ";
+    $order_period = " ((ff.date >= CURDATE()) AND (ff.date <= (CURDATE() + INTERVAL 28 DAY))) ";
   } else {
     $order_period = " ((ff.date >= CURDATE()) AND (ff.date <= (CURDATE() + INTERVAL 28 DAY))) ";
   }
   // служащие
-  if ($serving_ones === 'kbk') {
-    $serving_ones = ftt_lists::kbk_brothers();
+  if ($serving_ones === '_all_') {
+    $serving_ones = array_merge(ftt_lists::get_fellowship_list(), ftt_lists::kbk_brothers());
   } elseif ($serving_ones === 'pvom_br') {
-    $serving_ones = ftt_lists::serving_ones_brothers();
+    $serving_ones = array_merge(ftt_lists::serving_ones_fellowship_brothers(), ftt_lists::kbk_brothers());
   } else {
-    $serving_ones = ftt_lists::serving_ones();
+    $serving_ones = array($serving_ones => '');
   }
   $serving_ones_condition = '';
   foreach ($serving_ones as $key => $value) {
@@ -183,13 +183,19 @@ function set_communication_record($trainee, $id, $checked=0, $date='', $time_fro
   $date = $db->real_escape_string($date);
   $time_from = $db->real_escape_string($time_from);
   $time_to = $db->real_escape_string($time_to);
+  $check_exist = '';
   $result = [];
   if ($checked == 1) {
+    $res_extra = db_query("SELECT `trainee` FROM `ftt_fellowship` WHERE `id` = '$id'");
+    while ($row = $res_extra->fetch_assoc()) $check_exist = $row['trainee'];
+    if (!empty($check_exist)) {
+      return 'error_busy_' . $check_exist;
+    }
     // проверка времени SELECT * FROM `ftt_fellowship` WHERE `time` BETWEEN '11:00' AND '12:00'
     $res_extra = db_query("SELECT `serving_one` FROM `ftt_fellowship` WHERE (`trainee` = '$trainee' AND `date` = '$date') AND (`time` BETWEEN '$time_from' AND '$time_to')");
     while ($row = $res_extra->fetch_assoc()) $result[] = $row['serving_one'];
     if (count($result) > 0) {
-      return $result[0];
+      return 'error_intersection_' . $result[0];
     }
     // запрос
     $res = db_query("UPDATE `ftt_fellowship` SET `trainee`= '$trainee', `changed`= 1 WHERE `id` = '$id'");
