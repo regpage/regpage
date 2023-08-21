@@ -168,7 +168,7 @@ function get_communication_records($trainee, $sort='meet_sort_servingone-asc')
   $res = db_query("SELECT ff.*, m.name
     FROM ftt_fellowship AS ff
     LEFT JOIN member m ON m.key = ff.serving_one
-    WHERE ff.trainee = '{$trainee}'
+    WHERE ff.trainee = '{$trainee}' AND ff.date >= CURDATE()
     ORDER BY {$order_by}");
   while ($row = $res->fetch_assoc()) $result[] = $row;
   return $result;

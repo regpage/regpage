@@ -2,13 +2,14 @@
 $(document).ready(function(){
   /*** FELLOWSHIP TAB START ***/
   $("#meet_add").click(function () {
-    if ($("#meet_serving_ones_list_calendar") !== '_all_') {
+    if ($("#meet_serving_ones_list_calendar").val() !== '_all_') {
+      // это не возможно тк при закрытии бланка раздел перезагружается
       get_records_cal($("#meet_serving_ones_list_calendar").val());
     } else if (trainee_list_full[window.adminId]["male"] === "1" && trainee_access === "1") {
-      get_communication_list("pvom_br");
+      //get_communication_list("pvom_br");
       get_records_cal("pvom_br");
     } else {
-      get_communication_list("_all_");
+      //get_communication_list("_all_");
       get_records_cal("_all_");
     }
   });
@@ -22,7 +23,9 @@ $(document).ready(function(){
       calendar(commits.result);
     });
   }
-
+  $("#meet_serving_ones_list_calendar").change(function () {
+    get_records_cal($("#meet_serving_ones_list_calendar").val());
+  });
   // страрый вариант получаем данные
   /*
   function get_communication_list(pvom_br) {

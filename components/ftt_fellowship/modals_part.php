@@ -88,7 +88,7 @@
           </div>
           <div class="row mb-2">
             <div class="col">
-              <textarea id="mdl_meet_comment_trainee" class="form-control form-control-sm" rows="4" placeholder="Комментарий обучающегося" style="width: 100%;"></textarea>
+              <textarea id="mdl_meet_comment_trainee" class="form-control form-control-sm" rows="4" placeholder="Комментарий" style="width: 100%;"></textarea>
             </div>
           </div>
           <!--<div class="row mb-2">
@@ -105,7 +105,7 @@
       </div>
       <div class="modal-footer">
         <div class="text-right w-100">
-          <button id="mdl_btn_meet_ok" class="btn btn-sm btn-success">Записать</button>
+          <button id="mdl_btn_meet_ok" class="btn btn-sm btn-success">Сохранить</button>
           <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Отмена</button>
         </div>
       </div>
