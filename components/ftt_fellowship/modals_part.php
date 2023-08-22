@@ -96,15 +96,11 @@
               <textarea id="mdl_meet_comment_serving_one" class="form-control form-control-sm" rows="4" placeholder="Комментарий служащего" style="width: 100%;"></textarea>
             </div>
           </div>-->
-          <div class="row mb-2">
-            <div class="col">
-              <label for="meet_cancel"><input id="meet_cancel" type="checkbox" class=""> Общение отменено</label>
-            </div>
-          </div>
         </div>
       </div>
       <div class="modal-footer">
         <div class="text-right w-100">
+          <button id="meet_cancel" class="btn btn-sm btn-danger float-left">Отменить</button>
           <button id="mdl_btn_meet_ok" class="btn btn-sm btn-success">Сохранить</button>
           <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Отмена</button>
         </div>

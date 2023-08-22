@@ -1,6 +1,6 @@
 <?php
 // COMMUNICATION
-function get_communication_list($serving_ones = '_all_', $sort='meet_sort_servingone-asc', $canceled=0)
+function get_communication_list($serving_ones = '_all_', $sort='meet_sort_servingone-asc')
 {
   // # для братьев не выводятся служащие сёстры
   // # Уточнить список КБК !!! служащие пвом и братья из КБК (как определить братьев из КБК.)
@@ -14,7 +14,6 @@ function get_communication_list($serving_ones = '_all_', $sort='meet_sort_servin
 
   global $db;
   $serving_ones = $db->real_escape_string($serving_ones);
-  $canceled = $db->real_escape_string($canceled);
   $sort = $db->real_escape_string($sort);
 
   // Сортировка
@@ -65,13 +64,8 @@ function get_communication_list($serving_ones = '_all_', $sort='meet_sort_servin
     $serving_ones_condition = ' AND ' . '(' . $serving_ones_condition . ')';
   }
 
-  // трэш
-  $trash = "";
-  if ($canceled === '1') {
-    $trash = ' AND ff.cancel = 1 ';
-  }
-
-  $condition = $order_period . $serving_ones_condition . $trash;
+  // condition
+  $condition = $order_period . $serving_ones_condition;
 
   // запрос
   $result = [];
@@ -218,10 +212,20 @@ function set_meet_staff_blank($data)
   $duration = $db->real_escape_string($data->duration);
   $comment_train = $db->real_escape_string($data->comment_train);
   $comment_serv = $db->real_escape_string($data->comment_serv);
-  $cancel = $db->real_escape_string($data->cancel);
 
   $res = db_query("UPDATE `ftt_fellowship`
-    SET `serving_one`='$serving_one', `trainee`= '$trainee', `date`='$date', `time`='$time', `duration`='$duration', `comment_train`='$comment_train', `comment_serv`='$comment_serv', `cancel`='$cancel', `changed`= 1
+    SET `serving_one`='$serving_one', `trainee`= '$trainee', `date`='$date', `time`='$time', `duration`='$duration', `comment_train`='$comment_train', `comment_serv`='$comment_serv', `changed`= 1
+    WHERE `id` = '$id'");
+   return $res;
+}
+
+function cancel_communication_record($id)
+{
+  global $db;
+  $id = $db->real_escape_string($id);
+
+  $res = db_query("UPDATE `ftt_fellowship`
+    SET `trainee`= '', `comment_train`='', `comment_serv`='', `cancel` = 1, `changed`= 1
     WHERE `id` = '$id'");
    return $res;
 }

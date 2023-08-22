@@ -13,13 +13,18 @@ $adminId = db_getMemberIdBySessionId (session_id());
 // COMMUNICATION
 // get list
 if (isset($_GET['type']) && $_GET['type'] === 'get_communication_list') {
-  echo json_encode(["result"=>get_communication_list($_GET['serving_ones'], $_GET['sort'], $_GET['canceled'])]);
+  echo json_encode(["result"=>get_communication_list($_GET['serving_ones'], $_GET['sort'])]);
   exit();
 }
 
 // set record
 if (isset($_GET['type']) && $_GET['type'] === 'set_communication_record') {
   echo json_encode(["result"=>set_communication_record($_GET['trainee'], $_GET['id'], $_GET['checked'], $_GET['date'], $_GET['time_from'], $_GET['time_to'])]);
+  exit();
+}
+
+if (isset($_GET['type']) && $_GET['type'] === 'cancel_communication_record') {
+  echo json_encode(["result"=>cancel_communication_record($_GET['id'])]);
   exit();
 }
 

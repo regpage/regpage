@@ -64,6 +64,10 @@ td.normal {
   background-color: lightgreen;
 }
 
+.record_not_available {
+  background-color: lightgrey;
+}
+
 #btnPrev {
   float: left;
   margin-bottom: 20px;

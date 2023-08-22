@@ -90,8 +90,8 @@ if (isset($_COOKIE['meet_flt_trainee']) && !empty($_COOKIE['meet_flt_trainee']))
     <div class="col-1 text_blue"><b id="meet_sort_date" class="cursor-pointer">Дата<i class="<?php echo $meet_sort_date_ico; ?>"></i></b></div>
     <div class="col-1 text_blue"><b id="meet_sort_time" class="cursor-pointer">Время<i class="<?php echo $meet_sort_time_ico; ?>"></i></b></div>
     <div class="col-1"><b>Продолж</b></div>
-    <div class="col-2 text_blue"><b id="meet_sort_servingone" class="cursor-pointer">Служащий<i class="<?php echo $meet_sort_s_one_ico; ?>"></i></b></div>
     <div class="col-2 text_blue"><b id="meet_sort_trainee" class="cursor-pointer">Обучающийся<i class="<?php echo $meet_sort_trainee_ico; ?>"></i></b></div>
+    <div class="col-2 text_blue"><b id="meet_sort_servingone" class="cursor-pointer">Служащий<i class="<?php echo $meet_sort_s_one_ico; ?>"></i></b></div>
     <div class="col-5"><b>Комментарий</b></div>
   </div>
   <hr style="margin-left: -15px; margin-right: -15px; margin-top: 0px; margin-bottom: 0px; border-color: lightgray;">
@@ -102,21 +102,22 @@ if (isset($_COOKIE['meet_flt_trainee']) && !empty($_COOKIE['meet_flt_trainee']))
     if (empty($value['trainee'])) {
       $bg_empty = 'bg-warning';
     }
-    if ($value['cancel']) {
+    /*if ($value['cancel']) {
       $bg_empty = 'bg-danger';
-    }
+    }*/
     $date = date_convert::yyyymmdd_to_ddmm($value['date']);
+    $day_of_week = date_convert::week_days($value['date'], true);
     $comment_short = CutString::cut($value['comment_serv']);
     $comment_short_trainee = CutString::cut($value['comment_train']);
     echo "<div class='row str_record_staff {$bg_empty}' ";
     echo "data-id='{$value['id']}' data-serving_one='{$value['serving_one']}' data-trainee='{$value['trainee']}' ";
     echo "data-date='{$value['date']}' data-time='{$value['time']}' data-duration='{$value['duration']}' ";
     echo "data-comment_train='{$value['comment_train']}' data-comment_serv='{$value['comment_serv']}' data-cancel='{$value['cancel']}'>";
-    echo "<div class='col-1'>{$date}</div>";
+    echo "<div class='col-1'>{$date} {$day_of_week}</div>";
     echo "<div class='col-1'>{$value['time']}</div>";
     echo "<div class='col-1'>{$value['duration']}</div>";
-    echo "<div class='col-2'>{$serving_ones_list[$value['serving_one']]}</div>";
     echo "<div class='col-2'>{$trainee_list[$value['trainee']]}<br><span class='grey_text'>{$serving_ones_list[$trainee_serving_one[$value['trainee']]]}</span></div>";
+    echo "<div class='col-2'>{$serving_ones_list[$value['serving_one']]}</div>";
     echo "<div class='col-5'>{$comment_short_trainee}</div>"; //<br><span class='grey_text'>{$comment_short}</span>
     echo "</div>";
   }

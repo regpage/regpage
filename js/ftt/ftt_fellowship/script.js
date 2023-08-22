@@ -16,7 +16,7 @@ $(document).ready(function(){
 
   // получаем данные
   function get_records_cal(pvom_br) {
-    fetch("ajax/ftt_fellowship_ajax.php?type=get_communication_list&serving_ones="+pvom_br+"&sort=meet_sort_servingone-asc&canceled=0")
+    fetch("ajax/ftt_fellowship_ajax.php?type=get_communication_list&serving_ones="+pvom_br+"&sort=meet_sort_servingone-asc")
     .then(response => response.json())
     .then(commits => {
       console.log(commits.result);
@@ -246,17 +246,7 @@ $(document).ready(function(){
   });
 
   $("#undo_meet_blank").click(function () {
-    fetch("ajax/ftt_fellowship_ajax.php?type=set_communication_record&trainee="
-    + "&id="
-    + $("#edit_meet_blank_record").attr("data-id")
-    + "&checked&date&time_from&time_to")
-    .then(response => response.json())
-    .then(commits => {
-      showHint("Запись успешно отменена");
-      setTimeout(function () {
-        location.reload();
-      }, 1500);
-    });
+    cancel_meet_blank($("#edit_meet_blank_record").attr("data-id"));
   });
 
   $("#edit_meet_blank").on("hide.bs.modal", function () {
@@ -305,7 +295,7 @@ $(document).ready(function(){
     }, 30);
   });
 
-  // meet staff
+  /***    MEET STAFF   ***/
   $(".str_record_staff").click(function () {
     $("#mdl_edit_fellowship_staff").modal("show");
     fill_meet_staff_blank($(this));
@@ -319,6 +309,26 @@ $(document).ready(function(){
     save_meet_staff_blank();
   });
 
+  $("#meet_cancel").click(function () {
+    if (confirm("Отменить запись на общение?")) {
+      cancel_meet_blank($("#mdl_edit_fellowship_staff").attr("data-id"));
+      setTimeout(function () {
+        $("#mdl_edit_fellowship_staff").modal("hide");
+      }, 750);
+    }
+  });
+
+  // cancel meet
+  function cancel_meet_blank(id) {
+    fetch("ajax/ftt_fellowship_ajax.php?type=cancel_communication_record&id=" + id)
+    .then(response => response.json())
+    .then(commits => {
+      showHint("Запись успешно отменена");
+      setTimeout(function () {
+        location.reload();
+      }, 1500);
+    });
+  }
   function fill_meet_staff_blank(elem) {
     // data
     $("#mdl_edit_fellowship_staff").attr("data-id", elem.attr("data-id"));
@@ -332,15 +342,11 @@ $(document).ready(function(){
     $("#mdl_meet_time").val(elem.attr("data-time"));
     $("#mdl_meet_comment_trainee").val(elem.attr("data-comment_train"));
     $("#mdl_meet_comment_serving_one").val(elem.attr("data-comment_serv"));
-    if (elem.attr("data-cancel") === "1") {
-      $("#meet_cancel").prop("checked", true);
-    }
   }
 
   function reset_meet_staff_blank(elem) {
     elem.attr("data-duration", "");
     elem.attr("data-cancel", "");
-    $("#meet_cancel").prop("checked", false);
     module_blank_clear(elem);
   }
 
@@ -355,11 +361,6 @@ $(document).ready(function(){
     data_temp["trainee"] = $("#mdl_meet_trainee_list").val();
     data_temp["comment_train"] = $("#mdl_meet_comment_trainee").val();
     data_temp["comment_serv"] = ""; //$("#mdl_meet_comment_serving_one").val()
-    if ($("#meet_cancel").prop("checked")) {
-      data_temp["cancel"] = 1;
-    } else {
-      data_temp["cancel"] = 0;
-    }
     console.log(data_temp);
     data.set("data", JSON.stringify(data_temp));
 
@@ -495,9 +496,10 @@ $(document).ready(function(){
         let chk = new Date();
         let chkY = chk.getFullYear();
         let chkM = chk.getMonth();
-        if (chkY == this.currYear && chkM == this.currMonth && i == this.currDay) {
-          let record_available = "";
-          let date_record = chkY + '-' + (chkM < 10 ? '0' + String(chkM+1) : chkM)  + '-' + i;
+        if (chkY == y && chkM == m && i == this.currDay) { //this.currMonth
+          let record_available = "", not_available = "";
+          let date_record = chkY + '-' + (m < 10 ? '0' + String(m+1) : m)  + '-' + i;
+          let sim = "";
           // проверка, добавление класса
           for (let variable in records) {
             if (records.hasOwnProperty(variable)) {
@@ -509,20 +511,28 @@ $(document).ready(function(){
               for (let variable_1 in value_records) {
                 if (value_records.hasOwnProperty(variable_1)) {
                   let value_record = value_records[variable_1];
-                  if (value_record["date"] === date_record) {
-                    record_available = "record_available";
-                    break;
+                  //console.log(value_record["trainee"]);
+                  if (value_record["date"] === date_record) { // && value_record["trainee"] != ""
+                    if (!value_record["trainee"] || value_record["trainee"] === window.adminId) {
+                      record_available = "record_available";
+                      break;
+                    } else {
+                      sim = 1
+                    }
                   }
                 }
               }
             }
           }
-
+          if (!record_available && sim) {
+            record_available = "record_not_available";
+          }
           html += '<td class="today ' + record_available + '" data-date="' + date_record + '">' + i + '</td>';
         } else {
           // проверка, добавление класса
           let record_available = "", day_date = i;
-          let date_record = chkY + '-' + (chkM < 10 ? '0' + String(chkM+1) : chkM)  + '-' + (i < 10 ? '0' + String(day_date) : day_date);
+          let date_record = y + '-' + (m < 10 ? '0' + String(m+1) : m)  + '-' + (i < 10 ? '0' + String(day_date) : day_date);
+          let sim = "";
           for (let variable in records) {
             if (records.hasOwnProperty(variable)) {
               let value_records = records[variable];
@@ -530,12 +540,19 @@ $(document).ready(function(){
                 if (value_records.hasOwnProperty(variable_1)) {
                   let value_record = value_records[variable_1];
                   if (value_record["date"] === date_record) {
-                    record_available = "record_available";
-                    break;
+                    if (!value_record["trainee"] || value_record["trainee"] === window.adminId) {
+                      record_available = "record_available";
+                      break;
+                    } else {
+                      sim = 1
+                    }
                   }
                 }
               }
             }
+          }
+          if (!record_available && sim) {
+            record_available = "record_not_available";
           }
           html += '<td class="normal ' + record_available + '" data-date="' + date_record + '">' + i + '</td>';
         }
@@ -557,6 +574,91 @@ $(document).ready(function(){
       html += '</table>';
       // Записываем HTML в div
       document.getElementById(this.divId).innerHTML = html;
+      // open time list
+      $(".normal, .today").click(function () {
+        if (!$(this).hasClass("record_available")) {
+          return;
+        }
+        let html_checkboxes = "", first = 1;
+        // рендерим время
+        for (let variable in records) {
+          if (records.hasOwnProperty(variable)) {
+            let value_records = records[variable];
+            let str_id = value_records.find(str => str.date === $(this).attr("data-date"));
+            if (str_id !== undefined) {
+              if (first) {
+                html_checkboxes = '<div class="mb-2"><strong class="pt-2 pb-2">' + dateStrFromyyyymmddToddmm($(this).attr("data-date")) + '</strong><br>';
+                html_checkboxes += '<strong class="pb-2">' + serving_ones_list[variable] + '</strong></div>';
+              } else {
+                html_checkboxes += '<div class="mt-3 mb-2"><strong class="pb-2">' + serving_ones_list[variable] + '</strong></div>';
+              }
+              first = 0;
+            }
+
+            for (let variable_1 in value_records) {
+              if (value_records.hasOwnProperty(variable_1)) {
+                let value_record = value_records[variable_1];
+                if (value_record["date"] === $(this).attr("data-date")) {
+                  let disabled = "", checked = "", hidden = "display: none !important;";
+                  if (value_record["trainee"] && value_record["trainee"] === window.adminId) {
+                    checked = "checked";
+                    hidden = "";
+                  } else if (value_record["trainee"]) {
+                    disabled = "disabled";
+                    checked = "checked";
+                  }
+                  html_checkboxes += '<div class="mb-2"><label class="d-inline-block font-weight-normal pt-2 pb-2" for="checkbox_time_' + value_record["id"] + '" style="vertical-align: -middle; width: 105px;">' + value_record["time"]
+                  + " — " + time_plus_minutes(value_record["time"], value_record["duration"])
+                  + '</label><input id="checkbox_time_' + value_record["id"] + '" type="checkbox" class="pl-2 pb-2 meet_checked ml-2 mr-3" data-id="' + value_record["id"]
+                  + '" data-from="' + value_record["time"] + '" data-to="' + time_plus_minutes(value_record["time"], value_record["duration"])
+                  + '" data-date="'+value_record["date"]+'" style="vertical-align: middle;" ' + checked + ' ' + disabled
+                  + '><input type="text" class="meet_comment_trainee_time form-control form-control-sm d-inline-block" value="'
+                  + value_record["comment_train"] + '" style="max-width: 67%; vertical-align: middle; ' + hidden + '"></div>';
+                }
+              }
+            }
+          }
+        }
+        $("#list_possible_records").html(html_checkboxes);
+        // Сохраняем значение
+        $(".meet_checked").change(function () { // + kbk
+          let trainee = window.adminId;
+          let checked_time = 0;
+          if ($(this).prop("checked")) {
+            checked_time = 1;
+            if (!$(this).next().hasClass("d-inline-block")) {
+              $(this).next().addClass("d-inline-block");
+            }
+            $(this).next().show();
+          } else {
+            $(this).next().removeClass("d-inline-block");
+            $(this).next().hide();
+            $(this).next().val("");
+          }
+          fetch("ajax/ftt_fellowship_ajax.php?type=set_communication_record&id="
+          + $(this).attr("data-id") + "&trainee=" + trainee + "&checked=" + checked_time + "&time_from=" + $(this).attr("data-from") + "&time_to=" + $(this).attr("data-to") + "&date=" + $(this).attr("data-date"))
+          .then(response => response.json())
+          .then(commits => {
+            if ($(this).prop("checked")) {
+              if (commits.result !== true) {
+                let check_error = commits.result.split("_");
+                if (check_error[0] === "error" && check_error[1] === "busy") {
+                  showError("К сожалению это время уже занято.");
+                } else if (check_error[0] === "error" && check_error[1] === "intersection") {
+                  showError("На это время и дату уже назначена встреча с " + serving_ones_list[String(check_error[2])] + ". Запись не сохранена.");
+                }
+                $(this).prop("checked", false);
+              } else {
+                showHint("Запись на общение сохранена.");
+              }
+            } else {
+              showHint("Запись на общение отменена.");
+            }
+          });
+        });
+        // открываем окно
+        $("#mdl_meet_trainee_to_record").modal("show");
+      });
     };
 
     // Начать календарь
@@ -574,94 +676,6 @@ $(document).ready(function(){
     function getId(id) {
       return document.getElementById(id);
     }
-
-    // open time list
-    $(".normal, .today").click(function () {
-      if (!$(this).hasClass("record_available")) {
-        return;
-      }
-      let html_checkboxes = "", first = 1;
-      // рендерим время
-      for (let variable in records) {
-        if (records.hasOwnProperty(variable)) {
-          let value_records = records[variable];
-          let str_id = value_records.find(str => str.date === $(this).attr("data-date"));
-          if (str_id !== undefined) {
-            if (first) {
-              html_checkboxes = '<div class="mb-2"><strong class="pt-2 pb-2">' + dateStrFromyyyymmddToddmm($(this).attr("data-date")) + '</strong><br>';
-              html_checkboxes += '<strong class="pb-2">' + serving_ones_list[variable] + '</strong></div>';
-            } else {
-              html_checkboxes += '<div class="mt-3 mb-2"><strong class="pb-2">' + serving_ones_list[variable] + '</strong></div>';
-            }
-            first = 0;
-          }
-
-          for (let variable_1 in value_records) {
-            if (value_records.hasOwnProperty(variable_1)) {
-              let value_record = value_records[variable_1];
-              if (value_record["date"] === $(this).attr("data-date")) {
-                let disabled = "", checked = "", hidden = "display: none !important;";
-                if (value_record["trainee"] && value_record["trainee"] === window.adminId) {
-                  checked = "checked";
-                  hidden = "";
-                } else if (value_record["trainee"]) {
-                  disabled = "disabled";
-                  checked = "checked";
-                }
-                html_checkboxes += '<div class="mb-2"><label class="d-inline-block font-weight-normal pt-2 pb-2" for="checkbox_time_' + value_record["id"] + '" style="vertical-align: -middle; width: 105px;">' + value_record["time"]
-                + " — " + time_plus_minutes(value_record["time"], value_record["duration"])
-                + '</label><input id="checkbox_time_' + value_record["id"] + '" type="checkbox" class="pl-2 pb-2 meet_checked ml-2 mr-3" data-id="' + value_record["id"]
-                + '" data-from="' + value_record["time"] + '" data-to="' + time_plus_minutes(value_record["time"], value_record["duration"])
-                + '" data-date="'+value_record["date"]+'" style="vertical-align: middle;" ' + checked + ' ' + disabled
-                + '><input type="text" class="meet_comment_trainee_time form-control form-control-sm d-inline-block" value="'
-                + value_record["comment_train"] + '" style="max-width: 67%; vertical-align: middle; ' + hidden + '"></div>';
-              }
-            }
-          }
-        }
-      }
-      $("#list_possible_records").html(html_checkboxes);
-      // Сохраняем значение
-      $(".meet_checked").change(function () { // + kbk
-        console.log("I an here");
-        let trainee = window.adminId;
-        let checked_time = 0;
-        if ($(this).prop("checked")) {
-          checked_time = 1;
-          if (!$(this).next().hasClass("d-inline-block")) {
-            $(this).next().addClass("d-inline-block");
-          }
-          $(this).next().show();
-        } else {
-          $(this).next().removeClass("d-inline-block");
-          $(this).next().hide();
-          $(this).next().val("");
-        }
-        fetch("ajax/ftt_fellowship_ajax.php?type=set_communication_record&id="
-        + $(this).attr("data-id") + "&trainee=" + trainee + "&checked=" + checked_time + "&time_from=" + $(this).attr("data-from") + "&time_to=" + $(this).attr("data-to") + "&date=" + $(this).attr("data-date"))
-        .then(response => response.json())
-        .then(commits => {
-          if ($(this).prop("checked")) {
-            if (commits.result !== true) {
-              let check_error = commits.result.split("_");
-              if (check_error[0] === "error" && check_error[1] === "busy") {
-                showError("К сожалению это время уже занято.");
-              } else if (check_error[0] === "error" && check_error[1] === "intersection") {
-                showError("На это время и дату уже назначена встреча с " + serving_ones_list[String(check_error[2])] + ". Запись не сохранена.");
-              }
-              $(this).prop("checked", false);
-            } else {
-              showHint("Запись на общение сохранена.");
-            }
-          } else {
-            showHint("Запись на общение отменена.");
-          }
-        });
-      });
-      // открываем окно
-      $("#mdl_meet_trainee_to_record").modal("show");
-    });
-
   }
 
   /*** FELLOWSHIP TAB STOP ***/
