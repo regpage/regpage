@@ -178,6 +178,7 @@ else if (isset ($_SESSION["logged-in"])){
                 <!--<span><a class="ftt_menu_a" href="ftt_absence">Отсутствие</a></span>-->
                 <span><a class="ftt_menu_a" href="/ftt_extrahelp">Доп. задания<?php echo "<sup style='color: red;'><b> {$extra_help_count}</b></sup>"; ?></a></span>
               <?php if ($ftt_access['group'] === 'staff') { ?>
+                <span><a class="ftt_menu_a" href="/ftt_reading">Чтение</a></span>
                 <span><a class="ftt_menu_a" href="/ftt_application">Заявления<?php echo "<sup style='color: red;'><b> {$requests_stat_count_main}</b></sup>"; ?></a></span>
               <?php }?>
               </p>

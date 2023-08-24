@@ -9,19 +9,19 @@
     include_once "components/ftt_main/var_part.php";
 
     // Переменные раздела
-    include_once "components/???/var_part.php";
+    include_once "components/ftt_reading/var_part.php";
 
     // Подключение раздела, HTML код страницы
     include_once "components/ftt_main/html_part_refactoring.php";
 
     // HTML модальные окна основной страницы
-    include_once "components/???/modals_part.php";
+    include_once "components/ftt_reading/modals_part.php";
 
     // JS общие скрипты
     include_once "components/ftt_main/js_main.php";
 
     // JS скрипты раздела
-    include_once "components/???/js_part.php";
+    include_once "components/ftt_reading/js_part.php";
 
     include_once "footer2.php";
 ?>

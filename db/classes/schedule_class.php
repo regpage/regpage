@@ -7,6 +7,13 @@
  * ДОБАвить безопастность db()
  */
 // УЧИТЫВАТЬ ПРЕД ОТМЕНЁННЫЕ МЕРОПРИЯТИЯ
+// Классы. Конвертация дат Не ПОДКЛЮЧАЕТСЯ!
+if (isset($GLOBALS['global_root_path'])) {
+  include_once $GLOBALS['global_root_path'].'db/classes/ftt_param.php';
+} else {
+  include_once __DIR__.'/../classes/ftt_param.php';
+}
+
 class schedule_class {
 
   // Расписание по дням
@@ -58,8 +65,8 @@ class schedule_class {
     }
 
     // это можно вынести в переменные раздела
-    $ftt_attendance_start = getValueFttParamByName('attendance_start');
-    $ftt_attendance_end = getValueFttParamByName('attendance_end');
+    $ftt_attendance_start = fttParam::get('attendance_start');
+    $ftt_attendance_end = fttParam::get('attendance_end');
     $ftt_attendance_start = strtotime($ftt_attendance_start);
     $ftt_attendance_end = strtotime($ftt_attendance_end);
 

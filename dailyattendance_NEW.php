@@ -1,12 +1,12 @@
 <?php
 //Автоматическое добавление строк для учёта практик (practices) выполняется по заданию (cron)
 // строку ниже заменить на config.php
-// Вывод ошибок на экран
+ // Вывод ошибок на экран
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+error_reporting(E_ALL);/**/
 include_once 'config.php';
-//include_once 'logWriter.php'; не включать!
+include_once 'logWriter.php';
 include_once 'db/classes/schedule_class.php';
 include_once 'db/classes/date_convert.php';
 include_once 'db/classes/ftt_info.php';
@@ -14,37 +14,55 @@ include_once 'db/classes/ftt_permissions.php';
 include_once 'db/classes/ftt_attendance/bible.php';
 
 function db_newDailyAttendance () {
-  global $db;
+  echo "Start<br>";
   // Проверяем даты семестра
   // Проверяем что расписание не выходит за период обучения
-  if (ftt_info::pause()) {
+
+/*  if (ftt_info::pause()) {
     echo "Вне периода проведения обучения";
     exit();
-  }
-
+  }*/
   // получаем разрешения на сегодня (permissions)
   $todayDate = date("Y-m-d");
   $permissions = FttPermissions::get_by_date($todayDate);
   $bibleBooks = new Bible;
 
 
-  // получаем правила
+  echo "<br>Step 1<br>";
+  echo "$todayDate<br>";
+
+
+  // step 1 получаем правила
   $rules = [];
   $res_rules = db_query("SELECT `member_key`, `pause_start`, `pause_stop`
     FROM  ftt_trainee
     WHERE (`pause_start` <= NOW() AND `pause_stop` >= NOW()) OR (`pause_start` <= NOW() AND `pause_stop` IS NULL)");
   while ($row = $res_rules->fetch_assoc()) $rules[$row['member_key']]=[$row['start'], $row['stop']];
 
-  // получаем изменения в расписании
+
+  echo "<br>Step 2<br>";
+  print_r($rules);
+  echo "<br>";
+
+
+  // step 2 получаем изменения в расписании
   $correction = [];
   $res_correction = db_query("SELECT * FROM ftt_session_correction WHERE (`date` > (NOW() - INTERVAL 1 DAY)) AND (`date` < (NOW() + INTERVAL 1 DAY))"); // AND `attendance` = 1
   while ($row = $res_correction->fetch_assoc()) $correction[] = $row;
+  // step 3
 
+
+  echo "<br>Step 3<br>";
+  print_r($correction);
+  echo "<br>";
+
+echo "<br>Step 3.1<br>";
   //получаем расписание
   $schedule_001 = schedule_class::get('all','all');
   //$schedule_002 = schedule_class::get('2','02');
 
-  // формируем расписание на сегодня
+  print_r($schedule_001);
+  echo "<br>";
   //logFileWriter(false, 'ПВОМ ПОСЕЩАЕМОСТЬ. Автоматическое добавление строк учёта посещаемости.', 'WARNING');
   $number_day_now = date('N');
   $day_today_now = 'day'.$number_day_now;
@@ -53,7 +71,12 @@ function db_newDailyAttendance () {
   $res=db_query("SELECT `member_key`, `semester`, `time_zone`, `pause_start`, `pause_stop` FROM ftt_trainee");
   while ($row = $res->fetch_assoc()) $result[]=$row;
 
-  // проверяем, возможно бланки на сегодня для кого то уже созданы
+
+  echo "<br>Step 4<br>";
+  print_r($result);
+  echo "<br>";
+
+
   $result_2 = array();
   foreach ($result as $key){
     // Можно добавить на все зоны и все семестры сразу а потом отфильтровывать что бы каждый раз не запрашивать, или приготовить расписание для каждой группы
@@ -61,6 +84,10 @@ function db_newDailyAttendance () {
     $res_2=db_query ("SELECT `member_key` FROM ftt_attendance_sheet WHERE `member_key` = '$mem_id' AND `date` = '$currentDate'");
     while ($rows = $res_2->fetch_assoc()) $result_2[]=$rows['member_key'];
   }
+
+  echo "<br>Step 5<br>";
+  print_r($result_2);
+  echo "<br>";
 
   foreach ($result as $aa){
     $correction_stop = false;
@@ -75,13 +102,13 @@ function db_newDailyAttendance () {
       $max_id;
 
       // **__** ADD BIBLE READING
-      // добавляем книги библии
+      /*
       $prev_reading = [];
       $nextReading_ot;
       $nextReading_nt;
       $bible_chapter_ot;
       $bible_chapter_nt;
-      $res_bible=db_query("SELECT `book_ot`, `chapter_ot`, `book_nt`, `chapter_nt` FROM `ftt_bible` WHERE `member_key` = '{$aa['member_key']}' AND `date` = (NOW() - INTERVAL 1 DAY) AND `start` != 1");
+      $res_bible=db_query("SELECT `book_ot`, `chapter_ot`, `book_nt`, `chapter_nt` FROM ftt_bible WHERE `member_key` = '{$aa['member_key']}' AND `date` = (CURDATE() - INTERVAL 1 DAY AND `start` != 1)");
       while ($rows = $res_bible->fetch_assoc()) $prev_reading=[$rows['book_ot'], $rows['chapter_ot'], $rows['book_nt'], $rows['chapter_nt']];
 
       // что если бланк не сдан? И глава не заполнена?
@@ -104,8 +131,6 @@ function db_newDailyAttendance () {
           $bible_chapter_nt = '';
         }
       } else {
-        $sim_1 = 0;
-        $sim_2 = 0;
         $res_bible=db_query("SELECT * FROM ftt_bible WHERE `member_key` = '{$aa['member_key']}' AND `start` = 1 ORDER BY `date` DESC");
         while ($rows = $res_bible->fetch_assoc()) {
           if (isset($rows['book_ot']) && isset($rows['chapter_ot']) && !empty($rows['book_ot']) && !empty($rows['chapter_ot'])
@@ -138,7 +163,6 @@ function db_newDailyAttendance () {
             $sim_2 = 1;
           }
         }
-
         if (count($prev_reading) > 0) {
           $bible_book_ot = $prev_reading[0];
           $bible_chapter_ot = $prev_reading[1];
@@ -151,10 +175,9 @@ function db_newDailyAttendance () {
           $bible_chapter_nt = '';
         }
       }
-
+*/
       // **__** ADD NEW SHEET
-      // добавляем новый лист посещаемости
-      $id_new_string_block = db_query("LOCK TABLES ftt_attendance_sheet WRITE");
+      //$id_new_string_block = db_query("LOCK TABLES ftt_attendance_sheet WRITE");
       $id_new_string = db_query("INSERT INTO ftt_attendance_sheet (`date`, `member_key`) VALUES (NOW(), '$id_member')");
       // лучшие варианты получения ID
       if ($id_new_string) {
@@ -166,11 +189,12 @@ function db_newDailyAttendance () {
           while ($row = $max_id_tmp->fetch_assoc()) $max_id=$row['last_id'];
         }*/
       }
-      $id_new_string_block = db_query("UNLOCK TABLES;");
+      //$id_new_string_block = db_query("UNLOCK TABLES;");
 
       // **__** BIBLE READING INSERT
+      /*
       $bible_new_string = db_query("INSERT INTO `ftt_bible` (`date`, `member_key`, `book_ot`, `chapter_ot`, `book_nt`, `chapter_nt`) VALUES (CURDATE(), '$id_member', '$bible_book_ot', '$bible_chapter_ot', '$bible_book_nt', '$bible_chapter_nt')");
-
+*/
       // **__** PERMISSIONS
       // Проверяем наличие разрешений для пользователя (permissions)
       $has_permissions = false;
@@ -278,7 +302,7 @@ function db_newDailyAttendance () {
       }
     }
   }
-  //logFileWriter($id_member, 'ПВОМ ПОСЕЩАЕМОСТЬ. АВТОМАТИЧЕСКОЕ ОБСЛУЖИВАНИЕ СЕРВЕРА. Добавлена строка учёта посещаемости для данного пользователя.', 'WARNING');
+  logFileWriter($id_member, 'ПВОМ ПОСЕЩАЕМОСТЬ. АВТОМАТИЧЕСКОЕ ОБСЛУЖИВАНИЕ СЕРВЕРА. Добавлена строка учёта посещаемости для данного пользователя.', 'WARNING');
     }
   }
 }
