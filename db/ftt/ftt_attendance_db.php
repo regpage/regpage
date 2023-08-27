@@ -568,3 +568,31 @@ function get_permission_archive($sheet_id)
   while ($row = $res->fetch_assoc()) $result = $row['archive_sessions'];
   return $result;
 }
+
+/* bible reading*/
+function get_bible_data($member_key, $date)
+{
+  global $db;
+  $member_key = $db->real_escape_string($member_key);
+  $date = $db->real_escape_string($date);
+  $result = [];
+
+  $res = db_query("SELECT DISTINCT * FROM ftt_bible WHERE `member_key` = '{$member_key}' AND `date` = {$date} ORDER BY `id` DESC");
+  while ($row = $res->fetch_assoc()) $result[] = $row;
+
+  if (count($result) > 0) {
+    $res = db_query("SELECT DISTINCT * FROM ftt_bible WHERE `member_key` = '{$member_key}' AND `date` = {$date} - INTERVAL 1 DAY ORDER BY `id` DESC");
+    while ($row = $res->fetch_assoc()) $result[] = $row;
+  }
+
+  if (count($result) === 0) {
+    $res = db_query("SELECT DISTINCT * FROM ftt_bible WHERE `member_key` = '{$member_key}' AND `start` = 1 ORDER BY `id` DESC");
+    while ($row = $res->fetch_assoc()) $result = $row;
+  }
+
+  if (count($result) === 0) {
+    $result = 0;
+  }
+
+  return $result;
+}

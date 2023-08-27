@@ -63,39 +63,45 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
               <div class="col-12">
                 <h6 class="hide_element">Чтение Библии</h6>
                 <div class="input-group mb-3">
-                  <span class="mt-2 name_session">Чтение Библии</span>
-                  <input type="number" id="bible_reading" class="form-control practice_field short_number_field text-right" data-field="bible_reading" value="" min="0" max="30" style="font-size: 14px; max-width: 95px !important;">
+                  <span class="align-self-center name_session">Чтение Библии</span>
+                  <!--<input type="number" id="bible_reading" class="form-control practice_field short_number_field text-right" data-field="bible_reading" value="" min="0" max="30" style="font-size: 14px; max-width: 95px !important;">
                   <span class="align-self-center pl-2 mt-2">мин. (<?php if ($ftt_access['group'] === 'staff' || (isset($trainee_data['semester']) && $trainee_data['semester'] < 5)) { ?>15
                     <?php } else { ?>
                       30
                     <?php } ?>
                     мин. в день)
-                    <br>
-                  <span>Название книг Библии</span>
-                  <br>
-                  <select id="bible_book" class="" data-field="bible_book">
+                    <br>-->
+
+                  <!--<span>Название книг Библии</span>
+                  <br>-->
+                  <select id="bible_book_nt" class="mr-3" data-field="bible_book">
+                    <option value="0">Нет
                     <?php
                     $bible_books = $bible_obj->get();
                     foreach ($bible_books as $key => $value) {
-                      if ($value[0] === 'Мф.') {
-                        echo "<option disabled>----------";
+                      if ($key > 38) {
+                        for ($i=1; $i <= $value[1]; $i++) {
+                            echo "<option value='{$i}' data-book='{$value[0]}' data-chapter='{$i}'>{$value[0]} {$i}";
+                        }
                       }
-                      echo "<option value='{$value[0]}'>{$value[0]}";
                     }
                     ?>
                   </select>
-                  <br>
-                  <span>глава</span>
-                  <br>
-                  <select id="bible_chapter" class="" data-field="bible_chapter">
-                    <?php
-                    for ($i=1; $i <= $bible_books[0][1]; $i++) {
-                      echo "<option value='{$i}'>{$i}";
-                    }
-                    ?>
+                  <select id="bible_book_ot" class="" data-field="bible_ot">
+                    <option value="0">Нет
+                      <?php
+                      $bible_books = $bible_obj->get();
+                      foreach ($bible_books as $key => $value) {
+                        if ($key < 39) {
+                          for ($i=1; $i <= $value[1]; $i++) {
+                            echo "<option value='{$i}' data-book='{$value[0]}' data-chapter='{$i}'>{$value[0]} {$i}";
+                          }
+                        }
+                      }
+                      ?>
                   </select>
-                  </span>
-                  <button type="button" class="btn btn-warning btn-sm bible_statistic_btn" data-toggle="modal" data-target="#mdl_bible_statistic" style="height: 30px;">Статистика</button>
+                  <span id="set_start_reading" class="d-none">Задайте старт</span>
+                  <button type="button" class="bg-secondary text-light short_select_field rounded ml-5" data-toggle="modal" data-target="#mdl_bible_start">...</button>
                 </div>
               </div>
             </div>
@@ -165,31 +171,6 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
   </div>
 </div>
 
-<!-- Статистика чтения Библии -->
-<div class="modal fade" id="mdl_bible_statistic">
-  <div class="modal-dialog">
-    <div class="modal-content" style="width: 600px;">
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h5 class="modal-title">Статистика чтения Библии</h5>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-      <!-- Modal body -->
-      <div class="modal-body">
-        <div id="bible_statistic_list" class="container">
-          <canvas></canvas>
-        </div>
-        <div id="bible_statistic_list_dates" class="container">          
-          <canvas></canvas>
-        </div>
-      </div>
-      <!-- Modal footer -->
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Закрыть</button>
-      </div>
-    </div>
-  </div>
-</div>
-
+<?php include 'components/ftt_reading/modal_part_start.php'; ?>
 <?php include 'components/ftt_attendance/modal_permission.php'; ?>
 <?php include 'components/ftt_attendance/modal_skip.php'; ?>

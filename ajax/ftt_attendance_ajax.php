@@ -13,7 +13,7 @@ include_once '../db/classes/trainee_data.php';
 include_once '../db/classes/member.php';
 include_once '../db/classes/short_name.php';
 include_once '../db/classes/CutString.php';
-include_once '../db/classes/ftt_attendance/bible.php';
+include_once '../db/classes/ftt_reading/bible.php';
 include_once '../db/classes/statistic/biblereading.php';
 require_once '../db/classes/ftt_lists.php';
 
@@ -349,6 +349,11 @@ if (isset($_GET['type']) && $_GET['type'] === 'delete_skip') {
   // выполняем
   echo DbOperation::operation($db_data->get());
   exit();
+}
+
+// bible reading
+if (isset($_GET['type']) && $_GET['type'] === 'get_bible_data') {
+  echo json_encode(["result"=>get_bible_data($_GET['member_key'], $_GET['date'])]);
 }
 
 ?>

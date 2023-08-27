@@ -11,7 +11,7 @@ include_once 'db/classes/schedule_class.php';
 include_once 'db/classes/date_convert.php';
 include_once 'db/classes/ftt_info.php';
 include_once 'db/classes/ftt_permissions.php';
-include_once 'db/classes/ftt_attendance/bible.php';
+include_once 'db/classes/ftt_reading/bible.php';
 
 function db_newDailyAttendance () {
   global $db;
@@ -81,27 +81,41 @@ function db_newDailyAttendance () {
       $nextReading_nt;
       $bible_chapter_ot;
       $bible_chapter_nt;
-      $res_bible=db_query("SELECT `book_ot`, `chapter_ot`, `book_nt`, `chapter_nt` FROM `ftt_bible` WHERE `member_key` = '{$aa['member_key']}' AND `date` = (NOW() - INTERVAL 1 DAY) AND `start` != 1");
+      /*
+      // Был старт вчера?
+      $bible_start_check = [];
+      $bible_start=db_query("SELECT `book_ot`, `chapter_ot`, `book_nt`, `chapter_nt` FROM `ftt_bible` WHERE `member_key` = '{$aa['member_key']}' AND `date` = (CURDATE() - INTERVAL 1 DAY) AND `start` = 1");
+      while ($rowstart = $bible_start->fetch_assoc()) $bible_start_check=[$rows['book_ot'], $rows['chapter_ot'], $rows['book_nt'], $rows['chapter_nt']];
+      // Старт чего? ВЗ или НЗ? Что делать если старт НЗ был раньше а старт ВЗ позже, ИЛИ НЗ продолжается, а для ВЗ (который уже учитывается) добавляется новый старт
+      */
+      // получаем данные вчерашнего бланка
+      $res_bible=db_query("SELECT `book_ot`, `chapter_ot`, `book_nt`, `chapter_nt` FROM `ftt_bible` WHERE `member_key` = '{$aa['member_key']}' AND `date` = (CURDATE() - INTERVAL 1 DAY) AND `start` != 1");
       while ($rows = $res_bible->fetch_assoc()) $prev_reading=[$rows['book_ot'], $rows['chapter_ot'], $rows['book_nt'], $rows['chapter_nt']];
-
-      // что если бланк не сдан? И глава не заполнена?
-      if (isset($prev_reading[0]) && isset($prev_reading[1]) && !empty($prev_reading[0]) && !empty($prev_reading[1])) {
+      // ДОБАВИТЬ возможноть определять варанты ЧТЕНИЕ НЗ И СТАРТ ВЗ И НАОБОРОТ, ЕСЛИ НА ОДНО ЧИСЛО ЕСТЬ СТАРТ И ОТЧЁТ ТО ПРИ СОЗДАНИИ СЛЕДУЮЩЕГО БЛАНКА УЧИТЫВАЕТСЯ СТАРТ
+      if ((isset($prev_reading[0]) && isset($prev_reading[1]) && !empty($prev_reading[0]) && !empty($prev_reading[1]))
+      || (isset($prev_reading[2]) && isset($prev_reading[3]) && !empty($prev_reading[2])) && !empty($prev_reading[3])) {
         if (isset($prev_reading[0]) && !empty($prev_reading[0])) {
+          // СЛЕДУЮЩАЯ КНИГА ТОЛЬКО В ТОМ СЛУЧАЕ ЕСЛИ УКАЗАНА ПОСЛЕДНЯЯ ГЛАВА КНИГИ
           $nextReading_ot = $bibleBooks->nextChapter($prev_reading[0],$prev_reading[1]);
+          if ($nextReading_nt[0] !== $prev_reading[0]) {
+            $prev_reading[0] = $nextReading_nt[0];
+          }
         }
         if (isset($prev_reading[2]) && !empty($prev_reading[2])) {
+          // СЛЕДУЮЩАЯ КНИГА ТОЛЬКО В ТОМ СЛУЧАЕ ЕСЛИ УКАЗАНА ПОСЛЕДНЯЯ ГЛАВА КНИГИ
           $nextReading_nt = $bibleBooks->nextChapter($prev_reading[2],$prev_reading[3]);
+           if ($nextReading_nt[0] !== $prev_reading[2]) {
+             $prev_reading[2] = $nextReading_nt[0];
+           }
         }
 
-        echo "<br>{$nextReading[0]}<br>";
-        echo "<br>{$nextReading[1]}<br>";
         if (!empty($nextReading_ot)) {
-          $bible_book_ot = $nextReading_ot[0];
-          $bible_chapter_ot = '';
+          $bible_book_ot = $prev_reading[0];
+          $bible_chapter_ot = 0;
         }
         if (!empty($nextReading_nt)) {
-          $bible_book_nt = $nextReading_nt[0];
-          $bible_chapter_nt = '';
+          $bible_book_nt = $prev_reading[2];
+          $bible_chapter_nt = 0;
         }
       } else {
         $sim_1 = 0;
@@ -141,14 +155,14 @@ function db_newDailyAttendance () {
 
         if (count($prev_reading) > 0) {
           $bible_book_ot = $prev_reading[0];
-          $bible_chapter_ot = $prev_reading[1];
+          $bible_chapter_ot = 0; //$prev_reading[1]
           $bible_book_nt = $prev_reading[2];
-          $bible_chapter_nt = $prev_reading[3];
+          $bible_chapter_nt = 0; //$prev_reading[3]
         } else {
           $bible_book_ot = '';
-          $bible_chapter_ot = '';
+          $bible_chapter_ot = 0;
           $bible_book_nt = '';
-          $bible_chapter_nt = '';
+          $bible_chapter_nt = 0;
         }
       }
 

@@ -929,22 +929,55 @@ function open_blank(el_this) {
     $("#morning_revival").val(el_this.attr("data-morning_revival"));
     $("#personal_prayer").val(el_this.attr("data-personal_prayer"));
     $("#common_prayer").val(el_this.attr("data-common_prayer"));
-    $("#bible_reading").val(el_this.attr("data-bible_reading"));
+    //$("#bible_reading").val(el_this.attr("data-bible_reading"));
     $("#bible_book").val(el_this.attr("data-bible_book"));
     $("#bible_chapter").val(el_this.attr("data-bible_chapter"));
     $("#ministry_reading").val(el_this.attr("data-ministry_reading"));
     // книга и глава библии
     // bible
 
-    /*fetch("ajax/ftt_attendance_ajax.php?type=get_bible_data&member_key="
+    fetch("ajax/ftt_attendance_ajax.php?type=get_bible_data&member_key="
     + el_this.attr("data-member_key") + "&date=" + el_this.attr("data-date"))
     .then(response => response.json())
     .then(commits => {
-      if (commits.result) {
-        $("#bible_book").val(commits.result[0]);
-        $("#bible_chapter").val(commits.result[1]);
+      let reading_str = commits.result
+      if (reading_str === '0') {
+        // Нет старта и сегодняшней строки
+        $("#bible_book_ot").hide();
+        $("#bible_book_nt").hide();
+        $("#set_start_reading").show();
+        return;
       }
-    });*/
+      $("#set_start_reading").hide();
+      if (reading_str['bible_ot'] && reading_str['bible_nt']) {
+        $("#bible_book_ot").show();
+        $("#bible_book_nt").show();
+      }
+      if (reading_str['bible_ot']) {
+        $("#bible_book_ot").show();
+        $("#bible_book_nt").hide();
+      }
+      if (reading_str['bible_nt']) { //) && (reading_str['chaptr_ot'] || reading_str['chaptr_nt'])
+        $("#bible_book_ot").hide();
+        $("#bible_book_nt").show();
+        // Rendering select
+        // Скрываем не нужные книги, оставляем текущий + 10
+        // главу не заполняем
+        // value
+        $("#bible_book").val(reading_str[0]["bible_ot"] + " " + reading_str[0]["chaptr_ot"]);
+        $("#bible_chapter").val(reading_str[0]["bible_nt"] + " " + reading_str[0]["chaptr_nt"]);
+      }
+      /*else if (reading_str['bible_ot'] || reading_str['bible_nt']) {
+        // Rendering select
+        // Скрываем не нужные книги, оставляем вчерашний + 10
+        // главу не заполняем
+        // value
+        $("#bible_book").val(reading_str[0]);
+        $("#bible_chapter").val(reading_str[1]);
+      } else {
+        // Книги не заполненны
+      }*/
+    });
 
     // desabled
     if (el_this.attr("data-member_key") !== admin_id_gl) {
@@ -2604,6 +2637,15 @@ function open_blank(el_this) {
     $("#skip_modal_pic_preview_container").attr("src", elem.next().attr("href"));
   }
   /*** SKIP TAB STOP ***/
+
+  /*** BIBLE READING BEGIN ***/
+
+  $("#mdl_bible_start").on("hide.bs.modal", function () {
+    setTimeout(function () {
+      $("body").addClass("modal-open");
+    }, 500);
+  });
+  /*** BIBLE READING STOP ***/
 
 // DOCUMENT READY STOP
 });

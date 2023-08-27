@@ -8,7 +8,7 @@
   include_once 'db/classes/statistics.php';
   include_once 'db/ftt/ftt_attendance_db.php';
   include_once 'db/ftt/ftt_attendance_skip_db.php';  
-  include_once 'db/classes/ftt_attendance/bible.php';
+  include_once 'db/classes/ftt_reading/bible.php';
   include_once 'db/classes/CutString.php';
 
 // ПОСЕЩАЕМОСТЬ

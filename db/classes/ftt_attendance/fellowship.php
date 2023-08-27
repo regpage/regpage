@@ -8,7 +8,7 @@
 
 class Fellowship
 {
-  function now_trainee($trainee_id)
+  static function now_trainee($trainee_id)
   {
     $result=[];
     global $db;
@@ -23,7 +23,7 @@ class Fellowship
     return $result;
   }
 
-  function canceled_trainee($trainee_id)
+  static function canceled_trainee($trainee_id)
   {
     $result=[];
     global $db;
@@ -38,7 +38,7 @@ class Fellowship
     return $result;
   }
 
-  function now_serving_one($serving_one_id)
+  static function now_serving_one($serving_one_id)
   {
     $result=[];
     $res = db_query("SELECT ff.time, m.name
@@ -51,7 +51,7 @@ class Fellowship
     return $result;
   }
 
-  function canceled_serving_one($serving_one_id)
+  static function canceled_serving_one($serving_one_id)
   {
     $result=[];
     $res = db_query("SELECT ff.time, m.name

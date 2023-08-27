@@ -11,7 +11,7 @@ include_once 'db/classes/schedule_class.php';
 include_once 'db/classes/date_convert.php';
 include_once 'db/classes/ftt_info.php';
 include_once 'db/classes/ftt_permissions.php';
-include_once 'db/classes/ftt_attendance/bible.php';
+include_once 'db/classes/ftt_reading/bible.php';
 
 function db_newDailyAttendance () {
   echo "Start<br>";
