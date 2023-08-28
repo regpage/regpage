@@ -227,6 +227,7 @@ $(document).ready(function(){
  $('#modalAddEdit select').change(function (e) {
    let id = $("#modalAddEdit").attr("data-id");
    let value = $(this).val();
+   // *** BIBLE SAVE HERE! *** //
    if (e.target.id === "bible_book") {
      setTimeout(function () {
        fetch("ajax/ftt_attendance_ajax.php?type=get_bible_chapter&book=" + value)
@@ -284,6 +285,7 @@ function open_blank(el_this) {
          if ($(this).attr("id") === "comment_modal") {
            $(this).parent().parent().parent().show();
          } else {
+           // *** BIBLE HERE *** //
            if ($(this).attr("id") === "bible_reading") {
              $(this).parent().parent().parent().show();
            } else {
@@ -921,9 +923,6 @@ function open_blank(el_this) {
         $(this).css('border-color', 'lightgray');
       }
     });
-    if (el_this.attr("data-member_key") === admin_id_gl) {
-      $("#bible_book").attr('disabled', true);
-    }
   });
 
     $("#morning_revival").val(el_this.attr("data-morning_revival"));
@@ -936,37 +935,108 @@ function open_blank(el_this) {
     // книга и глава библии
     // bible
 
+    // *** BIBLE HERE *** //
     fetch("ajax/ftt_attendance_ajax.php?type=get_bible_data&member_key="
     + el_this.attr("data-member_key") + "&date=" + el_this.attr("data-date"))
     .then(response => response.json())
     .then(commits => {
       let reading_str = commits.result
+       console.log(reading_str);
+
+      $("#bible_book_ot").hide();
+      $("#bible_book_nt").hide();
+      $("#set_start_reading").show();
       if (reading_str === '0') {
         // Нет старта и сегодняшней строки
-        $("#bible_book_ot").hide();
-        $("#bible_book_nt").hide();
-        $("#set_start_reading").show();
         return;
       }
+
       $("#set_start_reading").hide();
-      if (reading_str['bible_ot'] && reading_str['bible_nt']) {
+
+      if (reading_str['book_ot']) {
         $("#bible_book_ot").show();
+      }
+      if (reading_str['book_nt']) {
         $("#bible_book_nt").show();
       }
-      if (reading_str['bible_ot']) {
-        $("#bible_book_ot").show();
-        $("#bible_book_nt").hide();
+      let bible_ot_html = "<option value='0'>Нет";
+      let bible_nt_html = "<option value='0'>Нет";
+      let sim_1, sim_2, sim_3, sim_4, count_1 = 0, count_2 = 0;
+
+      // OT
+      for (let variable in bible_arr) {
+        if (bible_arr.hasOwnProperty(variable)) {
+          if (bible_arr[variable][0] === reading_str["book_ot"]) {
+
+            if (sim_1 === 2) {
+              break;
+            }
+
+            if (!sim_1) {
+              sim_1 = 1;
+            }
+
+            for (let j = 0; j <= bible_arr[variable][1]; j++) {
+              if (j == Number(reading_str['chapter_ot']) || sim_3) {
+                if (reading_str['chapter_ot'] === "0") {
+
+                } else if (count_1 < 10) {
+                  count_1++;
+                  bible_ot_html += "<option data-book='" + bible_arr[variable][0] + "' data-chapter='" + j + "'>" + bible_arr[variable][0] + " " + j;
+                } else {
+                  sim_1 = 2;
+                  break;
+                }
+                sim_3 = 1;
+              }
+            }
+          }
+        }
       }
-      if (reading_str['bible_nt']) { //) && (reading_str['chaptr_ot'] || reading_str['chaptr_nt'])
-        $("#bible_book_ot").hide();
-        $("#bible_book_nt").show();
-        // Rendering select
-        // Скрываем не нужные книги, оставляем текущий + 10
-        // главу не заполняем
-        // value
-        $("#bible_book").val(reading_str[0]["bible_ot"] + " " + reading_str[0]["chaptr_ot"]);
-        $("#bible_chapter").val(reading_str[0]["bible_nt"] + " " + reading_str[0]["chaptr_nt"]);
+      $("#bible_book_ot").html(bible_ot_html);
+
+      // NT
+      for (let variable in bible_arr) {
+        if (bible_arr.hasOwnProperty(variable)) {
+          // OT
+          if (bible_arr[variable][0] === reading_str['book_nt']) {
+            if (sim_2 === 2) {
+              break;
+            }
+
+            if (!sim_2) {
+              sim_2 = 1;
+            }
+
+            for (let k = 0; k <= bible_arr[variable][1]; k++) {
+              if (k === Number(reading_str['chapter_nt']) || sim_4) {
+
+                if (reading_str['chapter_nt'] === "0") {
+
+                } else if (count_2 < 10) {
+                  count_2++;
+                  bible_nt_html += "<option data-book='" + bible_arr[variable][0] + "' data-chapter='" + k + "'>" + bible_arr[variable][0] + " " + k;
+                } else {
+                  sim_2 = 2;
+                  break;
+                }
+                sim_4 = 1;
+              }
+            }
+          }
+        }
       }
+      $("#bible_book_nt").html(bible_nt_html);
+
+      /*
+       //) && (reading_str['chapter_ot'] || reading_str['chapter_nt'])
+      // Rendering select
+      // Скрываем не нужные книги, оставляем текущий + 10
+      // главу не заполняем
+      // value
+      $("#bible_book").val(reading_str[0]["bible_ot"] + " " + reading_str[0]["chapter_ot"]);
+      $("#bible_chapter").val(reading_str[0]["bible_nt"] + " " + reading_str[0]["chapter_nt"]);
+      */
       /*else if (reading_str['bible_ot'] || reading_str['bible_nt']) {
         // Rendering select
         // Скрываем не нужные книги, оставляем вчерашний + 10

@@ -46,6 +46,13 @@ if ($(window).width()<=769) {
   $(".comment_mbl").show();
   $("#comment_modal").attr("style", "font-size: 16px !important");
   $("#modalAddEdit label").attr("style", "font-size: 16px !important");
+
+  // ot
+  $("#bible_book_ot").css("min-width", "auto").css("max-width", "105px");
+
+  // nt
+  $("#bible_book_nt").css("min-width", "auto").css("max-width", "105px");
+
   // строки 5 - 6 семестр
   $("#modal-block_2 .name_session").addClass("hide_element");
   $("#modal-block_2 h6").removeClass("hide_element");
@@ -124,7 +131,7 @@ if ($(window).width()<=769) {
   $(".skip_string div:nth-child(3)").removeClass("col-7").addClass("col-4").addClass("pl-2");
 
   $(".skip_string .col-8").removeClass("col-8").addClass("col-6").addClass("pr-1").addClass("pl-5");*/
-  
+
 } else if ($(window).width()<=991 && $(window).width()>769) {
   $("#current_extra_help").css("min-width", $(window).width()+"px");
   $(".card_header button").css("width", "180px");

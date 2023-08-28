@@ -1,4 +1,4 @@
-<!-- ЧТЕНИЕ СТАРТ-->
+<!-- ЧТЕНИЕ СТАРТ РАЗДЕЛ ПОСЕЩАЕМОСТЬ-->
 <div id="mdl_bible_start" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" data-id="" data-member_key="" data-serving_one="" data-status="">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -7,39 +7,22 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="font-size: 1.5rem;">x</button>
       </div>
       <div class="modal-body">
-        <div class="container border mt-3 mb-3 p-2" style="max-width: 450px;">
-          <?php if ($ftt_access['group'] === 'staff'): ?>
-          <!-- ОБУЧАЮЩИЙСЯ -->
-          <div class="row mb-3">
-            <div class="col">
-              <select id="ftr_trainee_reading" class="form-control">
-                <option value="">Обучающиеся</option>
-                <?php foreach ($trainee_list as $key => $value):
-                  /*$selected = '';
-                  if ($key === $ftr_trainee_skip) {
-                    $selected = 'selected';
-                  }*/
-                  echo "<option value='{$key}' {$selected}>{$value}</option>";
-                endforeach; ?>
-              </select>
-            </div>
-          </div>
-          <!-- ДАТА -->
-          <div class="row mb-3">
-              <div class="col">
-                <input type="date" class="form-control" value="<?php echo date('Y-m-d') ?>" min="<?php echo date('Y-m-d') ?>">
-              </div>
-          </div>
-          <?php endif; ?>
+        <div class="container">
           <!-- ВЗ -->
           <div class="row mb-2">
-              <div class="col">
-                <input type="checkbox"> <h5>Ветхий Завет</h5>
+              <div class="col-1">
+                <input type="checkbox" class="align-middle">
+              </div>
+              <div class="col pl-2">
+                <h5 class="">Ветхий Завет</h5>
               </div>
           </div>
           <div class="row mb-3">
-              <div class="col">
-                <select class="form-control" data-field="book_ot" <?php echo $ftt_access['group'] !== 'staff' ? 'disabled' : '' ?>>
+              <div class="col-1">
+
+              </div>
+              <div class="col-5">
+                <select class="form-control" data-field="book_ot">
                   <?php
                   $bible_books = $bible_obj->get();
                   foreach ($bible_books as $key => $value) {
@@ -51,9 +34,9 @@
                   ?>
                 </select>
               </div>
-              <div class="col">
+              <div class="col-5">
                 <select class="form-control" data-field="chapter_ot">
-                  <option value="0">Нет
+                  <option value="0">0
                   <?php
                   for ($i=1; $i <= $bible_books[0][1]; $i++) {
                     echo "<option value='{$i}'>{$i}";
@@ -62,15 +45,31 @@
                 </select>
               </div>
           </div>
+          <!-- ПРИМЕЧАНИЯ -->
+          <div class="row">
+              <div class="col-1">
+
+              </div>
+              <div class="col">
+                <label for="read_footnotes_ot"><input id="read_footnotes_ot" type="checkbox" class="align-middle" value="" data-field="read_footnotes_ot"> с примечаниями</label>
+              </div>
+          </div>
+          <hr>
           <!-- НЗ -->
           <div class="row mb-2">
-              <div class="col">
+            <div class="col-1">
+              <input type="checkbox" class="align-middle">
+            </div>
+              <div class="col pl-2">
                 <h5>Новый Завет</h5>
               </div>
           </div>
-          <div class="row mb-4">
-              <div class="col">
-                <select class="form-control" data-field="book_nt" <?php echo $ftt_access['group'] !== 'staff' ? 'disabled' : '' ?>>
+          <div class="row mb-3">
+              <div class="col-1">
+
+              </div>
+              <div class="col-5">
+                <select class="form-control" data-field="book_nt">
                   <?php
                   $bible_books = $bible_obj->get();
                   foreach ($bible_books as $key => $value) {
@@ -81,9 +80,9 @@
                   ?>
                 </select>
               </div>
-              <div class="col">
+              <div class="col-5">
                 <select class="form-control" data-field="chapter_ot">
-                  <option value="0">Нет
+                  <option value="0">0
                   <?php
                   for ($i=1; $i <= $bible_books[0][1]; $i++) {
                     echo "<option value='{$i}'>{$i}";
@@ -93,9 +92,12 @@
               </div>
           </div>
           <!-- ПРИМЕЧАНИЯ -->
-          <div class="row mb-4">
+          <div class="row">
+              <div class="col-1">
+
+              </div>
               <div class="col">
-                <label for="read_footnotes">Чтение с примечаниями <input id="read_footnotes" type="checkbox" class="align-middle" value="" data-field="read_footnotes"></label>
+                <label for="read_footnotes_nt"><input id="read_footnotes_nt" type="checkbox" class="align-middle" value="" data-field="read_footnotes_nt"> с примечаниями</label>
               </div>
           </div>
         </div>

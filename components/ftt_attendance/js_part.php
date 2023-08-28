@@ -10,13 +10,8 @@ trainee_access = "<?php if ($ftt_access['group'] === 'trainee') { echo "1"; } ?>
 
 // serving ones list
 let serving_ones_list_tmp;
-if (getCookie("tab_active") === "meet") {
-  serving_ones_list_tmp = "<?php
-  $kbk_list = array_merge($serving_ones_list, $kbk_list);
-  foreach ($kbk_list as $id => $name) echo $id.'_'.$name.'_'; ?>";
-} else {
-  serving_ones_list_tmp = "<?php foreach ($serving_ones_list as $id => $name) echo $id.'_'.$name.'_'; ?>";
-}
+
+serving_ones_list_tmp = "<?php foreach ($serving_ones_list as $id => $name) echo $id.'_'.$name.'_'; ?>";
 
 serving_ones_list_tmp = serving_ones_list_tmp ? serving_ones_list_tmp.split('_') : [];
 let serving_ones_list = [];
@@ -52,6 +47,15 @@ let link_pb = "<?php if (isset($_GET['pb'])) {echo $_GET['pb'];} else {echo '';}
 // admin key
 let admin_id_gl = "<?php echo $memberId;?>";
 
+// bible book
+let bible_arr = [];
+let bible_arr_temp = "<?php foreach ($bible_obj->getBooks() as $id => $name) echo $name[0].'_'.$name[1].'_'; ?>";
+bible_arr_temp = bible_arr_temp ? bible_arr_temp.split('_') : [];
+for (let i = 0; i < trainee_list_tmp.length; i = i + 2) {
+  bible_arr.push([bible_arr_temp[i], bible_arr_temp[i+1]]);
+}
+
+//
 function filterSkip() {
   $("#list_skip .skip_string").each(function () {
     let status = '';
@@ -76,8 +80,8 @@ if ($(window).width()<=769) {
 }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
-<script src="/js/ftt/ftt_attendance/script.js?v137"></script>
-<script src="/js/ftt/ftt_attendance/design.js?v28"></script>
+<script src="/js/ftt/ftt_attendance/script.js?v138"></script>
+<script src="/js/ftt/ftt_attendance/design.js?v30"></script>
 <script src="/js/modules/week.js?v1"></script>
 <script src="/js/modules/time.js?v1"></script>
 <script src="/js/modules/date.js?v1"></script>
