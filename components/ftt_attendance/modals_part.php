@@ -74,9 +74,9 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
           <!-- Чтение Библии -->
           <div class="row">
             <div class="col-12">
-              <h6 class="hide_element">Чтение Библии</h6>
+              <h6 class="hide_element reading_bible_title">Чтение Библии</h6>
               <div class="input-group justify-content-between mb-3">
-                <span class="align-self-center name_session">Чтение Библии</span>
+                <span class="align-self-center name_session reading_bible_title">Чтение Библии</span>
                 <!--<input type="number" id="bible_reading" class="form-control practice_field short_number_field text-right" data-field="bible_reading" value="" min="0" max="30" style="font-size: 14px; max-width: 95px !important;">
                 <span class="align-self-center pl-2 mt-2">мин. (<?php if ($ftt_access['group'] === 'staff' || (isset($trainee_data['semester']) && $trainee_data['semester'] < 5)) { ?>15
                   <?php } else { ?>
@@ -88,6 +88,7 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
                 <!--<span>Название книг Библии</span>
                 <br>-->
                 <select id="bible_book_ot" class="mr-3 form-control" data-field="bible_ot" style="min-width: 95px; min-height: 35px; margin-left: 0px !important;">
+                  <option value="_none_">
                   <option value="0">Нет
                     <?php
                     $bible_books = $bible_obj->get();
@@ -101,6 +102,7 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
                     ?>
                 </select>
                 <select id="bible_book_nt" class="mr-3 form-control" data-field="bible_book" style="min-width: 95px; min-height: 35px; margin-left: 0px !important;">
+                  <option value="_none_">
                   <option value="0">Нет
                   <?php
                   $bible_books = $bible_obj->get();
@@ -113,8 +115,7 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
                   }
                   ?>
                 </select>
-                <span id="set_start_reading" class="d-none">Задайте старт</span>
-                <button type="button" class="bg-secondary text-light short_select_field rounded" data-toggle="modal" data-target="#mdl_bible_start" style="min-width: 60px !important;">...</button>
+                <button type="button" id="show_me_start" class="bg-secondary text-light short_select_field rounded" data-toggle="modal" data-target="#mdl_bible_start" style="min-width: 54px !important;">...</button>
               </div>
             </div>
           </div>

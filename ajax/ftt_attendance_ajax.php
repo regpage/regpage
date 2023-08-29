@@ -354,6 +354,7 @@ if (isset($_GET['type']) && $_GET['type'] === 'delete_skip') {
 // bible reading
 if (isset($_GET['type']) && $_GET['type'] === 'get_bible_data') {
   echo json_encode(["result"=>get_bible_data($_GET['member_key'], $_GET['date'])]);
+  exit();
 }
 
 ?>

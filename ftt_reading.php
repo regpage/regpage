@@ -8,6 +8,9 @@
     // Общие переменные (стандартные)
     include_once "components/ftt_main/var_part.php";
 
+    // Работа с БД
+    include_once "db/ftt/ftt_reading_db.php";
+
     // Переменные раздела
     include_once "components/ftt_reading/var_part.php";
 

@@ -11,18 +11,18 @@
           <!-- ВЗ -->
           <div class="row mb-2">
               <div class="col-1">
-                <input type="checkbox" class="align-middle">
+                <input id="mdl_ot_start" type="checkbox" class="align-middle">
               </div>
               <div class="col pl-2">
                 <h5 class="">Ветхий Завет</h5>
               </div>
           </div>
           <div class="row mb-3">
-              <div class="col-1">
+              <div class="col-1" style="max-width: 22px;">
 
               </div>
               <div class="col-5">
-                <select class="form-control" data-field="book_ot">
+                <select id="mdl_book_ot_start" class="form-control" data-field="book_ot">
                   <?php
                   $bible_books = $bible_obj->get();
                   foreach ($bible_books as $key => $value) {
@@ -35,7 +35,7 @@
                 </select>
               </div>
               <div class="col-5">
-                <select class="form-control" data-field="chapter_ot">
+                <select id="mdl_chapter_ot_start" class="form-control" data-field="chapter_ot">
                   <option value="0">0
                   <?php
                   for ($i=1; $i <= $bible_books[0][1]; $i++) {
@@ -47,29 +47,29 @@
           </div>
           <!-- ПРИМЕЧАНИЯ -->
           <div class="row">
-              <div class="col-1">
+              <div class="col-1" style="max-width: 22px;">
 
               </div>
               <div class="col">
-                <label for="read_footnotes_ot"><input id="read_footnotes_ot" type="checkbox" class="align-middle" value="" data-field="read_footnotes_ot"> с примечаниями</label>
+                <label for="mdl_footnotes_ot_start"><input id="mdl_footnotes_ot_start" type="checkbox" class="align-middle" value="" data-field="read_footnotes_ot"> с примечаниями</label>
               </div>
           </div>
           <hr>
           <!-- НЗ -->
           <div class="row mb-2">
             <div class="col-1">
-              <input type="checkbox" class="align-middle">
+              <input id="mdl_nt_start" type="checkbox" class="align-middle">
             </div>
               <div class="col pl-2">
                 <h5>Новый Завет</h5>
               </div>
           </div>
           <div class="row mb-3">
-              <div class="col-1">
+              <div class="col-1" style="max-width: 22px;">
 
               </div>
               <div class="col-5">
-                <select class="form-control" data-field="book_nt">
+                <select id="mdl_book_nt_start" class="form-control" data-field="book_nt">
                   <?php
                   $bible_books = $bible_obj->get();
                   foreach ($bible_books as $key => $value) {
@@ -81,10 +81,10 @@
                 </select>
               </div>
               <div class="col-5">
-                <select class="form-control" data-field="chapter_ot">
+                <select id="mdl_chapter_nt_start" class="form-control" data-field="chapter_ot">
                   <option value="0">0
                   <?php
-                  for ($i=1; $i <= $bible_books[0][1]; $i++) {
+                  for ($i=1; $i <= $bible_books[39][1]; $i++) {
                     echo "<option value='{$i}'>{$i}";
                   }
                   ?>
@@ -93,18 +93,18 @@
           </div>
           <!-- ПРИМЕЧАНИЯ -->
           <div class="row">
-              <div class="col-1">
+              <div class="col-1" style="max-width: 22px;">
 
               </div>
               <div class="col">
-                <label for="read_footnotes_nt"><input id="read_footnotes_nt" type="checkbox" class="align-middle" value="" data-field="read_footnotes_nt"> с примечаниями</label>
+                <label for="mdl_footnotes_nt_start"><input id="mdl_footnotes_nt_start" type="checkbox" class="align-middle" value="" data-field="read_footnotes_nt"> с примечаниями</label>
               </div>
           </div>
         </div>
       </div>
       <div class="modal-footer">
         <div class="text-right w-100">
-          <button class="btn btn-sm btn-success" type="button">Сохранить</button>
+          <button id="set_start_reading_bible" class="btn btn-sm btn-success" type="button">Сохранить</button>
           <button class="btn btn-sm btn-secondary" type="button" data-dismiss="modal" aria-hidden="true">Закрыть</button>
         </div>
       </div>

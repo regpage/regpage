@@ -46,12 +46,14 @@ if ($(window).width()<=769) {
   $(".comment_mbl").show();
   $("#comment_modal").attr("style", "font-size: 16px !important");
   $("#modalAddEdit label").attr("style", "font-size: 16px !important");
-
+  
   // ot
   $("#bible_book_ot").css("min-width", "auto").css("max-width", "105px");
 
   // nt
   $("#bible_book_nt").css("min-width", "auto").css("max-width", "105px");
+
+  $("#show_me_start").attr("style", "min-width: 60px !important;");
 
   // строки 5 - 6 семестр
   $("#modal-block_2 .name_session").addClass("hide_element");
