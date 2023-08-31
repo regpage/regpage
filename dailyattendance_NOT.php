@@ -1,4 +1,125 @@
 <?php
+// **__** ADD BIBLE READING
+// добавляем книги библии
+$prev_reading = [];
+$nextReading_ot;
+$nextReading_nt;
+$bible_chapter_ot;
+$bible_chapter_nt;
+/*
+// Был старт вчера?
+$bible_start_check = [];
+$bible_start=db_query("SELECT `book_ot`, `chapter_ot`, `book_nt`, `chapter_nt` FROM `ftt_bible` WHERE `member_key` = '{$aa['member_key']}' AND `date` = (CURDATE() - INTERVAL 1 DAY) AND `start` = 1");
+while ($rowstart = $bible_start->fetch_assoc()) $bible_start_check=[$rows['book_ot'], $rows['chapter_ot'], $rows['book_nt'], $rows['chapter_nt']];
+// Старт чего? ВЗ или НЗ? Что делать если старт НЗ был раньше а старт ВЗ позже, ИЛИ НЗ продолжается, а для ВЗ (который уже учитывается) добавляется новый старт
+*/
+// получаем данные вчерашнего бланка
+$res_bible=db_query("SELECT `book_ot`, `chapter_ot`, `book_nt`, `chapter_nt` FROM `ftt_bible` WHERE `member_key` = '{$aa['member_key']}' AND `date` = (CURDATE() - INTERVAL 1 DAY) AND `start` != 1");
+while ($rows = $res_bible->fetch_assoc()) $prev_reading=[$rows['book_ot'], $rows['chapter_ot'], $rows['book_nt'], $rows['chapter_nt']];
+// ДОБАВИТЬ возможноть определять варанты ЧТЕНИЕ НЗ И СТАРТ ВЗ И НАОБОРОТ, ЕСЛИ НА ОДНО ЧИСЛО ЕСТЬ СТАРТ И ОТЧЁТ ТО ПРИ СОЗДАНИИ СЛЕДУЮЩЕГО БЛАНКА УЧИТЫВАЕТСЯ СТАРТ
+if ((isset($prev_reading[0]) && isset($prev_reading[1]) && !empty($prev_reading[0]) && !empty($prev_reading[1]))
+|| (isset($prev_reading[2]) && isset($prev_reading[3]) && !empty($prev_reading[2])) && !empty($prev_reading[3])) {
+  if (isset($prev_reading[0]) && !empty($prev_reading[0])) {
+    // СЛЕДУЮЩАЯ КНИГА ТОЛЬКО В ТОМ СЛУЧАЕ ЕСЛИ УКАЗАНА ПОСЛЕДНЯЯ ГЛАВА КНИГИ
+    $nextReading_ot = $bibleBooks->nextChapter($prev_reading[0],$prev_reading[1]);
+    if ($nextReading_nt[0] !== $prev_reading[0]) {
+      $prev_reading[0] = $nextReading_nt[0];
+    }
+  }
+  if (isset($prev_reading[2]) && !empty($prev_reading[2])) {
+    // СЛЕДУЮЩАЯ КНИГА ТОЛЬКО В ТОМ СЛУЧАЕ ЕСЛИ УКАЗАНА ПОСЛЕДНЯЯ ГЛАВА КНИГИ
+    $nextReading_nt = $bibleBooks->nextChapter($prev_reading[2],$prev_reading[3]);
+     if ($nextReading_nt[0] !== $prev_reading[2]) {
+       $prev_reading[2] = $nextReading_nt[0];
+     }
+  }
+
+  if (!empty($nextReading_ot)) {
+    $bible_book_ot = $prev_reading[0];
+    $bible_chapter_ot = 0;
+  }
+  if (!empty($nextReading_nt)) {
+    $bible_book_nt = $prev_reading[2];
+    $bible_chapter_nt = 0;
+  }
+} else {
+  $sim_1 = 0;
+  $sim_2 = 0;
+  $res_bible=db_query("SELECT * FROM ftt_bible WHERE `member_key` = '{$aa['member_key']}' AND `start` = 1 ORDER BY `date` DESC");
+  while ($rows = $res_bible->fetch_assoc()) {
+    if (isset($rows['book_ot']) && isset($rows['chapter_ot']) && !empty($rows['book_ot']) && !empty($rows['chapter_ot'])
+    && isset($rows['book_nt']) && isset($rows['chapter_nt']) && !empty($rows['book_nt']) && !empty($rows['chapter_nt'])) {
+      if (!$sim_1 && !$sim_2) {
+        $prev_reading=[$rows['book_ot'], $rows['chapter_ot'], $rows['book_nt'], $rows['chapter_nt']];
+        break;
+      } elseif ($sim_1) {
+        $prev_reading = [$prev_reading[0], $prev_reading[1], $rows['book_nt'], $rows['chapter_nt']];
+        break;
+      } elseif ($sim_2) {
+        $prev_reading = [$rows['book_ot'], $rows['chapter_ot'], $prev_reading[2], $prev_reading[3]];
+        break;
+      }
+    } elseif (isset($rows['book_ot']) && isset($rows['chapter_ot']) && !empty($rows['book_ot']) && !empty($rows['chapter_ot'])) {
+      if (!$sim_2 && !$sim_1) {
+        $prev_reading = [$rows['book_ot'], $rows['chapter_ot'], '', ''];
+      } elseif(!$sim_1) {
+        $prev_reading = [$rows['book_ot'], $rows['chapter_ot'], $prev_reading[2], $prev_reading[3]];
+        break;
+      }
+      $sim_1 = 1;
+    } elseif (isset($rows['book_nt']) && isset($rows['chapter_nt']) && !empty($rows['book_nt']) && !empty($rows['chapter_nt'])) {
+      if (!$sim_1 && !$sim_2) {
+        $prev_reading = ['', '', $rows['book_nt'], $rows['chapter_nt']];
+      } elseif(!$sim_2) {
+        $prev_reading = [$prev_reading[0], $prev_reading[0], $rows['book_nt'], $rows['chapter_nt']];
+        break;
+      }
+      $sim_2 = 1;
+    }
+  }
+
+  if (count($prev_reading) > 0) {
+    $bible_book_ot = $prev_reading[0];
+    $bible_chapter_ot = 0; //$prev_reading[1]
+    $bible_book_nt = $prev_reading[2];
+    $bible_chapter_nt = 0; //$prev_reading[3]
+  } else {
+    $bible_book_ot = '';
+    $bible_chapter_ot = 0;
+    $bible_book_nt = '';
+    $bible_chapter_nt = 0;
+  }
+}
+
+
+// **__** BIBLE READING INSERT
+$bible_new_string = db_query("INSERT INTO `ftt_bible` (`date`, `member_key`, `book_ot`, `chapter_ot`, `book_nt`, `chapter_nt`) VALUES (CURDATE(), '$id_member', '$bible_book_ot', '$bible_chapter_ot', '$bible_book_nt', '$bible_chapter_nt')");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //Автоматическое добавление строк для учёта практик (practices) выполняется по заданию (cron)
 // строку ниже заменить на config.php
  // Вывод ошибок на экран

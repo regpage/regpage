@@ -79,7 +79,7 @@ if ($(window).width()<=769) {
   $(".row_meet").hide();
 }
 </script>
-<script src="/js/ftt/ftt_attendance/script.js?v140"></script>
+<script src="/js/ftt/ftt_attendance/script.js?v148"></script>
 <script src="/js/ftt/ftt_attendance/design.js?v33"></script>
 <script src="/js/modules/week.js?v1"></script>
 <script src="/js/modules/time.js?v1"></script>

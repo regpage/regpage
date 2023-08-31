@@ -35,8 +35,7 @@
                 </select>
               </div>
               <div class="col-5">
-                <select id="mdl_chapter_ot_start" class="form-control" data-field="chapter_ot">
-                  <option value="0">0
+                <select id="mdl_chapter_ot_start" class="form-control" data-field="chapter_ot">                  
                   <?php
                   for ($i=1; $i <= $bible_books[0][1]; $i++) {
                     echo "<option value='{$i}'>{$i}";
@@ -82,7 +81,6 @@
               </div>
               <div class="col-5">
                 <select id="mdl_chapter_nt_start" class="form-control" data-field="chapter_ot">
-                  <option value="0">0
                   <?php
                   for ($i=1; $i <= $bible_books[39][1]; $i++) {
                     echo "<option value='{$i}'>{$i}";

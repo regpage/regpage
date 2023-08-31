@@ -429,7 +429,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
         <div class="container">
           <div class="row">
             <div class="col-12 mb-2">
-              <select id="team_goal_select" class="form-control form-control-sm">
+              <select id="team_goal_select" class="form-control form-control-sm" <?php echo $trainee_data['gospel_team']; ?>>
                 <option value="_all_">Все команды</option>
                 <?php
                 $my_team = '';
@@ -444,7 +444,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
                     }
                   } else {
                     $selected = '';
-                    if ($trainee_data['gospel_team'] === $key) {
+                    if ($trainee_data['gospel_team'] == $key) {
                       $selected = 'selected';
                       $my_team = $key;
                       $my_group = $trainee_data['gospel_group'];
@@ -469,7 +469,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
                         }
                       }
                     } else {
-                      if ($my_team === $value['gospel_team'] ) {
+                      if ($my_team == $value['gospel_team'] ) {
                         $selected = '';
                         if ($same_group !== $value['gospel_group']) {
                           if ($trainee_data['gospel_group'] === $value['gospel_group']) {
@@ -519,14 +519,15 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
             <div class="col-2"><input id="semester_flyers" type="number" class="form-control form-control-sm recom_goal little_number_field" data-field="flyers"
               value="<?php echo $semester_flyers; ?>">
             </div>
-            <div class="col-3 pt-1 pl-1"> (не менее <?php echo getValueFttParamByName('min_flyers'); ?>)</div>
+            <div class="col-3 pt-1 pl-1 pr-0" style="min-width: 100px;">
+              (не менее <?php echo getValueFttParamByName('min_flyers'); ?>)</div>
           </div>
           <div class="row mb-2">
             <div class="col-12 mb-1"><b>Скольким людям вы хотите благовествовать в течение недели?</b></div>
             <div class="col-2"><input id="semester_people" type="number" class="form-control form-control-sm recom_goal little_number_field" data-field="people"
               value="<?php echo $semester_people; ?>">
             </div>
-            <div class="col-3 pt-1 pl-1">
+            <div class="col-3 pt-1 pl-1 pr-0" style="min-width: 100px;">
               (не менее <?php echo getValueFttParamByName('min_people'); ?>)
             </div>
           </div>
@@ -535,7 +536,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
             <div class="col-2"><input id="semester_prayers" type="number" class="form-control form-control-sm recom_goal little_number_field" data-field="prayers"
               value="<?php echo $semester_prayers; ?>">
             </div>
-            <div class="col-3 pt-1 pl-1">
+            <div class="col-3 pt-1 pl-1 pr-0" style="min-width: 100px;">
                 (не менее <?php echo getValueFttParamByName('min_prayers'); ?>)
             </div>
           </div>
@@ -544,7 +545,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
             <div class="col-2"><input id="semester_baptism" type="number" class="form-control form-control-sm recom_goal little_number_field" data-field="baptism"
               value="<?php echo $semester_baptism; ?>">
             </div>
-            <div class="col-3 pt-1 pl-1">
+            <div class="col-3 pt-1 pl-1 pr-0" style="min-width: 100px;">
                 (не менее <?php echo getValueFttParamByName('min_baptism'); ?>)
             </div>
           </div>
@@ -553,7 +554,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
             <div class="col-2"><input id="semester_fruit" type="number" class="form-control form-control-sm recom_goal little_number_field" data-field="fruit"
               value="<?php echo $semester_fruit; ?>">
             </div>
-            <div class="col-3 pt-1 pl-1">
+            <div class="col-3 pt-1 pl-1 pr-0" style="min-width: 100px;">
               (не менее <?php echo getValueFttParamByName('min_fruit'); ?>)
             </div>
           </div>

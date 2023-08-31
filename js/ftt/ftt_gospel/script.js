@@ -414,7 +414,7 @@ $("#add_comment").click(function () {
 
 // ГОТОВО
 // открыть бланк для добавления правки
-$('#showModalAddEdit').click(function () {  
+$('#showModalAddEdit').click(function () {
   if (trainee_list_full[admin_id_gl] && !trainee_list_full[admin_id_gl]['gospel_team']) {
     showError("Не назначена команда благовестия");
     return;
@@ -1430,12 +1430,13 @@ $(".recom_goal").change(function () { //(!trainee_access || ftt_access_trainee) 
     .then(/*commits => console.log(commits.result)*/);
   }
 });
-if (!trainee_access) {
-  // $(".recom_goal").prop("disabled", false);
+
+if (trainee_access) {
+  $("#team_goal_select").prop("disabled", true);
+  $("#group_goal_select").prop("disabled", true);
+  //$(".recom_goal").prop("disabled", true);
 } else {
-   $("#team_goal_select").prop("disabled", true);
-   $("#group_goal_select").prop("disabled", true);
-   //$(".recom_goal").prop("disabled", true);
+  // $(".recom_goal").prop("disabled", false);
 }
 // team
 $("#team_goal_select").change(function () {

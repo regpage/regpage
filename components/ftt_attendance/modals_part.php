@@ -87,7 +87,7 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
 
                 <!--<span>Название книг Библии</span>
                 <br>-->
-                <select id="bible_book_ot" class="mr-3 form-control" data-field="bible_ot" style="min-width: 95px; min-height: 35px; margin-left: 0px !important;">
+                <select id="bible_book_ot" class="mr-3 form-control" data-field="book_ot" style="min-width: 95px; min-height: 35px; margin-left: 0px !important;">
                   <option value="_none_">
                   <option value="0">Нет
                     <?php
@@ -101,7 +101,7 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
                     }
                     ?>
                 </select>
-                <select id="bible_book_nt" class="mr-3 form-control" data-field="bible_book" style="min-width: 95px; min-height: 35px; margin-left: 0px !important;">
+                <select id="bible_book_nt" class="mr-3 form-control" data-field="book_nt" style="min-width: 95px; min-height: 35px; margin-left: 0px !important;">
                   <option value="_none_">
                   <option value="0">Нет
                   <?php
