@@ -1068,20 +1068,18 @@ function open_blank(el_this) {
         // NT
         render_bible_chapters(reading_str["book_nt"], reading_str['chapter_nt'], "#bible_book_nt");
 
-        // !! ВАЖНО ПЕРЕБИРАТЬ ВСЕ предыдущие значения, то есть у которых заплнена глава
-
+        // устанавливаем значения
         if (reading_str['chapter_ot'] && reading_str['today_ot']) {
           $("#bible_book_ot").val(reading_str["book_ot"] + " " + reading_str['chapter_ot']);
         }
         if (reading_str['chapter_nt'] && reading_str['today_nt']) {
           $("#bible_book_nt").val(reading_str["book_nt"] + " " + reading_str['chapter_nt']);
         }
-        // библия скрыть пустую опцию возможно не покадобится
-        /*
-        $("#bible_book_nt, #bible_book_ot").click(function () {
-          $(this).find("option[value='_none_']").attr("style", "display: none;");
-        });
-        */
+
+        if (reading_str['start_today'] == 1) {
+          $("#bible_book_ot").attr("disabled", true).css("background-color", "#f8f9fa");
+          $("#bible_book_nt").attr("disabled", true).css("background-color", "#f8f9fa");
+        }
 
       });
     }, 100);

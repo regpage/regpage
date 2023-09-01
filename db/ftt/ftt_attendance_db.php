@@ -569,7 +569,7 @@ function get_permission_archive($sheet_id)
   return $result;
 }
 
-/* bible reading */
+/*** bible reading***/
 function get_bible_data($member_key, $date)
 {
   global $db;
@@ -579,11 +579,14 @@ function get_bible_data($member_key, $date)
   $result2 = [];
   $result3 = [];
   $start_date = "";
+  $start_today = 0;
 
   // START
   $res = db_query("SELECT DISTINCT * FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `start` = 1 ORDER BY `date` ASC");
   while ($row = $res->fetch_assoc()) $start_date = $row['date'];
-
+  if ($start_date === $date) {
+    $start_today = 1;
+  }
   $res = db_query("SELECT DISTINCT * FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `date` = '{$date}' AND `start` != 1");
   while ($row = $res->fetch_assoc()) $result = $row;
   // если сегодня поля заполненны
@@ -605,7 +608,7 @@ function get_bible_data($member_key, $date)
     $res_ot = db_query("SELECT DISTINCT *
       FROM `ftt_bible`
       WHERE `member_key` = '{$member_key}' AND `chapter_ot` <> 0 AND `date` <= '{$date}' AND `date` >= '{$start_date}'
-      ORDER BY `date` ASC, `id` DESC");
+      ORDER BY `date` ASC, `id` ASC");
     while ($row = $res_ot->fetch_assoc()) $result2 = $row;
     // если да то любоя последняя запись
     /*if (isset($result2[`book_ot`])) {
@@ -633,7 +636,7 @@ function get_bible_data($member_key, $date)
     $res_nt = db_query("SELECT DISTINCT *
       FROM `ftt_bible`
       WHERE `member_key` = '$member_key' AND `chapter_nt` <> 0 AND `date` <= '{$date}' AND `date` >= '{$start_date}'
-       ORDER BY `date` ASC, `id` DESC");
+       ORDER BY `date` ASC, `id` ASC");
     while ($row = $res_nt->fetch_assoc()) $result3 = $row;
     // если да то любоя последняя запись
 
@@ -709,6 +712,8 @@ if (count($result2) > 0 && !isset($result['chapter_ot'])) {
 */
   if (count($result) === 0) {
     $result = 0;
+  } else {
+    $result += ['start_today' => $start_today];
   }
 
   return $result;

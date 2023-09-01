@@ -80,7 +80,7 @@
             <div class="col-1 cursor-pointer text-info" style="min-width: 105px;">
               <b class="sorting" data-field="birth_date">Возраст </b><?php if ($sort_field === 'birth_date') echo $sort_icon; ?>
             </div>
-            <div class="col-1" style="max-width: 50px;"><b>С</b></div>
+            <!--<div class="col-1" style="max-width: 50px;"><b>С</b></div>-->
             <div class="col-1" style="max-width: 40px;"><b></b></div>
         </div>
       </div>
@@ -156,9 +156,9 @@
           <div class='col-2' style='max-width: 140px;'><span class='m_cell_phone'>{$phone}</span></div>
           <div class='col-3'><span class='m_email'>{$email}</span></div>
           <div class='col-1' style='min-width: 105px;'><span class='m_age'>{$age}</span></div>
-          <div class='col-1' style='max-width: 50px;'><input type='checkbox' class='attend_chbox' data-field='attend_meeting' {$attend_checked} ></div>
           <div class='col-1' style='max-width: 40px;'>{$change_pencil}</div>
           </div>";
+          //<div class='col-1' style='max-width: 50px;'><input type='checkbox' class='attend_chbox' data-field='attend_meeting' {$attend_checked} ></div>
         endforeach; ?>
       </div>
     </div>

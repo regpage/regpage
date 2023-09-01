@@ -38,7 +38,7 @@ function set_start_reading_bible($member_key, $date, $chosen_book='', $book_ot='
 
   $res = db_query("SELECT `id` FROM `ftt_bible` WHERE `member_key` = '$member_key' AND `date` = '$date' AND `start` = 1");
   while ($row = $res->fetch_assoc()) $result = $row['id'];
-  
+
   if (empty($result)) {
     $res = db_query("INSERT INTO `ftt_bible` (`member_key`, `date`, `start`, {$condition_fields}) VALUES ('$member_key', '$date', 1, {$condition_value})");
   } else {
@@ -83,6 +83,88 @@ function set_reading_bible($member_key, $date, $book_field, $book, $chapter)
   }
 
   return $res;
+}
+
+/*** bible reading GET ***/
+function get_reading_data($member_key, $date)
+{
+  global $db;
+  $member_key = $db->real_escape_string($member_key);
+  $date = $db->real_escape_string($date);
+  $result = [];
+  $result2 = [];
+  $result3 = [];
+  $start_date = "";
+  $start_today = 0;
+
+  // START
+  $res = db_query("SELECT DISTINCT * FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `start` = 1 ORDER BY `date` ASC");
+  while ($row = $res->fetch_assoc()) $start_date = $row['date'];
+  if ($start_date === $date) {
+    $start_today = 1;
+  }
+  $res = db_query("SELECT DISTINCT * FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `date` = '{$date}' AND `start` != 1");
+  while ($row = $res->fetch_assoc()) $result = $row;
+  // если сегодня поля заполненны
+  if ((isset($result['chapter_ot']) && $result['chapter_ot'] > 0) && (isset($result['chapter_nt']) && $result['chapter_nt'] > 0)) {
+    $result += ['today_ot' => 1];
+    $result += ['today_nt' => 1];
+  } else {
+    if (isset($result['chapter_ot']) && $result['chapter_ot'] > 0) {
+      $result += ['today_ot' => 1];
+    } elseif (isset($result['chapter_nt']) && $result['chapter_nt'] > 0) {
+      $result += ['today_nt' => 1];
+    }
+  }
+
+  // Проверяем старт
+  if (!isset($result['today_ot']) || (isset($result['chapter_ot']) && $result['chapter_ot'] === 0)) {
+
+    // ВЗ // AND `start` = 1
+    $res_ot = db_query("SELECT DISTINCT *
+      FROM `ftt_bible`
+      WHERE `member_key` = '{$member_key}' AND `chapter_ot` <> 0 AND `date` <= '{$date}' AND `date` >= '{$start_date}'
+      ORDER BY `date` ASC, `id` ASC");
+    while ($row = $res_ot->fetch_assoc()) $result2 = $row;
+
+    if (isset($result2['book_ot']) && isset($result['book_nt'])) {
+      $result['book_ot'] = $result2['book_ot'];
+      $result['chapter_ot'] = $result2['chapter_ot'];
+    }
+  }
+
+  if (!isset($result['today_nt']) || (isset($result['chapter_nt']) && $result['chapter_nt'] === 0)) {
+    // НЗ `start` = 1
+    $res_nt = db_query("SELECT DISTINCT *
+      FROM `ftt_bible`
+      WHERE `member_key` = '$member_key' AND `chapter_nt` <> 0 AND `date` <= '{$date}' AND `date` >= '{$start_date}'
+       ORDER BY `date` ASC, `id` ASC");
+    while ($row = $res_nt->fetch_assoc()) $result3 = $row;
+
+    if (isset($result3['book_nt']) && isset($result['book_ot'])) {
+      $result['book_nt'] = $result3['book_nt'];
+      $result['chapter_nt'] = $result3['chapter_nt'];
+    } elseif(isset($result3['book_nt']) && !isset($result['book_ot']) && !isset($result2['book_nt'])) {
+      $result = $result3;
+    }
+
+  }
+
+if (count($result2) > 0 && !isset($result['chapter_ot'])) {
+  $result = $result2;
+  if (count($result3) > 0) {
+    $result['book_nt'] = $result3['book_nt'];
+    $result['chapter_nt'] = $result3['chapter_nt'];
+  }
+}
+
+  if (count($result) === 0) {
+    $result = 0;
+  } else {
+    $result += ['start_today' => $start_today];
+  }
+
+  return $result;
 }
 
 ?>
