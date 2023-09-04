@@ -493,7 +493,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
             $semester_fruit = 0;
             foreach (getGospelGoals() as $key => $value) {
               if ($ftt_access['group'] === 'staff') {
-                if ($my_team === $value['gospel_team']) {
+                if ($my_team == $value['gospel_team']) {
                   $semester_flyers += $value['flyers'];
                   $semester_people += $value['people'];
                   $semester_prayers += $value['prayers'];
@@ -501,7 +501,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
                   $semester_fruit += $value['fruit'];
                 }
               } else {
-                if ($my_team === $value['gospel_team'] && $my_group === $value['gospel_group']) {
+                if ($my_team == $value['gospel_team'] && $my_group == $value['gospel_group']) {
                   $semester_flyers += $value['flyers'];
                   $semester_people += $value['people'];
                   $semester_prayers += $value['prayers'];

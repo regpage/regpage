@@ -7,6 +7,94 @@
 include_once 'db.php';
 include_once 'logWriter.php';
 
+// ADMINS SESSIONS
+function db_checkDeleteTempAdminSessions() {
+    $counter = 0;
+    $res = db_query ("SELECT `admin_key` FROM `admin_session` WHERE `admin_key` LIKE '990%'");
+    while ($row = $res->fetch_assoc()) $counter++;
+
+    if ($counter > 0) {
+      db_query ("DELETE FROM `admin_session` WHERE `admin_key` LIKE '990%'");
+
+      logFileWriter(false, 'СЕССИИ АДМИНИСТРАТОРОВ. АВТОМАТИЧЕСКОЕ ОБСЛУЖИВАНИЕ СЕРВЕРА. Удалено '.$counter.' временных сессий.', 'WARNING');
+    } else {
+      logFileWriter(false, 'СЕССИИ АДМИНИСТРАТОРОВ. АВТОМАТИЧЕСКОЕ ОБСЛУЖИВАНИЕ СЕРВЕРА. Временные сессии отсутствуют.', 'WARNING');
+    }
+  }
+
+db_checkDeleteTempAdminSessions();
+
+function db_checkDeleteOldAdminSessions() {
+  $counter = 0;
+  $res = db_query ("SELECT `admin_key` FROM `admin_session`  WHERE `time_last_visit` < DATE_ADD(CURRENT_TIMESTAMP(), INTERVAL -12 MONTH)");
+  while ($row = $res->fetch_assoc()) $counter++;
+
+  if ($counter > 0) {
+    logFileWriter(false, 'СЕССИИ АДМИНИСТРАТОРОВ. АВТОМАТИЧЕСКОЕ ОБСЛУЖИВАНИЕ СЕРВЕРА. Удалено '.$counter.' просроченных сессий.', 'WARNING');
+    db_query ("DELETE FROM `admin_session` WHERE `time_last_visit` < DATE_ADD(CURRENT_TIMESTAMP(), INTERVAL -12 MONTH)");
+  } else {
+    logFileWriter(false, 'СЕССИИ АДМИНИСТРАТОРОВ. АВТОМАТИЧЕСКОЕ ОБСЛУЖИВАНИЕ СЕРВЕРА. Просроченные сессии отсутствуют.', 'WARNING');
+  }
+}
+
+db_checkDeleteOldAdminSessions();
+// STOP ADMINS SESSIONS
+
+//-------------------------------------//
+// ОБЩЕНИЕ СОЗДАНИЕ ЗАПИСЕЙ ИЗ РАСПИСАНИЯ
+function cron_set_fellowship_str() {
+  $dayNumber = date("N", strtotime("+2 week"));
+  $dayOfWeek = '';
+  $result = [];
+  switch ($dayNumber) {
+    case 1:
+      $dayOfWeek = 'пн';
+      break;
+    case 2:
+      $dayOfWeek = 'вт';
+      break;
+    case 3:
+      $dayOfWeek = 'ср';
+      break;
+    case 4:
+      $dayOfWeek = 'чт';
+      break;
+    case 5:
+      $dayOfWeek = 'пт';
+      break;
+    case 6:
+      $dayOfWeek = 'сб';
+      break;
+    case 7:
+      $dayOfWeek = 'вс';
+    break;
+    default:
+      $dayOfWeek = '';
+      break;
+  }
+
+  $res = db_query ("SELECT * FROM `ftt_fellowship_tmpl` WHERE `day` = '$dayOfWeek'");
+  while ($row = $res->fetch_assoc()) $result[] = $row;
+
+  if (count($result) > 0) {
+    foreach ($result as $key => $value) {
+      $res = db_query ("INSERT INTO `ftt_fellowship` (`serving_one`, `date`, `time`, `duration`) VALUES ('{$value['serving_one']}', (CURDATE() + INTERVAL 14 DAY) , '{$value['time']}', '{$value['duration']}')");
+    }
+    return true;
+  } else {
+    return false;
+  }
+}
+if (cron_set_fellowship_str()) {
+  echo "Добавлены строки в расписание общения из шаблона.";
+} else {
+  echo "Не добавлены строки в расписание общения из шаблона.";
+}
+
+// СТОП ОБЩЕНИЕ СОЗДАНИЕ ЗАПИСЕЙ ИЗ РАСПИСАНИЯ
+
+//------------------------------------------//
+// *** О Т К Л Ю Ч Е Н О ! *** //
 // PRACTICES
 function db_stopDailyPractices(){
   logFileWriter(false, 'ПРАКТИКИ. Автоматическая проверка учёта практик.', 'WARNING');
@@ -49,40 +137,6 @@ function db_deleteOldDailyPractices() {
 }
 
 // db_deleteOldDailyPractices();
-
-// ADMINS SESSIONS
-
-function db_checkDeleteTempAdminSessions() {
-    $counter = 0;
-    $res = db_query ("SELECT `admin_key` FROM `admin_session` WHERE `admin_key` LIKE '990%'");
-    while ($row = $res->fetch_assoc()) $counter++;
-
-    if ($counter > 0) {
-      db_query ("DELETE FROM `admin_session` WHERE `admin_key` LIKE '990%'");
-
-      logFileWriter(false, 'СЕССИИ АДМИНИСТРАТОРОВ. АВТОМАТИЧЕСКОЕ ОБСЛУЖИВАНИЕ СЕРВЕРА. Удалено '.$counter.' временных сессий.', 'WARNING');
-    } else {
-      logFileWriter(false, 'СЕССИИ АДМИНИСТРАТОРОВ. АВТОМАТИЧЕСКОЕ ОБСЛУЖИВАНИЕ СЕРВЕРА. Временные сессии отсутствуют.', 'WARNING');
-    }
-  }
-
-db_checkDeleteTempAdminSessions();
-
-function db_checkDeleteOldAdminSessions() {
-  $counter = 0;
-  $res = db_query ("SELECT `admin_key` FROM `admin_session`  WHERE `time_last_visit` < DATE_ADD(CURRENT_TIMESTAMP(), INTERVAL -12 MONTH)");
-  while ($row = $res->fetch_assoc()) $counter++;
-
-  if ($counter > 0) {
-    logFileWriter(false, 'СЕССИИ АДМИНИСТРАТОРОВ. АВТОМАТИЧЕСКОЕ ОБСЛУЖИВАНИЕ СЕРВЕРА. Удалено '.$counter.' просроченных сессий.', 'WARNING');
-    db_query ("DELETE FROM `admin_session` WHERE `time_last_visit` < DATE_ADD(CURRENT_TIMESTAMP(), INTERVAL -12 MONTH)");
-  } else {
-    logFileWriter(false, 'СЕССИИ АДМИНИСТРАТОРОВ. АВТОМАТИЧЕСКОЕ ОБСЛУЖИВАНИЕ СЕРВЕРА. Просроченные сессии отсутствуют.', 'WARNING');
-  }
-}
-
-db_checkDeleteOldAdminSessions();
-
 
 function db_checkDeleteOldAdminActivity() {
   $counter = 0;
