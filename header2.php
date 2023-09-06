@@ -51,7 +51,7 @@
     <link href="css/ftt/diagrams.css?v1" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_attendance.php') { ?>
-    <link href="css/ftt/ftt_attendance.css?v18" rel="stylesheet">
+    <link href="css/ftt/ftt_attendance.css?v19" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_list.php') { ?>
     <link href="css/ftt/ftt_list.css?v5" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_announcement.php') { ?>

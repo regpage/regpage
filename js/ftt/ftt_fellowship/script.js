@@ -175,11 +175,12 @@ $(document).ready(function(){
 
       html_time += '<span style="vertical-align: middle;">' + str[i]["time"]
       + " — " + time_plus_minutes(str[i]["time"], str[i]["duration"])
-      + '</span><input type="checkbox" class="meet_checked' + kbk + ' ml-2 mr-3" data-id="' + str[i]["id"]
+      + '</span><span class="meet_checked cursor-pointer link_custom' + kbk + ' ml-1 mr-3" data-id="' + str[i]["id"]
       + '" data-from="' + str[i]["time"] + '" data-to="' + time_plus_minutes(str[i]["time"], str[i]["duration"])
       + '" data-date="'+str[i]["date"]+'" style="vertical-align: middle;" ' + checked + ' ' + disabled
-      + '><input type="text" class="meet_comment_trainee_time form-control form-control-sm d-inline-block" value="'
-      + str[i]["comment_train"] + '" style="max-width: 72%; ' + hidden + '">';
+      + '>Записаться</span>';
+      //<input type="text" class="meet_comment_trainee_time form-control form-control-sm d-inline-block" value="'
+      //+ str[i]["comment_train"] + '" style="max-width: 72%; ' + hidden + '">'
     }
     // Добавляем контент
     $("#list_possible_records").html(html_time);
@@ -607,13 +608,12 @@ $(document).ready(function(){
                     disabled = "disabled";
                     checked = "checked";
                   }
-                  html_checkboxes += '<div class="mb-2"><label class="d-inline-block font-weight-normal pt-2 pb-2" for="checkbox_time_' + value_record["id"] + '" style="vertical-align: -middle; width: 105px;">' + value_record["time"]
+                  html_checkboxes += '<div class="mb-2"><span class="d-inline-block font-weight-normal pt-2 pb-2" style="vertical-align: middle; width: 105px;">' + value_record["time"]
                   + " — " + time_plus_minutes(value_record["time"], value_record["duration"])
-                  + '</label><input id="checkbox_time_' + value_record["id"] + '" type="checkbox" class="pl-2 pb-2 meet_checked ml-2 mr-3" data-id="' + value_record["id"]
+                  + '</span><span id="checkbox_time_' + value_record["id"] + '" class="pb-2 meet_checked mr-3 cursor-pointer link_custom" data-id="' + value_record["id"]
                   + '" data-from="' + value_record["time"] + '" data-to="' + time_plus_minutes(value_record["time"], value_record["duration"])
                   + '" data-date="'+value_record["date"]+'" style="vertical-align: middle;" ' + checked + ' ' + disabled
-                  + '><input type="text" class="meet_comment_trainee_time form-control form-control-sm d-inline-block" value="'
-                  + value_record["comment_train"] + '" style="max-width: 67%; vertical-align: middle; ' + hidden + '"></div>';
+                  + '>Записаться</span>';                  
                 }
               }
             }

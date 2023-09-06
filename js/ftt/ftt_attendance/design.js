@@ -46,12 +46,12 @@ if ($(window).width()<=769) {
   $(".comment_mbl").show();
   $("#comment_modal").attr("style", "font-size: 16px !important");
   $("#modalAddEdit label").attr("style", "font-size: 16px !important");
-  
+
   // ot
-  $("#bible_book_ot").css("min-width", "auto").css("max-width", "105px");
+  $("#bible_book_ot").css("min-width", "auto").css("max-width", "105px").css("font-size", "16px");
 
   // nt
-  $("#bible_book_nt").css("min-width", "auto").css("max-width", "105px");
+  $("#bible_book_nt").css("min-width", "auto").css("max-width", "105px").css("font-size", "16px");
 
   $("#show_me_start").attr("style", "min-width: 60px !important;");
 

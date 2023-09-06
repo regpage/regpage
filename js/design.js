@@ -407,7 +407,7 @@ if (window.location.pathname === "/application.php") {
 		$(".set_no").css("margin-left", "-65px");
 		$(".i-width-350-px").removeClass("i-width-350-px").addClass("i-width-long-one");
 		$("h5").removeClass("pl-3");
-		$("h6").removeClass("pl-3");		
+		$("h6").removeClass("pl-3");
 		$(".title_point").addClass("font-weight-bold");
 		$(".grey_text").css("font-size", "16px");
 		$(".form-check-label").css("font-weight", "normal");
@@ -475,7 +475,8 @@ if (window.location.pathname === "/application.php") {
 }
 
 // menu mobile the name of page
-if ($(window).width()<=769) {
+if ($(window).width()<=769) {	    
+	$(".dropdown-menu.pull-right").css("margin-left", "0px");
 	$(".show-name-list").show();
 	// main menu
 	$(".navbarmain").css('height', '52px');

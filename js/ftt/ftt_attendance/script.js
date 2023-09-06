@@ -514,7 +514,7 @@ function open_blank(el_this) {
     // customs select
     $(".dropdown-toggle-split").click(function (e) {
       let text = $(this).prev().prev().prev().prev().text();
-      if ((status_sheet === "1" && trainee_access) || (status_sheet !== "1" && !trainee_access) || status_sheet === "2") {
+      if ((status_sheet === "1" && trainee_access) || (status_sheet !== "1" && !trainee_access && $("#modalAddEdit").attr("data-member_key") !== window.adminId) || status_sheet === "2") {
         e.stopPropagation(); //|| (text.charAt(text.length-4) !== ":" && $(this).text() === "С")
       }
     });
@@ -638,13 +638,16 @@ function open_blank(el_this) {
       }
     });
 
-    if (status_sheet === "1" && trainee_access) {
+    if (status_sheet === "1" && (trainee_access || (!trainee_access && el_this.attr('data-member_key') === window.adminId))) {
       $('#modalAddEdit input').attr("disabled", true);
       $('#modalAddEdit select').attr("disabled", true);
       $('#send_blank').hide();
       $('#add_attendance_str').attr("disabled", true);
       $('#add_attendance_str').hide();
-    } else if (status_sheet === "0" && !trainee_access) {
+      $("#undo_attendance_str").prop("disabled", true);
+      $("#undo_attendance_str").hide();
+      $("#show_me_start").attr("disabled", true);
+    } else if (status_sheet === "0" && (!trainee_access && el_this.attr('data-member_key') !== window.adminId)) {
       $('#modalAddEdit input').attr("disabled", true);
       $('#modalAddEdit select').attr("disabled", true);
       $('#send_blank').hide();
@@ -655,9 +658,8 @@ function open_blank(el_this) {
       } else {
         $('#add_attendance_str').attr("style", "margin-right: 355px;");
       }
-
       $('#add_attendance_str').attr("disabled", false);
-      $('#add_attendance_str').show();
+      $('#add_attendance_str').show();      
     } else if (status_sheet === "2") {
       $('#modalAddEdit input').attr("disabled", true);
       $('#modalAddEdit select').attr("disabled", true);
@@ -667,8 +669,16 @@ function open_blank(el_this) {
        $('#send_blank').prop("disabled", true);
        $('#add_attendance_str').attr("disabled", true);
        $('#add_attendance_str').hide();
+       $("#show_me_start").attr("disabled", true);
+     } else if (status_sheet === "0" && (!trainee_access && el_this.attr('data-member_key') === window.adminId)) {
+       $('#modalAddEdit select').attr("disabled", false);
+       $('#modalAddEdit input').attr("disabled", false);
+       $('#send_blank').show();
+       $("#undo_attendance_str").hide();
+       $('#add_attendance_str').hide();
+       $("#show_me_start").attr("disabled", false);
      } else {
-     if (status_sheet === "1" && !trainee_access) {
+     if (status_sheet === "1" && (!trainee_access && el_this.attr('data-member_key') !== window.adminId)) {
        $('#send_blank').hide();
        $("#undo_attendance_str").prop("disabled", false);
        $("#undo_attendance_str").show();
@@ -702,7 +712,7 @@ function open_blank(el_this) {
 */
     // change fields
     $('#modalAddEdit input').change(function () { //, #modalAddEdit select
-      if (($("#modalAddEdit").attr("data-status") === "1" && trainee_access) || ($("#modalAddEdit").attr("data-status") !== "1" && !trainee_access) || $("#modalAddEdit").attr("data-status") === "2") {
+      if (($("#modalAddEdit").attr("data-status") === "1" && trainee_access) || ($("#modalAddEdit").attr("data-status") !== "1" && !trainee_access && $("#modalAddEdit").attr("data-member_key") !== window.adminId) || $("#modalAddEdit").attr("data-status") === "2") {
         showError("Данные не будут сохранены.");
         return;
       }
@@ -933,7 +943,7 @@ function open_blank(el_this) {
         .then(response => response.json())
         .then(commits => {
           $("#current_extra_help").find("[data-id="+$("#modalAddEdit").attr("data-id")+"]").attr("data-"+element.attr("data-field"), value);
-          console.log(commits.result);
+          //console.log(commits.result);
         });
       } else if ($(this).hasClass("select_reason")) {
         let is_reason;
@@ -1029,7 +1039,6 @@ function open_blank(el_this) {
       .then(response => response.json())
       .then(commits => {
         let reading_str = commits.result
-        console.log(reading_str);
 
        if (reading_str === 0) {
           // Нет старта и сегодняшней строки
@@ -1041,7 +1050,7 @@ function open_blank(el_this) {
           return;
         } else {
           let comma = "";
-          if (reading_str["book_nt"]) {
+          if (reading_str["book_nt"] && reading_str["book_ot"]) {
             comma = ",";
           }
           $(".reading_bible_title").text("Чтение Библии " + "(" + reading_str["book_ot"] + comma + " " + reading_str["book_nt"] +")");
@@ -1461,7 +1470,7 @@ function open_blank(el_this) {
               })
               .then(response => response.text())
               .then(commits => {
-                console.log(commits.result);
+                //console.log(commits.result);
               // location.reload();
               });
           } else {
@@ -1546,6 +1555,14 @@ function open_blank(el_this) {
       }
       $("#mdl_book_ot_start").val(ot[0]);
       $("#mdl_chapter_ot_start").val(ot[1]);
+      let found = bible_arr.find(e => e[0] === ot[0]);
+      if (found[1] === ot[1]) {
+        $("#mdl_ot_start").attr("disabled", false);
+        $("#mdl_ot_start").prop("checked", false);
+      } else {
+        $("#mdl_ot_start").attr("disabled", true);
+        $("#mdl_ot_start").prop("checked", true);
+      }
     }
     if (!$("#bible_book_nt").attr("disabled")) {
       if ($("#bible_book_nt").val() && $("#bible_book_nt").val() !== "0" && $("#bible_book_nt").val() !== "_none_") {
@@ -1555,6 +1572,19 @@ function open_blank(el_this) {
       }
       $("#mdl_book_nt_start").val(nt[0]);
       $("#mdl_chapter_nt_start").val(nt[1]);
+      let found = bible_arr.find(e => e[0] === nt[0]);
+      if (found[1] === nt[1]) {
+        $("#mdl_nt_start").attr("disabled", false);
+        $("#mdl_nt_start").prop("checked", false);
+      } else {
+        $("#mdl_nt_start").attr("disabled", true);
+        $("#mdl_nt_start").prop("checked", true);
+      }
+    }
+    if ($("#mdl_nt_start").prop("checked") && $("#mdl_ot_start").attr("disabled")) {
+      $("#set_start_reading_bible").attr("disabled", true);
+    } else {
+      $("#set_start_reading_bible").attr("disabled", false);
     }
   });
 
@@ -1661,7 +1691,7 @@ function open_blank(el_this) {
     fetch("ajax/ftt_reading_ajax.php?type=set_start_reading_bible" + param)
     .then(response => response.json())
     .then(commits => {
-      console.log(commits.result);
+      //console.log(commits.result);
       if (commits.result === "e001") {
         // error 001 некорректные входные данные
         showError("Запись не сохранена. Не корректные входные данные.");

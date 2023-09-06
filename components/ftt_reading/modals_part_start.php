@@ -8,6 +8,11 @@
       </div>
       <div class="modal-body">
         <div class="container">
+          <div class="row mb-2">
+              <div class="col-12">
+                <h6 class="">Выбор старта возможен если старта ранее не было или если текущая книга дочитана до последней главы</h6>
+              </div>
+          </div>
           <!-- ВЗ -->
           <div class="row mb-2">
               <div class="col-1">
@@ -35,7 +40,7 @@
                 </select>
               </div>
               <div class="col-5">
-                <select id="mdl_chapter_ot_start" class="form-control" data-field="chapter_ot">                  
+                <select id="mdl_chapter_ot_start" class="form-control" data-field="chapter_ot">
                   <?php
                   for ($i=1; $i <= $bible_books[0][1]; $i++) {
                     echo "<option value='{$i}'>{$i}";

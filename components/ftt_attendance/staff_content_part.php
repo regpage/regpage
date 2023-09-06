@@ -24,7 +24,7 @@
       <a class="nav-link <?php echo $tab_missed_class_active; ?>" data-toggle="tab" href="#missed_class_tab">
         Пропущенные занятия <?php echo $missed_class_statistics; ?>
       </a>
-    </li>    
+    </li>
   </ul>
   <!-- Tab panes -->
   <div id="tab_content_extra_help" class="tab-content">
@@ -111,7 +111,12 @@
             $list_access = '_all_';
           }
           $current_date_z = date("Y-m-d");
-          $data_for_list = getFttAttendanceSheetAndStrings($list_access, $filter_period_att, $serving_one_selected);
+          if ($serving_one_selected === '000010642') {
+            $data_for_list = getFttAttendanceSheetAndStrings('000010642', $filter_period_att);
+          } else {
+            $data_for_list = getFttAttendanceSheetAndStrings($list_access, $filter_period_att, $serving_one_selected);
+          }
+
           $counter_days = [];
           for ($i=0; $i < count($data_for_list); $i++) {
             if (isset($counter_days[$data_for_list[$i]['member_key']])) {

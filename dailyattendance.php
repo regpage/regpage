@@ -2,9 +2,9 @@
 //Автоматическое добавление строк для учёта практик (practices) выполняется по заданию (cron)
 // строку ниже заменить на config.php
 // Вывод ошибок на экран
-ini_set('display_errors', 1);
+/*ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+error_reporting(E_ALL);*/
 include_once 'config.php';
 //include_once 'logWriter.php'; не включать!
 include_once 'db/classes/schedule_class.php';
@@ -88,7 +88,7 @@ function db_newDailyAttendance () {
           while ($row = $max_id_tmp->fetch_assoc()) $max_id=$row['last_id'];
         }*/
       }
-      $id_new_string_block = db_query("UNLOCK TABLES;");      
+      $id_new_string_block = db_query("UNLOCK TABLES;");
 
       // **__** PERMISSIONS
       // Проверяем наличие разрешений для пользователя (permissions)

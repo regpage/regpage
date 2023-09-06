@@ -262,7 +262,7 @@ input[type='time'] {
   font-size: 14px;
 }
 
-#comment_modal {
+#comment_modal, #bible_book_ot, #bible_book_nt {
   font-size: 14px;
 }
 
