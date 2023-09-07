@@ -1,6 +1,6 @@
 <?php
 // reading bible page
-function set_start_reading_bible($member_key, $date, $chosen_book='', $book_ot='', $chapter_ot='', $footnotes_nt='', $book_nt='', $chapter_nt='', $footnotes_ot='')
+function set_start_reading_bible($member_key, $date, $chosen_book='', $book_ot='', $chapter_ot='', $footnotes_ot='', $book_nt='', $chapter_nt='', $footnotes_nt='')
 {
   global $db;
   $member_key = $db->real_escape_string($member_key);
@@ -11,7 +11,7 @@ function set_start_reading_bible($member_key, $date, $chosen_book='', $book_ot='
   $footnotes_ot = $db->real_escape_string($footnotes_ot);
   $book_nt = $db->real_escape_string($book_nt);
   $chapter_nt = $db->real_escape_string($chapter_nt);
-  $footnotes_ot = $db->real_escape_string($footnotes_ot);
+  $footnotes_nt = $db->real_escape_string($footnotes_nt);
   $condition_fields = '';
   $condition_value = '';
   $condition_updates = '';
