@@ -59,8 +59,12 @@ if ($ftt_access['group'] === 'staff' || $ftt_access['group'] === 'trainee') {
             } elseif ($ftt_access['group'] === 'trainee') {
               include_once 'components/ftt_fellowship/content_part.php';
             }
-          } elseif ($thispage === 'ftt_reading') {            
-            include_once 'components/ftt_reading/content_part.php';
+          } elseif ($thispage === 'ftt_reading') {
+            if ($ftt_access['group'] === 'staff') {
+              include_once 'components/ftt_reading/content_part_staff.php';
+            } elseif ($ftt_access['group'] === 'trainee') {
+              include_once 'components/ftt_reading/content_part.php';
+            }
           }
           ?>
 </div>

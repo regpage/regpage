@@ -156,5 +156,65 @@
   </div>
 </div>
 
+<!-- Отметка книг служащими -->
+<div class="modal fade" id="mdl_bible_check_book">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title">Прочитанные книги Библии</h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="row mb-3">
+          <div class="col">
+            <select id="ftr_trainee_reading_check_mbl" class="form-control">
+              <option value="_none_">Обучающиеся</option>
+              <?php foreach ($trainee_list as $key => $value):
+                /*$selected = '';
+                if ($key === $ftr_trainee_skip) {
+                  $selected = 'selected';
+                }*/
+                echo "<option value='{$key}' {$selected}>{$value}</option>";
+              endforeach; ?>
+            </select>
+          </div>
+        </div>
+        <div id="mdl_bible_books_check" class="row mb-3">
+          <div class="col-6">
+            <h5>ВЗ</h5>
+          </div>
+          <div class="col-6">
+            <h5>НЗ</h5>
+          </div>
+          <div class="col-3 pr-0" data-part="ot">
+            <?php
+            $bible_books = $bible_obj->get();
+            foreach ($bible_books as $key => $value) {
+              if ($key === 20) {
+                echo "</div><div class='col-3 pr-0' data-part='ot'>";
+              }
+              if ($key === 39) {
+                echo "</div><div class='col-3 pr-0' data-part='nt'>";
+              }
+              if ($key === 59) {
+                echo "</div><div class='col-3 pr-0' data-part='nt'>";
+              }
+              echo "<label class='mb-2'><input type='checkbox' id='mdl_book_check_{$key}' data-book='{$value[0]}' data-chapter='{$value[1]}'> {$value[0]}</label><br>";
+            }
+            ?>
+          </div>
+        </div>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success btn-sm" data-dismiss="modal">Сохранить</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ЧТЕНИЕ СТАРТ-->
 <?php include_once 'components/ftt_reading/modals_part_start.php'; ?>

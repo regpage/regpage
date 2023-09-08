@@ -4,6 +4,7 @@ include_once "ajax.php";
 
 // подключаем запросы
 include_once "../db/ftt/ftt_reading_db.php";
+include_once '../db/classes/ftt_reading/bible.php';
 
 $adminId = db_getMemberIdBySessionId (session_id());
 
@@ -16,6 +17,18 @@ if (isset($_GET['type']) && $_GET['type'] === 'set_start_reading_bible') {
 // bible reading set book & chapter
 if (isset($_GET['type']) && $_GET['type'] === 'set_reading_bible') {
   echo json_encode(["result"=>set_reading_bible($_GET['member_key'], $_GET['date'], $_GET['book_field'], $_GET['book'], $_GET['chapter'])]);
+  exit();
+}
+
+// bible reading get book & chapter statistics
+if (isset($_GET['type']) && $_GET['type'] === 'get_read_book') {
+  echo json_encode(["result"=>get_read_book($_GET['member_key'])]);
+  exit();
+}
+
+// bible reading set book statistics
+if (isset($_GET['type']) && $_GET['type'] === 'set_read_book') {
+  echo json_encode(["result"=>set_read_book($_GET['member_key'], $_GET['part'], $_GET['book'], $_GET['chapter'], $_GET['checked'])]);
   exit();
 }
 

@@ -108,4 +108,50 @@ $(document).ready(function(){
     });
   });
 
+  $("#ftr_trainee_reading_check_mbl").change(function () {
+    $("#mdl_bible_books_check input").each(function () {
+      $(this).prop("checked", false);
+      $(this).prop("disabled", false);
+    });
+    fetch("ajax/ftt_reading_ajax.php?type=get_read_book&member_key=" + $(this).val())
+    .then(response => response.json())
+    .then(commits => {
+      let read_data = commits.result, disabled;
+      for (let i = 0; i < read_data.length; i++) {
+        if (read_data[i][2] === 1) {
+          $("#mdl_bible_books_check input[data-book='"+read_data[i][0]+"']").prop("disabled", true);
+        } else {
+          $("#mdl_bible_books_check input[data-book='"+read_data[i][0]+"']").prop("disabled", false);
+        }
+        $("#mdl_bible_books_check input[data-book='"+read_data[i][0]+"']").prop("checked", true);
+      }
+    });
+  });
+
+  $("#mdl_bible_books_check input").change(function () {
+    if ($("#ftr_trainee_reading_check_mbl").val() === "_none_") {
+      showError("Выберите обучающегося");
+      $(this).prop("checked", false);
+      return;
+    }
+    let query = "&member_key=" + $("#ftr_trainee_reading_check_mbl").val()
+    + "&part=" + $(this).parent().parent().attr("data-part")
+    + "&book=" + $(this).attr("data-book")
+    + "&chapter=" + $(this).attr("data-chapter")
+    + "&checked=" + $(this).prop("checked");
+    fetch("ajax/ftt_reading_ajax.php?type=set_read_book" + query)
+    .then(response => response.json())
+    .then(commits => {
+    });
+  });
+
+  $("#mdl_bible_check_book").on("hide.bs.modal", function () {
+    $("#mdl_bible_books_check input").each(function () {
+      $(this).prop("checked", false);
+      $(this).prop("disabled", false);
+    });
+    $("#ftr_trainee_reading_check_mbl").val("_none_");
+  });
+
+  //**** DOCUMENT READY END ****//
 });
