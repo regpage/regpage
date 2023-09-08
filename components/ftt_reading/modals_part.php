@@ -209,7 +209,7 @@
       </div>
       <!-- Modal footer -->
       <div class="modal-footer">
-        <button type="button" class="btn btn-success btn-sm" data-dismiss="modal">Сохранить</button>
+        <!-- <button type="button" class="btn btn-success btn-sm" data-dismiss="modal">Сохранить</button>-->
         <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Закрыть</button>
       </div>
     </div>

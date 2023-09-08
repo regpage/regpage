@@ -132,24 +132,6 @@
   </div>
 </div>
 
-<!-- ОБЩЕНИЕ ПОДТВЕРЖДЕНИЕ -->
-<div id="edit_meet_blank_confirm" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" data-id="" data-trainee="">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="mb-0"></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="font-size: 1.5rem;">x</button>
-      </div>
-      <div class="modal-footer">
-        <div class="text-right w-100">
-          <button id="send_meet_blank" class="btn btn-sm btn-success">Записаться</button>
-          <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Отменить</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- ОБЩЕНИЕ ОТМЕНА-->
 <div id="edit_meet_blank_record" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" data-id="" data-member_key="" data-serving_one="" data-status="">
   <div class="modal-dialog">
@@ -210,19 +192,20 @@
 </div>
 
 <!-- ПОДТВЕРЖДЕНИЕ ЗАПИСИ ВРЕМЕНИ -->
-<div id="edit_meet_blank_record_comfirme" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" data-id="" data-member_key="" data-serving_one="" data-status="">
+<div id="edit_meet_blank_record_confirm" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" data-id="" data-member_key="" data-serving_one="" data-status="">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="mb-0">Записаться?</h5>
+        <h5 class="mb-0">Подтвердите запись</h5>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="font-size: 1.5rem;">x</button>
       </div>
       <div class="modal-body">
-        <input type="text" class="meet_comment_trainee_time form-control form-control-sm d-inline-block" placeholder="">
+        <span id="time_record_for_success"></span>
+        <input type="text" class="meet_comment_trainee_time form-control form-control-sm d-inline-block" placeholder="Ваш комментарий здесь">
       </div>
       <div class="modal-footer">
         <div class="text-right w-100">
-          <button id="undo_meet_blank" class="btn btn-sm btn-danger">Отменить</button>
+          <button id="confirm_meet_record" class="btn btn-sm btn-success">Записаться</button>
           <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Закрыть</button>
         </div>
       </div>

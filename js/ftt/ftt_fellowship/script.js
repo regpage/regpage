@@ -588,10 +588,10 @@ $(document).ready(function(){
             let str_id = value_records.find(str => str.date === $(this).attr("data-date"));
             if (str_id !== undefined) {
               if (first) {
-                html_checkboxes = '<div class="mb-2"><strong class="pt-2 pb-2">' + dateStrFromyyyymmddToddmm($(this).attr("data-date")) + '</strong><br>';
-                html_checkboxes += '<strong class="pb-2">' + serving_ones_list[variable] + '</strong></div>';
+                html_checkboxes = '<div class="mb-2"><strong class="pt-2 pb-2 date_record_header">' + dateStrFromyyyymmddToddmm($(this).attr("data-date")) + '</strong><br>';
+                html_checkboxes += '<strong class="pb-2 name_record_header">' + serving_ones_list[variable] + '</strong></div>';
               } else {
-                html_checkboxes += '<div class="mt-3 mb-2"><strong class="pb-2">' + serving_ones_list[variable] + '</strong></div>';
+                html_checkboxes += '<div class="mt-3 mb-2"><strong class="pb-2 name_record_header">' + serving_ones_list[variable] + '</strong></div>';
               }
               first = 0;
             }
@@ -613,16 +613,23 @@ $(document).ready(function(){
                   + '</span><span id="checkbox_time_' + value_record["id"] + '" class="pb-2 meet_checked mr-3 cursor-pointer link_custom" data-id="' + value_record["id"]
                   + '" data-from="' + value_record["time"] + '" data-to="' + time_plus_minutes(value_record["time"], value_record["duration"])
                   + '" data-date="'+value_record["date"]+'" style="vertical-align: middle;" ' + checked + ' ' + disabled
-                  + '>Записаться</span>';                  
+                  + '>Записаться</span>';
                 }
               }
             }
           }
         }
         $("#list_possible_records").html(html_checkboxes);
-        // Сохраняем значение
-        $(".meet_checked").change(function () { // + kbk
-          let trainee = window.adminId;
+
+        // ОТКРЫВАЕМ ОКНО ПОДТВЕРЖДЕНИЕ
+        //*** З А КО Н Ч И Л ЗДЕСЬ **//
+        $(".meet_checked").click(function () { // + kbk
+          $("#edit_meet_blank_record_confirm").modal("show");
+          // не понятно как определять служащего, с датой понятно
+          //$("#time_record_for_success").text($(this).parent().prev().find(".date_record_header").text()
+          //+ " " + $(this).parent().prev().find(".name_record_header").text() + " " + $(this).prev().text());
+
+          /* let trainee = window.adminId;
           let checked_time = 0;
           if ($(this).prop("checked")) {
             checked_time = 1;
@@ -654,7 +661,7 @@ $(document).ready(function(){
             } else {
               showHint("Запись на общение отменена.");
             }
-          });
+          });*/
         });
         // открываем окно
         $("#mdl_meet_trainee_to_record").modal("show");

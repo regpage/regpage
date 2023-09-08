@@ -5,10 +5,10 @@
 -->
 
 <div class="container">
-  <div id="" class="row pt-3">
+  <br>
+  <div id="" class="row">
     <button class="btn btn-sm btn-primary" type="button" data-toggle="modal" data-target="#mdl_bible_check_book">Отметить прочитанные книги</button>
   </div>
-
 
   <div id="" class="row border-bottom pb-2 d-none">
     <div class="container border mt-3 mb-3 p-2" style="max-width: 400px;">
