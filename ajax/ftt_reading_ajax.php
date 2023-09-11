@@ -16,7 +16,7 @@ if (isset($_GET['type']) && $_GET['type'] === 'set_start_reading_bible') {
 
 // bible reading set book & chapter
 if (isset($_GET['type']) && $_GET['type'] === 'set_reading_bible') {
-  echo json_encode(["result"=>set_reading_bible($_GET['member_key'], $_GET['date'], $_GET['book_field'], $_GET['book'], $_GET['chapter'])]);
+  echo json_encode(["result"=>set_reading_bible($_GET['member_key'], $_GET['date'], $_GET['book_field'], $_GET['book'], $_GET['chapter'], $_GET['notes_ot'], $_GET['notes_nt'])]);
   exit();
 }
 

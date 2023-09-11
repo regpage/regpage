@@ -49,7 +49,7 @@ function set_start_reading_bible($member_key, $date, $chosen_book='', $book_ot='
   return $res;
 }
 
-function set_reading_bible($member_key, $date, $book_field, $book, $chapter)
+function set_reading_bible($member_key, $date, $book_field, $book, $chapter, $notes_ot, $notes_nt)
 {
   global $db;
   $member_key = $db->real_escape_string($member_key);
@@ -68,17 +68,20 @@ function set_reading_bible($member_key, $date, $book_field, $book, $chapter)
   // заполняем второй блок если он пустой (при создании)
   if ($book_field === 'book_ot') {
     $chapter_field = 'chapter_ot';
-
+    $notes_ot_field = 'read_footnotes_ot';
+    $footnotes = $notes_ot;
   } else {
     $chapter_field = 'chapter_nt';
+    $notes_ot_field = 'read_footnotes_nt';
+    $footnotes = $notes_nt;
   }
 
   if (!isset($result['id'])) {
-    $res = db_query("INSERT INTO `ftt_bible` (`member_key`, `date`, `$book_field`, `$chapter_field`)
-     VALUES ('$member_key', '$date', '$book', '$chapter')");
+    $res = db_query("INSERT INTO `ftt_bible` (`member_key`, `date`, `$book_field`, `$chapter_field`, `$notes_ot_field`)
+     VALUES ('$member_key', '$date', '$book', '$chapter', '$footnotes')");
   } else {
     $res = db_query("UPDATE `ftt_bible`
-      SET `member_key` = '$member_key', `$book_field` = '$book', `$chapter_field` = '$chapter'
+      SET `member_key` = '$member_key', `$book_field` = '$book', `$chapter_field` = '$chapter', `$notes_ot_field` = '$footnotes'
       WHERE `member_key` = '$member_key' AND `date` = '$date' AND `start` != 1");
   }
 

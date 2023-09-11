@@ -1,5 +1,8 @@
 <?php
 // Сортировка
+echo "<br>Раздел в разработке";
+exit;
+
 if (isset($_COOKIE['meet_sorting'])) {
   $meet_curent_sorting = $_COOKIE['meet_sorting'];
   $fa_sort_arr = explode('-', $meet_curent_sorting);

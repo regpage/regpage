@@ -70,7 +70,9 @@ $(document).ready(function(){
 
      let data = "&member_key=" + $("#modalAddEdit").attr("data-member_key")
      + "&date=" + $("#modalAddEdit").attr("data-date")
-     + "&book_field=" + field + "&book=" + book + "&chapter=" + chapter;
+     + "&book_field=" + field + "&book=" + book + "&chapter=" + chapter
+     + "&notes_ot=" + $(".reading_bible_title").attr("data-notes_ot")
+     + "&notes_nt=" + $(".reading_bible_title").attr("data-notes_nt");
      fetch('ajax/ftt_reading_ajax.php?type=set_reading_bible' + data)
      .then(response => response.json())
      .then(commits => {
@@ -1691,7 +1693,7 @@ function open_blank(el_this) {
       text_nt = $("#mdl_book_nt_start").val();
       if ($("#mdl_footnotes_nt_start").prop("checked")) {
         text_nt += " с прим.";
-      }      
+      }
     } else {
       showError("Выберите книгу.");
       return;
