@@ -1065,6 +1065,8 @@ function open_blank(el_this) {
           $(".reading_bible_title").text("Чтение Библии " + "(" + reading_str["book_ot"] + comma + " " + notes_ot + " " + reading_str["book_nt"] + " " + notes_nt + ")");
           $(".reading_bible_title").attr("data-notes_ot", reading_str["read_footnotes_ot"]);
           $(".reading_bible_title").attr("data-notes_nt", reading_str["read_footnotes_nt"]);
+          $(".reading_bible_title").attr("data-book_ot", reading_str["book_ot"]);
+          $(".reading_bible_title").attr("data-book_nt", reading_str["book_nt"]);
         }
 
         if (reading_str['book_ot'] && $("#modalAddEdit").attr("data-status") === "0") {
@@ -1598,6 +1600,60 @@ function open_blank(el_this) {
     $("#set_start_reading_bible").attr("disabled", true);
   });
 
+  $("#bible_book_ot, #bible_book_nt").change(function (e) {
+    /* НУЖНО ЕДИНОЕ ПРАВИЛО Данные для статистики это строки с последней главой без дат */
+    /* ПРЕДУСМОТРЕТЬ ОТКАТ */
+    /*checked это откат, то есть пролистывание назад */
+    if (!$(this).val() || $(this).val() == 0 || $(this).val() === "_none_") {
+      return;
+    }
+    let book = split_book($(this).val());
+    let prev_book, part, notes;
+    let found = bible_arr.find(e => e[0] === book[0]);
+    if ($(this).attr("id") === "bible_book_ot") {
+      prev_book = $(".reading_bible_title").attr("data-book_ot");
+      part = "ot";
+      notes = $(".reading_bible_title").attr("data-notes_ot");
+    } else {
+      prev_book = $(".reading_bible_title").attr("data-book_nt");
+      part = "nt";
+      notes = $(".reading_bible_title").attr("data-notes_nt");
+    }
+    if (prev_book !== book[0]) {
+      books = read_books_check(book[0], prev_book);
+      books = books.join();
+      let query = "member_key=" + $("#modalAddEdit").attr("data-member_key")
+      + "&part=" + part
+      + "&books=" + books
+      + "&notes=" + notes
+      + "&checked=1";
+      fetch("ajax/ftt_reading_ajax.php?type=set_read_book_by_book&" + query)
+      .then(response => response.text())
+      .then(commits => {
+        console.log(commits.resilt);
+        if (part === "ot") {
+          $(".reading_bible_title").attr("data-book_ot", book);
+        } else {
+          $(".reading_bible_title").attr("data-book_nt", book);
+        }
+      });
+    }
+  });
+
+  function read_books_check(current, previous) {
+    let sim_1 = false;
+    let books = [];
+    for (let i = 0; i < bible_arr.length; i++) {
+      if (bible_arr[i][0] === current) {
+        break;
+      } else if (bible_arr[i][0] === previous || sim_1) {
+        sim_1 = true;
+        books.push(i);
+      }
+    }
+    return books;
+  }
+
   function split_book(text) {
     let book_slice = text;
     let book, chapter;
@@ -1702,6 +1758,8 @@ function open_blank(el_this) {
     $(".reading_bible_title").text("Чтение Библии " + "(" + text_ot + comma + text_nt +")");
     $(".reading_bible_title").attr("data-notes_ot", $("#mdl_footnotes_ot_start").prop("checked") ? 1 : 0);
     $(".reading_bible_title").attr("data-notes_nt", $("#mdl_footnotes_nt_start").prop("checked") ? 1 : 0);
+    $(".reading_bible_title").attr("data-book_ot", $("#mdl_book_ot_start").val());
+    $(".reading_bible_title").attr("data-book_nt", $("#mdl_book_nt_start").val());
     let footnotes_ot = $("#mdl_footnotes_ot_start").prop("checked") ? 1 : 0;
     let footnotes_nt = $("#mdl_footnotes_nt_start").prop("checked") ? 1 : 0;
     let param = "&member_key=" + $("#modalAddEdit").attr("data-member_key") +
@@ -1744,15 +1802,16 @@ function open_blank(el_this) {
   function render_bible_chapters(book, chapter, selector) {
     let sim_1, counter_1 = 0;
     let options = "<option value='_none_' disabled selected>";
-    if (!book) {
-      $(selector).html(options);
-      return;
-    }
     if (selector === "#bible_book_ot") {
       options += "ВЗ"
     } else {
       options += "НЗ"
     }
+    if (!book) {
+      $(selector).html(options);
+      return;
+    }
+
     options += "<option value='0'>нет";
     for (let i = 0; i < bible_arr.length; i++) {
       if (sim_1 === 2) {
@@ -2805,8 +2864,8 @@ function open_blank(el_this) {
     .then(response => response.json())
     .then(data => {
       if (data) {
-        element.hide();
-        element.prev().hide();
+        element.prev().remove();
+        element.remove();
         $("div[data-id='" + id + "']").attr("data-file","");
       }
     });

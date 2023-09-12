@@ -237,6 +237,7 @@ function set_read_book($member_key, $part, $book, $chapter, $checked)
   $member_key = $db->real_escape_string($member_key);
   $part = $db->real_escape_string($part);
   $book = $db->real_escape_string($book);
+  $chapter = $db->real_escape_string($chapter);
   $checked = $db->real_escape_string($checked);
   $id_check = '';
   $id_read = '';
@@ -266,5 +267,45 @@ function set_read_book($member_key, $part, $book, $chapter, $checked)
       $res = db_query("DELETE FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `date` = '0000-00-00' AND `{$book_field}` = '{$book}'");
     }
   }
+  return $res;
+}
+
+function set_read_book_by_book($member_key, $part, $books, $notes, $checked)
+{
+  global $db;
+  $bible_obj = new Bible;
+  $member_key = $db->real_escape_string($member_key);
+  $part = $db->real_escape_string($part);
+  $books = $db->real_escape_string($books);
+  $notes = $db->real_escape_string($notes);
+  $checked = $db->real_escape_string($checked);
+  $bible_books = $bible_obj->get();
+  $books = explode(',', $books);
+
+  if ($part === 'ot') {
+    $book_field = 'book_ot';
+    $chapters_field = 'chapter_ot';
+    $notes_field = 'read_footnotes_ot';
+  } else {
+    $book_field = 'book_nt';
+    $chapters_field = 'chapter_nt';
+    $notes_field = 'read_footnotes_nt';
+  }
+
+  for ($i=0; $i < count($books); $i++) {
+    $id_check = '';
+    $bible_book = $bible_books[$books[$i]];
+    // check
+    $res = db_query("SELECT `id`
+      FROM `ftt_bible`
+      WHERE `member_key` = '{$member_key}' AND `date` = '0000-00-00' AND `{$book_field}` = '{$bible_book[0]}'
+      AND `{$chapters_field}` = '{$bible_book[1]}' AND `{$notes_field}` = '{$notes}'");
+    while ($row = $res->fetch_assoc()) $id_check = $row['id'];
+    // set
+    if (empty($id_check)) {
+      $res = db_query("INSERT INTO `ftt_bible` (`member_key`, `{$book_field}`, `{$chapters_field}`, `{$notes_field}`) VALUES ('{$member_key}', '{$bible_book[0]}', '{$bible_book[1]}', '{$notes}')");
+    }
+  }
+
   return $res;
 }
