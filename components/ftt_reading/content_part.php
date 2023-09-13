@@ -163,6 +163,26 @@
       <div class="row mb-3">
         <div class="col-12">
           <?php
+          $start_data = get_start_position($memberId);
+          $notes_ot = '';
+          $notes_nt = '';
+          if (isset($start_data['book_ot']) && !empty($start_data['book_ot'])) {
+            if ($start_data['read_footnotes_ot'] == 1) {
+              $notes_ot = '(с примечаниями)';
+            } else {
+              $notes_ot = '(без примечаний)';
+            }
+          }
+          if ($start_data['book_nt']) {
+            if ($start_data['read_footnotes_nt'] == 1) {
+              $notes_nt = '(с примечаниями)';
+            } else {
+              $notes_nt = '(без примечаний)';
+            }
+          }
+          ?>
+          <h4>Ветхий завет <?php echo $notes_ot; ?></h4>
+          <?php
           $read_bible_books = get_read_book($memberId);
           $bible_books = $bible_obj->get();
           $bible_books_no_space = $bible_obj->getNoSpace();
@@ -175,7 +195,7 @@
               }
             }
             if ($key === 39) {
-              echo "</div></div><div class='row mb-3'><div class='col-12'>";
+              echo "</div></div><div class='row mb-3'><div class='col-12'><h4>Новый завет {$notes_nt}</h4>";
             }
             echo "<span class='{$green} mr-1 mb-1 p-1' data-book='{$bible_books[$key][0]}'>{$value[0]} </span>"; //custom_link
           }
