@@ -34,7 +34,7 @@ if (isset($_GET['type']) && $_GET['type'] === 'set_read_book') {
 
 // bible reading set book statistics
 if (isset($_GET['type']) && $_GET['type'] === 'set_read_book_by_book') {
-  echo json_encode(["result"=>set_read_book_by_book($_GET['member_key'], $_GET['part'], $_GET['books'], $_GET['notes'], $_GET['checked'])]);
+  echo json_encode(["result"=>set_read_book_by_book($_GET['member_key'], $_GET['part'], $_GET['books'], $_GET['notes'], $_GET['set'])]);
   exit();
 }
 

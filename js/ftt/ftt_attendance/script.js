@@ -1091,12 +1091,17 @@ function open_blank(el_this) {
         render_bible_chapters(reading_str["book_nt"], reading_str['chapter_nt'], "#bible_book_nt");
 
         // устанавливаем значения
+        // reading_str['today_ot'] должен быть 1 если запись существует и она === 0
         if (reading_str['chapter_ot'] && reading_str['today_ot']) {
           $("#bible_book_ot").val(reading_str["book_ot"] + " " + reading_str['chapter_ot']);
-        }
+        } /*else if(reading_str['chapter_ot'] && reading_str['chapter_ot'] !== "0" && !reading_str['today_ot']) {
+          $("#bible_book_ot").val(0);
+        }*/
         if (reading_str['chapter_nt'] && reading_str['today_nt']) {
           $("#bible_book_nt").val(reading_str["book_nt"] + " " + reading_str['chapter_nt']);
-        }
+        } /*else if(reading_str['chapter_nt'] && reading_str['chapter_nt'] !== "0" && !reading_str['today_nt']) {
+          // $("#bible_book_nt").val(0);
+        }*/
 
         if (reading_str['start_today'] == 1) {
           $("#bible_book_ot").attr("disabled", true).css("background-color", "#f8f9fa");
@@ -1608,7 +1613,7 @@ function open_blank(el_this) {
       return;
     }
     let book = split_book($(this).val());
-    let prev_book, part, notes;
+    let prev_book, part, notes, set, id_prev_book;
     let found = bible_arr.find(e => e[0] === book[0]);
     if ($(this).attr("id") === "bible_book_ot") {
       prev_book = $(".reading_bible_title").attr("data-book_ot");
@@ -1620,21 +1625,28 @@ function open_blank(el_this) {
       notes = $(".reading_bible_title").attr("data-notes_nt");
     }
     if (prev_book !== book[0]) {
+      id_prev_book = get_id_book(prev_book);
+      id_curr_book = get_id_book(book[0]);
       books = read_books_check(book[0], prev_book);
+      if (id_curr_book > id_prev_book) {
+        set = 1;
+      } else if (id_curr_book < id_prev_book) {
+        set = 0;
+      }
       books = books.join();
       let query = "member_key=" + $("#modalAddEdit").attr("data-member_key")
       + "&part=" + part
       + "&books=" + books
       + "&notes=" + notes
-      + "&checked=1";
+      + "&set=" + set;
       fetch("ajax/ftt_reading_ajax.php?type=set_read_book_by_book&" + query)
       .then(response => response.text())
       .then(commits => {
         console.log(commits.resilt);
         if (part === "ot") {
-          $(".reading_bible_title").attr("data-book_ot", book);
+          $(".reading_bible_title").attr("data-book_ot", book[0]);
         } else {
-          $(".reading_bible_title").attr("data-book_nt", book);
+          $(".reading_bible_title").attr("data-book_nt", book[0]);
         }
       });
     }
@@ -1643,6 +1655,7 @@ function open_blank(el_this) {
   function read_books_check(current, previous) {
     let sim_1 = false;
     let books = [];
+    console.log(previous);
     for (let i = 0; i < bible_arr.length; i++) {
       if (bible_arr[i][0] === current) {
         break;
@@ -1651,7 +1664,29 @@ function open_blank(el_this) {
         books.push(i);
       }
     }
+    if (books.length === 0) {
+      sim_1 = false;      
+      for (let i = 0; i < bible_arr.length; i++) {
+        if (bible_arr[i][0] === previous) {
+          break;
+        } else if (bible_arr[i][0] === current || sim_1) {
+          sim_1 = true;
+          books.push(i);
+        }
+      }
+    }
     return books;
+  }
+
+  function get_id_book(book) {
+    let id = "";
+    for (let i = 0; i < bible_arr.length; i++) {
+      if (bible_arr[i][0] === book) {
+        id = i;
+        break;
+      }
+    }
+    return id;
   }
 
   function split_book(text) {

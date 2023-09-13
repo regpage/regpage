@@ -60,7 +60,7 @@ function getServiceOnesWithTrainees ()
 
     // ГРУППЫ Найти по ключу и если нет добавить
     if (count($gospelTeamReportData) > 0 || !empty($sOteam)) {
-      $gospelText = 'Статистика благовестия за неделю с ' . date("d.m", mktime(0, 0, 0, date("m"), date("d")-7)) . ' по ' . date("d.m", mktime(0, 0, 0, date("m"), date("d")-1)) .' (со среды по вторник):<br><br>';
+      $gospelText = 'Статистика благовестия за неделю с ' . date("d.m", mktime(0, 0, 0, date("m"), date("d")-7)) . ' по ' . date("d.m", mktime(0, 0, 0, date("m"), date("d")-1)) ." (со среды по вторник):<br><br>";
       if (count($gospelTeamReportData) == 0) {
         foreach ($sOGroups as $key_all_group => $value_all_group) {
           $gospelTeamReportData[] = array('gospel_group' => $value_all_group, 'flyers' => 0, 'people' => 0, 'prayers' => 0, 'baptism' => 0, 'meets_last' => 0, 'meets_current' => 0, 'meetings_last' => 0, 'meetings_current' => 0, 'homes' => 0);
@@ -77,7 +77,7 @@ function getServiceOnesWithTrainees ()
 
       if (count($gospelTextData) > 0 || count($sOTrainees) > 0) {
         if (empty($gospelText)) {
-          $gospelText = 'Статистика благовестия за неделю с ' . date("d.m", mktime(0, 0, 0, date("m"), date("d")-7)) . ' по ' . date("d.m", mktime(0, 0, 0, date("m"), date("d")-1)) . ' (со среды по вторник):<br><br>';
+          $gospelText = 'Статистика благовестия за неделю с ' . date("d.m", mktime(0, 0, 0, date("m"), date("d")-7)) . ' по ' . date("d.m", mktime(0, 0, 0, date("m"), date("d")-1)) . " (со среды по вторник):<br><br>";
         }
         $trainePrepare = [];
         foreach ($gospelTextData as $key_1 => $value_1) {
@@ -144,7 +144,7 @@ function getServiceOnesWithTrainees ()
         $gospelText .= "<br><span {$colorRedGrp}>Группа ";
          $gospelText .= $key_1 . ': Л' . $value_1[0] . ', Б' . $value_1[1] . ', М' . $value_1[2];
          $gospelText .= ', К' .$value_1[3] . ', В' . (intval($value_1[4]) + intval($value_1[5]));
-         $gospelText .= ', С' . (intval($value_1[6]) + intval($value_1[7])) . ', Д' . $value_1[8] . '</span><br>';
+         $gospelText .= ', С' . (intval($value_1[6]) + intval($value_1[7])) . ', Д' . $value_1[8] . "</span><br>";
 
          // обучающиеся html
          foreach ($statisticPersonal as $key_2 => $value_2) {
@@ -159,10 +159,10 @@ function getServiceOnesWithTrainees ()
          }
       }
 
-      $gospelText .= '<br>';
-      $gospelText .= '<b>Сокращения:</b><br><br>Л — сколько <b>л</b>истовок раздали<br>Б — скольким людям <b>б</b>лаговествовали<br>М — сколько человек по<b>м</b>олились<br>';
-      $gospelText .= 'К — сколько человек <b>к</b>рещено<br>В — сколько было <b>в</b>стреч с новичками<br>С — сколько новичков было на <b>с</b>обрании<br>Д — сколько <b>д</b>омов святых посетили<br>';
-      $gospelText .= '<br>В — сколько было <b>в</b>ыходов на благовестие<br>Н — сколько <b>н</b>овых контактов по телефону<br>П — сколько <b>п</b>овторных контактов по телефону<br>';
+      $gospelText .= "<br>";
+      $gospelText .= "<b>Сокращения:</b><br><br>Л — сколько <b>л</b>истовок раздали<br>Б — скольким людям <b>б</b>лаговествовали<br>М — сколько человек по<b>м</b>олились<br>";
+      $gospelText .= "К — сколько человек <b>к</b>рещено<br>В — сколько было <b>в</b>стреч с новичками<br>С — сколько новичков было на <b>с</b>обрании<br>Д — сколько <b>д</b>омов святых посетили<br>";
+      $gospelText .= "<br>В — сколько было <b>в</b>ыходов на благовестие<br>Н — сколько <b>н</b>овых контактов по телефону<br>П — сколько <b>п</b>овторных контактов по телефону<br>";
 
     }
 
@@ -176,11 +176,11 @@ function getServiceOnesWithTrainees ()
     //Emailing::send('info@new-constellation.ru', $topic, $gospelText);
 
     if ($gospelText) {
-      $success .= "$value - статистика благовестия - success<br>";
+      $success .= "$value - статистика благовестия - success\r\n";
       //Emailing::send('info@new-constellation.ru', $topic, $gospelText);
       Emailing::send_by_key($value, $topic, $gospelText);
     } else {
-      $success .= "$value - статистика благовестия - failure<br>";
+      $success .= "$value - статистика благовестия - failure\r\n";
     }
   }
 

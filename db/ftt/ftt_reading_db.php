@@ -270,7 +270,7 @@ function set_read_book($member_key, $part, $book, $chapter, $checked)
   return $res;
 }
 
-function set_read_book_by_book($member_key, $part, $books, $notes, $checked)
+function set_read_book_by_book($member_key, $part, $books, $notes, $set)
 {
   global $db;
   $bible_obj = new Bible;
@@ -278,7 +278,7 @@ function set_read_book_by_book($member_key, $part, $books, $notes, $checked)
   $part = $db->real_escape_string($part);
   $books = $db->real_escape_string($books);
   $notes = $db->real_escape_string($notes);
-  $checked = $db->real_escape_string($checked);
+  $set = $db->real_escape_string($set);
   $bible_books = $bible_obj->get();
   $books = explode(',', $books);
 
@@ -292,18 +292,27 @@ function set_read_book_by_book($member_key, $part, $books, $notes, $checked)
     $notes_field = 'read_footnotes_nt';
   }
 
-  for ($i=0; $i < count($books); $i++) {
-    $id_check = '';
-    $bible_book = $bible_books[$books[$i]];
-    // check
-    $res = db_query("SELECT `id`
-      FROM `ftt_bible`
-      WHERE `member_key` = '{$member_key}' AND `date` = '0000-00-00' AND `{$book_field}` = '{$bible_book[0]}'
+  if ($set == 1) {
+    for ($i=0; $i < count($books); $i++) {
+      $id_check = '';
+      $bible_book = $bible_books[$books[$i]];
+      // check
+      $res = db_query("SELECT `id`
+        FROM `ftt_bible`
+        WHERE `member_key` = '{$member_key}' AND `date` = '0000-00-00' AND `{$book_field}` = '{$bible_book[0]}'
+        AND `{$chapters_field}` = '{$bible_book[1]}' AND `{$notes_field}` = '{$notes}'");
+      while ($row = $res->fetch_assoc()) $id_check = $row['id'];
+      // set
+      if (empty($id_check)) {
+        $res = db_query("INSERT INTO `ftt_bible` (`member_key`, `{$book_field}`, `{$chapters_field}`, `{$notes_field}`) VALUES ('{$member_key}', '{$bible_book[0]}', '{$bible_book[1]}', '{$notes}')");
+      }
+    }
+  } else {
+    for ($i=0; $i < count($books); $i++) {
+      $bible_book = $bible_books[$books[$i]];
+      // dlt
+      $res = db_query("DELETE FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `date` = '0000-00-00' AND `{$book_field}` = '{$bible_book[0]}'
       AND `{$chapters_field}` = '{$bible_book[1]}' AND `{$notes_field}` = '{$notes}'");
-    while ($row = $res->fetch_assoc()) $id_check = $row['id'];
-    // set
-    if (empty($id_check)) {
-      $res = db_query("INSERT INTO `ftt_bible` (`member_key`, `{$book_field}`, `{$chapters_field}`, `{$notes_field}`) VALUES ('{$member_key}', '{$bible_book[0]}', '{$bible_book[1]}', '{$notes}')");
     }
   }
 
