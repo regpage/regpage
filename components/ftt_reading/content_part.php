@@ -157,17 +157,27 @@
       </div> -->
     </div>
   </div>
+  <!-- СПИСОК КНИГ БИБЛИИ -->
   <div id="" class="row">
     <div class="container text-center mt-3"> <!-- style="max-width: 600px;"-->
       <div class="row mb-3">
         <div class="col-12">
           <?php
+          $read_bible_books = get_read_book($memberId);
           $bible_books = $bible_obj->get();
-          foreach ($bible_books as $key => $value) {
+          $bible_books_no_space = $bible_obj->getNoSpace();
+          foreach ($bible_books_no_space as $key => $value) {
+            $green = '';
+            for ($i=0; $i < count($read_bible_books); $i++) {
+              if ($bible_books[$key][0] === $read_bible_books[$i][0]) {
+                $green = 'bg_green';
+                break;
+              }
+            }
             if ($key === 39) {
               echo "</div></div><div class='row mb-3'><div class='col-12'>";
             }
-            echo "<span class='custom_link' value='{$value[0]}'>{$value[0]} </span>";
+            echo "<span class='{$green} mr-1 mb-1 p-1' data-book='{$bible_books[$key][0]}'>{$value[0]} </span>"; //custom_link
           }
           ?>
         </div>

@@ -2,6 +2,7 @@
 /**
  * Bible::nextChapter('Мф.', '5') Установить следующую главу или книгу библии
  */
+
 class Bible
 {
   public $books;
@@ -14,6 +15,11 @@ class Bible
   function get()
   {
     return $this->books;
+  }
+
+  function getNoSpace()
+  {
+    return $this->noSpace();
   }
 
   function getBooks($book='')
@@ -53,5 +59,21 @@ class Bible
         }
       }
     }
+  }
+
+  function noSpace()
+  {
+    $booksNoSpace = [];
+    for ($i=0; $i < count($this->books); $i++) {
+      $temp = explode(' ', $this->books[$i][0]);
+      if (count($temp) > 1) {
+        $elementArr = $this->books[$i];
+        $elementArr[0] = implode('&nbsp', $temp);
+        $booksNoSpace[] = $elementArr;
+      } else {
+        $booksNoSpace[] = $this->books[$i];
+      }
+    }
+    return $booksNoSpace;
   }
 }

@@ -206,8 +206,8 @@ function get_read_book($member_key)
           break;
         }
       }
-      $res4 = db_query("SELECT DISTINCT `chapter_ot`  FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `date` != '0000-00-00' AND `book_ot`= '{$value}' AND `chapter_ot`= '{$id_book_ot}'");
-      while ($row = $res4->fetch_assoc()) $result4[] = [$value, $row['chapter_ot'], 1];
+      /*$res4 = db_query("SELECT DISTINCT `chapter_ot`  FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `date` != '0000-00-00' AND `book_ot`= '{$value}' AND `chapter_ot`= '{$id_book_ot}'");
+      while ($row = $res4->fetch_assoc()) $result4[] = [$value, $row['chapter_ot'], 1];*/
     }
   }
 
@@ -221,8 +221,8 @@ function get_read_book($member_key)
         }
       }
 
-      $res5 = db_query("SELECT DISTINCT `chapter_nt`  FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `date` != '0000-00-00' AND `book_nt`= '{$value}' AND `chapter_nt`= '{$id_book_nt}'");
-      while ($row = $res5->fetch_assoc()) $result4[] = [$value, $row['chapter_nt'], 1];
+      /*$res5 = db_query("SELECT DISTINCT `chapter_nt`  FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `date` != '0000-00-00' AND `book_nt`= '{$value}' AND `chapter_nt`= '{$id_book_nt}'");
+      while ($row = $res5->fetch_assoc()) $result4[] = [$value, $row['chapter_nt'], 1];*/
     }
   }
   //return $result4;
@@ -252,13 +252,13 @@ function set_read_book($member_key, $part, $book, $chapter, $checked)
 
   $res = db_query("SELECT `id` FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `date` = '0000-00-00' AND `{$book_field}` = '{$book}'");
   while ($row = $res->fetch_assoc()) $id_check = $row['id'];
-  if (empty($id_check)) {
+  /*if (empty($id_check)) {
     $res = db_query("SELECT `id` FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `date` != '0000-00-00' AND `{$book_field}` = '{$book}' AND `{$chapters_field}` = '{$chapter}'");
     while ($row = $res->fetch_assoc()) $id_read = $row['id'];
-  }
+  }*/
 
   if ($checked === 'true') {
-    if (!$id_check && !$id_read) {
+    if (!$id_check) { // && !$id_read
       $res = db_query("INSERT INTO `ftt_bible` (`member_key`, `{$book_field}`, `{$chapters_field}`)
       VALUES ('{$member_key}', '{$book}', '{$chapter}')");
     }
