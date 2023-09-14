@@ -8,7 +8,7 @@
     <div class="container border mt-3 mb-3 p-2" style="max-width: 400px;">
       <div class="row">
         <div class="col-5" style="max-width: 170px;">
-          <select id="bible_book_ot" class="col mr-3 form-control" data-field="book_ot" style="min-width: 95px; min-height: 35px; margin-left: 0px !important;">
+          <select id="bible_book_ot" data-book="" data-chapter="" class="col mr-3 form-control" data-field="book_ot" style="min-width: 95px; min-height: 35px; margin-left: 0px !important;">
             <option value="_none_">
               <option value="0">Нет
                 <?php
@@ -164,6 +164,7 @@
         <div class="col-12">
           <?php
           $start_data = get_start_position($memberId);
+          $book_current = get_reading_data($memberId, date('Y-m-d'));
           $notes_ot = '';
           $notes_nt = '';
           if (isset($start_data['book_ot']) && !empty($start_data['book_ot'])) {
@@ -181,25 +182,33 @@
             }
           }
           ?>
-          <h4>Ветхий завет <?php echo $notes_ot; ?></h4>
-          <?php
-          $read_bible_books = get_read_book($memberId);
-          $bible_books = $bible_obj->get();
-          $bible_books_no_space = $bible_obj->getNoSpace();
-          foreach ($bible_books_no_space as $key => $value) {
-            $green = '';
-            for ($i=0; $i < count($read_bible_books); $i++) {
-              if ($bible_books[$key][0] === $read_bible_books[$i][0]) {
-                $green = 'bg_green';
-                break;
+          <h5>Ветхий завет <?php echo $notes_ot; ?></h5>
+          <div style="font-size: 16px;">
+            <?php
+            $read_bible_books = get_read_book($memberId);
+            $bible_books = $bible_obj->get();
+            $bible_books_no_space = $bible_obj->getNoSpace();
+            foreach ($bible_books_no_space as $key => $value) {
+              $green = '';
+              $border = '';
+              for ($i=0; $i < count($read_bible_books); $i++) {
+                if ($bible_books[$key][0] === $read_bible_books[$i][0]) {
+                  $green = 'bg_green';
+                }
               }
+              if ($bible_books[$key][0] === $book_current['book_nt']) {
+                $border = 'border border-dark';
+              }
+              if ($bible_books[$key][0] === $book_current['book_ot']) {
+                $border = 'border border-dark';
+              }
+              if ($key === 39) {
+                echo "</div></div></div><div class='row mb-3'><div class='col-12'><h5>Новый завет {$notes_nt}</h5><div style='font-size: 16px;'>";
+              }
+              echo "<span class='{$green} {$border} d-inline-block mb-1 p-1' data-book='{$bible_books[$key][0]}'>{$value[0]} </span>";
             }
-            if ($key === 39) {
-              echo "</div></div><div class='row mb-3'><div class='col-12'><h4>Новый завет {$notes_nt}</h4>";
-            }
-            echo "<span class='{$green} mr-1 mb-1 p-1' data-book='{$bible_books[$key][0]}'>{$value[0]} </span>"; //custom_link
-          }
-          ?>
+            ?>
+          </div>
         </div>
       </div>
     </div>

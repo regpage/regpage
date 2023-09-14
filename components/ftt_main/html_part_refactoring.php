@@ -30,8 +30,7 @@ if ($ftt_access['group'] === 'staff' || $ftt_access['group'] === 'trainee') {
               include_once 'components/ftt_attendance/content_part.php';
             }
           } elseif ($thispage === 'ftt_service') {
-            echo "В разработке.";
-            //include_once 'components/ftt_service/content_part.php';
+            include_once 'components/ftt_service/content_part.php';
             // code...
           } elseif ($thispage === 'ftt_gospel') {
             include_once 'components/ftt_gospel/staff_content_part.php';

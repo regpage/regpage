@@ -173,9 +173,13 @@ function getServiceOnesWithTrainees ()
     //
     if ($announcements || $absence || $attendance || $extraHelp || $missingClass || $fellowship_text) {
       $body = $announcements . $absence . $attendance . $extraHelp . $missingClass . $fellowship_text;
-      echo "DEBUG START {$value}<br>";
-      Emailing::send_by_key($value, $topic, $body);
-      echo "STOP<br><br>";
+      if (!empty($value)) {
+        Emailing::send_by_key($value, $topic, $body);
+      } else {
+        echo "Не получен емайл служащего, возможно не указан служащий для какого то обучающегося \r\n";
+      }
+
+
     } else {
       // add str to log file
     }

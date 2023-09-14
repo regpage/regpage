@@ -86,6 +86,15 @@ switch ($h) {
     case '/ftt_list.php':
         $res = 'ПВОМ';
         break;
+    case '/ftt_service.php':
+        $res = 'ПВОМ';
+        break;
+    case '/ftt_reading.php':
+        $res = 'ПВОМ';
+        break;
+    case '/ftt_fellowship.php':
+        $res = 'ПВОМ';
+        break;
     default:
       $res = '';
       break;
