@@ -3,160 +3,116 @@
 ФОРМУ ДОБАВИТЬ В БЛАНК И КНОПКУ СТАРТА
 ЕСЛИ ТЕКУЩИЙ БЛАНК НЕ ЗАПОЛНЕН СОВСЕМ ПРОВЕРЯТЬ БЫЛ ЛИ СТАРТ И ОТ ЭТОГО ЗАПОЛНЯТЬ
 -->
+<?php
+require_once 'db/classes/ftt_info.php';
+
+$read_bible_books = get_read_book($memberId);
+$bible_books = $bible_obj->get();
+$book_current = get_reading_data($memberId, date('Y-m-d'));
+$disabled_ot = '';
+$disabled_nt = '';
+$disabled = '';
+if (empty($book_current['book_ot'])) {
+  $disabled_ot = 'disabled';
+}
+if (empty($book_current['book_nt'])) {
+  $disabled_nt = 'disabled';
+}
+if ($book_current['start_today'] == 1) {
+  $disabled = 'disabled';
+  $disabled_ot = 'disabled';
+  $disabled_nt = 'disabled';
+}
+?>
 <div class="container">
-  <div id="" class="row border-bottom pb-2 d-none">
+  <?php
+  // БЛОК РАБОТАЕТ ТОЛЬКО НА ПЕРЕРЫВЕ
+  if (!ftt_info::pause()): ?>
+  <div id="" class="row border-bottom pb-2">
     <div class="container border mt-3 mb-3 p-2" style="max-width: 400px;">
       <div class="row">
         <div class="col-5" style="max-width: 170px;">
-          <select id="bible_book_ot" data-book="" data-chapter="" class="col mr-3 form-control" data-field="book_ot" style="min-width: 95px; min-height: 35px; margin-left: 0px !important;">
-            <option value="_none_">
+          <select id="bible_book_ot" class="col mr-3 form-control"
+            data-book="<?php echo $book_current['book_ot']; ?>" data-chapter="<?php echo $book_current['chapter_ot']; ?>" data-field="book_ot" data-notes="<?php echo $book_current['read_footnotes_ot']; ?>"
+            style="min-width: 95px; min-height: 35px; margin-left: 0px !important;" <?php echo $disabled_ot; ?>>
+            <option value="_none_">ВЗ
               <option value="0">Нет
                 <?php
-                $bible_books = $bible_obj->get();
+                $counter = 0;
                 foreach ($bible_books as $key => $value) {
                   if ($key < 39) {
                     for ($i=1; $i <= $value[1]; $i++) {
-                      echo "<option value='{$i}' data-book='{$value[0]}' data-chapter='{$i}'>{$value[0]} {$i}";
+                      if (($book_current['book_ot'] ===  $value[0] && $book_current['chapter_ot'] == $i) || $counter || empty($book_current['book_ot'])) {
+                        $selected = '';
+                        if ($book_current['book_ot'] ===  $value[0] && $book_current['chapter_ot'] == $i && $book_current['today_ot'] == 1) {
+                          $selected = 'selected';
+                        }
+                        echo "<option value='{$value[0]} {$i}' data-book='{$value[0]}' data-chapter='{$i}' {$selected}>{$value[0]} {$i}";
+                        if (!empty($book_current['book_ot'])) {
+                          $counter++;
+                          if ($counter === 10) {
+                            break;
+                          }
+                        }
+                      }
                     }
+                  }
+                  if ($counter === 10) {
+                    break;
                   }
                 }
                 ?>
           </select>
         </div>
         <div class="col-5" style="max-width: 170px;">
-          <select id="bible_book_nt" class="col mr-3 form-control" data-field="book_nt" style="min-width: 95px; min-height: 35px; margin-left: 0px !important;">
-            <option value="_none_">
+          <select id="bible_book_nt" class="col mr-3 form-control"
+          data-book="<?php echo $book_current['book_nt']; ?>" data-chapter="<?php echo $book_current['chapter_nt']; ?>" data-field="book_nt" data-notes="<?php echo $book_current['read_footnotes_nt']; ?>"
+          style="min-width: 95px; min-height: 35px; margin-left: 0px !important;" <?php echo $disabled_nt; ?>>
+            <option value="_none_">НЗ
               <option value="0">Нет
                 <?php
-                $bible_books = $bible_obj->get();
+                $counter = 0;
                 foreach ($bible_books as $key => $value) {
                   if ($key > 38) {
                     for ($i=1; $i <= $value[1]; $i++) {
-                      echo "<option value='{$i}' data-book='{$value[0]}' data-chapter='{$i}'>{$value[0]} {$i}";
+                      if (($book_current['book_nt'] ===  $value[0]  && $book_current['chapter_nt'] == $i) || $counter || empty($book_current['book_nt'])) {
+                        $selected = '';
+                        if ($book_current['book_nt'] ===  $value[0] && $book_current['chapter_nt'] == $i && $book_current['today_nt'] == 1) {
+                          $selected = 'selected';
+                        }
+                        echo "<option value='{$value[0]} {$i}' data-book='{$value[0]}' data-chapter='{$i}' {$selected}>{$value[0]} {$i}";
+                        if (!empty($book_current['book_nt'])) {
+                          $counter++;
+                          if ($counter === 10) {
+                            break;
+                          }
+                        }
+                      }
                     }
+                  }
+                  if ($counter === 10) {
+                    break;
                   }
                 }
                 ?>
           </select>
         </div>
-      <div class="col-2 pl-0">
-        <button type="button" id="show_me_start" class="col bg-secondary text-light short_select_field rounded" data-toggle="modal" data-target="#mdl_bible_start" style="min-width: 54px !important; height: 38px;" disabled>...</button>
-      </div>
-    </div>
-    <div class="row mt-3">
-      <div class="col-5" style="max-width: 170px;">
-        <input type="date" class="form-control" value="<?php echo date('Y-m-d'); ?>" max="<?php echo date('Y-m-d'); ?>">
-      </div>
-      <div class="col-7">
-        <button class="btn btn-sm btn-success float-right w-100 h-100" type="button" data-toggle="modal" data-target="#mdl_bible_start" disabled>Записать</button>
-      </div>
-    </div>
-
-      <!--<div class="row mb-2">
-          <div class="col">
-            <button class="btn btn-sm btn-primary" type="button" data-toggle="modal" data-target="#mdl_bible_start">Выбрать начало чтения</button>
-          </div>
-      </div>
-      <div class="row mb-2">
-          <div class="col">
-            <button type="button" class="btn btn-warning btn-sm bible_statistic_btn" data-toggle="modal" data-target="#mdl_bible_statistic" style="height: 30px;">Статистика</button>
-          </div>
-      </div>
-      <div class="row mb-2">
-          <div class="col">
-            <h5>Чтение Библии</h5>
-          </div>
-      </div>
-      <?php if ($ftt_access['group'] === 'staff'): ?>
-      <div class="row mb-3">
-        <div class="col">
-          <select id="ftr_trainee_reading" class="form-control">
-            <option value="">Обучающиеся</option>
-            <?php foreach ($trainee_list as $key => $value):
-              /*$selected = '';
-              if ($key === $ftr_trainee_skip) {
-                $selected = 'selected';
-              }*/
-              echo "<option value='{$key}' {$selected}>{$value}</option>";
-            endforeach; ?>
-          </select>
+        <div class="col-2 pl-0">
+          <button type="button" id="show_me_start" class="col bg-secondary text-light short_select_field rounded" data-toggle="modal" data-target="#mdl_bible_start" style="min-width: 54px !important; height: 38px;">...</button>
         </div>
       </div>
-      <div class="row mb-3">
-          <div class="col">
-            <input type="date" class="form-control" value="<?php echo date('Y-m-d') ?>" min="<?php echo date('Y-m-d') ?>">
-          </div>
+      <div class="row mt-3">
+        <div class="col-5" style="max-width: 170px;">
+          <input type="date" id="date_read" class="form-control" value="<?php echo date('Y-m-d'); ?>" max="<?php echo date('Y-m-d'); ?>">
+        </div>
+        <div class="col-7">
+          <button id="save_book_read" class="btn btn-sm btn-success float-right w-100 h-100" type="button" data-toggle="modal" data-target="#" <?php echo $disabled; ?>>Записать</button>
+        </div>
       </div>
-    <?php endif; ?>-->
-        <!-- ВЗ
-      <div class="row mb-2">
-          <div class="col">
-            <h5>Ветхий Завет</h5>
-          </div>
-      </div>
-      <div class="row mb-3">
-          <div class="col">
-            <select class="form-control" data-field="book_ot" <?php echo $ftt_access['group'] !== 'staff' ? 'disabled' : '' ?>>
-              <?php
-              $bible_books = $bible_obj->get();
-              foreach ($bible_books as $key => $value) {
-                if ($key === 39) {
-                  break;
-                }
-                echo "<option value='{$value[0]}'>{$value[0]}";
-              }
-              ?>
-            </select>
-          </div>
-          <div class="col">
-            <select class="form-control" data-field="chapter_ot">
-              <option value="0">Нет
-              <?php
-              for ($i=1; $i <= $bible_books[0][1]; $i++) {
-                echo "<option value='{$i}'>{$i}";
-              }
-              ?>
-            </select>
-          </div>
-      </div>-->
-      <!-- НЗ
-      <div class="row mb-2">
-          <div class="col">
-            <h5>Новый Завет</h5>
-          </div>
-      </div>
-      <div class="row mb-4">
-          <div class="col">
-            <select class="form-control" data-field="book_nt" <?php echo $ftt_access['group'] !== 'staff' ? 'disabled' : '' ?>>
-              <?php
-              $bible_books = $bible_obj->get();
-              foreach ($bible_books as $key => $value) {
-                if ($key > 38) {
-                  echo "<option value='{$value[0]}'>{$value[0]}";
-                }
-              }
-              ?>
-            </select>
-          </div>
-          <div class="col">
-            <select class="form-control" data-field="chapter_ot">
-              <option value="0">Нет
-              <?php
-              for ($i=1; $i <= $bible_books[0][1]; $i++) {
-                echo "<option value='{$i}'>{$i}";
-              }
-              ?>
-            </select>
-          </div>
-      </div>-->
-      <!-- ПРИМЕЧАНИЯ ???
-      <div class="row mb-4">
-          <div class="col">
-            <label for="read_footnotes">Чтение с примечаниями <input id="read_footnotes" type="checkbox" class="align-middle" value="" data-field="read_footnotes"></label>
-          </div>
-      </div> -->
     </div>
   </div>
+  <?php endif; ?>
+
   <!-- СПИСОК КНИГ БИБЛИИ -->
   <div id="" class="row">
     <div class="container text-center mt-3"> <!-- style="max-width: 600px;"-->
@@ -164,7 +120,6 @@
         <div class="col-12">
           <?php
           $start_data = get_start_position($memberId);
-          $book_current = get_reading_data($memberId, date('Y-m-d'));
           $notes_ot = '';
           $notes_nt = '';
           if (isset($start_data['book_ot']) && !empty($start_data['book_ot'])) {
@@ -185,8 +140,6 @@
           <h5>Ветхий завет <?php echo $notes_ot; ?></h5>
           <div style="font-size: 16px;">
             <?php
-            $read_bible_books = get_read_book($memberId);
-            $bible_books = $bible_obj->get();
             $bible_books_no_space = $bible_obj->getNoSpace();
             foreach ($bible_books_no_space as $key => $value) {
               $green = '';

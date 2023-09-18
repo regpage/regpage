@@ -271,25 +271,6 @@ $(document).ready(function(){
  $('#modalAddEdit select').change(function (e) {
    let id = $("#modalAddEdit").attr("data-id");
    let value = $(this).val();
-   // *** BIBLE SAVE HERE! *** //
-   if (e.target.id === "bible_book") {
-     setTimeout(function () {
-       fetch("ajax/ftt_attendance_ajax.php?type=get_bible_chapter&book=" + value)
-       .then(response => response.json())
-       .then(commits => {
-         let options = "";
-         for (let i = 1; i <= commits.result[0][1]; i++) {
-           options += "<option value='" + i + "'>" + i;
-         }
-         $("#bible_chapter").html(options);
-         save_select_field_extra("bible_chapter", 1, 1);
-         $("#accordion_attendance .list_string[data-id='"+id+"']").attr("data-bible_book", value);
-         $("#accordion_attendance .list_string[data-id='"+id+"']").attr("data-bible_chapter", 1);
-       });
-     }, 10);
-   } else {
-     $("#accordion_attendance .list_string[data-id='"+id+"']").attr("data-bible_chapter", value);
-   }
    save_select_field_extra($(this).attr("data-field"), value, 1);
  });
 
@@ -1654,8 +1635,7 @@ function open_blank(el_this) {
 
   function read_books_check(current, previous) {
     let sim_1 = false;
-    let books = [];
-    console.log(previous);
+    let books = [];    
     for (let i = 0; i < bible_arr.length; i++) {
       if (bible_arr[i][0] === current) {
         break;
@@ -1665,7 +1645,7 @@ function open_blank(el_this) {
       }
     }
     if (books.length === 0) {
-      sim_1 = false;      
+      sim_1 = false;
       for (let i = 0; i < bible_arr.length; i++) {
         if (bible_arr[i][0] === previous) {
           break;
@@ -1677,7 +1657,7 @@ function open_blank(el_this) {
     }
     return books;
   }
-
+  // получаем id книги Библии
   function get_id_book(book) {
     let id = "";
     for (let i = 0; i < bible_arr.length; i++) {
@@ -1687,20 +1667,6 @@ function open_blank(el_this) {
       }
     }
     return id;
-  }
-
-  function split_book(text) {
-    let book_slice = text;
-    let book, chapter;
-    book_slice = book_slice.split(" ");
-    if (book_slice[2]) {
-      book = book_slice[0] + " " + book_slice[1];
-      chapter = book_slice[2];
-    } else {
-      book = book_slice[0];
-      chapter = book_slice[1];
-    }
-    return [book, chapter];
   }
 
   $("#mdl_ot_start, #mdl_nt_start").change(function () {

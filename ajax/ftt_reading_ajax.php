@@ -26,6 +26,11 @@ if (isset($_GET['type']) && $_GET['type'] === 'get_read_book') {
   exit();
 }
 
+if (isset($_GET['type']) && $_GET['type'] === 'get_reading_data') {
+  echo json_encode(["result"=>get_reading_data($_GET['member_key'], $_GET['date'])]);
+  exit();
+}
+
 // bible reading set book statistics
 if (isset($_GET['type']) && $_GET['type'] === 'set_read_book') {
   echo json_encode(["result"=>set_read_book($_GET['member_key'], $_GET['part'], $_GET['book'], $_GET['chapter'], $_GET['checked'])]);

@@ -340,3 +340,18 @@ function he(str) {
             .replace(/</g, '&lt;')
             .replace(/>/g, '&gt;') : "";
 }
+
+// Разделы Посещаемость и Чтение разделени книги и главы Библии
+function split_book(text) {
+  let book_slice = text;
+  let book, chapter;
+  book_slice = book_slice.split(" ");
+  if (book_slice[2]) {
+    book = book_slice[0] + " " + book_slice[1];
+    chapter = book_slice[2];
+  } else {
+    book = book_slice[0];
+    chapter = book_slice[1];
+  }
+  return [book, chapter];
+}
