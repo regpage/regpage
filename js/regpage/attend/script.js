@@ -65,6 +65,39 @@ $(document).ready(function(){
     }, 10);
   });
 
+  // save fee
+  $(".vt_fee_field").change(function () {
+    let key = $(this).parent().parent().attr("data-member_key");
+    fetch("ajax/attend_ajax.php?type=change_checkbox&id="
+    + key + "&table=attendance&field="
+    + $(this).attr("data-field") + "&value=" + $(this).val())
+
+    // записываем текущего редактора
+    let editors_keys;
+    let editors_exist = "";
+    if ($(this).parent().next().find(".vt_comment_field").attr("data-editors")) {
+      editors_exist = $(this).parent().next().find(".vt_comment_field").attr("data-editors");
+    }
+
+    if (editors_exist.length > 9) {
+      editors_keys = editors_exist.split(",");
+      if (editors_keys[1]) {
+        editors_keys = String(editors_keys[1]) + "," + String(window.adminId);
+      } else {
+        editors_keys = window.adminId;
+      }
+    } else if (editors_exist && editors_exist.length < 10) {
+      editors_keys = editors_exist + "," + window.adminId;
+    } else {
+      editors_keys = window.adminId;
+    }
+    setTimeout(function () {
+      fetch("ajax/attend_ajax.php?type=change_checkbox&id="
+      + key + "&table=attendance&field=editors"
+      + "&value=" + editors_keys)
+    }, 10);
+  });
+
   // Выбор подраздела
   $("#members-lists-combo").change(function(){
       listsType = $(this).val();
@@ -101,6 +134,20 @@ $(document).ready(function(){
       $(this).parent().find(".vt_comment_field").focus();
     }
   });
+  // fee field show/hide
+  $(".attend_str .vt_fee_text").click(function(){
+    if ($(this).parent().find(".vt_fee_field").is(":visible")) {
+      $(this).parent().find(".vt_fee_field").hide();
+      $(this).show();
+    } else {
+      $(".attend_str .vt_fee_text").show();
+      $(".attend_str .vt_fee_field").hide();
+      $(this).hide();
+      $(this).parent().find(".vt_fee_field").show();
+      $(this).parent().find(".vt_fee_field").focus();
+    }
+  });
+
   // list, comment
   $(".vt_comment_field").keydown(function(e) {
       if(e.keyCode === 13) {
@@ -115,11 +162,34 @@ $(document).ready(function(){
         $(this).next().show();
       }
     });
+
+    // list, fee
+    $(".vt_fee_field").keydown(function(e) {
+        if(e.keyCode === 13) {
+          e.preventDefault();
+          $(this).next().text($(this).val());
+          $(this).hide();
+          $(this).next().show();
+        } else if (e.keyCode === 27) {
+          e.preventDefault();
+          $(this).val($(this).next().text());
+          $(this).hide();
+          $(this).next().show();
+        }
+      });
+
     $(".attend_str .vt_comment_field").focusout(function () {
       $(this).next().text($(this).val());
       $(this).hide();
       $(this).next().show();
     });
+
+    $(".attend_str .vt_fee_field").focusout(function () {
+      $(this).next().text($(this).val());
+      $(this).hide();
+      $(this).next().show();
+    });
+
   // sorting
   $(".sort_col").click(function () {
     if ($(this).find("i").hasClass("fa-sort-desc")) {
@@ -726,11 +796,11 @@ $(document).ready(function(){
           let miss = ["","","","","","","","","","","","",""];
           if ($(this).find(".vt_comment_field").val()) {
             let temp = $(this).find(".vt_comment_field").val().trim();
-            temp = temp.slice(",");
+            temp = temp.split(",");
             if (!isNaN(temp[0])) {
               text_v = 'V';
-              for (var i = 1; i <= 12; i++) {
-                if (temp.includes(i)) {
+              for (let i = 1; i <= 12; i++) {
+                if (temp.includes(String(i))) {
                   miss[i] = "—";
                 } else {
                   miss[i] = "";
@@ -738,12 +808,17 @@ $(document).ready(function(){
               }
             }
           }
-
+          let fee;
+          if (!$(this).find(".vt_fee_text").text() || $(this).find(".vt_fee_text").text() === "0") {
+            fee = "";
+          } else {
+            fee = $(this).find(".vt_fee_text").text();
+          }
           page["tbody"] += "<tr><td class='numpp'>" + (e + 1)
           + "</td><td class='fio " + bold + "'>" + fullNameToNoMiddleName($(this).find(".data_name").text())
-          + "</td><td class='dates'></td><td class='dates center'>"+ text_v
+          + "</td><td class='dates age'>"+ fee +"</td><td class='dates center'>"+ text_v
           +"</td><td class='dates center'>"+miss[1]+"</td><td class='dates center'>"+miss[2]
-          +"</td><td class='dates center'"+miss[3]+"></td><td class='dates center'>"+miss[4]
+          +"</td><td class='dates center'>"+miss[3]+"</td><td class='dates center'>"+miss[4]
           +"</td><td class='dates center'>"+miss[5]+"</td><td class='dates center'>"+miss[6]
           +"</td><td class='dates center'>"+miss[7]+"</td><td class='dates center'>"+miss[8]
           +"</td><td class='dates center'>"+miss[9]+"</td><td class='dates center'>"+miss[10]

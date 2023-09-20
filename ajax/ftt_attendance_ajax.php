@@ -275,15 +275,19 @@ if (isset($_GET['type']) && $_GET['type'] === 'set_pic') {
     $file = '';
   }
 
+  // сохраняем ссылку
   // готовим данные
-  $db_data = new DbData('set', 'ftt_skip');
+  /*$db_data = new DbData('set', 'ftt_skip');
   $db_data->set('field', 'file');
   $db_data->set('value', $file);
   $db_data->set('condition_field', 'id');
   $db_data->set('condition_value', $_GET['id']);
   // выполняем
   DbOperation::operation($db_data->get());
-  echo json_encode(["result"=>$file]);
+  */
+  $result_file = setPics($_GET['id'], $file);
+
+  echo json_encode(["result"=>[$result_file, $file]]);
   exit();
 }
 

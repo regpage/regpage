@@ -88,21 +88,22 @@
   </div>
 </div>
 <div id="col_name" class="row mb-2">
-  <div class="col-3 pl-1">
+  <div class="col-2 pl-1" style="min-width: 280px;">
     <b class="sort_col" data-sort="name">ФИО <i class="<?php echo $sort_fio_ico; ?>"></i></b>
   </div>
   <?php if (!$singleCity): ?>
-  <div class="col-2">
+  <div class="col-2" style="padding-left: 18px;">
     <b class="sort_col" data-sort="locality">Город <i class="<?php echo $sort_locality_ico; ?>"></i></b>
   </div>
   <?php endif; ?>
-  <div class="col-1 m_width_check" title="Собрания Господней трапезы"><b>Т</b></div>
-  <div class="col-1 m_width_check" title="Молитвенные собрания" style="padding-left: 13px;"><b>М</b></div>
-  <div class="col-1 m_width_check" title="Групповые собрания" style="padding-left: 15px;"><b>Г</b></div>
-  <div class="col-1 m_width_check" title="Другие виды собраний" style="padding-left: 15px;"><b>Д</b></div>
+  <div class="col-1 m_width_check" title="Собрания Господней трапезы" style="padding-left: 18px;"><b>Т</b></div>
+  <div class="col-1 m_width_check" title="Молитвенные собрания" style="padding-left: 15px;"><b>М</b></div>
+  <div class="col-1 m_width_check" title="Групповые собрания" style="padding-left: 17px;"><b>Г</b></div>
+  <div class="col-1 m_width_check" title="Другие виды собраний" style="padding-left: 17px;"><b>Д</b></div>
   <div class="col-1 m_width_check" title="Собрания видеообучения" style="padding-left: 15px;"><b>В</b></div>
-  <div class="col-1" title="Комментарий к видеообучению" style="min-width: 220px; padding-left: 10px;"><b>Комментарий</b></div>
-  <div class="col-1" style="padding-left: 10px;" title="Возраст">
+  <div class="col-1" title="Взнос" style="max-width: 70px; padding-left: 4px;"><b>Взнос</b></div>
+  <div class="col-1" title="Комментарий к видеообучению" style="min-width: 130px; padding-left: 4px;"><b>Комментарий</b></div>
+  <div class="col-1" style="" title="Возраст">
     <b class="sort_col" data-sort="age">Возраст <i class="<?php echo $sort_birth_date_ico; ?>"></i></b>
   </div>
 </div>
@@ -129,7 +130,7 @@
       <div class="row attend_str pl-1" data-member_key="<?php echo $value->id; ?>"
         data-locality_key="<?php echo $value->locality_key; ?>"
         data-category_key="<?php echo $value->category_key; ?>">
-        <div class="col-3 pl-0">
+        <div class="col-2 pl-0" style="min-width: 280px;">
           <span class="data_name"><?php echo $value->name; ?></span>
           <?php if (in_array(5, $userSettings)): ?>
             <br>
@@ -156,7 +157,13 @@
         <div class="col-1 m_width_check">
           <input type="checkbox" data-field="attend_vt" <?php if ($value->attend_vt) echo 'checked'; ?>>
         </div>
-        <div class="col-1 pl-1 pr-1" style="min-width: 220px;">
+        <div class="col-1 pl-1 pr-1" style="max-width: 70px;">
+          <input maxlength="5" type="number" class="form-control form-control-sm vt_fee_field"
+          value="<?php echo $value->fee; ?>"
+          style="display: none;" data-field="fee">
+          <span class="vt_fee_text" style="display: inline-block; width: 100%; height: 100%;"><?php echo $value->fee; ?></span>
+        </div>
+        <div class="col-1 pl-1 pr-1" style="min-width: 130px;">
           <input maxlength="25" type="text" class="form-control form-control-sm vt_comment_field"
           value="<?php echo $value->at_comment; ?>"
           style="display: none;" data-field="comment" data-editors="<?php echo $value->editors; ?>">

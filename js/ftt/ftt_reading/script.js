@@ -295,6 +295,13 @@ $("#date_read").change(function () {
     } else {
       $("#bible_book_nt").attr("disabled", true);
     }
+    if (data["start_today"]) {
+      $("#bible_book_nt").attr("disabled", true);
+      $("#bible_book_ot").attr("disabled", true);
+      $("#save_book_read").attr("disabled", true);
+    } else {
+      $("#save_book_read").attr("disabled", false);
+    }
   });
 });
 

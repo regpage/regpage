@@ -150,16 +150,15 @@ function get_reading_data($member_key, $date)
     } elseif(isset($result3['book_nt']) && !isset($result['book_ot']) && !isset($result2['book_nt'])) {
       $result = $result3;
     }
-
   }
 
-if (count($result2) > 0 && !isset($result['chapter_ot'])) {
-  $result = $result2;
-  if (count($result3) > 0) {
-    $result['book_nt'] = $result3['book_nt'];
-    $result['chapter_nt'] = $result3['chapter_nt'];
+  if (count($result2) > 0 && !isset($result['chapter_ot'])) {
+    $result = $result2;
+    if (count($result3) > 0) {
+      $result['book_nt'] = $result3['book_nt'];
+      $result['chapter_nt'] = $result3['chapter_nt'];
+    }
   }
-}
 
   if (count($result) === 0) {
     $result = 0;

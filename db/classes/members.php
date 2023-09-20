@@ -63,7 +63,7 @@ class Members
                       ca.name as category_name,
                       (SELECT rg.name FROM region rg WHERE rg.key=l.region_key) as region,
                       (SELECT co.name FROM country co INNER JOIN region re ON co.key=re.country_key WHERE l.region_key=re.key) as country, at.attend_pm, at.attend_gm,at.attend_am, at.attend_vt,
-                      at.comment AS at_comment, at.editors
+                      at.comment AS at_comment, at.editors, at.fee
                       FROM access as a
                       LEFT JOIN country c ON c.key = a.country_key
                       LEFT JOIN region r ON r.key = a.region_key OR c.key=r.country_key
@@ -78,7 +78,7 @@ class Members
                       DATEDIFF(CURRENT_DATE, STR_TO_DATE(m.birth_date, '%Y-%m-%d'))/365 as age, m.birth_date,
                       m.category_key, m.attend_meeting,
                       ca.name as category_name, at.attend_pm, at.attend_gm, at.attend_am, at.attend_vt,
-                      at.comment AS at_comment, at.editors,
+                      at.comment AS at_comment, at.editors, at.fee,
                       '' as region,
                       '' as country
                       FROM member m

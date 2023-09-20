@@ -124,16 +124,16 @@ if ($book_current['start_today'] == 1) {
           $notes_nt = '';
           if (isset($start_data['book_ot']) && !empty($start_data['book_ot'])) {
             if ($start_data['read_footnotes_ot'] == 1) {
-              $notes_ot = '(с примечаниями)';
+              $notes_ot = '(с прим.)';
             } else {
-              $notes_ot = '(без примечаний)';
+              $notes_ot = '(без прим.)';
             }
           }
           if ($start_data['book_nt']) {
             if ($start_data['read_footnotes_nt'] == 1) {
-              $notes_nt = '(с примечаниями)';
+              $notes_nt = '(с прим.)';
             } else {
-              $notes_nt = '(без примечаний)';
+              $notes_nt = '(без прим.)';
             }
           }
           ?>

@@ -1635,7 +1635,7 @@ function open_blank(el_this) {
 
   function read_books_check(current, previous) {
     let sim_1 = false;
-    let books = [];    
+    let books = [];
     for (let i = 0; i < bible_arr.length; i++) {
       if (bible_arr[i][0] === current) {
         break;
@@ -2722,12 +2722,12 @@ function open_blank(el_this) {
         $("#send_skip_blank").attr("disabled", false);
         $("#save_skip_blank").attr("disabled", false);
         $("#spinner_upload").hide();
-        if (commits.result[0] === "Н") {
-          showError(commits.result);
-        } else if (commits.result) {
-          $("div[data-id='" + id + "']").attr("data-file", commits.result);
+        if (commits.result[1][0] === "Н") {
+          showError(commits.result[1]);
+        } else if (commits.result[1]) {
+          $("div[data-id='" + id + "']").attr("data-file", commits.result[0]);
           $("#skip_modal_file").parent().css("border", "none");
-          let result_arr = commits.result;
+          let result_arr = commits.result[1];
           result_arr = result_arr.split(";")
           for (var i = 0; i < result_arr.length; i++) {
             $("#skip_pic").append('<div class="col-10"><button type="button" data-toggle="modal" class="btn btn-primary btn-sm mr-2 mb-2 skip_modal_pic_preview_open" data-target="#skip_modal_pic_preview">Просмотр</button><a class="skip_pic" href="' + result_arr[i] + '" target="_blank">скачать файл</a></div>'
@@ -2856,6 +2856,8 @@ function open_blank(el_this) {
   function skip_pic_delete(elem) {
     let patch = elem.parent().prev().find(".skip_pic").attr("href");
     if (!patch) {
+      element.prev().remove();
+      element.remove();
       return;
     }
     let id = $("#edit_skip_blank").attr("data-id");
@@ -2867,7 +2869,17 @@ function open_blank(el_this) {
       if (data) {
         element.prev().remove();
         element.remove();
-        $("div[data-id='" + id + "']").attr("data-file","");
+        let pathes = $("div[data-id='" + id + "']").attr("data-file");
+        let check = "";
+        pathes = pathes.split(";");
+        for (let i = 0; i < pathes.length; i++) {
+          if (pathes[i] === patch) {
+            check = i;
+            break;
+          }
+        }
+        pathes.splice(check, 1);
+        $("div[data-id='" + id + "']").attr("data-file", pathes.join(";"));
       }
     });
   }

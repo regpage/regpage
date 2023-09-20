@@ -90,4 +90,23 @@ function setSkipBlank($data)
 
 
 }
+
+function setPics($id, $file)
+{
+  global $db;
+  $file = $db->real_escape_string($file);
+  $id = $db->real_escape_string($id);
+  $result = '';
+
+  $res = db_query("SELECT `file` FROM `ftt_skip` WHERE `id` = '$id'");
+  while ($row = $res->fetch_assoc()) $result = $row['file'];
+
+  if (!empty($result)) {
+    $file = $file . ';' . $result;
+  }
+
+  $res = db_query("UPDATE `ftt_skip` SET `file` = '{$file}', `changed` = 1  WHERE `id` = '$id'");
+
+  return $file;
+}
 /* MISSED CLASS */
