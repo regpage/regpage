@@ -29,7 +29,7 @@ if ($book_current['start_today'] == 1) {
   // БЛОК РАБОТАЕТ ТОЛЬКО НА ПЕРЕРЫВЕ
   if (!ftt_info::pause()): ?>
   <div id="" class="row border-bottom pb-2">
-    <div class="container border mt-3 mb-3 p-2" style="max-width: 400px;">
+    <div class="container border mt-3 mb-3 p-2 d-none" style="max-width: 400px;">
       <div class="row">
         <div class="col-5" style="max-width: 170px;">
           <select id="bible_book_ot" class="col mr-3 form-control"
@@ -98,7 +98,7 @@ if ($book_current['start_today'] == 1) {
           </select>
         </div>
         <div class="col-2 pl-0">
-          <button type="button" id="show_me_start" class="col bg-secondary text-light short_select_field rounded" data-toggle="modal" data-target="#mdl_bible_start" style="min-width: 54px !important; height: 38px;">...</button>
+          <button type="button" id="show_me_start" class="col bg-secondary text-light short_select_field rounded" style="min-width: 54px !important; height: 38px;">...</button>
         </div>
       </div>
       <div class="row mt-3">

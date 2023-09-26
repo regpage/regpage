@@ -530,8 +530,15 @@ function open_blank(el_this) {
       }
       if (!$(this).parent().prev().prev().prop("disabled")) {
         let prev_val = $(this).parent().prev().prev().val();
+        let value_not_dot;
         $(this).parent().prev().prev().val($(this).attr("data-val"));
-        save_select_field($(this).parent().prev().prev(), $(this).attr("data-val"));
+        if ($(this).attr("data-val") === "...") {
+          value_not_dot = "";
+        } else {
+          value_not_dot = $(this).attr("data-val");
+        }
+
+        save_select_field($(this).parent().prev().prev(), value_not_dot);
 
         if ($(this).attr("data-val") === "С") {
           //session time
@@ -1542,6 +1549,29 @@ function open_blank(el_this) {
   /*** BIBLE READING BEGIN ***/
   // ЧТЕНИЕ БИБЛИИ СТАРТ
   $("#show_me_start").click(function () {
+    if ($(".reading_bible_title").attr("data-book_ot")) {
+      let bible_chapter_html = "";
+      let found = bible_arr.find(e => e[0] === $(".reading_bible_title").attr("data-book_ot"));
+      for (let i = 1; i <= found[1]; i++) {
+        bible_chapter_html += "<option value='"+i+"'>"+i;
+      }
+      $("#mdl_chapter_ot_start").html(bible_chapter_html);
+    } else {
+      $("#mdl_book_ot_start").val("Быт.");
+      $("#mdl_chapter_ot_start").val(1);
+    }
+
+    if ($(".reading_bible_title").attr("data-book_nt")) {
+      let bible_chapter_html = "";
+      let found = bible_arr.find(e => e[0] === $(".reading_bible_title").attr("data-book_nt"));
+      for (let i = 1; i <= found[1]; i++) {
+        bible_chapter_html += "<option value='"+i+"'>"+i;
+      }
+      $("#mdl_chapter_nt_start").html(bible_chapter_html);
+    } else {
+      $("#mdl_book_nt_start").val("Мф.");
+      $("#mdl_chapter_nt_start").val(1);
+    }
     $("#mdl_bible_start select").attr("disabled", true);
     $("#mdl_footnotes_ot_start").attr("disabled", true);
     $("#mdl_footnotes_nt_start").attr("disabled", true);
@@ -1623,7 +1653,7 @@ function open_blank(el_this) {
       fetch("ajax/ftt_reading_ajax.php?type=set_read_book_by_book&" + query)
       .then(response => response.text())
       .then(commits => {
-        console.log(commits.resilt);
+        //console.log(commits.resilt);
         if (part === "ot") {
           $(".reading_bible_title").attr("data-book_ot", book[0]);
         } else {
@@ -1713,16 +1743,12 @@ function open_blank(el_this) {
     }
   });
 
-    $("#mdl_bible_start").on("hide.bs.modal", function () {
-      $("#mdl_book_ot_start").val("Быт.");
-      $("#mdl_chapter_ot_start").val(1);
-      $("#mdl_book_nt_start").val("Мф.");
-      $("#mdl_chapter_ot_start").val(1);
-      $("#mdl_bible_start input[type='checkbox']").prop("checked", false);
-      setTimeout(function () {
-        $("body").addClass("modal-open");
-      }, 500);
-    });
+  $("#mdl_bible_start").on("hide.bs.modal", function () {
+    $("#mdl_bible_start input[type='checkbox']").prop("checked", false);
+    setTimeout(function () {
+      $("body").addClass("modal-open");
+    }, 500);
+  });
 
   // обучающийся
   $("#set_start_reading_bible").click(function () {
@@ -1756,13 +1782,39 @@ function open_blank(el_this) {
       return;
     }
 
-    $(".reading_bible_title").text("Чтение Библии " + "(" + text_ot + comma + text_nt +")");
-    $(".reading_bible_title").attr("data-notes_ot", $("#mdl_footnotes_ot_start").prop("checked") ? 1 : 0);
-    $(".reading_bible_title").attr("data-notes_nt", $("#mdl_footnotes_nt_start").prop("checked") ? 1 : 0);
-    $(".reading_bible_title").attr("data-book_ot", $("#mdl_book_ot_start").val());
-    $(".reading_bible_title").attr("data-book_nt", $("#mdl_book_nt_start").val());
     let footnotes_ot = $("#mdl_footnotes_ot_start").prop("checked") ? 1 : 0;
     let footnotes_nt = $("#mdl_footnotes_nt_start").prop("checked") ? 1 : 0;
+    // clear history
+    let footnotes_ot_change = "";
+    let footnotes_nt_change = "";
+    let and = "";
+    if (($(".reading_bible_title").attr("data-notes_ot") != footnotes_ot) && $(".reading_bible_title").attr("data-book_ot")) {
+      footnotes_ot_change = " Ветхому Завету";
+    }
+    if (($(".reading_bible_title").attr("data-notes_nt") != footnotes_nt) && $(".reading_bible_title").attr("data-book_nt")) {
+      footnotes_nt_change =  " Новому Завету";
+    }
+    if (footnotes_ot_change || footnotes_nt_change) {
+      if (footnotes_ot_change && footnotes_nt_change) {
+        and = " и";
+      }
+      if (confirm("Вы начинаете заново? Удалить предыдущую историю чтения по" + footnotes_ot_change + and + footnotes_nt_change + "?")) {
+        fetch("ajax/ftt_reading_ajax.php?type=dlt_history_reading_bible&member_key=" + window.adminId + "&ot=" + footnotes_ot_change + "&nt=" + footnotes_nt_change)
+        .then(response => response.json())
+        .then(commits => {
+          
+        });
+      } else {
+        return;
+      }
+    }
+    // set data in html
+    $(".reading_bible_title").text("Чтение Библии " + "(" + text_ot + comma + text_nt +")");
+    $(".reading_bible_title").attr("data-notes_ot", footnotes_ot);
+    $(".reading_bible_title").attr("data-notes_nt", footnotes_nt);
+    $(".reading_bible_title").attr("data-book_ot", $("#mdl_book_ot_start").val());
+    $(".reading_bible_title").attr("data-book_nt", $("#mdl_book_nt_start").val());
+    // query
     let param = "&member_key=" + $("#modalAddEdit").attr("data-member_key") +
     "&date=" + $("#modalAddEdit").attr("data-date") +
     "&chosen_book=" + chosen_book +
@@ -1782,8 +1834,8 @@ function open_blank(el_this) {
         showError("Запись не сохранена. Не корректные входные данные.");
         return;
       } else if(commits.result) {
-        $("#bible_book_ot").attr("disabled", true).css("background-color", "#f8f9fa");;
-        $("#bible_book_nt").attr("disabled", true).css("background-color", "#f8f9fa");;
+        $("#bible_book_ot").attr("disabled", true).css("background-color", "#f8f9fa");
+        $("#bible_book_nt").attr("disabled", true).css("background-color", "#f8f9fa");
         if (chosen_book === 3) {
           render_bible_chapters($("#mdl_book_ot_start").val(), $("#mdl_chapter_ot_start").val(), "#bible_book_ot");
           render_bible_chapters($("#mdl_book_nt_start").val(), $("#mdl_chapter_nt_start").val(), "#bible_book_nt");

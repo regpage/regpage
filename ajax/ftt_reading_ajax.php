@@ -43,4 +43,9 @@ if (isset($_GET['type']) && $_GET['type'] === 'set_read_book_by_book') {
   exit();
 }
 
+// delete history bible reading
+if (isset($_GET['type']) && $_GET['type'] === 'dlt_history_reading_bible') {
+  echo json_encode(["result"=>dlt_history_reading_bible($_GET['member_key'], $_GET['ot'], $_GET['nt'])]);
+  exit();
+}
 ?>

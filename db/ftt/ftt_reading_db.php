@@ -328,3 +328,21 @@ function get_start_position($member_key)
   while ($row = $res->fetch_assoc()) $result = $row;
   return $result;
 }
+
+function dlt_history_reading_bible($member_key, $ot, $nt)
+{
+  global $db;
+  $member_key = $db->real_escape_string($member_key);
+  $ot = $db->real_escape_string($ot);
+  $nt = $db->real_escape_string($nt);
+  $condition = "";
+  if (!empty($ot)) {
+    $condition = " AND `book_ot` != ''";
+  }
+  if (!empty($nt)) {
+    $condition .= " AND `book_nt` != ''";
+  }
+
+  $res = db_query("DELETE FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `date` = '0000-00-00' {$condition}");
+
+}
