@@ -1,0 +1,31 @@
+.read_day {
+  max-width: 70px !important;
+  text-align: center;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.green_string {
+  background-color: #b6efb6;
+}
+
+.read_name {
+  max-width: 250px !important;
+  padding-left: 2px !important;
+}
+.read_name .btn {
+  vertical-align: middle;
+  text-decoration: none !important;
+  color: #0050a7 !important;
+  text-align: left !important;
+  font-size: 14px;
+  padding-left: 2px;  
+  padding-bottom: 0px;
+}
+
+.edit_read {
+  max-width: 20px !important;
+  text-align: center;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}

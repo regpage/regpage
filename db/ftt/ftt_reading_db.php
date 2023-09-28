@@ -346,3 +346,44 @@ function dlt_history_reading_bible($member_key, $ot, $nt)
   $res = db_query("DELETE FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `date` = '0000-00-00' {$condition}");
 
 }
+
+/**** СЛУЖАЩИЕ ****/
+function getDataReadingForStaff($member_key)
+{
+  global $db;
+  $member_key = $db->real_escape_string($member_key);
+  $result = [];
+  $curent_date = [];
+  $condition = "";
+  if ($member_key != '_all_') {
+    $condition = " ft.serving_one = '{$member_key}' AND ";
+  }
+  for ($i=0; $i < 7; $i++) {
+    $day_text = 6 - $i;
+    $curent_date[date('Y-m-d', strtotime("-{$day_text} days"))] = '';
+  }
+
+  $res = db_query("SELECT fb.*, m.name, ft.serving_one
+    FROM ftt_bible AS fb
+    LEFT JOIN member m ON m.key = fb.member_key
+    LEFT JOIN ftt_trainee ft ON ft.member_key = fb.member_key
+    WHERE {$condition} fb.start != 1 AND fb.date != '0000-00-00' AND (fb.date > CURDATE() - INTERVAL 7 DAY) ORDER BY m.name ASC, fb.date ASC");
+  while ($row = $res->fetch_assoc()) {
+    if (!isset($result[$row['member_key']])) {
+      $result[$row['member_key']] = $curent_date;
+    }
+    $result[$row['member_key']][$row['date']] = $row;
+  }
+  return $result;
+}
+
+function getHistoryReadingTrainee($member_key)
+{
+  global $db;
+  $member_key = $db->real_escape_string($member_key);
+  $result = [];
+  $res = db_query("SELECT * FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `start` != 1 AND `date` != '0000-00-00' ORDER BY `date`");
+  while ($row = $res->fetch_assoc()) $result[] = $row;
+
+  return $result;
+}

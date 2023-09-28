@@ -110,7 +110,7 @@
   </div>
 </div>
 
-<!--ПРОЧИТАННЫЕ КНИГИ -->
+<!-- НЕ ИСПОЛЬЗУЕТСЯ  ПРОЧИТАННЫЕ КНИГИ
 <div id="mdl_bible_read_before" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" data-id="" data-member_key="" data-serving_one="" data-status="">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -129,9 +129,9 @@
     </div>
   </div>
 </div>
-
+ -->
 <!-- Статистика чтения Библии -->
-<div class="modal fade" id="mdl_bible_statistic">
+<div id="mdl_bible_statistic" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content" style="width: 600px;">
       <!-- Modal Header -->
@@ -157,7 +157,7 @@
 </div>
 
 <!-- Отметка книг служащими -->
-<div class="modal fade" id="mdl_bible_check_book">
+<div id="mdl_bible_check_book" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content">
       <!-- Modal Header -->
@@ -169,7 +169,7 @@
       <div class="modal-body">
         <div class="row mb-3">
           <div class="col">
-            <select id="ftr_trainee_reading_check_mbl" class="form-control">
+            <select id="ftr_trainee_reading_check_mbl" class="form-control" disabled>
               <option value="_none_">Обучающиеся</option>
               <?php foreach ($trainee_list as $key => $value):
                 /*$selected = '';
@@ -215,6 +215,134 @@
     </div>
   </div>
 </div>
+
+<!-- Статистика чтения Библии -->
+<div class="modal fade" id="mdl_reading_archive">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title">Чтение Библии</h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <h5 id="mdl_history_read_name"></h5>
+        <div id="mdl_lest_reading_bible" class="container pl-0">
+
+        </div>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- правка чтения Библии -->
+<?php if ($ftt_access['group'] === 'staff'): ?>
+<div class="modal fade" id="mdl_edit_read" data-member_key="">
+  <div class="modal-dialog" style="max-width: 440px;">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title">Чтение Библии</h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <h5 id="mdl_edit_read_name"></h5>
+        <div class="container border ml-0 mr-0 mt-3 mb-3 p-2" style="max-width: 400px;">
+          <div class="row">
+            <div class="col-5" style="max-width: 170px;">
+              <select id="bible_book_ot" class="col mr-3 form-control"
+                data-book="<?php echo $book_current['book_ot']; ?>" data-chapter="<?php echo $book_current['chapter_ot']; ?>" data-field="book_ot" data-notes="<?php echo $book_current['read_footnotes_ot']; ?>"
+                style="min-width: 95px; min-height: 35px; margin-left: 0px !important;" <?php echo $disabled_ot; ?>>
+                <option value="_none_">ВЗ
+                  <option value="0">Нет
+                    <?php
+                    $counter = 0;
+                    foreach ($bible_books as $key => $value) {
+                      if ($key < 39) {
+                        for ($i=1; $i <= $value[1]; $i++) {
+                          if (($book_current['book_ot'] ===  $value[0] && $book_current['chapter_ot'] == $i) || $counter || empty($book_current['book_ot'])) {
+                            $selected = '';
+                            if ($book_current['book_ot'] ===  $value[0] && $book_current['chapter_ot'] == $i && $book_current['today_ot'] == 1) {
+                              $selected = 'selected';
+                            }
+                            echo "<option value='{$value[0]} {$i}' data-book='{$value[0]}' data-chapter='{$i}' {$selected}>{$value[0]} {$i}";
+                            if (!empty($book_current['book_ot'])) {
+                              $counter++;
+                              if ($counter === 10) {
+                                break;
+                              }
+                            }
+                          }
+                        }
+                      }
+                      if ($counter === 10) {
+                        break;
+                      }
+                    }
+                    ?>
+              </select>
+            </div>
+            <div class="col-5" style="max-width: 170px;">
+              <select id="bible_book_nt" class="col mr-3 form-control"
+              data-book="<?php echo $book_current['book_nt']; ?>" data-chapter="<?php echo $book_current['chapter_nt']; ?>" data-field="book_nt" data-notes="<?php echo $book_current['read_footnotes_nt']; ?>"
+              style="min-width: 95px; min-height: 35px; margin-left: 0px !important;" <?php echo $disabled_nt; ?>>
+                <option value="_none_">НЗ
+                  <option value="0">Нет
+                    <?php
+                    $counter = 0;
+                    foreach ($bible_books as $key => $value) {
+                      if ($key > 38) {
+                        for ($i=1; $i <= $value[1]; $i++) {
+                          if (($book_current['book_nt'] ===  $value[0]  && $book_current['chapter_nt'] == $i) || $counter || empty($book_current['book_nt'])) {
+                            $selected = '';
+                            if ($book_current['book_nt'] ===  $value[0] && $book_current['chapter_nt'] == $i && $book_current['today_nt'] == 1) {
+                              $selected = 'selected';
+                            }
+                            echo "<option value='{$value[0]} {$i}' data-book='{$value[0]}' data-chapter='{$i}' {$selected}>{$value[0]} {$i}";
+                            if (!empty($book_current['book_nt'])) {
+                              $counter++;
+                              if ($counter === 10) {
+                                break;
+                              }
+                            }
+                          }
+                        }
+                      }
+                      if ($counter === 10) {
+                        break;
+                      }
+                    }
+                    ?>
+              </select>
+            </div>
+            <div class="col-2 pl-0">
+              <button type="button" id="show_me_start" class="col bg-secondary text-light short_select_field rounded" style="min-width: 54px !important; height: 38px;">...</button>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-5" style="max-width: 170px;">
+              <input type="date" id="date_read" class="form-control" value="<?php echo date('Y-m-d'); ?>" max="<?php echo date('Y-m-d'); ?>">
+            </div>
+            <div class="col-7">
+              <button id="save_book_read" class="btn btn-sm btn-success float-right w-100 h-100" type="button" data-toggle="modal" data-target="#" <?php echo $disabled; ?>>Записать</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+<?php endif; ?>
 
 <!-- ЧТЕНИЕ СТАРТ-->
 <?php include_once 'components/ftt_reading/modals_part_start.php'; ?>
