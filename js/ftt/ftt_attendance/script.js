@@ -1059,12 +1059,20 @@ function open_blank(el_this) {
 
         if (reading_str['book_ot'] && $("#modalAddEdit").attr("data-status") === "0") {
           $("#bible_book_ot").attr("disabled", false).css("background-color", "white");
+          $("#bible_book_ot").show();
         } else {
+          if (!reading_str['book_ot']) {
+            $("#bible_book_ot").hide();
+          }
           $("#bible_book_ot").attr("disabled", true).css("background-color", "#f8f9fa");
         }
         if (reading_str['book_nt'] && $("#modalAddEdit").attr("data-status") === "0") {
           $("#bible_book_nt").attr("disabled", false).css("background-color", "white");
+          $("#bible_book_nt").show();
         } else {
+          if (!reading_str['book_nt']) {
+            $("#bible_book_nt").hide();
+          }
           $("#bible_book_nt").attr("disabled", true).css("background-color", "#f8f9fa");
         }
         if ($("#modalAddEdit").attr("data-status") !== "0") {
@@ -1593,7 +1601,10 @@ function open_blank(el_this) {
         $("#mdl_ot_start").attr("disabled", true);
         $("#mdl_ot_start").prop("checked", true);
       }
+    } else if (!$("#bible_book_ot").is(":visible")) {
+      $("#mdl_ot_start").attr("disabled", false);      
     }
+
     if (!$("#bible_book_nt").attr("disabled")) {
       if ($("#bible_book_nt").val() && $("#bible_book_nt").val() !== "0" && $("#bible_book_nt").val() !== "_none_") {
         nt = split_book($("#bible_book_nt").val());
@@ -1611,6 +1622,8 @@ function open_blank(el_this) {
         $("#mdl_nt_start").attr("disabled", true);
         $("#mdl_nt_start").prop("checked", true);
       }
+    } else if (!$("#bible_book_nt").is(":visible")) {
+      $("#mdl_nt_start").attr("disabled", false);
     }
 
     $("#set_start_reading_bible").attr("disabled", true);
@@ -1802,7 +1815,7 @@ function open_blank(el_this) {
         fetch("ajax/ftt_reading_ajax.php?type=dlt_history_reading_bible&member_key=" + window.adminId + "&ot=" + footnotes_ot_change + "&nt=" + footnotes_nt_change)
         .then(response => response.json())
         .then(commits => {
-          
+
         });
       } else {
         return;
@@ -1839,10 +1852,16 @@ function open_blank(el_this) {
         if (chosen_book === 3) {
           render_bible_chapters($("#mdl_book_ot_start").val(), $("#mdl_chapter_ot_start").val(), "#bible_book_ot");
           render_bible_chapters($("#mdl_book_nt_start").val(), $("#mdl_chapter_nt_start").val(), "#bible_book_nt");
+          $("#bible_book_ot").show();
+          $("#bible_book_nt").show();
         } else if (chosen_book === 1) {
           render_bible_chapters($("#mdl_book_ot_start").val(), $("#mdl_chapter_ot_start").val(), "#bible_book_ot");
+          $("#bible_book_ot").show();
+          $("#bible_book_nt").hide();
         } else if (chosen_book === 2) {
           render_bible_chapters($("#mdl_book_nt_start").val(), $("#mdl_chapter_nt_start").val(), "#bible_book_nt");
+          $("#bible_book_ot").hide();
+          $("#bible_book_nt").show();
         }
         showHint("Запись сохранена.");
       } else {

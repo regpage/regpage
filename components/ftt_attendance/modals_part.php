@@ -87,34 +87,38 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
 
                 <!--<span>Название книг Библии</span>
                 <br>-->
-                <select id="bible_book_ot" class="mr-3 form-control" data-field="book_ot" style="min-width: 95px; min-height: 35px; margin-left: 0px !important;">
-                  <option value="_none_">
-                  <option value="0">Нет
+                <div style="min-width: 111px;">
+                  <select id="bible_book_ot" class="mr-3 form-control" data-field="book_ot" style="min-width: 95px; max-width: 95px; min-height: 35px; margin-left: 0px !important;">
+                    <option value="_none_">
+                    <option value="0">Нет
+                      <?php
+                      $bible_books = $bible_obj->get();
+                      foreach ($bible_books as $key => $value) {
+                        if ($key < 39) {
+                          for ($i=1; $i <= $value[1]; $i++) {
+                            echo "<option value='{$i}' data-book='{$value[0]}' data-chapter='{$i}'>{$value[0]} {$i}";
+                          }
+                        }
+                      }
+                      ?>
+                  </select>
+                </div>
+                <div style="min-width: 111px;">
+                  <select id="bible_book_nt" class="mr-3 form-control" data-field="book_nt" style="min-width: 95px; max-width: 95px; min-height: 35px; margin-left: 0px !important;">
+                    <option value="_none_">
+                    <option value="0">Нет
                     <?php
                     $bible_books = $bible_obj->get();
                     foreach ($bible_books as $key => $value) {
-                      if ($key < 39) {
+                      if ($key > 38) {
                         for ($i=1; $i <= $value[1]; $i++) {
-                          echo "<option value='{$i}' data-book='{$value[0]}' data-chapter='{$i}'>{$value[0]} {$i}";
+                            echo "<option value='{$i}' data-book='{$value[0]}' data-chapter='{$i}'>{$value[0]} {$i}";
                         }
                       }
                     }
                     ?>
-                </select>
-                <select id="bible_book_nt" class="mr-3 form-control" data-field="book_nt" style="min-width: 95px; min-height: 35px; margin-left: 0px !important;">
-                  <option value="_none_">
-                  <option value="0">Нет
-                  <?php
-                  $bible_books = $bible_obj->get();
-                  foreach ($bible_books as $key => $value) {
-                    if ($key > 38) {
-                      for ($i=1; $i <= $value[1]; $i++) {
-                          echo "<option value='{$i}' data-book='{$value[0]}' data-chapter='{$i}'>{$value[0]} {$i}";
-                      }
-                    }
-                  }
-                  ?>
-                </select>
+                  </select>
+                </div>
                 <button type="button" id="show_me_start" class="bg-secondary text-light short_select_field rounded" data-toggle="modal" data-target="#mdl_bible_start" style="min-width: 54px !important;">...</button>
               </div>
             </div>
