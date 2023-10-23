@@ -136,13 +136,20 @@ $(document).ready(function(){
     $("#mdl_edit_read").attr("data-member_key", $(this).parent().parent().find(".btn").attr("data-member_key"));
     $("#mdl_edit_read_name").text(trainee_list[$(this).parent().parent().find(".btn").attr("data-member_key")]);
     $("#date_read").val(gl_date_now);
+    $("#bible_book_ot").attr("data-book", "");
+    $("#bible_book_ot").attr("data-chapter", "");
+    $("#bible_book_ot").attr("data-notes", "");
+    $("#bible_book_nt").attr("data-book");
+    $("#bible_book_nt").attr("data-chapter", "");
+    $("#bible_book_nt").attr("data-notes", "");
+
     // получаем данные по дате
     fetch("ajax/ftt_reading_ajax.php?type=get_reading_data&member_key="
     + $(this).parent().parent().find(".btn").attr("data-member_key") + "&date=" + gl_date_now)
     .then(response => response.json())
     .then(commits => {
       let data = commits.result;
-      if (data["book_ot"]) {
+      if (data["book_ot"]) {        
         render_bible_chapters(data["book_ot"], data["chapter_ot"], "#bible_book_ot");
         $("#bible_book_ot").attr("data-book", data["book_ot"]);
         $("#bible_book_ot").attr("data-chapter", data["chapter_ot"]);
@@ -411,6 +418,7 @@ $(document).ready(function(){
 
   // открываем модальное окно старта
   $("#show_me_start").click(function () {
+
     if ($("#date_read").val() !== gl_date_now) {
       showError("Старт может быть задан только на текущую дату.");
       return;
