@@ -30,6 +30,7 @@ if (isset($_COOKIE['flt_serving_one_read'])) {
     </div>-->
   </div>
 </div>
+<hr class="m-0">
 <div id="list_readin_bible" class="container">
     <div class="row">
     <?php
@@ -45,10 +46,27 @@ if (isset($_COOKIE['flt_serving_one_read'])) {
         $bg_success = '';
         $date_record = date_convert::yyyymmdd_to_ddmm($key_2);
 
+        $title = '';
+        if (!empty($value_2['book_ot'])) {
+          $title = $value_2['book_ot'];
+          if ($value_2['chapter_ot'] > 0) {
+            $title .= ' ' . $value_2['chapter_ot'];
+          }
+          $title .= '; ';
+        }
+
+        if (!empty($value_2['book_nt'])) {
+          $title .= $value_2['book_nt'];
+          if ($value_2['chapter_nt'] > 0) {
+            $title .= ' ' . $value_2['chapter_nt'];
+          }
+          $title .= ';';
+        }
+
         if ((isset($value_2['chapter_ot']) && $value_2['chapter_ot'] > 0) || (isset($value_2['chapter_nt']) && $value_2['chapter_nt'] > 0)) {
           $bg_success = 'green_string';
         }
-        echo "<div class='col-1 read_day {$bg_success}'>{$date_record}</div>";
+        echo "<div class='col-1 read_day mr-2 {$bg_success}' title='{$title}' data-toggle='tooltip'>{$date_record}</div>";
         $counter++;
       }
       echo "<div class='col-1' style='max-width: 20px;'><i class='fa fa-pencil cursor-pointer edit_read' aria-hidden='true'></i></div>";

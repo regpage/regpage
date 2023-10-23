@@ -177,26 +177,60 @@ $(document).ready(function(){
     $("#mdl_edit_read").modal("show");
   });
 
+  function noSpace(book_name)
+  {
+    let booksNoSpace, temp;
+    temp = book_name.split(' ');
+      if (temp.length > 1) {
+        booksNoSpace = temp.join("&nbsp");
+      } else {
+        booksNoSpace = book_name;
+      }
+
+    return booksNoSpace;
+  }
+
   // Архив
   $(".read_name .btn").click(function () {
     $("#mdl_reading_archive").modal("show");
+    let member_key = $(this).attr("data-member_key");
+    $("#mdl_history_read_name").text(trainee_list[member_key]);
     // получаем прочитанные книги выбранного обучающегося
-    fetch("ajax/ftt_reading_ajax.php?type=get_history_reading_bible&member_key=" + $(this).attr("data-member_key"))
+    fetch("ajax/ftt_reading_ajax.php?type=get_read_book&member_key=" + member_key)
     .then(response => response.json())
     .then(commits => {
-      let history = commits.result;
-      let html = "<div>";
-      $("#mdl_history_read_name").text(trainee_list[$(this).attr("data-member_key")]);
-      for (let i = 0; i < history.length; i++) {
-        let bg_green = "";
-        if (history[i]["chapter_nt"] > 0 || history[i]["chapter_ot"] > 0) {
-          bg_green = "green_string";
+      let read_books = commits.result;
+      // сприсок прочитанных книг
+      let bible_books_html = "", found;
+      for (let i = 0; i < bible_arr.length; i++) {
+        found = read_books.find(e => e[0] === bible_arr[i][0]);
+        if (found === undefined) {
+          backgroung = "";
+        } else {
+          backgroung = "record_available";
         }
-        html += "<span class='p-2 mb-2 d-inline-block " + bg_green + "'>" + dateStrFromyyyymmddToddmm(history[i]["date"]) + "</span> ";
+
+        if (i < 39) {
+          bible_books_html += "<span class='" + backgroung + " p-1 mr-1' data-val='"+i+"'>" + noSpace(bible_arr[i][0]) + " </span>";
+        } else {
+          if (i === 39) {
+            bible_books_html += "<br><br>";
+          }
+          bible_books_html += "<span class='" + backgroung + " p-1 mr-1 mt-1' data-val='"+i+"'>" + noSpace(bible_arr[i][0]) + " </span>";
+        }
       }
-      $("#mdl_lest_reading_bible").html(html);
+      $("#mdl_lest_reading_bible").html(bible_books_html);
     });
+    setTimeout(function () {
+      // получаем историю чтения
+      fetch("ajax/ftt_reading_ajax.php?type=get_history_reading_bible&member_key=" + member_key)
+      .then(response => response.json())
+      .then(commits => {
+        calendar(commits.result);
+      });
+    }, 30);
   });
+
   // фильтр
   $("#read_sevice_one_select").change(function () {
     setCookie("flt_serving_one_read", $(this).val());
@@ -308,7 +342,7 @@ $(document).ready(function(){
       if (footnotes_ot_change && footnotes_nt_change) {
         and = " и";
       }
-      if (confirm("Вы начинаете заново? Удалить предыдущую историю чтения по" + footnotes_ot_change + and + footnotes_nt_change + "?")) {
+      if (confirm("Вы начинаете заново? Удалить предыдущую историю чтения по " + footnotes_ot_change + and + footnotes_nt_change + "?")) {
         fetch("ajax/ftt_reading_ajax.php?type=dlt_history_reading_bible&member_key=" + member_key + "&ot=" + footnotes_ot_change + "&nt=" + footnotes_nt_change)
         .then(response => response.json())
         .then(commits => {
@@ -389,7 +423,7 @@ $(document).ready(function(){
     }
     fetch("ajax/ftt_reading_ajax.php?type=get_start_reading_bible&member_key=" + member_key + "&date=" + gl_date_now)
     .then(response => response.json())
-    .then(commits => {      
+    .then(commits => {
       let data_book_ot, data_book_nt;
       let result = commits.result;
       if (result["id"]) {
@@ -748,26 +782,207 @@ function render_bible_chapters(book, chapter, selector) {
   }
   $(selector).html(options);
 }
-/*
-// *** BIBLE SAVE HERE! *** //
-if (e.target.id === "bible_book") {
-  setTimeout(function () {
-    fetch("ajax/ftt_attendance_ajax.php?type=get_bible_chapter&book=" + value)
-    .then(response => response.json())
-    .then(commits => {
-      let options = "";
-      for (let i = 1; i <= commits.result[0][1]; i++) {
-        options += "<option value='" + i + "'>" + i;
+  /*
+  // *** BIBLE SAVE HERE! *** //
+  if (e.target.id === "bible_book") {
+    setTimeout(function () {
+      fetch("ajax/ftt_attendance_ajax.php?type=get_bible_chapter&book=" + value)
+      .then(response => response.json())
+      .then(commits => {
+        let options = "";
+        for (let i = 1; i <= commits.result[0][1]; i++) {
+          options += "<option value='" + i + "'>" + i;
+        }
+        $("#bible_chapter").html(options);
+        save_select_field_extra("bible_chapter", 1, 1);
+        $("#accordion_attendance .list_string[data-id='"+id+"']").attr("data-bible_book", value);
+        $("#accordion_attendance .list_string[data-id='"+id+"']").attr("data-bible_chapter", 1);
+      });
+    }, 10);
+  } else {
+    $("#accordion_attendance .list_string[data-id='"+id+"']").attr("data-bible_chapter", value);
+  }
+  */
+  // CALENDAR
+  function calendar(records) {
+    let Cal = function(divId) {
+      //Сохраняем идентификатор div
+      this.divId = divId;
+      // Дни недели с понедельника
+      this.DaysOfWeek = [
+        'Пн',
+        'Вт',
+        'Ср',
+        'Чт',
+        'Пт',
+        'Сб',
+        'Вс'
+      ];
+      // Месяцы начиная с января
+      this.Months =['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+      //Устанавливаем текущий месяц, год
+      let d = new Date();
+      this.currMonth = d.getMonth();
+      this.currYear = d.getFullYear();
+      this.currDay = d.getDate();
+    };
+    // Переход к следующему месяцу
+    Cal.prototype.nextMonth = function() {
+      if ( this.currMonth == 11 ) {
+        this.currMonth = 0;
+        this.currYear = this.currYear + 1;
       }
-      $("#bible_chapter").html(options);
-      save_select_field_extra("bible_chapter", 1, 1);
-      $("#accordion_attendance .list_string[data-id='"+id+"']").attr("data-bible_book", value);
-      $("#accordion_attendance .list_string[data-id='"+id+"']").attr("data-bible_chapter", 1);
-    });
-  }, 10);
-} else {
-  $("#accordion_attendance .list_string[data-id='"+id+"']").attr("data-bible_chapter", value);
-}
-*/
+      else {
+        this.currMonth = this.currMonth + 1;
+      }
+      this.showcurr();
+    };
+    // Переход к предыдущему месяцу
+    Cal.prototype.previousMonth = function() {
+      if ( this.currMonth == 0 ) {
+        this.currMonth = 11;
+        this.currYear = this.currYear - 1;
+      }
+      else {
+        this.currMonth = this.currMonth - 1;
+      }
+      this.showcurr();
+    };
+    // Показать текущий месяц
+    Cal.prototype.showcurr = function() {
+      this.showMonth(this.currYear, this.currMonth);
+    };
+    // Показать месяц (год, месяц)
+    Cal.prototype.showMonth = function(y, m) {
+      let d = new Date()
+      // Первый день недели в выбранном месяце
+      , firstDayOfMonth = new Date(y, m, 7).getDay()
+      // Последний день выбранного месяца
+      , lastDateOfMonth =  new Date(y, m+1, 0).getDate()
+      // Последний день предыдущего месяца
+      , lastDayOfLastMonth = m == 0 ? new Date(y-1, 11, 0).getDate() : new Date(y, m, 0).getDate();
+      let html = '<table>';
+      // Запись выбранного месяца и года
+      html += '<thead><tr>';
+      html += '<td colspan="7">' + this.Months[m] + ' ' + y + '</td>';
+      html += '</tr></thead>';
+      // заголовок дней недели
+      html += '<tr class="days">';
+      for(let i=0; i < this.DaysOfWeek.length;i++) {
+        html += '<td>' + this.DaysOfWeek[i] + '</td>';
+      }
+      html += '</tr>';
+      // Записываем дни
+      let i=1;
+      do {
+        let dow = new Date(y, m, i).getDay();
+        // Начать новую строку в понедельник
+        if ( dow == 1 ) {
+          html += '<tr>';
+        }
+        // Если первый день недели не понедельник показать последние дни предыдущего месяца
+        else if ( i == 1 ) {
+          html += '<tr>';
+          let k = lastDayOfLastMonth - firstDayOfMonth+1;
+          for(let j=0; j < firstDayOfMonth; j++) {
+            html += '<td class="not-current">' + k + '</td>';
+            k++;
+          }
+        }
+        // Записываем текущий день в цикл
+        let chk = new Date();
+        let chkY = chk.getFullYear();
+        let chkM = chk.getMonth();
+        if (chkY == y && chkM == m && i == this.currDay) { //this.currMonth
+          let record_available = "", not_available = "";
+          let date_record = chkY + '-' + (m < 9 ? '0' + String(m+1) : m+1)  + '-' + i;
+          let books_read = "";
+          // проверка, добавление класса
+          found = records.find(e => e["date"] === date_record);
+
+          if (found !== undefined) {
+            if (found["date"] === date_record) {
+              if (found["chapter_nt"] > 0 || found["chapter_ot"] > 0) {
+                record_available = "record_available";
+                if (found["book_nt"] && found["chapter_nt"] > 0) {
+                  books_read = found["book_nt"] + " " + found["chapter_nt"] + "; ";
+                }
+                if (found["book_ot"] && found["chapter_ot"] > 0) {
+                  books_read += found["book_ot"] + " " + found["chapter_ot"] + "; ";
+                }
+              } else {
+                record_available = "record_not_available";
+                books_read = "Нет";
+              }
+            }
+          }
+
+          html += '<td class="today ' + record_available + '" data-date="' + date_record + '">' + i + '</td>';
+        } else {
+          // проверка, добавление класса
+          let record_available = "", day_date = i;
+          let date_record = y + '-' + (m < 9 ? '0' + String(m+1) : m+1)  + '-' + (i < 10 ? '0' + String(day_date) : day_date);
+          let books_read = "";
+          found = records.find(e => e["date"] === date_record);
+
+          if (found !== undefined) {
+            if (found["date"] === date_record) {
+              if (found["chapter_nt"] > 0 || found["chapter_ot"] > 0) {
+                record_available = "record_available";
+                if (found["book_nt"] && found["chapter_nt"] > 0) {
+                  books_read = found["book_nt"] + " " + found["chapter_nt"] + "; ";
+                }
+                if (found["book_ot"] && found["chapter_ot"] > 0) {
+                  books_read += found["book_ot"] + " " + found["chapter_ot"] + "; ";
+                }
+              } else {
+                record_available = "record_not_available";
+                books_read = "Нет";
+              }
+            }
+          }
+
+          html += '<td class="normal ' + record_available + '" data-toggle="tooltip" data-date="' + date_record + '" title="' + books_read + '">' + i + '</td>';
+        }
+        // закрыть строку в воскресенье
+        if (dow == 0) {
+          html += '</tr>';
+        }
+        // Если последний день месяца не воскресенье, показать первые дни следующего месяца
+        else if ( i == lastDateOfMonth ) {
+          let k=1;
+          for(dow; dow < 7; dow++) {
+            html += '<td class="not-current">' + k + '</td>';
+            k++;
+          }
+        }
+        i++;
+      }while(i <= lastDateOfMonth);
+      // Конец таблицы
+      html += '</table>';
+      // Записываем HTML в div
+      document.getElementById(this.divId).innerHTML = html;
+      $('[data-toggle="tooltip"]').tooltip();
+
+    };
+
+    // Начать календарь
+    let c = new Cal("divCal");
+    c.showcurr();
+    // Привязываем кнопки «Следующий» и «Предыдущий»
+    getId('btnNext').onclick = function() {
+      c.nextMonth();
+    };
+    getId('btnPrev').onclick = function() {
+      c.previousMonth();
+    };
+
+    // Получить элемент по id
+    function getId(id) {
+      return document.getElementById(id);
+    }
+  }
+
+
   //**** DOCUMENT READY END ****//
 });

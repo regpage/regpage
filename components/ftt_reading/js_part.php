@@ -18,4 +18,4 @@ for (let i = 0; i < bible_arr_temp.length; i = i + 2) {
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
 <script src="/js/modules/date.js"></script>
 <script src="/js/ftt/ftt_reading/script.js?v6"></script>
-<script src="/js/ftt/ftt_reading/design.js?v5"></script>
+<script src="/js/ftt/ftt_reading/design.js?v7"></script>

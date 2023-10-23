@@ -408,7 +408,7 @@ $(document).ready(function(){
   // CALENDAR
   function calendar(records) {
 
-    let html = '<div class="calendar-wrapper"><button id="btnPrev" type="button">Предыдущий</button><button id="btnNext" type="button">Следующий</button><div id="divCal"></div>';
+    //let html = '<div class="calendar-wrapper"><button id="btnPrev" type="button">Предыдущий</button><button id="btnNext" type="button">Следующий</button><div id="divCal"></div>';
     let Cal = function(divId) {
       //Сохраняем идентификатор div
       this.divId = divId;
@@ -499,7 +499,7 @@ $(document).ready(function(){
         let chkM = chk.getMonth();
         if (chkY == y && chkM == m && i == this.currDay) { //this.currMonth
           let record_available = "", not_available = "";
-          let date_record = chkY + '-' + (m < 10 ? '0' + String(m+1) : m)  + '-' + i;
+          let date_record = chkY + '-' + (m < 9 ? '0' + String(m+1) : m+1)  + '-' + i;
           let sim = "";
           // проверка, добавление класса
           for (let variable in records) {
@@ -532,7 +532,7 @@ $(document).ready(function(){
         } else {
           // проверка, добавление класса
           let record_available = "", day_date = i;
-          let date_record = y + '-' + (m < 10 ? '0' + String(m+1) : m)  + '-' + (i < 10 ? '0' + String(day_date) : day_date);
+          let date_record = y + '-' + (m < 9 ? '0' + String(m+1) : m+1)  + '-' + (i < 10 ? '0' + String(day_date) : day_date);
           let sim = "";
           for (let variable in records) {
             if (records.hasOwnProperty(variable)) {

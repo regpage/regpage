@@ -72,7 +72,7 @@ function db_newDailyAttendance () {
         $member_semester_range = '2';
       }
       echo "{$id_member}, ";
-      $max_id;
+      $max_id = '';
 
       // **__** ADD NEW SHEET
       // добавляем новый лист посещаемости
@@ -88,7 +88,7 @@ function db_newDailyAttendance () {
           while ($row = $max_id_tmp->fetch_assoc()) $max_id=$row['last_id'];
         }*/
       }
-      $id_new_string_block = db_query("UNLOCK TABLES;");
+      $id_new_string_block = db_query("UNLOCK TABLES;");      
 
       // **__** PERMISSIONS
       // Проверяем наличие разрешений для пользователя (permissions)
