@@ -151,10 +151,30 @@ function get_reading_data($member_key, $date)
       $result2 = $row;
       break;
     }
-
+    // полученные данные записываем в результат если оба массива существуют
     if (isset($result2['book_ot']) && isset($result['book_nt'])) {
       $result['book_ot'] = $result2['book_ot'];
       $result['chapter_ot'] = $result2['chapter_ot'];
+    }
+    // сверка книг
+    if (isset($result['book_ot']) || isset($result2['book_ot'])) {
+      $sim = 0;
+      if (isset($result2['book_ot']) && !empty($result2['book_ot'])) {
+        $sim = 1;
+      }
+      if (isset($result['book_ot']) && !empty($result['book_ot'])) {
+        $sim = 1;
+      }
+      if ($sim === 0) {
+        if (isset($result['book_ot'])) {
+          $result['book_ot'] = $start_data['book_ot'];
+          $result['chapter_ot'] = $start_data['chapter_ot'];
+        }
+        if (isset($result2['book_ot'])) {
+          $result2['book_ot'] = $start_data['book_ot'];
+          $result2['chapter_ot'] = $start_data['chapter_ot'];
+        }
+      }
     }
   }
 
@@ -178,6 +198,26 @@ function get_reading_data($member_key, $date)
     } elseif(isset($result3['book_nt']) && !isset($result['book_ot']) && !isset($result2['book_nt'])) {
       $result = $result3;
     }
+    // сверка книг
+    if (isset($result['book_nt']) || isset($result2['book_nt'])) {
+      $sim = 0;
+      if (isset($result2['book_nt']) && !empty($result2['book_nt'])) {
+        $sim = 1;
+      }
+      if (isset($result['book_nt']) && !empty($result['book_nt'])) {
+        $sim = 1;
+      }
+      if ($sim === 0) {
+        if (isset($result['book_nt'])) {
+          $result['book_nt'] = $start_data['book_nt'];
+          $result['chapter_nt'] = $start_data['chapter_nt'];
+        }
+        if (isset($result2['book_nt'])) {
+          $result2['book_nt'] = $start_data['book_nt'];
+          $result2['chapter_nt'] = $start_data['chapter_nt'];
+        }
+      }
+    }
   }
 
   if (count($result2) > 0 && !isset($result['chapter_ot'])) {
@@ -191,7 +231,7 @@ function get_reading_data($member_key, $date)
   if (count($result) === 0) {
     $result = 0;
   } else {
-    $result += ['start_today' => $start_today];    
+    $result += ['start_today' => $start_today];
   }
 
   return $result;
