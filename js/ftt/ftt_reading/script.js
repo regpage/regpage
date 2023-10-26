@@ -351,6 +351,7 @@ $(document).ready(function(){
         and = " и";
       }
       if (confirm("Вы начинаете заново? Удалить предыдущую историю чтения по " + footnotes_ot_change + and + footnotes_nt_change + "?")) {
+        sim = 1; // новый завет или ветхий?
         fetch("ajax/ftt_reading_ajax.php?type=dlt_history_reading_bible&member_key=" + member_key + "&ot=" + footnotes_ot_change + "&nt=" + footnotes_nt_change)
         .then(response => response.json())
         .then(commits => {
@@ -362,7 +363,7 @@ $(document).ready(function(){
     }
 
     // отметка прочитанных книг по последней главе
-    if (!$("#mdl_ot_start").attr("disabled") && $("#bible_book_ot").attr("data-book")) {
+    if (!$("#mdl_ot_start").attr("disabled") && $("#bible_book_ot").attr("data-book") && !footnotes_ot_change) {
       let ot_temp;
       if ($("#bible_book_ot").val()) {
         ot_temp = split_book($("#bible_book_ot").val());
@@ -381,7 +382,7 @@ $(document).ready(function(){
         }, 30);
       }
     }
-    if (!$("#mdl_nt_start").attr("disabled") && $("#bible_book_nt").attr("data-book")) {
+    if (!$("#mdl_nt_start").attr("disabled") && $("#bible_book_nt").attr("data-book") && !footnotes_nt_change) {
       let nt_temp;
       if ($("#bible_book_nt").val()) {
         nt_temp = split_book($("#bible_book_nt").val());
@@ -441,6 +442,7 @@ $(document).ready(function(){
 
   $("#mdl_bible_start").on("hide.bs.modal", function () {
     $("#mdl_bible_start input[type='checkbox']").prop("checked", false);
+    $("#mdl_bible_start input[type='checkbox']").attr("disabled", false);
   });
 
   // смена книг в модальном окне

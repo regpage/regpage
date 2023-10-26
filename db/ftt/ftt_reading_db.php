@@ -415,6 +415,7 @@ function dlt_history_reading_bible($member_key, $ot, $nt)
   $ot = $db->real_escape_string($ot);
   $nt = $db->real_escape_string($nt);
   $condition = "";
+
   if (!empty($ot)) {
     $condition = " AND `book_ot` != ''";
   }
@@ -423,7 +424,7 @@ function dlt_history_reading_bible($member_key, $ot, $nt)
   }
 
   $res = db_query("DELETE FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `date` = '0000-00-00' {$condition}");
-
+  return $res;
 }
 
 /**** СЛУЖАЩИЕ ****/

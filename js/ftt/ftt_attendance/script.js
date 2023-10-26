@@ -1763,6 +1763,7 @@ function open_blank(el_this) {
 
   $("#mdl_bible_start").on("hide.bs.modal", function () {
     $("#mdl_bible_start input[type='checkbox']").prop("checked", false);
+    $("#mdl_bible_start input[type='checkbox']").attr("disabled", false);
     setTimeout(function () {
       $("body").addClass("modal-open");
     }, 500);
@@ -1828,7 +1829,7 @@ function open_blank(el_this) {
     }
 
     // отметка прочитанных книг по последней главе
-    if (!$("#mdl_ot_start").attr("disabled") && $("#bible_book_ot").is(":visible")) {
+    if (!$("#mdl_ot_start").attr("disabled") && $("#bible_book_ot").is(":visible") && !footnotes_ot_change) {
       let ot_temp;
       if ($("#bible_book_ot").val()) {
         ot_temp = split_book($("#bible_book_ot").val());
@@ -1848,7 +1849,7 @@ function open_blank(el_this) {
         }, 30);
       }
     }
-    if (!$("#mdl_nt_start").attr("disabled") && $("#bible_book_nt").is(":visible")) {
+    if (!$("#mdl_nt_start").attr("disabled") && $("#bible_book_nt").is(":visible") && !footnotes_nt_change) {
       let nt_temp;
       if ($("#bible_book_nt").val()) {
         nt_temp = split_book($("#bible_book_nt").val());
