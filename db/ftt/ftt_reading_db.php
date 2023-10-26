@@ -97,18 +97,38 @@ function get_reading_data($member_key, $date)
   $result = [];
   $result2 = [];
   $result3 = [];
-  $start_date = "";
+  $start_date;
   $start_today = 0;
+  $start_data;
 
-  // START
-  $res = db_query("SELECT DISTINCT * FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `start` = 1 ORDER BY `date` ASC");
-  while ($row = $res->fetch_assoc()) $start_date = $row['date'];
-  if ($start_date === $date) {
+  // получаем последнюю стартовую позицию
+  $res = db_query("SELECT * FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `start` = 1 ORDER BY `date` DESC");
+  while ($row = $res->fetch_assoc()) {
+    $start_data = $row;
+    $start_data['start'] = 0;
+    break;
+  }
+  // если старт не указан возвращаем 0
+  if (count($start_data) === 0) {
+    return 0;
+  }
+  // если указанную дата больше старта
+  if (strtotime($date) > strtotime($start_data['date'])) {
+    $start_date = $start_data['date'];
+  } else {
+    $start_date = '0000-00-00';
+  }
+
+  // ИСТИНА если в указанную дату имеется стартовая позиция
+  if ($start_data['date'] === $date) {
     $start_today = 1;
   }
+
+  // запрашиваем данные на указанную дату
   $res = db_query("SELECT DISTINCT * FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `date` = '{$date}' AND `start` != 1");
   while ($row = $res->fetch_assoc()) $result = $row;
-  // если сегодня поля заполненны
+
+  // если на указанную дату поля заполненны
   if ((isset($result['chapter_ot']) && $result['chapter_ot'] > 0) && (isset($result['chapter_nt']) && $result['chapter_nt'] > 0)) {
     $result += ['today_ot' => 1];
     $result += ['today_nt' => 1];
@@ -120,15 +140,17 @@ function get_reading_data($member_key, $date)
     }
   }
 
-  // Проверяем старт
+  // ВЗ получаем последнюю строку с заполненными даннными при условии что дата строки больше даты старта
   if (!isset($result['today_ot']) || (isset($result['chapter_ot']) && $result['chapter_ot'] === 0)) {
 
-    // ВЗ // AND `start` = 1
     $res_ot = db_query("SELECT DISTINCT *
       FROM `ftt_bible`
-      WHERE `member_key` = '{$member_key}' AND `chapter_ot` <> 0 AND `date` <= '{$date}' AND `date` >= '{$start_date}'
-      ORDER BY `date` ASC, `id` ASC");
-    while ($row = $res_ot->fetch_assoc()) $result2 = $row;
+      WHERE `member_key` = '{$member_key}' AND `chapter_ot` <> 0 AND `date` > '{$start_date}' AND `date` <= '{$date}'
+      ORDER BY `date` DESC");
+    while ($row = $res_ot->fetch_assoc()){
+      $result2 = $row;
+      break;
+    }
 
     if (isset($result2['book_ot']) && isset($result['book_nt'])) {
       $result['book_ot'] = $result2['book_ot'];
@@ -136,13 +158,19 @@ function get_reading_data($member_key, $date)
     }
   }
 
+  if (count($result2) === 0 && count($result) === 0) {
+    $result = $start_data;
+  }
+  // НЗ получаем последнюю строку с заполненными даннными при условии что дата строки больше даты старта
   if (!isset($result['today_nt']) || (isset($result['chapter_nt']) && $result['chapter_nt'] === 0)) {
-    // НЗ `start` = 1
     $res_nt = db_query("SELECT DISTINCT *
       FROM `ftt_bible`
-      WHERE `member_key` = '$member_key' AND `chapter_nt` <> 0 AND `date` <= '{$date}' AND `date` >= '{$start_date}'
-       ORDER BY `date` ASC, `id` ASC");
-    while ($row = $res_nt->fetch_assoc()) $result3 = $row;
+      WHERE `member_key` = '$member_key' AND `chapter_nt` <> 0 AND `date` > '{$start_date}' AND `date` <= '{$date}'
+       ORDER BY `date` DESC");
+    while ($row = $res_nt->fetch_assoc()) {
+      $result3 = $row;
+      break;
+    }
 
     if (isset($result3['book_nt']) && isset($result['book_ot'])) {
       $result['book_nt'] = $result3['book_nt'];
@@ -163,7 +191,7 @@ function get_reading_data($member_key, $date)
   if (count($result) === 0) {
     $result = 0;
   } else {
-    $result += ['start_today' => $start_today];
+    $result += ['start_today' => $start_today];    
   }
 
   return $result;

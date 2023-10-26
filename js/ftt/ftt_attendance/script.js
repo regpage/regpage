@@ -35,7 +35,6 @@ $(document).ready(function(){
     }
   });
 
-
   // save select field
   function save_select_field(element, value) {
     let field = element.attr("data-field");
@@ -141,6 +140,12 @@ $(document).ready(function(){
        }
      });
  }
+
+  // закрытие бланка
+  $("#modalAddEdit").on("hide.bs.modal", function () {
+    $("#bible_book_ot").show();
+    $("#bible_book_nt").show();
+  });
 
   // send blank
  $('#send_blank').click(function (e) {
@@ -1024,7 +1029,7 @@ function open_blank(el_this) {
     // bible
     // *** BIBLE HERE *** //
     setTimeout(function () {
-      fetch("ajax/ftt_attendance_ajax.php?type=get_bible_data&member_key="
+      fetch("ajax/ftt_reading_ajax.php?type=get_reading_data&member_key="
       + el_this.attr("data-member_key") + "&date=" + el_this.attr("data-date"))
       .then(response => response.json())
       .then(commits => {
@@ -1602,7 +1607,7 @@ function open_blank(el_this) {
         $("#mdl_ot_start").prop("checked", true);
       }
     } else if (!$("#bible_book_ot").is(":visible")) {
-      $("#mdl_ot_start").attr("disabled", false);      
+      $("#mdl_ot_start").attr("disabled", false);
     }
 
     if (!$("#bible_book_nt").attr("disabled")) {
@@ -1821,6 +1826,48 @@ function open_blank(el_this) {
         return;
       }
     }
+
+    // отметка прочитанных книг по последней главе
+    if (!$("#mdl_ot_start").attr("disabled") && $("#bible_book_ot").is(":visible")) {
+      let ot_temp;
+      if ($("#bible_book_ot").val()) {
+        ot_temp = split_book($("#bible_book_ot").val());
+      } else {
+        ot_temp = split_book($("#bible_book_ot option:nth-child(3)").attr("data-book") + " " + $("#bible_book_ot option:nth-child(3)").attr("data-chapter"));
+      }
+
+      let found_temp = bible_arr.find(e => e[0] === ot_temp[0]);
+      if (found_temp[1] === ot_temp[1]) {
+        setTimeout(function () {
+          let query_temp = "&member_key=" + $("#modalAddEdit").attr("data-member_key") + "&book=" + ot_temp[0] + "&chapter=" + ot_temp[1];
+          fetch("ajax/ftt_reading_ajax.php?type=set_read_book&part=ot&checked=true" + query_temp)
+          .then(response => response.text())
+          .then(commits => {
+
+          });
+        }, 30);
+      }
+    }
+    if (!$("#mdl_nt_start").attr("disabled") && $("#bible_book_nt").is(":visible")) {
+      let nt_temp;
+      if ($("#bible_book_nt").val()) {
+        nt_temp = split_book($("#bible_book_nt").val());
+      } else {
+        nt_temp = split_book($("#bible_book_nt option:nth-child(3)").attr("data-book") + " " + $("#bible_book_nt option:nth-child(3)").attr("data-chapter"));
+      }
+
+      let found_temp = bible_arr.find(e => e[0] === nt_temp[0]);
+      if (found_temp[1] === nt_temp[1]) {
+        setTimeout(function () {
+          let query_temp = "&member_key=" + $("#modalAddEdit").attr("data-member_key") + "&book=" + nt_temp[0] + "&chapter=" + nt_temp[1];
+          fetch("ajax/ftt_reading_ajax.php?type=set_read_book&part=nt&checked=true" + query_temp)
+          .then(response => response.text())
+          .then(commits => {
+
+          });
+        }, 60);
+      }
+    }
     // set data in html
     $(".reading_bible_title").text("Чтение Библии " + "(" + text_ot + comma + text_nt +")");
     $(".reading_bible_title").attr("data-notes_ot", footnotes_ot);
@@ -1872,7 +1919,7 @@ function open_blank(el_this) {
   });
 
   function render_bible_chapters(book, chapter, selector) {
-    let sim_1, counter_1 = 0;
+    let sim_1, counter_1 = 0, cap_rend=10;
     let options = "<option value='_none_' disabled selected>";
     if (selector === "#bible_book_ot") {
       options += "ВЗ"
@@ -1884,18 +1931,28 @@ function open_blank(el_this) {
       return;
     }
 
+    if (book === "Мал.") {
+      cap_rend = cap_rend - 5 - chapter;
+    }
+
+    if (book === "Зах.") {
+      if (chapter > 8) {
+        cap_rend = cap_rend - chapter + 9;
+      }
+    }
+
     options += "<option value='0'>нет";
     for (let i = 0; i < bible_arr.length; i++) {
       if (sim_1 === 2) {
         break;
       }
-      if ((bible_arr[i][0] === book || sim_1 === 1) && counter_1 < 10) {
+      if ((bible_arr[i][0] === book || sim_1 === 1) && counter_1 < cap_rend) {
         for (let j = 1; j <= bible_arr[i][1]; j++) {
-          if ((j >= chapter || sim_1 === 1) && counter_1 < 10) {
+          if ((j >= chapter || sim_1 === 1) && counter_1 < cap_rend) {
             if (sim_1 === 2) {
               break;
             }
-            if (counter_1 < 10) {
+            if (counter_1 < cap_rend) {
               options += "<option data-book='" + bible_arr[i][0] + "' data-chapter='" + j + "'>" + bible_arr[i][0] + " " + j;
               counter_1 ++;
               sim_1 = 1;
