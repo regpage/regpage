@@ -54,6 +54,7 @@
       </div>
       <div class="modal-body">
         <div class="container">
+          <?php if ($ftt_access['group'] === 'staff'): ?>
           <div class="row mb-2">
             <div class="col">
               <select id="mdl_meet_trainee_list" class="form-control form-control-sm">
@@ -64,6 +65,7 @@
               </select>
             </div>
           </div>
+          <?php endif; ?>
           <div class="row mb-2">
             <div class="col">
               <select id="mdl_meet_serving_ones_list" class="form-control form-control-sm">
@@ -82,8 +84,11 @@
             <div class="col-6">
               <input type="date" id="mdl_meet_date" class="form-control form-control-sm">
             </div>
-            <div class="col-6">
+            <div class="col-4">
               <input type="time" id="mdl_meet_time" class="form-control form-control-sm" style="max-width: 100% !important;">
+            </div>
+            <div class="col-2">
+              <input type="text" id="mdl_meet_duration" class="form-control form-control-sm" style="max-width: 100% !important;">
             </div>
           </div>
           <div class="row mb-2">
@@ -125,25 +130,6 @@
       <div class="modal-footer">
         <div class="text-right w-100">
           <!--<button id="" class="btn btn-sm btn-success">Записаться</button>-->
-          <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Закрыть</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ОБЩЕНИЕ ОТМЕНА-->
-<div id="edit_meet_blank_record" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" data-id="" data-member_key="" data-serving_one="" data-status="">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="mb-0">Отменить запись на общение?</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="font-size: 1.5rem;">x</button>
-      </div>
-
-      <div class="modal-footer">
-        <div class="text-right w-100">
-          <button id="undo_meet_blank" class="btn btn-sm btn-danger">Отменить</button>
           <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Закрыть</button>
         </div>
       </div>

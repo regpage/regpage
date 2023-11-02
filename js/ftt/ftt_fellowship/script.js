@@ -226,8 +226,15 @@ $(document).ready(function(){
 
   // open record
   $(".str_record").click(function () {
-    $("#edit_meet_blank_record").attr("data-id", $(this).attr("data-id"));
-    $("#edit_meet_blank_record").modal("show");
+    $("#mdl_edit_fellowship_staff input").attr("disabled", true);
+    $("#mdl_edit_fellowship_staff select").attr("disabled", true);
+    $("#mdl_edit_fellowship_staff").attr("data-id", $(this).attr("data-id"));
+    $("#mdl_meet_serving_ones_list").val($(this).attr("data-serving_one"));
+    $("#mdl_meet_date").val($(this).attr("data-date"));
+    $("#mdl_meet_time").val($(this).attr("data-time"));
+    $("#mdl_meet_duration").val($(this).attr("data-duration"));
+    $("#mdl_meet_comment_trainee").val($(this).attr("data-comment"));
+    $("#mdl_edit_fellowship_staff").modal("show");
   });
 
   $("#undo_meet_blank").click(function () {
@@ -291,7 +298,15 @@ $(document).ready(function(){
   });
 
   $("#mdl_btn_meet_ok").click(function () {
-    save_meet_staff_blank();
+    if (trainee_access) {
+      meet_comment_change($("#mdl_meet_comment_trainee").val(), 1);
+    } else {
+      save_meet_staff_blank();
+    }
+    $("#mdl_edit_fellowship_staff").modal("hide");
+    setTimeout(function () {
+      location.reload();
+    }, 100);
   });
 
   $("#meet_cancel").click(function () {
@@ -632,7 +647,7 @@ $(document).ready(function(){
               $(".meet_comment_trainee_time").val("");
             }
             $("#time_record_for_success").text(dateStrFromyyyymmddToddmm($(this).attr("data-date")) + " " + serving_ones_list[$(this).attr("data-serving_one")] + " с " + $(this).attr("data-from") + " по " + $(this).attr("data-to"));
-          });          
+          });
           // открываем окно
           $("#mdl_meet_trainee_to_record").modal("show");
         });
@@ -703,14 +718,19 @@ $(document).ready(function(){
   // сохраняем ИЗМЕНЕНИЯ в комментарий
   $(".meet_comment_trainee_time").change(function () {
     if ($("#edit_meet_blank_record_confirm").attr("data-my") === "1") {
-      meet_comment_change($(this));
+      meet_comment_change($(this).val());
       $(".meet_checked[data-id='" + $("#edit_meet_blank_record_confirm").attr("data-id") + "']").attr("data-comment", $(".meet_comment_trainee_time").val());
     }
   });
   // сохраняем комментарий
-  function meet_comment_change(elem) {
-    fetch("ajax/ftt_fellowship_ajax.php?type=set_communication_comment_trainee&comment=" + elem.val()
-    + "&id=" + elem.parent().parent().parent().parent().attr("data-id"))
+  function meet_comment_change(comm, blank) {
+    let id;
+    if (blank) {
+      id = $("#mdl_edit_fellowship_staff").attr("data-id");
+    } else {
+      id = $("#edit_meet_blank_record_confirm").attr("data-id");
+    }
+    fetch("ajax/ftt_fellowship_ajax.php?type=set_communication_comment_trainee&comment=" + comm + "&id=" + id)
     .then(response => response.json())
     .then(commits => {
 
