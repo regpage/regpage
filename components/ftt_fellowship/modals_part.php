@@ -200,12 +200,12 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="font-size: 1.5rem;">x</button>
       </div>
       <div class="modal-body">
-        <span id="time_record_for_success"></span>
-        <input type="text" class="meet_comment_trainee_time form-control form-control-sm d-inline-block" placeholder="Ваш комментарий здесь">
+        <strong id="time_record_for_success"></strong>
+        <input type="text" class="meet_comment_trainee_time form-control form-control-sm d-inline-block mt-2" placeholder="Ваш комментарий здесь">
       </div>
       <div class="modal-footer">
         <div class="text-right w-100">
-          <button id="confirm_meet_record" class="btn btn-sm btn-success">Записаться</button>
+          <button id="confirm_meet_record" data-dismiss="modal" aria-hidden="true" class="btn btn-sm btn-success">Записаться</button>
           <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Закрыть</button>
         </div>
       </div>

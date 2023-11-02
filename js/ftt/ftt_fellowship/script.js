@@ -179,8 +179,6 @@ $(document).ready(function(){
       + '" data-from="' + str[i]["time"] + '" data-to="' + time_plus_minutes(str[i]["time"], str[i]["duration"])
       + '" data-date="'+str[i]["date"]+'" style="vertical-align: middle;" ' + checked + ' ' + disabled
       + '>Записаться</span>';
-      //<input type="text" class="meet_comment_trainee_time form-control form-control-sm d-inline-block" value="'
-      //+ str[i]["comment_train"] + '" style="max-width: 72%; ' + hidden + '">'
     }
     // Добавляем контент
     $("#list_possible_records").html(html_time);
@@ -216,22 +214,8 @@ $(document).ready(function(){
         }
       });
     });
-
-    $(".meet_comment_trainee_time").change(function () {
-      meet_comment_change($(this));
-    });
-
     // открываем окно
     $("#mdl_meet_trainee_to_record").modal("show");
-  }
-
-  function meet_comment_change(elem) {
-    fetch("ajax/ftt_fellowship_ajax.php?type=set_communication_comment_trainee&comment=" + elem.val()
-    + "&id=" + elem.prev().attr("data-id"))
-    .then(response => response.json())
-    .then(commits => {
-
-    });
   }
 
   $("#mdl_meet_trainee_to_record").on("hide.bs.modal", function () {
@@ -485,7 +469,7 @@ $(document).ready(function(){
           html += '<tr>';
         }
         // Если первый день недели не понедельник показать последние дни предыдущего месяца
-        else if ( i == 1 ) {
+        else if (i == 1) {
           html += '<tr>';
           let k = lastDayOfLastMonth - firstDayOfMonth+1;
           for(let j=0; j < firstDayOfMonth; j++) {
@@ -504,25 +488,15 @@ $(document).ready(function(){
           // проверка, добавление класса
           for (let variable in records) {
             if (records.hasOwnProperty(variable)) {
-              let value_records = records[variable];
-              // работает
-              // попробовать в форыч
-              //let str_id = value_records.find(str => str.date === date_record);
-              //console.log(str_id);
-              for (let variable_1 in value_records) {
-                if (value_records.hasOwnProperty(variable_1)) {
-                  let value_record = value_records[variable_1];
-                  //console.log(value_record["trainee"]);
-                  if (value_record["date"] === date_record) { // && value_record["trainee"] != ""
-                    if (!value_record["trainee"] || value_record["trainee"] === window.adminId) {
-                      record_available = "record_available";
-                      break;
-                    } else {
-                      sim = 1
-                    }
+              records[variable].find(function (str, i) {
+                if (str.date && str.date === date_record && (!record_available || !sim)) {
+                  if (!str.trainee || str.trainee === window.adminId) {
+                    record_available = "record_available";
+                  } else if (str.trainee) {
+                    sim = 1;
                   }
                 }
-              }
+              });
             }
           }
           if (!record_available && sim) {
@@ -536,20 +510,15 @@ $(document).ready(function(){
           let sim = "";
           for (let variable in records) {
             if (records.hasOwnProperty(variable)) {
-              let value_records = records[variable];
-              for (let variable_1 in value_records) {
-                if (value_records.hasOwnProperty(variable_1)) {
-                  let value_record = value_records[variable_1];
-                  if (value_record["date"] === date_record) {
-                    if (!value_record["trainee"] || value_record["trainee"] === window.adminId) {
-                      record_available = "record_available";
-                      break;
-                    } else {
-                      sim = 1
-                    }
+              records[variable].find(function (str, i) {
+                if (str.date && str.date === date_record && (!record_available || !sim)) {
+                  if (!str.trainee || str.trainee === window.adminId) {
+                    record_available = "record_available";
+                  } else if (str.trainee) {
+                    sim = 1;
                   }
                 }
-              }
+              });
             }
           }
           if (!record_available && sim) {
@@ -580,91 +549,93 @@ $(document).ready(function(){
         if (!$(this).hasClass("record_available")) {
           return;
         }
-        let html_checkboxes = "", first = 1;
-        // рендерим время
-        for (let variable in records) {
-          if (records.hasOwnProperty(variable)) {
-            let value_records = records[variable];
-            let str_id = value_records.find(str => str.date === $(this).attr("data-date"));
-            if (str_id !== undefined) {
-              if (first) {
-                html_checkboxes = '<div class="mb-2"><strong class="pt-2 pb-2 date_record_header">' + dateStrFromyyyymmddToddmm($(this).attr("data-date")) + '</strong><br>';
-                html_checkboxes += '<strong class="pb-2 name_record_header">' + serving_ones_list[variable] + '</strong></div>';
-              } else {
-                html_checkboxes += '<div class="mt-3 mb-2"><strong class="pb-2 name_record_header">' + serving_ones_list[variable] + '</strong></div>';
-              }
-              first = 0;
-            }
-
-            for (let variable_1 in value_records) {
-              if (value_records.hasOwnProperty(variable_1)) {
-                let value_record = value_records[variable_1];
-                if (value_record["date"] === $(this).attr("data-date")) {
-                  let disabled = "", checked = "", hidden = "display: none !important;";
-                  if (value_record["trainee"] && value_record["trainee"] === window.adminId) {
-                    checked = "checked";
-                    hidden = "";
-                  } else if (value_record["trainee"]) {
-                    disabled = "disabled";
-                    checked = "checked";
-                  }
-                  html_checkboxes += '<div class="mb-2"><span class="d-inline-block font-weight-normal pt-2 pb-2" style="vertical-align: middle; width: 105px;">' + value_record["time"]
-                  + " — " + time_plus_minutes(value_record["time"], value_record["duration"])
-                  + '</span><span id="checkbox_time_' + value_record["id"] + '" class="pb-2 meet_checked mr-3 cursor-pointer link_custom" data-id="' + value_record["id"]
-                  + '" data-from="' + value_record["time"] + '" data-to="' + time_plus_minutes(value_record["time"], value_record["duration"])
-                  + '" data-date="'+value_record["date"]+'" style="vertical-align: middle;" ' + checked + ' ' + disabled
-                  + '>Записаться</span>';
-                }
-              }
-            }
-          }
-        }
-        $("#list_possible_records").html(html_checkboxes);
-
-        // ОТКРЫВАЕМ ОКНО ПОДТВЕРЖДЕНИЕ
-        //*** З А КО Н Ч И Л ЗДЕСЬ **//
-        $(".meet_checked").click(function () { // + kbk
-          $("#edit_meet_blank_record_confirm").modal("show");
-          // не понятно как определять служащего, с датой понятно
-          //$("#time_record_for_success").text($(this).parent().prev().find(".date_record_header").text()
-          //+ " " + $(this).parent().prev().find(".name_record_header").text() + " " + $(this).prev().text());
-
-          /* let trainee = window.adminId;
-          let checked_time = 0;
-          if ($(this).prop("checked")) {
-            checked_time = 1;
-            if (!$(this).next().hasClass("d-inline-block")) {
-              $(this).next().addClass("d-inline-block");
-            }
-            $(this).next().show();
+        let serving_ones_arg;
+        if ($("#meet_serving_ones_list_calendar").val() === "_all_" || !$("#meet_serving_ones_list_calendar").val()) {
+          if (trainee_list_full[window.adminId]["male"] === "1") {
+            serving_ones_arg = "pvom_br";
           } else {
-            $(this).next().removeClass("d-inline-block");
-            $(this).next().hide();
-            $(this).next().val("");
+            serving_ones_arg = "_all_";
           }
-          fetch("ajax/ftt_fellowship_ajax.php?type=set_communication_record&id="
-          + $(this).attr("data-id") + "&trainee=" + trainee + "&checked=" + checked_time + "&time_from=" + $(this).attr("data-from") + "&time_to=" + $(this).attr("data-to") + "&date=" + $(this).attr("data-date"))
-          .then(response => response.json())
-          .then(commits => {
-            if ($(this).prop("checked")) {
-              if (commits.result !== true) {
-                let check_error = commits.result.split("_");
-                if (check_error[0] === "error" && check_error[1] === "busy") {
-                  showError("К сожалению это время уже занято.");
-                } else if (check_error[0] === "error" && check_error[1] === "intersection") {
-                  showError("На это время и дату уже назначена встреча с " + serving_ones_list[String(check_error[2])] + ". Запись не сохранена.");
+        } else {
+          serving_ones_arg = $("#meet_serving_ones_list_calendar").val();
+        }
+        fetch("ajax/ftt_fellowship_ajax.php?type=get_meet_by_date&date=" + $(this).attr("data-date") + "&serving_ones="+serving_ones_arg)
+        .then(response => response.json())
+        .then(commits => {
+          day_records = commits.result;
+          let html_checkboxes = "", first = 1;
+          // рендерим время
+          for (let variable in day_records) {
+            if (day_records.hasOwnProperty(variable)) {
+              let value_records = day_records[variable];
+              let str_id = value_records.find(str => str.date === $(this).attr("data-date"));
+              if (str_id !== undefined) {
+                if (first) {
+                  html_checkboxes = '<div class="mb-2"><strong class="pt-2 pb-2 date_record_header">' + dateStrFromyyyymmddToddmm($(this).attr("data-date")) + '</strong><br>';
+                  html_checkboxes += '<strong class="pb-2 name_record_header">' + serving_ones_list[variable] + '</strong></div>';
+                } else {
+                  html_checkboxes += '<div class="mt-3 mb-2"><strong class="pb-2 name_record_header">' + serving_ones_list[variable] + '</strong></div>';
                 }
-                $(this).prop("checked", false);
-              } else {
-                showHint("Запись на общение сохранена.");
+                first = 0;
               }
-            } else {
-              showHint("Запись на общение отменена.");
+
+              for (let variable_1 in value_records) {
+                if (value_records.hasOwnProperty(variable_1)) {
+                  let value_record = value_records[variable_1];
+                  if (value_record["date"] === $(this).attr("data-date")) {
+                    let disabled = "", busy = "", my = "", text = "Записаться";
+                    if (value_record["trainee"] && value_record["trainee"] === window.adminId) {
+                      busy = "1";
+                      my = "1";
+                      text = "Вы записаны"
+                    } else if (value_record["trainee"]) {
+                      busy = "1";
+                      text = "Не доступно"
+                    }
+                    value_record["comment"] === undefined ? value_record["comment"] = "" : "";
+                    html_checkboxes += '<div class="mb-2"><span class="d-inline-block font-weight-normal pt-2 pb-2" style="vertical-align: middle; width: 105px;">' + value_record["time"]
+                    + " — " + time_plus_minutes(value_record["time"], value_record["duration"])
+                    + '</span><span id="checkbox_time_' + value_record["id"] + '" class="pb-2 meet_checked mr-3 cursor-pointer link_custom" data-id="' + value_record["id"]
+                    + '" data-from="' + value_record["time"] + '" data-to="' + time_plus_minutes(value_record["time"], value_record["duration"])
+                    + '" data-serving_one="' + variable + '" data-date="'+value_record["date"]+'" data-comment="'+value_record["comment_train"]+'" data-busy="' + busy + '"  data-my="' + my + '"  style="vertical-align: middle;"'
+                    + '>'+text+'</span>';
+                  }
+                }
+              }
             }
-          });*/
+          }
+          $("#list_possible_records").html(html_checkboxes);
+          // ОТКРЫВАЕМ ОКНО ПОДТВЕРЖДЕНИЕ
+          $(".meet_checked").click(function () { // + kbk
+            // учитывать "свои" сохранённые записи и чужие!
+            if ($(this).attr("data-busy") === "1" && $(this).attr("data-my") !== "1") {
+              return;
+            }
+            $("#edit_meet_blank_record_confirm").modal("show");
+            // заполняем атрибуты
+            $("#edit_meet_blank_record_confirm").attr("data-id", $(this).attr("data-id"));
+            $("#edit_meet_blank_record_confirm").attr("data-serving_one", $(this).attr("data-serving_one"));
+            $("#edit_meet_blank_record_confirm").attr("data-date", $(this).attr("data-date"));
+            $("#edit_meet_blank_record_confirm").attr("data-from", $(this).attr("data-from"));
+            $("#edit_meet_blank_record_confirm").attr("data-to", $(this).attr("data-to"));
+            $("#edit_meet_blank_record_confirm").attr("data-busy", $(this).attr("data-busy"));
+            $("#edit_meet_blank_record_confirm").attr("data-my", $(this).attr("data-my"));
+            if ($(this).attr("data-my") === "1") {
+              $("#confirm_meet_record").removeClass("btn-success").addClass("btn-danger").text("Отменить");
+            } else {
+              $("#confirm_meet_record").removeClass("btn-danger").addClass("btn-success").text("Записаться");
+            }
+            // заполняем поля и пр.
+            if ($(this).attr("data-comment")) {
+              $(".meet_comment_trainee_time").val($(this).attr("data-comment"));
+            } else {
+              $(".meet_comment_trainee_time").val("");
+            }
+            $("#time_record_for_success").text(dateStrFromyyyymmddToddmm($(this).attr("data-date")) + " " + serving_ones_list[$(this).attr("data-serving_one")] + " с " + $(this).attr("data-from") + " по " + $(this).attr("data-to"));
+          });          
+          // открываем окно
+          $("#mdl_meet_trainee_to_record").modal("show");
         });
-        // открываем окно
-        $("#mdl_meet_trainee_to_record").modal("show");
       });
     };
 
@@ -684,6 +655,66 @@ $(document).ready(function(){
       return document.getElementById(id);
     }
   }
+  // Сохраняем / отменяем запись
+  $("#confirm_meet_record").click(function () {
+    let trainee_key = window.adminId;
+    let comment_trainee = $(".meet_comment_trainee_time");
+    let checked_time = 1;
+    let id = $("#edit_meet_blank_record_confirm").attr("data-id");
+    if ($("#edit_meet_blank_record_confirm").attr("data-busy") === "1" && $("#edit_meet_blank_record_confirm").attr("data-my") === "1") {
+      checked_time = 0;
+    } else if ($("#edit_meet_blank_record_confirm").attr("data-busy") === "1") {
+      showError("Это время занято.");
+      return;
+    }
 
+    fetch("ajax/ftt_fellowship_ajax.php?type=set_communication_record&id=" + id
+    + "&trainee=" + trainee_key + "&checked=" + checked_time + "&time_from=" + $("#edit_meet_blank_record_confirm").attr("data-from")
+    + "&time_to=" + $("#edit_meet_blank_record_confirm").attr("data-to") + "&date=" + $("#edit_meet_blank_record_confirm").attr("data-date")
+    + "&comment=" + $(".meet_comment_trainee_time").val())
+    .then(response => response.json())
+    .then(commits => {
+      let el = $(".meet_checked[data-id='" + id + "']");
+      if (checked_time) {
+        if (commits.result !== true) {
+          let check_error = commits.result.split("_");
+          if (check_error[0] === "error" && check_error[1] === "busy") {
+            showError("К сожалению это время уже занято.");
+          } else if (check_error[0] === "error" && check_error[1] === "intersection") {
+            showError("На это время и дату уже назначена встреча с " + serving_ones_list[String(check_error[2])] + ". Запись не сохранена.");
+          }
+          $(this).prop("checked", false);
+        } else {
+          showHint("Запись на общение сохранена.");
+          el.attr("data-busy", 1);
+          el.attr("data-my", 1);
+          el.attr("data-comment", $(".meet_comment_trainee_time").val());
+          el.text("Вы записаны");
+        }
+      } else {
+        showHint("Запись на общение отменена.");
+        el.attr("data-busy", "");
+        el.attr("data-my", "");
+        el.attr("data-comment", "");
+        el.text("Записаться");
+      }
+    });
+  });
+  // сохраняем ИЗМЕНЕНИЯ в комментарий
+  $(".meet_comment_trainee_time").change(function () {
+    if ($("#edit_meet_blank_record_confirm").attr("data-my") === "1") {
+      meet_comment_change($(this));
+      $(".meet_checked[data-id='" + $("#edit_meet_blank_record_confirm").attr("data-id") + "']").attr("data-comment", $(".meet_comment_trainee_time").val());
+    }
+  });
+  // сохраняем комментарий
+  function meet_comment_change(elem) {
+    fetch("ajax/ftt_fellowship_ajax.php?type=set_communication_comment_trainee&comment=" + elem.val()
+    + "&id=" + elem.parent().parent().parent().parent().attr("data-id"))
+    .then(response => response.json())
+    .then(commits => {
+
+    });
+  }
   /*** FELLOWSHIP TAB STOP ***/
 });

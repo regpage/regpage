@@ -17,9 +17,15 @@ if (isset($_GET['type']) && $_GET['type'] === 'get_communication_list') {
   exit();
 }
 
+// get records by date
+if (isset($_GET['type']) && $_GET['type'] === 'get_meet_by_date') {
+  echo json_encode(["result"=>get_meet_by_date($_GET['date'], $_GET['serving_ones'])]);
+  exit();
+}
+
 // set record
 if (isset($_GET['type']) && $_GET['type'] === 'set_communication_record') {
-  echo json_encode(["result"=>set_communication_record($_GET['trainee'], $_GET['id'], $_GET['checked'], $_GET['date'], $_GET['time_from'], $_GET['time_to'])]);
+  echo json_encode(["result"=>set_communication_record($_GET['trainee'], $_GET['id'], $_GET['checked'], $_GET['date'], $_GET['time_from'], $_GET['time_to'], $_GET['comment'])]);
   exit();
 }
 

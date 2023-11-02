@@ -290,6 +290,9 @@ function preventMotion(event){
 $('#modalEditMember').on('show', function() {
   if ($(document).width() < 980) {
     window.scrollTo(0, 0);
+    console.log("I am here!");
+    $("#modalEditMember .emParking").parent().attr("style", "width: 28%");
+    $("#modalEditMember .emAvtomobile").parent().attr("style", "width: 41%; float: right;");
   }
 });
 // STOP stop automatic scrolling on modal window

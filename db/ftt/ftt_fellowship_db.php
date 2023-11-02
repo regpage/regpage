@@ -19,7 +19,7 @@ function get_communication_list($serving_ones = '_all_', $sort='meet_sort_servin
   // Сортировка
   // сортировка по name бывает по обучающимся и по служащим
   // менять поле в строке JOIN на нужное
-  $order_by = ' ff.name, ff.date ';
+  $order_by = ' m.name, ff.date ';
   if (!empty($sort) && $sort !== 'meet_sort_date-asc') {
     if ($sort === 'meet_sort_date-desc') {
       $order_by = ' ff.date DESC, m.name DESC ';
@@ -30,7 +30,7 @@ function get_communication_list($serving_ones = '_all_', $sort='meet_sort_servin
     } elseif ($sort === 'meet_sort_servingone-asc') {
       $order_by = ' m.name, ff.date ';
     } elseif ($sort === 'meet_sort_servingone-desc') {
-      $order = ' m.name DESC, ff.date DESC ';
+      $order_by = ' m.name DESC, ff.date DESC ';
     }
   }
 
@@ -168,7 +168,7 @@ function get_communication_records($trainee, $sort='meet_sort_servingone-asc')
   return $result;
 }
 
-function set_communication_record($trainee, $id, $checked=0, $date='', $time_from='', $time_to='')
+function set_communication_record($trainee, $id, $checked=0, $date='', $time_from='', $time_to='', $comment='')
 {
   global $db;
   $trainee = $db->real_escape_string($trainee);
@@ -177,6 +177,7 @@ function set_communication_record($trainee, $id, $checked=0, $date='', $time_fro
   $date = $db->real_escape_string($date);
   $time_from = $db->real_escape_string($time_from);
   $time_to = $db->real_escape_string($time_to);
+  $comment = $db->real_escape_string($comment);
   $check_exist = '';
   $result = [];
   if ($checked == 1) {
@@ -192,7 +193,7 @@ function set_communication_record($trainee, $id, $checked=0, $date='', $time_fro
       return 'error_intersection_' . $result[0];
     }
     // запрос
-    $res = db_query("UPDATE `ftt_fellowship` SET `trainee`= '$trainee', `changed`= 1 WHERE `id` = '$id'");
+    $res = db_query("UPDATE `ftt_fellowship` SET `trainee`= '{$trainee}', `comment_train`='{$comment}', `changed`= 1 WHERE `id` = '$id'");
   } else {
     $res = db_query("UPDATE `ftt_fellowship` SET `trainee`= '', `comment_train`='', `changed`= 1 WHERE `id` = '$id'");
   }
@@ -228,4 +229,63 @@ function cancel_communication_record($id)
     SET `trainee`= '', `comment_train`='', `comment_serv`='', `cancel` = 1, `changed`= 1
     WHERE `id` = '$id'");
    return $res;
+}
+
+
+function get_meet_by_date($date, $serving_ones = '_all_')
+{
+  // # для братьев не выводятся служащие сёстры
+  // # Уточнить список КБК !!! служащие пвом и братья из КБК (как определить братьев из КБК.)
+
+  global $db;
+  $serving_ones = $db->real_escape_string($serving_ones);
+  $date = $db->real_escape_string($date);
+
+  // Сортировка
+  $order_by = ' m.name, ff.date ';
+
+  // УСЛОВИЯ
+  // дата
+  $order_period = " ff.date = '{$date}' ";
+
+  // служащие
+  if ($serving_ones === '_all_') {
+    $serving_ones = array_merge(ftt_lists::get_fellowship_list(), ftt_lists::kbk_brothers());
+  } elseif ($serving_ones === 'pvom_br') {
+    $serving_ones = array_merge(ftt_lists::serving_ones_fellowship_brothers(), ftt_lists::kbk_brothers());
+  } else {
+    $serving_ones = array($serving_ones => '');
+  }
+  $serving_ones_condition = '';
+  foreach ($serving_ones as $key => $value) {
+    if (empty($serving_ones_condition)) {
+      $serving_ones_condition .= " ff.serving_one = '{$key}' ";
+    } else {
+      $serving_ones_condition .= " OR ff.serving_one = '{$key}' ";
+    }
+  }
+  if (!empty($serving_ones_condition)) {
+    $serving_ones_condition = ' AND ' . '(' . $serving_ones_condition . ')';
+  }
+
+  // condition
+  $condition = $order_period . $serving_ones_condition;
+
+  // запрос
+  $result = [];
+  $res = db_query("SELECT ff.*, m.name
+    FROM ftt_fellowship AS ff
+    LEFT JOIN member m ON m.key = ff.serving_one
+    WHERE {$condition}
+    ORDER BY {$order_by}");
+  while ($row = $res->fetch_assoc()) {
+    if (isset($result[$row['serving_one']])) {
+      $result[$row['serving_one']][] = $row;
+    } else {
+      $result[$row['serving_one']] = [];
+      $result[$row['serving_one']][] = $row;
+    }
+  }
+
+  return $result;
 }

@@ -1,7 +1,8 @@
 <?php
-
+/*
 echo "<br>Раздел в разработке";
 exit();
+*/
 // Сортировка
 if (isset($_COOKIE['meet_sorting'])) {
   $meet_curent_sorting = $_COOKIE['meet_sorting'];
