@@ -19,7 +19,6 @@ $(document).ready(function(){
     fetch("ajax/ftt_fellowship_ajax.php?type=get_communication_list&serving_ones="+pvom_br+"&sort=meet_sort_servingone-asc")
     .then(response => response.json())
     .then(commits => {
-      console.log(commits.result);
       calendar(commits.result);
     });
   }
@@ -226,15 +225,7 @@ $(document).ready(function(){
 
   // open record
   $(".str_record").click(function () {
-    $("#mdl_edit_fellowship_staff input").attr("disabled", true);
-    $("#mdl_edit_fellowship_staff select").attr("disabled", true);
-    $("#mdl_edit_fellowship_staff").attr("data-id", $(this).attr("data-id"));
-    $("#mdl_meet_serving_ones_list").val($(this).attr("data-serving_one"));
-    $("#mdl_meet_date").val($(this).attr("data-date"));
-    $("#mdl_meet_time").val($(this).attr("data-time"));
-    $("#mdl_meet_duration").val($(this).attr("data-duration"));
-    $("#mdl_meet_comment_trainee").val($(this).attr("data-comment"));
-    $("#mdl_edit_fellowship_staff").modal("show");
+    fill_meet_staff_blank($(this), 1);
   });
 
   $("#undo_meet_blank").click(function () {
@@ -289,7 +280,6 @@ $(document).ready(function(){
 
   /***    MEET STAFF   ***/
   $(".str_record_staff").click(function () {
-    $("#mdl_edit_fellowship_staff").modal("show");
     fill_meet_staff_blank($(this));
   });
 
@@ -329,19 +319,22 @@ $(document).ready(function(){
       }, 1500);
     });
   }
-  function fill_meet_staff_blank(elem) {
+  // заполнеие бланка
+  function fill_meet_staff_blank(elem, trainee) {
+    if (trainee) {
+      $("#mdl_edit_fellowship_staff input").attr("disabled", true);
+      $("#mdl_edit_fellowship_staff select").attr("disabled", true);
+    }
     // data
     $("#mdl_edit_fellowship_staff").attr("data-id", elem.attr("data-id"));
-    $("#mdl_edit_fellowship_staff").attr("data-date", elem.attr("data-date"));
-    $("#mdl_edit_fellowship_staff").attr("data-duration", elem.attr("data-duration"));
     // fields
     $("#mdl_meet_trainee_list").val(elem.attr("data-trainee"));
     $("#mdl_meet_serving_ones_list").val(elem.attr("data-serving_one"));
     $("#mdl_meet_date").val(elem.attr("data-date"));
-
+    $("#mdl_meet_duration").val(elem.attr("data-duration"));
     $("#mdl_meet_time").val(elem.attr("data-time"));
     $("#mdl_meet_comment_trainee").val(elem.attr("data-comment_train"));
-    $("#mdl_meet_comment_serving_one").val(elem.attr("data-comment_serv"));
+    $("#mdl_edit_fellowship_staff").modal("show");
   }
 
   function reset_meet_staff_blank(elem) {
@@ -361,7 +354,6 @@ $(document).ready(function(){
     data_temp["trainee"] = $("#mdl_meet_trainee_list").val();
     data_temp["comment_train"] = $("#mdl_meet_comment_trainee").val();
     data_temp["comment_serv"] = ""; //$("#mdl_meet_comment_serving_one").val()
-    console.log(data_temp);
     data.set("data", JSON.stringify(data_temp));
 
     fetch("ajax/ftt_fellowship_ajax.php?type=set_meet_staff_blank", {
@@ -637,8 +629,10 @@ $(document).ready(function(){
             $("#edit_meet_blank_record_confirm").attr("data-my", $(this).attr("data-my"));
             if ($(this).attr("data-my") === "1") {
               $("#confirm_meet_record").removeClass("btn-success").addClass("btn-danger").text("Отменить");
+              $("#edit_meet_blank_record_confirm h5").text("Отменить запись");
             } else {
               $("#confirm_meet_record").removeClass("btn-danger").addClass("btn-success").text("Записаться");
+              $("#edit_meet_blank_record_confirm h5").text("Подтвердите запись");
             }
             // заполняем поля и пр.
             if ($(this).attr("data-comment")) {

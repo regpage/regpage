@@ -49,11 +49,15 @@ if (isset($_COOKIE['meet_sorting'])) {
     $date = date_convert::yyyymmdd_to_ddmm($value['date']);
     $day_of_week = date_convert::week_days($value['date'], true);
     $comment_short = CutString::cut($value['comment_train']);
+    $time_to = '';
+    if (!empty($value['time']) && !empty($value['duration'])) {
+      $time_to = time_convert::sum($value['time'], $value['duration']);
+    }
 
     echo "<div class='row str_record' data-id='{$value['id']}' ";
     echo "data-duration='{$value['duration']}' data-trainee='{$value['trainee']}' data-serving_one='{$value['serving_one']}' data-time='{$value['time']}' data-date='{$value['date']}' data-comment='{$value['comment_train']}' data-cancel='{$value['cancel']}'>";
     echo "<div class='col-2 pl-1'>{$date} {$day_of_week}</div>";;
-    echo "<div class='col-2'>{$value['time']}</div>";
+    echo "<div class='col-2'>{$value['time']} –  {$time_to}</div>";
     echo "<div class='col-2'>{$value['duration']}</div>";
     echo "<div class='col-3'>{$serving_ones_list[$value['serving_one']]}</div>";
     echo "<div class='col-3'>{$value['comment_train']}</div>";

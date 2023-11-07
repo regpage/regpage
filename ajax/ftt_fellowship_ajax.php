@@ -5,6 +5,10 @@ include_once "ajax.php";
 include_once "../db/ftt/ftt_fellowship_db.php";
 include_once "../db/classes/db_operations.php";
 require_once '../db/classes/ftt_lists.php';
+include_once '../db/classes/emailing.php';
+include_once '../db/classes/member.php';
+include_once '../db/classes/short_name.php';
+include_once '../db/classes/date_convert.php';
 
 // Подключаем ведение лога
 include_once "../extensions/write_to_log/write_to_log.php";

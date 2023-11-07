@@ -116,7 +116,7 @@ if (isset($_COOKIE['meet_flt_trainee']) && !empty($_COOKIE['meet_flt_trainee']))
     echo "<div class='row str_record_staff {$bg_empty}' ";
     echo "data-id='{$value['id']}' data-serving_one='{$value['serving_one']}' data-trainee='{$value['trainee']}' ";
     echo "data-date='{$value['date']}' data-time='{$value['time']}' data-duration='{$value['duration']}' ";
-    echo "data-comment_train='{$value['comment_train']}' data-comment_serv='{$value['comment_serv']}' data-cancel='{$value['cancel']}'>";
+    echo "data-comment_train='{$value['comment_train']}' data-cancel='{$value['cancel']}'>";
     echo "<div class='col-1'>{$date} {$day_of_week}</div>";
     echo "<div class='col-1'>{$value['time']}</div>";
     echo "<div class='col-1'>{$value['duration']}</div>";

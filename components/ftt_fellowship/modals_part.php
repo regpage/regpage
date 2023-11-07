@@ -1,6 +1,6 @@
 <!-- ОБЩЕНИЕ СПИСОК-->
 <div id="edit_meet_blank" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" data-id="" data-member_key="" data-serving_one="" data-status="">
-  <div class="modal-dialog">
+  <div class="modal-dialog" style="max-width: 400px;">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="mb-0">Запись на общение</h5>
@@ -104,10 +104,10 @@
         </div>
       </div>
       <div class="modal-footer">
-        <div class="text-right w-100">
-          <button id="meet_cancel" class="btn btn-sm btn-danger float-left">Отменить</button>
+        <div class="text-right w-100 pl-1 pr-1">
+          <button id="meet_cancel" class="btn btn-sm btn-danger float-left ml-2">Отменить</button>
           <button id="mdl_btn_meet_ok" class="btn btn-sm btn-success">Сохранить</button>
-          <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Отмена</button>
+          <button class="btn btn-sm btn-secondary mr-2" data-dismiss="modal" aria-hidden="true" style="">Отмена</button>
         </div>
       </div>
     </div>

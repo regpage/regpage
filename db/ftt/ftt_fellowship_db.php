@@ -179,10 +179,14 @@ function set_communication_record($trainee, $id, $checked=0, $date='', $time_fro
   $time_to = $db->real_escape_string($time_to);
   $comment = $db->real_escape_string($comment);
   $check_exist = '';
+  $serving_one = '';
   $result = [];
   if ($checked == 1) {
-    $res_extra = db_query("SELECT `trainee` FROM `ftt_fellowship` WHERE `id` = '$id'");
-    while ($row = $res_extra->fetch_assoc()) $check_exist = $row['trainee'];
+    $res_extra = db_query("SELECT `trainee`, `serving_one` FROM `ftt_fellowship` WHERE `id` = '$id'");
+    while ($row = $res_extra->fetch_assoc()) {
+      $check_exist = $row['trainee'];
+      $serving_one = $row['serving_one'];
+    }
     if (!empty($check_exist)) {
       return 'error_busy_' . $check_exist;
     }
@@ -194,8 +198,33 @@ function set_communication_record($trainee, $id, $checked=0, $date='', $time_fro
     }
     // запрос
     $res = db_query("UPDATE `ftt_fellowship` SET `trainee`= '{$trainee}', `comment_train`='{$comment}', `changed`= 1 WHERE `id` = '$id'");
+
+    // EMAILING
+    if (!empty($serving_one)) {
+      if (!empty($comment)) {
+        $comment = 'Комменарий обучающегося:' . $comment;
+      } else {
+        $comment = '';
+      }
+      $trainee_name = short_name::no_middle(Member::get_name($trainee));
+      $email_text = $trainee_name . ' записан(а) на общение ' . date_convert::yyyymmdd_to_ddmmyyyy($date) . ' с ' . $time_from . ' по ' . $time_to . "<br><br>Ссылка на раздел: " . "https://reg-page.ru/ftt_fellowship.php" . '<br><br>Запись создана ' . date("d.m.y, H:i") . '.';
+//$serving_one
+      emailing::send_by_key('000005716', 'Запись на общение '.$trainee_name, $email_text);
+    }
   } else {
+    if (!empty($comment)) {
+      $comment = 'Комменарий обучающегося:' . $comment;
+    } else {
+      $comment = '';
+    }
     $res = db_query("UPDATE `ftt_fellowship` SET `trainee`= '', `comment_train`='', `changed`= 1 WHERE `id` = '$id'");
+    // EMAILING
+    if (!empty($serving_one)) {
+      $trainee_name = short_name::no_middle(Member::get_name($trainee));
+      $email_text = $trainee_name . ' отменена запись на общение ' . date_convert::yyyymmdd_to_ddmmyyyy($date) . ' с ' . $time_from . ' по ' . $time_to . "<br><br>Ссылка на раздел: " . "https://reg-page.ru/ftt_fellowship.php" . '<br><br>Запись отменена ' . date("d.m.y, H:i") . '.';
+//$serving_one
+      emailing::send_by_key('000005716', 'Отмена записи на общение '.$trainee_name, $email_text);
+    }
   }
 
   return $res;
