@@ -59,6 +59,7 @@ if (isset($_COOKIE['meet_sorting'])) {
     echo "<div class='col-2 pl-1'>{$date} {$day_of_week}</div>";;
     echo "<div class='col-2'>{$value['time']} –  {$time_to}</div>";
     echo "<div class='col-2'>{$value['duration']}</div>";
+    echo "<div class='col-3 text-secondary' style='display: none;'>коммент.</div>";
     echo "<div class='col-3'>{$serving_ones_list[$value['serving_one']]}</div>";
     echo "<div class='col-3'>{$comment_short}</div>";
     echo "</div>";
