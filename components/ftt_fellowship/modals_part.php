@@ -45,7 +45,7 @@
 </div>
 
 <!-- ОБЩЕНИЕ ЗАПИСЬ -->
-<div id="mdl_edit_fellowship_staff" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" data-id="" data-date="" data-duration="" data-cancel="">
+<div id="mdl_edit_fellowship_staff" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" data-id="" data-date="" data-trainee="" data-comment="">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -178,7 +178,7 @@
 </div>
 
 <!-- ПОДТВЕРЖДЕНИЕ ЗАПИСИ ВРЕМЕНИ -->
-<div id="edit_meet_blank_record_confirm" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" data-id="" data-member_key="" data-serving_one="" data-status="">
+<div id="edit_meet_blank_record_confirm" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" data-id="" data-member_key="" data-serving_one="" data-status="" data-comment="">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">

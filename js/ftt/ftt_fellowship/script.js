@@ -296,12 +296,15 @@ $(document).ready(function(){
     $("#mdl_edit_fellowship_staff").modal("hide");
     setTimeout(function () {
       location.reload();
-    }, 100);
+    }, 300);
   });
 
   $("#meet_cancel").click(function () {
+    if (!$("#mdl_edit_fellowship_staff").attr("data-trainee")) {
+      return;
+    }
     if (confirm("Отменить запись на общение?")) {
-      cancel_meet_blank($("#mdl_edit_fellowship_staff").attr("data-id"));
+      cancel_meet_blank($("#mdl_edit_fellowship_staff").attr("data-id"),$("#mdl_meet_comment_trainee").val());
       setTimeout(function () {
         $("#mdl_edit_fellowship_staff").modal("hide");
       }, 750);
@@ -309,8 +312,8 @@ $(document).ready(function(){
   });
 
   // cancel meet
-  function cancel_meet_blank(id) {
-    fetch("ajax/ftt_fellowship_ajax.php?type=cancel_communication_record&id=" + id)
+  function cancel_meet_blank(id, comment) {
+    fetch("ajax/ftt_fellowship_ajax.php?type=cancel_communication_record&id=" + id + "&comment=" + comment)
     .then(response => response.json())
     .then(commits => {
       showHint("Запись успешно отменена");
@@ -327,19 +330,22 @@ $(document).ready(function(){
     }
     // data
     $("#mdl_edit_fellowship_staff").attr("data-id", elem.attr("data-id"));
+    $("#mdl_edit_fellowship_staff").attr("data-date", elem.attr("data-date"));
+    $("#mdl_edit_fellowship_staff").attr("data-trainee", elem.attr("data-trainee"));
+    $("#mdl_edit_fellowship_staff").attr("data-comment", elem.attr("data-comment"));
     // fields
     $("#mdl_meet_trainee_list").val(elem.attr("data-trainee"));
     $("#mdl_meet_serving_ones_list").val(elem.attr("data-serving_one"));
     $("#mdl_meet_date").val(elem.attr("data-date"));
     $("#mdl_meet_duration").val(elem.attr("data-duration"));
     $("#mdl_meet_time").val(elem.attr("data-time"));
-    $("#mdl_meet_comment_trainee").val(elem.attr("data-comment_train"));
+    $("#mdl_meet_comment_trainee").val(elem.attr("data-comment"));
     $("#mdl_edit_fellowship_staff").modal("show");
   }
 
   function reset_meet_staff_blank(elem) {
-    elem.attr("data-duration", "");
-    elem.attr("data-cancel", "");
+    elem.attr("data-trainee", "");
+    elem.attr("data-comment", "");
     module_blank_clear(elem);
   }
 
@@ -349,7 +355,7 @@ $(document).ready(function(){
     data_temp["id"] = $("#mdl_edit_fellowship_staff").attr("data-id");
     data_temp["date"] = $("#mdl_meet_date").val();
     data_temp["time"] = $("#mdl_meet_time").val();
-    data_temp["duration"] = $("#mdl_edit_fellowship_staff").attr("data-duration");
+    data_temp["duration"] = $("#mdl_meet_duration").val();
     data_temp["serving_one"] = $("#mdl_meet_serving_ones_list").val();
     data_temp["trainee"] = $("#mdl_meet_trainee_list").val();
     data_temp["comment_train"] = $("#mdl_meet_comment_trainee").val();
@@ -364,9 +370,6 @@ $(document).ready(function(){
     .then(commits => {
       $("#mdl_edit_fellowship_staff").modal("hide");
       showHint("Данные сохранены");
-      setTimeout(function () {
-        location.reload();
-      }, 300);
     });
   }
 
@@ -721,11 +724,17 @@ $(document).ready(function(){
     let id;
     if (blank) {
       id = $("#mdl_edit_fellowship_staff").attr("data-id");
+      if (comm === $("#mdl_edit_fellowship_staff").attr("data-comment")) {
+        return;
+      }
     } else {
       id = $("#edit_meet_blank_record_confirm").attr("data-id");
+      if (comm === $("#edit_meet_blank_record_confirm").attr("data-comment")) {
+        return;
+      }
     }
     fetch("ajax/ftt_fellowship_ajax.php?type=set_communication_comment_trainee&comment=" + comm + "&id=" + id)
-    .then(response => response.json())
+    .then(response => response.text())
     .then(commits => {
 
     });

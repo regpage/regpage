@@ -48,7 +48,7 @@ if (isset($_COOKIE['meet_sorting'])) {
   foreach (get_communication_records($memberId, $meet_curent_sorting) as $key => $value) {
     $date = date_convert::yyyymmdd_to_ddmm($value['date']);
     $day_of_week = date_convert::week_days($value['date'], true);
-    $comment_short = CutString::cut($value['comment_train']);
+    $comment_short = CutString::cut($value['comment_train'], 30);
     $time_to = '';
     if (!empty($value['time']) && !empty($value['duration'])) {
       $time_to = time_convert::sum($value['time'], $value['duration']);
@@ -60,7 +60,7 @@ if (isset($_COOKIE['meet_sorting'])) {
     echo "<div class='col-2'>{$value['time']} –  {$time_to}</div>";
     echo "<div class='col-2'>{$value['duration']}</div>";
     echo "<div class='col-3'>{$serving_ones_list[$value['serving_one']]}</div>";
-    echo "<div class='col-3'>{$value['comment_train']}</div>";
+    echo "<div class='col-3'>{$comment_short}</div>";
     echo "</div>";
   }
 ?>

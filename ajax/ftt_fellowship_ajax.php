@@ -9,6 +9,7 @@ include_once '../db/classes/emailing.php';
 include_once '../db/classes/member.php';
 include_once '../db/classes/short_name.php';
 include_once '../db/classes/date_convert.php';
+include_once '../db/classes/time_convert.php';
 
 // Подключаем ведение лога
 include_once "../extensions/write_to_log/write_to_log.php";
@@ -34,7 +35,7 @@ if (isset($_GET['type']) && $_GET['type'] === 'set_communication_record') {
 }
 
 if (isset($_GET['type']) && $_GET['type'] === 'cancel_communication_record') {
-  echo json_encode(["result"=>cancel_communication_record($_GET['id'])]);
+  echo json_encode(["result"=>cancel_communication_record($_GET['id'], $_GET['comment'])]);
   exit();
 }
 
@@ -65,6 +66,10 @@ if (isset($_GET['type']) && $_GET['type'] === 'set_communication_comment_trainee
   $db_data->set('condition_value', $_GET['id']);
   // выполняем
   echo json_encode(["result"=>DbOperation::operation($db_data->get())]);
+  // отправляем уведомление
+  if (!empty($_GET['comment'])) {
+    send_email_to_staff($_GET['id']);
+  }
   exit();
 }
 
