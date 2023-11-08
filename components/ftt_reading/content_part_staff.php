@@ -51,6 +51,8 @@ if (isset($_COOKIE['flt_serving_one_read'])) {
           $title = $value_2['book_ot'];
           if ($value_2['chapter_ot'] > 0) {
             $title .= ' ' . $value_2['chapter_ot'];
+          } else {
+            $title .= ' нет';
           }
           $title .= '; ';
         }

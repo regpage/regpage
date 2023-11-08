@@ -227,11 +227,14 @@
       </div>
       <!-- Modal body -->
       <div class="modal-body">
-        <h5 id="mdl_history_read_name"></h5>
+
         <div class="container pl-0">
           <div class="row">
-            <div id="mdl_lest_reading_bible" class="col-6 text-center" style="font-size: 16px;">
+            <div class="col-6 text-center">
+              <h5 id="mdl_history_read_name"></h5>
+              <div id="mdl_lest_reading_bible" style="font-size: 16px;">
 
+              </div>
             </div>
             <div id="mdl_cal_reading_bible" class="col-6">
               <div class="calendar-wrapper mt-0">

@@ -218,12 +218,12 @@ $(document).ready(function(){
         }
 
         if (i < 39) {
-          bible_books_html += "<span class='" + backgroung + " p-1 mr-1' data-val='"+i+"'>" + noSpace(bible_arr[i][0]) + " </span>";
+          bible_books_html += "<span class='d-inline-block " + backgroung + " p-1 mt-1' data-val='"+i+"'>" + noSpace(bible_arr[i][0]) + " </span>";
         } else {
           if (i === 39) {
             bible_books_html += "<br><br>";
           }
-          bible_books_html += "<span class='" + backgroung + " p-1 mr-1 mt-1' data-val='"+i+"'>" + noSpace(bible_arr[i][0]) + " </span>";
+          bible_books_html += "<span class='d-inline-block " + backgroung + " p-1 mt-1' data-val='"+i+"'>" + noSpace(bible_arr[i][0]) + " </span>";
         }
       }
       $("#mdl_lest_reading_bible").html(bible_books_html);
@@ -993,9 +993,13 @@ function render_bible_chapters(book, chapter, selector) {
                 record_available = "record_available";
                 if (found["book_nt"] && found["chapter_nt"] > 0) {
                   books_read = found["book_nt"] + " " + found["chapter_nt"] + "; ";
+                } else if(found["book_nt"]) {
+                  books_read = found["book_nt"] + " нет;";
                 }
                 if (found["book_ot"] && found["chapter_ot"] > 0) {
                   books_read += found["book_ot"] + " " + found["chapter_ot"] + "; ";
+                } else if(found["book_ot"]) {
+                  books_read += found["book_ot"] + " нет;";
                 }
               } else {
                 record_available = "record_not_available";
