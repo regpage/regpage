@@ -180,6 +180,12 @@ if (isset($_GET['type']) && $_GET['type'] === 'get_bible_statistic_dates') {
   exit();
 }
 
+// overnight
+if (isset($_GET['type']) && $_GET['type'] === 'overnight') {
+  echo json_encode(["result"=>db_overnight($_GET['member_key'], $_GET['date'])]);
+  exit();
+}
+
 // PERMISSIONS
 // save permission.
 if (isset($_GET['type']) && $_GET['type'] === 'set_permission') {

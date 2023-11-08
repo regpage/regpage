@@ -403,7 +403,7 @@ function db_overnight($member_key, $date)
   $member_key = $db->real_escape_string($member_key);
   $date = $db->real_escape_string($date);
   if (!empty($date)) {
-    $date = explode('.', $date);
+    $date = explode('-', $date);
     if (isset($date[1]) && !empty($date)) {
       $date = intval($date[1]);
     }

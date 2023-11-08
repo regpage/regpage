@@ -525,6 +525,7 @@ function open_blank(el_this) {
         fetch("ajax/ftt_attendance_ajax.php?type=overnight&member_key=" + $("#modalAddEdit").attr("data-member_key")+"&date=" + $("#modalAddEdit").attr("data-date"))
         .then(response => response.json())
         .then(commits => {
+          console.log(commits.result);
           if (commits.result) {
             $(this).parent().prev().prev().val("");
             $(this).parent().prev().text("...")

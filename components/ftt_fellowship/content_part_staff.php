@@ -38,14 +38,14 @@ if (isset($_COOKIE['meet_sorting'])) {
     $meet_sort_s_one_ico = 'hide_element';
     $meet_sort_trainee_ico = 'hide_element';
     $meet_sort_time_ico = 'hide_element';
-    $meet_curent_sorting = 'meet_sort_date-desc';
+    $meet_curent_sorting = 'meet_sort_date-asc';
   }
 } else {
   $meet_sort_date_ico = 'fa fa-sort-asc';
   $meet_sort_s_one_ico = 'hide_element';
   $meet_sort_trainee_ico = 'hide_element';
   $meet_sort_time_ico = 'hide_element';
-  $meet_curent_sorting = 'meet_sort_date-desc';
+  $meet_curent_sorting = 'meet_sort_date-asc';
 }
 
 // Фильтры
