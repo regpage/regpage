@@ -146,25 +146,26 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="font-size: 1.5rem;">x</button>
       </div>
       <div class="modal-body">
-        <select id="flt_done_meet_mbl" class="form-control form-control-sm mr-2 mb-2">
-
-        </select>
         <select id="flt_sevice_one_meet_mbl" class="form-control form-control-sm mr-2 mb-2">
           <option value="_all_">Все служащие</option>
-          <?php foreach ($serving_ones_list as $key => $value):
-            $selected = '';
-            if ($key === $serving_ones_flt) {
-              $selected = 'selected';
+          <?php foreach ($serving_ones_list_meet as $key => $value):
+            $selected = "";
+            if ($serving_ones_flt === $key) {
+              $selected = "selected";
             }
             echo "<option value='{$key}' {$selected}>{$value}</option>";
+          endforeach; ?>
+          <option disabled>----КБК----</option>";
+          <?php foreach ($kbk_list as $key => $value):
+            echo "<option value='{$key}'>{$value}</option>";
           endforeach; ?>
         </select>
         <select id="ftr_trainee_meet_mbl" class="form-control form-control-sm mr-2">
           <option value="_all_">Все обучающиеся</option>
           <?php foreach ($trainee_list as $key => $value):
-            $selected = '';
-            if ($key === $trainee_flt) {
-              $selected = 'selected';
+            $selected = "";
+            if ($trainee_flt === $key) {
+              $selected = "selected";
             }
             echo "<option value='{$key}' {$selected}>{$value}</option>";
           endforeach; ?>

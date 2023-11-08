@@ -19,7 +19,7 @@
       <div id="bar_extra_help" class="btn-group">
         <button id="showModalAddEditExtraHelp" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAddEditExtraHelp">Добавить</button>
         <button id="showModalShortStatistics" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalShortStatistics">Печать</button>
-        <button id="filters_button" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalFilrets" style="display: none;">Фильтры</button>
+        <button id="filters_button" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalFilrets" style="display: none;">Фильтры</button>
         <button id="sort_button" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalSort" style="display: none;">Порядок</button>
         <?php // if ($trainee_data['coordinator'] !== '1'): ?>
         <select id="trainee_select" class="form-control form-control-sm" style="width: 158px;">

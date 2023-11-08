@@ -4,6 +4,7 @@
 echo "<br>Раздел в разработке";
 exit;
 */
+
 if (isset($_COOKIE['meet_sorting'])) {
   $meet_curent_sorting = $_COOKIE['meet_sorting'];
   $fa_sort_arr = explode('-', $meet_curent_sorting);
@@ -74,7 +75,11 @@ if (isset($_COOKIE['meet_flt_trainee']) && !empty($_COOKIE['meet_flt_trainee']))
     endforeach; ?>
     <option disabled>----КБК----</option>";
     <?php foreach ($kbk_list as $key => $value):
-      echo "<option value='{$key}'>{$value}</option>";
+      $selected = "";
+      if ($serving_ones_flt === $key) {
+        $selected = "selected";
+      }
+      echo "<option value='{$key}' {$selected}>{$value}</option>";
     endforeach; ?>
   </select>
   <select id="meet_trainee_select" class="form-control form-control-sm">
@@ -101,7 +106,10 @@ if (isset($_COOKIE['meet_flt_trainee']) && !empty($_COOKIE['meet_flt_trainee']))
   <hr style="margin-left: -15px; margin-right: -15px; margin-top: 0px; margin-bottom: 0px; border-color: lightgray;">
 <?php
   foreach (get_communication_records_staff($serving_ones_flt, $trainee_flt, $meet_curent_sorting) as $key => $value) {
-
+    $hide = '';
+    if ($serving_ones_flt === $memberId) {
+      $hide = 'd-none';
+    }
     $bg_empty = '';
     if (empty($value['trainee'])) {
       $bg_empty = 'bg-warning';
@@ -113,6 +121,7 @@ if (isset($_COOKIE['meet_flt_trainee']) && !empty($_COOKIE['meet_flt_trainee']))
     /*if ($value['cancel']) {
       $bg_empty = 'bg-danger';
     }*/
+
     $date = date_convert::yyyymmdd_to_ddmm($value['date']);
     $day_of_week = date_convert::week_days($value['date'], true);
     //$comment_short = CutString::cut($value['comment_serv']);
@@ -124,8 +133,9 @@ if (isset($_COOKIE['meet_flt_trainee']) && !empty($_COOKIE['meet_flt_trainee']))
     echo "<div class='col-1'>{$date} {$day_of_week}</div>";
     echo "<div class='col-2' style='max-width: 120px;'>{$value['time']} – {$time_to}</div>";
     echo "<div class='col-1'>{$value['duration']}</div>";
-    echo "<div class='col-2'>{$trainee_list[$value['trainee']]}<br><span class='grey_text'>{$serving_ones_list[$trainee_serving_one[$value['trainee']]]}</span></div>";
-    echo "<div class='col-2'>{$serving_ones_list[$value['serving_one']]}</div>";
+    echo "<div class='col-3 text-secondary' style='display: none;'>коммент.</div>";
+    echo "<div class='col-2'><div>{$trainee_list[$value['trainee']]}</div><div class='grey_text'>{$serving_ones_list[$trainee_list_list[$value['trainee']]['serving_one']]}</div></div>";
+    echo "<div class='col-2 {$hide}'>{$serving_ones_list[$value['serving_one']]}</div>";
     echo "<div class='col-4'>{$comment_short_trainee}</div>"; //<br><span class='grey_text'>{$comment_short}</span>
     echo "</div>";
   }

@@ -387,6 +387,21 @@ $(document).ready(function(){
     }
     //flt_fellowship($(this));
   });
+  // mobile filters
+  $("#flt_sevice_one_meet_mbl, #ftr_trainee_meet_mbl").change(function (e) {
+    if ($(this).attr("id") === "flt_sevice_one_meet_mbl") {
+      setCookie('meet_flt_staff', $(this).val(), 356);
+    } else if ($(this).attr("id") === "ftr_trainee_meet_mbl") {
+      setCookie('meet_flt_trainee', $(this).val(), 356);
+    }
+  });
+  // apply the filters of the modal
+  $("#apply_filters_meet_mbl").click(function () {
+    setTimeout(function () {
+      location.reload();
+    }, 50);
+  });
+
   // фильтры
   /*
   function flt_fellowship(elem) {

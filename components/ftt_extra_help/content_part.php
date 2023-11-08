@@ -10,7 +10,7 @@
     <div id="current_extra_help" class="container tab-pane active"><br>
       <div id="bar_extra_help" class="btn-group">
         <button id="showModalAddEditExtraHelp" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAddEditExtraHelp">Добавить</button>
-        <button id="filters_button" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalFilrets" style="display: none;">Фильтры</button>
+        <button id="filters_button" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalFilrets" style="display: none;">Фильтры</button>
         <select id="tasks_select" class="form-control form-control-sm ">
           <option value="_all_">Все задания</option>
           <option value="0" selected>Текущие</option>
@@ -44,7 +44,7 @@
           if (strlen($reason) > 30) {
             $reason_short = iconv_substr($reason, 0, 84, 'UTF-8');
             if (strlen($reason) >= 84) {
-              //$reason_short .= '...';  
+              //$reason_short .= '...';
             }
           } else {
             $reason_short = $reason;

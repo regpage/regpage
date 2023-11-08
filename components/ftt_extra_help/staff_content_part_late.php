@@ -1,6 +1,6 @@
 <div id="bar_late" class="btn-group">
   <button id="showModalAddEditLate" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAddEditLate">Добавить</button>
-  <button id="filters_button_late" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalFilrets_late" style="display: none;">Фильтры</button>
+  <button id="filters_button_late" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalFilrets_late" style="display: none;">Фильтры</button>
   <select id="trainee_select_late" class="form-control form-control-sm">
     <option value="_all_" selected>Все обучающиеся</option>
     <?php foreach ($trainee_list as $key => $value):
@@ -25,7 +25,7 @@
       }
       echo "<option value='{$key}' $selected>{$value}</option>";
     endforeach; ?>
-  </select>  
+  </select>
   <select id="tasks_select_late" class="form-control form-control-sm ">
     <option value="_all_">Все опоздания</option>
     <option value="0" selected>Неучтённые</option>

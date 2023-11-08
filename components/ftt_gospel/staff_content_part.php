@@ -10,7 +10,7 @@
     <div id="gospel_tab" class="container tab-pane active"><br>
       <div id="bar_extra_help" class="btn-group">
         <button id="showModalAddEdit" type="button" class="btn btn-success btn-sm">Добавить</button>
-        <button id="filters_button" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalFilrets" style="display: none;">Фильтры</button>
+        <button id="filters_button" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalFilrets" style="display: none;">Фильтры</button>
         <button id="modalRecommended_open" type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modalRecommended">Цели</button>
         <?php if ($ftt_access['group'] === 'staff' || $serving_trainee) { ?>
           <!--<button id="sort_button" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalSort" style="display: none;">Порядок</button>-->
