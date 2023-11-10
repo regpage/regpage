@@ -248,6 +248,7 @@ function send_email_to_staff($id)
   }
   // EMAILING
   if (isset($result['serving_one']) && !empty($result['serving_one'])) {
+    $serving_one = $result['serving_one'];
     $trainee_name = short_name::no_middle(Member::get_name($result['trainee']));
     $email_text = ' Обновлен комментарий записи на общение ' . $trainee_name . ' ' . date_convert::yyyymmdd_to_ddmmyyyy($result['date']) . ' с ' . $result['time'] . ' по ' . $time_to . '.<br>' . $comment . "<br><br>Ссылка на раздел: " . "https://reg-page.ru/ftt_fellowship.php" . '<br><br>Запись обновлена ' . date("d.m.y, H:i") . '.';
 //'000005716'

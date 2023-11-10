@@ -19,6 +19,14 @@ function db_newContactByApi($data){
   $project = '24 урока';
   $status='';
   $responsible = '000010642';
+  $svaz = '';
+  // связь с подписчиком
+  if (!empty($email)) {
+    $svaz = 'Емайл: '.$email . '<br>';
+  }
+  if (!empty($phone)) {
+    $svaz .= 'Тел.: '.$phone . '<br>';
+  }
   // добавить всю инфу в комментарий + дата и время обращения
   $byMsgr = $db->real_escape_string($data['by_messanger']);
   $byPhone = $db->real_escape_string($data['by_phone']);
@@ -50,6 +58,7 @@ function db_newContactByApi($data){
   if ($res) {
     $topic = 'Новый подписчик на 24 урока добавлен в раздел «Контакты»';
     $body = "Подписчик {$name} отметил поля в форме на bibleforall.ru для совместного изучения.<br>";
+    $body .= $svaz;
     $body .= "Доп инфо: {$comment_mail}<br><br>";
     $body .= "<a href='https://reg-page.ru/contacts'>Перейти в раздел «Контакты»</a>";
     Emailing::send_by_key('000001679', $topic, $body); // $responsible

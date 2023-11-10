@@ -288,7 +288,7 @@ $(document).ready(function(){
   });
 
   $("#mdl_btn_meet_ok").click(function () {
-    if (trainee_access) {
+    if (trainee_access) {      
       meet_comment_change($("#mdl_meet_comment_trainee").val(), 1);
     } else {
       save_meet_staff_blank();

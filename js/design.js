@@ -475,7 +475,7 @@ if (window.location.pathname === "/application.php") {
 }
 
 // menu mobile the name of page
-if ($(window).width()<=769) {	    
+if ($(window).width()<=769) {
 	$(".dropdown-menu.pull-right").css("margin-left", "0px");
 	$(".show-name-list").show();
 	// main menu
@@ -483,8 +483,12 @@ if ($(window).width()<=769) {
 	$('.navbar .nav-link').attr('style', 'font-size: 17px !important; margin-top: 10px; font-weight: normal;');
 	$('.nav-sub-container .help_link').parent().attr('style', 'margin-bottom: 10px; margin-top: 10px;');
 	$(".nav-sub-container .divider-vertical").hide();
+	// FONTS
 	$('.show-name-list').css('font-size', '17px');
 	$('#main_container .tab-content .btn').css('font-size', '17px');
+	$("#main_container").css("font-size", "16px");
+  $("#main_container button").css("font-size", "16px");
+  $("#main_container select").css("font-size", "16px");
 	//$('#main_container .tab-content select').css('font-size', '17px');
 } else {
 	/*console.log($(window).height());

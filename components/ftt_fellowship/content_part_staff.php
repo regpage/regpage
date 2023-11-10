@@ -131,7 +131,7 @@ if (isset($_COOKIE['meet_flt_trainee']) && !empty($_COOKIE['meet_flt_trainee']))
     echo "data-date='{$value['date']}' data-time='{$value['time']}' data-duration='{$value['duration']}' ";
     echo "data-comment='{$value['comment_train']}' data-cancel='{$value['cancel']}'>";
     echo "<div class='col-1'>{$date} {$day_of_week}</div>";
-    echo "<div class='col-2' style='max-width: 120px;'>{$value['time']} – {$time_to}</div>";
+    echo "<div class='col-2' style='max-width: 120px;'>{$value['time']}–{$time_to}</div>";
     echo "<div class='col-1'>{$value['duration']}</div>";
     echo "<div class='col-3 text-secondary' style='display: none;'>коммент.</div>";
     echo "<div class='col-2'><div>{$trainee_list[$value['trainee']]}</div><div class='grey_text'>{$serving_ones_list[$trainee_list_list[$value['trainee']]['serving_one']]}</div></div>";

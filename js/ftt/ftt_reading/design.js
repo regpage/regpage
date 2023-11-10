@@ -4,7 +4,7 @@ if ($(window).width()<=769) {
   //$("#save_book_read").
   $("#date_read").parent().attr("style", "");
   $("#show_me_start").attr("style", "min-width: 45px !important; height: 38px;");
-  $("#mdl_lest_reading_bible").removeClass("col-6").addClass("col-12");
+  $("#mdl_lest_reading_bible").parent().removeClass("col-6").addClass("col-12");
   $("#mdl_cal_reading_bible").removeClass("col-6").addClass("col-12").addClass("pl-0").addClass("pr-0");
   // font size
   $("#main_container").css("font-size", "16px");
