@@ -930,6 +930,52 @@ filters_list_show();
   $("#print_modal_open").click(function () {
     statistics_counter();
   });
+
+  $("#print_modal_dates_open").click(function () {
+    statistics_dates();
+  });
+
+  function statistics_dates() {
+    // html
+    let html = "<table>";
+    // header
+    let header = "<thead><tr><th class='extra_groups' style='text-align: left; vertical-align: top; min-width: 80px;'>Дата</th>"
+    + "<th class='extra_groups' style='text-align: left; vertical-align: top; min-width: 90px;'>Команда</th>"
+    + "<th class='extra_groups' style='text-align: left; vertical-align: top; min-width: 200px;'>Состав группы</th>"
+    + "<th style='text-align: left; vertical-align: top; min-width: 40px;'>Л</th>"
+    + "<th style='text-align: left; vertical-align: top; min-width: 40px;'>Б</th>"
+    + "<th style='text-align: left; vertical-align: top; min-width: 40px;'>М</th>"
+    + "<th style='text-align: left; vertical-align: top; min-width: 40px;'>Н</th>"
+    + "<th style='text-align: left; vertical-align: top; min-width: 40px;'>П</th>"
+    + "<th style='text-align: left; vertical-align: top; min-width: 40px;'>В</th>"
+    + "<th style='text-align: left; vertical-align: top; min-width: 40px;'>С</th>"
+    + "<th style='text-align: left; vertical-align: top; min-width: 40px;'>Д</th></tr></thead>";
+    // ["Дата", "Команда", "Состав группы", "Л", "Б", "М", "Н", "П", "В", "С", "Д"]
+    // body
+    let body = "<tbody>";
+    $("#list_content .list_string").each(function () {
+      if ($(this).is(":visible")) {
+        body += "<tr><td style='text-align: left; vertical-align: top; min-width: 80px;'>"
+        + $(this).find("div:nth-child(1) span").text() + "</td><td style='text-align: left; vertical-align: top; min-width: 90px;'>"
+        + $(this).find("div:nth-child(2) .col_n_2_2").text() + "</td><td style='text-align: left; vertical-align: top; min-width: 200px;'>"
+        + $(this).find("div:nth-child(3) span").text() + "</td><td style='text-align: left; vertical-align: top; min-width: 40px;'>"
+        + $(this).find("div:nth-child(4) span").text() + "</td><td style='text-align: left; vertical-align: top; min-width: 40px;'>"
+        + $(this).find("div:nth-child(5) span").text() + "</td><td style='text-align: left; vertical-align: top; min-width: 40px;'>"
+        + $(this).find("div:nth-child(7) span").text() + "</td><td style='text-align: left; vertical-align: top; min-width: 40px;'>"
+        + $(this).find("div:nth-child(6) span").text() + "</td><td style='text-align: left; vertical-align: top; min-width: 40px;'>"
+        + $(this).find("div:nth-child(8) span").text() + "</td><td style='text-align: left; vertical-align: top; min-width: 40px;'>"
+        + $(this).find("div:nth-child(9) span").text() + "</td><td style='text-align: left; vertical-align: top; min-width: 40px;'>"
+        + $(this).find("div:nth-child(10) span").text() + "</td><td style='text-align: left; vertical-align: top; min-width: 40px;'>"
+        + $(this).find("div:nth-child(11) span").text()
+        body += "</td></tr>";
+      }
+    });
+    body += "</tbody>";
+    html += header;
+    html += body;
+    html += "</table>";
+    $("#gospel_report_dates").html(html);
+  }
   // рендорим поля для групп в таблице отчёта
   function render_print_report(groups) {
     let groups_html, body_html;
@@ -1044,7 +1090,7 @@ filters_list_show();
     }
   });
 
-  $("#print_button").click(function () {
+  $("#print_button, #print_button_dates").click(function () {
 
     function printElem(elem){
       popup($(elem).html());
@@ -1060,7 +1106,12 @@ filters_list_show();
       //mywindow.close();
       //return true;
     }
-    printElem('#gospel_body_print');
+    if ($(this).attr("id") === "print_button") {
+      printElem("#gospel_body_print");
+    } else if ($(this).attr("id") === "print_button_dates") {
+      printElem("#gospel_report_dates");
+    }
+
   });
 // фильтры
 $("#periods, #periods_mbl").change(function (e) {
