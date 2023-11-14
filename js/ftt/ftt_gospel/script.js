@@ -746,7 +746,16 @@ filters_list_show();
 
   // Печать
   function statistics_counter() {
-    $("#team_select_print").val(); //serving_ones_list_full[admin_id_gl]["gospel_team"]
+    //$("#team_select_print").val(); //serving_ones_list_full[admin_id_gl]["gospel_team"]
+    let all_groups = [];
+    if ($("#group_select_print").val() === "_all_" && $("#team_select_print").val() !== "_all_") {
+      $("#group_select_print option").each(function () {
+        if ($(this).val() !== "_all_") {
+          all_groups.push($(this).val());
+        }
+      });
+    }
+
     fetch("ajax/ftt_gospel_ajax.php?type=get_gospel_str&team="+$("#team_select_print").val()+"&period=_all_&from=&to=")
     .then(response => response.json())
     .then(commits => {
@@ -762,6 +771,12 @@ filters_list_show();
       let range_meetings_current = 0, range_first_contacts = 0, range_further_contacts = 0, range_homes = 0;
       let group_stat = [];
       for (let i = 0; i < stat.length; i++) {
+        if (stat[i].gospel_group) {
+          let key_arr = all_groups.indexOf(stat[i].gospel_group);
+          if (key_arr !== -1) {
+            all_groups.splice(key_arr, 1);
+          }
+        }
         // При условии что отчёт формируется по всем группам
         // Добавить массив с элементами по количеству групп. В каждой группе все элементы для боди.
         // В них записывать статистику и передавать в функцию рендеринга
@@ -852,9 +867,17 @@ filters_list_show();
           }
         }
       }
+
+      if (all_groups.length > 0) {
+        // добавляем 0 для групп отсутствующих в массиве
+        for (let j = 0; j < all_groups.length; j++) {
+          group_stat[all_groups[j]] = {baptism: 0, first_contacts:0, flyers:0, further_contacts:0, homes:0, meetings_current:0, meetings_last:0, meets_current:0, meets_last:0, people:0, prayers:0};
+        }
+      }
       if (selected_group === "_all_") {
         $(".extra_groups").remove();
           render_print_report(group_stat);
+
       } else {
         $(".extra_groups").remove();
         // Получаем цели для колонки целей (только для групп)

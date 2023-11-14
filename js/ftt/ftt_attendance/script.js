@@ -692,7 +692,7 @@ function open_blank(el_this) {
      $('#comment_modal').attr("disabled", false);
      $(".practice_field").attr("disabled", false);
      if ($(window).width()<=769) {
-       $('#undo_attendance_str').attr("style", "margin-right: 198px;");
+       $('#undo_attendance_str').attr("style", "margin-right: 190px;");
      } else {
        $('#undo_attendance_str').attr("style", "margin-right: 355px;");
      }
