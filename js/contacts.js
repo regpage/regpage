@@ -1710,7 +1710,7 @@ function sendTheOrder(ua) {
     !$('#addressContact').val() ? $('#addressContact').css('border-color', 'red') : $('#addressContact').css('border-color', '#ced4da');
     if (!$('#nameContact').val() || !$('#phoneContact').val() || !$('#regionContact').val() || !$('#localityContact').val() || !$('#indexContact').val() || !$('#addressContact').val()) {
       showError('Заполните поля выделенные красным цветом.');
-      setStringToLog('КОНТАКТ ' + $('#nameContact').val() + ', ID - ' + $('#saveContact').attr('data-id')+' Нажатие на кнопку - ОТПРАВИТЬ ЗАКАЗ. Итог - неудача, НЕ ВСЕ ПОЛЯ ЗАПОЛНЕНЫ.', 'FATAL');
+      //setStringToLog('КОНТАКТ ' + $('#nameContact').val() + ', ID - ' + $('#saveContact').attr('data-id')+' Нажатие на кнопку - ОТПРАВИТЬ ЗАКАЗ. Итог - неудача, НЕ ВСЕ ПОЛЯ ЗАПОЛНЕНЫ.', 'FATAL');
       e.stopPropagation();
       return
     } else {
@@ -1730,12 +1730,12 @@ function sendTheOrder(ua) {
   });
 
   $('#saveCancelConfirmBtn').click(function() {
-    setStringToLog('КОНТАКТ ' + $('#nameContact').val() + ', ID - ' + $('#saveContact').attr('data-id')+' Нажатие на кнопку - ОТМЕНИТЬ. Итог - закрытие модального окна подтверждения отправки заказа.', 'ERROR');
+    //setStringToLog('КОНТАКТ ' + $('#nameContact').val() + ', ID - ' + $('#saveContact').attr('data-id')+' Нажатие на кнопку - ОТМЕНИТЬ. Итог - закрытие модального окна подтверждения отправки заказа.', 'ERROR');
     $('#saveConfirm').hide();
   });
 
   $('#saveConfirmBtn').click(function() {
-    setStringToLog('КОНТАКТ ' + $('#nameContact').val() + ', ID - ' + $('#saveContact').attr('data-id')+' Нажатие на кнопку - ОТПРАВИТЬ в модальной форме заказа. Итог - необходимо проверить лог отправки в CRM.', 'WARNING');
+    //setStringToLog('КОНТАКТ ' + $('#nameContact').val() + ', ID - ' + $('#saveContact').attr('data-id')+' Нажатие на кнопку - ОТПРАВИТЬ в модальной форме заказа. Итог - необходимо проверить лог отправки в CRM.', 'WARNING');
     function sendOrderToCRMExtra() {
       if ($('#countryContact').val() === 'UA') {
         sendTheOrder('UA');
@@ -2188,7 +2188,7 @@ function sendTheOrder(ua) {
         }
         // Добавляем недостающих ответственных
         for (let variable in data_page.responsible_previous) {
-          if (data_page.responsible_previous.hasOwnProperty(variable)) {    
+          if (data_page.responsible_previous.hasOwnProperty(variable)) {
             if (variable[0] !== undefined) {
               html.push('<option value="'+variable+'">'+fullNameToNoMiddleName(data_page.full_admin_list[variable][0])+'</option>');
             }

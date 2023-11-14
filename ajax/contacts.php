@@ -104,7 +104,7 @@ if (isset($_POST['type']) && $_POST['type'] === 'message_ua') {
     }
     if($error == null){
         $textmext = 'UA Заказ отправлен по email на Украину. '.$_POST['text_message'];
-        logFileWriter($adminId, $textmext, 'WARNING');
+        //logFileWriter($adminId, $textmext, 'WARNING');
         echo json_encode(["result"=>true]);
         exit;
     }
@@ -126,7 +126,7 @@ if (isset($_POST['type']) && $_POST['type'] === 'message_lv') {
     }
     if($error == null){
         $textmext = 'UA Заказ отправлен по email в Латвию. '.$_POST['text_message'];
-        logFileWriter($adminId, $textmext, 'WARNING');
+        //logFileWriter($adminId, $textmext, 'WARNING');
         echo json_encode(["result"=>true]);
         exit;
     }

@@ -206,7 +206,7 @@ $(document).ready(function(){
     fetch("ajax/ftt_reading_ajax.php?type=get_read_book&member_key=" + member_key)
     .then(response => response.json())
     .then(commits => {
-      let read_books = commits.result;
+      let read_books = commits.result;      
       // сприсок прочитанных книг
       let bible_books_html = "", found;
       for (let i = 0; i < bible_arr.length; i++) {

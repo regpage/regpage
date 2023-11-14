@@ -31,7 +31,7 @@
 
 <?php if (IS_FTT) { ?>
     <!-- Основные стили ПВОМ -->
-    <link href="css/ftt/ftt.css?v2" rel="stylesheet">
+    <link href="css/ftt/ftt.css?v3" rel="stylesheet">
 <?php } ?>
 
 

@@ -69,7 +69,7 @@ function db_deleteContactString($id, $adminId){
   foreach ($id as $value) {
     db_query ("UPDATE contacts SET `notice` = 2, `sending_date` = '$datatime' WHERE `id`='$value'");
     db_query("INSERT INTO chat (`group_id`, `member_key`, `message`) VALUES ('$value', '$adminId', '$text')");
-    logFileWriter($adminId, 'КОНТАКТЫ. Перемещён в корзину контакт '.$value);
+    //logFileWriter($adminId, 'КОНТАКТЫ. Перемещён в корзину контакт '.$value);
   }
   return 1;
 }
@@ -78,7 +78,7 @@ function db_deleteContactStringTotal($id, $adminId){
   foreach ($id as $value) {
     db_query ("DELETE FROM contacts WHERE `id`='$value'");
     db_query ("DELETE FROM chat WHERE `group_id`='$value'");
-    logFileWriter($adminId, 'КОНТАКТЫ. Удалён из базы контакт '.$value);
+    //logFileWriter($adminId, 'КОНТАКТЫ. Удалён из базы контакт '.$value);
   }
 }
 // responsible set
@@ -92,8 +92,8 @@ function db_responsibleSet($id, $responsibleNew, $adminId){
     db_query ("UPDATE contacts SET `responsible` = '$responsibleKey', `responsible_previous` = '$value[1]' WHERE `id`='$value[0]'");
     db_query("INSERT INTO chat (`group_id`, `member_key`, `message`) VALUES ('$value[0]', '$adminId', '$text')");
     db_newNotification($responsibleKey, $value[0]);
-    $textLog = 'КОНТАКТЫ. Контакт ID - '.$value[0].'. '.$text.'. Предыдущий '.$value[1].'.';
-    logFileWriter($adminId, $textLog);
+    //$textLog = 'КОНТАКТЫ. Контакт ID - '.$value[0].'. '.$text.'. Предыдущий '.$value[1].'.';
+    //logFileWriter($adminId, $textLog);
   }
 }
 // responsible set for admin 0
@@ -106,8 +106,8 @@ function db_responsibleSetZero($data, $adminId){
     db_query ("UPDATE contacts SET `responsible` = '$value[1]', `responsible_previous` = '$adminId' WHERE `id`='$value[0]'");
     db_query("INSERT INTO chat (`group_id`, `member_key`, `message`) VALUES ('$value[0]', '$adminId', '$text')");
     db_newNotification($value[1], $value[0]);
-    $textLog = 'КОНТАКТЫ. Контакт ID - '.$value[0].'. '.$text.'. Предыдущий '.$adminId.'.';
-    logFileWriter($adminId, $textLog);
+    //$textLog = 'КОНТАКТЫ. Контакт ID - '.$value[0].'. '.$text.'. Предыдущий '.$adminId.'.';
+    //logFileWriter($adminId, $textLog);
   }
 }
 
@@ -492,7 +492,7 @@ function db_setRespForAdmin($adminId, $keys, $role){
 // Добавить админа который делает это
     $msg = 'Админом с ролью 2 добавлен новый администратор с ролью - '.$role.'. И списоком ответственных - '.$keys;
   }
-  logFileWriter($adminId, 'КОНТАКТЫ. '.$msg);
+  //logFileWriter($adminId, 'КОНТАКТЫ. '.$msg);
 }
 
 function db_getContactsRoleAdmin($adminId){
@@ -549,7 +549,7 @@ if ($role === 'none' && $check !== '0') {
   } elseif ($check === '0' && $role !== 'none') {
     db_query ("INSERT INTO contacts_resp (`member_key`,`role`) VALUES ('$adminId','$role')");
   }
-  logFileWriter($adminId, 'КОНТАКТЫ. '.$msg.'назначена роль '.$role);
+  //logFileWriter($adminId, 'КОНТАКТЫ. '.$msg.'назначена роль '.$role);
 }
 
 // STOP responsibles group
@@ -592,7 +592,7 @@ function db_setRecoverArchivedStrings($id, $adminId){
 
   db_query("INSERT INTO chat (`group_id`, `member_key`, `message`) VALUES ('$id', '$adminId', '$text')");
 
-  logFileWriter($adminId, 'КОНТАКТЫ. Контакт востановлен из архива. '.$id);
+  //logFileWriter($adminId, 'КОНТАКТЫ. Контакт востановлен из архива. '.$id);
 
   return $result;
 }
@@ -624,7 +624,7 @@ function db_setRecoverStrings($id, $adminId) {
 
   db_query("INSERT INTO chat (`group_id`, `member_key`, `message`) VALUES ('$id', '$adminId', '$text')");
 
-  logFileWriter($adminId, 'КОНТАКТЫ. Контакт востановлен из корзины. '.$id);
+  //logFileWriter($adminId, 'КОНТАКТЫ. Контакт востановлен из корзины. '.$id);
 
   return $result;
 }
@@ -637,7 +637,7 @@ function db_setContactsToArchive($id, $adminId){
   foreach ($id as $value) {
     db_query ("UPDATE contacts SET `notice` = 3 WHERE `id`='$value'");
     db_query("INSERT INTO chat (`group_id`, `member_key`, `message`) VALUES ('$value', '$adminId', '$text')");
-    logFileWriter($adminId, 'КОНТАКТЫ. Перемещён в архив контакт '.$value);
+    //logFileWriter($adminId, 'КОНТАКТЫ. Перемещён в архив контакт '.$value);
   }
   return 1;
 }
@@ -651,7 +651,7 @@ function db_deleteOneContact($id, $adminId){
 
   db_query ("UPDATE contacts SET `notice` = 2, `sending_date` = '$datatime' WHERE `id`='$id'");
   db_query("INSERT INTO chat (`group_id`, `member_key`, `message`) VALUES ('$id', '$adminId', '$text')");
-  logFileWriter($adminId, 'КОНТАКТЫ. Перемещён в корзину контакт '.$id);
+  //logFileWriter($adminId, 'КОНТАКТЫ. Перемещён в корзину контакт '.$id);
 
   return 1;
 }
@@ -664,7 +664,7 @@ function db_archiveOneContact($id, $adminId){
 
   db_query ("UPDATE contacts SET `notice` = 3 WHERE `id`='$id'");
   db_query("INSERT INTO chat (`group_id`, `member_key`, `message`) VALUES ('$id', '$adminId', '$text')");
-  logFileWriter($adminId, 'КОНТАКТЫ. Перемещён в архив контакт '.$id);
+  //logFileWriter($adminId, 'КОНТАКТЫ. Перемещён в архив контакт '.$id);
 
   return 1;
 }
@@ -682,12 +682,12 @@ function setNewNameForGroup($adminId, $newName, $oldName = '') {
       $count = $row['count'];
     }
     db_query ("UPDATE contacts SET `project` = '$newName'  WHERE `project`='$oldName'");
-    logFileWriter($adminId, 'КОНТАКТЫ. Переименована группа контактов с '.$oldName.' на '.$newName);
+    //logFileWriter($adminId, 'КОНТАКТЫ. Переименована группа контактов с '.$oldName.' на '.$newName);
   } else {
     $text = 'Фантом для группы '.$newName;
     $newId = db_getNewContactId();
     db_query("INSERT INTO contacts (`id`,`project`, `responsible`, `name`) VALUES ('$newId', '$newName', '$adminId', '$text')");
-    logFileWriter($adminId, 'КОНТАКТЫ. Добавлена новая группа контактов: '.$newName.', и карточка: '.$text);
+    //logFileWriter($adminId, 'КОНТАКТЫ. Добавлена новая группа контактов: '.$newName.', и карточка: '.$text);
   }
   return $count;
 }

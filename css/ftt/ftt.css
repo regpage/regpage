@@ -69,7 +69,7 @@
   cursor: pointer;
 }
 
-#divCal .record_available {
+.record_available {
   background-color: lightgreen;
 }
 
