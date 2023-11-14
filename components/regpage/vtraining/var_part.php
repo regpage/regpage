@@ -2,7 +2,7 @@
 // Classes
 // components
 // db
-/*require_once 'db/classes/members.php';*/
+require_once 'db/regpage/vtraining_db.php';
 require_once 'db/classes/member.php';
 require_once 'db/classes/localities.php';
 require_once 'db/classes/settings.php';
@@ -45,6 +45,9 @@ if (isset($_COOKIE['sorting-vtraining']) && !empty($_COOKIE['sorting-vtraining']
 } else {
   $sort_fio_ico = 'fa fa-sort-desc';
 }
+
+$vTSpring = vTApplication(1);
+$vTFall = vTApplication(2);
 /*
 $membersList = Members::getListAttend($memberId, $sort_setting[0], $sort_setting[1]);
 $adminLocalitiesList = localities::getAdminLocalities($memberId);

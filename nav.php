@@ -156,6 +156,15 @@ switch ($h) {
                 echo"><a href='/meetings'>Собрания</a></li>";
             }
 
+            // доступ до раздел видеообучение
+            if(!isset($isGuest) && $ftt_access['group'] !== 'trainee') {
+              if (get_admin_data::vt($memberId)) {
+                echo '<li';
+                if (strpos ($s,"/vtraining")!==FALSE) {echo " class='active'";}
+                echo"><a href='/vtraining'>Видеообучение</a></li>";
+              }
+            }
+
             /*if((!isset($isGuest) && db_isAdmin($memberId)) || db_hasAdminFullAccess($memberId)) {
                 echo '<li';
                 if (strpos ($s,"/list")!==FALSE){echo " class='active'";}

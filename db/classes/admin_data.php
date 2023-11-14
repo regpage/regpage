@@ -5,10 +5,13 @@ include_once 'db/classes/short_name.php';
  * $curent_admin_data = new Admin_data;
  * $curent_admin_name = $curent_admin_data->name;
  * ДОБАвить безопастность db()
+ * admin_data::vt($admin_id) доступ к разделу видео обучение
  */
 class get_admin_data {
 
   static public function data($admin_id) {
+    global $db;
+    $admin_id = $db->real_escape_string($admin_id);
     $result = [];
     $res = db_query("SELECT m.key, m.name AS admin_name, m.locality_key, m.email, l.name AS locality_name, m.category_key, m.male
       FROM member AS m
@@ -19,6 +22,8 @@ class get_admin_data {
   }
 
   static public function ftt($admin_id) {
+    global $db;
+    $admin_id = $db->real_escape_string($admin_id);
     $result = [];
     $result_2 = [];
     $service = '';
@@ -43,6 +48,20 @@ class get_admin_data {
           } else {
             return ['group' => '', 'ftt_service' => '', 'staff_time_zone' => '', 'attendance' => '', 'coordinator'=>''];
           }
+      }
+  }
+  static public function vt($admin_id)
+  {
+    global $db;
+    $admin_id = $db->real_escape_string($admin_id);
+    $result = '';
+
+    $res = db_query("SELECT `member_key` FROM `vt_responsibles` WHERE `member_key` = '$admin_id'");
+      while ($row = $res->fetch_assoc()) $result=$row['member_key'];
+      if (empty($result)) {
+        return false;
+      } else {
+        return true;
       }
   }
 }

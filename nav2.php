@@ -186,6 +186,14 @@ switch ($h) {
               }
             }
 
+            // доступ до раздел видеообучение
+            if(!isset($isGuest) && $ftt_access['group'] !== 'trainee') {
+              if (get_admin_data::vt($memberId)) {
+                echo '<li class="nav-item"';
+                if (strpos ($s,"/vtraining")!==FALSE) {echo " class='active'";}
+                echo"><a class='nav-link' href='/vtraining'>Видеообучение</a></li>";
+              }
+            }
             /*if((!isset($isGuest) && (in_array('9', db_getUserSettings($memberId)))) || (db_hasAdminFullAccess($memberId) && (in_array('9', db_getUserSettings($memberId)))) || (!isset($isGuest) && (in_array('12', db_getUserSettings($memberId)))) || (db_hasAdminFullAccess($memberId) && (in_array('10', db_getUserSettings($memberId))))) {
               if ($ftt_access['group'] !== 'trainee') {
                 echo '<li  class="nav-item"';
