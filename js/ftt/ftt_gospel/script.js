@@ -965,14 +965,14 @@ filters_list_show();
     let header = "<thead><tr><th class='extra_groups' style='text-align: left; vertical-align: top; min-width: 80px;'>Дата</th>"
     + "<th class='extra_groups' style='text-align: left; vertical-align: top; min-width: 90px;'>Команда</th>"
     + "<th class='extra_groups' style='text-align: left; vertical-align: top; min-width: 200px;'>Состав группы</th>"
-    + "<th style='text-align: left; vertical-align: top; min-width: 40px;'>Л</th>"
-    + "<th style='text-align: left; vertical-align: top; min-width: 40px;'>Б</th>"
-    + "<th style='text-align: left; vertical-align: top; min-width: 40px;'>М</th>"
-    + "<th style='text-align: left; vertical-align: top; min-width: 40px;'>Н</th>"
-    + "<th style='text-align: left; vertical-align: top; min-width: 40px;'>П</th>"
-    + "<th style='text-align: left; vertical-align: top; min-width: 40px;'>В</th>"
-    + "<th style='text-align: left; vertical-align: top; min-width: 40px;'>С</th>"
-    + "<th style='text-align: left; vertical-align: top; min-width: 40px;'>Д</th></tr></thead>";
+    + "<th style='text-align: right; vertical-align: top; min-width: 40px;'>Л</th>"
+    + "<th style='text-align: right; vertical-align: top; min-width: 40px;'>Б</th>"
+    + "<th style='text-align: right; vertical-align: top; min-width: 40px;'>М</th>"
+    + "<th style='text-align: right; vertical-align: top; min-width: 40px;'>Н</th>"
+    + "<th style='text-align: right; vertical-align: top; min-width: 40px;'>П</th>"
+    + "<th style='text-align: right; vertical-align: top; min-width: 40px;'>В</th>"
+    + "<th style='text-align: right; vertical-align: top; min-width: 40px;'>С</th>"
+    + "<th style='text-align: right; vertical-align: top; min-width: 40px;'>Д</th></tr></thead>";
     // ["Дата", "Команда", "Состав группы", "Л", "Б", "М", "Н", "П", "В", "С", "Д"]
     // body
     let body = "<tbody>";
@@ -981,14 +981,14 @@ filters_list_show();
         body += "<tr><td style='text-align: left; vertical-align: top; min-width: 80px;'>"
         + $(this).find("div:nth-child(1) span").text() + "</td><td style='text-align: left; vertical-align: top; min-width: 90px;'>"
         + $(this).find("div:nth-child(2) .col_n_2_2").text() + "</td><td style='text-align: left; vertical-align: top; min-width: 200px;'>"
-        + $(this).find("div:nth-child(3) span").text() + "</td><td style='text-align: left; vertical-align: top; min-width: 40px;'>"
-        + $(this).find("div:nth-child(4) span").text() + "</td><td style='text-align: left; vertical-align: top; min-width: 40px;'>"
-        + $(this).find("div:nth-child(5) span").text() + "</td><td style='text-align: left; vertical-align: top; min-width: 40px;'>"
-        + $(this).find("div:nth-child(7) span").text() + "</td><td style='text-align: left; vertical-align: top; min-width: 40px;'>"
-        + $(this).find("div:nth-child(6) span").text() + "</td><td style='text-align: left; vertical-align: top; min-width: 40px;'>"
-        + $(this).find("div:nth-child(8) span").text() + "</td><td style='text-align: left; vertical-align: top; min-width: 40px;'>"
-        + $(this).find("div:nth-child(9) span").text() + "</td><td style='text-align: left; vertical-align: top; min-width: 40px;'>"
-        + $(this).find("div:nth-child(10) span").text() + "</td><td style='text-align: left; vertical-align: top; min-width: 40px;'>"
+        + $(this).find("div:nth-child(3) span").text() + "</td><td style='text-align: right; vertical-align: top; min-width: 40px;'>"
+        + $(this).find("div:nth-child(4) span").text() + "</td><td style='text-align: right; vertical-align: top; min-width: 40px;'>"
+        + $(this).find("div:nth-child(5) span").text() + "</td><td style='text-align: right; vertical-align: top; min-width: 40px;'>"
+        + $(this).find("div:nth-child(6) span").text() + "</td><td style='text-align: right; vertical-align: top; min-width: 40px;'>"
+        + $(this).find("div:nth-child(7) span").text() + "</td><td style='text-align: right; vertical-align: top; min-width: 40px;'>"
+        + $(this).find("div:nth-child(8) span").text() + "</td><td style='text-align: right; vertical-align: top; min-width: 40px;'>"
+        + $(this).find("div:nth-child(9) span").text() + "</td><td style='text-align: right; vertical-align: top; min-width: 40px;'>"
+        + $(this).find("div:nth-child(10) span").text() + "</td><td style='text-align: right; vertical-align: top; min-width: 40px;'>"
         + $(this).find("div:nth-child(11) span").text()
         body += "</td></tr>";
       }

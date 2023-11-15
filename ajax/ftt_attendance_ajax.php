@@ -269,7 +269,7 @@ if (isset($_GET['type']) && $_GET['type'] === 'set_pic') {
             $imagick->writeImage(__DIR__ . '/' . $target_file);
           } elseif ($data['mimetype'] === 'image/jpeg' && $imagick->getImageLength() >= 2000000 && $imagick->getImageLength() <= 5000000){
             $imagick->setCompression(Imagick::COMPRESSION_JPEG);
-            $imagick->setImageCompressionQuality(50);
+            $imagick->setImageCompressionQuality(60);
             $imagick->writeImage(__DIR__ . '/' . $target_file);
           } elseif ($data['mimetype'] === 'image/jpeg' && $imagick->getImageLength() > 5000000) {
             $imagick->setCompression(Imagick::COMPRESSION_JPEG);

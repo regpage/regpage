@@ -40,7 +40,7 @@ if (isset($_COOKIE['flt_serving_one_read'])) {
       $counter = 0;
       foreach ($value as $key_2 => $value_2) {
         if ($counter == 0) {
-          echo "</div><div class='row border-bottom pb-1 pt-1'><div class='col-3 read_name'><button class='btn btn-link' data-member_key='{$key}'>{$trainee_list[$key]}</button></div>";
+          echo "</div><div class='row border-bottom pb-1 pt-1'><div class='col-3 read_name'><button class='btn btn-link' data-member_key='{$key}'>{$trainee_list[$key]} ({$trainee_list_list[$key]['semester']})</button></div>";
         }
 
         $bg_success = '';

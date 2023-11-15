@@ -489,6 +489,10 @@ if ($(window).width()<=769) {
 	$("#main_container").css("font-size", "16px");
   $("#main_container button").css("font-size", "16px");
   $("#main_container select").css("font-size", "16px");
+
+	$('#ftt_navs .nav-item').each(function () {
+		$(this).css("width", $(this).width() + 4);		
+	});
 	//$('#main_container .tab-content select').css('font-size', '17px');
 } else {
 	/*console.log($(window).height());
