@@ -126,6 +126,7 @@
             }
           }
 
+          // RENDER LIST
           foreach ($data_for_list as $key => $value):
             $counter++;
           /*$short_name_trainee = short_name::no_middle($trainee_list[$value['feh_member_key']]);
@@ -281,10 +282,6 @@
 
             // FIRST
             if ($first_str) {
-              $date_strt_str = $date_strt_str;
-              $date_stp_str = $date_stp_str;
-              $comm_str = $comm_str;
-              $comm_ico_str = $comm_ico_str;
               $date_strt_ico = date_convert::yyyymmdd_to_ddmm($date_strt_str);
               $date_stp_ico = date_convert::yyyymmdd_to_ddmm($date_stp_str);
               $f_pause_from = '';
@@ -312,7 +309,7 @@
                 if (!$f_pause_from) {
                   if (mb_strlen($comm_str) > 30) {
                     $comment_temp = mb_substr($comm_str, 0, 30).'...';
-                    $comm_str = "<span class='desk_show' title='{$comm_str} с {$date_start_ico} по {$date_stop_ico}'>с {$date_start_ico} по {$date_stop_ico} {$comment_temp}</span>";
+                    $comm_str = "<span class='desk_show' title='{$comm_str} с {$date_strt_ico} по {$date_stp_ico}'>с {$date_strt_ico} по {$date_stp_ico} {$comment_temp}</span>";
                   } else {
                     $comm_str = "<span class='desk_show'>{$comm_str} с {$date_strt_ico} по {$date_stp_ico}</span>";
                   }
@@ -323,6 +320,7 @@
               }
 
               $first_str = false;
+              // рендерим комментарий для первой строки, если в текужщий момент пауза не активна.
               echo "<span class='period_col'><span class='desk_show'>{$f_pause_from} {$f_pause_start} {$f_pause_to} {$f_pause_stop} {$comm_str}</span></span>{$comm_ico_str}";
             }
             echo "</div></div>";

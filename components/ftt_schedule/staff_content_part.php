@@ -59,7 +59,7 @@ for ($ii=0; $ii < count($correction); $ii++) {
   && ($correction[$ii]['time_zone'] === $time_zone_list)) {
     //$correction[$ii]['time_zone'] === $ftt_access['staff_time_zone'] ||
     $correction_info = ' (есть изменения)';
-    // проверяем количество изменяемых строк
+    // количество изменяемых строк и если id в cancel_id два или более, то создаём для каждого id доп. корректировку, но без указания времени
     $correction_strings = explode(',' ,$correction[$ii]['cancel_id']);
 
     if (count($correction_strings) > 0) {
@@ -101,7 +101,7 @@ for ($ii=0; $ii < count($correction); $ii++) {
 //ВНЕСЕНИЕ ИЗМЕНЕНИЙ И СОРТИРОВКА МАССИВА
 // пренести корректировку и сортировку массива сюда, сбрасывать на 0 счётчек
 
-if (count($correction_data) > 0 ) {
+if (count($correction_data) > 0) {
   // Определяем день
   $number_day = $i + 1;
   $day = 'day'.$number_day;
@@ -126,10 +126,15 @@ if (count($correction_data) > 0 ) {
 // Добавляем корректировки
   $loop_schedule_extra = [];
   $correction_color = [];
+  // перебираем мероприятия
   foreach ($loop_schedule as $key => $value) {
     if ($value[$day]) {
+    // перебираем корректировки
     for ($iii=0; $iii < count($correction_data); $iii++) {
-      if (!$correction_data[$iii]['cancel_id']) {
+      // все корректировки вносятся в массив на первой итерации $correction_data после идет обработка отменяемых строк
+      if (empty($correction_data[$iii]['cancel_id'])) {
+        // Если нет отменяемых мероприятий в корректировке
+        // записываем корректировки в доп. массив для дальнейшего слияния с массивом мероприятий
         $loop_schedule_extra[] = [
           'session_name' => $correction_data[$iii]['session_name'],
           $day => $correction_data[$iii]['time'],
@@ -138,11 +143,15 @@ if (count($correction_data) > 0 ) {
           'comment' => $correction_data[$iii]['comment'],
           'color' => 1
         ];
+        // помечаем корректировку как отработанную
         $correction_data[$iii]['cancel_id'] = 'break';
-      } else if ($value['id'] === $correction_data[$iii]['cancel_id'] && !$correction_data[$iii]['time']) {
-        $loop_schedule[$key][$day] = $correction_data[$iii]['time'];
+      } else if ($value['id'] === $correction_data[$iii]['cancel_id'] && empty($correction_data[$iii]['time'])) {
+        // если id мероприятия соответствует id отменяемого мероприятия и время в корректировке не заполнено
+        // затираем время в отменяемой строке, что бы она не участвовала в дальнейшей обработке (это мероприятие не будет отображатся в расписании)
+        $loop_schedule[$key][$day] = '';
       }
-      if ($correction_data[$iii]['cancel_id'] && $correction_data[$iii]['cancel_id'] !== 'break' && $correction_data[$iii]['time']) {
+      if (!empty($correction_data[$iii]['cancel_id']) && $correction_data[$iii]['cancel_id'] !== 'break' && !empty($correction_data[$iii]['time'])) {
+        // записываем корректировки в доп. массив для дальнейшего слияния с массивом мероприятий
         $loop_schedule_extra[] = [
           'session_name' => $correction_data[$iii]['session_name'],
           $day => $correction_data[$iii]['time'],
@@ -151,7 +160,12 @@ if (count($correction_data) > 0 ) {
           'comment' => $correction_data[$iii]['comment'],
           'color' => 1
         ];
+        // затираем время корректировки что бы данные больше не добавлялись в доп массив и могли отработать отменяющие строки корректировок
         $correction_data[$iii]['time']  = '';
+        // отменяем мероприятие.
+        if ($value['id'] === $correction_data[$iii]['cancel_id']) {
+          $loop_schedule[$key][$day] = '';
+        }
       }
     }
   }

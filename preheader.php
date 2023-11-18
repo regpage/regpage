@@ -26,6 +26,8 @@ session_start();
 include_once 'extensions/write_to_log/write_to_log.php';
 // подключение необходимых функций и конфигов
 include_once "db.php";
+// данные админа
+include_once "db/classes/admin_data.php";
 // if (!isset($isGuest)) { // лишнее условие, эта переменная выше не объявляется.
 /* авторизация на сайте */
 // получаем админа по сессии
@@ -67,7 +69,7 @@ define("IS_FTT", $isFttPage);
 } else*/
 // Custom page. Если название страницы состоит из двух символов типа '/bt'
 /* разбор адресов */
-if(strlen($_SERVER['REQUEST_URI']) == 3){
+if(strlen($_SERVER['REQUEST_URI']) == 3){  
     // Названия разделов из двух символов не допустимы, так как два символа используются для специальных страниц
       // determine a special page
       $specPage = NULL;
@@ -114,9 +116,9 @@ if (!db_isAvailableMeetingPage($memberId) && $thispage === 'meetings') {
   exit;
 }
 */
+// текстовые блоки
 include_once "textblock.php";
-// Данные Админа
-include_once "db/classes/admin_data.php";
+
 $admin_data = get_admin_data::data($memberId);
 
 // правило отображения разделов для обучающихся

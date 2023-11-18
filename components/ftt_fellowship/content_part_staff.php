@@ -98,7 +98,7 @@ if (isset($_COOKIE['meet_flt_trainee']) && !empty($_COOKIE['meet_flt_trainee']))
   <div class="row row_meet mb-1">
     <div class="col-1 text_blue"><b id="meet_sort_date" class="cursor-pointer">Дата<i class="<?php echo $meet_sort_date_ico; ?>"></i></b></div>
     <div class="col-2 text_blue" style="max-width: 120px;"><b id="meet_sort_time" class="cursor-pointer">Время<i class="<?php echo $meet_sort_time_ico; ?>"></i></b></div>
-    <div class="col-1"><b>Продолж</b></div>
+    <div class="col-1 text-right"><b>Продолж</b></div>
     <div class="col-2 text_blue"><b id="meet_sort_trainee" class="cursor-pointer">Обучающийся<i class="<?php echo $meet_sort_trainee_ico; ?>"></i></b></div>
     <div class="col-2 text_blue"><b id="meet_sort_servingone" class="cursor-pointer">Служащий<i class="<?php echo $meet_sort_s_one_ico; ?>"></i></b></div>
     <div class="col-4"><b>Комментарий</b></div>
@@ -132,7 +132,7 @@ if (isset($_COOKIE['meet_flt_trainee']) && !empty($_COOKIE['meet_flt_trainee']))
     echo "data-comment='{$value['comment_train']}' data-cancel='{$value['cancel']}'>";
     echo "<div class='col-1'>{$date} {$day_of_week}</div>";
     echo "<div class='col-2' style='max-width: 120px;'>{$value['time']}–{$time_to}</div>";
-    echo "<div class='col-1'>{$value['duration']}</div>";
+    echo "<div class='col-1 text-right'>{$value['duration']}</div>";
     echo "<div class='col-3 text-secondary' style='display: none;'>коммент.</div>";
     echo "<div class='col-2'><div>{$trainee_list[$value['trainee']]}</div><div class='grey_text'>{$serving_ones_list[$trainee_list_list[$value['trainee']]['serving_one']]}</div></div>";
     echo "<div class='col-2 {$hide}'>{$serving_ones_list[$value['serving_one']]}</div>";

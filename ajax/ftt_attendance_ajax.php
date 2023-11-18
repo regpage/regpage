@@ -258,18 +258,18 @@ if (isset($_GET['type']) && $_GET['type'] === 'set_pic') {
         move_uploaded_file($value['tmp_name'], $target_file);
         $file = 'ajax/' . $target_file;
 
-        //compress
+        //compress от 1 до 100, 1 = высокая степень сжатия, 100 = низкая степень сжатия.
         $allowedfileExtensions = array('jpg', 'jpeg', 'gif', 'png', 'webp', 'bmp');
         if (in_array($fileExtension, $allowedfileExtensions)) {
           $imagick = new Imagick(__DIR__ . '/' . $target_file);
           $data = $imagick->identifyImage();
           if ($data['mimetype'] === 'image/jpeg' && $imagick->getImageLength() > 500000 && $imagick->getImageLength() < 2000000){
             $imagick->setCompression(Imagick::COMPRESSION_JPEG);
-            $imagick->setImageCompressionQuality(60);
+            $imagick->setImageCompressionQuality(40);
             $imagick->writeImage(__DIR__ . '/' . $target_file);
           } elseif ($data['mimetype'] === 'image/jpeg' && $imagick->getImageLength() >= 2000000 && $imagick->getImageLength() <= 5000000){
             $imagick->setCompression(Imagick::COMPRESSION_JPEG);
-            $imagick->setImageCompressionQuality(60);
+            $imagick->setImageCompressionQuality(40);
             $imagick->writeImage(__DIR__ . '/' . $target_file);
           } elseif ($data['mimetype'] === 'image/jpeg' && $imagick->getImageLength() > 5000000) {
             $imagick->setCompression(Imagick::COMPRESSION_JPEG);

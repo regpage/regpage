@@ -137,7 +137,11 @@ if (count($correction_data) > 0 ) {
           'comment' => $correction_data[$iii]['comment'],
           'color' => 1
         ];
-        $correction_data[$iii]['time']  = '';
+        $correction_data[$iii]['time']  = '';        
+        // отменяем мероприятие.
+        if ($value['id'] === $correction_data[$iii]['cancel_id']) {
+          $loop_schedule[$key][$day] = '';
+        }
       }
     }
   }

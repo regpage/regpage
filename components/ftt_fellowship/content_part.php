@@ -38,7 +38,7 @@ if (isset($_COOKIE['meet_sorting'])) {
   <div class="row row_meet mb-1">
     <div class="col-2 pl-1 text_blue"><b id="meet_sort_date" class="cursor-pointer">Дата<i class="<?php echo $meet_sort_date_ico; ?>"></i></b></div>
     <div class="col-2"><b>Время</b></div>
-    <div class="col-2"><b>Продолж</b></div>
+    <div class="col-2 text-right"><b>Продолж</b></div>
     <div class="col-3 text_blue"><b id="meet_sort_servingone" class="cursor-pointer">Служащий<i class="<?php echo $meet_sort_s_one_ico; ?>"></i></b></div>
     <div class="col-3"><b>Комментарий</b></div>
   </div>
@@ -57,7 +57,7 @@ if (isset($_COOKIE['meet_sorting'])) {
     echo "data-duration='{$value['duration']}' data-trainee='{$value['trainee']}' data-serving_one='{$value['serving_one']}' data-time='{$value['time']}' data-date='{$value['date']}' data-comment='{$value['comment_train']}' data-cancel='{$value['cancel']}'>";
     echo "<div class='col-2 pl-1'>{$date} {$day_of_week}</div>";;
     echo "<div class='col-2'>{$value['time']}–{$time_to}</div>";
-    echo "<div class='col-2'>{$value['duration']}</div>";
+    echo "<div class='col-2 text-right'>{$value['duration']}</div>";
     echo "<div class='col-3 text-secondary' style='display: none;'>коммент.</div>";
     echo "<div class='col-3'>{$serving_ones_list[$value['serving_one']]}</div>";
     echo "<div class='col-3'>{$comment_short}</div>";
