@@ -203,5 +203,19 @@ $(document).ready(function(){
     setCookie('panel_tab_active') === "";
   }
 
+  // auth link
+  $(".auth_link").click(function () {
+    fetch("panelsource/panelAjax.php?type=auth_link&member_key=" + $(this).attr("data-member_key"))
+    .then(response => response.text())
+    .then(result => {
+      if (result === "OK") {
+        location.reload();
+      } else {
+        showError("Неудача.");
+      }
+    });
+  });
+
+
 // ready page stop here
 });

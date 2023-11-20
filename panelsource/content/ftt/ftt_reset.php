@@ -1,3 +1,4 @@
+<?php include_once 'db/classes/ftt_lists.php'; ?>
 <div class="container">
   <!-- Таблицы с данными ПВОМ -->
   <div class="row">
@@ -71,4 +72,6 @@
       <button id="showModalUniversalConfirmApplication" type="button" class="btn btn-danger btn-sm" name="button" data-toggle="modal" data-target="#modalUniversalConfirm">Удалить заявления</button>
     </div>
   </div>
+  <!-- auth -->
+  <?php include_once 'panelsource/content/ftt/auth.php'; ?>
 </div>

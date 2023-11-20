@@ -255,7 +255,7 @@ function resetSemester(){
   return $result;
 }
 
-function resetApplications(){
+function resetApplications() {
 // не удаляет фотографии с диска
   $tables = array('ftt_request');
   $result;
@@ -267,7 +267,7 @@ function resetApplications(){
   return $result;
 }
 
-function checkDataSemester(){
+function checkDataSemester() {
     $tables = array('ftt_announcement', 'ftt_announcement_recipients', 'ftt_attendance', 	'ftt_attendance_sheet', 'ftt_extra_help', 'ftt_gospel', 'ftt_gospel_members', 'ftt_gospel_goals', 'ftt_late', 'ftt_permission', 'ftt_permission_sheet', 'ftt_session', 'ftt_session_correction', 'ftt_trainee', 'ftt_skip', 'ftt_fellowship');
     $result = array();
     foreach ($tables as $key => $value) {
@@ -277,7 +277,7 @@ function checkDataSemester(){
     return $result;
 }
 
-function checkOtherDataSemester(){
+function checkOtherDataSemester() {
     $tables = array('ftt_serving_one', 'ftt_apartment', 'ftt_service', 'ftt_param', 'ftt_study_group', 'ftt_gospel_team');
     $result = array();
     foreach ($tables as $key => $value) {

@@ -2,6 +2,7 @@
 include_once "../ajax/ajax.php";
 include_once "panelDB.php";
 include_once '../logWriter.php';
+include_once '../db/classes/auth/auth.php';
 include_once '../extensions/write_to_log/write_to_log.php';
 
 $adminId = db_getMemberIdBySessionId (session_id());
@@ -43,6 +44,9 @@ else if(isset($_GET['set_practices_pvom'])){
   exit();
 } elseif (isset($_GET['type']) && $_GET['type'] === 'reset_applications') {
   echo resetApplications();
+  exit();
+} elseif (isset($_GET['type']) && $_GET['type'] === 'auth_link') {
+  echo Auth::by_link($_GET['member_key']);
   exit();
 }
 
