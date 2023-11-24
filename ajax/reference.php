@@ -1,6 +1,6 @@
 <?php
 include_once "ajax.php";
-
+include_once "../db/regpage/reference_db.php";
 $adminId = db_getMemberIdBySessionId (session_id());
 if (!$adminId)
 {
@@ -23,7 +23,7 @@ else if(isset($_GET['delete'])){
 }
 else if(isset($_GET['set_field'])){
     db_setReferenceFieldValue($_POST['field'], $_POST['value'], $_POST['id']);
-    
+
     echo json_encode(["res"=>"ok"]);
     exit();
 }

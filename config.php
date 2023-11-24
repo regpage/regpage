@@ -22,9 +22,9 @@
         $gl_db_name = 'regpager_dev';
         $appRootPath = 'https://dev.reg-page.ru/';
       } elseif (substr($host, 0,3) === 'new') {
-        $gl_db_name = 'ch59248_regpage';
-        $gl_db_user = 'ch59248_regpage';
-        $gl_db_pass = 'dCKY46xu';
+        $gl_db_name = 'p518584_regpage';
+        $gl_db_user = 'p518584_dev';
+        $gl_db_pass = 'Qg8LAt3yS4';
         $appRootPath = 'https://new-constellation.ru/';
       } elseif (substr($host, 0,3) !== 'reg') {
         $gl_db_name = 'ch59248_regpage';

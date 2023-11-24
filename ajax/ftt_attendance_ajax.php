@@ -264,16 +264,52 @@ if (isset($_GET['type']) && $_GET['type'] === 'set_pic') {
           $imagick = new Imagick(__DIR__ . '/' . $target_file);
           $data = $imagick->identifyImage();
           if ($data['mimetype'] === 'image/jpeg' && $imagick->getImageLength() > 500000 && $imagick->getImageLength() < 2000000){
+            // ПОНИЖАЕМ КАЧЕСТВО
             $imagick->setCompression(Imagick::COMPRESSION_JPEG);
             $imagick->setImageCompressionQuality(40);
+            // ИЗМЕНЯЕМ РАЗМЕР В МЕНЬШУЮ СТОРОНУ
+            $cropWidth = $imagick->getImageWidth();
+            $cropHeight = $imagick->getImageHeight();
+            if ($cropHeight < $cropWidth && $cropWidth > 2500) {
+              $imagick->scaleimage(2500, 0);
+            } elseif ($cropWidth < $cropHeight && $cropHeight > 2500) {
+              $imagick->scaleimage(0, 2500);
+            }
+            // записываем файл
             $imagick->writeImage(__DIR__ . '/' . $target_file);
           } elseif ($data['mimetype'] === 'image/jpeg' && $imagick->getImageLength() >= 2000000 && $imagick->getImageLength() <= 5000000){
+            // ПОНИЖАЕМ КАЧЕСТВО
             $imagick->setCompression(Imagick::COMPRESSION_JPEG);
             $imagick->setImageCompressionQuality(40);
+            // ИЗМЕНЯЕМ РАЗМЕР В МЕНЬШУЮ СТОРОНУ
+            $cropWidth = $imagick->getImageWidth();
+            $cropHeight = $imagick->getImageHeight();
+            if ($cropHeight < $cropWidth && $cropWidth > 2500) {
+              $imagick->scaleimage(2500, 0);
+            } elseif ($cropWidth < $cropHeight && $cropHeight > 2500) {
+              $imagick->scaleimage(0, 2500);
+            }
+            // записываем файл
             $imagick->writeImage(__DIR__ . '/' . $target_file);
           } elseif ($data['mimetype'] === 'image/jpeg' && $imagick->getImageLength() > 5000000) {
+            // ПОНИЖАЕМ КАЧЕСТВО
             $imagick->setCompression(Imagick::COMPRESSION_JPEG);
             $imagick->setImageCompressionQuality(40);
+            // ИЗМЕНЯЕМ РАЗМЕР В МЕНЬШУЮ СТОРОНУ
+            $cropWidth = $imagick->getImageWidth();
+            $cropHeight = $imagick->getImageHeight();
+            if ($cropHeight < $cropWidth && $cropWidth > 2500) {
+              $imagick->scaleimage(2500, 0);
+            } elseif ($cropWidth < $cropHeight && $cropHeight > 2500) {
+              $imagick->scaleimage(0, 2500);
+            }
+            // записываем файл
+            $imagick->writeImage(__DIR__ . '/' . $target_file);
+          } elseif ($data['mimetype'] === 'image/jpeg' && $imagick->getImageLength() <= 500000) {
+            // ПОНИЖАЕМ КАЧЕСТВО
+            $imagick->setCompression(Imagick::COMPRESSION_JPEG);
+            $imagick->setImageCompressionQuality(60);
+            // записываем файл
             $imagick->writeImage(__DIR__ . '/' . $target_file);
           }
         }

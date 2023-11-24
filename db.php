@@ -643,7 +643,7 @@ function db_registerMembers ($adminId, $eventId, $memberIds)
         $row=$res->fetch_array();
 
         if (!$row['regstate_key'] || $row['regstate_key'] =='05' || $row['regstate_key'] =='03'){
-          // OR (e.min_age > 0) AND (e.min_age >= CONVERT((YEAR(e.end_date) - YEAR(m.birth_date)), CHAR))        
+          // OR (e.min_age > 0) AND (e.min_age >= CONVERT((YEAR(e.end_date) - YEAR(m.birth_date)), CHAR))
             $rs=db_query ("SELECT m.name FROM reg r
                        INNER JOIN member m ON r.member_key=m.key
                        INNER JOIN event e ON r.event_key=e.key
@@ -3526,17 +3526,18 @@ function db_getEventMemberInvited($eventId, $memberId){
     return NULL;
 }
 
+// BEGIN References
 function db_getReferences($sortField, $sortType){
     global $db;
     $_sortField = $db->real_escape_string($sortField);
-    $_sortType = $db->real_escape_string($sortType);
+    $_sortType = $db->real_escape_string($sortType);    
 
     $res = db_query("SELECT r.name, r.link_article, p.name as page_name,
             r.block_num, r.published, r.id, r.page, b.name as block_name, r.priority
             FROM reference_system r
             INNER JOIN page p ON p.key=r.page
             INNER JOIN reference_block b ON b.id=r.block_num
-            ORDER BY priority desc, $_sortField $_sortType ");
+            ORDER BY $_sortField $_sortType "); // priority desc,
 
     $references = array();
     while($row = $res->fetch_assoc()){
@@ -3547,47 +3548,6 @@ function db_getReferences($sortField, $sortType){
         return $references;
     }
     return null;
-}
-
-function db_addReference($data){
-    global $db;
-
-    $_name = $db->real_escape_string($data['name']);
-    $_page = $db->real_escape_string($data['page']);
-    $_link_article = $db->real_escape_string($data['link_article']);
-    $_block = $db->real_escape_string($data['block']);
-    $_published = $db->real_escape_string($data['published']);
-    $_priority = $db->real_escape_string($data['priority']);
-
-    db_query("INSERT INTO reference_system (name, link_article, page, block_num, published, priority) VALUES ('$_name', '$_link_article', '$_page', '$_block', '$_published', $_priority)");
-}
-
-function db_setReference($data){
-    global $db;
-    $_name = $db->real_escape_string($data['name']);
-    $_page = $db->real_escape_string($data['page']);
-    $_link_article = $db->real_escape_string($data['link_article']);
-    $_block = (int)$data['block'];
-    $_id = (int)$data['id'];
-    $_published = $db->real_escape_string($data['published']);
-    $_priority = $db->real_escape_string($data['priority']);
-
-    db_query("UPDATE reference_system SET name='$_name', link_article = '$_link_article', page = '$_page', block_num = '$_block', published = '$_published', priority='$_priority' WHERE id=$_id");
-}
-
-function db_setReferenceFieldValue($field, $value, $id){
-    global $db;
-    $_field = $db->real_escape_string($field);
-    $_value = (int)$value;
-    $_id = (int)$id;
-
-    db_query("UPDATE reference_system SET ".$_field." = '$_value' WHERE id=$_id ");
-}
-
-function db_deleteReference($id){
-    $_id = (int)$id;
-
-    db_query("DELETE FROM reference_system WHERE id=$_id ");
 }
 
 function db_getPages(){
@@ -3601,6 +3561,7 @@ function db_getPages(){
     return $pages;
 }
 
+// Не используется? Видино планировался использоваться в справке
 function db_getCustomPages(){
     $res = db_query("SELECT * FROM custom_page");
 
@@ -3611,17 +3572,7 @@ function db_getCustomPages(){
 
     return $pages;
 }
-
-function db_getReferencesBlock(){
-    $res = db_query("SELECT * FROM reference_block");
-
-    $blocks = array();
-    while($row = $res->fetch_assoc()){
-        $blocks [$row['id']] = $row['name'];
-    }
-
-    return $blocks;
-}
+// END References
 
 function db_getEventTemplates($adminId){
     return [];

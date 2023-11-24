@@ -2,4 +2,4 @@
 // modiles
 ?>
 
-<script src="js/modules/cookie.js?v2"></script>
+<script src="js/modules/cookie.js?v3"></script>
