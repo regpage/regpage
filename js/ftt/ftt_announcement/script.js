@@ -294,6 +294,8 @@ $(document).ready(function(){
 
   // Фильтр списка
   function filter_list() {
+    // фильтр Получатели
+    $("#flt_recipients_list").hide();
     let is_archive;
     $("#list_announcement .list_string").each(function () {
       is_archive = false;
@@ -302,9 +304,34 @@ $(document).ready(function(){
       } else if (compare_date($(this).attr("data-archive_date")) && $(this).attr("data-archive_date")) {
         is_archive = true;
       }
+
+      // BEGIN фильтр получателей
+      let by_list;
+      let temp = $(this).find(".recipients_groups_col").text();
+      temp = temp.split(", ");
+      if (temp.indexOf($("#flt_recipients").val()) !== -1 || $("#flt_recipients").val() === "_all_") {
+        if ($("#flt_recipients").val() === "по списку") {
+          if ($(window).width()>=769) {
+            $("#flt_recipients_list").show();
+          }
+          let temp_list = $(this).attr("data-list")
+          temp_list = temp_list.split(",");
+          if (temp_list.indexOf($("#flt_recipients_list").val()) !== -1 || $("#flt_recipients_list").val() === "_all_") {
+            by_list = true;
+          } else {
+            by_list = false;
+          }
+        } else {
+          by_list = true;
+        }
+      } else {
+        by_list = false;
+      }
+      // END фильтр получателей
+
       if (($(this).attr("data-author") === $("#flt_service_ones").val() || $("#flt_service_ones").val() === "_all_")
       && ($(this).attr("data-time_zone") === $("#flt_time_zone").val() || $("#flt_time_zone").val() === "01")
-      && (!is_archive && $("#flt_public").val() === "_all_" || (is_archive && $("#flt_public").val() === "2"))) {
+      && (!is_archive && $("#flt_public").val() === "_all_" || (is_archive && $("#flt_public").val() === "2")) && by_list) {
         $(this).show();
       } else {
         $(this).hide();
@@ -549,11 +576,21 @@ setTimeout(function () {
     }
   });
 
+  // modal filters
+  $("#modal_flt_recipients").change(function () {
+    if ($(this).val() === "по списку") {
+      $("#modal_flt_recipients_list").show();
+    } else {
+      $("#modal_flt_recipients_list").hide();
+    }
+  });
   // modal filters apply
   $("#modal_flt_apply").click(function () {
     $("#flt_service_ones").val($("#modal_flt_service_ones").val());
     $("#flt_time_zone").val($("#modal_flr_time_zones").val());
     $("#flt_public").val($("#modal_flt_public").val());
+    $("#flt_recipients").val($("#modal_flt_recipients").val());
+    $("#flt_recipients_list").val($("#modal_flt_recipients_list").val());
     filter_list();
   });
 
@@ -577,7 +614,7 @@ setTimeout(function () {
     $("#announcement_title").text(data.attr("data-header"));
     $("#announcement_content").html(data.attr("data-content"));
     if (Number($("#announcement_content img").attr("width")) > 350 && $(window).width()<=769) {
-        $("#announcement_content img").attr("width", "350px");    
+        $("#announcement_content img").attr("width", "350px");
     }
     if (!data.attr("data-notice")) {
       fetch("ajax/ftt_announcement_ajax.php?type=noticed_announcement&id=" + data.attr("data-id_announcement"))

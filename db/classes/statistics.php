@@ -1,4 +1,5 @@
 <?php
+include_once 'db/classes/DatesCompare.php';
 /**  Статистики
 * Количество активных допзаданий - statistics::extra_help_count($memberId);
 * Поимённый список активных допзаданий - statistics::extra_help_count($memberId, true);
@@ -159,12 +160,16 @@ class statistics {
   {
     global $db;
     $memberId = $db->real_escape_string($memberId);
-    $result = '';
-    $res = db_query("SELECT COUNT(far.id_announcement) AS total
+    $result = 0;
+    $res = db_query("SELECT far.id_announcement, far.date AS far_date, fa.date, fa.time
     FROM ftt_announcement_recipients AS far
     INNER JOIN ftt_announcement fa ON fa.id = far.id_announcement
-    WHERE far.member_key = '$memberId' AND far.date IS NULL AND fa.date <= DATE(NOW())");
-    while ($row = $res->fetch_assoc()) $result = $row['total'];
+    WHERE far.member_key = '$memberId' AND far.date IS NULL AND fa.date <= DATE(CURDATE())"); // AND fa.time < DATE_FORMAT(NOW(), '%H:%i')
+    while ($row = $res->fetch_assoc()) {
+      if (!DatesCompare::isMoreThanCurrentTime($row['date'].' '.$row['time'])) {
+        $result++;
+      }
+    }
     return $result;
   }
 
@@ -177,7 +182,11 @@ class statistics {
     FROM ftt_announcement_recipients AS far
     INNER JOIN ftt_announcement fa ON fa.id = far.id_announcement
     WHERE far.member_key = '$memberId' AND far.date IS NULL AND fa.date <= DATE(NOW())");
-    while ($row = $res->fetch_assoc()) $result[] = $row;
+    while ($row = $res->fetch_assoc()) {
+      if (!DatesCompare::isMoreThanCurrentTime($row['date'].' '.$row['time'])) {
+        $result[] = $row;
+      }
+    }
     return $result;
   }
 

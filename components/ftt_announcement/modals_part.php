@@ -250,6 +250,20 @@
           <option value="_all_" selected>Текущие</option>
           <option value="2">Архивные</option>
         </select>
+        <select id="modal_flt_recipients" class="form-control form-control-sm mb-2">
+          <option value="_all_">Все</option>
+          <option value="1-4">Семестры 1-4</option>
+          <option value="5-6">Семестры 5-6</option>
+          <option value="координаторы">Координаторы</option>
+          <option value="служащие">Служащие</option>
+          <option value="по списку">Получатель</option>
+        </select>
+        <select id="modal_flt_recipients_list" class="form-control form-control-sm mb-2" style=" display: none;">
+          <option disabled>--- Служащие ---</option>
+          <?php FTT_Select_fields::rendering($serving_ones_list, '_all_', 'Все служащие') ?>
+          <option disabled>--- Обучающиеся ---</option>
+          <?php FTT_Select_fields::rendering($trainee_list) ?>
+        </select>
       </div>
       <div class="modal-footer">
         <button id="modal_flt_apply" class="btn btn-sm btn-primary" data-dismiss="modal" aria-hidden="true">Применить</button>

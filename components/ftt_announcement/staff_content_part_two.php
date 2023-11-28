@@ -31,7 +31,7 @@
       $id = $value['id'];
       $noticed_date = $value['notice'];
       $notice = '';
-
+      $publication = $value['publication'];
       $recipients_groups_text = '';
       if ($value['to_14']) {
         $recipients_groups_text .= '1-4';
@@ -49,11 +49,20 @@
         $recipients_groups_text ? $recipients_groups_text .= ', по списку' : $recipients_groups_text .= 'по списку';
       }
 
+      // активно согласно дате и времени?
+      if ($date !== '0000-00-00' && !empty($date) && $publication > 0) {
+        if (!empty($time)) {
+          $is_active = !DatesCompare::isMoreThanCurrentTime($date.' '.$time);
+        } else {
+          $is_active = !DatesCompare::isMoreThanCurrent($date);
+        }
+      }
+
       $show_string = 'style="display: none"';
-      if (!$value['notice']) {
+      if (!$noticed_date && !($archive_date && $archive_date !== '0000-00-00' && !DatesCompare::isMoreThanCurrent($archive_date)) && $is_active) {
         $notice = 'bg-notice-string';
         $show_string = '';
-      } elseif (!($noticed_date && $archive_date && $archive_date !== '0000-00-00' && !DatesCompare::isMoreThanCurrent($archive_date))) {
+      } elseif (!($noticed_date && $archive_date && $archive_date !== '0000-00-00' && !DatesCompare::isMoreThanCurrent($archive_date)) && $is_active) {
         $show_string = '';
       }
 

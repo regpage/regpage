@@ -4,7 +4,7 @@
 function getAnnouncements($admin_id)
 {
     $result = [];
-    $res = db_query("SELECT `id`, `date`, `time`, `publication`, `header`, `member_key`, `comment`, `to_14`, `to_56`, `to_coordinators`, `to_servingones`, `by_list`, `time_zone`, `archive_date` FROM `ftt_announcement` WHERE 1 ORDER BY `date` DESC");
+    $res = db_query("SELECT `id`, `date`, `time`, `publication`, `header`, `member_key`, `comment`, `to_14`, `to_56`, `to_coordinators`, `to_servingones`, `by_list`, `list`, `time_zone`, `archive_date` FROM `ftt_announcement` WHERE 1 ORDER BY `date` DESC");
     while ($row = $res->fetch_assoc()) $result[] = $row;
     return $result;
 }
