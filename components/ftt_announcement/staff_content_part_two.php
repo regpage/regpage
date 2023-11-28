@@ -65,7 +65,9 @@
       } elseif (!($noticed_date && $archive_date && $archive_date !== '0000-00-00' && !DatesCompare::isMoreThanCurrent($archive_date)) && $is_active) {
         $show_string = '';
       }
-
+      if (!$noticed_date) {
+        $notice = 'bg-notice-string';
+      }
       if (DatesCompare::isMoreThanCurrent($date)) {
 
       } else {

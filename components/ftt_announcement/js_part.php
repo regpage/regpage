@@ -24,5 +24,5 @@ recipients_group["coordinators"] = [];
  ?>
 
 </script>
-<script src="js/ftt/ftt_announcement/script.js?v27"></script>
-<script src="js/ftt/ftt_announcement/design.js?v2"></script>
+<script src="js/ftt/ftt_announcement/script.js?v30"></script>
+<script src="js/ftt/ftt_announcement/design.js?v5"></script>

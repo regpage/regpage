@@ -1,6 +1,7 @@
 //design
 if ($(window).width()<=769) {
   // containers
+  $("#main_container").css("padding-right", "10px");
   $(".list_header").hide();
   $(".list_string div").css("padding-right", "4px");
   $(".list_string div").css("padding-left", "4px");
@@ -47,7 +48,13 @@ if ($(window).width()<=769) {
   $("#announcement_tab_2 .ftt_buttons_bar").css("border-bottom", "1px solid lightgray");
   $("#flt_read").css("width", "150px");
   $("#announcement_tab_2 .list_string div:first-child").next().next().next().hide();
-  //$("#announcement_tab_2 .list_string div:first-child").next().removeClass("col-6").addClass("col-6");
+  $("#announcement_tab_2 .list_string div:first-child").next().next().addClass("text-break");
+  $("#announcement_tab_2 .list_string div:first-child").next().each(function () {
+    let short_header = $(this).text();
+    if (short_header.length > 28) {
+      $(this).text(short_header.substr(0,22) + '...');
+    }
+  });
   $("#announcement_tab_2").addClass("pl-0");
   $("#announcement_tab_2").parent().parent().addClass("pr-0");
   $(".list_string").addClass("mr-0");

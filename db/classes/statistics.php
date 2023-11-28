@@ -181,7 +181,7 @@ class statistics {
     $res = db_query("SELECT far.id_announcement, far.date AS far_date, far.member_key AS far_member_key, fa.*
     FROM ftt_announcement_recipients AS far
     INNER JOIN ftt_announcement fa ON fa.id = far.id_announcement
-    WHERE far.member_key = '$memberId' AND far.date IS NULL AND fa.date <= DATE(NOW())");
+    WHERE far.member_key = '$memberId' AND far.date IS NULL AND fa.date <= DATE(CURDATE())");
     while ($row = $res->fetch_assoc()) {
       if (!DatesCompare::isMoreThanCurrentTime($row['date'].' '.$row['time'])) {
         $result[] = $row;

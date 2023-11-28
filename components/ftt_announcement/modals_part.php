@@ -149,10 +149,10 @@
               <option value="1">Братья</option>
               <option value="0">Сёстры</option>
             </select>
-            <select id="modal_flt_apartment" class="form-control form-control-sm mb-2 mr-2">
+            <select id="modal_flt_apartment" class="form-control form-control-sm mb-2 mr-2" multiple>
               <?php FTT_Select_fields::rendering(FttExtraLists::getApartments(), '_all_', 'Все квартиры'); ?>
             </select>
-            <select id="modal_flt_semester" class="form-control form-control-sm mb-2 mr-2">
+            <select id="modal_flt_semester" class="form-control form-control-sm mb-2 mr-2" multiple>
               <option value="_all_">Все семестры</option>
               <option value="1">1</option>
               <option value="2">2</option>

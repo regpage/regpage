@@ -191,22 +191,36 @@ $(document).ready(function(){
     }
 
     // comment
-    let comment = "", extra_comment = "";
+    let comment = "", extra_comment = "", flt_apartment = "", flt_semester = "";
     if ($("#modal_flt_male").val() !== "_all_") {
       extra_comment = $("#modal_flt_male option:selected").text();
     }
     if ($("#modal_flt_apartment").val() !== "_all_") {
+      $("#modal_flt_apartment option:selected").each(function () {
+        if (flt_apartment) {
+          flt_apartment += ", " + $(this).text();
+        } else {
+          flt_apartment += $(this).text();
+        }
+      });
       if (extra_comment) {
-        extra_comment = extra_comment + ", " + $("#modal_flt_apartment option:selected").text();
+        extra_comment = extra_comment + ", " + flt_apartment;
       } else {
-        extra_comment = $("#modal_flt_apartment option:selected").text();
+        extra_comment = flt_apartment;
       }
     }
     if ($("#modal_flt_semester").val() !== "_all_") {
+      $("#modal_flt_semester option:selected").each(function () {
+        if (flt_semester) {
+          flt_semester += ", " + $(this).text();
+        } else {
+          flt_semester += "семестры: " + $(this).text();
+        }
+      });
       if (extra_comment) {
-        extra_comment = extra_comment + ", " + $("#modal_flt_semester option:selected").text();
+        extra_comment = extra_comment + ", " + flt_semester;
       } else {
-        extra_comment = $("#modal_flt_semester option:selected").text();
+        extra_comment = flt_semester;
       }
     }
     if (extra_comment) {
@@ -341,7 +355,9 @@ $(document).ready(function(){
 
   function filter_extra_groups() {
     $("#modal_list_select_all").prop("checked", false);
-    if ($("#modal_flt_male").val() === "_all_" && $("#modal_flt_apartment").val() === "_all_" && $("#modal_flt_semester").val() === "_all_") {
+    let flt_apartment = $("#modal_flt_apartment").val();
+    let flt_semester = $("#modal_flt_semester").val();
+    if ($("#modal_flt_male").val() === "_all_" && flt_apartment.indexOf("_all_") !== -1 && flt_semester.indexOf("_all_") !== -1) {
       $("#modal_list_select_all").parent().hide();
     } else {
       $("#modal_list_select_all").parent().show();
@@ -349,8 +365,8 @@ $(document).ready(function(){
 
     $("#modal_extra_groups input").each(function () {
       if ($(this).attr("id") !== "modal_list_select_all") {
-        if (($("#modal_flt_semester").val() === "_all_" || $(this).attr("data-semester") === $("#modal_flt_semester").val())
-        && ($("#modal_flt_apartment").val() === "_all_" || $(this).attr("data-apartment") === $("#modal_flt_apartment").val())
+        if ((flt_semester.indexOf("_all_") !== -1 || flt_semester.indexOf($(this).attr("data-semester")) !== -1)
+        && (flt_apartment.indexOf("_all_") !== -1 || flt_apartment.indexOf($(this).attr("data-apartment")) !== -1)
         && ($("#modal_flt_male").val() === "_all_" || $(this).attr("data-male") === $("#modal_flt_male").val())) {
           $(this).parent().show();
         } else {
