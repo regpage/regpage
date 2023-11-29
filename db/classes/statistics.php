@@ -1,5 +1,10 @@
 <?php
-include_once 'db/classes/DatesCompare.php';
+if (isset($GLOBALS['global_root_path'])) {
+  include_once $GLOBALS['global_root_path'].'db/classes/DatesCompare.php';
+} else {
+  include_once __DIR__.'/../classes/DatesCompare.php';
+}
+
 /**  Статистики
 * Количество активных допзаданий - statistics::extra_help_count($memberId);
 * Поимённый список активных допзаданий - statistics::extra_help_count($memberId, true);

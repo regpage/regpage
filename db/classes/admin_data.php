@@ -1,5 +1,9 @@
 <?php
-include_once 'db/classes/short_name.php';
+if (isset($GLOBALS['global_root_path'])) {
+  include_once $GLOBALS['global_root_path'].'db/classes/short_name.php';
+} else {
+  include_once __DIR__.'/../classes/short_name.php';
+}
 /**
  * It's admin's current data
  * $curent_admin_data = new Admin_data;

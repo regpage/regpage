@@ -18,6 +18,7 @@ if (ftt_info::pause()) {
 include_once 'extensions/write_to_log/write_to_log.php';
 
 // classes
+include_once 'db/classes/DatesCompare.php';
 require_once 'db/classes/statistics.php';
 require_once 'db/classes/emailing.php';
 require_once 'db/classes/ftt_lists.php';
