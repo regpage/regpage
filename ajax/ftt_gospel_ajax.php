@@ -43,7 +43,7 @@ if (isset($_GET['type']) && $_GET['type'] === 'set_ftt_param') {
 
 // set gospel goals
 if (isset($_GET['type']) && $_GET['type'] === 'set_ftt_gospel_goals') {
-  echo json_encode(["result"=>set_ftt_gospel_goals($_GET['gospel_team'], $_GET['gospel_group'], $_GET['column'], $_GET['value'])]);
+  echo json_encode(["result"=>set_ftt_gospel_goals($_GET['gospel_team'], $_GET['gospel_group'], $_GET['flyers'], $_GET['people'], $_GET['prayers'], $_GET['baptism'], $_GET['fruit'])]);
   exit();
 }
 

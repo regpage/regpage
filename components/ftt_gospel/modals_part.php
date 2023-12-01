@@ -588,6 +588,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
         </div>
       </div>
       <div class="modal-footer" style="">
+        <button id="mdl_btn_goals_save" class="btn btn-sm btn-success" aria-hidden="true">Сохранить</button>
         <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Закрыть</button>
       </div>
     </div>

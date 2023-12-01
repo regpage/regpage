@@ -134,18 +134,21 @@ function get_group_gospel_goals($team, $group) {
 }
 
 // set gospel goals
-function set_ftt_gospel_goals($team, $group, $column, $value){
+function set_ftt_gospel_goals($team, $group, $flyers, $people, $prayers, $baptism, $fruit){
   global $db;
   $team = $db->real_escape_string($team);
   $group = $db->real_escape_string($group);
-  $column = $db->real_escape_string($column);
-  $value = $db->real_escape_string($value);
+  $flyers = $db->real_escape_string($flyers);
+  $people = $db->real_escape_string($people);
+  $prayers = $db->real_escape_string($prayers);
+  $baptism = $db->real_escape_string($baptism);
+  $fruit = $db->real_escape_string($fruit);
   $result = [];
   $res=db_query("SELECT * FROM `ftt_gospel_goals` WHERE `gospel_team`='$team' AND `gospel_group`='$group'");
   while ($row = $res->fetch_assoc()) $result[] = $row;
 
   if (count($result) > 0) {
-    $res2=db_query("UPDATE `ftt_gospel_goals` SET `$column`='$value' WHERE `gospel_team`='$team' AND `gospel_group`='$group'");
+    $res2=db_query("UPDATE `ftt_gospel_goals` SET `flyers`='$flyers', `people`='$people', `prayers`='$prayers', `baptism`='$baptism', `fruit`='$fruit' WHERE `gospel_team`='$team' AND `gospel_group`='$group'");
   } else {
     $members = '';
     $res3=db_query("SELECT * FROM `ftt_trainee` WHERE `gospel_team`='$team' AND `gospel_group`='$group'");
@@ -156,7 +159,8 @@ function set_ftt_gospel_goals($team, $group, $column, $value){
         $members .= $row['member_key'];
       }
     }
-    $res2=db_query("INSERT INTO `ftt_gospel_goals` (`$column`, `gospel_team`, `gospel_group`, `group_members`) VALUES ('$value', '$team', '$group', '$members')");
+    $res2=db_query("INSERT INTO `ftt_gospel_goals` (`gospel_team`, `gospel_group`, `group_members`, `flyers`, `people`, `prayers`, `baptism`, `fruit`)
+      VALUES ('$team', '$group', '$members', '$flyers', '$people', '$prayers', '$baptism', '$fruit')");
   }
 
   return $res2;

@@ -1497,13 +1497,15 @@ $(".sort_col").click(function (e) {
   }, 30);
 });
 
+/*
 $(".recom_goal").change(function () { //(!trainee_access || ftt_access_trainee) &&
   if (($("#team_goal_select").val() !== "_all_" && $("#group_goal_select").val() !== "_all_")) {
     fetch("ajax/ftt_gospel_ajax.php?type=set_ftt_gospel_goals&gospel_team="+$("#team_goal_select").val()+"&gospel_group="+$("#group_goal_select").val()+"&column="+$(this).attr("data-field")+"&value="+$(this).val())
     .then(response => response.json())
-    .then(/*commits => console.log(commits.result)*/);
+    .then(commits => console.log(commits.result));
   }
 });
+*/
 
 if (trainee_access) {
   $("#team_goal_select").prop("disabled", true);
@@ -1590,6 +1592,23 @@ $("#group_goal_select").change(function () {
         $("#semester_baptism").val(baptism);
         $("#semester_fruit").val(fruit);
       });
+  }
+});
+
+$("#mdl_btn_goals_save").click(function () {
+  if (($("#team_goal_select").val() !== "_all_" && $("#group_goal_select").val() !== "_all_")) {
+    fetch("ajax/ftt_gospel_ajax.php?type=set_ftt_gospel_goals&gospel_team=" + $("#team_goal_select").val() + "&gospel_group=" +$("#group_goal_select").val()
+    + "&flyers=" + $("#semester_flyers").val()
+    + "&people=" + $("#semester_people").val()
+    + "&prayers=" + $("#semester_prayers").val()
+    + "&baptism=" + $("#semester_baptism").val()
+    + "&fruit=" + $("#semester_fruit").val())
+    .then(response => response.json())
+    .then(commits => {
+      $("#modalRecommended").modal("hide");      
+    });
+  } else {
+    showError("Выберите команду и группу.");
   }
 });
 
