@@ -1400,7 +1400,7 @@ function open_blank(el_this) {
       // построчное вкл/выкл мероприятий в бланке
       $("#modal-block_staff_body .session_staff_str").change(function () {
         if ($("#modalAddEdit").attr("data-status") === 1) {
-          showError("Этот лист посещаемости отправлен. Радактирование невозможено.");
+          showError("Этот лист посещаемости отправлен. Радактирование невозможно.");
           return;
         }
         let session_staff_str_test = {};

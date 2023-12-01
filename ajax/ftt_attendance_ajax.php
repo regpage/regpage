@@ -4,7 +4,6 @@ include_once "ajax.php";
 // подключаем запросы
 include_once "../db/ftt/ftt_attendance_db.php";
 include_once "../db/ftt/ftt_attendance_skip_db.php";
-include_once "../db/ftt/ftt_attendance_meet_db.php";
 include_once "../db/classes/schedule_class.php";
 include_once "../db/classes/db_operations.php";
 include_once '../db/classes/date_convert.php';
