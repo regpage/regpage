@@ -514,7 +514,7 @@ else if (isset ($_SESSION["logged-in"])){
                 }
             }
         ?>
-        <div style="margin-top:10px; margin-left:10px; "><a id="frameArchive">Показать архив мероприятий</a></div>
+        <div style="margin-top:10px;"><a id="frameArchive" style="margin-left:10px;">Показать архив мероприятий</a></div>
         <?php endif; ?>
     </div>
 

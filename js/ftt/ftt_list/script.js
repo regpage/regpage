@@ -40,8 +40,10 @@ $(document).ready(function(){
   $("#search_field").keyup(function(e) {
     if ($("#tab_trainee").hasClass("active")) {
       filter_trainee();
-    } else {
+    } else if ($("#tab_service_one").hasClass("active")) {
       filter_staff();
+    } else if ($("#tab_auth").hasClass("active")) {
+      filter_auth();
     }
   });
 
@@ -82,6 +84,31 @@ $(document).ready(function(){
       }
     });
   }
+// фильтр для раздел аутификаци, раздел сейчас не используется
+  function filter_auth () {
+    // Search
+    let search = $("#search_field").val();
+    let string;
+    let search_result = true;
+
+    // Filter
+    $("#list_content_auth .col-fio").each(function() {
+      string = $(this).text();
+      string = string.toLowerCase();
+      if (search.length >= 3) {
+        search_result = string.indexOf(search.toLowerCase()) !== -1;
+      }
+      // Filter
+      if (search_result) {
+        $(this).show();
+        $(this).next().show();
+      } else {
+        $(this).hide();
+        $(this).next().hide();
+      }
+    });
+  }
+
   $("#time_zones_staff, #localities_staff").change(function(e) {
     filter_staff();
   });
@@ -94,7 +121,17 @@ $(document).ready(function(){
     $("#search_field").val("");
     filter_trainee();
     filter_staff();
+    setCookie("tab_selected", $("#change_tab option:selected").val());
+    $("#tab_content .tab-pane").removeClass("active");
+    $("#"+$(this).val()).addClass("active");
+    clear_blank();
   });
+  /*$("#change_tab").change(function (e) {
+    if ($(".js-cd-panel-main").hasClass("cd-panel--is-visible")) {
+      $(".js-cd-panel-main").removeClass("cd-panel--is-visible");
+      $("#tab_content .active_str").removeClass("active_str");
+    }
+  });*/
 
   // Sorting
   $(".sorting, .sorting_staff").click( function(e) {
@@ -121,17 +158,6 @@ $(document).ready(function(){
     setTimeout(function () {
      location.reload();
     }, 30);
-  });
-
-  $("#change_tab").change(function (e) {
-    if ($(".js-cd-panel-main").hasClass("cd-panel--is-visible")) {
-      $(".js-cd-panel-main").removeClass("cd-panel--is-visible");
-      clear_blank();
-      $("#tab_content .active_str").removeClass("active_str");
-    }
-    setCookie("tab_selected", $("#change_tab option:selected").val());
-    $("#tab_content .tab-pane").removeClass("active");
-    $("#"+$(this).val()).addClass("active");
   });
 
   // BLANK
@@ -351,5 +377,32 @@ $(document).ready(function(){
     }
   });
 
+  // auth link раздел не используется
+  /*
+  $(".auth_link").click(function () {
+    fetch("ajax/ftt_list_ajax.php?type=auth_link&member_key=" + $(this).attr("data-member_key"))
+    .then(response => response.text())
+    .then(result => {
+      if (result === "OK") {
+        location.href = "index";
+      } else {
+        showError("Неудача.");
+      }
+    });
+  });
+  */
+  $(".trainee_auth_link").click(function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    fetch("ajax/ftt_list_ajax.php?type=auth_link&member_key=" + $(this).parent().parent().attr("data-member_key"))
+    .then(response => response.text())
+    .then(result => {
+      if (result === "OK") {
+        location.href = "index";
+      } else {
+        showError("Неудача.");
+      }
+    });
+  });
 // DOCUMENT READY STOP
 });

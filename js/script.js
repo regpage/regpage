@@ -740,7 +740,7 @@ function handleAditionalMenu(){
                 }
             });
         }
-    });
+    });    
 });
 // STOP READY
 function handleBirthDateAndCategoryFields(){

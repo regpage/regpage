@@ -12,6 +12,7 @@
     <select id="change_tab" class="col-2 form-control form-control-sm select_bold mr-2" style="max-width: 189px;">
       <option value="tab_trainee" <?php if ($tab_active === 'tab_trainee') echo 'selected'; ?>>Обучающиеся</option>
       <option value="tab_service_one" <?php if ($tab_active === 'tab_service_one') echo 'selected'; ?>>Служащие</option>
+    <!--   <option value="tab_auth" <?php if ($tab_active === 'tab_auth') echo 'selected'; ?>>Авторизация</option> -->
     </select>
     <input id="search_field" class="w-50 form-control form-control-sm" type="text" placeholder="Поиск по фамилии">
     <i class="fa fa-remove clear-search"></i>
@@ -157,6 +158,7 @@
           <div class='col-3'><span class='m_email'>{$email}</span></div>
           <div class='col-1' style='min-width: 105px;'><span class='m_age'>{$age}</span></div>
           <div class='col-1' style='max-width: 40px;'>{$change_pencil}</div>
+          <div class='col-1' style='max-width: 40px;'><i class='fa fa-sign-in h6 trainee_auth_link' aria-hidden='true'></i></div>
           </div>";
           //<div class='col-1' style='max-width: 50px;'><input type='checkbox' class='attend_chbox' data-field='attend_meeting' {$attend_checked} ></div>
         endforeach; ?>
@@ -164,5 +166,8 @@
     </div>
     <div id="tab_service_one" class="container tab-pane <?php if ($tab_active === 'tab_service_one') echo 'active'; ?>">
         <?php include 'components/ftt_list/staff_content_tab.php'; ?>
+    </div>
+    <div id="tab_auth" class="container tab-pane <?php if ($tab_active === 'tab_auth') echo 'active'; ?>">
+        <?php // include 'components/ftt_list/auth_content_tab.php'; ?>
     </div>
   </div>

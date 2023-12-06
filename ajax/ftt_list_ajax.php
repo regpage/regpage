@@ -5,6 +5,7 @@ include_once "ajax.php";
 include_once "../db/classes/db_operations.php";
 include_once "../db/classes/member.php";
 include_once '../db/ftt/ftt_list_db.php';
+include_once '../db/classes/auth/auth.php';
 // Подключаем ведение лога
 //include_once "../extensions/write_to_log/write_to_log.php";
 
@@ -50,4 +51,8 @@ if (isset($_GET['type']) && $_GET['type'] === 'change_field') {
   exit();
 }
 
+if (isset($_GET['type']) && $_GET['type'] === 'auth_link') {
+  echo Auth::by_link($_GET['member_key']);
+  exit();
+}
 ?>

@@ -34,6 +34,8 @@ if ($(window).width()<=769) {
   $(".list_string .col-3").removeClass("col-3").addClass("col-8");
   //$(".list_string .col-2").first().removeClass("col-2").addClass("col-6");
   $(".list_string .col-1").hide();
+  $(".list_string .trainee_auth_link").parent().addClass("pl-1").show();
+  $(".list_string .trainee_auth_link").removeClass("h6").addClass("h5");
   $(".list_string .m_email").hide();
   $(".list_string .m_cell_phone").hide();
 

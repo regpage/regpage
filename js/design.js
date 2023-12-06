@@ -491,10 +491,11 @@ if ($(window).width()<=769) {
   $("#main_container select").css("font-size", "16px");
 
 	$('#ftt_navs .nav-item').each(function () {
-		$(this).css("width", $(this).width() + 4);		
+		$(this).css("width", $(this).width() + 4);
 	});
 	//$('#main_container .tab-content select').css('font-size', '17px');
 } else {
+	footer_btm(62);
 	/*console.log($(window).height());
 	console.log($("#main_container").height());
 	if (($("#main_container").height() + 117+91)< $(window).height()) {

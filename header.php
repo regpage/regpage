@@ -48,6 +48,7 @@ include_once "preheader.php";
     <script src="js/bootstrap-datepicker.min.js" type="text/javascript"></script>
     <script src="js/bootstrap-datepicker.ru.js" type="text/javascript"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="js/modules/footer_btm.js?v2"></script>
 
     <?php if ($_SERVER['PHP_SELF'] === '/index.php' || $_SERVER['PHP_SELF'] === '/members.php' || $_SERVER['PHP_SELF'] === '/reg.php' || $_SERVER['PHP_SELF'] === '/meetings.php' || $_SERVER['PHP_SELF'] === '/profile.php' || $_SERVER['PHP_SELF'] === '/youth.php') { ?>
   <!--  <link rel="stylesheet" href="https://cdn.envybox.io/widget/cbk.css">

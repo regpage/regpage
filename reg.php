@@ -1508,7 +1508,8 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
 
         $("#eventTab-"+eventId+" table.reg-list tbody").html (tableRows.join(''));
         $("#phoneRegList-"+eventId+" tbody").html (phoneRows.join(''));
-
+        // прибить футер
+        footer_btm(62, true);
         var elemList = $("tr[class|='regmem']");
         elemList.unbind('click');
         elemList.click (function (){

@@ -45,9 +45,6 @@ else if(isset($_GET['set_practices_pvom'])){
 } elseif (isset($_GET['type']) && $_GET['type'] === 'reset_applications') {
   echo resetApplications();
   exit();
-} elseif (isset($_GET['type']) && $_GET['type'] === 'auth_link') {
-  echo Auth::by_link($_GET['member_key']);
-  exit();
 }
 
 ?>

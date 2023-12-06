@@ -51,7 +51,7 @@ $(document).ready(function() {
        //<div class='col-1 request-trash'>🗑</div>
      }
      $(list_id).html(list_desk);
-
+     footer_btm(62);
      // открываем строку
      $(".request-string").click(function () {
        let query = "application.php?member_key=" + $(this).attr("data-member_key");

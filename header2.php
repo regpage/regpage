@@ -69,6 +69,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <!--<script src="js/script.js?v182" type="text/javascript"></script>-->
     <script src="js/script2.js?v18" type="text/javascript"></script>
+    <script src="js/modules/footer_btm.js?v2"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <?php if ($_SERVER['PHP_SELF'] === '/index.php' || $_SERVER['PHP_SELF'] === '/members.php') { ?>
 
