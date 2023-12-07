@@ -9,13 +9,11 @@
 // $serving_ones_list_full = ftt_lists::serving_ones_full();
 // $trainee_list_full = ftt_lists::trainee_full();
 
-include_once "header.php";
-include_once "nav.php";
-include_once "db/statisticdb.php";
+include_once "db/regpage/ch_statistic_db.php";
 
 $hasMemberRightToSeePage = db_isAdmin($memberId);
 if(!$hasMemberRightToSeePage){
-    die();
+//    die();
 }
 $localityStatus = db_getLocalitiesStatus();
 $localities = db_getAdminMeetingLocalities($memberId);

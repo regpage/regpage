@@ -13,7 +13,7 @@
                       <?php
                           foreach ($localities as $id => $name) {
                               echo "<option value='$id' ". ($id == $singleLocality || $isSingleCity ? 'selected="selected"' :   '') ." >".htmlspecialchars ($name)."</option>";
-                              }
+                            }
                               ?>
                   </select>
                   <select id="localityStatus" class="col-sm">

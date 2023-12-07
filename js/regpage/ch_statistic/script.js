@@ -4,11 +4,11 @@ $(document).ready(function(){
     $(this).val() !== '_all_' ? adminLocalitiesGlb.push($(this).val()) : '';
   });
 
-  loadDashboard();
+  //loadDashboard();
 
 // START DASHBOARD
     function loadDashboard() {
-      $.get('/ajax/statistic.php?get_statistic', {localities: adminLocalitiesGlb})
+      $.get('/ajax/ch_statistic_ajax.php?get_statistic', {localities: adminLocalitiesGlb})
       .done(function(data){
         if(data.statistic){
           buildList(data.statistic);
@@ -21,22 +21,7 @@ $(document).ready(function(){
       for (var i = 0; i < list.length; i++) {
          var item = list[i];
 
-        dataString = 'data-id="'+item.statistic_card_id+'" data-locality_key="'+item.locality_key+'" data-author="'+item.author+'" data-locality_status="'+item.locality_status_id+'" data-archive="'+item.archive+'" data-comment="'+item.comment+'" data-bptz17="'+item.bptz_younger_17+'" data-bptz1725="'+item.bptz_17_25+'" data-bptzAll="'+item.bptz_count+'" data-attended60="'+item.attended_older_60+'" data-attended17="'+item.attended_younger_17+'" data-attended1725="'+item.attended_17_25+'" data-attended25="'+item.attended_older_25+'" data-attendedAll="'+item.attended_count+'" data-meeting_average="'+item.lt_meeting_average+'" data-completed="'+item.status_completed+'" data-periods="'+item.period_start+' - '+item.period_end+'" data-id_statistic="'+item.id_statistic+'"';
-        tableRows.push('<tr class="row-statistic" style="cursor: pointer; '+(item.status_completed == '1' ? 'background-color: lightgreen' : '')+'" '+dataString+'>'+
-            '<td>'+item.statistic_card_id+'</td>' +
-            '<td>'+item.locality_name+'</td>'+
-            '<td>'+item.status_name+'</td>'+
-            '<td class="bptz_half_year">'+item.bptz_count+'</td>'+
-            '<td class="attended_count">'+item.attended_count+'</td>'+
-            '<td class="lt_meeting_average">'+item.lt_meeting_average+'</td>'+
-            '<td style="text-align: center;">'+(item.status_completed == '1' ? '<i class="fa fa-check" aria-hidden="true"></i>' : '')+'</td></tr>'
-        );
-
-        phoneRows.push('<tr class="row-statistic" '+(item.status_completed == '1' ? 'style="background-color: lightgreen"' : '')+' '+dataString+'>'+
-          '<td>'+item.statistic_card_id+'</td>' +
-          '<td>'+item.locality_name+'</td>'+
-          '<td><span>Крещены за полгода: '+item.bptz_count+'</span><br><span>Посещают собрания: '+item.attended_count+'</span><br><span>Кол. на трапезе: '+item.lt_meeting_average+'</span></td></tr>'
-        );
+        
       }
       $("#statisticList tbody").html (tableRows.join(''));
       $("#statisticListMbl tbody").html (phoneRows.join(''));
@@ -93,7 +78,7 @@ $(document).ready(function(){
               return FALSE
             }
           }
-          $.get('/ajax/statistic.php?get_member_name', {memberId: author})
+          $.get('/ajax/ch_statistic_ajax.php?get_member_name', {memberId: author})
           .done(function(data){
             if(data.statistic){
               var item = data.statistic;
@@ -351,7 +336,7 @@ $(document).ready(function(){
     $('#statisticCompleteChkbox').prop('checked') ? statisticCompleteChkbox = 1 : statisticCompleteChkbox = 0;
 
     if (doUpdate) {
-      $.get('/ajax/statistic.php?update_statistic', {locality: locality, locality_status: localityStatus, period_id: periodId, bptz17: bptz17, bptzAll: bptzAll, attended17: attended17, attended17_25: attended17_25, attended25: attended25, attended60: attended60, attendedAll: attendedAll, lt_MeetingAverage: ltMeetingAverage, archive: archive, comment: comment, statisticCompleteChkbox: statisticCompleteChkbox, id_statistic: idStatistic})
+      $.get('/ajax/ch_statistic_ajax.php?update_statistic', {locality: locality, locality_status: localityStatus, period_id: periodId, bptz17: bptz17, bptzAll: bptzAll, attended17: attended17, attended17_25: attended17_25, attended25: attended25, attended60: attended60, attendedAll: attendedAll, lt_MeetingAverage: ltMeetingAverage, archive: archive, comment: comment, statisticCompleteChkbox: statisticCompleteChkbox, id_statistic: idStatistic})
       .done(function(data){
         if(data){
           loadDashboard();
@@ -359,7 +344,7 @@ $(document).ready(function(){
         }
       });
     } else {
-      $.get('/ajax/statistic.php?set_statistic', {locality: locality, locality_status: localityStatus, period_id: periodId, bptz17: bptz17, bptzAll: bptzAll, attended17: attended17, attended17_25: attended17_25, attended25: attended25, attended60: attended60, attendedAll: attendedAll, lt_MeetingAverage: ltMeetingAverage, archive: archive, comment: comment, statisticCompleteChkbox: statisticCompleteChkbox})
+      $.get('/ajax/ch_statistic_ajax.php?set_statistic', {locality: locality, locality_status: localityStatus, period_id: periodId, bptz17: bptz17, bptzAll: bptzAll, attended17: attended17, attended17_25: attended17_25, attended25: attended25, attended60: attended60, attendedAll: attendedAll, lt_MeetingAverage: ltMeetingAverage, archive: archive, comment: comment, statisticCompleteChkbox: statisticCompleteChkbox})
       .done(function(data){
         if(data != 'error_001'){
           loadDashboard();
@@ -490,7 +475,7 @@ $(document).ready(function(){
   $('.btnDoHandleFulfillStatistic').click(function (){
     $('#autoFulfillModal').modal('hide');
     var localityKey = $('#statisticLocalityModal').val();
-    $.get('/ajax/statistic.php?get_members_statistic', {locality_key : localityKey})
+    $.get('/ajax/ch_statistic_ajax.php?get_members_statistic', {locality_key : localityKey})
     .done(function(data){
       if(data.statistic){
         //console.log(data.statistic);
@@ -504,7 +489,7 @@ $(document).ready(function(){
     });
     $('.btnDoConfirmDeleteStatistic').click(function (){
       var idStatistic = $('#addEditStatisticModal').attr('data-id_statistic');
-      $.get('/ajax/statistic.php?delete_members_statistic', {id_statistic : idStatistic})
+      $.get('/ajax/ch_statistic_ajax.php?delete_members_statistic', {id_statistic : idStatistic})
       .done(function(data){
         $('#deleteStatisticBlankConfirm').modal('hide');
         $('#addEditStatisticModal').modal('hide');

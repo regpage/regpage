@@ -30,8 +30,7 @@ else{
 if (isset($_GET['get_statistic'])){
     echo json_encode(["statistic"=>db_getStatisticStrings ($adminId, $_GET['localities'])]);
     exit();
-}
-elseif (isset($_GET['set_statistic'])){
+} elseif (isset($_GET['set_statistic'])){
   if (!getCheckDublicateStatistic($_GET['period_id'], $_GET['locality'])) {
     echo json_encode(["statistic"=>db_setNewStatistic($adminId, $_GET['locality'], $_GET['locality_status'], $_GET['period_id'], $_GET['bptz17'], $_GET['bptzAll'], $_GET['attended17'], $_GET['attended17_25'], $_GET['attended25'], $_GET['attended60'], $_GET['attendedAll'], $_GET['lt_MeetingAverage'], $_GET['archive'], $_GET['comment'], $_GET['statisticCompleteChkbox'])]);
     exit();

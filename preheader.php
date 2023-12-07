@@ -69,7 +69,7 @@ define("IS_FTT", $isFttPage);
 } else*/
 // Custom page. Если название страницы состоит из двух символов типа '/bt'
 /* разбор адресов */
-if(strlen($_SERVER['REQUEST_URI']) == 3){  
+if(strlen($_SERVER['REQUEST_URI']) == 3){
     // Названия разделов из двух символов не допустимы, так как два символа используются для специальных страниц
       // determine a special page
       $specPage = NULL;
@@ -102,7 +102,7 @@ if(strlen($_SERVER['REQUEST_URI']) == 3){
     header("Location: ".$appRootPath."login?returl=".urlencode ($_SERVER["REQUEST_URI"]));
   	exit;
 // Если пользователь админ, а страница не существует или её нет в списке в условии
-} else if($memberId && count(db_getAdminEventsRespForReg($memberId)) == 0 && !db_isAdmin($memberId) && preg_match("/(index.php)|(signup.php)|(passrec.php)|(login.php)|(ftt_application.php)|(ftt_list.php)|(ftt_schedule.php)|(ftt_absence.php)|(ftt_announcement.php)|(ftt_extrahelp.php)|(ftt_attendance.php)|(ftt_gospel.php)|(ftt_service.php)|(application.php)|(practices.php)|(contacts.php)|(profile.php)|(settings.php)|(meetings.php)|(opros.php)|(attend.php)|(ftt_fellowship.php)|(ftt_reading.php)|(vtraining)/", $_SERVER["SCRIPT_NAME"])==0){ //|(links.php)
+} else if($memberId && count(db_getAdminEventsRespForReg($memberId)) == 0 && !db_isAdmin($memberId) && preg_match("/(index.php)|(signup.php)|(passrec.php)|(login.php)|(ftt_application.php)|(ftt_list.php)|(ftt_schedule.php)|(ftt_absence.php)|(ftt_announcement.php)|(ftt_extrahelp.php)|(ftt_attendance.php)|(ftt_gospel.php)|(ftt_service.php)|(application.php)|(practices.php)|(contacts.php)|(profile.php)|(settings.php)|(meetings.php)|(opros.php)|(attend.php)|(ftt_fellowship.php)|(ftt_reading.php)|(vtraining)|(ch_statistic)/", $_SERVER["SCRIPT_NAME"])==0){ //|(links.php)
     header("Location: ".$appRootPath);
   	exit;
 }

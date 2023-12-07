@@ -6,6 +6,7 @@ function db_getStatisticStrings ($memberId, $localities)
     global $db;
     $memberId = $db->real_escape_string($memberId);
     $localities = implode( "','", $localities);
+    $statistic = array ();
 
     $res=db_query ("SELECT sit.id AS id_statistic, sit.statistic_card_id, sit.locality_key, sit.locality_status_id, sit.bptz_younger_17, sit.bptz_17_25, sit.attended_older_60, sit.bptz_count, sit.attended_younger_17, sit.attended_17_25, sit.attended_older_25, sit.attended_count, sit.lt_meeting_average, sit.status_completed, sit.author, sit.archive, sit.comment,
       l.name AS locality_name, ls.name AS status_name, sc.period_start, sc.period_end, sc.comment AS card_comment
@@ -15,8 +16,6 @@ function db_getStatisticStrings ($memberId, $localities)
       INNER JOIN statistic_card sc ON sc.id=sit.statistic_card_id
       WHERE sit.locality_key IN ('".$localities."')
       ORDER BY sc.period_end DESC");
-
-    $statistic = array ();
     while ($row = $res->fetch_assoc()) $statistic[]=$row;
     return $statistic;
 }
