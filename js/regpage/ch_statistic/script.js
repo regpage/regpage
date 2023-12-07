@@ -20,87 +20,102 @@ $(document).ready(function(){
       tableRows = [], phoneRows = [];
       for (var i = 0; i < list.length; i++) {
          var item = list[i];
-
-        
+         dataString = 'data-id="'+item.statistic_card_id+'" data-locality_key="'+item.locality_key+'" data-author="'+item.author+'" data-locality_status="'+item.locality_status_id+'" data-archive="'+item.archive+'" data-comment="'+item.comment+'" data-bptz17="'+item.bptz_younger_17+'" data-bptz1725="'+item.bptz_17_25+'" data-bptzAll="'+item.bptz_count+'" data-attended60="'+item.attended_older_60+'" data-attended17="'+item.attended_younger_17+'" data-attended1725="'+item.attended_17_25+'" data-attended25="'+item.attended_older_25+'" data-attendedAll="'+item.attended_count+'" data-meeting_average="'+item.lt_meeting_average+'" data-completed="'+item.status_completed+'" data-periods="'+item.period_start+' - '+item.period_end+'" data-id_statistic="'+item.id_statistic+'"';
+         tableRows.push('<tr class="row-statistic" style="cursor: pointer; '+(item.status_completed == '1' ? 'background-color: lightgreen' : '')+'" '+dataString+'>'+
+             '<td>'+item.statistic_card_id+'</td>' +
+             '<td>'+item.locality_name+'</td>'+
+             '<td>'+item.status_name+'</td>'+
+             '<td class="bptz_half_year">'+item.bptz_count+'</td>'+
+             '<td class="attended_count">'+item.attended_count+'</td>'+
+             '<td class="lt_meeting_average">'+item.lt_meeting_average+'</td>'+
+             '<td style="text-align: center;">'+(item.status_completed == '1' ? '<i class="fa fa-check" aria-hidden="true"></i>' : '')+'</td></tr>'
+         );
       }
       $("#statisticList tbody").html (tableRows.join(''));
       $("#statisticListMbl tbody").html (phoneRows.join(''));
 
-      function statisticBlankFill (id, locality_key, author, locality_status, archive, comment, bptzHalfYear, attendedCount, ltMeetingAverage, bptz17, bptz1725, bptz25, attended17, attended1725, attended25, completed, periods, idStatistic, attended60) {
-        var periodsSE = periods.split(' - ');
-        $('#addEditStatisticModal').attr('data-author', author);
-        $('#addEditStatisticModal').attr('data-archive', archive);
-        $('#addEditStatisticModal').attr('data-status_val', completed);
-        $('#addEditStatisticModal').attr('data-period_start', periodsSE[0]);
-        $('#addEditStatisticModal').attr('data-period_end', periodsSE[1]);
-        $('#addEditStatisticModal').attr('data-id_statistic', idStatistic);
-        $('#addEditStatisticModal').find('#statisticLocalityModal').val(locality_key);
-        $('#addEditStatisticModal').find('#localityStatus').val(locality_status);
-        $('#addEditStatisticModal').find('#periodId').text(id);
-        $('#addEditStatisticModal').find('#periodDate').text(periods);
-        $('#addEditStatisticModal').find('#bptz17').val(bptz17);
-        //$('#addEditStatisticModal').find('#bptz17_25').val(bptz1725);
-        $('#addEditStatisticModal').find('#attended60').val(attended60);
-        $('#addEditStatisticModal').find('#bptzAll').val(bptzHalfYear);
-        $('#addEditStatisticModal').find('#attended17').val(attended17);
-        $('#addEditStatisticModal').find('#attended17_25').val(attended1725);
-        $('#addEditStatisticModal').find('#attended25').val(attended25);
-        $('#addEditStatisticModal').find('#attendedAll').val(attendedCount);
-        $('#addEditStatisticModal').find('#ltMeetingAverage').val(ltMeetingAverage);
-// MBL start
-        $('#addEditStatisticModal').find('#bptz17mbl').val(bptz17);
-        $('#addEditStatisticModal').find('#attended60mbl').val(attended60);
-        $('#addEditStatisticModal').find('#bptzAllmbl').val(bptzHalfYear);
-        $('#addEditStatisticModal').find('#attended17mbl').val(attended17);
-        $('#addEditStatisticModal').find('#attended17_25mbl').val(attended1725);
-        $('#addEditStatisticModal').find('#attended25mbl').val(attended25);
-        $('#addEditStatisticModal').find('#attendedAllmbl').val(attendedCount);
-        $('#addEditStatisticModal').find('#ltMeetingAveragembl').val(ltMeetingAverage);
-// MBL stop
-        $('#addEditStatisticModal').find('#comment').val(comment);
-        completed == '1' ? $('#addEditStatisticModal').find('#statisticCompleteChkbox').prop('checked', true) : $('#addEditStatisticModal').find('#statisticCompleteChkbox').prop('checked', false);
-        if (completed == '1') {
-          // Дублирующаяся функция (не 100% соответствие)
-          function treeShortNames(fullName) {
-            var shortName;
-            fullName ? fullName = fullName.split(' ') : '';
-            if (fullName) {
-              var two = fullName[1] ? fullName[1].slice(0,1) : FALSE;
-              var tree = fullName[2] ? fullName[2].slice(0,1) : FALSE;
-              if (two) {
-                shortName = fullName[0] + ' ' + two+'.';
-              }
-              if (tree) {
-                shortName = shortName +tree+'.';
-              }
-              return shortName;
-            } else {
-              return FALSE
-            }
-          }
-          $.get('/ajax/ch_statistic_ajax.php?get_member_name', {memberId: author})
-          .done(function(data){
-            if(data.statistic){
-              var item = data.statistic;
-              var shortName = treeShortNames(item[0]);
-              $('#addEditStatisticModal').find('#adminShortName').text(shortName);
-            }
-          });
-        }
-      }
-
       $(".row-statistic").unbind('click');
       $('.row-statistic').click(function (){
-        $('#addEditStatisticModal').modal('show');
-        $('#addEditStatisticModal').hasClass('edit') ? '' : $('#addEditStatisticModal').addClass('edit');
-        statisticBlankFill($(this).attr('data-id'), $(this).attr('data-locality_key'), $(this).attr('data-author'), $(this).attr('data-locality_status'), $(this).attr('data-archive'), $(this).attr('data-comment'), $(this).attr('data-bptzAll'), $(this).attr('data-attendedAll'), $(this).attr('data-meeting_average'), $(this).attr('data-bptz17'), $(this).attr('data-bptz1725'), $(this).attr('data-bptz25'), $(this).attr('data-attended17'), $(this).attr('data-attended1725'), $(this).attr('data-attended25'), $(this).attr('data-completed'), $(this).attr('data-periods'), $(this).attr('data-id_statistic'), $(this).attr('data-attended60'));
-      })
+        fullfill($(this));
+      });
+    }
+
+    $('.row-statistic').click(function (){
+      fullfill($(this));
+    });
+
+    function fullfill (elem) {
+      $("#addEditStatisticModal").modal("show");
+      $('#addEditStatisticModal').hasClass('edit') ? '' : $('#addEditStatisticModal').addClass('edit');
+      statisticBlankFill(elem.attr('data-id'), elem.attr('data-locality_key'), elem.attr('data-author'), elem.attr('data-locality_status'), elem.attr('data-archive'), elem.attr('data-comment'), elem.attr('data-bptzAll'), elem.attr('data-attendedAll'), elem.attr('data-meeting_average'), elem.attr('data-bptz17'), elem.attr('data-bptz1725'), elem.attr('data-bptz25'), elem.attr('data-attended17'), elem.attr('data-attended1725'), elem.attr('data-attended25'), elem.attr('data-completed'), elem.attr('data-periods'), elem.attr('data-id_statistic'), elem.attr('data-attended60'));
+    }
+    function statisticBlankFill (id, locality_key, author, locality_status, archive, comment, bptzHalfYear, attendedCount, ltMeetingAverage, bptz17, bptz1725, bptz25, attended17, attended1725, attended25, completed, periods, idStatistic, attended60) {
+      var periodsSE = periods.split(' - ');
+      $('#addEditStatisticModal').attr('data-author', author);
+      $('#addEditStatisticModal').attr('data-archive', archive);
+      $('#addEditStatisticModal').attr('data-status_val', completed);
+      $('#addEditStatisticModal').attr('data-period_start', periodsSE[0]);
+      $('#addEditStatisticModal').attr('data-period_end', periodsSE[1]);
+      $('#addEditStatisticModal').attr('data-id_statistic', idStatistic);
+      $('#addEditStatisticModal').find('#statisticLocalityModal').val(locality_key);
+      $('#addEditStatisticModal').find('#localityStatus').val(locality_status);
+      $('#addEditStatisticModal').find('#periodId').text(id);
+      $('#addEditStatisticModal').find('#periodDate').text(periods);
+      $('#addEditStatisticModal').find('#bptz17').val(bptz17);
+      //$('#addEditStatisticModal').find('#bptz17_25').val(bptz1725);
+      $('#addEditStatisticModal').find('#attended60').val(attended60);
+      $('#addEditStatisticModal').find('#bptzAll').val(bptzHalfYear);
+      $('#addEditStatisticModal').find('#attended17').val(attended17);
+      $('#addEditStatisticModal').find('#attended17_25').val(attended1725);
+      $('#addEditStatisticModal').find('#attended25').val(attended25);
+      $('#addEditStatisticModal').find('#attendedAll').val(attendedCount);
+      $('#addEditStatisticModal').find('#ltMeetingAverage').val(ltMeetingAverage);
+// MBL start
+      $('#addEditStatisticModal').find('#bptz17mbl').val(bptz17);
+      $('#addEditStatisticModal').find('#attended60mbl').val(attended60);
+      $('#addEditStatisticModal').find('#bptzAllmbl').val(bptzHalfYear);
+      $('#addEditStatisticModal').find('#attended17mbl').val(attended17);
+      $('#addEditStatisticModal').find('#attended17_25mbl').val(attended1725);
+      $('#addEditStatisticModal').find('#attended25mbl').val(attended25);
+      $('#addEditStatisticModal').find('#attendedAllmbl').val(attendedCount);
+      $('#addEditStatisticModal').find('#ltMeetingAveragembl').val(ltMeetingAverage);
+// MBL stop
+      $('#addEditStatisticModal').find('#comment').val(comment);
+      completed == '1' ? $('#addEditStatisticModal').find('#statisticCompleteChkbox').prop('checked', true) : $('#addEditStatisticModal').find('#statisticCompleteChkbox').prop('checked', false);
+      if (completed == '1') {
+        // Дублирующаяся функция (не 100% соответствие)
+        function treeShortNames(fullName) {
+          var shortName;
+          fullName ? fullName = fullName.split(' ') : '';
+          if (fullName) {
+            var two = fullName[1] ? fullName[1].slice(0,1) : FALSE;
+            var tree = fullName[2] ? fullName[2].slice(0,1) : FALSE;
+            if (two) {
+              shortName = fullName[0] + ' ' + two+'.';
+            }
+            if (tree) {
+              shortName = shortName +tree+'.';
+            }
+            return shortName;
+          } else {
+            return FALSE
+          }
+        }
+        $.get('/ajax/ch_statistic_ajax.php?get_member_name', {memberId: author})
+        .done(function(data){
+          if(data.statistic){
+            var item = data.statistic;
+            var shortName = treeShortNames(item[0]);
+            $('#addEditStatisticModal').find('#adminShortName').text(shortName);
+          }
+        });
+      }
     }
     function filtersList() {
-      var periods;adminLocalitiesGlb
+      let periods;
       $('#arhivePeriods').val() ? periods = $('#arhivePeriods').val() : periods = [];
       //periods.indexOf($('#blanksArchive').attr('data-id')) === -1 ? $('.add-statistic').hide() : $('.add-statistic').show();
-      $('.meetings-list tbody tr').each(function () {
+      $('#statisticList tbody tr').each(function () {
         if ((($('#selStatisticLocality').val() === $(this).attr('data-locality_key')) || ($('#selStatisticLocality').val() === '_all_')) && (($('#fulfilledBlank').val() === $(this).attr('data-completed')) || ($('#fulfilledBlank').val() === '_all_')) && (periods.indexOf($(this).attr('data-id')) !== -1)){
           $(this).show();
         } else {
@@ -112,36 +127,43 @@ $(document).ready(function(){
       filtersList();
     });
 
-    $("a[id|='sort']").click (function (){
-
-        var id = $(this).attr("id");
-        var icon = $(this).siblings("i");
-
-        $(".meetings-list a[id|='sort'][id!='"+id+"'] ~ i").attr("class","icon-none");
-        icon.attr ("class", icon.hasClass("icon-chevron-down") ? "icon-chevron-up" : "icon-chevron-down");
+    $("a[id|='sort']").click (function () {
+        let id = $(this).attr("id");
+        let icon_new;
+        if ($(this).parent().find("i").hasClass("fa-sort-desc")) {
+          icon_new = "fa-sort-asc";
+        } else if ($(this).parent().find("i").hasClass("fa-sort-asc")) {
+          icon_new = "fa-sort-desc";
+        } else {
+          icon_new = "fa-sort-desc";
+        }
+        $("#header_cols i").removeClass("fa-sort-asc").removeClass("fa-sort-desc");
+        $(this).parent().find("i").addClass(icon_new);
+        //$(".meetings-list a[id|='sort'][id!='"+id+"'] ~ i").attr("class","icon-none");
+        //icon.attr("class", icon.hasClass("icon-chevron-down") ? "icon-chevron-up" : "icon-chevron-down");
 
         if (id == 'sort-city') {
-          icon.hasClass("icon-chevron-down") ? sortingStatistic(1) : sortingStatistic(2);
+          icon_new === "fa-sort-desc" ? sortingStatistic(1) : sortingStatistic(2);
         } else if (id == 'sort-status') {
-          icon.hasClass("icon-chevron-down") ? sortingStatistic(3) :sortingStatistic(4);
+          icon_new === "fa-sort-desc" ? sortingStatistic(3) :sortingStatistic(4);
         } else if (id === 'sort-id') {
-          icon.hasClass("icon-chevron-down") ? sortingStatistic(5) : sortingStatistic(6);
+          icon_new === "fa-sort-desc" ? sortingStatistic(5) : sortingStatistic(6);
         } else if (id === 'sort-bptz_half_year') {
-          icon.hasClass("icon-chevron-down") ? sortingStatistic(7) :sortingStatistic(8);
+          icon_new === "fa-sort-desc" ? sortingStatistic(7) :sortingStatistic(8);
         } else if (id === 'sort-attended') {
-          icon.hasClass("icon-chevron-down") ? sortingStatistic(9) :sortingStatistic(10);
+          icon_new === "fa-sort-desc" ? sortingStatistic(9) :sortingStatistic(10);
         } else if (id === 'sort-count_ltmeeting') {
-          icon.hasClass("icon-chevron-down") ? sortingStatistic(11) :sortingStatistic(12);
+          icon_new === "fa-sort-desc" ? sortingStatistic(11) :sortingStatistic(12);
         } else if (id === 'sort-completed') {
-          icon.hasClass("icon-chevron-down") ? sortingStatistic(13) :sortingStatistic(14);
+          icon_new === "fa-sort-desc" ? sortingStatistic(13) :sortingStatistic(14);
         }
     });
 
     function sortingStatistic (sortType) {
 
-      var list = [], tableRows = [], phoneRows = [], isLocationAlone = $('#selMeetingLocality option').length == 2 ?  true : false;
-      $('#statisticList tbody').find('tr').each(function(){
-        var  id = $(this).attr('data-id'),
+      let list = [], tableRows = [], phoneRows = [], isLocationAlone = $('#selMeetingLocality option').length == 2 ?  true : false;
+      $('#statisticList tbody tr').each(function(){
+        let  id = $(this).attr('data-id'),
         locality_key = $(this).attr('data-locality_key'),
         author = $(this).attr('data-author'),
         locality_status = $(this).attr('data-locality_status'),
@@ -224,6 +246,7 @@ $(document).ready(function(){
       } else if (sortType == 14) {
         sortingFun(2, 'a.status_completed', 'b.status_completed');
       }
+
       buildList(list);
       filtersList();
     }

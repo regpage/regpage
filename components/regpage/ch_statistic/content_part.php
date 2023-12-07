@@ -63,20 +63,20 @@
 <!-- Botton bar Statistic STOP -->
 <!-- List Statistic BEGIN -->
       <div class="desctopVisible" id="statisticList">
-        <table id="" class="table table-hover">
+        <table id="header_cols" class="table table-hover">
           <thead>
             <tr>
-                <th style="text-align: left; min-width:70px"><a id="sort-id" href="#" title="сортировать">Код</a>&nbsp;<i class="<?php echo $sort_field=='id' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none'; ?>"></i></th>
-                <th style=""><a id="sort-city" href="#" title="сортировать">Город</a>&nbsp;<i class="<?php echo $sort_field=='city' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none'; ?>"></i></th>
+                <th style="text-align: left; min-width:70px"><a id="sort-id" href="#" title="сортировать">Код</a>&nbsp;<i class="fa"></i></th>
+                <th style=""><a id="sort-city" href="#" title="сортировать">Город</a>&nbsp;<i class="fa fa-sort-desc"></i></th>
                 <?php /*
                 if (!$isSingleCity)
                     echo '<th><a id="sort-locality_key" href="#" title="сортировать">Местность (район)</a>&nbsp;<i class="'.($sort_field=='locality_key' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none').'"></i></th>';
                     */?>
-                <th style="text-align: left; min-width:70px"><a id="sort-status" href="#" title="сортировать">Статус</a>&nbsp;<i class="<?php echo $sort_field=='status' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none'; ?>"></i></th>
-                <th style="text-align: left;"><a id="sort-bptz_half_year" href="#" title="сортировать">Крещены за полгода</a>&nbsp;<i class="<?php echo $sort_field=='half_year' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none'; ?>"></i></th>
-                <th style="text-align: left;"><a id="sort-attended" href="#" title="сортировать">Посещают собрания</a>&nbsp;<i class="<?php echo $sort_field=='attended' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none'; ?>"></i></th>
-                <th style="text-align: left;"><a id="sort-count_ltmeeting" href="#" title="сортировать">Количество на трапезе</a>&nbsp;<i class="<?php echo $sort_field=='count_ltmeeting' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none'; ?>"></i></th>
-                <th style="text-align: center;"><a id="sort-completed" href="#" title="сортировать">Заполнено</a>&nbsp;<i class="<?php echo $sort_field=='completed' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none'; ?>"></i></th>
+                <th style="text-align: left; min-width:70px"><a id="sort-status" href="#" title="сортировать">Статус</a>&nbsp;<i class="fa"></i></th>
+                <th style="text-align: left;"><a id="sort-bptz_half_year" href="#" title="сортировать">Крещены за полгода</a>&nbsp;<i class="fa"></i></th>
+                <th style="text-align: left;"><a id="sort-attended" href="#" title="сортировать">Посещают собрания</a>&nbsp;<i class="fa"></i></th>
+                <th style="text-align: left;"><a id="sort-count_ltmeeting" href="#" title="сортировать">Количество на трапезе</a>&nbsp;<i class="fa"></i></th>
+                <th style="text-align: center;"><a id="sort-completed" href="#" title="сортировать">Заполнено</a>&nbsp;<i class="fa"></i></th>
             </tr>
           </thead>
           <tbody>
@@ -99,8 +99,8 @@
             echo "<td>{$value['statistic_card_id']}</td><td>{$value['locality_name']}</td><td>{$value['status_name']}</td><td class='bptz_half_year'>{$value['bptz_count']}</td>";
             echo "<td class='attended_count'>{$value['attended_count']}</td><td class='lt_meeting_average'>{$value['lt_meeting_average']}</td>";
             echo "<td style='text-align: center;'>";
-            if ($value == '1') {
-              echo '<i class="fa fa-check" aria-hidden="true"></i>';
+            if ($value['status_completed'] === '1') {
+              echo "<i class='fa fa-check' aria-hidden='true'></i>";
             }
             echo '</td></tr>';
 
