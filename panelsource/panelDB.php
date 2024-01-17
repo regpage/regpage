@@ -244,7 +244,8 @@ function resetSemester(){
     }
   }
 
-  $tables = array('ftt_announcement', 'ftt_announcement_recipients', 'ftt_attendance', 	'ftt_attendance_sheet', 'ftt_extra_help', 'ftt_gospel', 'ftt_gospel_members', 'ftt_gospel_goals', 'ftt_late', 'ftt_permission', 'ftt_permission_sheet', 'ftt_session', 'ftt_session_correction', 'ftt_trainee', 'ftt_skip', 'ftt_fellowship');
+  $tables = array('ftt_announcement', 'ftt_announcement_recipients', 'ftt_attendance', 	'ftt_attendance_sheet', 'ftt_extra_help', 'ftt_gospel', 'ftt_gospel_members', 'ftt_gospel_goals', 'ftt_late', 'ftt_permission', 'ftt_permission_sheet', 'ftt_session', 'ftt_session_correction', 'ftt_skip', 'ftt_fellowship');
+  //'ftt_trainee',
   $result;
 
   foreach ($tables as $value) {

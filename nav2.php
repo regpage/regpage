@@ -267,6 +267,10 @@ switch ($h) {
             if ($memberId === '000001679' || $memberId === '000005716') {
               echo '<i class="fa fa-wrench cursor-pointer" style="color: silver; font-size: 20px; margin-top: 5px; margin-left: 10px;" title="Дополнительные опции"></i>';
             }
+
+            if ($ftt_access['group'] === 'staff' || $memberId === '000005716') {
+              echo '<i class="fa fa-cog cursor-pointer" style="color: silver; font-size: 20px; margin-top: 5px; margin-left: 10px;" title="Управление данными ПВОМ"></i>';
+            }
             ?>
             <!--<i class="fa fa-envelope envelope-support cursor-pointer" title="Обратится в службу поддержки"></i>-->
             <ul id="helpButton" class="nav" style="margin-left: auto; margin-right: 10px; margin-left: 10px;">
@@ -369,6 +373,11 @@ referenceSysAnew();
     $('.fa-wrench').click(function () {
       if (window.location != '/panel') {
         window.location = '/panel';
+      }
+    });
+    $('.fa-cog').click(function () {
+      if (window.location != '/ftt_settings') {
+        window.location = '/ftt_settings';
       }
     });
 // Give me Admin Role 0   ver 5.1.8

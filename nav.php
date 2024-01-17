@@ -276,7 +276,10 @@ switch ($h) {
             <?php
 
             if ($memberId == '000001679' || $memberId == '000005716') {
-            echo '<i class="fa fa-wrench cursor-pointer" style="color: silver; font-size: 20px; margin-top: 10px;"></i>';
+              echo '<i class="fa fa-wrench cursor-pointer" style="color: silver; font-size: 20px; margin-top: 10px;"></i>';
+            }
+            if ($memberId == '000005716' || $ftt_access['group'] === 'staff') {
+              echo '<i class="fa fa-cog cursor-pointer" style="color: silver; font-size: 20px; margin-top: 10px;"></i>';
             }
             ?>
         </ul>
@@ -360,7 +363,6 @@ referenceSysAnew();
           $(event.target).parent().parent().addClass("open");
         }
       }
-      console.log(event.target);
     }
 
     $(".send-message-regteam").click (function (){
@@ -393,6 +395,11 @@ referenceSysAnew();
     	if (window.location != '/panel') {
     		window.location = '/panel';
     	}
+    });
+    $('.fa-cog').click(function () {
+      if (window.location != '/ftt_settings') {
+        window.location = '/ftt_settings';
+      }
     });
     if ($(window).width()>=769) {
       $('.bell-alarm-mbl').hide();
