@@ -1,7 +1,7 @@
 <?php
 // РАЗДЕЛ
 // DB
-//include_once 'db/ftt/ftt_list_db.php';
+include_once 'db/ftt/ftt_settings_db.php';
 // Classes
 //include_once 'db/classes/members.php';
 

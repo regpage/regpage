@@ -2,11 +2,11 @@
 // Ajax
 include_once "ajax.php";
 // подключаем запросы
-include_once "../db/classes/db_operations.php";
-include_once "../db/classes/member.php";
-//include_once '../db/classes/date_convert.php';
+//include_once "../db/classes/db_operations.php";
+
+include_once '../db/ftt/ftt_settings_db.php';
 // Подключаем ведение лога
-//include_once "../extensions/write_to_log/write_to_log.php";
+include_once "../extensions/write_to_log/write_to_log.php";
 
 $adminId = db_getMemberIdBySessionId (session_id());
 
@@ -16,32 +16,14 @@ if (!$adminId) {
 }
 
 // Добавить одно мероприятие в ручную.
-
-if (isset($_GET['type']) && $_GET['type'] === 'get_member_data') {
-  echo json_encode(["result"=>Member::get_data($_GET['id'])]);
+if (isset($_GET['type']) && $_GET['type'] === 'reset_semester') {
+  echo json_encode(["result"=>resetSemester($adminId)]);
   exit();
 }
 
-if (isset($_GET['type']) && $_GET['type'] === 'get_member_data_staff') {
-  echo json_encode(["result"=>Member::get_data_staff($_GET['id'])]);
+// Удалить заявления
+if (isset($_GET['type']) && $_GET['type'] === 'reset_applications') {
+  echo resetApplications($adminId);
   exit();
 }
-
-if (isset($_GET['type']) && $_GET['type'] === 'change_field') {
-  // Сохранение изменений в полях бланка
-  // готовим данные
-  $db_data = new DbData('set', $_GET['table']);
-  $db_data->set('field', $_GET['field']);
-  $db_data->set('value', $_GET['value']);
-  $db_data->set('condition_field', $_GET['condition_field']);
-  $db_data->set('condition_value', $_GET['condition']);
-  if ($_GET['changed'] === "1") {
-    $db_data->set('changed', 1);
-  }
-  // запрос
-  echo json_encode(['result'=>DbOperation::operation($db_data->get())]);
-
-  exit();
-}
-
 ?>
