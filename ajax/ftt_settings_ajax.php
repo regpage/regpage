@@ -17,7 +17,7 @@ if (!$adminId) {
 
 // Добавить одно мероприятие в ручную.
 if (isset($_GET['type']) && $_GET['type'] === 'reset_semester') {
-  echo json_encode(["result"=>resetSemester($adminId)]);
+  echo resetSemester($adminId, $_GET['all']);
   exit();
 }
 

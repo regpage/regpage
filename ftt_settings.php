@@ -8,11 +8,11 @@
     // Общие переменные (стандартные)
     include_once "components/ftt_main/var_part.php";
 
-    // Переменные раздела
-    include_once "components/ftt_settings/var_part.php";
+    // Общие переменные раздела
+    include_once "components/ftt_settings/cntrl_common.php";
 
     // Подключение раздела, HTML код страницы, модальные окна основной страницы
-    include_once "components/ftt_main/html_part_refactoring.php";    
+    include_once "components/ftt_main/html_part_refactoring.php";
 
     // JS общие скрипты
     include_once "components/ftt_main/js_main.php";

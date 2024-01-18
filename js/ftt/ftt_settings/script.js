@@ -1,6 +1,6 @@
 $(document).ready(function(){
   // Заявления ПВОМ
-  $("#showModalUniversalConfirm, #showModalUniversalConfirmApplication").click(function (e) {
+  $("#showModalUniversalConfirm, #showModalUniversalConfirmApplication, #showModalUniversalConfirmThree").click(function (e) {
     if (e.target.id === "showModalUniversalConfirm") {
       $("#modalUniversalConfirm").attr("data-type", "1");
       $("#modalUniversalTitle").text("УДАЛЕНИЕ");
@@ -9,6 +9,10 @@ $(document).ready(function(){
       $("#modalUniversalConfirm").attr("data-type", "2");
       $("#modalUniversalTitle").text("УДАЛЕНИЕ");
       $("#modalUniversalText").text("Удалить заявления? Вопросы не будут удалены.");
+    } else if (e.target.id === "showModalUniversalConfirmThree") {
+      $("#modalUniversalConfirm").attr("data-type", "3");
+      $("#modalUniversalTitle").text("УДАЛЕНИЕ");
+      $("#modalUniversalText").text("Удалить данные семестра НЕ ВКЛЮЧАЯ ДОЛГИ, то есть остаются доп. помощь, пропущенные занятия, расписание и бланки посещаемости.");
     } else {
       $("#modalUniversalConfirm").attr("data-type", "0");
       $("#modalUniversalTitle").text("?");
@@ -19,20 +23,24 @@ $(document).ready(function(){
 
   // ПВОМ
   $("#modalUniversalOK").click(function () {
-    if ($("#modalUniversalConfirm").attr("data-type") === "1") {
-      fetch('ajax/ftt_settings_ajax.php?type=reset_semester')
+    if ($("#modalUniversalConfirm").attr("data-type") === "1" || $("#modalUniversalConfirm").attr("data-type") === "3") {
+      let all = "";
+      if ($("#modalUniversalConfirm").attr("data-type") === "1") {
+        all = 1;
+      }
+      fetch('ajax/ftt_settings_ajax.php?type=reset_semester&all=' + all)
       .then(response => response.text())
       .then(result => {
         if (result == 1) {
           showHint("Операция успешно завершена.");
           setTimeout(function () {
             location.reload();
-          }, 1000);
+          }, 1500);
         } else {
           showError("Что то пошло не так.");
           setTimeout(function () {
             location.reload();
-          }, 1000);
+          }, 1500);
         }
       });
     } else if ($("#modalUniversalConfirm").attr("data-type") === "2") {
@@ -43,12 +51,12 @@ $(document).ready(function(){
           showHint("Операция успешно завершена.");
           setTimeout(function () {
             location.reload();
-          }, 1000);
+          }, 1500);
         } else {
           showError("Что то пошло не так.");
           setTimeout(function () {
             location.reload();
-          }, 1000);
+          }, 1500);
         }
       });
     }
