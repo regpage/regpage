@@ -27,9 +27,9 @@ if ($book_current['start_today'] == 1) {
 <div class="container">
   <?php
   // БЛОК РАБОТАЕТ ТОЛЬКО НА ПЕРЕРЫВЕ
-  if (!ftt_info::pause()): ?>
+  if (ftt_info::pause()): ?>
   <div id="" class="row border-bottom pb-2">
-    <div class="container border mt-3 mb-3 p-2 d-none" style="max-width: 400px;">
+    <div class="container border mt-3 mb-3 p-2" style="max-width: 400px;">  <!--d-none-->
       <div class="row">
         <div class="col-5" style="max-width: 170px;">
           <select id="bible_book_ot" class="col mr-3 form-control"

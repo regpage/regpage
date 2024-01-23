@@ -52,7 +52,7 @@ function resetSemester($adminId, $all){
     $tablesArr = array('ftt_announcement', 'ftt_announcement_recipients', 'ftt_gospel', 'ftt_gospel_members', 'ftt_gospel_goals', 'ftt_late', 'ftt_permission', 'ftt_permission_sheet', 'ftt_session_correction', 'ftt_fellowship', 'ftt_fellowship_tmpl', 'ftt_service');
   }
 
-  $result;
+  $result='';
 
   foreach ($tablesArr as $value) {
     if ($value === $exception) {
@@ -91,7 +91,7 @@ function resetApplications($adminId) {
 
 // сброс доб. заданий, кроме долгов
 function resetExtraHelp($adminId) {
-  $result;
+  $result='';
   $result = db_query ("DELETE FROM `ftt_extra_help` WHERE `archive` = 1");
 
   write_to_log::warning(db_getMemberIdBySessionId (session_id()), "Данные таблицы ПВОМ ftt_extra_help частично удалены служащим с ключом {$adminId}. Результат: {$result}");
@@ -100,7 +100,7 @@ function resetExtraHelp($adminId) {
 
 // сброс пропущеных занятий, кроме долгов
 function resetSkip($adminId) {
-  $result;
+  $result='';
   // ftt_skip prepare
   $pathsToFiles = [];
   $res = db_query ("SELECT `file` FROM `ftt_skip` WHERE `status` = 2");
@@ -128,7 +128,7 @@ function resetSkip($adminId) {
 
 // сброс чтения Библии у тех, кто закончил обучаться
 function resetBible($adminId) {
-  $result;
+  $result='';
   // ftt_skip prepare
   $trainee = [];
   $res = db_query ("SELECT `member_key` FROM `ftt_trainee`");

@@ -17,6 +17,11 @@ if (!$adminId) {
 
 // Добавить одно мероприятие в ручную.
 if (isset($_GET['type']) && $_GET['type'] === 'reset_semester') {
+  if (empty($_GET['all'])) {
+    resetExtraHelp($adminId);
+    resetSkip($adminId);    
+  }
+
   echo resetSemester($adminId, $_GET['all']);
   exit();
 }
@@ -26,4 +31,21 @@ if (isset($_GET['type']) && $_GET['type'] === 'reset_applications') {
   echo resetApplications($adminId);
   exit();
 }
-?>
+
+// Удалить доп. помощи без долгов
+if (isset($_GET['type']) && $_GET['type'] === 'partial_reset_extra_help') {
+  echo resetExtraHelp($adminId);
+  exit();
+}
+
+// Удалить пропущенные занятия без долгов
+if (isset($_GET['type']) && $_GET['type'] === 'partial_reset_skip') {
+  echo resetSkip($adminId);
+  exit();
+}
+
+// Удалить чтение библии для закончивших обучение
+if (isset($_GET['type']) && $_GET['type'] === 'partial_reset_bible') {
+  echo resetBible($adminId);
+  exit();
+}
