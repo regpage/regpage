@@ -95,12 +95,14 @@ function db_responsibleSet($id, $responsibleNew, $adminId){
     //$textLog = 'КОНТАКТЫ. Контакт ID - '.$value[0].'. '.$text.'. Предыдущий '.$value[1].'.';
     //logFileWriter($adminId, $textLog);
   }
+  Emailing::send_by_key($responsibleKey, 'Новые контакты на reg-page.ru', 'Здравствуйте. Вам переданы новые контакты на сайте <a href="https://reg-page.ru/contacts">reg-page.ru</a>');
 }
 // responsible set for admin 0
 function db_responsibleSetZero($data, $adminId){
   global $db;
   $adminId = $db->real_escape_string($adminId);
   $text;
+  $responsibleKey;
   foreach ($data as $value) {
     $text = 'Назначен ответственный '.$value[2];
     db_query ("UPDATE contacts SET `responsible` = '$value[1]', `responsible_previous` = '$adminId' WHERE `id`='$value[0]'");
@@ -108,7 +110,9 @@ function db_responsibleSetZero($data, $adminId){
     db_newNotification($value[1], $value[0]);
     //$textLog = 'КОНТАКТЫ. Контакт ID - '.$value[0].'. '.$text.'. Предыдущий '.$adminId.'.';
     //logFileWriter($adminId, $textLog);
+    $responsibleKey = $value[1];
   }
+  //Emailing::send_by_key($responsibleKey, 'Контакты на reg-page.ru', 'Здравствуйте. Вам переданы контакты на сайте <a href="https://reg-page.ru/contacts">reg-page.ru</a>');
 }
 
 // get the contact

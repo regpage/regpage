@@ -21,6 +21,10 @@
     $allLocalities = db_getLocalities();
     $listMyAdmins = db_getAdminResponsiblesGroup($memberId);
     $contactsAdminData = db_getContactsRoleAdmin($memberId);
+    /*$idBlank = '';
+    if (isset($_GET['id']) && !empty($_GET['id'])) {
+      $idBlank = $_GET['id'];
+    }*/
     if (isset($contactsAdminData[0])) {
       $contactsRoleAdmin = $contactsAdminData[0];
     } else {
@@ -1075,6 +1079,8 @@
         } else {
           data_page.isDesktop = 0;
         }
+
+        //let idBlankGet = '<?php echo $idBlank; ?>';
     </script>
     <script src="/js/contacts.js?v86"></script>
     <script src="/js/contactsupload.js?v5"></script>

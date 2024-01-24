@@ -3,6 +3,7 @@
 include_once "ajax.php";
 include_once "../db/contactsdb.php";
 include_once '../logWriter.php';
+require_once '../db/classes/emailing.php';
 $adminId = db_getMemberIdBySessionId (session_id());
 
 if (!$adminId)

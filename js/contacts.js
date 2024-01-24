@@ -1,6 +1,15 @@
 // Contacts JS
 
 $(document).ready(function(){
+
+  // переход на карточку, для реализации событие клик на строке нужно переместить в функцию
+  // РНР закомментирован
+  /*if (idBlankGet) {
+    setTimeout(function () {
+      let get_str = $(".contacts_str[data-id='" + idBlankGet + "']");
+    }, 1000);
+  }*/
+
   if (data_page.admin_contacts_role === '0') { // 09-06-2022  admin_role
     $('#responsibleContact').html('<option value="'+window.adminId+'">'+fullNameToNoMiddleName(data_page.admin_name)+'');
   } else {
