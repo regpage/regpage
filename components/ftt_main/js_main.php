@@ -28,5 +28,6 @@
   // admin key
   let admin_id_gl = "<?php echo $memberId;?>";
   // получаем текущую дату
-  let gl_date_now = date_now_gl();
+  let gl_date_now = date_now_gl();    
+
 </script>

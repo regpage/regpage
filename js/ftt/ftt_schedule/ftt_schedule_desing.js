@@ -2,7 +2,7 @@ $(document).ready(function(){
   // Мобильная версия
   if ($(window).width()<=769) {
     // bar
-    $("#time_zone_select").removeClass("col-3").addClass("col-4");
+    $("#time_zone_select").removeClass("col-3").addClass("col-4").addClass("mt-2");
 
     $("#ftt_schedule_list").removeClass("col-6");
     $("#ftt_schedule_list").addClass("col-12");

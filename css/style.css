@@ -2002,6 +2002,24 @@ input.error, .control-group.error select, textarea.error {
   text-decoration: underline;
 }
 
+.link_custom_normal {
+  cursor: pointer;
+  color: #007bff;
+}
+.font_normal {
+  font-weight: normal;
+}
+
 .bg_yellow {
   background-color: lightyellow;
+}
+
+.dropdown_custom-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 120px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 16px;
+  z-index: 1;
 }

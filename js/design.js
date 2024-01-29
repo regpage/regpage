@@ -492,8 +492,8 @@ if ($(window).width()<=769) {
 
 	$('#ftt_navs .nav-item').each(function () {
 		$(this).css("width", $(this).width() + 4);
-	});
-	//$('#main_container .tab-content select').css('font-size', '17px');
+	});	
+	$('#main_container .tab-content select').css('font-size', '17px');
 } else {
 	footer_btm(62);
 	/*console.log($(window).height());

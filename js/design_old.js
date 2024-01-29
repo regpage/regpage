@@ -9,6 +9,12 @@ if ($(window).width()<=769) {
   $(".members-lists-combo").css("max-width", "auto");
   $(".members-lists-combo").css("width", "97%");
   $(".close-event-registration").css("display", "block");
+  $(".dropdown_custom").parent().show();
+  $(".ftt_menu_a[href='/contacts']").parent().hide();
+  $(".ftt_menu_a[href='/ftt_extrahelp']").parent().hide();
+  $(".ftt_menu_a[href='/ftt_reading']").parent().hide();
+  $(".ftt_menu_a[href='/ftt_application']").parent().hide();
+
 } else {
   // прибить футер
   if (window.location.pathname === '/index.php' || window.location.pathname === '/index') {

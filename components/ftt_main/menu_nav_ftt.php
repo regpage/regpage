@@ -10,6 +10,7 @@ if ($ftt_access['group'] === 'staff') {
 }
 
 // счётчик доп заданий в меню
+$other_count = 0;
 $extra_help_text = 'Доп. задания';
 if ($ftt_access['group'] === 'trainee'){
   $extra_help_count = statistics::extra_help_count($memberId);
@@ -18,6 +19,8 @@ if ($ftt_access['group'] === 'trainee'){
 }
 if ($extra_help_count == 0) {
   $extra_help_count = '';
+} else {
+  $other_count = $extra_help_count;
 }
 $extra_help_text .= "<sup style='color: red;'> <b> {$extra_help_count}</b></sup>";
 
@@ -46,6 +49,15 @@ $requests_for_application_text = 'Заявления';
 $requests_for_application_count = statistics::requests();
 if ($requests_for_application_count == 0) {
   $requests_for_application_count = '';
+} else {
+  if ($ftt_access['group'] === 'staff') {
+    $other_count += $requests_for_application_count;
+  }
+}
+if (!$other_count) {
+  $other_count = '';
+} else {
+  $other_count = "<sup style='color: red;'> <b> {$other_count}</b></sup>";
 }
 $requests_for_application_text .= "<sup style='color: red;'> <b> {$requests_for_application_count}</b></sup>";
 
@@ -96,7 +108,7 @@ if ($ftt_access['group'] === 'trainee') {
   <div class="row">
     <div id="ftt_navs" class="col">
       <!-- Меню разделов -->
-      <ul class="nav" role="tablist" style="margin: 0px;">
+      <ul id="menu_nav_ftt_ul" class="nav" role="tablist" style="margin: 0px;">
         <?php foreach ($ftt_devisions as $key => $value):
           if ($_SERVER['REQUEST_URI'] === '/'.$key || $_SERVER['PHP_SELF'] === '/'.$key.'.php') {
             $class_btn = 'active mark_menu_item';
@@ -108,6 +120,36 @@ if ($ftt_access['group'] === 'trainee') {
             <a class="nav-link <?php echo $class_btn ?>" href="<?php echo '/'.$key ?>"><?php echo $value ?></a>
           </li>
         <?php endforeach; ?>
+      </ul>
+      <ul id="menu_nav_ftt_ul_mbl" class="nav" role="tablist" style="margin: 0px; display:none;">
+        <?php
+        $count = 0;
+        foreach ($ftt_devisions as $key => $value):
+          if ($_SERVER['REQUEST_URI'] === '/'.$key || $_SERVER['PHP_SELF'] === '/'.$key.'.php') {
+            $class_btn = 'active mark_menu_item';
+          } else {
+            $class_btn = '';
+          }
+          ?>
+          <?php if ($count <= 5): ?>
+            <li class="nav-item">
+              <a class="nav-link <?php echo $class_btn ?>" href="<?php echo '/'.$key ?>"><?php echo $value ?></a>
+            </li>
+          <?php endif; ?>
+          <?php if ($count === 6): ?>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">Ещё<?php echo $other_count; ?></a>
+              <div class="dropdown-menu dropdown-menu-right">
+              <a class="nav-link ml-3 <?php echo $class_btn ?>" href="<?php echo '/'.$key ?>"><?php echo $value ?></a>
+          <?php endif; ?>
+          <?php if ($count > 6): ?>
+            <a class="nav-link  ml-3 dropdown-toggle <?php echo $class_btn ?>" href="<?php echo '/'.$key ?>"><?php echo $value ?></a>
+          <?php endif; ?>
+        <?php
+        $count++;
+        endforeach; ?>
+          </div>
+        </li>
       </ul>
     </div>
   </div>
@@ -135,6 +177,12 @@ $(".fellowship_link").click(function () {
     window.location = 'ftt_attendance';
   }, 30);
 });
+// ftt menu
+if ($(window).width()<=769) {
+  $('#menu_nav_ftt_ul').hide();
+  $('#menu_nav_ftt_ul_mbl').show();
+  $('#menu_nav_ftt_ul_mbl .nav-item').css("width", "auto");
+}
 </script>
 
 <script src="js/ftt/menu_ftt_desing.js"></script>

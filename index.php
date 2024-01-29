@@ -146,12 +146,23 @@ else if (isset ($_SESSION["logged-in"])){
         if ($permission_stat_count_main == 0) {
           $permission_stat_count_main = '';
         }
+        $others_counter = 0;
         if ($extra_help_count == 0) {
           $extra_help_count = '';
+        } else {
+          $others_counter = $extra_help_count;
         }
         if ($requests_stat_count_main == 0) {
           $requests_stat_count_main = '';
+        } else {
+          if ($ftt_access['group'] === 'staff') {
+            $others_counter += $requests_stat_count_main;
+          }
         }
+        if (!$others_counter) {
+          $others_counter = '';
+        }
+
         ?>
       <div id="ftt_trainee_block" class="tab-content" style="margin-bottom: 10px; padding-bottom: 10px; padding-top: 10px; padding-bottom: 19px;">
           <div class="">
@@ -174,8 +185,17 @@ else if (isset ($_SESSION["logged-in"])){
                 <span><a class="ftt_menu_a" href="/ftt_fellowship">Общение</a></span>
                 <span><a class="ftt_menu_a" href="/ftt_service">Служение</a></span>
                 <span><a class="ftt_menu_a" href="/ftt_gospel">Благовестие</a></span>
+
+                <strong class="ftt_menu_a link_custom_normal dropdown_custom font_normal" style="display:none;">Ещё<?php echo "<sup style='color: red;'><b> {$others_counter}</b></sup>"; ?></strong>
+                <strong class="dropdown_custom-content" style="display: none;">
+                  <a class="ftt_menu_a font_normal" href="/contacts">Контакты</a><br><br>
+                  <a class="ftt_menu_a font_normal" href="/ftt_extrahelp">Доп. задания<?php echo "<sup style='color: red;'><b> {$extra_help_count}</b></sup>"; ?></a><br><br>
+                  <a class="ftt_menu_a font_normal" href="/ftt_reading">Чтение</a>
+                  <?php if ($ftt_access['group'] === 'staff') { ?>
+                    <br><br><a class="ftt_menu_a font_normal" href="/ftt_application">Заявления<?php echo "<sup style='color: red;'><b> {$requests_stat_count_main}</b></sup>"; ?></a>
+                  <?php }?>
+                </strong>
                 <span><a class="ftt_menu_a" href="/contacts">Контакты</a></span>
-                <!--<span><a class="ftt_menu_a" href="ftt_absence">Отсутствие</a></span>-->
                 <span><a class="ftt_menu_a" href="/ftt_extrahelp">Доп. задания<?php echo "<sup style='color: red;'><b> {$extra_help_count}</b></sup>"; ?></a></span>
                 <span><a class="ftt_menu_a" href="/ftt_reading">Чтение</a></span>
               <?php if ($ftt_access['group'] === 'staff') { ?>
@@ -201,6 +221,14 @@ else if (isset ($_SESSION["logged-in"])){
         </div>
       </div>
       <script>
+      $(".dropdown_custom").click(function () {
+        if ($(".dropdown_custom-content").is(":visible")) {
+          $(".dropdown_custom-content").css("display", "none");
+        } else {
+          $(".dropdown_custom-content").css("display", "block");
+          $(".dropdown_custom-content").css("right", "10px");
+        }
+      });
       /*
       $("#ftt_trainee_block .ftt_menu_s").click(function () {
         let href_tmp = "https://reg-page.ru/"+ $(this).attr("data-link") +".php"
