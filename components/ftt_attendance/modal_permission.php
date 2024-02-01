@@ -23,7 +23,7 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
         <div class="row">
           <div class="col-4" style="max-width: 150px;">
             <label class="required-for-label" style="min-width: 130px;">Дата отсутствия</label>
-            <input type="date" id="permission_modal_date" class="form-control form-control-sm mb-2" value="" min="<?php echo date("Y-m-d");?>">
+            <input type="date" id="permission_modal_date" class="form-control form-control-sm mb-2" value="" min="<?php //echo date("Y-m-d");?>">
           </div>
           <div class="col-3 pl-0" style="margin-top:28px;">
             <span class=""><strong id="show_day_in_blank"></strong></span>

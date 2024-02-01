@@ -19,7 +19,7 @@ if (!$adminId) {
 if (isset($_GET['type']) && $_GET['type'] === 'reset_semester') {
   if (empty($_GET['all'])) {
     resetExtraHelp($adminId);
-    resetSkip($adminId);    
+    resetSkip($adminId);
   }
 
   echo resetSemester($adminId, $_GET['all']);
@@ -41,6 +41,12 @@ if (isset($_GET['type']) && $_GET['type'] === 'partial_reset_extra_help') {
 // Удалить пропущенные занятия без долгов
 if (isset($_GET['type']) && $_GET['type'] === 'partial_reset_skip') {
   echo resetSkip($adminId);
+  exit();
+}
+
+// Удалить пропущенные занятия без долгов
+if (isset($_GET['type']) && $_GET['type'] === 'reset_graduate') {
+  echo resetGraduate($adminId);
   exit();
 }
 

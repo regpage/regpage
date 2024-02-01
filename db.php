@@ -3095,7 +3095,7 @@ function db_isAdminExist ($login)
 {
     global $db;
     $login = $db->real_escape_string($login);
-    $res=db_query ("SELECT * FROM admin WHERE login='$login'");
+    $res=db_query ("SELECT * FROM `admin` WHERE `login`='$login'");
     return $res->num_rows>0 ? true : false;
 }
 
@@ -3530,7 +3530,7 @@ function db_getEventMemberInvited($eventId, $memberId){
 function db_getReferences($sortField, $sortType){
     global $db;
     $_sortField = $db->real_escape_string($sortField);
-    $_sortType = $db->real_escape_string($sortType);    
+    $_sortType = $db->real_escape_string($sortType);
 
     $res = db_query("SELECT r.name, r.link_article, p.name as page_name,
             r.block_num, r.published, r.id, r.page, b.name as block_name, r.priority

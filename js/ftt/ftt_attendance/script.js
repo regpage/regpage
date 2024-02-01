@@ -1309,6 +1309,93 @@ function open_blank(el_this) {
   });
 
   // Правка мероприятий в бланке
+  // формимуем список мероприятий из таблицы разрешения
+  function get_sessions_permission_for_blank(member_key, date, permission_sheet_id) {
+    let no_checked = true;
+    fetch("ajax/ftt_attendance_ajax.php?type=get_permission&sheet_id=" + permission_sheet_id)
+    .then(response => response.json())
+    .then(commits => { // then start
+      let sessions_staff = commits.result;
+      let checked_str, id_field_extra;
+      let html_staff_editor= "<div><label class='form-check-label'><input class='select_all_session form-check-input' type='checkbox'>Добавить/Удалить все</label></div><hr>";
+      for (let session_str in sessions_staff) {
+        if (sessions_staff.hasOwnProperty(session_str)) {
+          if (sessions_staff[session_str]["checked"] === "1") {
+            checked_str = "checked";
+          } else {
+            checked_str = "";
+            no_checked = false;
+          }
+
+          if (!sessions_staff[session_str]["id"]) {
+            id_field_extra = "";
+          } else {
+            id_field_extra = sessions_staff[session_str]["id"];
+          }
+
+          let end_time_session = "";
+          if (sessions_staff[session_str]["duration"] && sessions_staff[session_str]["duration"] != "0") {
+            end_time_session = " – " + time_plus_minutes(sessions_staff[session_str]["session_time"], sessions_staff[session_str]["duration"]);
+          }
+
+          html_staff_editor += "<div><label class='form-check-label'><input type='checkbox' class='session_staff_str form-check-input' data-day='"+sessions_staff[session_str]["session_time"]
+          + "' data-session_name='" + sessions_staff[session_str]["session_name"] + "' data-session_id='" + id_field_extra
+          + "' data-visit='" + sessions_staff[session_str]["visit"] + "' data-end_time='" + sessions_staff[session_str]["end_time"]
+          + "' data-duration='"+sessions_staff[session_str]["duration"] + "' data-comment='" + sessions_staff[session_str]["comment"]
+          + "' " + checked_str + ">" + sessions_staff[session_str]["session_name"] + " ("
+          + sessions_staff[session_str]["session_time"]+""+end_time_session+")</label></div>"
+        }
+      }
+
+      $("#modal_permission_block").html(html_staff_editor);
+      // checked all
+      $(".select_all_session").change(function () {
+        if (($("#edit_permission_blank").attr("data-status") === "1" && trainee_access) || $("#edit_permission_blank").attr("data-status") === "2" || $("#edit_permission_blank").attr("data-status") === "3") {
+          showError("Этот лист посещаемости отправлен. Радактирование невозможно.");
+          $(this).prop("checked", !$(this).prop("checked"));
+          return;
+        }
+        if ($(this).prop("checked")) {
+          valid_modal_permission_field();
+        } else {
+          valid_modal_permission_field(1);
+        }
+        $("#modal_permission_block input[type='checkbox']").each(function () {
+          if (!$(this).hasClass("select_all_session")) {
+            $(this).prop("checked", $(".select_all_session").prop("checked"));
+          }
+        });
+      });
+      // checked sessions
+      $("#modal_permission_block .session_staff_str").change(function () {
+        if (($("#edit_permission_blank").attr("data-status") === "1" && trainee_access) || $("#edit_permission_blank").attr("data-status") === "2" || $("#edit_permission_blank").attr("data-status") === "3") {
+          showError("Этот лист посещаемости отправлен. Радактирование невозможно.");
+          $(this).prop("checked", !$(this).prop("checked"));
+          return;
+        }
+        if ($("#modal_permission_block .session_staff_str:checked").length === 0) {
+          valid_modal_permission_field(1);
+        } else {
+          valid_modal_permission_field();
+        }
+      });
+      if (permission_sheet_id) {
+        valid_modal_permission_field();
+        //permission_session_checked(permission_sheet_id);
+      }
+      // вкл / выкл "Выбрать всё"
+      $(".select_all_session").prop("checked", true);
+      if (no_checked) {
+        $(".select_all_session").prop("checked", false);
+      }
+      if (($("#edit_permission_blank").attr("data-status") === "1" && trainee_access) || $("#edit_permission_blank").attr("data-status") === "2" || $("#edit_permission_blank").attr("data-status") === "3") {
+        $(".select_all_session").prop("disabled", false);
+        $("#modal_permission_block input[type='checkbox']").attr("disabled", true);
+      }
+      // then end
+    });
+  }
+
   // формимуем список мероприятий из расписания
   function get_sessions_for_blank(member_key, date, permission, permission_sheet_id) {
     let semester_range;
@@ -2042,22 +2129,26 @@ function open_blank(el_this) {
 
     $("#modal_permission_block input[type='checkbox']").each(function (i) {
       if (!$(this).hasClass("select_all_session")) {
+        let checked_combobox = 0;
         if ($(this).prop("checked")) {
-          session_str_test[i];
-          session_str_test[i] = {
-            sheet_id: "",
-            session_id: $(this).attr("data-session_id"),
-            session_name: $(this).attr("data-session_name"),
-            session_time: $(this).attr("data-day"),
-            duration: $(this).attr("data-duration"),
-            session_correction_id: ""
-          }
-          if ($("#edit_permission_blank").attr("data-id")) {
-            session_str_test[i]["sheet_id"] = $("#edit_permission_blank").attr("data-id");
-          }
-          if (!$(this).attr("data-session_id")) {
-            session_str_test[i]["session_correction_id"] = $(this).attr("data-day");
-          }
+          checked_combobox = 1;
+        }
+
+        session_str_test[i];
+        session_str_test[i] = {
+          sheet_id: "",
+          session_id: $(this).attr("data-session_id"),
+          session_name: $(this).attr("data-session_name"),
+          session_time: $(this).attr("data-day"),
+          duration: $(this).attr("data-duration"),
+          session_correction_id: "",
+          checked: checked_combobox
+        }
+        if ($("#edit_permission_blank").attr("data-id")) {
+          session_str_test[i]["sheet_id"] = $("#edit_permission_blank").attr("data-id");
+        }
+        if (!$(this).attr("data-session_id")) {
+          session_str_test[i]["session_correction_id"] = $(this).attr("data-day");
         }
       }
     });
@@ -2150,25 +2241,26 @@ function open_blank(el_this) {
   function fill_blank(element) {
     // behavior
     // buttons
-    $("#send_permission_blank").prop("disabled", true).hide();
+    $("#send_permission_blank").attr("disabled", true).hide();
+    // кнопка сохранить
     if (!trainee_access) {
-      $("#save_permission_blank").prop("disabled", false).show();
+      $("#save_permission_blank").attr("disabled", false).show();
     } else {
-      $("#save_permission_blank").prop("disabled", true).hide();
+      $("#save_permission_blank").attr("disabled", true).hide();
     }
     if (element.attr("data-status") === "0") {
-      $("#deny_permission_blank").prop("disabled", true).hide();
-      $("#apply_permission_blank").prop("disabled", true).hide();
+      $("#deny_permission_blank").attr("disabled", true).hide();
+      $("#apply_permission_blank").attr("disabled", true).hide();
     }
 
     if (element.attr("data-status") === "2") {
-      $("#apply_permission_blank").prop("disabled", true).hide();
-      $("#deny_permission_blank").prop("disabled", false).show();
+      $("#apply_permission_blank").attr("disabled", true).hide();
+      $("#deny_permission_blank").attr("disabled", false).show();
     }
 
     if (element.attr("data-status") === "3") {
-      $("#apply_permission_blank").prop("disabled", false).show();
-      $("#deny_permission_blank").prop("disabled", true).hide();
+      $("#apply_permission_blank").attr("disabled", false).show();
+      $("#deny_permission_blank").attr("disabled", true).hide();
     }
 
     // fields
@@ -2180,7 +2272,7 @@ function open_blank(el_this) {
     $("#permission_modal_comment").css("border-color", "#ced4da");
 
     if (element.attr("data-status") === "1") {
-      $("#delete_permission_blank").prop("disabled", false).show();
+      $("#delete_permission_blank").attr("disabled", false).show();
       if (!trainee_access) {
         if ($(window).width()<=769) {
           $("#apply_permission_blank").text("Одоб");
@@ -2189,8 +2281,8 @@ function open_blank(el_this) {
           $("#close_permission_blank").text("Закр");
         }
         // buttons
-        $("#deny_permission_blank").prop("disabled", false).show();
-        $("#apply_permission_blank").prop("disabled", false).show();
+        $("#deny_permission_blank").attr("disabled", false).show();
+        $("#apply_permission_blank").attr("disabled", false).show();
         $("#edit_permission_blank input").attr("disabled", false);
         $("#edit_permission_blank select").attr("disabled", false);
       } else {
@@ -2199,11 +2291,17 @@ function open_blank(el_this) {
     } else if (element.attr("data-status") === "2") {
       // buttons
       if (!trainee_access) {
-        $("#deny_permission_blank").prop("disabled", false).show();
+        $("#deny_permission_blank").attr("disabled", false).show();
       }
-      $("#delete_permission_blank").prop("disabled", true).hide();
+      $("#trainee_select_permission").attr("disabled", true);
+      $("#permission_modal_date").attr("disabled", true);
+      $("#permission_modal_comment").attr("disabled", true);
+      $("#delete_permission_blank").attr("disabled", true).hide();
     } else if (element.attr("data-status") === "3") {
-      $("#delete_permission_blank").prop("disabled", true).hide();
+      $("#trainee_select_permission").attr("disabled", true);
+      $("#permission_modal_date").attr("disabled", true);
+      $("#permission_modal_comment").attr("disabled", true);
+      $("#delete_permission_blank").attr("disabled", true).hide();
     } else {
       if (!trainee_access) {
 
@@ -2223,17 +2321,17 @@ function open_blank(el_this) {
     let d1 = new Date(date_now_gl);
     let d2 = new Date(element.attr("data-absence_date"));
     let dm = d1 - d2;
-    let historic = false;
+    //let historic = false;
 
     if (dm > 0) {
-      setTimeout(function () {
+      /*setTimeout(function () {
         get_sessions_archive(element.attr("data-id"));
-      }, 30);
-      $("#history_permission_block").show();
-      $("#modal_permission_block").hide();
-      historic = true;
+      }, 30);*/
+      //$("#history_permission_block").show();
+      $("#modal_permission_block").show();
+      //historic = true;
     } else {
-      $("#history_permission_block").hide();
+      //$("#history_permission_block").hide();
       $("#modal_permission_block").show();
     }
 
@@ -2280,7 +2378,7 @@ function open_blank(el_this) {
       } else {
         $("#show_day_in_blank").text(getNameDayOfWeekByDayNumber(element.attr("data-absence_date"), false));
       }
-
+      // Инфо в футере бланка
       let text_permission_status = "Отправлен ";
       if (element.attr("data-status") === "2" || element.attr("data-status") === "3") {
         text_permission_status = "Отправлен ";
@@ -2324,7 +2422,7 @@ function open_blank(el_this) {
     $("#permission_modal_comment_extra").attr("disabled", false);
     valid_modal_permission_field();
   }
-
+  // не используется
   function permission_session_checked(sheet_id) {
     fetch("ajax/ftt_attendance_ajax.php?type=get_permission&sheet_id="+sheet_id)
     .then(response => response.json())
@@ -2361,8 +2459,8 @@ function open_blank(el_this) {
       $(this).removeClass("bg-notice-string");
     }
     clear_blank("#edit_permission_blank");
+    get_sessions_permission_for_blank($(this).attr("data-member_key"), $(this).attr("data-absence_date"), $(this).attr("data-id"));
     fill_blank($(this));
-    get_sessions_for_blank($(this).attr("data-member_key"), $(this).attr("data-absence_date"), true, $(this).attr("data-id"));
   });
 
   $("#permission_modal_comment").keyup(function () {
@@ -2374,11 +2472,11 @@ function open_blank(el_this) {
   $("#permission_modal_date").change(function () {
     if (!$(this).val() || $(this).val() === "") {
       $("#modal_permission_block").html("");
-    } else if (compare_date($(this).val()) || $(this).val().length > 10 || $(this).val().length === 0) {
+    }/* else if (compare_date($(this).val()) || $(this).val().length > 10 || $(this).val().length === 0) {
       $(this).val("");
       showError("Нельзя создать бланк за прошедшую дату.");
       $("#modal_permission_block").html("");
-    } else if ($("#trainee_select_permission").val() === "_none_" && !$("#trainee_select_permission").val()) {
+    }*/ else if ($("#trainee_select_permission").val() === "_none_" && !$("#trainee_select_permission").val()) {
 
     } else {
       valid_modal_permission_field();

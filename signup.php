@@ -328,7 +328,7 @@ $(document).ready(function(){
     }
 });
 
-$("#loginFormBtn").click (function (e){
+$("#loginFormBtn").click(function (e) {
     e.stopPropagation();
     e.preventDefault();
 
@@ -343,10 +343,9 @@ $("#loginFormBtn").click (function (e){
         e.stopPropagation();
         e.preventDefault();
         return;
-    }
-    else{
+    } else {
         $("#emailError").hide ();
-    }
+    }    
 
     if(password !== passwordConfirm){
         $('.password').focus();
@@ -354,8 +353,7 @@ $("#loginFormBtn").click (function (e){
         e.stopPropagation();
         e.preventDefault();
         return;
-    }
-    else{
+    } else {
         $("#passError").hide ();
     }
 
@@ -364,20 +362,17 @@ $("#loginFormBtn").click (function (e){
         e.stopPropagation();
         e.preventDefault();
         return;
-    }
-    else{
+    } else {
         $("#passLengthError").hide ();
     }
 
     $.get('/ajax/login.php', { signupLogin: login.val() })
     .done (function(data) {
         $("#ajaxError").hide ();
-
         if(data === "error"){
             $("#emailError").hide ();
             $('#loginError').show();
-        }
-        else{
+        } else {
             $('.signup-container h3').css('display', 'block');
             $('.signup-container form').css('display', 'none');
             $.get('/ajax/login.php', { signupLogin: login.val(), password:password });
@@ -389,6 +384,8 @@ $("#loginFormBtn").click (function (e){
 
 
 /*
+
+
 $("#btnDoSendEventMsgAdmins").click (function (){
     if ($(this).hasClass('disabled')) return;
     var message = $("#sendMsgTextAdmin").val(), name = $("#sendMsgNameAdmin").val(), email = $("#sendMsgEmailAdmin").val();

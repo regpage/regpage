@@ -529,8 +529,9 @@ function set_permission($sessions, $adminId)
       $session_name = $value->session_name;
       $session_time = $value->session_time;
       $duration = $value->duration;
-      $res2 = db_query("INSERT INTO `ftt_permission` (`sheet_id`, `session_id`, `session_correction_id`, `session_name`, `session_time`, `duration`, `changed`)
-      VALUES ('$sheet_id_sub', '$session_id', '$session_correction_id', '$session_name', '$session_time', '$duration', 1)");
+      $checked = $value->checked;
+      $res2 = db_query("INSERT INTO `ftt_permission` (`sheet_id`, `session_id`, `session_correction_id`, `session_name`, `session_time`, `duration`, `checked`, `changed`)
+      VALUES ('$sheet_id_sub', '$session_id', '$session_correction_id', '$session_name', '$session_time', '$duration', '$checked', 1)");
 
       // Если бланк передан сегодня
       if ($today && $status === '2') {

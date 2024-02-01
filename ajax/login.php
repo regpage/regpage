@@ -40,8 +40,7 @@ else if (isset($_GET["signupLogin"])) {
         if(!$memberId){
             UTILS::sendConfirmationEmailToCreateAccount($email, $_GET);
         }
-    }
-    else{
+    } else {
         print !$memberId ? "success" : "error";
     }
 }

@@ -279,15 +279,14 @@ $("#loginFormBtn").click (function (e){
         return;
     }
 
-      $.get('ajax/login.php', {checklogin: loginTrim})
-      .done (function(data) {
-        if (data === 'new') {
-            setCookie('log_log', loginTrim, 1);
-            setCookie('pas_pas', password, 1);
-
+    $.get('ajax/login.php', {checklogin: loginTrim})
+    .done (function(data) {
+      if (data === 'new') {
+          setCookie('log_log', loginTrim, 1);
+          setCookie('pas_pas', password, 1);
           window.location = 'signup?redirect=yes';
         }
-      });
+    });
 
     $.get('ajax/login.php', { login: loginTrim, password:$("#password").val() })
     .done (function(data) {

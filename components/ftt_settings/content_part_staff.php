@@ -102,6 +102,17 @@
   <!--  -->
   <div class="row pt-3">
     <div class="col-10">
+      <h6>Удалить долги участников закончивших обучение. Включая данные и прикрепленные файлы таблиц посещаемость, доп. помощь, проп. занятия? Списк обучающихся должен быть актуальным.</h6>
+    </div>
+    <div class="col-2">
+      <button id="" type="button" class="btn btn-danger btn-sm partial_removal" name="button" data-toggle="modal" data-target="#modalUniversalConfirm" data-type="reset_graduate">Удалить долги закончивших обучение</button>
+    </div>
+  </div>
+  <hr class="mb-2 mt-2">
+
+  <!--  -->
+  <div class="row pt-3">
+    <div class="col-10">
       <h6>Удалить историю чтения Библии закончивших обучение? Списк обучающихся должен быть актуальным. Если список обучающихся пуст, тогда будут удалена вся история чтения Библии.</h6>
     </div>
     <div class="col-2">
