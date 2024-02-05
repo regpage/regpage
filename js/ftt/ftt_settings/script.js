@@ -28,6 +28,7 @@ $(document).ready(function(){
       if ($("#modalUniversalConfirm").attr("data-type") === "1") {
         all = 1;
       }
+      $("#spinner").show();
       fetch('ajax/ftt_settings_ajax.php?type=reset_semester&all=' + all)
       .then(response => response.text())
       .then(result => {
@@ -44,6 +45,7 @@ $(document).ready(function(){
         }
       });
     } else if ($("#modalUniversalConfirm").attr("data-type") === "2") {
+      $("#spinner").show();
       fetch('ajax/ftt_settings_ajax.php?type=reset_applications')
       .then(response => response.text())
       .then(result => {
@@ -85,6 +87,7 @@ $(document).ready(function(){
     if (!type || !isNaN(type)) {
       return;
     }
+    $("#spinner").show();
     fetch("ajax/ftt_settings_ajax.php?type=" + type)
     .then(response => response.text())
     .then(result => {

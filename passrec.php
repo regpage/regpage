@@ -54,13 +54,13 @@
     else if ($login){
 ?>
         <h2 class="title">Введите новый пароль два раза</h2>
-        <form id="change-password" role="form" method="POST">
-            <input name="code" type="hidden" value="<?php echo htmlspecialchars($_GET['code'])?>" />
+        <form id="change-password" role="form" method="POST" onSubmit="return validate_pass(this)">
+            <input name="code" type="hidden" value="<?php echo htmlspecialchars($_GET['code'])?>">
             <div id="passgroup" class="form-group">
                 <input type="password" maxlength="50" minlength="5" class="form-control input-lg" id="pwd1" name="password"
-                       placeholder="Новый пароль" required autofocus>
+                       placeholder="Новый пароль" required autofocus onkeypress="return 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,:;-_!?‘()[]{}<>|=+*@^~'.includes(event.key)">
                 <input type="password" maxlength="50" minlength="5" class="form-control input-lg" id="pwd2" name="password2"
-                       placeholder="Новый пароль еще раз" required autofocus>
+                       placeholder="Новый пароль еще раз" required autofocus onkeypress="return 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,:;-_!?‘()[]{}<>|=+*@^~'.includes(event.key)">
                 <p class="help-block" id="helpPasswordNoMatch" style="font-weight: bold;display: none;">Несоответствие паролей</p>
             </div>
             <button id="btnChangePassword" type="submit" class="btn btn-success btn-lg" style="width: 100%" disabled>Сменить пароль</button>
@@ -130,4 +130,19 @@
             checkPassword ();
         });
     });
+    function validate_pass(form) {
+      // проверям пароль
+      for (let char of form.password.value) {
+        if (!/[a-zA-Z0-9\.,:;_!?‘\(\)\[\]{|}<>=+*@^~-]/.test(char)) {
+          if (/[а-яА-ЯёЁ]/.test(char)) {
+            showError("Пароль содержит буквы русского алфавита. Используйте английские буквы.");
+          } else {
+            showError("Пароль содержит недопустимый символ — " + char);
+          }
+          return false;
+        }
+      }
+
+      return true;
+    }
 </script>

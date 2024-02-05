@@ -227,10 +227,11 @@ $(document).ready(function(){
         <input type="text" class="login" name="login" placeholder="Email" valid="required">
 
         <label class="control-label" for="password">Придумайте пароль</label>
-        <input type="password" class="password" name="password" valid="required" placeholder="Придумайте пароль" maxlength="15">
+        <input type="password" class="password" name="password" valid="required" placeholder="Придумайте пароль" maxlength="15" onkeypress="return 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,:;-_!?‘()[]{}<>|=+*@^~'.includes(event.key)">
+        <!-- console.log(event.key) -->
 
         <label class="control-label" for="password">Повторите пароль</label>
-        <input type="password" class="passwordConfirm" valid="required" placeholder="Повторите пароль" name="passwordConfirm" maxlength="15">
+        <input type="password" class="passwordConfirm" valid="required" placeholder="Повторите пароль" name="passwordConfirm" maxlength="15" onkeypress="return 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,:;-_!?%‘()[]{}<>|=+*@^~'.includes(event.key)">
 
         <div id="loginError" class="alert alert-error" style="display:none; width: 100%; padding: 10px 7px 10px 10px; text-align: center; margin-bottom: 10px;">Учетная запись с таким логином уже существует. <a href="/login">Войти</a>?</div>
         <div id="emailError" class="alert alert-error" style="display:none; width: 100%; padding: 10px 7px 10px 10px; text-align: center; margin-bottom: 10px;">Логином должен быть корректный email</div>
@@ -320,7 +321,7 @@ $(document).ready(function(){
 
     handleSignupFields();
 
-    function handleSignupFields(){
+    function handleSignupFields() {
         $(".login").val('').keyup();
         $(".password").val('').keyup();
         $(".passwordConfirm").val('').keyup();
@@ -345,7 +346,19 @@ $("#loginFormBtn").click(function (e) {
         return;
     } else {
         $("#emailError").hide ();
-    }    
+    }
+
+    // проверям пароль
+    for (let char of password) {
+      if (!/[a-zA-Z0-9\.,:;_!?‘\(\)\[\]{|}<>=+*@^~-]/.test(char)) {
+        if (/[а-яА-ЯёЁ]/.test(char)) {
+          showError("Пароль содержит буквы русского алфавита. Используйте английские буквы.");
+        } else {
+          showError("Пароль содержит недопустимый символ — " + char);
+        }
+        return;
+      }
+    }
 
     if(password !== passwordConfirm){
         $('.password').focus();
