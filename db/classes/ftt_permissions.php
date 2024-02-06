@@ -29,7 +29,7 @@ class FttPermissions
     $res = db_query("SELECT fps.id, fps.member_key, fps.absence_date, fps.date, fps.comment,
       fps.status, fps.date_send, fps.decision_date, fps.comment_extra, fps.notice,
       fp.id AS fp_id, fp.sheet_id, fp.session_id, fp.session_correction_id,
-      fp.session_name, fp.session_time, fp.duration
+      fp.session_name, fp.session_time, fp.duration, fp.checked
       FROM ftt_permission_sheet AS fps
       INNER JOIN ftt_permission fp ON fp.sheet_id = fps.id
       WHERE  fps.member_key = '$member_id'
@@ -100,7 +100,7 @@ class FttPermissions
       $condition = $sheets[$i]['id'];
       $res = db_query("SELECT `id`, `sheet_id`, `session_id`, `session_correction_id`
         FROM ftt_permission
-        WHERE  `sheet_id` = '$condition'");
+        WHERE  `sheet_id` = '{$condition}' AND `checked` = 1");
       while ($row = $res->fetch_assoc()) {
         $result[$sheets[$i]['member_key']]['sessions'][]=$row;
       }

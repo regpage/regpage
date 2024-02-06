@@ -1311,7 +1311,7 @@ function open_blank(el_this) {
   // Правка мероприятий в бланке
   // формимуем список мероприятий из таблицы разрешения
   function get_sessions_permission_for_blank(member_key, date, permission_sheet_id) {
-    let no_checked = true;
+    let no_checked = false;
     fetch("ajax/ftt_attendance_ajax.php?type=get_permission&sheet_id=" + permission_sheet_id)
     .then(response => response.json())
     .then(commits => { // then start
@@ -1323,14 +1323,15 @@ function open_blank(el_this) {
           if (sessions_staff[session_str]["checked"] === "1") {
             checked_str = "checked";
           } else {
+            no_checked = true;
             checked_str = "";
-            no_checked = false;
+
           }
 
-          if (!sessions_staff[session_str]["id"]) {
+          if (!sessions_staff[session_str]["session_id"]) {
             id_field_extra = "";
           } else {
-            id_field_extra = sessions_staff[session_str]["id"];
+            id_field_extra = sessions_staff[session_str]["session_id"];
           }
 
           let end_time_session = "";
@@ -1339,6 +1340,7 @@ function open_blank(el_this) {
           }
 
           html_staff_editor += "<div><label class='form-check-label'><input type='checkbox' class='session_staff_str form-check-input' data-day='"+sessions_staff[session_str]["session_time"]
+          + "' data-id='" + sessions_staff[session_str]["id"]
           + "' data-session_name='" + sessions_staff[session_str]["session_name"] + "' data-session_id='" + id_field_extra
           + "' data-visit='" + sessions_staff[session_str]["visit"] + "' data-end_time='" + sessions_staff[session_str]["end_time"]
           + "' data-duration='"+sessions_staff[session_str]["duration"] + "' data-comment='" + sessions_staff[session_str]["comment"]
@@ -2085,8 +2087,9 @@ function open_blank(el_this) {
   function prepare_data(status) {
     let comment_extra = $("#permission_modal_comment_extra").val();
     if ($("#permission_modal_date").val() && compare_date($("#permission_modal_date").val()) && (status === 2 || status === 3)) {
-      showHint("Так как дата прошедшая, лист посещаемости не изменён.");
-      comment_extra += " Так как дата прошедшая, лист посещаемости не изменён.";
+      // на данный момент бланкти изменяюится
+      //showHint("Так как дата прошедшая, лист посещаемости не изменён.");
+      //comment_extra += " Так как дата прошедшая, лист посещаемости не изменён.";
     }
     //  сверить дату бланка и текущую дату
     // если статус 2 или 3 Выдать предупреждение и дописать это предупреждение к концу коментария служащего
@@ -2248,7 +2251,7 @@ function open_blank(el_this) {
     } else {
       $("#save_permission_blank").attr("disabled", true).hide();
     }
-    if (element.attr("data-status") === "0") {
+    if (element.attr("data-status") === "0" || !element.attr("data-status")) {
       $("#deny_permission_blank").attr("disabled", true).hide();
       $("#apply_permission_blank").attr("disabled", true).hide();
     }

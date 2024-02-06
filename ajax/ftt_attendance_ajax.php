@@ -7,6 +7,7 @@ include_once "../db/ftt/ftt_attendance_skip_db.php";
 include_once "../db/classes/schedule_class.php";
 include_once "../db/classes/db_operations.php";
 include_once '../db/classes/date_convert.php';
+include_once '../db/classes/DatesCompare.php';
 include_once '../db/classes/emailing.php';
 include_once '../db/classes/trainee_data.php';
 include_once '../db/classes/member.php';
@@ -14,7 +15,7 @@ include_once '../db/classes/short_name.php';
 include_once '../db/classes/CutString.php';
 include_once '../db/classes/ftt_reading/bible.php';
 include_once '../db/classes/statistic/biblereading.php';
-require_once '../db/classes/ftt_lists.php';
+include_once '../db/classes/ftt_lists.php';
 
 // Подключаем ведение лога
 include_once "../extensions/write_to_log/write_to_log.php";

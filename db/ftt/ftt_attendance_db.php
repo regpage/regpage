@@ -483,8 +483,8 @@ function set_permission($sessions, $adminId)
   }
 
   if (empty($sessions->sheet->id)) {
-    $res = db_query("INSERT INTO `ftt_permission_sheet` (`member_key`, `absence_date`, `date`, `comment`, `status`, `date_send`, `serving_one`, $comment_extra_field `decision_date`, `notice`, $archive_sessions_field `changed`)
-    VALUES ('$member_key', '$absence_date', NOW(),'$comment', '$status', $date_send, '$serving_one', $comment_extra_value '$date_decision', '$notice', $archive_sessions_value 1)");
+    $res = db_query("INSERT INTO `ftt_permission_sheet` (`member_key`, `absence_date`, `date`, `comment`, `status`, `date_send`, `serving_one`, {$comment_extra_field} `decision_date`, `notice`, `changed`)
+    VALUES ('$member_key', '$absence_date', NOW(),'$comment', '$status', $date_send, '$serving_one', {$comment_extra_value} '$date_decision', '$notice', 1)");
     $sheet_id = $db->insert_id;
   } else { //
     $res = db_query("UPDATE `ftt_permission_sheet` SET
@@ -507,11 +507,12 @@ function set_permission($sessions, $adminId)
   $today = false;
   $result_attendance_sheet = '';
   $curent_date = date("Y-m-d");
+  $past_date = !DatesCompare::isMoreThanCurrent($absence_date);
   if ($absence_date === $curent_date && ($status === '2' || $status === '3')) {
     $today = true;
   }
 
-  if ($today) {
+  if ($today && $past_date) {
     $attendance_sheet = db_query("SELECT `id`
       FROM `ftt_attendance_sheet`
       WHERE `date` = '$curent_date' AND `member_key`='$member_key'");
@@ -534,12 +535,12 @@ function set_permission($sessions, $adminId)
       VALUES ('$sheet_id_sub', '$session_id', '$session_correction_id', '$session_name', '$session_time', '$duration', '$checked', 1)");
 
       // Если бланк передан сегодня
-      if ($today && $status === '2') {
+      if (($today || $past_date) && $status === '2') {
         // обновляем соответствующие строки attendance задавая в permission_sheet_id    id $sheet_id_sub
         $res = db_query("UPDATE `ftt_attendance` SET
           `permission_sheet_id` = '$sheet_id_sub', `reason` = 'Р', `changed` = 1
           WHERE `sheet_id`='$result_attendance_sheet' AND (`session_id` = '$session_id' OR `session_time` = '$session_time')");
-      } elseif ($today && $status === '3') {
+      } elseif (($today || $past_date) && $status === '3') {
         // обновляем соответствующие строки attendance удаля из permission_sheet_id    id $sheet_id_sub
         $res = db_query("UPDATE `ftt_attendance` SET
           `permission_sheet_id` = '', `reason` = '', `changed` = 1
