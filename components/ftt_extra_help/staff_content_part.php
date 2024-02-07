@@ -18,7 +18,13 @@
     <div id="current_extra_help" class="container tab-pane active"><br>
       <div id="bar_extra_help" class="btn-group">
         <button id="showModalAddEditExtraHelp" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAddEditExtraHelp">Добавить</button>
-        <button id="showModalShortStatistics" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalShortStatistics">Печать</button>
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">Печать</button>
+          <div class="dropdown-menu">
+            <button id="showModalShortStatistics" class="btn btn-link" data-toggle="modal" data-target="#modalShortStatistics">Отчёт</button>
+            <button id="showModalFullStatistics" class="btn btn-link" data-toggle="modal" data-target="#modalFullStatistics">Отчёт подробный</button>
+          </div>
+        </div>
         <button id="filters_button" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalFilrets" style="display: none;">Фильтры</button>
         <button id="sort_button" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalSort" style="display: none;">Порядок</button>
         <?php // if ($trainee_data['coordinator'] !== '1'): ?>

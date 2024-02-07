@@ -360,6 +360,26 @@
   </div>
 </div>
 
+<!-- Фильтры -->
+<div id="modalFullStatistics" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 id="">Отчёт</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+      </div>
+      <div class="modal-body">
+        <div id="modalFullStatisticsTbl">
+
+        </div>
+      </div>
+      <div class="modal-footer" style="">
+        <button id="btn_print_full_report" class="btn btn-sm btn-info" data-dismiss="modal" aria-hidden="true" style="">Печать</button>
+        <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- Сортировка
 <div id="modalSort" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">

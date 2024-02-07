@@ -870,7 +870,7 @@ $("#info_of_extrahelp").click(function () {
       }
     }
   });
-
+  // краткий отчёт
   function rendering_report_extra_help() {
     fetch("ajax/ftt_extra_help_ajax.php?type=get_print_report&service_one_key="+$("#sevice_one_print_report").val())
     .then(response => response.json())
@@ -892,6 +892,34 @@ $("#info_of_extrahelp").click(function () {
     });
   }
 
+  //отчёт
+  function rendering_full_report_extra_help() {
+    let result = [];
+    $("#list_content .ftt_extra_help_string:visible").each(function () {
+      result.push([$(this).find(".trainee_name").text(), $(this).find(".semester_text").text(), $(this).attr("data-reason"), $(this).attr("data-comment")]);
+    });
+
+    let html = "<h3 class='hide_element'>Статистика доп. заданий</h3><p class='hide_element'> Служащий: "+$("#sevice_one_select option:selected").text()
+    + ";<span class='hide_element'> Обучающийся: "+$("#trainee_select option:selected").text()
+    + ";</span><span class='hide_element'> Семестр: "+$("#semesters_select option:selected").text()
+    + ";</span><span class='hide_element'> "+$("#tasks_select option:selected").text()
+    +"</span></p><table class='table'><thead><tr><th style='width: 180px; text-align: left;'><b>Обучающийся</b></th>"
+    + "<th style='text-align: left;'><b>Причина</b></th><th style='width: 130px; text-align: left;'><b>Комментарий</b></th></tr><thead><tbody>";
+    for (let line in result) {
+      html += "<tr><td style='text-align: left;'>"+ result[line][0]
+      + " " + result[line][1] + "</td><td style='text-align: left;'>"+ result[line][2]
+      + "</td><td style='text-align: left;'>"+ result[line][3] +"</td></tr>";
+    }
+    html += "</tbody></table>";
+    $("#modalFullStatisticsTbl").html(html);
+  }
+
+  // отчёт
+  $("#showModalFullStatistics").click(function () {
+    rendering_full_report_extra_help();
+  });
+
+  // краткий отчёт
   $("#showModalShortStatistics").click(function () {
     $("#sevice_one_print_report").val($("#sevice_one_select").val());
     rendering_report_extra_help();
@@ -901,7 +929,7 @@ $("#info_of_extrahelp").click(function () {
     rendering_report_extra_help();
   });
 
-  $("#btn_print_report").click(function () {
+  $("#btn_print_report, #btn_print_full_report").click(function () {
 
     function printElem(elem){
       popup($(elem).html());
@@ -917,7 +945,11 @@ $("#info_of_extrahelp").click(function () {
       //mywindow.close();
       //return true;
     }
-    printElem("#modalShortStatisticsTbl");
+    let selector = "#modalShortStatisticsTbl";
+    if ($(this).attr("id") === "btn_print_full_report") {
+      selector = "#modalFullStatisticsTbl";
+    }
+    printElem(selector);
   });
 
 /* ==== MAIN & EXTRA HELP STOP ==== */
