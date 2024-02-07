@@ -1261,7 +1261,7 @@ function open_blank(el_this) {
          day = "";
          date = "";
        }
-       let html_part_span = "<span class='list_string list_string_archive link_day "+sunday_back+" "+done_string+" "+mark_string+"' data-id='"+res[i].id+"' data-date='"+date+"' data-member_key='"+res[i].member_key+"' data-status='"+res[i].status+"' data-date_send='"+res[i].date_send+"' data-bible='"+res[i].bible+"' data-morning_revival='"+res[i].morning_revival+"' data-personal_prayer='"+res[i].personal_prayer+"' data-common_prayer='"+res[i].common_prayer+"' data-bible_reading='"+res[i].bible_reading+"' data-ministry_reading='"+res[i].ministry_reading+"' data-serving_one='"+res[i].serving_one+"' data-bible_book='"+res[i].bible_book+"' data-bible_chapter='"+res[i].bible_chapter+"' data-comment='"+res[i].comment+"'>"+date+" "+day+"</span>";
+       let html_part_span = "<span class='list_string list_string_archive link_day "+sunday_back+" "+done_string+" "+mark_string+"' data-id='"+res[i].id+"' data-date='"+res[i].date+"' data-member_key='"+res[i].member_key+"' data-status='"+res[i].status+"' data-date_send='"+res[i].date_send+"' data-bible='"+res[i].bible+"' data-morning_revival='"+res[i].morning_revival+"' data-personal_prayer='"+res[i].personal_prayer+"' data-common_prayer='"+res[i].common_prayer+"' data-bible_reading='"+res[i].bible_reading+"' data-ministry_reading='"+res[i].ministry_reading+"' data-serving_one='"+res[i].serving_one+"' data-bible_book='"+res[i].bible_book+"' data-bible_chapter='"+res[i].bible_chapter+"' data-comment='"+res[i].comment+"'>"+date+" "+day+"</span>";
        if (i % 7 === 0) {
         html.push("<div class='row archive_str' style='margin-bottom: 2px;' data-member_key='member_key'>"+html_part_span);
       } else {
@@ -2089,7 +2089,7 @@ function open_blank(el_this) {
     if ($("#permission_modal_date").val() && compare_date($("#permission_modal_date").val()) && (status === 2 || status === 3)) {
       // на данный момент бланкти изменяюится
       //showHint("Так как дата прошедшая, лист посещаемости не изменён.");
-      //comment_extra += " Так как дата прошедшая, лист посещаемости не изменён.";
+      comment_extra += " Лист посещаемости за прошедшую дату. ";
     }
     //  сверить дату бланка и текущую дату
     // если статус 2 или 3 Выдать предупреждение и дописать это предупреждение к концу коментария служащего
@@ -2155,10 +2155,10 @@ function open_blank(el_this) {
         }
       }
     });
-
     session_str.set("data", JSON.stringify(session_str_test));
     return session_str;
   }
+
   function save_permissions(data) {
     // fetch
     fetch("ajax/ftt_attendance_ajax.php?type=set_permission", {

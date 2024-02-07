@@ -498,7 +498,6 @@ function set_permission($sessions, $adminId)
   // EMAILING
   if ($is_send_blank) {
     $email_text = short_name::no_middle(Member::get_name($member_key)) . ' создал(а) лист отсутствия на ' . date_convert::yyyymmdd_to_ddmmyyyy($absence_date) . "<br><br>" . "https://reg-page.ru/ftt_attendance.php?pb=" . $sheet_id . '<br><br>Лист отсутствия создан ' . date("d.m.y, H:i");
-
     emailing::send_by_key(trainee_data::get_serving_one($member_key), 'Лист отсутствия '.short_name::no_middle(Member::get_name($member_key)), $email_text);
   }
 
@@ -512,10 +511,10 @@ function set_permission($sessions, $adminId)
     $today = true;
   }
 
-  if ($today && $past_date) {
+  if ($today || $past_date) {
     $attendance_sheet = db_query("SELECT `id`
       FROM `ftt_attendance_sheet`
-      WHERE `date` = '$curent_date' AND `member_key`='$member_key'");
+      WHERE `date` = '$absence_date' AND `member_key`='$member_key'");
     while ($row = $attendance_sheet->fetch_assoc()) $result_attendance_sheet = $row['id'];
   }
   foreach ($sessions as $key => $value) {
@@ -531,20 +530,25 @@ function set_permission($sessions, $adminId)
       $session_time = $value->session_time;
       $duration = $value->duration;
       $checked = $value->checked;
+
       $res2 = db_query("INSERT INTO `ftt_permission` (`sheet_id`, `session_id`, `session_correction_id`, `session_name`, `session_time`, `duration`, `checked`, `changed`)
       VALUES ('$sheet_id_sub', '$session_id', '$session_correction_id', '$session_name', '$session_time', '$duration', '$checked', 1)");
 
       // Если бланк передан сегодня
       if (($today || $past_date) && $status === '2') {
         // обновляем соответствующие строки attendance задавая в permission_sheet_id    id $sheet_id_sub
-        $res = db_query("UPDATE `ftt_attendance` SET
-          `permission_sheet_id` = '$sheet_id_sub', `reason` = 'Р', `changed` = 1
-          WHERE `sheet_id`='$result_attendance_sheet' AND (`session_id` = '$session_id' OR `session_time` = '$session_time')");
+        if ($value->checked) {
+          $res = db_query("UPDATE `ftt_attendance` SET
+            `permission_sheet_id` = '$sheet_id_sub', `reason` = 'Р', `changed` = 1
+            WHERE `sheet_id`='$result_attendance_sheet' AND (`session_id` = '$session_id' OR `session_time` = '$session_time')");
+        }
       } elseif (($today || $past_date) && $status === '3') {
         // обновляем соответствующие строки attendance удаля из permission_sheet_id    id $sheet_id_sub
-        $res = db_query("UPDATE `ftt_attendance` SET
-          `permission_sheet_id` = '', `reason` = '', `changed` = 1
-          WHERE `sheet_id`='$result_attendance_sheet' AND (`session_id` = '$session_id' OR `session_time` = '$session_time')");
+        if ($value->checked) {
+          $res = db_query("UPDATE `ftt_attendance` SET
+            `permission_sheet_id` = '', `reason` = '', `changed` = 1
+            WHERE `sheet_id`='$result_attendance_sheet' AND (`session_id` = '$session_id' OR `session_time` = '$session_time')");
+        }
       }
     }
   }
