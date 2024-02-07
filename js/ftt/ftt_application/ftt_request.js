@@ -449,7 +449,7 @@ $(document).ready(function(){
         value += $(this).val() + ";" ;
         /*if (e === 12) {
           // Экранирование апострофа
-          value = value.replace(/\"/g, "\'");
+          value = value.replace(/'/g, '"');
           fetch("ajax/ftt_request_ajax.php?type=set&table="+table+"&field="+field+"&data="+value+"&id="+id+"&guest="+is_guest)
           .then(response => response.json())
           .then(result => {
@@ -489,7 +489,7 @@ $(document).ready(function(){
         value += $(this).val() + ";" ;
         if (e === 12) {
           console.log(value);
-          value = value.replace(/\"/g, "\'");
+          value = value.replace(/'/g, '"');
           fetch("ajax/ftt_request_ajax.php?type=set&table="+table+"&field="+field+"&data="+value+"&id="+id+"&guest="+is_guest)
           .then(response => response.json())
           .then(result => {
@@ -529,7 +529,7 @@ $(document).ready(function(){
     let field = element.data("field");
     let value = element.val();
     //value = value.replace(/\'/g, "\_");
-    value = value.replace(/\"/g, "\'");
+    value = value.replace(/'/g, '"');
     let prev_value = element.attr("data-value");
     let id = $("#main_container").attr("data-id");
     let is_guest = $("#main_container").attr("data-guest");
@@ -540,7 +540,7 @@ $(document).ready(function(){
       value = "";
       $("input[data-field=support_persons]").each(function (e) {
         prepare = $(this).val();
-        prepare = prepare.replace(/\"/g, "\'");
+        prepare = prepare.replace(/'/g, '"');
         value = value + prepare + ";";
           /*if (e === 12) {
             fetch("ajax/ftt_request_ajax.php?type=set&table="+table+"&field="+field+"&data="+value+"&id="+id+"&guest="+is_guest)
@@ -1518,7 +1518,7 @@ $(document).ready(function(){
     // дата выгрузки
     let copytext = "Дата выгрузки — " + dateStrToddmmyyyyToyyyymmdd(date_now_gl(), true) + "\n";
     let file_name = $("#point_name").val();
-    file_name = file_name.replace("'", '"');
+    file_name = file_name.replace(/'/g, '"');
     $("#main_container .container").each(function () {
       // check
       if (($(this).find("h4").text().trim() === "Рекомендация" && (!$("#point_need_recommend").prop("checked")
@@ -1530,9 +1530,8 @@ $(document).ready(function(){
       } else {
         // get text for file
         copytext += "\n" + $(this).find("h4").text().trim() + "\n\n";
-        copytext = copytext.replace("'", '"');
+        copytext = copytext.replace(/'/g, '"');
         $(this).find(".row").each(function () {
-
             if ($(this).find(".title_point").is(":visible")) {
               copytext += $(this).find(".title_point").text().trim();
             }
@@ -1606,7 +1605,7 @@ $(document).ready(function(){
         });
       }
     });
-    copytext = copytext.replace("'", '"');
+    copytext = copytext.replace(/'/g, '"');
     downloadSys(copytext.trim(), file_name)
   });
 
