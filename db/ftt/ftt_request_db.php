@@ -101,8 +101,10 @@ function setRequestField($adminId, $field, $data, $id, $table, $isGuest, $blob=f
   if ($id) {
     $res = db_query("UPDATE $table SET `$field` = '$data' $changed_one  WHERE  `$id_field` = '$id'");
   } else {
-    $res = db_query("INSERT INTO $table (`$field`, `member_key`, `guest`, `stage`) VALUES ('$data', '$adminId', '$isGuest', '0')");
-    $res = $db->insert_id;
+    //db_query("LOCK TABLES {$table} WRITE");
+    $res = db_query("INSERT INTO {$table} (`$field`, `member_key`, `guest`, `stage`) VALUES ('$data', '$adminId', '$isGuest', '0')");
+    //$res = $db->insert_id;
+    //db_query("UNLOCK TABLES;");
   }
 
   return $res;

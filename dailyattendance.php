@@ -77,16 +77,12 @@ function db_newDailyAttendance () {
       // **__** ADD NEW SHEET
       // добавляем новый лист посещаемости
       $id_new_string_block = db_query("LOCK TABLES ftt_attendance_sheet WRITE");
-      $id_new_string = db_query("INSERT INTO ftt_attendance_sheet (`date`, `member_key`) VALUES (NOW(), '$id_member')");
+      $id_new_string = db_query("INSERT INTO `ftt_attendance_sheet` (`date`, `member_key`) VALUES (NOW(), '$id_member')");
       // лучшие варианты получения ID
       if ($id_new_string) {
         $max_id = $db->insert_id;
         // ИЛИ
         // mysqli_insert_id($db);
-        /*if ($id_new_string) {
-          $max_id_tmp = db_query("SELECT MAX(id) AS last_id FROM ftt_attendance_sheet");
-          while ($row = $max_id_tmp->fetch_assoc()) $max_id=$row['last_id'];
-        }*/
       }
       $id_new_string_block = db_query("UNLOCK TABLES;");
 

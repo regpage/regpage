@@ -2,20 +2,20 @@
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
     <li class="nav-item">
-      <a class="nav-link active" data-toggle="tab" href="#current_extra_help">Задания</a>
+      <a class="nav-link <?php echo $tab_main; ?>" data-toggle="tab" href="#current_extra_help">Задания</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" data-toggle="tab" href="#current_late">Опоздания</a>
     </li>
     <?php if (!$serving_trainee): ?>
       <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#extra_help_statistic">Статистика</a>
+        <a class="nav-link <?php echo $tab_stat; ?>" data-toggle="tab" href="#extra_help_statistic">Статистика</a>
       </li>
     <?php endif; ?>
   </ul>
   <!-- Tab panes -->
   <div id="tab_content_extra_help" class="tab-content">
-    <div id="current_extra_help" class="container tab-pane active"><br>
+    <div id="current_extra_help" class="container tab-pane <?php echo $tab_main; ?>"><br>
       <div id="bar_extra_help" class="btn-group">
         <button id="showModalAddEditExtraHelp" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAddEditExtraHelp">Добавить</button>
         <div class="dropdown">
@@ -177,9 +177,11 @@
     <div id="current_late" class="container tab-pane fade"><br>
       <?php include_once 'components/ftt_extra_help/staff_content_part_late.php'; ?>
     </div>
-    <div id="extra_help_statistic" class="container tab-pane fade"><br>
-      <h3>Статистика</h3>
-      <p>В разработке...</p>
+    <div id="extra_help_statistic" class="container tab-pane <?php echo $tab_stat; ?>"><br>
+      <?php
+      include_once 'components/ftt_extra_help/cntrl_stat.php';
+      include_once 'components/ftt_extra_help/staff_content_part_stat.php';
+      ?>
     </div>
   </div>
 </div>

@@ -192,15 +192,15 @@ function addDataBlank($data){
   $author = $db->real_escape_string($data['author']);
   $comment = $db->real_escape_string($data['comment_field']);
 //`place`, '$place',
+  db_query("LOCK TABLES ftt_gospel WRITE");
   $res = db_query("INSERT INTO `ftt_gospel`(`date`, `gospel_team`, `gospel_group`, `group_members`,
     `flyers`, `people`, `prayers`, `baptism`, `meets_last`, `meets_current`, `meetings_last`, `meetings_current`, `homes`, `author`, `comment`, `changed`)
   VALUES ('$date','$gospel_team','$gospel_group','$group_members','$flyers','$people', '$prayers', '$baptism',
      '$meets_last', '$meets_current', '$meetings_last', '$meetings_current',
      '$homes', '$author', '$comment', 1)");
   if ($res) {
-    $res2 = db_query("SELECT MAX(`id`) AS last_id FROM `ftt_gospel` LIMIT 1");
-    while ($row = $res2->fetch_assoc()) $result = $row['last_id'];
-
+    $result = $db->insert_id;
+    db_query("UNLOCK TABLES;");
     // personal block
     $group_members_data = json_decode($data['personal_blocks']);
 
@@ -228,6 +228,7 @@ function addDataBlank($data){
 
     return $result2;
   } else {
+    db_query("UNLOCK TABLES;");
     return $res;
   }
 }

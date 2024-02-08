@@ -483,9 +483,11 @@ function set_permission($sessions, $adminId)
   }
 
   if (empty($sessions->sheet->id)) {
+    db_query("LOCK TABLES ftt_permission_sheet WRITE");
     $res = db_query("INSERT INTO `ftt_permission_sheet` (`member_key`, `absence_date`, `date`, `comment`, `status`, `date_send`, `serving_one`, {$comment_extra_field} `decision_date`, `notice`, `changed`)
     VALUES ('$member_key', '$absence_date', NOW(),'$comment', '$status', $date_send, '$serving_one', {$comment_extra_value} '$date_decision', '$notice', 1)");
     $sheet_id = $db->insert_id;
+    db_query("UNLOCK TABLES;");
   } else { //
     $res = db_query("UPDATE `ftt_permission_sheet` SET
       `member_key` = '$member_key', `absence_date` = '$absence_date', {$date_send_update}

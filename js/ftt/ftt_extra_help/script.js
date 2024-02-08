@@ -278,7 +278,8 @@ function get_data_fields() {
    +')</span><br><span class="serving_one_name light_text_grey" style="'+hide_this+'">'+ serving_ones_list[data.ft_serving_one]
    +'</span></div><div class="'+col+' '+reason_text+'">'+ short_reason_text
    +'</div><div class="col-2 set_to_archive_container"><input type="checkbox" class="set_to_archive" '+status+'></div></div>';
-   $('#list_content').prepend(update_string);
+   //$('#list_content').prepend(update_string);
+   location.reload();
    // привязываем событие клик новой строке
    $('#list_content').on('click', '.ftt_extra_help_string', function () {
      if ($(this).attr("data-archive") === '1') {
@@ -1568,6 +1569,21 @@ $("#done_checkbox_field").click(function (e) {
     showError("Ошибка. Не достаточно прав.");
     return;
   }
+});
+
+// STATISTICS
+setCookie("tab_stat", "");
+// сортировка
+$(".sort_name_stat").click(function (e) {
+  if ($(this).find("i").hasClass("fa-sort-desc")) {
+    setCookie('sorting_stat', e.target.id + "asc", 356);
+  } else {
+    setCookie('sorting_stat', e.target.id + "desc", 356);
+  }
+  setCookie('tab_stat', "active");
+  setTimeout(function () {
+    location.reload();
+  }, 30);
 });
 
 // DOCUMENT READY STOP

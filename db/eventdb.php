@@ -139,11 +139,11 @@ function db_addEventArchive($adminId, $data){
                     break;
             }
         }
-
+        db_query("LOCK TABLES event_archive WRITE");
         db_query("INSERT INTO event_archive (name, event_type, created, locality_key, author, members, start_date, end_date, members_count, service_ones, contrib, currency) VALUES ('$name', '$eventType', now(), '$eventLocality', '$adminId', '". implode(',', $participantsArr) ."', '$eventStartDate', '$eventEndDate', '".count($participantsArr)."', '". implode(',', $eventAdmins) ."', '$eventContrib', '$eventCurrency')");
 
         $eventArchiveId = $db->insert_id;
-
+        db_query("UNLOCK TABLES;");
         handleAdminsInEventAccessTable($eventArchiveId, $eventAdmins, 'event_archive');
         addZonesForEvent($eventArchiveId, $zones, 'event_archive');
     }

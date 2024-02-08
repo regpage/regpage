@@ -66,6 +66,7 @@ function saveAnnouncement($data)
   }
 
   if (empty($id)) { // new
+    db_query("LOCK TABLES ftt_announcement WRITE");
     $res = db_query("INSERT INTO `ftt_announcement` (`id`, `date`, `time`, `publication`, `header`, `content`, `member_key`, `comment`, `to_14`, `to_56`, `to_coordinators`, `to_servingones`, `by_list`, `list`, `time_zone`, `archive_date`)
     VALUES ('$id', '$publication_date', '$publication_time', '$publication', '$header', '$content', '$author', '$comment', '$to_14', '$to_56', '$to_coordinators', '$to_servingones', '$by_list', '$recipients', '$time_zone', '$archivation_date')");
     if ($publication === '1') {
@@ -78,6 +79,7 @@ function saveAnnouncement($data)
         db_query("INSERT INTO `ftt_announcement_recipients` (`id_announcement`, `member_key`) VALUES ('$last_id', '$value')");
       }
     }
+    db_query("UNLOCK TABLES;");
   } else { // update
     $res = db_query("UPDATE `ftt_announcement` SET
       `date`='$publication_date', `time`='$publication_time', `publication`='$publication', `header`='$header',

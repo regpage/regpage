@@ -59,13 +59,12 @@ function setAddExtraHelp($data){
   $serving_one = $db->real_escape_string($data['serving_one']);
   $comment = $db->real_escape_string($data['comment']);
   $archive_date = $db->real_escape_string($data['archive_date']);
-
+  db_query("LOCK TABLES ftt_extra_help WRITE");
   $res = db_query("INSERT INTO `ftt_extra_help`(`date`, `member_key`, `reason`, `archive`, `author`, `comment`, `archive_date`, `serving_one`, `changed`)
   VALUES ('$date','$member_key','$reason','$archive','$author','$comment','$archive_date', '$serving_one', 1)");
-  if ($res) {
-    $res2 = db_query("SELECT MAX(`id`) AS last_id FROM `ftt_extra_help` LIMIT 1");
-    while ($row = $res2->fetch_assoc()) $result = $row['last_id'];
-
+  if ($res) {    
+    $result = $db->insert_id;
+    db_query("UNLOCK TABLES;");
     $res3 = db_query("SELECT feh.id AS feh_id, feh.date, feh.member_key, feh.reason, feh.archive, feh.author,
     feh.serving_one AS archivator, feh.comment, feh.archive_date, feh.changed,
     ft.semester, ft.serving_one as ft_serving_one
@@ -73,9 +72,9 @@ function setAddExtraHelp($data){
     INNER JOIN ftt_trainee ft ON ft.member_key = feh.member_key
     WHERE `id`='$result'");
     while ($row = $res3->fetch_assoc()) $result2 = $row;
-
     return $result2;
   } else {
+    db_query("UNLOCK TABLES;");
     return $res;
   }
 }
@@ -112,7 +111,7 @@ function updateAddExtraHelp($data){
   }
 }
 
-// Доб. задания
+// Доп. задания
 function setExtraHelpDone($id, $archive, $adminId) {
   global $db;
   $id = $db->real_escape_string($id);
@@ -127,13 +126,29 @@ function setExtraHelpDone($id, $archive, $adminId) {
   return $res;
 }
 
-// удалить доб. задания
+// удалить доп. задания
 function deleteExtraHelpString($id){
   global $db;
   $id = $db->real_escape_string($id);
   $res = db_query("DELETE FROM `ftt_extra_help` WHERE `id` = $id");
 
   return $res;
+}
+
+function getStatisticsExtraHelp($sorting)
+{
+  global $db;
+  $sorting = $db->real_escape_string($sorting);
+  $result = [];
+  //ORDER BY feh.date
+  $res = db_query("SELECT feh.id AS feh_id, feh.date, feh.member_key AS feh_member_key, feh.reason, feh.archive, feh.author, feh.serving_one AS feh_serving_one, feh.comment, feh.archive_date, ft.semester, ft.serving_one, m.name
+    FROM ftt_extra_help AS feh
+    INNER JOIN ftt_trainee ft ON ft.member_key = feh.member_key
+    INNER JOIN member m ON m.key = feh.member_key
+    WHERE 1
+    ORDER BY m.name {$sorting}, feh.date DESC");
+  while ($row = $res->fetch_assoc()) $result[$row['feh_member_key']][] = $row;
+  return $result;
 }
 
 // ==== ОПОЗДАНИЯ ====
@@ -174,13 +189,12 @@ function setAddLate($data){
   $author = $db->real_escape_string($data['author']);
   $delay = $db->real_escape_string($data['delay']);
 
-
+  db_query("LOCK TABLES ftt_late WRITE");
   $res = db_query("INSERT INTO `ftt_late`(`date`, `member_key`, `session_name`, `done`, `author`, `delay`, `changed`)
   VALUES ('$date','$member_key','$session_name','$done','$author','$delay', 1)");
   if ($res) {
-    $res2 = db_query("SELECT MAX(`id`) AS last_id FROM `ftt_late` LIMIT 1");
-    while ($row = $res2->fetch_assoc()) $result = $row['last_id'];
-
+    $result = $db->insert_id;
+    db_query("UNLOCK TABLES;");
     $res3 = db_query("SELECT feh.id AS feh_id, feh.date, feh.member_key, feh.session_name, feh.done, feh.author,
     feh.delay,  feh.changed,
     ft.semester, ft.serving_one as ft_serving_one
@@ -188,9 +202,9 @@ function setAddLate($data){
     INNER JOIN ftt_trainee ft ON ft.member_key = feh.member_key
     WHERE `id`='$result'");
     while ($row = $res3->fetch_assoc()) $result2 = $row;
-
     return $result2;
   } else {
+    db_query("UNLOCK TABLES;");
     return $res;
   }
 }

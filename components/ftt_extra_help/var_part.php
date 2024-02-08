@@ -46,7 +46,6 @@ if ($serving_trainee) {
   $serving_trainee_selected = 'selected';
 }
 
-
 // куки
 if (isset($_GET['my']) && isset($_COOKIE['sevice_one_select'])) {
   $_COOKIE['sevice_one_select'] = $memberId;
@@ -63,8 +62,13 @@ if (isset($_GET['my']) && isset($_COOKIE['semesters_select'])) {
 if (isset($_GET['my']) && isset($_COOKIE['tasks_select'])) {
   $_COOKIE['tasks_select'] = '0';
 }
+$tab_main = 'active';
+$tab_stat = '';
 
+if (isset($_COOKIE['tab_stat']) && $_COOKIE['tab_stat'] === 'active') {
+  $tab_main = '';
+  $tab_stat = 'active';
+}
 //$days = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
 
 // ПОСЕЩАЕМОСТЬ СТОП
-?>
