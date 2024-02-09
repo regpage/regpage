@@ -698,14 +698,27 @@ function open_blank(el_this) {
      }
      $('#add_attendance_str').hide();
    }
-/* Авто подстановка времени мероприятия в поле прихода
-   $('#modalAddEdit input').click(function (e) {
-     if (e.target.type === "time" && !$(this).val()) {
-       $(this).val($(this).prev().val());
-       save_select_field($(this), $(this).val());
-     }
-   });
-*/
+
+   // Авто подстановка времени мероприятия в поле прихода .focusout()
+    $("#modalAddEdit input[data-field='attend_time']").on("input", function (e) {
+      if ($(window).width()<=769) {
+        save_select_field($(this), $(this).val());
+      }
+    });
+    
+    $("#modalAddEdit input[data-field='attend_time']").click(function() {
+      if ($(window).width()<=769) {
+        if ($(this).val() || $(this).next().val() || $(this).attr("disabled")) {
+          return;
+        }
+        $(this).val($(this).prev().val());
+        let elem = $(this);
+        setTimeout(function () {
+          elem.val("");
+        }, 0);
+      }
+    });
+
     // change fields
     $('#modalAddEdit input').change(function () { //, #modalAddEdit select
       if (($("#modalAddEdit").attr("data-status") === "1" && trainee_access) || ($("#modalAddEdit").attr("data-status") !== "1" && !trainee_access && $("#modalAddEdit").attr("data-member_key") !== window.adminId) || $("#modalAddEdit").attr("data-status") === "2") {
