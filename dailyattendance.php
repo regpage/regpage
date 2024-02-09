@@ -132,6 +132,7 @@ function db_newDailyAttendance () {
               $end_time_corr = $value_corr['end_time'];
               $duration_corr = $value_corr['duration'];
               $class_corr = $value_corr['class'];
+              $coord_control_corr = $value_corr['coord_control'];
 
               // разрешения для корректируемых строк
               $reason ='';
@@ -165,8 +166,8 @@ function db_newDailyAttendance () {
                 //}
                 }
                 if ($value_corr['attendance'] === '1') {
-                  db_query("INSERT INTO ftt_attendance (`sheet_id`, `session_name`, `session_time`, `reason`, `permission_sheet_id`, `visit`, `duration`, `end_time`, `class`)
-                  VALUES ('$max_id', '$session_name_corr', '$time_start_corr', '$reason', '$permission_sheet_id', '$visit_corr', '$duration_corr', '$end_time_corr', '$class_corr')");
+                  db_query("INSERT INTO ftt_attendance (`sheet_id`, `session_name`, `session_time`, `reason`, `permission_sheet_id`, `visit`, `duration`, `end_time`, `class`, `coord_control`)
+                  VALUES ('$max_id', '$session_name_corr', '$time_start_corr', '$reason', '$permission_sheet_id', '$visit_corr', '$duration_corr', '$end_time_corr', '$class_corr', '$coord_control_corr')");
                 }
              }
           }
@@ -179,6 +180,7 @@ function db_newDailyAttendance () {
         $duration = $value['duration'];
         $session_id = $value['id'];
         $class = $value['class'];
+        $coord_control = $value['coord_control'];
         if ($value['duration'] && $value['duration'] > 0) {
           $session_name = $session_name.", ".$value['duration']."&nbsp;мин.";
         }
@@ -187,8 +189,8 @@ function db_newDailyAttendance () {
         }
         if (!in_array($value['id'], $canceled_session)) {
           db_query("INSERT INTO ftt_attendance
-            (`session_id`,`sheet_id`, `session_name`, `session_time`, `reason`, `permission_sheet_id`, `visit`, `duration`, `end_time`, `class`)
-            VALUES ('$session_id','$max_id', '$session_name', '$time_start', '$reason', '$permission_sheet_id', '$visit_field', '$duration', '$end_time', '$class')");
+            (`session_id`,`sheet_id`, `session_name`, `session_time`, `reason`, `permission_sheet_id`, `visit`, `duration`, `end_time`, `class`, `coord_control`)
+            VALUES ('$session_id','$max_id', '$session_name', '$time_start', '$reason', '$permission_sheet_id', '$visit_field', '$duration', '$end_time', '$class', '$coord_control')");
         }
       }
     }

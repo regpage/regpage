@@ -33,7 +33,7 @@ class schedule_class {
       $semester_range = " `semester_range`= '$semester_range'";
     }
     $result = [];
-    $res = db_query("SELECT `id`, `$day`, `session_name`, `attendance`, `duration`, `semester_range`, `comment`, `time_zone`, `visit`, `end_time`, `class`
+    $res = db_query("SELECT `id`, `$day`, `session_name`, `attendance`, `duration`, `semester_range`, `comment`, `time_zone`, `visit`, `end_time`, `class`, `coord_control`
       FROM ftt_session
       WHERE (`semester_range`= 0 OR {$semester_range}) {$time_zone}
       ORDER BY `$day`");
@@ -138,7 +138,8 @@ class schedule_class {
               'attendance' => $correction_data[$iii]['attendance'],
               'comment' => $correction_data[$iii]['comment'],
               'color' => 1,
-              'class' => $correction_data[$iii]['class']
+              'class' => $correction_data[$iii]['class'],
+              'coord_control' => $correction_data[$iii]['coord_control']
             ];
             $correction_data[$iii]['cancel_id'] = 'break';
           }
@@ -152,6 +153,7 @@ class schedule_class {
             $loop_schedule[$key]['time_zone'] = $correction_data[$iii]['time_zone'];
             $loop_schedule[$key]['class'] = $correction_data[$iii]['class'];
             $loop_schedule[$key]['id'] = '';
+            $loop_schedule[$key]['coord_control'] = $correction_data[$iii]['coord_control'];
           }
         }
       }
