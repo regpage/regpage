@@ -19,6 +19,10 @@ $(document).ready(function(){
 
 let data_strings = ['id', 'date', 'author', 'gospel_team', 'gospel_group', 'place', 'group_members', 'flyers', 'people', 'prayers', 'baptism', 'meets_last', 'meets_current', 'meetings_last', 'meetings_current', 'first_contacts', 'further_contacts', 'homes', 'place_name', 'fgt_place', 'comment'];
 
+$("#statistics_link").click(function () {
+  location.pathname = "ftt_gospel_statistic";
+});
+
 // Очистить форму
 function clear_blank() {
   if ($("#gospel_tab").is(":visible")) {
@@ -1605,7 +1609,7 @@ $("#mdl_btn_goals_save").click(function () {
     + "&fruit=" + $("#semester_fruit").val())
     .then(response => response.json())
     .then(commits => {
-      $("#modalRecommended").modal("hide");      
+      $("#modalRecommended").modal("hide");
     });
   } else {
     showError("Выберите команду и группу.");

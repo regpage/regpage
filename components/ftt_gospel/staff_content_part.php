@@ -21,7 +21,7 @@
               <button id="print_modal_open" type="button" class="dropdown-item" data-toggle="modal" data-target="#modalPrint">Статистика за период</button>
             </div>
           </div>
-
+          <button id="statistics_link" type="button" class="btn btn-primary btn-sm">Статистики</button>
         <!--<select id="sort_select" class="form-control form-control-sm" style="display: none;">
           <option value="">По дате</option>
           <option value="">По команде</option>

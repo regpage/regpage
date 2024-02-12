@@ -16,6 +16,7 @@
               <?php
               if ($ftt_access['group'] === 'staff') {
                 foreach ($teamsList as $key => $value){
+                  echo "<h5>$value</h5>";
                   gospelStatFun($key, $teamsList);
                 }
               }
@@ -46,7 +47,7 @@
         <div class="container">
           <div class="row">
             <div class="col">
-              <b>Понедельная статистика благовестия персональная(со среды по вторник):</b><br><br>
+              <b>Понедельная статистика благовестия персональная (со среды по вторник):</b><br><br>
               <?php
               if ($ftt_access['group'] === 'staff') {
                 foreach ($teamsList as $key => $value){

@@ -1,7 +1,10 @@
-<button id="report_modal_open" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#gospel_modal_statistic">Отчёт2</button>
-<button id="report_modal_open" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#gospel_modal_statistic_personal">Отчёт3</button>
-<button id="report_group_os" type="button" class="btn btn-primary btn-sm">Графики</button>
-<div class="">
+<div class="row" style="margin-left: -2px; padding-top: 21px;">
+  <button id="go_back" type="button" class="btn btn-secondary btn-sm ml-0">Назад</button>
+  <button id="report_modal_open" type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target="#gospel_modal_statistic">Отчёт по группам</button>
+  <button id="report_modal_open" type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target="#gospel_modal_statistic_personal">Персональные отчёты</button>
+  <button id="report_group_os" type="button" class="btn btn-primary btn-sm ml-2">Графики</button>
+</div>
+<div>
   <?php
  // Группы
  if ($ftt_access['group'] === 'staff') {
@@ -56,6 +59,10 @@
         /* Г Р А Ф И К  С Т О П */
       return;
       });
+    });
+
+    $("#go_back").click(function () {
+      location.pathname = "ftt_gospel";
     });
 
   function getChartData(element) {
