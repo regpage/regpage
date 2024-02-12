@@ -459,3 +459,17 @@ function gospelPersonalStatByDates($team, $period, $from, $to)
 
     return $statistic;
 }
+
+function totalGroupData($team, $group)
+{
+  global $db;
+  $team = $db->real_escape_string($team);
+  $group = $db->real_escape_string($group);
+  $result = [];
+  $res = db_query("SELECT `flyers`, `people`, `prayers`, `baptism`, `meets_last`, `meets_current`, `meetings_last`, `meetings_current`, `homes`
+     FROM `ftt_gospel`
+     WHERE `gospel_team` = '{$team}' AND `gospel_group` = '{$group}'");
+  while ($row = $res->fetch_assoc()) $result[] = $row;
+
+  return $result;
+}

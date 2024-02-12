@@ -231,9 +231,10 @@ function gospelStatСolumn($membersBlanksStatistic, $teamsList, $gospelTeamRepor
         continue;
       }
 
+      $totalGroupRender = totalGroupRender(totalGroupData(strval($value_1['gospel_team']), $value_1['gospel_group']));
       if ($counter === 0) {
         $prevGroup = $value_1['gospel_group'];
-        echo "<div><b class='group_number' data-group='{$value_1['gospel_group']}'>Группа {$value_1['gospel_group']}</b><br></div>";
+        echo "<div><b class='group_number' data-group='{$value_1['gospel_group']}'>Группа {$value_1['gospel_group']} {$totalGroupRender}</b><br></div>";
         echo "<div class='diagram_line'></div>";
         echo "<div class='d-flex overflow-auto mb-3'>";
       }
@@ -247,7 +248,7 @@ function gospelStatСolumn($membersBlanksStatistic, $teamsList, $gospelTeamRepor
           echo "</div>";
         }
 
-        echo "<div><b class='group_number' data-group='{$value_1['gospel_group']}'>Группа {$value_1['gospel_group']}</b><br></div>";
+        echo "<div><b class='group_number' data-group='{$value_1['gospel_group']}'>Группа {$value_1['gospel_group']} {$totalGroupRender}</b><br></div>";
         echo "<div class='diagram_line'></div>";
         echo "<div class='d-flex overflow-auto mb-3'>";
 
@@ -344,6 +345,42 @@ function addTraineeAndSort(&$arr, $keyArr, $check)
   }
 }
 
+// === ИТОГИ === //
+function totalGroupRender($data)
+{
+  $ftt_gospel=0;
+  $flyers=0;
+  $people=0;
+  $prayers=0;
+  $baptism=0;
+  $meets_last=0;
+  $meets_current=0;
+  $meetings_last=0;
+  $meetings_current=0;
+  $first_contacts=0;
+  $further_contacts=0;
+  $homes=0;
+  foreach ($data as $value) {
+    $ftt_gospel+=$value['ftt_gospel'];
+    $flyers+=$value['flyers'];
+    $people+=$value['people'];
+    $prayers+=$value['prayers'];
+    $baptism+=$value['baptism'];
+    $meets_last+=$value['meets_last'];
+    $meets_current+=$value['meets_current'];
+    $meetings_last+=$value['meetings_last'];
+    $meetings_current+=$value['meetings_current'];
+    $first_contacts+=$value['first_contacts'];
+    $further_contacts+=$value['further_contacts'];
+    $homes+=$value['homes'];
+  }
+  return "Л{$flyers}, Б{$people}, М{$prayers}";
+}
+
+// === СТАТИСТИКА ПО ГРУППАМ === //
+
+
+// === СТАТИСТИКА ПО ОБУЧАЮЩИМСЯ === //
 function gospelStatFunPersonal($team,$teamName)
 {
   echo "<div><h5>{$teamName[$team]}</h5></div>";
