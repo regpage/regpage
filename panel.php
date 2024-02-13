@@ -61,6 +61,9 @@ write_to_log::info($memberId, 'Админ зашёл в панел админи�
             <a class="nav-link" data-toggle="tab" href="#menu2">BFA</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="ftt_techdocs">Документация</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#menu3">Ещё</a>
           </li>
 

@@ -1,7 +1,7 @@
 <?php
 // Описание
 require_once "preheader.php";
-if ($memberId !== '000005716') {
+if ($memberId !== '000005716' && $memberId !== '000001679') {
   echo '<h1 style="margin-top: 70px; margin-left: 70px;">Пожалуйста, выберите другой раздел.</h1>';
   die();
 }
@@ -140,6 +140,9 @@ include_once "nav2.php";
   -webkit-transition-timing-function: ease-out;
   transition-timing-function: ease-out;
 }
+.col-md-3 {
+  max-width: 260px;
+}
 </style>
 <div class="container-fluid">
     <div class="row d-flex d-md-block flex-nowrap wrapper">
@@ -158,34 +161,47 @@ include_once "nav2.php";
             <a href="#" data-target="#sidebar" data-toggle="collapse"><i class="text-dark fa fa-navicon fa-lg py-2 p-1"></i></a>
             <div class="page-header">
                 <h4 class="display_file_name float-left">Редактор</h4>
-                <input id="new_file_field" class="ml-3" type="text" style="display:none;">
-                <button id="new_file_btn_ok" class="ml-3" style="display:none;">OK</button>
+                <input id="new_file_field" class="ml-3 rounded" type="text" value="doc.txt" style="display:none;">
+                <button id="new_file_btn_cancel" class="ml-3 rounded" style="display:none;">Отмена</button>
+                <button id="new_file_btn_ok" class="ml-3 rounded" style="display:none;">OK</button>
                 <div class="float-right">
-                  <button id="new_file_btn_show" type="button">Новый</button>
-                  <button id="save_file_btn" type="button" class="ml-3">Сохранить</button>
+                  <button id="new_file_btn_show" class="rounded mb-4">Новый</button>
+                  <button id="save_file_btn" class="rounded ml-3">Сохранить</button>
                 </div>
             </div>
+            <br>
             <textarea id="text_editor" name="announcement_editor" style="width: 100%; height: 400px;"></textarea>
-            <hr>
         </main>
     </div>
 </div>
 <img id="save_icon" src="img/save.png" height="32" style="display: none; position: fixed; bottom: 30px; right: 30px;" alt="">
 <script src="extensions/nicedit/nicEdit.js"></script>
 <script type="text/javascript">
+
 /* ==== TECHDOCS START ==== */
 $(document).ready(function() {
+  // ctrl + s
+  document.addEventListener('keydown', (e) => {
+    if (e.code == 'KeyS' && e.ctrlKey) {
+      e.preventDefault();
+      if (check_data()) {
+        save_file(prepare_data());
+      }
+    }
+    if (e.key == 'Enter' && $("#new_file_field").is(":focus") && $("#new_file_field").is(":visible")) {
+      e.preventDefault();
+      set_up_interface_after_added_file();
+      if (check_data()) {
+        save_file(prepare_data());
+      }
+    }
+  });
   // text editor nicEditor style
-
   new nicEditor().panelInstance("text_editor");
   $(".nicEdit-main").css("padding", "1px 5px").css("background-color", "#f7f7f7");
   $(".list-group-item").click(function () {
     $(".display_file_name").text($(this).text().trim());
-    fetch("panelsource/techdocs/ajax/techdocs_ajax.php?type=get_file&patch=" + "../content/" + $(this).text().trim())
-    .then(response => response.json())
-    .then(commits => {
-      nicEditors.findEditor("text_editor").setContent(commits);
-    });
+    load_file($(this));
   });
 
   $("#save_file_btn").click(function () {
@@ -196,23 +212,35 @@ $(document).ready(function() {
 
   $("#new_file_btn_show").click(function () {
     $("#new_file_field").show();
+    $("#new_file_field").focus();
     $("#new_file_btn_ok").show();
+    $("#new_file_btn_cancel").show();
     $(".display_file_name").text("");
     nicEditors.findEditor("text_editor").setContent("");
   });
 
+  $("#new_file_btn_cancel").click(function () {
+    $("#new_file_field").hide();
+    $("#new_file_field").val("doc.txt");
+    $("#new_file_btn_ok").hide();
+    $("#new_file_btn_cancel").hide();
+    $(".display_file_name").text("Редактор");
+  });
+
   $("#new_file_btn_ok").click(function () {
+    set_up_interface_after_added_file();
+    if (check_data()) {
+      save_file(prepare_data());
+    }
+  });
+
+  function set_up_interface_after_added_file() {
     $(".display_file_name").text($("#new_file_field").val().trim());
     $("#new_file_field").hide();
     $("#new_file_btn_ok").hide();
-    fetch("panelsource/techdocs/ajax/techdocs_ajax.php?type=save_file", {
-      method: 'POST',
-      body: prepare_data()})
-    .then(response => response.text())
-    .then(commits => {
-      //console.log(commits);
-    });
-  });
+    $("#new_file_btn_cancel").hide();
+  }
+
   function check_data() {
     if (!$(".display_file_name").text()) {
       showError("Укажите имя файла и нажмите ОК.");
@@ -220,6 +248,13 @@ $(document).ready(function() {
     } else {
       return true;
     }
+  }
+  function load_file(elem) {
+    fetch("panelsource/techdocs/ajax/techdocs_ajax.php?type=get_file&patch=" + "../content/" + elem.text().trim())
+    .then(response => response.json())
+    .then(commits => {
+      nicEditors.findEditor("text_editor").setContent(commits);
+    });
   }
   function save_file (data) {
     $("#save_icon").show();
