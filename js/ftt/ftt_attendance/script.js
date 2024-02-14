@@ -705,7 +705,7 @@ function open_blank(el_this) {
         save_select_field($(this), $(this).val());
       }
     });
-    
+
     $("#modalAddEdit input[data-field='attend_time']").click(function() {
       if ($(window).width()<=769) {
         if ($(this).val() || $(this).next().val() || $(this).attr("disabled")) {
@@ -2972,14 +2972,21 @@ function open_blank(el_this) {
           $("div[data-id='" + id + "']").attr("data-file", commits.result[0]);
           $("#skip_modal_file").parent().css("border", "none");
           let result_arr = commits.result[1];
-          result_arr = result_arr.split(";")
-          for (var i = 0; i < result_arr.length; i++) {
-            $("#skip_pic").append('<div class="col-10"><button type="button" data-toggle="modal" class="btn btn-primary btn-sm mr-2 mb-2 skip_modal_pic_preview_open" data-target="#skip_modal_pic_preview">Просмотр</button><a class="skip_pic" href="' + result_arr[i] + '" target="_blank">скачать файл</a></div>'
-            + '</div><div class="col-2 text-right"><i class="fa fa-trash text-danger cursor-pointer pic_skip_delete mr-3" aria-hidden="true" style="font-size: 1.5rem;"></i></div>');
-          }
-          $(".pic_skip_delete").click(function () {
-            skip_pic_delete($(this));
+          result_arr = result_arr.split(";");
+          let list_pics_lenght = 0;
+          $(".pic_skip_delete").each(function () {
+            list_pics_lenght++;
           });
+          for (let i = 0; i < result_arr.length; i++) {
+            list_pics_lenght++;
+            let res = $("#skip_pic").append('<div class="col-10"><button type="button" data-toggle="modal" class="btn btn-primary btn-sm mr-2 mb-2 skip_modal_pic_preview_open" data-target="#skip_modal_pic_preview">Просмотр</button><a class="skip_pic" href="' + result_arr[i] + '" target="_blank">скачать файл</a></div>'
+            + '</div><div class="col-2 text-right"><i id="skip_dlt_btn_'+list_pics_lenght+'" class="fa fa-trash text-danger cursor-pointer pic_skip_delete mr-3" aria-hidden="true" style="font-size: 1.5rem;"></i></div>');
+
+            $("#skip_dlt_btn_"+list_pics_lenght).click(function () {
+              skip_pic_delete($(this));
+            });
+          }
+
           $(".skip_modal_pic_preview_open").click(function () {
             show_pic_preview($(this));
           });
@@ -3127,9 +3134,7 @@ function open_blank(el_this) {
       }
     });
   }
-  $(".pic_skip_delete").click(function () {
-    skip_pic_delete($(this));
-  });
+  
   $(".skip_modal_pic_preview_open").click(function () {
     show_pic_preview($(this));
   });
