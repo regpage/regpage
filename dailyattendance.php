@@ -18,6 +18,9 @@ function db_newDailyAttendance () {
   // Проверяем даты семестра
   // Проверяем что расписание не выходит за период обучения
   if (ftt_info::pause()) {
+    // отметка о выполнении
+    $faleName = $_SERVER['PHP_SELF'];
+    db_query("INSERT INTO `cron` (`date`,`script`, `status`, `comment`) VALUES (CURRENT_DATE(),'{$faleName}', '1', 'Вне периода')");
     echo "Вне периода проведения обучения";
     exit();
   }
@@ -26,7 +29,6 @@ function db_newDailyAttendance () {
   $todayDate = date("Y-m-d");
   $permissions = FttPermissions::get_by_date($todayDate);
   $bibleBooks = new Bible;
-
 
   // получаем правила
   $rules = [];
@@ -195,9 +197,12 @@ function db_newDailyAttendance () {
       }
     }
   }
-  //logFileWriter($id_member, 'ПВОМ ПОСЕЩАЕМОСТЬ. АВТОМАТИЧЕСКОЕ ОБСЛУЖИВАНИЕ СЕРВЕРА. Добавлена строка учёта посещаемости для данного пользователя.', 'WARNING');
+
     }
   }
+  // отметка о выполнении
+  $faleName = $_SERVER['PHP_SELF'];
+  db_query("INSERT INTO `cron` (`date`,`script`, `status`, `comment`) VALUES (CURRENT_DATE(),'{$faleName}', '1', '')");
 }
 
 db_newDailyAttendance ();

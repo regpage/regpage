@@ -9,6 +9,9 @@ require_once 'config.php';
 require_once 'db/classes/ftt_info.php';
 
 if (ftt_info::pause()) {
+  // отметка о выполнении
+  $faleName = $_SERVER['PHP_SELF'];
+  db_query("INSERT INTO `cron` (`date`,`script`, `status`, `comment`) VALUES (CURRENT_DATE(),'{$faleName}', '1', 'Вне периода')");
   echo "Вне периода проведения обучения";
   exit();
 }
@@ -185,7 +188,9 @@ function getServiceOnesWithTrainees ()
       // add str to log file
     }
   }
-
+  // отметка о выполнении
+  $faleName = $_SERVER['PHP_SELF'];
+  db_query("INSERT INTO `cron` (`date`,`script`, `status`, `comment`) VALUES (CURRENT_DATE(),'{$faleName}', '1', '')");
   echo "success";
   return 1;
 }

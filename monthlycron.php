@@ -14,7 +14,12 @@ function db_deleteTrashFromContacts(){
   } else {
     logFileWriter(false, 'УДАЛЕНИЕ КОНТАКТОВ ИЗ КОРЗИНЫ. АВТОМАТИЧЕСКОЕ ОБСЛУЖИВАНИЕ СЕРВЕРА. Контакты в корзине отсутствуют.', 'WARNING');
   }
+
+  $faleName = $_SERVER['PHP_SELF'];
+  db_query("INSERT INTO `cron` (`date`,`script`, `status`, `comment`) VALUES (CURRENT_DATE(),'{$faleName}', '1', '')");
+
+  echo "УДАЛЕНИЕ КОНТАКТОВ ИЗ КОРЗИНЫ - ОК";
 }
+
 //DATEDIFF(CURRENT_DATE, STR_TO_DATE(m.birth_date, '%Y-%m-%d'))/365
 db_deleteTrashFromContacts();
-?>

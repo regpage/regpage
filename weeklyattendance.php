@@ -33,6 +33,9 @@ function db_checkweeklyAttendance () {
       setMissedClasses($id);
     }
   }
+  // отметка о выполнении
+  $faleName = $_SERVER['PHP_SELF'];
+  db_query("INSERT INTO `cron` (`date`,`script`, `status`, `comment`) VALUES (CURRENT_DATE(),'{$faleName}', '1', '')");
 }
 
 /* MISSED CLASS */
@@ -69,5 +72,3 @@ function setMissedClasses($sheet_id='')
 /* MISSED CLASS */
 
 db_checkweeklyAttendance ();
-
-?>
