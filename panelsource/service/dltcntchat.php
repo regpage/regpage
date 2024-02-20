@@ -1,5 +1,5 @@
 <?php
-include_once 'config.php';
+include_once '../../config.php';
 
 if (isset($_GET['get'])) {
   $chatId = [];
@@ -19,16 +19,20 @@ if (isset($_GET['get'])) {
 */
 
   $result = array_diff($chatId, $contactId);
+  //print_r(count($result));
+  //exit();
   $resultTmp = [];
   $count = 0;
   $res = [];
-  $counterloop = 0;
+  $sql = '';
+  //$counterloop = 0;
+
   for ($i = 0; $i < count($result); $i++) {
-    if ($counterloop > 4) {
+    /*if ($counterloop > 4) {
       break;
-    }
+    }*/
     $resultTmp[] = $result[$i];
-    if ($count === 1000) {
+    if ($count === 5000) {
       foreach ($resultTmp as $value) {
         if (!empty($value)) {
           if (empty($resultTxt)) {
@@ -39,11 +43,11 @@ if (isset($_GET['get'])) {
         }
       }
       $sql = "DELETE FROM `chat` WHERE {$resultTxt}";
-      $res[] = db_query($sql);
+      //$res[] = db_query($sql);
       $resultTxt = '';
       $count = 0;
-      $counterloop++;
-      //break;
+      //$counterloop++;
+      break;
     } elseif (($i+1) === count($result)) {
       foreach ($resultTmp as $value) {
         if (!empty($value)) {
@@ -54,7 +58,8 @@ if (isset($_GET['get'])) {
           }
         }
       }
-      $res[] = db_query ("DELETE FROM `chat` WHERE {$resultTxt}");
+      $sql = "DELETE FROM `chat` WHERE {$resultTxt}";
+      //$res[] = db_query ($sql);
       break;
     }
 
@@ -62,38 +67,13 @@ if (isset($_GET['get'])) {
   }
   $counter = count($result);
 
-
   echo json_encode(array("result" => $sql));
   exit();
 }
-
+/* не используется
 if (isset($_GET['dlt'])) {
   $condition = $_GET['cnd'];
   db_query ("DELETE FROM `chat` WHERE `group_id` = '{$condition}'");
   exit();
 }
-
-/*
-$counter = 0;
-$condition = '';
-foreach ($result as $key => $value) {
-  if ($counter === 100) {
-    if (empty($condition)) {
-      $condition = $value;
-    } else {
-      $condition .= ',' . $value;
-    }
-    $res3=db_query ("DELETE FROM `chat` WHERE `group_id` IN ({$condition})");
-    $counter = 0;
-    $condition = '';
-  } else {
-    if (empty($condition)) {
-      $condition = $value;
-    } else {
-      $condition .= ',' . $value;
-    }
-    $counter++;
-  }
-}
-
 */
