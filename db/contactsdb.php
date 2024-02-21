@@ -73,6 +73,7 @@ function db_deleteContactString($id, $adminId){
   }
   return 1;
 }
+// НЕ ИСПОЛЬЗУЕТСЯ
 // Delete contacts strings from DATABASE
 function db_deleteContactStringTotal($id, $adminId){
   foreach ($id as $value) {

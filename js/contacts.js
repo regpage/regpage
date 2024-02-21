@@ -1157,7 +1157,9 @@ function historyBuilder(data) {
         if (data_page.admin_contacts_role === '0' && $(this).attr('data-responsible_previous')) {
           dataError.push($(this).find('.data_name').text());
         } else {
-          dataStr.push($(this).attr('data-id'));
+          if ($(this).attr('data-id')) {
+            dataStr.push($(this).attr('data-id'));
+          }
         }
         if ($(this).attr('data-id')=== $('#saveContact').attr('data-id')) {
           saveEditContact();
