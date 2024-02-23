@@ -7,8 +7,9 @@
   include_once 'db/classes/ftt_permissions.php';
   include_once 'db/classes/statistics.php';
   include_once 'db/ftt/ftt_attendance_db.php';
-  include_once 'db/ftt/ftt_attendance_skip_db.php';  
+  include_once 'db/ftt/ftt_attendance_skip_db.php';
   include_once 'db/classes/ftt_reading/bible.php';
+  include_once 'db/classes/ftt_reading/book_read.php';
   include_once 'db/classes/CutString.php';
 
 // ПОСЕЩАЕМОСТЬ
@@ -17,6 +18,7 @@ $bible_obj = new Bible;
 // данные обучающегося
 $trainee_data = trainee_data::get_data($memberId);
 $serving_trainee = '';
+$read_book_arr = [];
 // служащие из обучающихся
 if (isset($ftt_access['ftt_service']) && $ftt_access['ftt_service'] === '06') {
   $serving_trainee = 1;
@@ -40,6 +42,8 @@ if ($ftt_access['group'] === 'staff' || $serving_trainee) {
   $serving_ones_list_full = ftt_lists::serving_ones_full();
   $trainee_list_full = ftt_lists::trainee_full();
   // ОБУЧАЮЩИЕСЯ
+  //bible books
+  $read_book_arr = BookRead::get_all($memberId);
 }
 
 $serving_trainee_disabled = '';

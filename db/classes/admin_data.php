@@ -43,8 +43,10 @@ class get_admin_data {
           if ($result_2[0]['member_key']) {
             # Ответственные в парам
             $service_param = getValueFttParamByName('extrahelp_service_id');
-            // проверить пи одном служении возвращает ли МАССИВ
+            // проверить при одном служении возвращает ли МАССИВ
             $ftt_services = explode(',', $result_2[0]['service']);
+            // неясно следующая строка можеьт быть пустой или нее
+            $service_access_param = '';
             if (in_array($service_param, $ftt_services)) {
               $service_access_param = $service_param;
             }

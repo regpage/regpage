@@ -27,4 +27,3 @@
     include_once "components/ftt_reading/js_part.php";
 
     include_once "footer2.php";
-?>

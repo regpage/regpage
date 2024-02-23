@@ -34,8 +34,7 @@ if (isset($_COOKIE['flt_serving_one_read'])) {
 <div id="list_readin_bible" class="container">
     <div class="row">
     <?php
-    $reading_data = getDataReadingForStaff($flt_sevice_one_read);
-    //print_r($reading_data);
+    $reading_data = getDataReadingForStaff($flt_sevice_one_read);    
     foreach ($reading_data as $key => $value) {
       $counter = 0;
       foreach ($value as $key_2 => $value_2) {
@@ -44,7 +43,11 @@ if (isset($_COOKIE['flt_serving_one_read'])) {
         }
 
         $bg_success = '';
-        $date_record = date_convert::yyyymmdd_to_ddmm($key_2);
+        $date_record = '';
+        if (!empty($key_2)) {
+          $date_record = date_convert::yyyymmdd_to_ddmm($key_2);
+        }
+
 
         $title = '';
         if (!empty($value_2['book_ot'])) {

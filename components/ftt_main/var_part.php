@@ -18,6 +18,7 @@ include_once 'components/ftt_blocks/FTT_Select_fields.php';
 // GLOBALS
 $gl_time_zones = extra_lists::get_time_zones_list();
 // access
+$serving_trainee = '';
 if ($ftt_access['group'] === 'staff') {
   // получить группу служащего
 } elseif ($ftt_access['group'] === 'trainee') {
@@ -35,7 +36,7 @@ if ($ftt_access['group'] === 'staff') {
     $serving_trainee = 1;
     $ftt_access['serving_trainee'] = $ftt_access['ftt_service'];
   }
-} else {   
+} else {
   exit();
 }
 

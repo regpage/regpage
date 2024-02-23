@@ -5,7 +5,8 @@ if (isset($_COOKIE['flt_skip_done'])) {
 } else {
   $flt_skip_done = 0;
 }
-
+$ftr_trainee_skip = '_all_';
+$flt_sevice_one_skip = '';
 $skip_sort_date_ico = 'hide_element';
 $skip_curent_sorting = 'skip_sort_date-desc';
 if (isset($_COOKIE['skip_sorting'])) {

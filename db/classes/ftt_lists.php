@@ -181,5 +181,3 @@ class ftt_lists {
     return $result;
   }
 }
-
- ?>
