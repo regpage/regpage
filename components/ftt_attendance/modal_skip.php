@@ -105,7 +105,7 @@ data-id="" data-member_key="" data-serving_one="" data-status="">
           <option value="_all_">Все служащие</option>
           <?php foreach ($serving_ones_list as $key => $value):
             $selected = '';
-            if ($key === $flt_sevice_one_skip) {
+            if ($key === $flt_sevice_one_skip && $ftt_access['group'] === 'staff') {
               $selected = 'selected';
             }
             echo "<option value='{$key}' {$selected}>{$value}</option>";
@@ -115,7 +115,7 @@ data-id="" data-member_key="" data-serving_one="" data-status="">
           <option value="_all_">Все обучающиеся</option>
           <?php foreach ($trainee_list as $key => $value):
             $selected = '';
-            if ($key === $ftr_trainee_skip) {
+            if ($key === $ftr_trainee_skip && $ftt_access['group'] === 'staff') {
               $selected = 'selected';
             }
             echo "<option value='{$key}' {$selected}>{$value}</option>";

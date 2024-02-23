@@ -14,7 +14,7 @@
       <a class="nav-link <?php echo $tab_missed_class_active; ?>" data-toggle="tab" href="#missed_class_tab">
         Пропущенные занятия <?php echo $missed_class_statistics; ?>
       </a>
-    </li>    
+    </li>
   </ul>
   <!-- Tab panes -->
   <div id="tab_content_extra_help" class="tab-content">
@@ -23,10 +23,10 @@
       <div id="bar_extra_help" class="btn-group mb-2">
         <!--<button id="showModalAddEditExtraHelp" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalAddEdit">Добавить</button>-->
         <?php
+        $selected_week = '';
+        $selected_month = '';
+        $selected_all = '';
         if (isset($_COOKIE['filter_period_att'])) {
-          $selected_week = '';
-          $selected_month = '';
-          $selected_all = '';
           if ($_COOKIE['filter_period_att'] === 'week') {
             $selected_week = 'selected';
           } elseif ($_COOKIE['filter_period_att'] === 'month') {
@@ -178,7 +178,7 @@
             $show_string = '';
           }*/
           if ($trainee_data['semester'] < 5) {
-            echo "<div class='row list_string' data-id='{$id}' data-date='{$date}' data-member_key='{$member_key}' data-status='{$status}' data-date_send='{$date_send}' data-bible='{$bible}' data-morning_revival='{$morning_revival}' data-personal_prayer='{$personal_prayer}' data-common_prayer='{$common_prayer}' data-bible_reading='{$bible_reading}' data-ministry_reading='{$ministry_reading}' data-bible_book='{$book}' data-bible_chapter='{$chapter}' data-comment='{$comment}' data-toggle='modal' data-target='#modalAddEdit' $show_string>
+            echo "<div class='row list_string' data-id='{$id}' data-date='{$date}' data-member_key='{$member_key}' data-status='{$status}' data-date_send='{$date_send}' data-bible='{$bible}' data-morning_revival='{$morning_revival}' data-personal_prayer='{$personal_prayer}' data-common_prayer='{$common_prayer}' data-bible_reading='{$bible_reading}' data-ministry_reading='{$ministry_reading}' data-bible_book='{$book}' data-bible_chapter='{$chapter}' data-comment='{$comment}' data-toggle='modal' data-target='#modalAddEdit'>
             <div class='col-2 col_n_1 pl-1'><span class='date_str' data-short='{$day_of_week_short}'>{$short_date}</span><span class='pl-2'> {$day_of_week}</span></div>
             <div class='col-3'><span class='trainee_name'>{$bible_reading_text}</span></div>
             <div class='col-5 col_n_3'>{$comment_short}</div>
@@ -186,7 +186,7 @@
             <div class='comment_mbl pl-1'>$comment_short</div>
             </div>";
           } else {
-            echo "<div class='row list_string' data-id='{$id}' data-date='{$date}' data-member_key='{$member_key}' data-status='{$status}' data-date_send='{$date_send}' data-bible='{$bible}' data-morning_revival='{$morning_revival}' data-personal_prayer='{$personal_prayer}' data-common_prayer='{$common_prayer}' data-bible_reading='{$bible_reading}' data-ministry_reading='{$ministry_reading}' data-bible_book='{$book}' data-bible_chapter='{$chapter}' data-comment='{$comment}' data-toggle='modal' data-target='#modalAddEdit' $show_string>
+            echo "<div class='row list_string' data-id='{$id}' data-date='{$date}' data-member_key='{$member_key}' data-status='{$status}' data-date_send='{$date_send}' data-bible='{$bible}' data-morning_revival='{$morning_revival}' data-personal_prayer='{$personal_prayer}' data-common_prayer='{$common_prayer}' data-bible_reading='{$bible_reading}' data-ministry_reading='{$ministry_reading}' data-bible_book='{$book}' data-bible_chapter='{$chapter}' data-comment='{$comment}' data-toggle='modal' data-target='#modalAddEdit'>
             <div class='col-2 col_n_1 pl-1'><span class='date_str' data-short='{$day_of_week_short}'>{$short_date}</span> <span> {$day_of_week}</span></div>
             <div class='col-1'><span class='trainee_name'>{$morning_revival}</span></div>
             <div class='col-1'><span class='trainee_name'>{$personal_prayer}</span></div>

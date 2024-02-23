@@ -10,7 +10,7 @@
         <div class="container">
           <div class="row mb-2">
               <div class="col-12">
-                <h6 class="">Выбор старта возможен только на текущую дату, для Завета, старта для которой ранее не было или если текущая книга дочитана до последней главы.</h6>
+                <h6 class="">Выбор другой книги возможен только на сегодняшнюю дату и в том случае, если текущая книга дочитана до последней главы.</h6>
               </div>
           </div>
           <!-- ВЗ -->
@@ -34,7 +34,9 @@
                     if ($key === 39) {
                       break;
                     }
-                    echo "<option value='{$value[0]}'>{$value[0]}";
+                    if (!in_array($value[0], $read_book_arr)) {
+                      echo "<option value='{$value[0]}'>{$value[0]}";
+                    }
                   }
                   ?>
                 </select>
@@ -78,7 +80,9 @@
                   $bible_books = $bible_obj->get();
                   foreach ($bible_books as $key => $value) {
                     if ($key > 38) {
-                      echo "<option value='{$value[0]}'>{$value[0]}";
+                      if (!in_array($value[0], $read_book_arr)) {
+                        echo "<option value='{$value[0]}'>{$value[0]}";
+                      }
                     }
                   }
                   ?>

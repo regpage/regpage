@@ -206,9 +206,9 @@ $(document).ready(function(){
     fetch("ajax/ftt_reading_ajax.php?type=get_read_book&member_key=" + member_key)
     .then(response => response.json())
     .then(commits => {
-      let read_books = commits.result;      
+      let read_books = commits.result;
       // сприсок прочитанных книг
-      let bible_books_html = "", found;
+      let bible_books_html = "<i id='mdl_footnotes_ot_title'></i><br>", found;
       for (let i = 0; i < bible_arr.length; i++) {
         found = read_books.find(e => e[0] === bible_arr[i][0]);
         if (found === undefined) {
@@ -221,7 +221,7 @@ $(document).ready(function(){
           bible_books_html += "<span class='d-inline-block " + backgroung + " p-1 mt-1' data-val='"+i+"'>" + noSpace(bible_arr[i][0]) + " </span>";
         } else {
           if (i === 39) {
-            bible_books_html += "<br><br>";
+            bible_books_html += "<br><br><i id='mdl_footnotes_nt_title'></i><br>";
           }
           bible_books_html += "<span class='d-inline-block " + backgroung + " p-1 mt-1' data-val='"+i+"'>" + noSpace(bible_arr[i][0]) + " </span>";
         }
@@ -236,10 +236,37 @@ $(document).ready(function(){
         calendar(commits.result);
       });
     }, 30);
+
+    setTimeout(function () {
+      // получаем историю чтения
+      fetch("ajax/ftt_reading_ajax.php?type=get_start_position&member_key=" + member_key)
+      .then(response => response.json())
+      .then(commits => {
+        console.log(commits.result);
+        let title_text_footnotes_yes = "С примечаниями";
+        let title_text_footnotes_no = "Без примечаний";
+        if (commits.result.book_ot) {
+          if (commits.result.read_footnotes_ot == 1) {
+            $("#mdl_footnotes_ot_title").text(title_text_footnotes_yes);
+          } else {
+            $("#mdl_footnotes_ot_title").text(title_text_footnotes_no);
+          }
+        }
+        if (commits.result.book_nt) {
+          if (commits.result.read_footnotes_nt == 1) {
+            $("#mdl_footnotes_nt_title").text(title_text_footnotes_yes);
+          } else {
+            $("#mdl_footnotes_nt_title").text(title_text_footnotes_no);
+          }
+        }
+
+      });
+    }, 60);
   });
 
   // фильтр
   $("#read_sevice_one_select").change(function () {
+    console.log("Hi all");
     setCookie("flt_serving_one_read", $(this).val());
     setTimeout(function () {
       location.reload();
@@ -445,6 +472,21 @@ $(document).ready(function(){
     $("#mdl_bible_start input[type='checkbox']").attr("disabled", false);
   });
 
+  $("#mdl_book_ot_start, #mdl_book_nt_start").focus(function() {
+    // ЕСЛИ ПРИ ПЕРЕБОРЕ ОПЦИЙ не обнаруживаются книги то выводит предупреждение что всё прочитано
+    let counter = 0;
+
+    $(this).find("option").each(function (e) {
+      counter = e;
+      if (e > 1) {
+        return;
+      }
+    });
+    if (counter <= 1) {
+      let text = "Вы прочитали все книги. Для выбора начала чтения с примечаниями обратитесь к служащим.";
+      showHint(text);
+    }
+  });
   // смена книг в модальном окне
   $("#mdl_book_ot_start, #mdl_book_nt_start").change(function() {
     let bible_chapter_html = "";
@@ -488,8 +530,10 @@ $(document).ready(function(){
       if ($("#bible_book_ot").attr("data-book") && data_book_ot) {
         let bible_chapter_html = "";
         let found = bible_arr.find(e => e[0] === data_book_ot);
-        for (let i = 1; i <= found[1]; i++) {
-          bible_chapter_html += "<option value='"+i+"'>"+i;
+        if ($("#mdl_book_ot_start option").val()) {
+          for (let i = 1; i <= found[1]; i++) {
+            bible_chapter_html += "<option value='"+i+"'>"+i;
+          }
         }
         $("#mdl_chapter_ot_start").html(bible_chapter_html);
       } else {
@@ -500,8 +544,10 @@ $(document).ready(function(){
       if ($("#bible_book_nt").attr("data-book") && data_book_nt) {
         let bible_chapter_html = "";
         let found = bible_arr.find(e => e[0] === data_book_nt);
-        for (let i = 1; i <= found[1]; i++) {
-          bible_chapter_html += "<option value='"+i+"'>"+i;
+        if ($("#mdl_book_ot_start option").val()) {
+          for (let i = 1; i <= found[1]; i++) {
+            bible_chapter_html += "<option value='"+i+"'>"+i;
+          }
         }
         $("#mdl_chapter_nt_start").html(bible_chapter_html);
       } else {
@@ -586,7 +632,9 @@ $(document).ready(function(){
   $("#mdl_ot_start, #mdl_nt_start").change(function () {
     if ($(this).attr("id") === "mdl_ot_start") {
       if ($(this).prop("checked")) {
-        $("#mdl_footnotes_ot_start").attr("disabled", false);
+        if (trainee_access !== "1") {
+          $("#mdl_footnotes_ot_start").attr("disabled", false);
+        }
         $("#mdl_book_ot_start").attr("disabled", false);
         $("#mdl_chapter_ot_start").attr("disabled", false);
       } else {
@@ -596,7 +644,9 @@ $(document).ready(function(){
       }
     } else {
       if ($(this).prop("checked")) {
-        $("#mdl_footnotes_nt_start").attr("disabled", false);
+        if (trainee_access !== "1") {
+          $("#mdl_footnotes_nt_start").attr("disabled", false);
+        }
         $("#mdl_book_nt_start").attr("disabled", false);
         $("#mdl_chapter_nt_start").attr("disabled", false);
       } else {
