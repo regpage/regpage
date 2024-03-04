@@ -99,7 +99,7 @@ function get_reading_data($member_key, $date)
   $result3 = [];
   $start_date;
   $start_today = 0;
-  $start_data;
+  $start_data = [];
 
   // получаем последнюю стартовую позицию
   $res = db_query("SELECT * FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `start` = 1 ORDER BY `date` DESC");
@@ -423,6 +423,10 @@ function dlt_history_reading_bible($member_key, $ot, $nt)
     $condition .= " AND `book_nt` != ''";
   }
 
+  if (!empty($ot) && !empty($nt)) {
+    $condition = " AND (`book_nt` != '' OR `book_ot` != '')";
+  }
+
   $res = db_query("DELETE FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `date` = '0000-00-00' {$condition}");
   return $res;
 }
@@ -435,9 +439,23 @@ function getDataReadingForStaff($member_key)
   $result = [];
   $curent_date = [];
   $condition = "";
+  $condition_old_str = "";
+  $condition_trainee = "1";
+  global $trainee_list_list;
+
   if ($member_key != '_all_') {
     $condition = " ft.serving_one = '{$member_key}' AND ";
+    $condition_old_str = " AND ft.serving_one = '{$member_key}' ";
+    $condition_trainee = " tr.serving_one = '{$member_key}' ";
   }
+
+  $res = db_query("SELECT tr.member_key, m.name
+    FROM ftt_trainee AS tr
+    LEFT JOIN member m ON m.key = tr.member_key
+    WHERE {$condition_trainee}
+    ORDER BY m.name ASC");
+  while ($row = $res->fetch_assoc()) $result[$row['member_key']] = [];
+
   for ($i=0; $i < 7; $i++) {
     $day_text = 6 - $i;
     $curent_date[date('Y-m-d', strtotime("-{$day_text} days"))] = '';
@@ -449,11 +467,33 @@ function getDataReadingForStaff($member_key)
     LEFT JOIN ftt_trainee ft ON ft.member_key = fb.member_key
     WHERE {$condition} fb.start != 1 AND fb.date != '0000-00-00' AND (fb.date > CURDATE() - INTERVAL 7 DAY) ORDER BY m.name ASC, fb.date ASC");
   while ($row = $res->fetch_assoc()) {
-    if (!isset($result[$row['member_key']])) {
+    if (empty($result[$row['member_key']])) {
       $result[$row['member_key']] = $curent_date;
     }
     $result[$row['member_key']][$row['date']] = $row;
   }
+
+  $resLastDate = db_query("SELECT fb.*, m.name, ft.serving_one
+    FROM ftt_bible AS fb
+    LEFT JOIN member m ON m.key = fb.member_key
+    LEFT JOIN ftt_trainee ft ON ft.member_key = fb.member_key
+    WHERE fb.start != 1 AND fb.date != '0000-00-00' {$condition_old_str} ORDER BY fb.date DESC"); //m.name ASC,
+  while ($row = $resLastDate->fetch_assoc()) {
+    if (empty($result[$row['member_key']])) {
+      $result[$row['member_key']][$row['date']] = $row;
+    }
+  }
+
+  foreach ($result as $key => $value) {
+    if (empty($value)) {
+      $result[$key] = array('0000-00-00' => array(
+        'name' => $trainee_list_list[$key]['name'], 'serving_one' => $trainee_list_list[$key]['serving_one'], 'id' =>'', 'member_key' =>'', 'book_nt' =>'',
+        'chapter_nt' =>'', 'read_footnotes_nt' =>'', 'book_ot' =>'', 'chapter_ot' =>'',
+        'read_footnotes_ot' =>'', 'date' =>'', 'start' =>''
+      ));
+    }
+  }
+
   return $result;
 }
 

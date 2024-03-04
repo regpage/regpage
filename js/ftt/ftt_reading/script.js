@@ -153,6 +153,7 @@ $(document).ready(function(){
         render_bible_chapters(data["book_ot"], data["chapter_ot"], "#bible_book_ot");
         $("#bible_book_ot").attr("data-book", data["book_ot"]);
         $("#bible_book_ot").attr("data-chapter", data["chapter_ot"]);
+        $("#bible_book_ot").attr("data-notes", data["read_footnotes_ot"]);
         if (data["today_ot"] > 0) {
           $("#bible_book_ot").val(data["book_ot"] + " " + data["chapter_ot"]);
         }
@@ -165,6 +166,7 @@ $(document).ready(function(){
         render_bible_chapters(data["book_nt"], data["chapter_nt"], "#bible_book_nt");
         $("#bible_book_nt").attr("data-book", data["book_nt"]);
         $("#bible_book_nt").attr("data-chapter", data["chapter_nt"]);
+        $("#bible_book_nt").attr("data-notes", data["read_footnotes_nt"]);
         if (data["today_nt"] > 0) {
           $("#bible_book_nt").val(data["book_nt"] + " " + data["chapter_nt"]);
         }
@@ -242,18 +244,17 @@ $(document).ready(function(){
       fetch("ajax/ftt_reading_ajax.php?type=get_start_position&member_key=" + member_key)
       .then(response => response.json())
       .then(commits => {
-        console.log(commits.result);
         let title_text_footnotes_yes = "С примечаниями";
         let title_text_footnotes_no = "Без примечаний";
         if (commits.result.book_ot) {
-          if (commits.result.read_footnotes_ot == 1) {
+          if (commits.result.read_footnotes_ot === "1") {
             $("#mdl_footnotes_ot_title").text(title_text_footnotes_yes);
           } else {
             $("#mdl_footnotes_ot_title").text(title_text_footnotes_no);
           }
         }
         if (commits.result.book_nt) {
-          if (commits.result.read_footnotes_nt == 1) {
+          if (commits.result.read_footnotes_nt === "1") {
             $("#mdl_footnotes_nt_title").text(title_text_footnotes_yes);
           } else {
             $("#mdl_footnotes_nt_title").text(title_text_footnotes_no);
@@ -520,6 +521,7 @@ $(document).ready(function(){
     .then(commits => {
       let data_book_ot, data_book_nt;
       let result = commits.result;
+
       if (result["id"]) {
         data_book_ot = result["book_ot"];
         data_book_nt = result["book_nt"];
@@ -578,7 +580,11 @@ $(document).ready(function(){
         }
         $("#mdl_book_ot_start").val(ot[0]);
         $("#mdl_chapter_ot_start").val(ot[1]);
-        $("#mdl_footnotes_ot_start").prop("checked", $(".reading_bible_title").attr("data-notes_ot") === "1" ? true : false);
+
+        if ($("#bible_book_ot").attr("data-notes") === "1") {
+          $("#mdl_footnotes_ot_start").prop("checked", true);
+        }
+
         let found = bible_arr.find(e => e[0] === ot[0]);
         if (found[1] === ot[1]) {
           $("#mdl_ot_start").attr("disabled", false);
@@ -611,7 +617,9 @@ $(document).ready(function(){
         }
         $("#mdl_book_nt_start").val(nt[0]);
         $("#mdl_chapter_nt_start").val(nt[1]);
-        $("#mdl_footnotes_nt_start").prop("checked", $(".reading_bible_title").attr("data-notes_nt") === "1" ? true : false);
+        if ($("#bible_book_nt").attr("data-notes") === "1") {
+          $("#mdl_footnotes_nt_start").prop("checked", true);
+        }
         let found = bible_arr.find(e => e[0] === nt[0]);
         if (found[1] === nt[1]) {
           $("#mdl_nt_start").attr("disabled", false);
