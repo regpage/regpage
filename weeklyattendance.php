@@ -66,7 +66,7 @@ function setMissedClasses($sheet_id='')
     $id_attendance = $value['id'];
     $id_attendance_sheet = $value['sheet_id'];
     $res = db_query("INSERT INTO `ftt_skip` (`id_attendance`, `id_attendance_sheet`, `comment`, `changed`)
-    VALUES ('{$id_attendance}', '{$id_attendance_sheet}', 'Бланк не сдан во время, обратитесь к служащему.', 1)");
+    VALUES ('{$id_attendance}', '{$id_attendance_sheet}', 'Лист посещаемости не сдан во время, обратитесь к служащему.', 1)");
   }
 }
 /* MISSED CLASS */

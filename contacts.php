@@ -956,11 +956,13 @@
       respAdmTmp=[];
 
       data_page.members_responsibles = [];
+      data_page.members_responsibles_admin = [];
       var respMemTmp = '<?php if ($adminRole !== 0 && count($membersForCombobox) !== 0) foreach ($membersForCombobox as $id => $name) echo $id.'_'.$name.'_'; ?>';
       respMemTmp ? respMemTmp = respMemTmp.split('_') : respMemTmp=[];
       for (var iv = 0; iv < respMemTmp.length; iv = iv + 2) {
         if (respMemTmp[iv+1]) {
           data_page.members_responsibles[String(respMemTmp[iv])] = respMemTmp[iv+1];
+          data_page.members_responsibles_admin[String(respMemTmp[iv])] = respMemTmp[iv+1];
         }
       }
       respMemTmp=[];
@@ -1082,7 +1084,7 @@
 
         //let idBlankGet = '<?php echo $idBlank; ?>';
     </script>
-    <script src="/js/contacts.js?v86"></script>
+    <script src="/js/contacts.js?v87"></script>
     <script src="/js/contactsupload.js?v5"></script>
 <?php
     include_once "footer2.php";

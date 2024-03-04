@@ -2148,6 +2148,7 @@ function sendTheOrder(ua) {
       }
       var xey = [];
       arr2 = blankCounter.blank_count_their;
+
       for (var ii = 0; ii < arr2.length; ii++) {
           if (arr2[ii]['responsible'] in xey) {
             xey[arr2[ii]['responsible']][0] += 1;
@@ -2167,7 +2168,16 @@ function sendTheOrder(ua) {
             }
           }
         }
+
+        let extra_arr = [];
+        for (const the_responsible in data_page.members_responsibles_admin) {
+          if (!xey.hasOwnProperty(the_responsible)) {
+            xey[the_responsible] = [0,0,0,0,0,0,0,0,0,data_page.members_responsibles_admin[the_responsible]];
+          }
+        }
+        //xey.sort();
         blankCounter.blank_count_status = xey;
+
     },3000);
 
     function addNumberToComboboxes(data, update) {
@@ -3133,6 +3143,7 @@ function renderGroupList(groups) {
       showHint('Данные временно отсутствуют', 5000);
     }
   });
+//
 
 
 });
