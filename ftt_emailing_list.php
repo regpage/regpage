@@ -40,7 +40,15 @@ function getServiceOnesWithTrainees ()
   //print_r($result);
   foreach ($result as $key => $value) {
     if (empty($value)) {
-      Emailing::send_by_key('000002634', 'Уведомление с сайта регистрации (ПВОМ)', 'Некоторым обучающимся на сайте регистрации в разделе ПВОМ не назначен ответственный.');
+      $name_miss = '';
+      $res = db_query("SELECT m.name
+        FROM ftt_trainee AS ft
+        LEFT JOIN member m ON m.key = ft.member_key
+        WHERE ft.serving_one = ''
+        ORDER BY m.name");
+        while ($row = $res->fetch_assoc()) $name_miss .= $row['name']."<br>";
+        // 000005716
+      Emailing::send_by_key('000002634', 'Уведомление с сайта ПВОМ', "Некоторым обучающимся на сайте регистрации в разделе ПВОМ не назначен ответственный.<br>{$name_miss}");
       continue;
     }
     //echo $value."<br>";
@@ -177,7 +185,7 @@ function getServiceOnesWithTrainees ()
 
     // ==== Пророчествование отчёт
     $prophecy_text = '';
-    if (date('w') == 2) {
+    if (date('w') == 1) {
       $prophecy_text = '<br><br><b>Пророчествование в прошедшее воскресенье:<br></b>';
       $lTMeeting_date = date_plus::sub_d(date('Y-m-d'), 1);
       $prophecy_data = Prophecy::by_serving_one($traine_list, $lTMeeting_date);
@@ -203,7 +211,7 @@ function getServiceOnesWithTrainees ()
     if ($announcements || $absence || $attendance || $extraHelp || $missingClass || $fellowship_text || $prophecy_text) {
       $body = $announcements . $absence . $attendance . $extraHelp . $missingClass . $fellowship_text . $prophecy_text;
       if (!empty($value)) {
-        Emailing::send_by_key($value, $topic, $body);        
+        Emailing::send_by_key($value, $topic, $body);
       } else {
         echo "Не получен емайл служащего, возможно не указан служащий для какого то обучающегося \r\n";
       }
