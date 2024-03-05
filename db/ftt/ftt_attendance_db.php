@@ -23,7 +23,7 @@ function yyyymmdd_to_ddmm ($date)  {
 // получаем шапки
 function getFttAttendanceSheet() {
   $result = [];
-  $res = db_query("SELECT `id`, `member_key`, `date`, `comment`, `status`, `date_send`, `morning_revival`, `personal_prayer`, `common_prayer`, `bible_reading`, `ministry_reading` FROM `ftt_attendance_sheet` WHERE 1");
+  $res = db_query("SELECT `id`, `member_key`, `date`, `comment`, `status`, `date_send`, `morning_revival`, `personal_prayer`, `common_prayer`, `prophecy`, `bible_reading`, `ministry_reading` FROM `ftt_attendance_sheet` WHERE 1");
   while ($row = $res->fetch_assoc()) $result[] = $row;
   return $result;
 }
@@ -112,7 +112,7 @@ function getFttAttendanceSheetAndStrings($list_access, $condition, $admin_id = '
   $header = [];
   $strings = [];
   $res = db_query("SELECT fas.id, fas.member_key, fas.date, fas.comment, fas.status, fas.date_send, fas.bible,
-     fas.morning_revival, fas.personal_prayer, fas.common_prayer, fas.bible_reading, fas.ministry_reading, fas.mark,
+     fas.morning_revival, fas.personal_prayer, fas.common_prayer, fas.prophecy, fas.bible_reading, fas.ministry_reading, fas.mark,
      fas.bible_book, fas.bible_chapter,
      m.name, tra.serving_one, tra.pause_start, tra.pause_stop, tra.pause_comment
     FROM ftt_attendance_sheet AS fas
@@ -164,7 +164,7 @@ function setFttStringsById($data) {
 }
 
 // Добавляем header (?) НЕИСПОЛЬЗУЕТСЯ
-function setFttSheetById($data) {
+/*function setFttSheetById($data) {
   global $db;
   $id = $db->real_escape_string($data['id']);
   $comment = $db->real_escape_string($data['comment']);
@@ -180,7 +180,7 @@ function setFttSheetById($data) {
     VALUES ('$comment', '$status','$date_send', '$morning_revival', '$personal_prayer', '$common_prayer', '$bible_reading', '$ministry_reading', 1) WHERE `id` = '$id'");
 
   return $res;
-}
+}*/
 
 function set_attendance($id, $field, $value, $header) {
   global $db;
@@ -417,6 +417,32 @@ function db_overnight($member_key, $date)
   while ($row = $res->fetch_assoc()) $result = $row['date'];
 
   return $result;
+}
+
+// получаем бланк недельной давности
+function getPrevWeekBlank($member_key, $date_blank) {
+  global $db;
+  $member_key = $db->real_escape_string($member_key);
+  $date_blank = $db->real_escape_string($date_blank);
+  $prophecy = '';
+  $id = '';
+  $has_sessions = '';
+
+  $res = db_query ("SELECT `id`, `prophecy` FROM `ftt_attendance_sheet` WHERE `member_key`='{$member_key}' AND `date` = '{$date_blank}'");
+  while ($row = $res->fetch_assoc()) {
+    $prophecy = $row['prophecy'];
+    $id = $row['id'];
+  }
+
+  $res2 = db_query ("SELECT DISTINCT `id` FROM `ftt_attendance` WHERE `sheet_id`='{$id}'");
+  while ($row2 = $res2->fetch_assoc()) $has_sessions = $row2['id'];
+
+  if (empty($has_sessions)) {
+    return $has_sessions;
+  } else {
+    return $prophecy;
+  }
+
 }
 
 // PERMISSIONS

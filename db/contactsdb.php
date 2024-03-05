@@ -725,5 +725,3 @@ function getShortStatResp($adminId) {
   asort($resp2);
   return $resp2;
 }
-
-?>

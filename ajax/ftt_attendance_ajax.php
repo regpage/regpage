@@ -186,6 +186,11 @@ if (isset($_GET['type']) && $_GET['type'] === 'overnight') {
   exit();
 }
 
+// получаем бланк недельной давности от переданной даты
+if(isset($_GET['type']) && $_GET['type'] = 'get_prev_week_blank'){
+    echo json_encode(getPrevWeekBlank($_GET['member_key'], $_GET['date_blank']));
+    exit();
+}
 // PERMISSIONS
 // save permission.
 if (isset($_GET['type']) && $_GET['type'] === 'set_permission') {

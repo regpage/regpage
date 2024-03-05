@@ -164,6 +164,7 @@
           $morning_revival = $value['morning_revival'];
           $personal_prayer = $value['personal_prayer'];
           $common_prayer = $value['common_prayer'];
+          $prophecy = $value['prophecy'];
           $bible_reading = $value['bible_reading'];
           $ministry_reading = $value['ministry_reading'];
           $serving_one = $value['serving_one'];
@@ -332,7 +333,7 @@
             $start = false;
             echo "<div data-member_key='{$member_key}' style='margin-top: 2px;'>
                     <div class='card_header cursor-pointer'>
-				                <button class='btn btn-link'>{$name_trainee} ({$semester_number})</button> <span class='list_string link_day {$sunday_class} {$done_string}' data-id='{$id}' data-date='{$date}' data-member_key='{$member_key}' data-status='{$status}' data-date_send='{$date_send}' data-bible='{$bible}' data-morning_revival='{$morning_revival}' data-personal_prayer='{$personal_prayer}'
+				                <button class='btn btn-link'>{$name_trainee} ({$semester_number})</button> <span class='list_string link_day {$sunday_class} {$done_string}' data-id='{$id}' data-date='{$date}' data-member_key='{$member_key}' data-status='{$status}' data-date_send='{$date_send}' data-bible='{$bible}' data-morning_revival='{$morning_revival}' data-personal_prayer='{$personal_prayer}' data-prophecy='{$prophecy}'
                         data-common_prayer='{$common_prayer}' data-bible_reading='{$bible_reading}' data-ministry_reading='{$ministry_reading}' data-serving_one='{$serving_one}' data-bible_book='{$book}' data-bible_chapter='{$chapter}' data-comment='{$comment}' data-toggle='modal' data-target='#modalAddEdit'> {$short_date} {$short_day_of_week} </span>";
           } else {
             /*if ($counter_periods === 8) {
@@ -340,7 +341,7 @@
               <div class='row card-body' data-toggle='modal' data-target='#modalAddEdit' {$show_string}>
               <span class='list_string link_day {$sunday_class}' data-id='{$id}' data-date='{$date}' data-member_key='{$member_key}' data-status='{$status}' data-date_send='{$date_send}' data-bible='{$bible}' data-morning_revival='{$morning_revival}' data-personal_prayer='{$personal_prayer}' data-common_prayer='{$common_prayer}' data-bible_reading='{$bible_reading}' data-ministry_reading='{$ministry_reading}' data-serving_one='{$serving_one}' data-comment='{$comment}' data-toggle='modal' data-target='#modalAddEdit'> {$short_date} {$short_day_of_week} </span>";
             } else {*/
-              echo "<span class='list_string link_day {$sunday_class} {$done_string} {$mark_string}' data-id='{$id}' data-date='{$date}' data-member_key='{$member_key}' data-status='{$status}' data-date_send='{$date_send}' data-bible='{$bible}' data-morning_revival='{$morning_revival}' data-personal_prayer='{$personal_prayer}' data-common_prayer='{$common_prayer}' data-bible_reading='{$bible_reading}' data-ministry_reading='{$ministry_reading}' data-serving_one='{$serving_one}' data-bible_book='{$book}' data-bible_chapter='{$chapter}' data-comment='{$comment}' data-toggle='modal' data-target='#modalAddEdit'> {$short_date} {$short_day_of_week}</span>";
+              echo "<span class='list_string link_day {$sunday_class} {$done_string} {$mark_string}' data-id='{$id}' data-date='{$date}' data-member_key='{$member_key}' data-status='{$status}' data-date_send='{$date_send}' data-bible='{$bible}' data-morning_revival='{$morning_revival}' data-personal_prayer='{$personal_prayer}' data-prophecy='{$prophecy}' data-common_prayer='{$common_prayer}' data-bible_reading='{$bible_reading}' data-ministry_reading='{$ministry_reading}' data-serving_one='{$serving_one}' data-bible_book='{$book}' data-bible_chapter='{$chapter}' data-comment='{$comment}' data-toggle='modal' data-target='#modalAddEdit'> {$short_date} {$short_day_of_week}</span>";
             /*}*/
           } // || $counter % $counter_days[$member_key] === 0
           if ($counter % $counter_days[$member_key] === 0 || $counter_days[$member_key] === 1) {

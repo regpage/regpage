@@ -164,8 +164,9 @@ $(document).ready(function(){
      showError('Бланк не был отправлен. Нельзя сохранить.');
      return;
    }
+   // проверяем отметку чтения Библии
    if ((!$("#bible_book_ot").val() && !$("#bible_book_ot").attr("disabled")) || (!$("#bible_book_nt").val()  && !$("#bible_book_nt").attr("disabled"))) {
-     showError('Заполните поля чтения Библии.');
+     showError("Заполните поля чтения Библии.");
      if ($("#bible_book_ot").val() === "_none_") {
        $("#bible_book_ot").css("border-color", "red");
      } else {
@@ -177,6 +178,14 @@ $(document).ready(function(){
        $("#bible_book_nt").css("border-color", "lightgray");
      }
      return;
+   }
+   // проверяем отметку пророчествования в воскресенье
+   if ($("#sunday_prophecy").is(":visible") && !$("#sunday_prophecy").val() && $("#modal-block_1 label").text() !== "В этот день учёт посещаемости не ведётся.") {
+     $("#sunday_prophecy").css("border-color", "red");
+     showError("Заполните поле «Пророчествование»‎.");
+     return;
+   } else {
+     $("#sunday_prophecy").css("border-color", "lightgray");
    }
 //
    // валидация значений полей
@@ -282,9 +291,17 @@ $(document).ready(function(){
 function open_blank(el_this) {
   let disabled = "", status;
   $("#modal-block_staff").hide();
+  $("#note_prophecy").hide();
   $("#modal-block_1").show();
   $("#modal-block_2").show();
   status_sheet = el_this.attr("data-status");
+  let tmp_day_of_week = el_this.text().trim();
+  if (tmp_day_of_week[tmp_day_of_week.length-1] === 'с') {
+    $("#sunday_prophecy").parent().parent().parent().show();
+    last_prophecy(el_this.attr("data-member_key"), el_this.attr("data-date"));
+  } else {
+    $("#sunday_prophecy").parent().parent().parent().hide();
+  }
   // поля бланка для просмотра служащими отображаются в соответствии с семестром обучающегося
   if (!trainee_access) {
    $("#name_of_trainee").text(trainee_list[el_this.attr("data-member_key")]);
@@ -307,6 +324,7 @@ function open_blank(el_this) {
    if (status_sheet === "0") {
      disabled = "disabled";
    }
+
    if (trainee_list_full[el_this.attr("data-member_key")]["semester"] < 5) {
      $(".practice_field").each(function () {
        if ($(this).attr("type") === "checkbox") {
@@ -989,6 +1007,7 @@ function open_blank(el_this) {
     $("#morning_revival").val(el_this.attr("data-morning_revival"));
     $("#personal_prayer").val(el_this.attr("data-personal_prayer"));
     $("#common_prayer").val(el_this.attr("data-common_prayer"));
+    $("#sunday_prophecy").val(el_this.attr("data-prophecy"));
     //$("#bible_reading").val(el_this.attr("data-bible_reading"));
 //    $("#bible_book").val(el_this.attr("data-bible_book"));
 //    $("#bible_chapter").val(el_this.attr("data-bible_chapter"));
@@ -1139,6 +1158,7 @@ function open_blank(el_this) {
         $("#personal_prayer").css("min-width", $("#bible_book_ot").css("width"));
         $("#common_prayer").css("min-width", $("#bible_book_ot").css("width"));
         $("#ministry_reading").css("min-width", $("#bible_book_ot").css("width"));
+        $("#sunday_prophecy").css("min-width", $("#bible_book_ot").css("width"));
       }, 200);
     }
 
@@ -1274,7 +1294,12 @@ function open_blank(el_this) {
          day = "";
          date = "";
        }
-       let html_part_span = "<span class='list_string list_string_archive link_day "+sunday_back+" "+done_string+" "+mark_string+"' data-id='"+res[i].id+"' data-date='"+res[i].date+"' data-member_key='"+res[i].member_key+"' data-status='"+res[i].status+"' data-date_send='"+res[i].date_send+"' data-bible='"+res[i].bible+"' data-morning_revival='"+res[i].morning_revival+"' data-personal_prayer='"+res[i].personal_prayer+"' data-common_prayer='"+res[i].common_prayer+"' data-bible_reading='"+res[i].bible_reading+"' data-ministry_reading='"+res[i].ministry_reading+"' data-serving_one='"+res[i].serving_one+"' data-bible_book='"+res[i].bible_book+"' data-bible_chapter='"+res[i].bible_chapter+"' data-comment='"+res[i].comment+"'>"+date+" "+day+"</span>";
+       let html_part_span = "<span class='list_string list_string_archive link_day "+sunday_back+" "+done_string+" "+mark_string+"' data-id='"
+       + res[i].id+"' data-date='"+res[i].date+"' data-member_key='"+res[i].member_key+"' data-status='"+res[i].status+"' data-date_send='"
+       + res[i].date_send+"' data-bible='"+res[i].bible+"' data-morning_revival='"+res[i].morning_revival+"' data-personal_prayer='"
+       + res[i].personal_prayer+"' data-common_prayer='"+res[i].common_prayer+"' data-prophecy='"+res[i].prophecy+"' data-bible_reading='"
+       + res[i].bible_reading+"' data-ministry_reading='"+res[i].ministry_reading+"' data-serving_one='"+res[i].serving_one+"' data-bible_book='"
+       + res[i].bible_book+"' data-bible_chapter='"+res[i].bible_chapter+"' data-comment='"+res[i].comment+"'>"+date+" "+day+"</span>";
        if (i % 7 === 0) {
         html.push("<div class='row archive_str' style='margin-bottom: 2px;' data-member_key='member_key'>"+html_part_span);
       } else {
@@ -2093,6 +2118,28 @@ function open_blank(el_this) {
     $(selector).html(options);
   }
   /*** BIBLE READING STOP ***/
+
+  // === ПРОВЕРКА ПРОРОЧЕСТВОВАНИЯ НА ПРОШЛОМ СОБРАНИИ
+  // получаем бланк прошлого воскресенья
+  function last_prophecy(member_key, date_blank) {
+    date_blank = subtract_dates(date_blank, 7);
+    fetch("ajax/ftt_attendance_ajax.php?type=get_prev_week_blank&member_key=" + member_key + "&date_blank=" + date_blank)
+    .then(response => response.json())
+    .then(commits => {      
+      if (commits === "0") {
+        $("#note_prophecy").text("Вы не пророчествовали<br>на прошлой неделе.");
+        $("#note_prophecy").show();
+      } else if (commits === "1" || commits === '') {
+        $("#note_prophecy").hide();
+      } else if (commits === null) {
+        $("#note_prophecy").html(dateStrFromyyyymmddToddmm(date_blank) + " лист не<br>отправлен!");
+        $("#note_prophecy").show();
+      } else {
+        $("#note_prophecy").text("Ошибка.");
+        $("#note_prophecy").show();
+      }
+    });
+  }
 
   /*** ПОДРАЗДЕЛ РАЗРЕШЕНИЯ ***/
   // Bootstrap tooltip

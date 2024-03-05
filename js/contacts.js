@@ -1904,8 +1904,12 @@ function sendTheOrder(ua) {
         fio = $(this).find('.data_name').text().trim();
         loc = $(this).find('.data_locality').text().trim();
         region = $(this).attr('data-region');
+        tel = $(this).find('.data_phone').text().trim();
         searchResult = true;
-        if (fio.toLowerCase().indexOf(String(text.toLowerCase())) === -1  && loc.toLowerCase().indexOf(String(text.toLowerCase())) === -1 && region.toLowerCase().indexOf(String(text.toLowerCase())) === -1) {
+        if (fio.toLowerCase().indexOf(String(text.toLowerCase())) === -1
+        && loc.toLowerCase().indexOf(String(text.toLowerCase())) === -1
+        && region.toLowerCase().indexOf(String(text.toLowerCase())) === -1
+        && tel.toLowerCase().indexOf(String(text.toLowerCase())) === -1) {
           searchResult = false;
         }
       } else {

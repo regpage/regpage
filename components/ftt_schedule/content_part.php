@@ -137,7 +137,7 @@ if (count($correction_data) > 0 ) {
           'comment' => $correction_data[$iii]['comment'],
           'color' => 1
         ];
-        $correction_data[$iii]['time']  = '';        
+        $correction_data[$iii]['time']  = '';
         // отменяем мероприятие.
         if ($value['id'] === $correction_data[$iii]['cancel_id']) {
           $loop_schedule[$key][$day] = '';
@@ -381,7 +381,7 @@ array_multisort($sort_field_7, SORT_ASC, $schedule_day7);
           $time_to = date('H:i',$res);
         }
         //
-        if ($value['color'] === 1) {
+        if (isset($value['color']) && $value['color'] === 1) {
           $color = 'mark-yellow';
         } else {
           $color = '';

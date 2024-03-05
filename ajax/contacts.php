@@ -235,4 +235,3 @@ if(isset($_GET['set_log_CRM'])){
     echo json_encode(logFileWriter($adminId, $_GET['message'], $_GET['status']));
     exit();
 }
-?>

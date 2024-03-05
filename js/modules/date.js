@@ -78,4 +78,14 @@ function compare_date(d1, d2) {
 	}
 	// добавить вычесление количества дней если нет стандартной функции
 }
+
+// вычесть из даты
+ function subtract_dates(date, days) {
+   date = new Date(date);
+   let day = date.getDate();
+   days = day - days;
+   date.setDate(days);
+   date_blank = date.toISOString().split("T")[0];
+   return date.toISOString().split("T")[0];
+ }
 /* ==== STOP DATE ==== */
