@@ -7,14 +7,14 @@ include_once "preheader.php";
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-144838221-1"></script>
+  <!-- Global site tag (gtag.js) - Google Analytics
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-144838221-1"></script>-->
 <script>
-  window.dataLayer = window.dataLayer || [];
+  /*window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'UA-144838221-1');
+  gtag('config', 'UA-144838221-1');*/
 </script>
     <meta charset="utf-8">
     <title>Страница регистрации</title>

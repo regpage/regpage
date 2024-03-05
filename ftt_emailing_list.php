@@ -26,7 +26,9 @@ require_once 'db/classes/ftt_lists.php';
 require_once 'db/classes/member.php';
 require_once 'db/classes/short_name.php';
 require_once 'db/classes/date_convert.php';
+require_once 'db/classes/date_plus.php';
 include_once 'db/classes/ftt_attendance/fellowship.php';
+include_once 'db/classes/ftt_attendance/prophecy.php';
 
 function getServiceOnesWithTrainees ()
 {
@@ -37,6 +39,10 @@ function getServiceOnesWithTrainees ()
   while ($row = $res->fetch_assoc()) $result[] = $row['serving_one'];
   //print_r($result);
   foreach ($result as $key => $value) {
+    if (empty($value)) {
+      Emailing::send_by_key('000002634', 'Уведомление с сайта регистрации (ПВОМ)', 'Некоторым обучающимся на сайте регистрации в разделе ПВОМ не назначен ответственный.');
+      continue;
+    }
     //echo $value."<br>";
     $traine_list = ftt_lists::get_trainees_by_staff($value);
     // тема
@@ -169,21 +175,38 @@ function getServiceOnesWithTrainees ()
       $fellowship_text .= "<a href='https://reg-page.ru/ftt_fellowship.php'>Перейти в раздел «Общение»</span>";
     }
 
+    // ==== Пророчествование отчёт
+    $prophecy_text = '';
+    if (date('w') == 2) {
+      $prophecy_text = '<br><br><b>Пророчествование в прошедшее воскресенье:<br></b>';
+      $lTMeeting_date = date_plus::sub_d(date('Y-m-d'), 1);
+      $prophecy_data = Prophecy::by_serving_one($traine_list, $lTMeeting_date);
+      foreach ($prophecy_data as $key => $value) {
+        $prophecy_text .= "{$value['name']} — ";
+        if ($value['prophecy'] === 0) {
+          $prophecy_text .= "нет<br>";
+        } elseif ($value['prophecy'] === 1) {
+          $prophecy_text .= "да<br>";
+        } else {
+          $prophecy_text .= "данные отсутствуют<br>";
+        }
+      }
+      $prophecy_text .= "<a href='https://reg-page.ru/ftt_attendance.php'>Перейти в раздел «Листы посещаемости»</a><br>";
+    }
+
     /***  ОТПРАВКА ПИСЬМА  **/
     //Emailing::send_by_key()
     //Emailing::send
     //a.rudanok@gmail.com
     //info@zhichkinroman.ru '000005716'
     //
-    if ($announcements || $absence || $attendance || $extraHelp || $missingClass || $fellowship_text) {
-      $body = $announcements . $absence . $attendance . $extraHelp . $missingClass . $fellowship_text;
+    if ($announcements || $absence || $attendance || $extraHelp || $missingClass || $fellowship_text || $prophecy_text) {
+      $body = $announcements . $absence . $attendance . $extraHelp . $missingClass . $fellowship_text . $prophecy_text;
       if (!empty($value)) {
-        Emailing::send_by_key($value, $topic, $body);
+        Emailing::send_by_key($value, $topic, $body);        
       } else {
         echo "Не получен емайл служащего, возможно не указан служащий для какого то обучающегося \r\n";
       }
-
-
     } else {
       // add str to log file
     }
@@ -196,5 +219,3 @@ function getServiceOnesWithTrainees ()
 }
 
 getServiceOnesWithTrainees ();
-
-?>
