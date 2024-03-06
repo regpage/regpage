@@ -62,6 +62,7 @@ function db_newContactByApi($data){
     $body .= "Доп инфо: {$comment_mail}<br><br>";
     $body .= "<a href='https://reg-page.ru/contacts'>Перейти в раздел «Контакты»</a>";
     Emailing::send_by_key('000001679', $topic, $body); // $responsible
+    Emailing::send_by_key('000010642', $topic, $body); // $responsible
   }
 
   return $res;

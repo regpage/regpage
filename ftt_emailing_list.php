@@ -119,7 +119,7 @@ function getServiceOnesWithTrainees ()
     $missingClass = '';
     $missingClassData = statistics::missed_class_count_name($traine_list);
     if (count($extraHelpData) > 0) {
-      if (empty($announcements) && empty($absence) && empty($attendance)) {
+      if (empty($announcements) && empty($absence) && empty($attendance) && empty($extraHelp)) {
         $missingClass = '<b>Пропущенные занятия:</b><br>';
       } else {
         $missingClass = '<br><b>Пропущенные занятия:</b><br>';
@@ -137,7 +137,7 @@ function getServiceOnesWithTrainees ()
     $fellowship_text = '';
     $fellowship_text_name = '';
     if (count($fellowship_today) > 0) {
-      if (empty($announcements) && empty($absence) && empty($attendance) && empty($extraHelpData)) {
+      if (empty($announcements) && empty($absence) && empty($attendance) && empty($extraHelp) && empty($missingClass)) {
         $fellowship_text = '<b>Общение сегодня: </b>';
       } else {
         $fellowship_text = '<br><b>Общение сегодня: </b>';
@@ -161,7 +161,7 @@ function getServiceOnesWithTrainees ()
     $fellowship_cancel_today = Fellowship::canceled_serving_one($value);
     $fellowship_cancel_text_name = '';
     if (count($fellowship_cancel_today) > 0) {
-      if (empty($announcements) && empty($absence) && empty($attendance) && empty($extraHelpData) && empty($fellowship_text)) {
+      if (empty($announcements) && empty($absence) && empty($attendance) && empty($extraHelp) && empty($missingClass) && empty($fellowship_text)) {
         $fellowship_text = '<b>Отменено общение сегодня:</b>';
       } else {
         $fellowship_text .= '<br><b>Отменено общение сегодня:</b>';
@@ -180,13 +180,18 @@ function getServiceOnesWithTrainees ()
     }
 
     if (!empty($fellowship_text)) {
-      $fellowship_text .= "<a href='https://reg-page.ru/ftt_fellowship.php'>Перейти в раздел «Общение»</span>";
+      $fellowship_text .= "<a href='https://reg-page.ru/ftt_fellowship.php'>Перейти в раздел «Общение»</span><br>";
     }
 
     // ==== Пророчествование отчёт
     $prophecy_text = '';
     if (date('w') == 1) {
-      $prophecy_text = '<br><br><b>Пророчествование в прошедшее воскресенье:<br></b>';
+      if (empty($announcements) && empty($absence) && empty($attendance) && empty($extraHelp) && empty($missingClass) && empty($fellowship_text) && empty($fellowship_cancel_text_name)) {
+        $prophecy_text = '<b>Пророчествование в прошедшее воскресенье:<br></b>';
+      } else {
+        $prophecy_text = '<br><b>Пророчествование в прошедшее воскресенье:<br></b>';
+      }
+
       $lTMeeting_date = date_plus::sub_d(date('Y-m-d'), 1);
       $prophecy_data = Prophecy::by_serving_one($traine_list, $lTMeeting_date);
       foreach ($prophecy_data as $key => $value) {

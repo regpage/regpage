@@ -638,8 +638,8 @@ setTimeout(function () {
       .then(commits => {
         if (commits.result) {
           data.removeClass("bg-notice-string");
-            $("#ftt_navs .active b").text(Number($("#ftt_navs .active b").text()) - 1);
-            if ($("#ftt_navs .active b").text() === "0" || $("#ftt_navs .active b").text() === "-1") {
+            $("#ftt_navs .active b").text(Number($("#ftt_navs .active b:visible").text().trim()) - 1);
+            if ($("#ftt_navs .active b:visible").text() === "0" || $("#ftt_navs .active b:visible").text() === "-1") {
               $("#ftt_navs .active b").text("");
             }
         }
@@ -648,6 +648,7 @@ setTimeout(function () {
   }
   $("#announcement_tab_2 .list_string").click(function (e) {
     $("#announcement_show").modal("show");
+
     announcement_open($(this));
   });
 

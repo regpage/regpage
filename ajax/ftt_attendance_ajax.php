@@ -187,7 +187,7 @@ if (isset($_GET['type']) && $_GET['type'] === 'overnight') {
 }
 
 // получаем бланк недельной давности от переданной даты
-if(isset($_GET['type']) && $_GET['type'] = 'get_prev_week_blank'){
+if(isset($_GET['type']) && $_GET['type'] === 'get_prev_week_blank'){
     echo json_encode(getPrevWeekBlank($_GET['member_key'], $_GET['date_blank']));
     exit();
 }
@@ -411,5 +411,3 @@ if (isset($_GET['type']) && $_GET['type'] === 'get_bible_data') {
   echo json_encode(["result"=>get_bible_data($_GET['member_key'], $_GET['date'])]);
   exit();
 }
-
-?>
