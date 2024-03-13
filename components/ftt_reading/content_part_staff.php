@@ -34,8 +34,11 @@ if (isset($_COOKIE['flt_serving_one_read'])) {
 <div id="list_readin_bible" class="container">
     <div class="row">
     <?php
-    $reading_data = getDataReadingForStaff($flt_sevice_one_read);    
+    $reading_data = getDataReadingForStaff($flt_sevice_one_read);
     foreach ($reading_data as $key => $value) {
+      if (!isset($trainee_list[$key])) {
+        continue;
+      }
       $counter = 0;
       foreach ($value as $key_2 => $value_2) {
         if ($counter == 0) {

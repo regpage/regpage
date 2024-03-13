@@ -176,17 +176,17 @@ function getServiceOnesWithTrainees ()
     //a.rudanok@gmail.com
     //info@new-constellation.ru
     //Emailing::send_by_key($value, $topic, $gospelText);
-    //Emailing::send('info@new-constellation.ru', $topic, $gospelText);
+    //Emailing::send('rzhichkin@vk.com', $topic, $gospelText);
 
     if ($gospelText) {
       $success .= "$value - статистика благовестия - success\r\n";
-      //Emailing::send('info@new-constellation.ru', $topic, $gospelText);
+      //Emailing::send('rzhichkin@vk.com', $topic, $gospelText);
       Emailing::send_by_key($value, $topic, $gospelText);
     } else {
       $success .= "$value - статистика благовестия - failure\r\n";
     }
   }
-  
+
   $faleName = $_SERVER['PHP_SELF'];
   db_query("INSERT INTO `cron` (`date`,`script`, `status`, `comment`) VALUES (CURRENT_DATE(),'{$faleName}', '1', 'Вне периода')");
 
