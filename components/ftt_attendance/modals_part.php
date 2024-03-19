@@ -75,7 +75,7 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
           <div class="row">
             <div class="col-12">
               <h6 class="hide_element">Пророчествование на собрании</h6>
-              <div class="input-group mb-3">
+              <div class="input-group mb-2">
                 <span class="align-self-center name_session">Пророчествование на собрании</span>
                 <select type="number" id="sunday_prophecy" class="form-control short_number_field" data-field="prophecy" value="" style="margin-left: 0px !important; font-size: 14px; max-width: 95px !important;">
                   <option value=""></option>

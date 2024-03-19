@@ -295,13 +295,13 @@ function open_blank(el_this) {
   $("#modal-block_1").show();
   $("#modal-block_2").show();
   status_sheet = el_this.attr("data-status");
-  let tmp_day_of_week = el_this.text().trim();
-  if (tmp_day_of_week[tmp_day_of_week.length-1] === 'с') {
-    $("#sunday_prophecy").parent().parent().parent().show();
-    last_prophecy(el_this.attr("data-member_key"), el_this.attr("data-date"));
+  let tmp_day_of_week;
+  if (trainee_access) {
+      tmp_day_of_week = el_this.find(".date_str").attr("data-short").trim();
   } else {
-    $("#sunday_prophecy").parent().parent().parent().hide();
+      tmp_day_of_week = el_this.text().trim();
   }
+
   // поля бланка для просмотра служащими отображаются в соответствии с семестром обучающегося
   if (!trainee_access) {
    $("#name_of_trainee").text(trainee_list[el_this.attr("data-member_key")]);
@@ -481,12 +481,20 @@ function open_blank(el_this) {
       if (commits.result[i]['permission_sheet_id'] > 0 && commits.result[i]['reason'] === "Р") {
         text_success_btn = "btn-success";
       }
+      let lord_table_meeting_today = "";
+
+      if (tmp_day_of_week[tmp_day_of_week.length-1] === 'с' ) {
+        let tmp_ltm = commits.result[i]['session_name'].toLowerCase();
+        if (tmp_ltm.indexOf("трапез") !== -1) {
+          lord_table_meeting_today = "ltm_here";
+        }
+      }
 
       srings.push("<div class='row' data-id='"+commits.result[i]['id']+"' data-visit='"+visit_field+"' data-end_time='"+commits.result[i]['end_time']+"' data-correction_id='"+commits.result[i]['session_correction_id']+"' data-absence='"+
       commits.result[i]['absence']+"' data-late='"+commits.result[i]['late']+"' data-permission_id='"+
       commits.result[i]['permission_sheet_id']+"' style='"+mb_2+"'><div class='col-12'><h6 class='"+hide_element+"'>"+ commits.result[i]['session_name']
       +"</h6>"+extra_label+"<div class='input-group "+mb_3+"'><span data-text='"+render_session_name
-      +"' data-field='session_name' class='align-self-center name_session "+hide_element_mbl+"'>"+ commits.result[i]['session_name']
+      +"' data-field='session_name' class='align-self-center name_session "+hide_element_mbl+" " + lord_table_meeting_today + "'>"+ commits.result[i]['session_name']
       +"</span><input type='time' data-val='"+time_val+"' value='"+commits.result[i]['session_time']
       +"' class='form-control "+bg_light+" mr-3 ' required data-field='session_time' "+disabled_extra+" "+disabled_service+"><input type='time' class='form-control mr-3  "+bg_color_time+"' data-field='attend_time' value='"+commits.result[i]['attend_time']
       +"' "+disabled+" "+disabled_service+"><select data-field='reason' class='select_reason bg-secondary text-light short_select_field hide_element'"
@@ -503,6 +511,7 @@ function open_blank(el_this) {
      $("#modal-block_1").html(srings.join(" "));
     } else {
      $("#modal-block_1").html("<p><label style='color: red;'>В этот день учёт посещаемости не ведётся.</label></p>");
+     $("#sunday_prophecy").parent().parent().parent().hide();
     }
     // DESIGN
     if ($(window).width()<=769) {
@@ -1002,6 +1011,18 @@ function open_blank(el_this) {
         $(this).css('border-color', 'lightgray');
       }
     });
+    // проверка на наличие трапезы в расписании
+    let lord_table_meeting_today = false;
+    if ($("#modal-block_1 .ltm_here").text()) {
+      lord_table_meeting_today = true;
+    }
+
+    if (tmp_day_of_week[tmp_day_of_week.length-1] === 'с' && lord_table_meeting_today) {
+      $("#sunday_prophecy").parent().parent().parent().show();
+      last_prophecy(el_this.attr("data-member_key"), el_this.attr("data-date"));
+    } else {
+      $("#sunday_prophecy").parent().parent().parent().hide();
+    }
   });
 
     $("#morning_revival").val(el_this.attr("data-morning_revival"));
@@ -1730,7 +1751,7 @@ function open_blank(el_this) {
           if (!$("#bible_book_ot").attr("disabled") && !disabled_checkbox_start_ot && $("#modalAddEdit").attr("data-date") === gl_date_now) {
             disabled_bookfields_start_mdl("o", disabled_checkbox_start_ot);
           }
-        }        
+        }
       } else if (!$("#bible_book_ot").is(":visible")) { // если поле в листе не видимо ВЕРНО
         $("#mdl_ot_start").prop("checked", false);
         if ($("#modalAddEdit").attr("data-date") === gl_date_now) {
@@ -2193,11 +2214,11 @@ function open_blank(el_this) {
     .then(response => response.json())
     .then(commits => {
       if (commits === "0") {
-        $("#note_prophecy").text("Вы не пророчествовали<br>на прошлой неделе.");
+        $("#note_prophecy").html("Вы не пророчествовали<br>на прошлой неделе.");
         $("#note_prophecy").show();
-      } else if (commits === "1" || commits === '') {
+      } else if (commits === "1" || commits === '' || commits === null) {
         $("#note_prophecy").hide();
-      } else if (commits === null) {
+      } else if (commits === "2") {
         $("#note_prophecy").html(dateStrFromyyyymmddToddmm(date_blank) + " лист не<br>отправлен!");
         $("#note_prophecy").show();
       } else {

@@ -427,11 +427,13 @@ function getPrevWeekBlank($member_key, $date_blank) {
   $prophecy = '';
   $id = '';
   $has_sessions = '';
+  $status = '';
 
-  $res = db_query ("SELECT `id`, `prophecy` FROM `ftt_attendance_sheet` WHERE `member_key`='{$member_key}' AND `date` = '{$date_blank}'");
+  $res = db_query ("SELECT `id`, `prophecy`, `status` FROM `ftt_attendance_sheet` WHERE `member_key`='{$member_key}' AND `date` = '{$date_blank}'");
   while ($row = $res->fetch_assoc()) {
     $prophecy = $row['prophecy'];
     $id = $row['id'];
+    $status = $row['status'];
   }
 
   $res2 = db_query ("SELECT DISTINCT `id` FROM `ftt_attendance` WHERE `sheet_id`='{$id}'");
@@ -439,6 +441,8 @@ function getPrevWeekBlank($member_key, $date_blank) {
 
   if (empty($has_sessions)) {
     return $has_sessions;
+  } elseif ($status == 2) {
+    return 2;
   } else {
     return $prophecy;
   }
