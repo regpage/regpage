@@ -507,3 +507,22 @@ function getHistoryReadingTrainee($member_key)
 
   return $result;
 }
+
+function checkReadBook($memberKey, $book, $footnotes, $ot)
+{
+  global $db;
+  $memberKey = $db->real_escape_string($memberKey);
+  $book = $db->real_escape_string($book);
+  $footnotes = $db->real_escape_string($footnotes);
+  if ($ot == 1) {
+    $conditions = " AND `book_ot` = '{$book}' "; // AND `read_footnotes_ot` = '{$footnotes}'
+  } else {
+    $conditions = " AND `book_nt` = '{$book}' "; // AND `read_footnotes_nt` = '{$footnotes}'
+  }
+
+  $result = "";
+  $res = db_query("SELECT DISTINCT `id` FROM `ftt_bible` WHERE `member_key` = '{$memberKey}' {$conditions} AND `start` != 1 AND `date` = '0000-00-00'");
+  while ($row = $res->fetch_assoc()) $result = $row['id'];
+
+  return $result;
+}

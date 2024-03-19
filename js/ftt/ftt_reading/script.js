@@ -635,8 +635,59 @@ $(document).ready(function(){
       $("#set_start_reading_bible").attr("disabled", true);
       $("#mdl_bible_start").modal("show");
     });
-  });
 
+    // check ot
+    setTimeout(function () {
+      if ($("#mdl_ot_start").prop("checked")) {
+        let mdl_footnotes_ot_start = 0;
+        /*if ($("#mdl_footnotes_ot_start").prop("checked")) {
+          mdl_footnotes_ot_start = 1;
+        }*/
+        fetch("ajax/ftt_reading_ajax.php?type=check_read_book&member_key="
+        + member_key + "&footnotes=" + mdl_footnotes_ot_start + "&book=" + $("#mdl_book_ot_start").val() + "&ot=1")
+        .then(response => response.json())
+        .then(commits => {
+          if (commits.result) {
+            disabled_bookfields_start_mdl("o", false);
+          }
+        });
+      }
+    }, 50);
+    // check ot
+    setTimeout(function () {
+      if ($("#mdl_nt_start").prop("checked")) {
+        let mdl_footnotes_nt_start = 0;
+        /*if ($("#mdl_footnotes_nt_start").prop("checked")) {
+          mdl_footnotes_nt_start = 1;
+        }*/
+        fetch("ajax/ftt_reading_ajax.php?type=check_read_book&member_key="
+        + member_key + "&footnotes=" + mdl_footnotes_nt_start + "&book=" + $("#mdl_book_nt_start").val() + "&ot=0")
+        .then(response => response.json())
+        .then(commits => {
+          if (commits.result) {
+            disabled_bookfields_start_mdl("n", false);
+          }
+        });
+      }
+    }, 100);
+  });
+  // блокировка полей старта нз и/или вз
+  function disabled_bookfields_start_mdl(book, disabled, exception) {
+    let selectors = ["#mdl_"+book+"t_start", "#mdl_book_"+book+"t_start", "#mdl_chapter_"+book+"t_start", "#mdl_footnotes_"+book+"t_start"];
+    for (let i = 0; i < selectors.length; i++) {
+      if (exception >= 0 && exception === i) {
+        continue;
+      } else {
+        if (trainee_access && i === 3) {
+          $(selectors[i]).attr("disabled", true);
+        } else {
+          $(selectors[i]).attr("disabled", disabled);
+        }
+      }
+    }
+  }
+
+  // change
   $("#mdl_ot_start, #mdl_nt_start").change(function () {
     if ($(this).attr("id") === "mdl_ot_start") {
       if ($(this).prop("checked")) {

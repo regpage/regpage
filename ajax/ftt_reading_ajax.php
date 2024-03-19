@@ -63,3 +63,8 @@ if (isset($_GET['type']) && $_GET['type'] === 'get_start_position') {
   echo json_encode(["result"=>get_start_position($_GET['member_key'])]);
   exit();
 }
+
+if (isset($_GET['type']) && $_GET['type'] === 'check_read_book') {
+  echo json_encode(["result"=>checkReadBook($_GET['member_key'], $_GET['book'], $_GET['footnotes'], $_GET['ot'])]);
+  exit();
+}

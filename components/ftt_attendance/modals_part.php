@@ -30,9 +30,9 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
         <?php if($ftt_access['group'] === 'staff' || (isset($trainee_data['semester']) && $trainee_data['semester'] > 4)) { ?>
             <div class="row">
               <div class="col-12">
-                <h6 class="hide_element">Личное утреннее оживление</h6>
+                <h6 class="hide_element">Утреннее оживление</h6>
                 <div class="input-group mb-3">
-                  <span class="align-self-center name_session">Личное утреннее оживление</span>
+                  <span class="align-self-center name_session">Утреннее оживление</span>
                   <input type="number" id="morning_revival" class="form-control practice_field short_number_field text-right" data-field="morning_revival" value="" min="0" max="30" style="font-size: 14px; max-width: 95px !important;">
                   <span class="pl-2 align-self-center">мин. (30 мин. в день)</span>
                 </div>
