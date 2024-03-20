@@ -200,7 +200,10 @@ if ($("#events-list").val() === "20222028") {
       if (checkLocalityFieldForLink.length !== 0) {
         $('#modalEditMember').find('.handle-new-locality').parent().hide();
       }
-  }, 100);
+      // заполняем список выбора служения
+      get_services_event($("#events-list").val(), $('#modalEditMember').attr("data-member_id"), $(".emService").val());
+
+    }, 100);
   });
 
 $('#modalEditMember').on('hide', function() {
@@ -290,7 +293,6 @@ function preventMotion(event){
 $('#modalEditMember').on('show', function() {
   if ($(document).width() < 980) {
     window.scrollTo(0, 0);
-    console.log("I am here!");
     $("#modalEditMember .emParking").parent().attr("style", "width: 28%");
     $("#modalEditMember .emAvtomobile").parent().attr("style", "width: 41%; float: right;");
   }
@@ -747,4 +749,34 @@ $('#tblPresents').click(function () {
 
   }
 });
+
+// получить служения для мероприятия
+function get_services_event(event_id, member_key, value) {
+  // ПРОБЛЕМЫ С ЗАПОЛНЕНИЕМ
+  // ПРОВЕРИТЬ ПОД ОТВЕТСТВЕННЫМ НЕ АДМИНОМ
+  fetch("/ajax/get.php?type=get_services_event&event_id=" + event_id) // + "&member_key=" + member_key
+  .then(response => response.json())
+  .then(commits => {
+    if (commits.result.list.length > 0) {
+      let selected;
+      let html = "<option>";
+      for (let i = 0; i < commits.result.list.length; i++) {
+        if (value === commits.result.list[i]['service_key']) {
+          selected = "selected";          
+        } else {
+          selected = "";
+        }
+        if (commits.result.list[i]['admin'] === "0") {
+          html += "<option value='" + commits.result.list[i]['service_key'] + "' " + selected + ">" + commits.result.list[i]['name'];
+        } else if ((commits.result.admin && commits.result.list[i]['admin'] === "1") || selected === "selected") {
+          html += "<option value='" + commits.result.list[i]['service_key'] + "' " + selected + ">" + commits.result.list[i]['name'];
+        }
+      }
+      $(".emService").html(html);
+    } else {
+      $(".emService").html("");
+    }
+  });
+}
+
 // Stop table present

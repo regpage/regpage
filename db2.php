@@ -337,4 +337,23 @@ function setValueFttParamByName($name, $value) {
 
     return $res;
 }
-?>
+
+// получаем служения для мероприятия
+function db_getServicesEvent($eventId, $adminId) {
+    global $db;
+    $eventId = $db->real_escape_string($eventId);
+    $adminId = $db->real_escape_string($adminId);
+    $result = array('admin' => "", 'list' => []);
+
+    $res = db_query("SELECT es.*, s.name
+      FROM event_services AS es
+      LEFT JOIN service s ON s.key = es.service_key
+      WHERE es.event_key = '$eventId'");
+    while ($row = $res->fetch_assoc()) $result['list'][]=$row;
+
+    $res2 = db_query("SELECT `member_key` FROM `event_access` WHERE `key` = '$eventId' AND `member_key` = '$adminId'");
+    while ($row = $res2->fetch_assoc()) $result['admin']=$row['member_key'];
+
+
+    return $result;
+}

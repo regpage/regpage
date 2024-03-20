@@ -2921,6 +2921,7 @@ function db_getEventsForEventsPage($adminId, $sort_type, $sort_field){
     // first request is by locality
     // second request is by admin access if zones more than access
     // third request is by admin acees if zones less than access
+    // ДОБАВЛЕН ЗАПРОС для получение мероприятий на которые пользователь зарегистрировал, но мероприятия не находятся в зоне доступа пользователя
     // forth request is by zones (available only events are not restricted by zones)
 
     $res=db_query ("SELECT DISTINCT * FROM (
@@ -2969,6 +2970,17 @@ function db_getEventsForEventsPage($adminId, $sort_type, $sort_field){
                     INNER JOIN locality lo ON lo.key = a.locality_key or lo.region_key = r.key
                     INNER JOIN event_zones z ON z.event_key=e.key AND (z.country_key=c.key or z.region_key=r.key or z.locality_key=lo.key)
                     WHERE 1 $request
+
+                    UNION
+
+                    SELECT e.key as id, e.name as name, e.need_passport, e.need_transport, e.close_registration,
+                    e.participants_count, e.online, e.event_type,
+                    e.need_prepayment, e.start_date, e.end_date, e.min_age, e.max_age, e.need_flight, e.need_tp, e.regend_date, e.info, e.private,
+                    e.locality_key, e.author, l.name as locality_name, e.is_active, e.archived, re.regstate_key, re.member_key
+                    FROM event e
+                    LEFT JOIN reg re ON re.event_key=e.key AND re.member_key='$adminId'
+                    LEFT JOIN locality l ON l.key=e.locality_key
+                    WHERE re.member_key='$adminId'
 
                     UNION
 

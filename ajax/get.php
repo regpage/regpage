@@ -152,7 +152,10 @@ if(isset($_GET['get_regstate'])){
     echo json_encode(["regstate"=>db_checkRegState ($_POST ['memberKey'], $_POST['eventAdmin'])]);
     exit();
 }
-
+if ($_GET['type'] === 'get_services_event') {
+  echo json_encode(["result"=>db_getServicesEvent ($_GET ['event_id'], $adminId)]); //$_GET ['member_key']
+  exit();
+}
 if (isset ($_GET ['eventId']))
 {
     $info=db_getEventToCreateNewMember ($_GET ['eventId']);
