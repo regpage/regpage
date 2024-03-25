@@ -429,6 +429,10 @@
                   <input type="checkbox" id="member_name" disabled checked>
                   <label for="member_name">ФИО</label>
               </div>
+              <div>
+                  <input type="checkbox" data-download="male" id="download-male">
+                  <label for="download-male">Пол</label>
+              </div>
                 <div>
                     <input type="checkbox" data-download="birth_date" id="download-birth-date-member">
                     <label for="download-birth-date-member">Дата рождения</label>
@@ -2850,7 +2854,7 @@ function checkStopEventRegistration(eventId){
   });
     // END Romans Code
 </script>
-<script src="/js/reg.js?v82"></script>
+<script src="/js/reg.js?v83"></script>
 <script src="/js/regupload.js?v5"></script>
 <?php
     include_once "footer.php";

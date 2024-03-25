@@ -26,7 +26,7 @@ if(isset($_GET['file'])) {
 if(isset($_POST['data'])){
     $file = $_POST['data'];
     unlink($file);
-}
+} // ПАРКОВКА
 else if ($_POST['page'] == 'reg' && isset($_POST ['parking'])) {
     $memberslength = $_POST ['memberslength'];
     $membersAll = json_decode($_POST ['members'], TRUE);
@@ -114,7 +114,7 @@ else if ($_POST['page'] == 'reg' && isset($_POST ['parking'])) {
 
     $filename = $file.'.xlsx';
     echo $filename;
-}
+} // reg_aid
 else if (isset($_POST ['members']) && isset ($_POST ['memberslength']) && isset($_POST['adminId']) && ($_POST['page'] == 'reg_aid')) {
     $memberslength = $db->real_escape_string($_POST ['memberslength']);
     $membersAll = json_decode($_POST ['members'], TRUE);
@@ -251,7 +251,7 @@ else if (isset($_POST ['members']) && isset ($_POST ['memberslength']) && isset(
 
     $filename = $file.'.xlsx';
     echo $filename;
-}
+} // members
 else if (isset($_POST ['members']) && isset ($_POST ['memberslength']) && isset($_POST['adminId']) && ($_POST['page'] == 'members')) {
     $memberslength = $db->real_escape_string($_POST ['memberslength']);
     $membersAll = json_decode($_POST ['members'], TRUE);
@@ -510,7 +510,7 @@ else if (isset($_POST ['members']) && isset ($_POST ['memberslength']) && isset(
 
     $filename = $file.'.xlsx';
     echo $filename;
-}
+} // список участников зарегистрированных на мероприятие
 else if (isset ($_POST ['members']) && isset ($_POST ['memberslength']) && isset($_POST['adminId']) && $_POST['page'] == 'reg' && !isset($_POST ['parking'])){
     $memberslength = $_POST ['memberslength'];
     $membersAll = json_decode($_POST ['members'], TRUE);
@@ -772,6 +772,9 @@ else if (isset ($_POST ['members']) && isset ($_POST ['memberslength']) && isset
                 case 'paid':
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue($ind.'1', 'Внесённый взнос');
                     break;
+                case 'male':
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue($ind.'1', "Пол");
+                    break;
             }
             $ind ++;
         }
@@ -969,6 +972,9 @@ else if (isset ($_POST ['members']) && isset ($_POST ['memberslength']) && isset
                                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue($ind.''.$i, $membersAll[$m]['tp_num']); $ind ++;
                                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue($ind.''.$i, $membersAll[$m]['tp_auth']); $ind ++;
                                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue($ind.''.$i, $membersAll[$m]['tp_date']);
+                                break;
+                            case 'male':
+                                $objPHPExcel->setActiveSheetIndex(0)->setCellValue($ind.''.$i, $membersAll[$m]['male'] == 1 ? 'Брат': 'Сестра');
                                 break;
                         }
                         $ind ++;
