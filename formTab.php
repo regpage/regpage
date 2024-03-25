@@ -296,6 +296,8 @@
         </select>
     </div>
 </div>
+<?php } ?>
+<?php if (!$isGuest) { ?>
 <div class="controls service-block">
     <div class="control-group row-fluid" style="width: 48%;">
         <label class="span12">Служение</label>
@@ -304,6 +306,7 @@
             <?php foreach (db_getServices() as $id => $name) echo "<option value='$id'>".htmlspecialchars ($name)."</option>"; ?>
         </select>
     </div>
+    <?php if (!$isGuest && !$indexPage) { ?>
     <div class="control-group row-fluid" style="width: 48%; float: right;">
         <label class="span12">Координатор <a href="#" rel="tooltip" data-placement="bottom" data-toggle="tooltip" title="Условия: возраст до 55 лет, здоровье и способность позаботиться о святых" tabindex="-1"><i class="icon-question-sign"></i></a></label>
             <select class="span12 emCoord">
@@ -311,7 +314,10 @@
                 <option value="1">РЕКОМЕНДУЕТСЯ</option>
             </select>
     </div>
+    <?php } ?>
 </div>
+<?php } ?>
+<?php if (!$isGuest && !$indexPage) { ?>
 <div class="controls">
     <div class="control-group row-fluid">
         <label class="span12 emStatusLabel">Статус<sup>*</sup></label>

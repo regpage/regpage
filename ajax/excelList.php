@@ -118,7 +118,7 @@ else if ($_POST['page'] == 'reg' && isset($_POST ['parking'])) {
 else if (isset($_POST ['members']) && isset ($_POST ['memberslength']) && isset($_POST['adminId']) && ($_POST['page'] == 'reg_aid')) {
     $memberslength = $db->real_escape_string($_POST ['memberslength']);
     $membersAll = json_decode($_POST ['members'], TRUE);
-    $fields = isset($_POST['fields']) ? explode(',', $db->real_escape_string($_POST['fields'])) : NULL;
+    $fields = isset($_POST['fields']) ? explode(',', $db->real_escape_string($_POST['fields'])) : [];
     $fieldsCount = count($fields);
     $suplemValues = isset($_POST['general_values']) ? json_decode($_POST['general_values'], TRUE) : NULL;
 
@@ -255,7 +255,7 @@ else if (isset($_POST ['members']) && isset ($_POST ['memberslength']) && isset(
 else if (isset($_POST ['members']) && isset ($_POST ['memberslength']) && isset($_POST['adminId']) && ($_POST['page'] == 'members')) {
     $memberslength = $db->real_escape_string($_POST ['memberslength']);
     $membersAll = json_decode($_POST ['members'], TRUE);
-    $fields = isset($_POST['document']) ? explode(',', $db->real_escape_string($_POST['document'])) : NULL;
+    $fields = isset($_POST['document']) ? explode(',', $db->real_escape_string($_POST['document'])) : [];
     $fieldsCount = count($fields);
 
     $title = 'Список';
@@ -514,7 +514,7 @@ else if (isset($_POST ['members']) && isset ($_POST ['memberslength']) && isset(
 else if (isset ($_POST ['members']) && isset ($_POST ['memberslength']) && isset($_POST['adminId']) && $_POST['page'] == 'reg' && !isset($_POST ['parking'])){
     $memberslength = $_POST ['memberslength'];
     $membersAll = json_decode($_POST ['members'], TRUE);
-    $fields = isset($_POST['document']) ? json_decode( $_POST['document'], TRUE) : NULL;
+    $fields = isset($_POST['document']) && !empty($_POST['document']) ? json_decode($_POST['document'], TRUE) : [];
 
     $fieldsCount = $fields['name']['arr_date'] ? count($fields)+1 : count($fields);
     $eventType = $_POST["event_type"];

@@ -372,7 +372,7 @@ if ($noEvent) { ?>
 <?php if($indexPage){?>
 <div class="controls">
     <input id="terms-use-checkbox" type="checkbox" style="float: left; margin-top: 3px; margin-left: 30px;">
-    <label for="terms-use-checkbox" class="span6" style="margin-left: 5px;">подтверждаю согласие на обработку моих персональных данных</label>    
+    <label for="terms-use-checkbox" class="span6" style="margin-left: 5px;">подтверждаю согласие на обработку моих персональных данных</label>
 </div>
 <?php } ?>
 <?php } ?>

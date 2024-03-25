@@ -1212,7 +1212,7 @@ function db_setEventMember ($adminId, $get, $post){
     $_avtomobile_number = $_page =='/members' ? (DONT_CHANGE) : (isset($post['avtomobile_number']) && $post['avtomobile_number']!='' ? $db->real_escape_string($post['avtomobile_number']) : '');
     $_prepaid = $_page == '/members' || $_page == '/index' ? (DONT_CHANGE) : (int)$post['prepaid'];
     $_currency = $_page == '/members' || $_page == '/index' ? (DONT_CHANGE) : (isset($post['currency']) ? $db->real_escape_string($post['currency']) : null);
-    $_service_key = $_page == '/members' || $_page == '/index' ? (DONT_CHANGE) : (isset($post['service_key']) ? $db->real_escape_string($post['service_key']) : null);
+    $_service_key = $_page == '/members' ? (DONT_CHANGE) : (isset($post['service_key']) ? $db->real_escape_string($post['service_key']) : null); //|| $_page == '/index'
     $is_guest = $_page == '/index';
     $_aid = $_page == '/members' || $_page == '/index' ? (DONT_CHANGE) : (isset($post['aid']) ? (int)$post['aid'] : 0);
     $_contr_amount = $_page == '/members' || $_page == '/index' ? (DONT_CHANGE) : (isset($post['contr_amount']) ? (int)$post['contr_amount'] : 0);

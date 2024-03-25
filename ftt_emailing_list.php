@@ -180,28 +180,31 @@ function getServiceOnesWithTrainees ()
     }
 
     if (!empty($fellowship_text)) {
-      $fellowship_text .= "<a href='https://reg-page.ru/ftt_fellowship.php'>Перейти в раздел «Общение»</span><br>";
+      $fellowship_text .= "<a href='https://reg-page.ru/ftt_fellowship.php'>Перейти в раздел «Общение»</a><br>";
     }
 
     // ==== Пророчествование отчёт
     $prophecy_text = '';
-    if (date('w') == 1) {
+    if (date('w') != 0) {
       if (empty($announcements) && empty($absence) && empty($attendance) && empty($extraHelp) && empty($missingClass) && empty($fellowship_text) && empty($fellowship_cancel_text_name)) {
         $prophecy_text = '<b>Пророчествование в прошедшее воскресенье:<br></b>';
       } else {
         $prophecy_text = '<br><b>Пророчествование в прошедшее воскресенье:<br></b>';
       }
 
-      $lTMeeting_date = date_plus::sub_d(date('Y-m-d'), 1);
+      $lTMeeting_date = date_plus::sub_d(date('Y-m-d'), date('w'));
       $prophecy_data = Prophecy::by_serving_one($traine_list, $lTMeeting_date);
-      foreach ($prophecy_data as $key => $value) {
-        $prophecy_text .= "{$value['name']} — ";
-        if ($value['prophecy'] === 0) {
-          $prophecy_text .= "нет<br>";
-        } elseif ($value['prophecy'] === 1) {
-          $prophecy_text .= "да<br>";
+      $lTMeeting_date_format = date_convert::yyyymmdd_to_ddmm($lTMeeting_date);
+      foreach ($prophecy_data as $keyProph => $valueProph) {
+        $prophecy_text .= "{$valueProph['name']} — ";
+        if ($valueProph['status'] === "0" || $valueProph['status'] === "2") {
+          $prophecy_text .= $lTMeeting_date_format . " лист не отправлен <br>";
+        } elseif ($valueProph['prophecy'] === "0") {
+          $prophecy_text .= $lTMeeting_date_format . " пророчествовал(а)<br>";
+        } elseif ($valueProph['prophecy'] === "1") {
+          $prophecy_text .= $lTMeeting_date_format . " не пророчествовал(а)<br>";
         } else {
-          $prophecy_text .= "данные отсутствуют<br>";
+          $prophecy_text .= $lTMeeting_date_format . " данные отсутствуют тк установлен перерыв или собрание трапезы не было указано в расписании<br>";
         }
       }
       $prophecy_text .= "<a href='https://reg-page.ru/ftt_attendance.php'>Перейти в раздел «Листы посещаемости»</a><br>";
@@ -217,6 +220,7 @@ function getServiceOnesWithTrainees ()
       $body = $announcements . $absence . $attendance . $extraHelp . $missingClass . $fellowship_text . $prophecy_text;
       if (!empty($value)) {
         Emailing::send_by_key($value, $topic, $body);
+        //Emailing::send_by_key('000005716', $topic, $body);
       } else {
         echo "Не получен емайл служащего, возможно не указан служащий для какого то обучающегося \r\n";
       }

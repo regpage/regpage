@@ -86,6 +86,7 @@ function checkCron($script, $date) {
     $content = "Сообщение с сайта reg-page.ru.<br>Ошибка CRON. Нет данных на {$dateRuFormat} о выполнении ежедневного CRON {$script}.<br>";
     $topic = 'Ошибка CRON reg-page.ru';
     Emailing::send('zhichkinroman@gmail.com', $topic, $content);
+    Emailing::send('a.rudanok@gmail.com', $topic, $content);
     //Emailing::send_by_key($value, $topic, $content);
     $answer = "Внимание! Проблема на {$dateRuFormat} с {$script} CRON\r\n";
   } else {

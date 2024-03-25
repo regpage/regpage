@@ -740,7 +740,7 @@ function handleAditionalMenu(){
                 }
             });
         }
-    });    
+    });
 });
 // STOP READY
 function handleBirthDateAndCategoryFields(){
@@ -2640,3 +2640,31 @@ $('.bell-alarm, .bell-alarm-mbl').click(function () {
 		window.location = '/contacts';
 	}
 });
+// получить служения для мероприятия
+function get_services_event(event_id, member_key, value) {
+  // ПРОБЛЕМЫ С ЗАПОЛНЕНИЕМ
+  // ПРОВЕРИТЬ ПОД ОТВЕТСТВЕННЫМ НЕ АДМИНОМ
+  fetch("/ajax/get.php?type=get_services_event&event_id=" + event_id) // + "&member_key=" + member_key
+  .then(response => response.json())
+  .then(commits => {
+    if (commits.result.list.length > 0) {
+      let selected;
+      let html = "<option>";
+      for (let i = 0; i < commits.result.list.length; i++) {
+        if (value === commits.result.list[i]['service_key']) {
+          selected = "selected";
+        } else {
+          selected = "";
+        }
+        if (commits.result.list[i]['admin'] === "0") {
+          html += "<option value='" + commits.result.list[i]['service_key'] + "' " + selected + ">" + commits.result.list[i]['name'];
+        } else if ((commits.result.admin && commits.result.list[i]['admin'] === "1") || selected === "selected") {
+          html += "<option value='" + commits.result.list[i]['service_key'] + "' " + selected + ">" + commits.result.list[i]['name'];
+        }
+      }
+      $(".emService").html(html);
+    } else {
+      $(".emService").html("");
+    }
+  });
+}

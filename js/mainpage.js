@@ -143,6 +143,7 @@ $('#modalEditMember').on('show',  function() {
     $('#modalEditMember .handle-passport-info').hide();
     $('#modalEditMember .address_block').hide();
   }
+  get_services_event($("#modalShowEventInfo").attr("data-event-id"), window.adminId, $(".emService").val());
 });
 
 // hide the blank
