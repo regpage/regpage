@@ -3754,7 +3754,8 @@ function db_removeFilter($filter_id){
 // SETTINGS
 function db_getSettings(){
     $res = db_query("SELECT * FROM setting_category sc
-                     LEFT JOIN setting_item si ON si.setting_category_key=sc.category_key");
+                     LEFT JOIN setting_item si ON si.setting_category_key=sc.category_key
+                     ORDER BY si.setting_category_key, si.setting_key DESC");
 
     $settings = [];
     while($row = $res->fetch_assoc()){

@@ -307,6 +307,7 @@ write_to_log::info($memberId, 'Админ зашёл в панел админи�
           </div>
           <div id="menu3" class="container tab-pane fade"><br>
             <h3>Other</h3>
+            <?php require_once 'panelsource/content/i_tests/itest.php'; ?>
             <div class="" style="margin: 7px;">
               <input type="button" id="dltSameStrOfLog" class="btn btn-danger btn-sm" name="" value="Удалить схожие строки из лога администраторов">
             </div>

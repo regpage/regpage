@@ -18,7 +18,7 @@
 
     $singleCity = db_isSingleCityAdmin($memberId);
     $user_settings = db_getUserSettings($memberId);
-
+    $user_settings_arr = $user_settings;
     $userSettings = implode (',', $user_settings);
 ?>
 
@@ -194,11 +194,22 @@
                                         echo '<th><a id="sort-locality" href="#" title="сортировать">Город</a>&nbsp;<i class="'.($sort_field=='locality' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none').'"></i></th>';
                                     }
                                 ?>
-                            <th class="hide-tablet">Телефон</th>
+                            <th id="header_point_cell" class="hide-tablet" <?php if (in_array(15, $user_settings_arr)): ?>
+                              style="display: none;"
+                            <?php endif; ?>>Телефон</th>
                             <th class="table_present" style="display: none;">Кат.</th><th class="table_present" style="display: none;">*</th><th class="table_present" style="display: none;">*</th>
                             <th class="table_present" style="display: none;">*</th><th class="table_present" style="display: none;">*</th>
-                            <th class="hide-tablet"><a id="sort-status" href='#' title="сортировать">Статус</a>&nbsp;<i class="<?php echo $sort_field=='status' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none'; ?>"></i></th>
+                            <th class="hide-tablet"><a id="sort-status" href='#' title="сортировать">
+                              <?php if (in_array(16, $user_settings_arr) && !in_array(15, $user_settings_arr)): ?>
+                                Стат.
+                              <?php else: ?>
+                                Статус
+                              <?php endif; ?>
 
+                            </a>&nbsp;<i class="<?php echo $sort_field=='status' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none'; ?>"></i></th>
+                            <th id="header_point_cell" class="hide-tablet" <?php if (!in_array(16, $user_settings_arr)): ?>
+                              style="display: none;"
+                            <?php endif; ?>>Служение</th>
                             <th class="date_th">Даты</th>
                             <th><a id="sort-regstate" href="#" title="сортировать">Состояние</a>&nbsp;<i class="<?php echo $sort_field=='regstate' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none'; ?>"></i></th>
                         </tr>
@@ -1388,6 +1399,7 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
           gl_localities_brothers_p_v = localities;
           gl_events_brothers_p_v = eventId;
         }
+
         for (var i in members){
             var m = members[i];
 
@@ -1467,16 +1479,16 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
                 (showLocalityField ? '<td class=style-city>' + he(m.locality ? (m.locality.length>20 ? m.locality.substring(0,18)+'...' : m.locality) : '') +
                 (in_array(2, window.user_settings) ? '<br/>'+ '<span class="user_setting_span">'+(m.region || m.country)+'</span>' : '') +
                     '</td>' : '') +
-                '<td class="style-cell hide-tablet">' + he(m.cell_phone) +
-                (in_array(3, window.user_settings) ? '<br/>'+ '<span class="user_setting_span">'+m.email+'</span>' : '') +
+                '<td class="style-cell hide-tablet" ' + ((in_array(15, window.user_settings)) ? 'style="display:none;"' : '' )+ '>' + he(m.cell_phone) +
+                (in_array(3, window.user_settings) ? '<br>'+ '<span class="user_setting_span">'+m.email+'</span>' : '') +
                 '</td>' +
-
                '<td class="style-serv hide-tablet"><div>'+ (m.status ? he(m.status) : '') +'<br>'+
                '<span class="user_setting_span">' + getAgeWithSuffix(parseInt(get_current_age(m.birth_date)),get_current_age(m.birth_date)) + '</span>'
                // + '<span class="user_setting_span">'+(m.service ? he(m.service) : '')+ '</span>'
                + '</div>'
                // + ( m.coord == '1' ? '<div>Координатор</div>' : '')
                + '</td>'
+               + ((in_array(16, window.user_settings)) ? '<td class=""><span>'+(m.service != null ? m.service : '') +'</span></td>' : '')
                + (!isOnline ? '<td class="style-date"><span class="arrival" data-date="' + he(m.arr_date) + '" data-time="' + he(m.arr_time) + '">' : "") + formatDDMM( m.arr_date) + '</span> - '+
                 '<span class="departure" data-date="' + he(m.dep_date) + '" data-time="' + he(m.dep_time) + '">'+ formatDDMM(m.dep_date) + '</span><br>'+htmlPlace + ' ' +htmlPlaceFlag+'</td>'+
                 '<td>' + htmlLabelByRegState(m.regstate, m.web, htmlEditor) +
