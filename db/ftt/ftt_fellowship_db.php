@@ -325,7 +325,7 @@ function get_meet_by_date($date, $serving_ones = '_all_')
   $date = $db->real_escape_string($date);
 
   // Сортировка
-  $order_by = ' m.name, ff.date ';
+  $order_by = ' ff.date ';
 
   // УСЛОВИЯ
   // дата
@@ -356,6 +356,7 @@ function get_meet_by_date($date, $serving_ones = '_all_')
 
   // запрос
   $result = [];
+
   $res = db_query("SELECT ff.*, m.name
     FROM ftt_fellowship AS ff
     LEFT JOIN member m ON m.key = ff.serving_one
@@ -369,6 +370,10 @@ function get_meet_by_date($date, $serving_ones = '_all_')
       $result[$row['serving_one']][] = $row;
     }
   }
-
+  uasort($result, function($a, $b){
+    if (isset($a[0]['name']) && isset($b[0]['name'])) {
+      return ($a[0]['name'] > $b[0]['name']);
+    }
+  });
   return $result;
 }
