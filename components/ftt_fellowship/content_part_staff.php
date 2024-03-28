@@ -110,23 +110,20 @@ if (isset($_COOKIE['meet_flt_trainee']) && !empty($_COOKIE['meet_flt_trainee']))
     if ($serving_ones_flt === $memberId) {
       $hide = 'd-none';
     }
-    $bg_empty = '';
-    if (empty($value['trainee'])) {
-      //$bg_empty = 'bg-warning';
+    $bg_busy = '';
+    if (!empty($value['trainee'])) {
+      $bg_busy = 'green_string';
     }
     $time_to = '';
     if (!empty($value['time']) && !empty($value['duration'])) {
       $time_to = time_convert::sum($value['time'], $value['duration']);
     }
-    /*if ($value['cancel']) {
-      $bg_empty = 'bg-danger';
-    }*/
 
     $date = date_convert::yyyymmdd_to_ddmm($value['date']);
     $day_of_week = date_convert::week_days($value['date'], true);
     //$comment_short = CutString::cut($value['comment_serv']);
     $comment_short_trainee = CutString::cut($value['comment_train'], 30);
-    echo "<div class='row str_record_staff'";
+    echo "<div class='row str_record_staff {$bg_busy}'";
     echo "data-id='{$value['id']}' data-serving_one='{$value['serving_one']}' data-trainee='{$value['trainee']}' ";
     echo "data-date='{$value['date']}' data-time='{$value['time']}' data-duration='{$value['duration']}' ";
     echo "data-comment='{$value['comment_train']}' data-cancel='{$value['cancel']}'>";

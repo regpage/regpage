@@ -73,7 +73,7 @@ if ($ftt_access['group'] === 'trainee') {
   $fellowship_today = Fellowship::now_trainee($memberId);
   $fellowship_text = '';
   $fellowship_text_name = '';
-  $fellowship_link = "<span class='link_custom fellowship_link' href='https://churchinspb.online/ftt_attendance.php?meet=1' style='display: inline-block; font-weight: normal;'> перейти в раздел</span>";
+  $fellowship_link = "<span class='link_custom fellowship_link' style='display: inline-block; font-weight: normal;'> перейти в раздел</span>";
   // Добавить отменённые, добавить для служащих. Продублировать в меню раздела пвом
   foreach ($fellowship_today as $key => $value) {
     $name_f = short_name::short($value['name']);
@@ -84,7 +84,7 @@ if ($ftt_access['group'] === 'trainee') {
     }
   }
   if (count($fellowship_today) > 0) {
-    $fellowship_text = "<strong class='fellowship_today' style='color: red; padding-left: 16px; padding-bottom: 10px; padding-right: 10px; display: inline-block;'>Сегодня общение:  {$fellowship_text_name} </strong>";
+    $fellowship_text = "<strong class='fellowship_today' style='color: red; padding: 7px 10px 10px 16px; display: inline-block;'>Сегодня общение:  {$fellowship_text_name} </strong>";
   }
 
   $fellowship_cancel_today = Fellowship::canceled_trainee($memberId);
@@ -100,7 +100,7 @@ if ($ftt_access['group'] === 'trainee') {
     }
   }
   if (count($fellowship_cancel_today) > 0) {
-    $fellowship_cancel_text = "<strong class='fellowship_today' style='color: red; padding-bottom: 10px; padding-left: 16px; padding-right: 10px; display: inline-block;'>Отменено общение:  {$fellowship_cancel_text_name} </strong>";
+    $fellowship_cancel_text = "<strong class='fellowship_today' style='color: red; padding: 7px 10px 10px 16px; display: inline-block;'>Отменено общение:  {$fellowship_cancel_text_name} </strong>";
   }
 }
 ?>
@@ -172,10 +172,7 @@ if ($ftt_access['group'] === 'trainee') {
 <script>
 // переход в раздел общение из меню
 $(".fellowship_link").click(function () {
-  setCookie("tab_active", "meet");
-  setTimeout(function () {
-    window.location = 'ftt_attendance';
-  }, 30);
+  window.location = 'ftt_fellowship';
 });
 // ftt menu
 if ($(window).width()<=769) {
@@ -185,5 +182,5 @@ if ($(window).width()<=769) {
 }
 </script>
 
-<script src="js/ftt/menu_ftt_desing.js"></script>
+<script src="js/ftt/menu_ftt_desing.js?v1"></script>
 <link href="css/ftt/menu_nav_ftt.css" rel="stylesheet">

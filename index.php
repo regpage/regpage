@@ -105,7 +105,7 @@ else if (isset ($_SESSION["logged-in"])){
           $fellowship_today = Fellowship::now_trainee($memberId);
           $fellowship_text = '';
           $fellowship_text_name = '';
-          $fellowship_link = "<span class='link_custom fellowship_link' href='https://churchinspb.online/ftt_attendance.php?meet=1' style='display: inline-block; padding-top: 10px; font-weight: normal;'>перейти в раздел</span>";
+          $fellowship_link = "<span class='link_custom fellowship_link' style='display: inline-block; padding-top: 10px; font-weight: normal;'>перейти в раздел</span>";
           // Добавить отменённые, добавить для служащих. Продублировать в меню раздела пвом
           foreach ($fellowship_today as $key => $value) {
             $name_f = short_name::short($value['name']);
@@ -2000,7 +2000,7 @@ console.log('stop is ', stopRegistration, 'close is ', closeRegistration, modalW
 var adminRole = '<?php echo db_getAdminRole($memberId); ?>';
 
 </script>
-<script src="/js/mainpage.js?v35"></script>
+<script src="/js/mainpage.js?v36"></script>
 
 <?php
 }

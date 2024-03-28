@@ -209,13 +209,6 @@ label {
   background-color: lightgrey;
 }
 
-.green_string {
-  background-color: #b6efb6;
-}
-
-.green_string:hover {
-  background-color: #9deb9d;
-}
 /* Строки в десктопе*/
 .link_day {
   text-decoration: none !important;

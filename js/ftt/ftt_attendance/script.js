@@ -1088,7 +1088,7 @@ function open_blank(el_this) {
       .then(response => response.json())
       .then(commits => {
         let reading_str = commits.result
-        let notes_ot = "", notes_nt = "";
+        let notes_ot = "", notes_nt = "", comma = "";
        if (reading_str === 0) {
           // Нет старта и сегодняшней строки
           $(".reading_bible_title").html("Чтение Библии" + " — выберите начало");
@@ -1098,9 +1098,8 @@ function open_blank(el_this) {
           //}, 250);
           return;
         } else {
-          let comma = "";
-          if (reading_str["book_nt"] && reading_str["book_ot"]) {
-            comma = ",";
+          if (reading_str["book_nt"] && reading_str["book_nt"] !== undefined && reading_str["book_ot"] && reading_str["book_ot"] !== undefined) {
+            comma = ", ";
           }
 
           if (reading_str["read_footnotes_ot"] === "1") {
@@ -1109,7 +1108,7 @@ function open_blank(el_this) {
           if (reading_str["read_footnotes_nt"] === "1") {
             notes_nt += " с прим.";
           }
-          $(".reading_bible_title").text("Чтение Библии " + "(" + reading_str["book_ot"] + comma + " " + notes_ot + " " + reading_str["book_nt"] + " " + notes_nt + ")");
+          $(".reading_bible_title").text("Чтение Библии " + "(" + reading_str["book_ot"] + notes_ot + comma + reading_str["book_nt"] + notes_nt + ")");
           $(".reading_bible_title").attr("data-notes_ot", reading_str["read_footnotes_ot"]);
           $(".reading_bible_title").attr("data-notes_nt", reading_str["read_footnotes_nt"]);
           $(".reading_bible_title").attr("data-book_ot", reading_str["book_ot"]);

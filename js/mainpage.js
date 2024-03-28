@@ -321,8 +321,5 @@ $("#send_request_for_pvom").click(function () {
 });
 
 $(".fellowship_link").click(function () {
-  setCookie("tab_active", "meet");
-  setTimeout(function () {
-    window.location = 'ftt_attendance';
-  }, 30);
+  window.location = 'ftt_fellowship';  
 });

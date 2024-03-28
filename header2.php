@@ -31,7 +31,7 @@
 
 <?php if (IS_FTT) { ?>
     <!-- Основные стили ПВОМ -->
-    <link href="css/ftt/ftt.css?v3" rel="stylesheet">
+    <link href="css/ftt/ftt.css?v4" rel="stylesheet">
 <?php } ?>
 
 
@@ -44,14 +44,14 @@
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_schedule.php') { ?>
     <link href="css/ftt/ftt_schedule.css?v3" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_extrahelp.php') { ?>
-    <link href="css/ftt/ftt_extra_help.css?v2" rel="stylesheet">
+    <link href="css/ftt/ftt_extra_help.css?v3" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_gospel.php') { ?>
-    <link href="css/ftt/ftt_gospel.css?v9" rel="stylesheet">
+    <link href="css/ftt/ftt_gospel.css?v10" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_gospel_statistic.php') { ?>
     <link href="css/ftt/diagrams.css?v1" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_attendance.php') { ?>
-    <link href="css/ftt/ftt_attendance.css?v19" rel="stylesheet">
+    <link href="css/ftt/ftt_attendance.css?v20" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_list.php') { ?>
     <link href="css/ftt/ftt_list.css?v5" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_announcement.php') { ?>
@@ -61,7 +61,7 @@
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_fellowship.php') { ?>
     <link href="css/ftt/ftt_fellowship.css?v2" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_reading.php') { ?>
-    <link href="css/ftt/ftt_reading.css?v1" rel="stylesheet">
+    <link href="css/ftt/ftt_reading.css?v2" rel="stylesheet">
 <?php } ?>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

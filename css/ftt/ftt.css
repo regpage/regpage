@@ -105,3 +105,19 @@
   color: #28283b;
   font-weight: bold;
 }
+
+.green_string {
+  background-color: #b6efb6;
+}
+
+.green_string:hover {
+  background-color: #9deb9d;
+}
+
+/*.green_string {
+  background-color: #eefbee;
+}
+
+.green_string:hover {
+  background-color: #e0f3e0;
+}*/

@@ -146,14 +146,6 @@ button {
   background-color: lightgrey;
 }
 
-.green_string {
-  background-color: #eefbee;
-}
-
-.green_string:hover {
-  background-color: #e0f3e0;
-}
-
 /* Стилизация полей ввода для модального окна */
 .select-google {
   float: right;

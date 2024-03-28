@@ -50,7 +50,6 @@ if ($(window).width()<=769) {
   });
   $(".str_record div:nth-child(5)").removeClass("col-3").addClass("col-12").css("padding-left", "75px");
   $(".str_record div:nth-child(6)").hide();
-
   if ($(window).width()<=390) {
 
   }

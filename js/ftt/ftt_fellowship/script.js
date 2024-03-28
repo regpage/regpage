@@ -608,19 +608,22 @@ $(document).ready(function(){
                 if (value_records.hasOwnProperty(variable_1)) {
                   let value_record = value_records[variable_1];
                   if (value_record["date"] === $(this).attr("data-date")) {
-                    let disabled = "", busy = "", my = "", text = "Записаться";
+                    let disabled = "", busy = "", my = "", text = "Записаться", text_color = "";
                     if (value_record["trainee"] && value_record["trainee"] === window.adminId) {
                       busy = "1";
                       my = "1";
+                      text_color = "text-success";
                       text = "Вы записаны"
                     } else if (value_record["trainee"]) {
+                      text_color = "text-secondary";
                       busy = "1";
                       text = "Недоступно"
                     }
                     value_record["comment"] === undefined ? value_record["comment"] = "" : "";
                     html_checkboxes += '<div class="mb-2"><span class="d-inline-block font-weight-normal pt-2 pb-2" style="vertical-align: middle; width: 105px;">' + value_record["time"]
-                    + " — " + time_plus_minutes(value_record["time"], value_record["duration"])
-                    + '</span><span id="checkbox_time_' + value_record["id"] + '" class="pb-2 meet_checked mr-3 cursor-pointer link_custom" data-id="' + value_record["id"]
+                    + "—" + time_plus_minutes(value_record["time"], value_record["duration"])
+                    + '</span><span id="checkbox_time_' + value_record["id"] + '" class="pb-2 meet_checked mr-3 ml-2 cursor-pointer link_custom '
+                    + text_color + '" data-id="' + value_record["id"]
                     + '" data-from="' + value_record["time"] + '" data-to="' + time_plus_minutes(value_record["time"], value_record["duration"])
                     + '" data-serving_one="' + variable + '" data-date="'+value_record["date"]+'" data-comment="'+value_record["comment_train"]+'" data-busy="' + busy + '"  data-my="' + my + '"  style="vertical-align: middle;"'
                     + '>'+text+'</span>';
@@ -717,6 +720,7 @@ $(document).ready(function(){
           el.attr("data-my", 1);
           el.attr("data-comment", $(".meet_comment_trainee_time").val());
           el.text("Вы записаны");
+          el.addClass("text-success");
         }
       } else {
         showHint("Запись на общение отменена.");
@@ -724,6 +728,7 @@ $(document).ready(function(){
         el.attr("data-my", "");
         el.attr("data-comment", "");
         el.text("Записаться");
+        el.removeClass("text-success");
       }
     });
   });
