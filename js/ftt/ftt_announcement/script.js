@@ -292,8 +292,7 @@ $(document).ready(function(){
     if (to_public && validation) {
       showError(validation);
       return;
-    }
-
+    }    
     fetch("ajax/ftt_announcement_ajax.php?type=save_announcement", {
       method: 'POST',
       body: get_data_fields(to_public)

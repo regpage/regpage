@@ -71,6 +71,7 @@ function saveAnnouncement($data)
     VALUES ('$id', '$publication_date', '$publication_time', '$publication', '$header', '$content', '$author', '$comment', '$to_14', '$to_56', '$to_coordinators', '$to_servingones', '$by_list', '$recipients', '$time_zone', '$archivation_date')");
     if ($publication === '1') {
       $last_id = $db->insert_id;
+      db_query("UNLOCK TABLES;");
       if ($by_list === '1' && $recipients) {
         $groups .= $recipients;
       }
@@ -78,8 +79,10 @@ function saveAnnouncement($data)
       foreach ($groups as $key => $value) {
         db_query("INSERT INTO `ftt_announcement_recipients` (`id_announcement`, `member_key`) VALUES ('$last_id', '$value')");
       }
+    } else {
+      db_query("UNLOCK TABLES;");
     }
-    db_query("UNLOCK TABLES;");
+
   } else { // update
     $res = db_query("UPDATE `ftt_announcement` SET
       `date`='$publication_date', `time`='$publication_time', `publication`='$publication', `header`='$header',
