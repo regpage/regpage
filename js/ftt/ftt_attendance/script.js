@@ -1087,7 +1087,7 @@ function open_blank(el_this) {
       + el_this.attr("data-member_key") + "&date=" + el_this.attr("data-date"))
       .then(response => response.json())
       .then(commits => {
-        let reading_str = commits.result
+        let reading_str = commits.result;
         let notes_ot = "", notes_nt = "", comma = "";
        if (reading_str === 0) {
           // Нет старта и сегодняшней строки
@@ -1711,145 +1711,127 @@ function open_blank(el_this) {
   // ЧТЕНИЕ БИБЛИИ СТАРТ
   // Открытие окна старта
   $("#show_me_start").click(function () {
-    fetch("ajax/ftt_reading_ajax.php?type=get_start_reading_bible&member_key="
-    + $("#modalAddEdit").attr("data-member_key") + "&date=" + $("#modalAddEdit").attr("data-date"))
+    // настраиваем окно старта
+    // получить прочитанные книги
+    let ot_was_read = true, nt_was_read = true;
+    fetch("ajax/ftt_reading_ajax.php?type=get_read_books&member_key=" + $("#modalAddEdit").attr("data-member_key"))
     .then(response => response.json())
     .then(commits => {
-      let book_ot_start = $(".reading_bible_title").attr("data-book_ot");
-      let book_nt_start = $(".reading_bible_title").attr("data-book_nt");
+      // получаем options html прочитанных книг
+      let data_reading = get_books_for_start(bible_arr, commits.result);
+      let html_ot = data_reading["ot"];
+      let html_nt = data_reading["nt"];
+      ot_was_read = data_reading["ot_complete"];
+      nt_was_read = data_reading["nt_complete"];
 
-      // Если старт установлен сегодня
-      if (commits.result.id) {
-        book_ot_start = commits.result.book_ot;
-        book_nt_start = commits.result.book_nt;
-      }
+      $("#mdl_book_ot_start").html(html_ot);
+      $("#mdl_book_nt_start").html(html_nt);
+    });
 
-      // блокируем поля старта вз и нз
-      disabled_bookfields_start_mdl("o", true);
-      disabled_bookfields_start_mdl("n", true);
+    // получаем данные старта
+    setTimeout(function () {
+      fetch("ajax/ftt_reading_ajax.php?type=get_start_reading_bible&member_key="
+      + $("#modalAddEdit").attr("data-member_key") + "&date=" + $("#modalAddEdit").attr("data-date"))
+      .then(response => response.json())
+      .then(commits => {
+        // правила для окна старта
+        let book_ot_start = $(".reading_bible_title").attr("data-book_ot");
+        let book_nt_start = $(".reading_bible_title").attr("data-book_nt");
 
-      // Заполнение поля глав данными по текущей книге ВЗ и НЗ ИЛИ старт
-      fill_chapters_options_start_mdl(book_ot_start, "o");
-      fill_chapters_options_start_mdl(book_nt_start, "n");
-
-      // заполняем данными форму старт ВЗ и блокируем/разблокируем поля
-      if ($("#bible_book_ot").is(":visible")) { // если поле в листе не заблокировано НЕ ВЕРНО ДЛЯ СЛУЖАЩИХ
-        // получаем и заполняем книги  и главы ВЗ в окне старта
-        let disabled_checkbox_start_ot;
+        // Если старт установлен сегодня
         if (commits.result.id) {
-          if (book_ot_start) {
-            disabled_checkbox_start_ot = set_book_chapter_fnote_start_mdl(book_ot_start + " " + commits.result.chapter_ot, "o");
-            if ($("#modalAddEdit").attr("data-date") === gl_date_now && !trainee_access) {
-              disabled_bookfields_start_mdl("o", false);
-            } else {
+          book_ot_start = commits.result.book_ot;
+          book_nt_start = commits.result.book_nt;
+        }
+
+        // блокируем поля старта вз и нз
+        disabled_bookfields_start_mdl("o", true);
+        disabled_bookfields_start_mdl("n", true);
+
+        // Заполнение поля глав данными по текущей книге ВЗ и НЗ ИЛИ для старта
+        fill_chapters_options_start_mdl(book_ot_start, "o");
+        fill_chapters_options_start_mdl(book_nt_start, "n");
+
+        // заполняем данными форму старт ВЗ и блокируем/разблокируем поля
+        if ($("#bible_book_ot").is(":visible")) { // если поле в листе не заблокировано НЕ ВЕРНО ДЛЯ СЛУЖАЩИХ
+          // получаем и заполняем книги  и главы ВЗ в окне старта
+          let disabled_checkbox_start_ot;
+          if (commits.result.id) {
+            if (book_ot_start) {
+              disabled_checkbox_start_ot = set_book_chapter_fnote_start_mdl(book_ot_start + " " + commits.result.chapter_ot, "o");
+              if ($("#modalAddEdit").attr("data-date") === gl_date_now && !trainee_access) {
+                disabled_bookfields_start_mdl("o", false);
+              } else {
+                disabled_bookfields_start_mdl("o", disabled_checkbox_start_ot);
+              }
+            }
+          } else {
+            disabled_checkbox_start_ot = set_book_chapter_fnote_start_mdl($("#bible_book_ot").val(), "o");
+            if (!$("#bible_book_ot").attr("disabled") && !disabled_checkbox_start_ot && $("#modalAddEdit").attr("data-date") === gl_date_now) {
               disabled_bookfields_start_mdl("o", disabled_checkbox_start_ot);
             }
           }
-        } else {
-          disabled_checkbox_start_ot = set_book_chapter_fnote_start_mdl($("#bible_book_ot").val(), "o");
-          if (!$("#bible_book_ot").attr("disabled") && !disabled_checkbox_start_ot && $("#modalAddEdit").attr("data-date") === gl_date_now) {
-            disabled_bookfields_start_mdl("o", disabled_checkbox_start_ot);
+        } else if (!$("#bible_book_ot").is(":visible")) { // если поле в листе не видимо ВЕРНО
+          $("#mdl_ot_start").prop("checked", false);
+          if ($("#modalAddEdit").attr("data-date") === gl_date_now) {
+            $("#mdl_ot_start").attr("disabled", false);
+          } else {
+            $("#mdl_ot_start").attr("disabled", true);
           }
         }
-      } else if (!$("#bible_book_ot").is(":visible")) { // если поле в листе не видимо ВЕРНО
-        $("#mdl_ot_start").prop("checked", false);
-        if ($("#modalAddEdit").attr("data-date") === gl_date_now) {
-          $("#mdl_ot_start").attr("disabled", false);
-        } else {
-          $("#mdl_ot_start").attr("disabled", true);
-        }
-      }
 
-      // заполняем данными форму старт НЗ и блокируем/разблокируем поля
-      if ($("#bible_book_nt").is(":visible")) {
-        // получаем и заполняем книги  и главы НЗ в окне старта
-        let disabled_checkbox_start_nt;
-        if (commits.result.id) {
-          if (book_nt_start) {
-            disabled_checkbox_start_nt = set_book_chapter_fnote_start_mdl(book_nt_start + " " + commits.result.chapter_nt, "n");
-            if ($("#modalAddEdit").attr("data-date") === gl_date_now && !trainee_access) {
-              disabled_bookfields_start_mdl("n", false);
-            } else {
+        // заполняем данными форму старт НЗ и блокируем/разблокируем поля
+        if ($("#bible_book_nt").is(":visible")) {
+          // получаем и заполняем книги  и главы НЗ в окне старта
+          let disabled_checkbox_start_nt;
+          if (commits.result.id) {
+            if (book_nt_start) {
+              disabled_checkbox_start_nt = set_book_chapter_fnote_start_mdl(book_nt_start + " " + commits.result.chapter_nt, "n");
+              if ($("#modalAddEdit").attr("data-date") === gl_date_now && !trainee_access) {
+                disabled_bookfields_start_mdl("n", false);
+              } else {
+                disabled_bookfields_start_mdl("n", disabled_checkbox_start_nt);
+              }
+            }
+          } else {
+            disabled_checkbox_start_nt = set_book_chapter_fnote_start_mdl($("#bible_book_nt").val(), "n");
+            if (!$("#bible_book_nt").attr("disabled") && !disabled_checkbox_start_nt && $("#modalAddEdit").attr("data-date") === gl_date_now) {
               disabled_bookfields_start_mdl("n", disabled_checkbox_start_nt);
             }
           }
-        } else {
-          disabled_checkbox_start_nt = set_book_chapter_fnote_start_mdl($("#bible_book_nt").val(), "n");
-          if (!$("#bible_book_nt").attr("disabled") && !disabled_checkbox_start_nt && $("#modalAddEdit").attr("data-date") === gl_date_now) {
-            disabled_bookfields_start_mdl("n", disabled_checkbox_start_nt);
+        } else if (!$("#bible_book_nt").is(":visible")) { // если поле в листе не видимо ВЕРНО
+          $("#mdl_nt_start").prop("checked", false);
+          if ($("#modalAddEdit").attr("data-date") === gl_date_now) {
+            $("#mdl_nt_start").attr("disabled", false);
+          } else {
+            $("#mdl_nt_start").attr("disabled", true);
           }
         }
-      } else if (!$("#bible_book_nt").is(":visible")) {
-        $("#mdl_nt_start").prop("checked", false);
-        if ($("#modalAddEdit").attr("data-date") === gl_date_now) {
+
+        // если указанная книга отмечена как прочитаная или если все книги прочитаны
+        if ((!$("#mdl_book_ot_start").val() && $("#mdl_book_ot_start option").val()) || ($("#mdl_ot_start").prop("checked") && ot_was_read)) {
+          disabled_bookfields_start_mdl("o", false);
+        } else if ((!$("#mdl_book_ot_start").val() && $("#mdl_book_ot_start option").val()) || (!$("#mdl_ot_start").prop("checked") && ot_was_read)) {
+          disabled_bookfields_start_mdl("o", true);
+          $("#mdl_ot_start").attr("disabled", false);
+        }
+
+        if ((!$("#mdl_book_nt_start").val() && $("#mdl_book_nt_start option").val()) || ($("#mdl_nt_start").prop("checked") && nt_was_read)) {
+          disabled_bookfields_start_mdl("n", false);
+        } else if ((!$("#mdl_book_nt_start").val() && $("#mdl_book_nt_start option").val()) || (!$("#mdl_nt_start").prop("checked") && nt_was_read)) {
+          disabled_bookfields_start_mdl("n", true);
           $("#mdl_nt_start").attr("disabled", false);
-        } else {
-          $("#mdl_nt_start").attr("disabled", true);
         }
-      }
 
-      // блокирование полей
-      $("#set_start_reading_bible").attr("disabled", true);
-    });
+        // блокирование кнопки сохранения старта
+        $("#set_start_reading_bible").attr("disabled", true);
+      });
+    }, 10);
   });
-
-  // получаем и заполняем книги  и главы ВЗ/НЗ в окне старта
-  function set_book_chapter_fnote_start_mdl(bible_book, testament) {
-    let data;
-      if (bible_book && bible_book !== "0" && bible_book !== "_none_") {
-        data = split_book(bible_book);
-      } else {
-        data = split_book($("#bible_book_"+testament+"t option:nth-child(3)").attr("data-book") + " " + $("#bible_book_"+testament+"t option:nth-child(3)").attr("data-chapter"));
-      }
-      $("#mdl_book_"+testament+"t_start").val(data[0]);
-      $("#mdl_chapter_"+testament+"t_start").val(data[1]);
-      $("#mdl_footnotes_"+testament+"t_start").prop("checked", $(".reading_bible_title").attr("data-notes_"+testament+"t") === "1" ? true : false);
-      $("#mdl_"+testament+"t_start").prop("checked", true);
-      let found = bible_arr.find(e => e[0] === data[0]);
-      if (found[1] === data[1]) {
-        return false;
-      } else {
-        return true;
-      }
-  }
-
-  // блокировка полей старта нз и/или вз
-  function disabled_bookfields_start_mdl(book, disabled, exception) {
-    let selectors = ["#mdl_"+book+"t_start", "#mdl_book_"+book+"t_start", "#mdl_chapter_"+book+"t_start", "#mdl_footnotes_"+book+"t_start"];
-    for (let i = 0; i < selectors.length; i++) {
-      if (exception >= 0 && exception === i) {
-        continue;
-      } else {
-        if (trainee_access && i === 3) {
-          $(selectors[i]).attr("disabled", true);
-        } else {
-          $(selectors[i]).attr("disabled", disabled);
-        }
-      }
-    }
-  }
-
-  // Заполнение поля глав данными по текущей книге ВЗ/НЗ
-  function fill_chapters_options_start_mdl(book, testament) {
-    if (book) {
-      let bible_chapter_html = "";
-      let found = bible_arr.find(e => e[0] === book);
-      // если в списке нет книг то главы не выводятся
-      if ($("#mdl_book_"+testament+"t_start").val()) {
-        for (let i = 1; i <= found[1]; i++) {
-          bible_chapter_html += "<option value='"+i+"'>"+i;
-        }
-      }
-      $("#mdl_chapter_"+testament+"t_start").html(bible_chapter_html);
-    } else { // если данных нет
-      let name_book = "Быт.";
-      if(testament === "n") {
-        name_book = "Мф.";
-      }
-      $("#mdl_book_"+testament+"t_start").val(name_book);
-      $("#mdl_chapter_"+testament+"t_start").val(1);
-    }
-  }
+  // разблокирование кнопки сохранения старта
+  $("#mdl_footnotes_ot_start, #mdl_footnotes_nt_start").change(function() {
+    $("#set_start_reading_bible").attr("disabled", false);
+  });
 
   // Изменение полей с книгами ВЗ и НЗ
   $("#bible_book_ot, #bible_book_nt").change(function (e) {
@@ -1962,7 +1944,7 @@ function open_blank(el_this) {
       }
     }
 
-    if (($("#mdl_ot_start").prop("checked") && !$("#mdl_ot_start").attr("disabled")) || ($("#mdl_nt_start").prop("checked") && !$("#mdl_nt_start").attr("disabled"))) {
+    if (!$("#mdl_ot_start").attr("disabled") || !$("#mdl_nt_start").attr("disabled")) {
       $("#set_start_reading_bible").attr("disabled", false);
     } else {
       $("#set_start_reading_bible").attr("disabled", true);
@@ -1986,6 +1968,8 @@ function open_blank(el_this) {
   });
 
   $("#mdl_book_ot_start, #mdl_book_nt_start").change(function() {
+    // разблокируем кнопку сохраниения старта
+    $("#set_start_reading_bible").attr("disabled", false);
     let bible_chapter_html = "";
     let found = bible_arr.find(e => e[0] === $(this).val());
 
@@ -2011,7 +1995,7 @@ function open_blank(el_this) {
   $("#set_start_reading_bible").click(function () {
     let chosen_book = 0;
     let text_ot = "", text_nt = "", comma = "";
-    if ($("#mdl_nt_start").prop("checked") && $("#mdl_ot_start").prop("checked")) {
+    if ($("#mdl_nt_start").prop("checked") && $("#mdl_ot_start").prop("checked")) { // если отмечены обе книги
       chosen_book = 3;
       text_ot = $("#mdl_book_ot_start").val();
       if ($("#mdl_footnotes_ot_start").prop("checked")) {
@@ -2022,13 +2006,13 @@ function open_blank(el_this) {
       if ($("#mdl_footnotes_nt_start").prop("checked")) {
         text_nt += " с прим.";
       }
-    } else if ($("#mdl_ot_start").prop("checked")) {
+    } else if ($("#mdl_ot_start").prop("checked")) { // если отмечен ВЗ
       chosen_book = 1;
       text_ot = $("#mdl_book_ot_start").val();
       if ($("#mdl_footnotes_ot_start").prop("checked")) {
         text_ot += " с прим.";
       }
-    } else if ($("#mdl_nt_start").prop("checked")) {
+    } else if ($("#mdl_nt_start").prop("checked")) { // если отмечен НЗ
       chosen_book = 2;
       text_nt = $("#mdl_book_nt_start").val();
       if ($("#mdl_footnotes_nt_start").prop("checked")) {
@@ -2051,7 +2035,7 @@ function open_blank(el_this) {
     if (($(".reading_bible_title").attr("data-notes_nt") != footnotes_nt) && $(".reading_bible_title").attr("data-book_nt")) {
       footnotes_nt_change =  " Новому Завету";
     }
-    if (footnotes_ot_change || footnotes_nt_change) {
+    if ((footnotes_ot_change && $("#mdl_ot_start").prop("checked")) || (footnotes_nt_change && $("#mdl_nt_start").prop("checked"))) {
       if (footnotes_ot_change && footnotes_nt_change) {
         and = " и";
       }
@@ -2075,7 +2059,7 @@ function open_blank(el_this) {
         ot_temp = split_book($("#bible_book_ot option:nth-child(3)").attr("data-book") + " " + $("#bible_book_ot option:nth-child(3)").attr("data-chapter"));
       }
       let found_temp = bible_arr.find(e => e[0] === ot_temp[0]);
-      if (found_temp[1] === ot_temp[1]) {
+      if (found_temp && found_temp[1] === ot_temp[1]) {
         setTimeout(function () {
           let query_temp = "&member_key=" + $("#modalAddEdit").attr("data-member_key") + "&book=" + ot_temp[0] + "&chapter=" + ot_temp[1];
           fetch("ajax/ftt_reading_ajax.php?type=set_read_book&part=ot&checked=true" + query_temp)
@@ -2095,7 +2079,7 @@ function open_blank(el_this) {
       }
 
       let found_temp = bible_arr.find(e => e[0] === nt_temp[0]);
-      if (found_temp[1] === nt_temp[1]) {
+      if (found_temp && found_temp[1] === nt_temp[1]) {
         setTimeout(function () {
           let query_temp = "&member_key=" + $("#modalAddEdit").attr("data-member_key") + "&book=" + nt_temp[0] + "&chapter=" + nt_temp[1];
           fetch("ajax/ftt_reading_ajax.php?type=set_read_book&part=nt&checked=true" + query_temp)
@@ -2107,20 +2091,37 @@ function open_blank(el_this) {
       }
     }
     // set data in html
+    let chapter_ot_extra = 0, chapter_nt_extra = 0;
     $(".reading_bible_title").text("Чтение Библии " + "(" + text_ot + comma + text_nt +")");
-    $(".reading_bible_title").attr("data-notes_ot", footnotes_ot);
-    $(".reading_bible_title").attr("data-notes_nt", footnotes_nt);
-    $(".reading_bible_title").attr("data-book_ot", $("#mdl_book_ot_start").val());
-    $(".reading_bible_title").attr("data-book_nt", $("#mdl_book_nt_start").val());
+    if ($("#mdl_ot_start").prop("checked")) {
+      $(".reading_bible_title").attr("data-notes_ot", footnotes_ot);
+      $(".reading_bible_title").attr("data-book_ot", $("#mdl_book_ot_start").val());
+      chapter_ot_extra = $("#mdl_chapter_ot_start").val();
+    } else {
+      $(".reading_bible_title").attr("data-notes_ot", "");
+      $(".reading_bible_title").attr("data-book_ot", "");
+      footnotes_ot = 0;
+    }
+
+    if ($("#mdl_nt_start").prop("checked")) {
+      $(".reading_bible_title").attr("data-notes_nt", footnotes_nt);
+      $(".reading_bible_title").attr("data-book_nt", $("#mdl_book_nt_start").val());
+      chapter_nt_extra = $("#mdl_chapter_nt_start").val();
+    } else {
+      $(".reading_bible_title").attr("data-notes_nt", "");
+      $(".reading_bible_title").attr("data-book_nt", "");
+      footnotes_nt = 0;
+    }
+
     // query
     let param = "&member_key=" + $("#modalAddEdit").attr("data-member_key") +
     "&date=" + $("#modalAddEdit").attr("data-date") +
-    "&chosen_book=" + chosen_book +
-    "&book_ot=" + $("#mdl_book_ot_start").val() +
-    "&chapter_ot=" + $("#mdl_chapter_ot_start").val() +
+    "&chosen_book=" + 3 +
+    "&book_ot=" + $(".reading_bible_title").attr("data-book_ot") +
+    "&chapter_ot=" + chapter_ot_extra +
     "&footnotes_ot=" + footnotes_ot +
-    "&book_nt=" + $("#mdl_book_nt_start").val() +
-    "&chapter_nt=" + $("#mdl_chapter_nt_start").val() +
+    "&book_nt=" + $(".reading_bible_title").attr("data-book_nt") +
+    "&chapter_nt=" + chapter_nt_extra +
     "&footnotes_nt=" + footnotes_nt;
 
     fetch("ajax/ftt_reading_ajax.php?type=set_start_reading_bible" + param)

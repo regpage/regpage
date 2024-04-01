@@ -85,3 +85,4 @@ if ($(window).width()<=769) {
 <script src="/js/modules/time.js?v1"></script>
 <script src="/js/modules/date.js?v3"></script>
 <script src="/js/modules/blank.js?v1"></script>
+<script src="/js/modules/ftt/bible_read.js?v1"></script>

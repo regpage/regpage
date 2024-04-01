@@ -351,7 +351,7 @@ referenceSysAnew();
         var getSessionIdLogOut = "<?php print(session_id()); ?>"
         $.get('ajax/login.php?logout', {memberId: memberId, sessionId: getSessionIdLogOut})
         .done (function() {
-            window.location ='<?php $_SESSION["sess_last_page"]; ?>';
+            window.location ='<?php if (isset($_SESSION["sess_last_page"])) echo $_SESSION["sess_last_page"]; ?>';
         })
         .fail(function() {
             window.location = "/";

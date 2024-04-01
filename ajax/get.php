@@ -152,10 +152,17 @@ if(isset($_GET['get_regstate'])){
     echo json_encode(["regstate"=>db_checkRegState ($_POST ['memberKey'], $_POST['eventAdmin'])]);
     exit();
 }
+
 if (isset($_GET['type']) && $_GET['type'] === 'get_services_event') {
   echo json_encode(["result"=>db_getServicesEvent ($_GET ['event_id'], $adminId)]); //$_GET ['member_key']
   exit();
 }
+
+if (isset($_GET['type']) && $_GET['type'] === 'be_mate') {
+  echo json_encode(["result"=>db_getEventMembers ($_GET ['event_id'])]);
+  exit();
+}
+
 if (isset ($_GET ['eventId']))
 {
     $info=db_getEventToCreateNewMember ($_GET ['eventId']);

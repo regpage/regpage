@@ -1428,16 +1428,31 @@ function fillEditMember (memberId, info, localities, newMemberBlank) {
     });
 
     if ($(".emMate").length){
-        var emMateHtml = "<option value='_none_'>&nbsp;</option>", mateArr = [];
-
-        $(".tab-pane.active " + (document.documentElement.clientWidth < 751 ? '.show-phone' : '.desctopVisible' ) + " table.reg-list tr[class|='regmem']").each (function (){
-            var id = $(this).attr ('class').replace(/^regmem-/,'');
-            if (id.length>2 && id.substr (0,2)!="99" && id!=memberId){
-                var name = $(this).find('.mname1').text() + " (" + $(this).find('.mnameCategory').text() + ")";
-                mateArr.push({'id': he(id), 'name' : he(name)});
-                //emMateHtml+="<option value='"+he(id)+"'>"+he(name)+"</option>";
+      var emMateHtml = "<option value='_none_'>&nbsp;</option>"; //, mateArr = []
+      //Разместить с новая версия
+      fetch("/ajax/get.php?type=be_mate&event_id=" + $("#events-list").val())
+      .then(response => response.json())
+      .then(commits => {
+        for (const variable in commits.result) {
+          if (commits.result.hasOwnProperty(variable)) {
+            if (variable.substr (0,2) != "99" && variable != memberId) {
+              emMateHtml+="<option value='"+variable+"'>"+commits.result[variable]+"</option>";
             }
-        });
+          }
+        }
+        $(".emMate").html (emMateHtml).val (info["mate_key"] ? info["mate_key"] : "_none_");
+      });
+
+/*
+      //Разместить с старая версия 
+      $(".tab-pane.active " + (document.documentElement.clientWidth < 751 ? '.show-phone' : '.desctopVisible' ) + " table.reg-list tr[class|='regmem']").each (function (){
+          var id = $(this).attr ('class').replace(/^regmem-/,'');
+          if (id.length>2 && id.substr (0,2)!="99" && id!=memberId){
+              var name = $(this).find('.mname1').text() + " (" + $(this).find('.mnameCategory').text() + ")";
+              mateArr.push({'id': he(id), 'name' : he(name)});
+              //emMateHtml+="<option value='"+he(id)+"'>"+he(name)+"</option>";
+          }
+      });
 
         mateArr.sort(function (a, b) {
             if (a.name < b.name) {
@@ -1455,6 +1470,7 @@ function fillEditMember (memberId, info, localities, newMemberBlank) {
         }
 
         $(".emMate").html (emMateHtml).val (info["mate_key"] ? info["mate_key"] : "_none_");
+*/
     }
 
     $(".emName").val (info["name"] ? info["name"] : "" ).keyup();

@@ -2399,6 +2399,9 @@ function checkStopEventRegistration(eventId){
             $(".beGrpTransport, .beLblTransport").css('display', 'none');
         }
 
+        arriveDepart('data-start','.beArrDate');
+        arriveDepart('data-end','.beDepDate');
+
         $(".beArrDate").val(formatDate(arr_date)).keyup();
         $(".beArrTime").val(formatTime(arr_time));
         $(".beDepDate").val(formatDate(dep_date)).keyup();

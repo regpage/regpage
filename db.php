@@ -261,6 +261,22 @@ function db_getEventMember ($memberId, $eventId)
     return NULL;
 }
 
+function db_getEventMembers ($eventId)
+{
+    global $db;
+    $eventId = $db->real_escape_string($eventId);
+    $result = [];
+
+    $res=db_query ("SELECT r.member_key, m.name
+      FROM reg AS r
+      LEFT JOIN member m ON m.key = r.member_key
+      WHERE r.event_key='$eventId'
+      ORDER BY m.name");
+    while ($row = $res->fetch_assoc()) $result[$row['member_key']]=$row['name'];
+
+    return $result;
+}
+
 function db_getEventMemberByLink ($link)
 {
     global $db, $selectEventMember;

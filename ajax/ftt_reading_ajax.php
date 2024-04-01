@@ -5,6 +5,7 @@ include_once "ajax.php";
 // подключаем запросы
 include_once "../db/ftt/ftt_reading_db.php";
 include_once '../db/classes/ftt_reading/bible.php';
+include_once '../db/classes/ftt_reading/book_read.php';
 
 $adminId = db_getMemberIdBySessionId (session_id());
 
@@ -66,5 +67,10 @@ if (isset($_GET['type']) && $_GET['type'] === 'get_start_position') {
 
 if (isset($_GET['type']) && $_GET['type'] === 'check_read_book') {
   echo json_encode(["result"=>checkReadBook($_GET['member_key'], $_GET['book'], $_GET['footnotes'], $_GET['ot'])]);
+  exit();
+}
+
+if (isset($_GET['type']) && $_GET['type'] === 'get_read_books') {
+  echo json_encode(["result"=>BookRead::get_all($_GET['member_key'])]);
   exit();
 }
