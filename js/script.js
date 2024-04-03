@@ -1444,7 +1444,7 @@ function fillEditMember (memberId, info, localities, newMemberBlank) {
       });
 
 /*
-      //Разместить с старая версия 
+      //Разместить с старая версия
       $(".tab-pane.active " + (document.documentElement.clientWidth < 751 ? '.show-phone' : '.desctopVisible' ) + " table.reg-list tr[class|='regmem']").each (function (){
           var id = $(this).attr ('class').replace(/^regmem-/,'');
           if (id.length>2 && id.substr (0,2)!="99" && id!=memberId){
@@ -1834,8 +1834,8 @@ function handleAidInteraction(userId, amount, eventId, eventName){
     });
 }
 
-function getStatistics(stats, eventName, localitiesLength, countParking, countTransport, countAccomSisters, countAccomBrothers, countBrothers, countSisters, countries, countFlag){
-    var first = 0, second = 0, third = 0, forth = 0, fifth = 0, def  = 0, state;
+function getStatistics(stats, eventName, localitiesLength, countParking, countTransport, countAccomSisters, countAccomBrothers, countBrothers, countSisters, countries, countFlag, countYoung){
+    var first = 0, second = 0, third = 0, forth = 0, fifth = 0, def  = 0, state, young = 0;
     for(var i in stats){
         state = stats[i];
         switch (state){
@@ -1849,21 +1849,35 @@ function getStatistics(stats, eventName, localitiesLength, countParking, countTr
     }
 
     var regWait = first + second;
-    var responce = '<div class="statistic-block"><p>Регистрация подтверждена — '+(forth)+' чел.</p><p>Ожидание подтверждения — '+(regWait)+' чел.</p>' +
-        '<p>Не зарегистрирован — '+(def)+' чел.</p>'+
-        '<p><strong>Всего участников — '+(stats.length - third - fifth )+' чел.</strong></p>'+
-        '<p><strong>Фактически зарегистрировались — '+countFlag+' чел.</strong></p>'+
-        '<hr>'+
-        '<p>Ожидание отмены — '+(third)+' чел.</p>'+
-        '<p>Регистрация отменена — '+(fifth)+' чел.</p></div>';
+    var responce = '<div class="statistic-block" style="margin-top: 10px;"><p>Регистрация подтверждена — '+(forth)+'<br>'
+      + '<span style="color: #AAA; font-size: 12px;">в том числе до 17 лет — ' + countYoung.forth + '</span></p>'
+      + '<p>Ожидание подтверждения — '+(regWait)+'<br>'
+      + '<span style="color: #AAA; font-size: 12px;">в том числе до 17 лет — ' + (countYoung.first + countYoung.second) + '</span></p>'
+      + '<p>Не зарегистрирован — '+(def)+'<br>'
+      + '<span style="color: #AAA; font-size: 12px;">в том числе до 17 лет — ' + countYoung.def + '</span></p>'
+      + '<p><strong>Всего участников — '+(stats.length - third - fifth )+'</strong><br>'
+      + '<span style="color: #AAA; font-size: 12px;">в том числе до 17 лет — ' + (countYoung.all - countYoung.third - countYoung.fifth) + '</span></p>'
+      + '<p><strong>Факт. регистрация — '+countFlag+'</strong><br>'
+      + '<span style="color: #AAA; font-size: 12px;">в том числе до 17 лет — ' + countYoung.flag + '</span></p>'
+      + '<hr>'
+      + '<p>Ожидание отмены — '+(third)+'<br>'
+      + '<span style="color: #AAA; font-size: 12px;">в том числе до 17 лет — ' + countYoung.third + '</span></p>'
+      + '<p>Регистрация отменена — '+(fifth)+'<br><span style="color: #AAA; font-size: 12px;">в том числе до 17 лет — ' + countYoung.fifth + '</span></p></div>';
 
-    var additionalStatistic = '<div class="statistic-additional-block"><p>Зарегистрировано братьев  — ' + countBrothers +' чел.</p>' +
-                                        '<p>Зарегистрировано сестёр  — ' + countSisters + ' чел.</p>' +
-                                        '<p>Разместить — ' + countAccomBrothers + ' братьев и '+ countAccomSisters + ' сестёр</p>' +
-                                        '<p><strong>Всего разместить — '+(parseInt(countAccomSisters) + parseInt(countAccomBrothers))+' чел.</strong></p>' +
-                                        '<hr>'+
-                                        '<p>Нужен транспорт — ' + countTransport +' чел.</p>' +
-                                        '<p>Нужна парковка — ' + countParking +' м.</p></div>';
+
+    var additionalStatistic = '<div class="statistic-additional-block" style="margin-top: 10px;"><p>Зарегистрировано братьев  — ' + countBrothers +'<br>'
+      +'<span style="color: #AAA; font-size: 12px;">в том числе до 17 лет — ' + countYoung.brother + '</span></p>'
+                                        +'<p>Зарегистрировано сестёр  — ' + countSisters + '<br>'
+                                        + '<span style="color: #AAA; font-size: 12px;">в том числе до 17 лет — ' + countYoung.sister + '</span></p>'
+                                        +'<p>Разместить — братьев ' + countAccomBrothers + ', сестёр '+ countAccomSisters + '<br>'
+                                        + '<span style="color: #AAA; font-size: 12px;">в том числе до 17 лет — братьев ' + countYoung.accom_brother
+                                        + ', сестёр' + countYoung.accom_sister + '</span></p>'
+                                        + '<p><strong>Всего разместить — '+(parseInt(countAccomSisters) + parseInt(countAccomBrothers))+'</strong><br>'
+                                        + '<span style="color: #AAA; font-size: 12px;">в том числе до 17 лет — ' + (countYoung.accom_sister + countYoung.accom_brother)
+                                        + '</span></p>'
+                                        + '<br><br><hr>'
+                                        + '<p>Нужен транспорт — ' + countTransport +'</p>'
+                                        + '<p>Нужна парковка — ' + countParking +' м.</p></div>';
 
     $("#showStatistic").append(responce + additionalStatistic);
     $("#modalStatistic h5").text(eventName);

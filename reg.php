@@ -1296,7 +1296,21 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
             countParking = 0, countTransport = 0,
             countAccomSisters = 0, countAccomBrothers = 0,
             countBrothers = 0, countSisters = 0, countFlag = 0,
-            locality, state, male, accom, transport, parking, country, flag;
+            locality, state, male, accom, transport, parking, country, flag, young;
+        let countYoung = {
+          all: 0,
+          first: 0,
+          second: 0,
+          third: 0,
+          forth: 0,
+          fifth: 0,
+          def: 0,
+          brother: 0,
+          sister: 0,
+          accom_brother: 0,
+          accom_sister: 0,
+          flag: 0
+        };
 
         $("div.tab-pane.active .desctopVisible tr[class|='regmem'] ").each(function () {
             locality = $(this).attr("data-locality");
@@ -1307,6 +1321,33 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
             transport = $(this).attr("data-transport");
             parking = $(this).attr("data-parking");
             flag = $(this).attr("data-attended");
+            young = $(this).find(".member_age_reg").text().trim().split(" ");
+
+
+            if (!isNaN(young[0]) && young[0] < 18 && (state !== '05' || state !== '04')) {
+              countYoung.all++;
+            }
+            if (!isNaN(young[0]) && young[0] < 18 && state === '01') {
+              countYoung.first++;
+            } else if (!isNaN(young[0]) && young[0] < 18 && state === '02') {
+              countYoung.second++;
+            } else if (!isNaN(young[0]) && young[0] < 18 && state === '03') {
+              countYoung.third++;
+            } else if (!isNaN(young[0]) && young[0] < 18 && state === '04') {
+              countYoung.forth++;
+            } else if (!isNaN(young[0]) && young[0] < 18 && state === '05') {
+              countYoung.fifth++;
+            } else if (!isNaN(young[0]) && young[0] < 18 && state === "null") {
+              countYoung.def++;
+            }
+
+            if (!isNaN(young[0]) && male === '1' && state === '04' && young[0] < 18) {
+              countYoung.brother++;
+            }
+
+            if (!isNaN(young[0]) && male === '0' && state === '04' && young[0] < 18) {
+              countYoung.sister++;
+            }
 
             if(parking === '1'){
                 countParking++;
@@ -1320,8 +1361,16 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
                 countAccomBrothers++;
             }
 
+            if(!isNaN(young[0]) && accom === '1' && male === '1' && state === '04' && young[0] < 18){
+                countYoung.accom_brother++;
+            }
+
             if(accom === '1' && male === '0' && state === '04'){
                 countAccomSisters++;
+            }
+
+            if(!isNaN(young[0]) && accom === '1' && male === '0' && state === '04' && young[0] < 18){
+                countYoung.accom_sister++;
             }
 
             if(male === '1' && state === '04'){
@@ -1335,6 +1384,9 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
             if(flag === '1'){
                 countFlag++;
             }
+            if(!isNaN(young[0]) && flag === '1' && young[0] < 18){
+                countYoung.flag++;
+            }
 
             states.push($(this).attr('data-regstate'));
             if(!in_array(locality, localities) && state !== '03' && state !== '05')
@@ -1344,7 +1396,7 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
                 countries.push(country);
         });
 
-        getStatistics(states, eventName, localities.length, countParking, countTransport, countAccomSisters, countAccomBrothers, countBrothers, countSisters, countries.length, countFlag);
+        getStatistics(states, eventName, localities.length, countParking, countTransport, countAccomSisters, countAccomBrothers, countBrothers, countSisters, countries.length, countFlag, countYoung);
     });
 
     $('.aid-statistic').click(function(){
@@ -1483,7 +1535,7 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
                 (in_array(3, window.user_settings) ? '<br>'+ '<span class="user_setting_span">'+m.email+'</span>' : '') +
                 '</td>' +
                '<td class="style-serv hide-tablet"><div>'+ (m.status ? he(m.status) : '') +'<br>'+
-               '<span class="user_setting_span">' + getAgeWithSuffix(parseInt(get_current_age(m.birth_date)),get_current_age(m.birth_date)) + '</span>'
+               '<span class="user_setting_span member_age_reg">' + getAgeWithSuffix(parseInt(get_current_age(m.birth_date)),get_current_age(m.birth_date)) + '</span>'
                // + '<span class="user_setting_span">'+(m.service ? he(m.service) : '')+ '</span>'
                + '</div>'
                // + ( m.coord == '1' ? '<div>Координатор</div>' : '')
