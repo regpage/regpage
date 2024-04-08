@@ -1860,10 +1860,8 @@ function getStatistics(stats, eventName, localitiesLength, countParking, countTr
       + '<p><strong>Факт. регистрация — '+countFlag+'</strong><br>'
       + '<span style="color: #AAA; font-size: 12px;">в том числе до 17 лет — ' + countYoung.flag + '</span></p>'
       + '<hr>'
-      + '<p>Ожидание отмены — '+(third)+'<br>'
-      + '<span style="color: #AAA; font-size: 12px;">в том числе до 17 лет — ' + countYoung.third + '</span></p>'
-      + '<p>Регистрация отменена — '+(fifth)+'<br><span style="color: #AAA; font-size: 12px;">в том числе до 17 лет — ' + countYoung.fifth + '</span></p></div>';
-
+      + '<p>Ожидание отмены — '+(third)+'</p>'
+      + '<p>Регистрация отменена — '+(fifth)+'</p></div>';
 
     var additionalStatistic = '<div class="statistic-additional-block" style="margin-top: 10px;"><p>Зарегистрировано братьев  — ' + countBrothers +'<br>'
       +'<span style="color: #AAA; font-size: 12px;">в том числе до 17 лет — ' + countYoung.brother + '</span></p>'

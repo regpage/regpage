@@ -19,4 +19,4 @@ for (let i = 0; i < bible_arr_temp.length; i = i + 2) {
 <script src="/js/modules/date.js"></script>
 <script src="/js/ftt/ftt_reading/script.js?v20"></script>
 <script src="/js/ftt/ftt_reading/design.js?v8"></script>
-<script src="/js/modules/ftt/bible_read.js?v1"></script>
+<script src="/js/modules/ftt/bible_read.js?v2"></script>
