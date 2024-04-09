@@ -134,7 +134,7 @@ else if (isset ($_SESSION["logged-in"])){
           if (count($fellowship_cancel_today) > 0) {
             $fellowship_cancel_text = "<strong class='fellowship_today' style='color: red; padding-left: 16px; padding-right: 5px;  padding-top: 10px; display: inline-block;'>Отменено общение:  {$fellowship_cancel_text_name} </strong>";
           }
-
+          $indexStaffFellowship = Fellowship::get_all_fellowship_today_future_trainee($memberId);
         endif; ?>
         <?php if ($ftt_access['group'] === 'staff'):
           include_once 'db/classes/ftt_lists.php';
@@ -142,7 +142,11 @@ else if (isset ($_SESSION["logged-in"])){
           $extra_help_count = statistics::extra_help_count($gl_trainees_by_staff);
           $permission_stat_count_main = statistics::permission_count($gl_trainees_by_staff);
           $requests_stat_count_main = statistics::requests();
+          $indexStaffFellowship = Fellowship::get_all_fellowship_today_future($memberId);
         endif;
+        if ($indexStaffFellowship == 0) {
+          $indexStaffFellowship = '';
+        }
         if ($permission_stat_count_main == 0) {
           $permission_stat_count_main = '';
         }
@@ -161,6 +165,15 @@ else if (isset ($_SESSION["logged-in"])){
         }
         if (!$others_counter) {
           $others_counter = '';
+        }
+        // посещаемость
+        if ($ftt_access['group'] === 'staff') {
+          $permission_stat_count_main = statistics::permission_count($gl_trainees_by_staff);
+        } else {
+          $permission_stat_count_main = statistics::permission_count($memberId);
+        }
+        if ($permission_stat_count_main == 0) {
+          $permission_stat_count_main = '';
         }
 
         ?>
@@ -181,8 +194,8 @@ else if (isset ($_SESSION["logged-in"])){
 
                 <span><a class="ftt_menu_a" href="/ftt_schedule">Расписание</a></span>
                 <span><a class="ftt_menu_a" href="/ftt_announcement">Объявления<?php echo "<sup style='color: red;'><b> {$announcement_unread_count}</b></sup>"; ?></a></span>
-                <span><a class="ftt_menu_a" href="/ftt_attendance">Посещаемость</a></span>
-                <span><a class="ftt_menu_a" href="/ftt_fellowship">Общение</a></span>
+                <span><a class="ftt_menu_a" href="/ftt_attendance">Посещаемость<?php echo "<sup style='color: red;'><b> {$permission_stat_count_main}</b></sup>"; ?></a></span>
+                <span><a class="ftt_menu_a" href="/ftt_fellowship">Общение<?php echo "<sup style='color: red;'><b> {$indexStaffFellowship}</b></sup>"; ?></a></span>
                 <span><a class="ftt_menu_a" href="/ftt_service">Служение</a></span>
                 <span><a class="ftt_menu_a" href="/ftt_gospel">Благовестие</a></span>
 
