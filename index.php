@@ -92,7 +92,7 @@ else if (isset ($_SESSION["logged-in"])){
       <?php if ($memberId == '000005716' || $ftt_access['group'] === 'trainee' || $ftt_access['group'] === 'staff'):?>
         <?php
           include_once 'db/classes/statistics.php';
-          include_once 'db/classes/ftt_attendance/fellowship.php';
+          include_once 'db/classes/ftt_fellowship/fellowship.php';
           $announcement_unread_count = statistics::announcement_unread($memberId);
           if ($announcement_unread_count == 0) {
             $announcement_unread_count = '';

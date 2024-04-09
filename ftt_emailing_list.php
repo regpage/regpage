@@ -27,7 +27,7 @@ require_once 'db/classes/member.php';
 require_once 'db/classes/short_name.php';
 require_once 'db/classes/date_convert.php';
 require_once 'db/classes/date_plus.php';
-include_once 'db/classes/ftt_attendance/fellowship.php';
+include_once 'db/classes/ftt_fellowship/fellowship.php';
 include_once 'db/classes/ftt_attendance/prophecy.php';
 
 function getServiceOnesWithTrainees ()

@@ -1,7 +1,7 @@
 <?php
 include_once 'db/classes/statistics.php';
 include_once 'db/classes/ftt_lists.php';
-include_once 'db/classes/ftt_attendance/fellowship.php';
+include_once 'db/classes/ftt_fellowship/fellowship.php';
 
 // получаем обучающихся служащего
 $gl_trainees_by_staff = [];
