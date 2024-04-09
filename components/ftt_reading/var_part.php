@@ -14,4 +14,5 @@ if ($ftt_access['group'] === 'trainee') {
   $trainee_data = trainee_data::get_data($memberId);
   //bible books
   $read_book_arr = BookRead::get_all($memberId);
+  $read_book_arr = $read_book_arr['books'];
 }

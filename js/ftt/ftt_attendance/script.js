@@ -1713,17 +1713,27 @@ function open_blank(el_this) {
   $("#show_me_start").click(function () {
     // настраиваем окно старта
     // получить прочитанные книги
-    let ot_was_read = true, nt_was_read = true;
+    let ot_was_read = true, nt_was_read = true, ot_was_read_notes, nt_was_read_notes;
     fetch("ajax/ftt_reading_ajax.php?type=get_read_books&member_key=" + $("#modalAddEdit").attr("data-member_key"))
     .then(response => response.json())
     .then(commits => {
       // получаем options html прочитанных книг
-      let data_reading = get_books_for_start(bible_arr, commits.result);
+      let data_reading = get_books_for_start(bible_arr, commits.result["books"]);
       let html_ot = data_reading["ot"];
       let html_nt = data_reading["nt"];
       ot_was_read = data_reading["ot_complete"];
       nt_was_read = data_reading["nt_complete"];
+      ot_was_read_notes = commits.result["notes_ot"];
+      nt_was_read_notes = commits.result["notes_nt"];
+      $("#mdl_start_info").text("");
+      
+      if (ot_was_read) {
+        show_msg_all_is_read(ot_was_read_notes, "o");
+      }
 
+      if (nt_was_read) {
+        show_msg_all_is_read(nt_was_read_notes, "n");
+      }
       $("#mdl_book_ot_start").html(html_ot);
       $("#mdl_book_nt_start").html(html_nt);
     });

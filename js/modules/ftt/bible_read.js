@@ -26,7 +26,7 @@ function set_book_chapter_fnote_start_mdl(bible_book, testament, footnotes) {
     } else {
       footnotes = footnotes == 1 ? true : false;
     }
-    
+
     $("#mdl_book_"+testament+"t_start").val(data[0]);
     $("#mdl_chapter_"+testament+"t_start").val(data[1]);
     $("#mdl_footnotes_"+testament+"t_start").prop("checked", footnotes);
@@ -109,4 +109,19 @@ function get_books_for_start(bible_arr_tmp, book_read) {
     }
   }
   return {"ot":html_ot_tmp, "ot_complete": ot_was_read_tmp, "nt":html_nt_tmp, "nt_complete": nt_was_read_tmp};
+}
+
+function show_msg_all_is_read(read_notes, testament) {
+  if (testament === "o") {
+    testament = "Ветхий завет";
+  } else {
+    testament = "Новый завет";
+  }
+
+  if (read_notes == 1) {
+    read_notes = "с примечаниями";
+  } else {
+    read_notes = "без примечаний";
+  }
+  $("#mdl_start_info").html($("#mdl_start_info").html() + testament + " " + read_notes + " прочитан, вы можете задать новый старт.<br>");
 }

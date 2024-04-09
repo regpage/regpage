@@ -44,6 +44,7 @@ if ($ftt_access['group'] === 'staff' || $serving_trainee) {
   // ОБУЧАЮЩИЕСЯ
   //bible books
   $read_book_arr = BookRead::get_all($memberId);
+  $read_book_arr = $read_book_arr['books'];
 }
 
 $serving_trainee_disabled = '';
