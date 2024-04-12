@@ -438,10 +438,12 @@ function open_blank(el_this) {
      } else {
        deff_rend = 0;
      }
-
-      if ((deff_rend > 0 && deff_rend < 20) && (btn_text === "..." || btn_text === "О" || btn_text === "Р")) {
+     // условие если длительность опоздания больше чем длительность мероприятия
+      if (((deff_rend > 0 && deff_rend < 20 && commits.result[i]['duration'] == 0)
+      || (deff_rend > 0 && deff_rend < 20 && commits.result[i]['duration'] > 0 && deff_rend < commits.result[i]['duration']))
+      && (btn_text === "..." || btn_text === "О" || btn_text === "Р")) {
         bg_color_time = "bg_color_yellow";
-      } else if ((deff_rend >= 20 && (btn_text === "..." || btn_text === "О" || btn_text === "Р")) || (deff_rend === 0 && btn_text === "О")) {
+      } else if (((deff_rend >= 20 || (deff_rend >= commits.result[i]['duration'] && commits.result[i]['duration'] > 0)) && (btn_text === "..." || btn_text === "О" || btn_text === "Р")) || (deff_rend === 0 && btn_text === "О")) {
         bg_color_time = "bg_color_pink";
       } else {
         bg_color_time = "";
@@ -757,6 +759,19 @@ function open_blank(el_this) {
       field = $(this).attr("data-field");
       value = $(this).val();
       id = $(this).parent().parent().parent().attr("data-id");
+      // продолжительность мероприятия
+      let session_duration = $(this).parent().find(".name_session").attr("data-text");
+      if (session_duration) {
+        session_duration = session_duration.trim();
+        if (session_duration.substr(session_duration.length - 4) === "мин.") {
+          session_duration = session_duration.split(" ");
+          session_duration = session_duration[session_duration.length - 1].split("мин.")[0].trim();
+        } else {
+          session_duration = 0;
+        }
+      } else {
+        session_duration = 0;
+      }
 
       // update field
       if (!$(this).hasClass("bg-light") && $(this).attr("type") === "time") {
@@ -775,15 +790,16 @@ function open_blank(el_this) {
            deff = my_attendance - sessiion_begin;
 
            $(this).next().next().next().next().val(deff);
-           if (deff > 0 && deff < 20) {
+           // session_duration опоздане больше чем продолжительность мероприятия учитывается как отсутствие
+           if ((deff > 0 && deff < 20 && session_duration == 0) || (deff > 0 && deff < 20 && session_duration > 0 && deff < session_duration)) {
              late = 1;
              absence = 0;
-           if (!$(this).hasClass("bg_color_yellow")) {
-              $(this).addClass("bg_color_yellow");
-              $(this).removeClass("bg_color_pink");
-           }
+             if (!$(this).hasClass("bg_color_yellow")) {
+               $(this).addClass("bg_color_yellow");
+               $(this).removeClass("bg_color_pink");
+             }
               //$(this).css("background-color", "yellow !important");
-           } else if (deff >= 20) {
+           } else if (deff >= 20 || (deff > 0 && deff < 20 && session_duration > 0 && deff >= session_duration)) {
               late = 0;
               absence = 1;
               if (!$(this).hasClass("bg_color_pink")) {
@@ -824,12 +840,13 @@ function open_blank(el_this) {
               $(this).next().val("");
               $(this).next().next().html('...');
             }
-          } else if ($(this).next().next().next().next().val() > 0 && $(this).next().next().next().next().val() < 20) {
+          } else if (($(this).next().next().next().next().val() > 0 && $(this).next().next().next().next().val() < 20 && session_duration == 0)
+          || ($(this).next().next().next().next().val() > 0 && $(this).next().next().next().next().val() < 20 && session_duration > 0 && $(this).next().next().next().next().val() < session_duration)) {
             if (!$(this).hasClass("bg_color_yellow")) {
              $(this).removeClass("bg_color_pink");
              $(this).addClass("bg_color_yellow");
             }
-          } else if ($(this).next().next().next().next().val() >= 20) {
+          } else if ($(this).next().next().next().next().val() >= 20 || ($(this).next().next().next().next().val() > 0 && $(this).next().next().next().next().val() < 20 && session_duration > 0 && $(this).next().next().next().next().val() >= session_duration)) {
             if (!$(this).hasClass("bg_color_pink")) {
              $(this).removeClass("bg_color_yellow");
              $(this).addClass("bg_color_pink");
@@ -850,12 +867,13 @@ function open_blank(el_this) {
               $(this).next().val("");
               $(this).next().next().html('...');
             }
-          } else if ($(this).next().next().next().next().val() > 0 && $(this).next().next().next().next().val() < 20) {
+          } else if (($(this).next().next().next().next().val() > 0 && $(this).next().next().next().next().val() < 20 && session_duration == 0)
+          || ($(this).next().next().next().next().val() > 0 && $(this).next().next().next().next().val() < 20 && session_duration > 0 && $(this).next().next().next().next().val() < session_duration)) {
             if (!$(this).hasClass("bg_color_yellow")) {
              $(this).removeClass("bg_color_pink");
              $(this).addClass("bg_color_yellow");
             }
-          } else if ($(this).next().next().next().next().val() >= 20) {
+          } else if ($(this).next().next().next().next().val() >= 20 || ($(this).next().next().next().next().val() > 0 && $(this).next().next().next().next().val() < 20 && session_duration > 0 && $(this).next().next().next().next().val() >= session_duration)) {
             if (!$(this).hasClass("bg_color_pink")) {
              $(this).removeClass("bg_color_yellow");
              $(this).addClass("bg_color_pink");
@@ -1726,7 +1744,7 @@ function open_blank(el_this) {
       ot_was_read_notes = commits.result["notes_ot"];
       nt_was_read_notes = commits.result["notes_nt"];
       $("#mdl_start_info").text("");
-      
+
       if (ot_was_read) {
         show_msg_all_is_read(ot_was_read_notes, "o");
       }
