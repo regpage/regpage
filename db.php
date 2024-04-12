@@ -928,7 +928,21 @@ function db_getDashboardMembersService ($eventId, $attended, $regstate, $sortFie
 
     $_coord = $coord ? " AND reg.coord='1' " : '';
     $_service = $service ? " AND reg.service_key IS NOT NULL AND reg.service_key <> '' " : '';
-    $_locality = $locality ? $locality == 'without' ? " AND (m.locality_key IS NULL OR m.locality_key ='') " : " AND m.locality_key ='".$db->real_escape_string($locality)."' " : '';
+    $localityTmp = explode(',', $locality);
+    if (count($localityTmp) > 1) {
+      $_locality = ' AND ' . '(';
+      foreach ($localityTmp as $key => $value) {
+        $value = $db->real_escape_string($value);
+        if ($key > 0) {
+          $_locality .= ' OR ';
+        }
+        $_locality .= "  m.locality_key ='{$value}' ";
+      }
+      $_locality .= ')';
+    }
+    if (count($localityTmp) < 2) {
+      $_locality = $locality ? $locality == 'without' ? " AND (m.locality_key IS NULL OR m.locality_key ='') " : " AND m.locality_key ='".$db->real_escape_string($locality)."' " : '';
+    }
 
     $res=db_query ("SELECT DISTINCT * FROM (
         SELECT m.key as id, m.name as name, IF (COALESCE(l.name,'')='', m.new_locality, l.name) as locality,
