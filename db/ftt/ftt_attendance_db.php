@@ -3,22 +3,12 @@
 // Классы. Конвертация дат Не ПОДКЛЮЧАЕТСЯ!
 if (isset($GLOBALS['global_root_path'])) {
   include_once $GLOBALS['global_root_path'].'db/classes/ftt_info.php';
+  include_once $GLOBALS['global_root_path'].'db/classes/date_convert.php';
 } else {
   include_once __DIR__.'/../classes/ftt_info.php';
 }
 
 //echo __DIR__ . DIRECTORY_SEPARATOR;
-function yyyymmdd_to_ddmm ($date)  {
-  if (!$date) {
-    return 'No date';
-  }
-  $date = explode('-', $date);
-  if (isset($date[2])) {
-    return $date[2].'.'.$date[1];
-  } else {
-    return 'Date is incorrect.';
-  }
-}
 // ПОСЕЩАЕМОСТЬ
 // получаем шапки
 function getFttAttendanceSheet() {
@@ -89,7 +79,8 @@ function getFttAttendanceSheetAndStrings($list_access, $condition, $admin_id = '
     if (!$list_access_condition) {
       $condition = 1;
     } else {
-      $condition = $list_access_condition;
+      $semsterBegin = date_convert::ddmmyyyy_to_yyyymmdd(ftt_info::begin());
+      $condition = $list_access_condition . " AND DATE(fas.date) >= '{$semsterBegin}' ";
     }
   }
   // выборка по служащему
@@ -270,9 +261,9 @@ function set_late_automatic($member_key, $date, $delay, $session_name, $end_time
         }
         $condition = "`id`='".$result[$i]['id']."' OR `id`='".$result[$i+1]['id']."' OR `id`='".$result[$i+2]['id']."'";
         $res3 = db_query("UPDATE `ftt_late` SET `done` = 1, `changed` = 1 WHERE {$condition}");
-        $reason_text = yyyymmdd_to_ddmm($result[$i]['date']).' '.$result[$i]['session_name'].' — '.$text_msg.' на '.$result[$i]['delay'].' мин.\r\n';
-        $reason_text .= yyyymmdd_to_ddmm($result[$i+1]['date']).' '.$result[$i+1]['session_name'].' — '.$text_msg_1.' на '.$result[$i+1]['delay'].' мин.\r\n';
-        $reason_text .= yyyymmdd_to_ddmm($result[$i+2]['date']).' '.$result[$i+2]['session_name'].' — '.$text_msg_2.' на '.$result[$i+2]['delay'].' мин.\r\n';
+        $reason_text = date_convert::yyyymmdd_to_ddmm($result[$i]['date']).' '.$result[$i]['session_name'].' — '.$text_msg.' на '.$result[$i]['delay'].' мин.\r\n';
+        $reason_text .= date_convert::yyyymmdd_to_ddmm($result[$i+1]['date']).' '.$result[$i+1]['session_name'].' — '.$text_msg_1.' на '.$result[$i+1]['delay'].' мин.\r\n';
+        $reason_text .= date_convert::yyyymmdd_to_ddmm($result[$i+2]['date']).' '.$result[$i+2]['session_name'].' — '.$text_msg_2.' на '.$result[$i+2]['delay'].' мин.\r\n';
          $attendance_and_late = $result[$i]['id_attendance'].':'.$result[$i]['id'].',';
          $attendance_and_late .= $result[$i+1]['id_attendance'].':'.$result[$i+1]['id'].',';
          $attendance_and_late .= $result[$i+2]['id_attendance'].':'.$result[$i+2]['id'];
