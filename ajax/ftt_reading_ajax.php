@@ -6,6 +6,7 @@ include_once "ajax.php";
 include_once "../db/ftt/ftt_reading_db.php";
 include_once '../db/classes/ftt_reading/bible.php';
 include_once '../db/classes/ftt_reading/book_read.php';
+include_once '../db/classes/statistic/biblecounter.php';
 
 $adminId = db_getMemberIdBySessionId (session_id());
 
@@ -72,5 +73,10 @@ if (isset($_GET['type']) && $_GET['type'] === 'check_read_book') {
 
 if (isset($_GET['type']) && $_GET['type'] === 'get_read_books') {
   echo json_encode(["result"=>BookRead::get_all($_GET['member_key'])]);
+  exit();
+}
+
+if (isset($_GET['type']) && $_GET['type'] === 'get_bible_deff') {
+  echo json_encode(["result"=>BibleCounter::calculateTheDifference($_GET['trainee_id'])]);
   exit();
 }

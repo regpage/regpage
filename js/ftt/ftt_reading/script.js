@@ -3,9 +3,24 @@ $(document).ready(function(){
   // Статистика чтения библии
   $(".bible_statistic_btn").click(function () {
     $('#spinner').modal("show");
-    fetch("ajax/ftt_attendance_ajax.php?type=get_bible_statistic&trainee_id=" + $("#modalAddEdit").attr("data-member_key"))
+    // статистика с датами
+    fetch("ajax/ftt_reading_ajax.php?type=get_bible_deff&trainee_id=" + $(this).attr("data-member_key"))
     .then(response => response.json())
     .then(commits => {
+      let html = "";
+      for (const variable in commits.result) {
+        if (commits.result.hasOwnProperty(variable)) {
+          html += "<div>" + variable + " - " + commits.result[variable] + "</div>";
+        }
+      }
+      $("#bible_statistic_list").html(html);
+      $('#spinner').modal("hide");
+    });
+/*
+    fetch("ajax/ftt_attendance_ajax.php?type=get_bible_statistic&trainee_id=" + $(this).attr("data-member_key"))
+    .then(response => response.json())
+    .then(commits => {
+      console.log(commits.result);
       if (commits.result.length > 0) {
         $("#bible_statistic_list").find("canvas").remove();
         $("#bible_statistic_list").append("<canvas></canvas>");
@@ -47,9 +62,9 @@ $(document).ready(function(){
         });
       }
     });
-
+*/
     // статистика с датами
-    fetch("ajax/ftt_attendance_ajax.php?type=get_bible_statistic_dates&trainee_id=" + $("#modalAddEdit").attr("data-member_key"))
+  /*  fetch("ajax/ftt_attendance_ajax.php?type=get_bible_statistic_dates&trainee_id=" + $(this).attr("data-member_key"))
     .then(response => response.json())
     .then(commits => {
       console.log(commits.result);
@@ -96,9 +111,9 @@ $(document).ready(function(){
         });
       }
       $('#spinner').modal("hide");
-    });
+    });*/
 
-    setTimeout(function () {
+    /*setTimeout(function () {
       $("body").addClass("modal-open");
       $("body").attr("style", "padding-right: 15px;");
     }, 500);
@@ -106,7 +121,7 @@ $(document).ready(function(){
       setTimeout(function () {
         $("body").addClass("modal-open");
       }, 500);
-    });
+    });*/
   });
 
   // *** С Л У Ж А Щ И Е *** //
