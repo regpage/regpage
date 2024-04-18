@@ -6,8 +6,7 @@
  * получаем кол-во дней до конца семестра
  * даём рекоммендацию на день = оставшиеся главы/дни
  */
-include_once '../db/classes/ftt_reading/bible.php';
-include_once '../db/classes/ftt_info.php';
+
 class BibleCounter
 {
   static function sumChapters ()
@@ -38,22 +37,36 @@ class BibleCounter
 
     return $result;
   }
-
-  static function calculateTheDifference($member_key)
+  // рассчёт
+  static function calculateTheDifference($member_key, $semester)
   {
     global $db;
     $member_key = $db->real_escape_string($member_key);
     $sumChapters = self::sumChapters();
     $readBook = self::getRead($member_key);
+    $modificator = self::semesterModificator($semester);
     $startPosition = self::get_start_position($member_key);
     if (count($startPosition) === 0) {
       $startPosition = array('book_ot' => '0', 'read_footnotes_nt' => 0,'book_nt' => '','read_footnotes_ot' => 0);
     }
+
     $daysToEnd = ftt_info::days_to_end();
     $deffOt = $sumChapters['ot'] - $readBook['chapters_ot'];
     $deffNt = $sumChapters['nt'] - $readBook['chapters_nt'];
-    $deffOt = $deffOt / $daysToEnd;
-    $deffNt = $deffNt / $daysToEnd;
+    if ($semester === '1' || $semester === '2') { // нз и вз без примечаний за 1 год обучения
+      if ($startPosition['book_ot'] && empty($startPosition['book_nt'])) {
+        $deffOt += $deffNt;
+      } elseif (empty($startPosition['book_ot']) && $startPosition['book_nt']) {
+        $deffNt += $deffOt;
+      }
+    } elseif ($semester === '3' || $semester === '4' || $semester === '5' || $semester === '6') {
+
+    } else {
+      return 'error A001';
+    }
+
+    $deffOt = $deffOt / ($daysToEnd + $modificator);
+    $deffNt = $deffNt / ($daysToEnd + $modificator);
 
     $result = [
       'ot_deff'=>round($deffOt, 1),
@@ -64,10 +77,20 @@ class BibleCounter
       'ot_complete'=> $readBook['chapters_ot'],
       'nt_complete'=>$readBook['chapters_nt'],
       'ot_current'=> $startPosition['book_ot'],
-      'nt_current'=>$startPosition['book_nt']
+      'nt_current'=>$startPosition['book_nt'],
+      'semester'=>$semester
     ];
 
     return $result;
+  }
+  // модификатор для разных семестров
+  static function semesterModificator($semester)
+  {
+    $modificator = 0;
+    if ($semester % 2 !== 0) {
+      $modificator = 120 + 60;
+    }
+    return $modificator;
   }
   // start position
   static function get_start_position($member_key)

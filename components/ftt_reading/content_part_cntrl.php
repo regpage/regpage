@@ -5,7 +5,7 @@ include_once 'db/classes/statistic/biblecounter.php';
 $read_bible_books = get_read_book($memberId);
 $bible_books = $bible_obj->get();
 $book_current = get_reading_data($memberId, date('Y-m-d'));
-$bible_reading_calculate = BibleCounter::calculateTheDifference($memberId);
+$bible_reading_calculate = BibleCounter::calculateTheDifference($memberId, $trainee_data['semester']);
 $disabled_ot = '';
 $disabled_nt = '';
 $disabled = '';

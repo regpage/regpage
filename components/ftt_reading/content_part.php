@@ -7,6 +7,44 @@
 require_once 'components/ftt_reading/content_part_cntrl.php';
 ?>
 <div class="container">
+  <!-- Уведомление о чтении кол-ва глав в день -->  
+  <?php if (!empty($bible_reading_calculate['ot_current']) || !empty($bible_reading_calculate['nt_current'])): ?>
+  <div class="row pt-2">
+    <div class="col-12">
+      <div class="text-center">
+        <strong class="text-danger">
+          <?php
+          $text_deff = '';
+          if ((!empty($bible_reading_calculate['ot_current']) && ($bible_reading_calculate['semester'] === '1' || $bible_reading_calculate['semester'] === '2')) || ($bible_reading_calculate['semester'] === '5' || $bible_reading_calculate['semester'] === '6')) {
+            $text_deff = "Что бы успеть до конца текущего года обучения вам нужно прочитывать не менее {$bible_reading_calculate['ot_deff']} глав Ветхого Завета в день. ";
+          }
+
+          if ((!empty($bible_reading_calculate['nt_current']) && ($bible_reading_calculate['semester'] === '1' || $bible_reading_calculate['semester'] === '2')) || ($bible_reading_calculate['semester'] === '3' || $bible_reading_calculate['semester'] === '4')) {
+            if (empty($text_deff)) {
+              $text_deff .= "Что бы успеть до конца текущего года обучения вам нужно прочитывать не менее {$bible_reading_calculate['nt_deff']} глав Нового Завета в день.";
+            } else {
+              $text_deff .= "И не менее {$bible_reading_calculate['nt_deff']} глав Нового Завета в день.";
+            }
+          }
+
+          echo $text_deff;
+          ?>
+        </strong>
+      </div>
+    </div>
+  </div>
+  <?php endif; ?>
+  <?php if (empty($bible_reading_calculate['ot_current']) && empty($bible_reading_calculate['nt_current'])): ?>
+    <div class="row pt-2">
+      <div class="col-12">
+        <div class="text-center">
+          <strong class="text-danger">
+            Задайте старт чтения Библии.
+          </strong>
+        </div>
+      </div>
+    </div>
+  <?php endif; ?>
   <?php
   // БЛОК РАБОТАЕТ ТОЛЬКО НА ПЕРЕРЫВЕ
   if (ftt_info::pause()): ?>
@@ -148,30 +186,4 @@ require_once 'components/ftt_reading/content_part_cntrl.php';
       </div>
     </div>
   </div>
-  <!-- Уведомление о чтении кол-ва глав в день -->
-  <?php if (!empty($bible_reading_calculate['ot_current']) || !empty($bible_reading_calculate['nt_current'])): ?>
-  <div class="row">
-    <div class="col-12">
-      <div class="text-center">
-        <strong class="text-danger">
-          <?php
-          $text_deff = '';
-          if ($bible_reading_calculate['ot_deff'] > 3 && !empty($bible_reading_calculate['ot_current'])) {
-            $text_deff = "Что бы успеть до конца семестра вам нужно прочитывать не менее {$bible_reading_calculate['ot_deff']} глав Ветхого Завета в день. ";
-          }
-
-          if ($bible_reading_calculate['nt_deff'] > 3 && !empty($bible_reading_calculate['nt_current'])) {
-            if (empty($text_deff)) {
-              $text_deff .= "Что бы успеть до конца семестра вам нужно прочитывать не менее {$bible_reading_calculate['nt_deff']} глав Нового Завета в день.";
-            } else {
-              $text_deff .= "И не менее {$bible_reading_calculate['nt_deff']} глав Нового Завета в день.";
-            }
-          }
-          echo $text_deff;
-          ?>
-        </strong>
-      </div>
-    </div>
-  </div>
-  <?php endif; ?>
 </div>

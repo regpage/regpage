@@ -3,10 +3,11 @@
 include_once "ajax.php";
 
 // подключаем запросы
-include_once "../db/ftt/ftt_reading_db.php";
+include_once '../db/classes/ftt_info.php';
 include_once '../db/classes/ftt_reading/bible.php';
 include_once '../db/classes/ftt_reading/book_read.php';
 include_once '../db/classes/statistic/biblecounter.php';
+include_once "../db/ftt/ftt_reading_db.php";
 
 $adminId = db_getMemberIdBySessionId (session_id());
 
