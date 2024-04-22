@@ -613,6 +613,8 @@ $(document).ready(function(){
               if (ot[0] !== $("#bible_book_ot").attr("data-book") || ot[1] !== $("#bible_book_ot").attr("data-chapter")) {
                 showError("Пожалуйста, сначала сохраните изменения, нажав кнопку записать.");
                 return;
+              } else {
+                disabled_bookfields_start_mdl("o", disabled_checkbox_start_ot);
               }
             }
           } else {
@@ -668,6 +670,8 @@ $(document).ready(function(){
               if (nt[0] !== $("#bible_book_nt").attr("data-book") || nt[1] !== $("#bible_book_nt").attr("data-chapter")) {
                 showError("Пожалуйста, сначала сохраните изменения, нажав кнопку «Записать».");
                 return;
+              } else {
+                disabled_bookfields_start_mdl("n", disabled_checkbox_start_nt);
               }
             }
           } else {
