@@ -162,6 +162,10 @@ label {
   background-color: #f8f8d4 !important;
 }
 
+.bg_color_blue {
+  background-color: #78e5f6 !important;
+}
+
 .short_number_field {
   max-width: 70px !important;
 }

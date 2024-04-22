@@ -377,11 +377,11 @@ function open_blank(el_this) {
 
       if ((a["duration"] === "0" && a["attend_time"] && a['session_name'][a['session_name'].length-4] !== ":") || (b["duration"] === "0" && b["attend_time"] && b['session_name'][b['session_name'].length-4] !== ":")) {
         if ((a["duration"] === "0" && a["attend_time"]) && (b["duration"] === "0" && b["attend_time"])) {
-          nameA=a["attend_time"], nameB=b["attend_time"];
+          nameA=a["session_time"], nameB=b["session_time"];
         } else if (b["duration"] === "0" && b["attend_time"]) {
-          nameA=a["session_time"], nameB=b["attend_time"];
+          nameA=a["session_time"], nameB=b["session_time"];
         } else {
-          nameA=a["attend_time"], nameB=b["session_time"];
+          nameA=a["session_time"], nameB=b["session_time"];
         }
       } else {
         nameA=a["session_time"], nameB=b["session_time"];
@@ -448,6 +448,12 @@ function open_blank(el_this) {
       } else {
         bg_color_time = "";
       }
+
+      // если приход раньше чем за час или позже для инвертированых опозданий
+      if (deff_rend < -60) {
+        bg_color_time = "bg_color_blue";
+      }
+
       let hide_element = "", hide_element_mbl = "";
       if ($(window).width()<=769) {
         hide_element_mbl = "hide_element";
@@ -797,6 +803,7 @@ function open_blank(el_this) {
              if (!$(this).hasClass("bg_color_yellow")) {
                $(this).addClass("bg_color_yellow");
                $(this).removeClass("bg_color_pink");
+               $(this).removeClass("bg_color_blue");
              }
               //$(this).css("background-color", "yellow !important");
            } else if (deff >= 20 || (deff > 0 && deff < 20 && session_duration > 0 && deff >= session_duration)) {
@@ -805,6 +812,15 @@ function open_blank(el_this) {
               if (!$(this).hasClass("bg_color_pink")) {
                 $(this).addClass("bg_color_pink");//$(this).css("background-color", "pink !important");
                 $(this).removeClass("bg_color_yellow");
+                $(this).removeClass("bg_color_blue");
+              }
+            }
+            // если приход раньше чем за час или позже для инвертированых опозданий
+            if (deff < -60) {
+              if (!$(this).hasClass("bg_color_blue")) {
+                $(this).addClass("bg_color_blue");
+                $(this).removeClass("bg_color_yellow");
+                $(this).removeClass("bg_color_pink");
               }
             }
         } else if ($(this).attr("type") === "time" && value < $(this).prev().val() && $(this).next().val() !== "Р" && $(this).next().val() !== "П" && $(this).next().val() !== "С" && $(this).parent().parent().parent().attr("data-end_time") === "1") {
@@ -825,10 +841,18 @@ function open_blank(el_this) {
                $(this).removeClass("bg_color_pink");
              }
            }
+           // если приход раньше чем за час или позже для инвертированых опозданий
+           if (deff < -60) {
+             if (!$(this).hasClass("bg_color_blue")) {
+               $(this).addClass("bg_color_blue");
+               $(this).removeClass("bg_color_yellow");
+             }
+           }
         } else if ($(this).attr("type") === "time" && $(this).attr("data-field") === "attend_time" && $(this).next().val() !== "С" && $(this).next().val() !== "П" && $(this).parent().parent().parent().attr("data-end_time") !== "1") {
           // && $(this).next().val() !== "Р"
           minutes = $(this).prev().val().split(":");
           minutes_my = value.split(":");
+          $(this).removeClass("bg_color_blue");
           // приход раньше
           deff = (minutes_my[0]*60 + Number(minutes_my[1])) - (minutes[0]*60 + Number(minutes[1]));
           $(this).next().next().next().next().val(deff);
@@ -852,10 +876,19 @@ function open_blank(el_this) {
              $(this).addClass("bg_color_pink");
             }
           }
+          // если приход раньше чем за час или позже для инвертированых опозданий
+          if (deff < -60) {
+            if (!$(this).hasClass("bg_color_blue")) {
+              $(this).addClass("bg_color_blue");//$(this).css("background-color", "pink !important");
+              $(this).removeClass("bg_color_yellow");
+              $(this).removeClass("bg_color_pink");
+            }
+          }
         } else if ($(this).attr("type") === "time" && $(this).attr("data-field") === "attend_time" && $(this).next().val() !== "С" && $(this).next().val() !== "П" && $(this).parent().parent().parent().attr("data-end_time") === "1") {
           //&& $(this).next().val() !== "Р"
           minutes = $(this).prev().val().split(":");
           minutes_my = value.split(":");
+          $(this).removeClass("bg_color_blue");
           // приход раньше
           deff = (minutes[0]*60 + Number(minutes[1])) - (minutes_my[0]*60 + Number(minutes_my[1]));
           $(this).next().next().next().next().val(deff);
@@ -877,6 +910,14 @@ function open_blank(el_this) {
             if (!$(this).hasClass("bg_color_pink")) {
              $(this).removeClass("bg_color_yellow");
              $(this).addClass("bg_color_pink");
+            }
+          }
+          // если приход раньше чем за час или позже для инвертированых опозданий
+          if (deff < -60) {
+            if (!$(this).hasClass("bg_color_blue")) {
+              $(this).addClass("bg_color_blue");//$(this).css("background-color", "pink !important");
+              $(this).removeClass("bg_color_yellow");
+              $(this).removeClass("bg_color_pink");
             }
           }
         } else if ($(this).next().val() === "С" && $(this).attr("data-field") === "attend_time") {
