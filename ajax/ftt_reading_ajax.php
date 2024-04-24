@@ -78,6 +78,6 @@ if (isset($_GET['type']) && $_GET['type'] === 'get_read_books') {
 }
 
 if (isset($_GET['type']) && $_GET['type'] === 'get_bible_deff') {
-  echo json_encode(["result"=>BibleCounter::calculateTheDifference($_GET['trainee_id'])]);
+  echo json_encode(["result"=>BibleCounter::calculateTheDifference($_GET['trainee_id'], $_GET['semester'])]);
   exit();
 }
