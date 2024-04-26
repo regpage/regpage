@@ -51,7 +51,7 @@
       <div id="list_header" class="row">
         <?php if ($trainee_data['semester'] < 5): ?>
           <div class="col-2 pl-1"><b>Дата</b></div>
-          <div class="col-3"><b>Чтение библии</b></div>
+          <div class="col-3"><b>Чтение Библии</b></div>
           <div class="col-5"><b>Комментарий</b></div>
           <div class="col-2"><b>Статус</b></div>
         <?php else: ?>

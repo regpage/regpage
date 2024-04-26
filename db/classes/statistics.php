@@ -195,7 +195,7 @@ class statistics {
     return $result;
   }
 
-  // посещаемость
+  // посещаемость не сданные листы за 10 дней начиная с текучая дата - 4 дня
   static function attendanceFour($memberId)
   {
     global $db;
@@ -205,7 +205,7 @@ class statistics {
         foreach ($memberId as $key => $value) {
           $key = $db->real_escape_string($key);
           //`date` >= CURDATE() - INTERVAL 4 DAY `date` != CURDATE() AND DATE_ADD(DATE(NOW()), INTERVAL -4 DAY)
-          $condition = " `member_key`='$key' AND `status`= 0 AND `date` <= CURDATE() - INTERVAL 4 DAY";
+          $condition = " `member_key`='$key' AND `status`= 0 AND `date` <= CURDATE() - INTERVAL 4 DAY AND `date` >= CURDATE() - INTERVAL 14 DAY ";
           $res = db_query("SELECT DISTINCT `date` FROM ftt_attendance_sheet WHERE {$condition} ORDER BY `date` DESC");
           while ($row = $res->fetch_assoc()) $result[$key] = $row['date'];
         }

@@ -1965,14 +1965,14 @@ function open_blank(el_this) {
       .then(commits => {
         let html = "";
         if ((commits.result.ot_current && (semester_tmp  === "1" || semester_tmp  === "2")) || (semester_tmp  === "5" || semester_tmp  === "6")) {
-          html = "Что бы успеть до конца текущего года обучения вам нужно прочитывать не менее " + commits.result.ot_deff
+          html = "Чтобы успеть до конца текущего года обучения, нужно прочитывать не менее " + commits.result.ot_deff
           + "  глав Ветхого Завета в день. ";
         }
         if ((commits.result.nt_current && (semester_tmp  === "1" || semester_tmp  === "2")) || (semester_tmp  === "3" || semester_tmp  === "4")) {
           if (html) {
             html += "<br>И не менее " + commits.result.nt_deff + "  глав Нового Завета в день.";
           } else {
-            html = "Что бы успеть до конца текущего года обучения вам нужно прочитывать не менее " + commits.result.nt_deff
+            html = "Чтобы успеть до конца текущего года обучения, нужно прочитывать не менее " + commits.result.nt_deff
             + " глав Нового Завета в день.";
           }
         }
