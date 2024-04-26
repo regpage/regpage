@@ -140,16 +140,13 @@ else if (isset ($_SESSION["logged-in"])){
           include_once 'db/classes/ftt_lists.php';
           $gl_trainees_by_staff = ftt_lists::get_trainees_by_staff($memberId);
           $extra_help_count = statistics::extra_help_count($gl_trainees_by_staff);
-          $permission_stat_count_main = statistics::permission_count($gl_trainees_by_staff);
           $requests_stat_count_main = statistics::requests();
           $indexStaffFellowship = Fellowship::get_all_fellowship_today_future($memberId);
         endif;
         if ($indexStaffFellowship == 0) {
           $indexStaffFellowship = '';
         }
-        if ($permission_stat_count_main == 0) {
-          $permission_stat_count_main = '';
-        }
+
         $others_counter = 0;
         if ($extra_help_count == 0) {
           $extra_help_count = '';
@@ -166,12 +163,16 @@ else if (isset ($_SESSION["logged-in"])){
         if (!$others_counter) {
           $others_counter = '';
         }
-        // посещаемость
+        // посещаемость и проп. занятия
         if ($ftt_access['group'] === 'staff') {
           $permission_stat_count_main = statistics::permission_count($gl_trainees_by_staff);
+          $missed_class_count = statistics::missed_class_count(ftt_lists::get_trainees_by_staff($memberId));
         } else {
           $permission_stat_count_main = statistics::permission_count($memberId);
+          $missed_class_count = statistics::missed_class_count($memberId);
         }
+        $permission_stat_count_main += $missed_class_count;
+
         if ($permission_stat_count_main == 0) {
           $permission_stat_count_main = '';
         }

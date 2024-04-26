@@ -121,7 +121,7 @@ $permission_stat_count;
 $permission_statistics = '';
 $missed_class_statistics = '';
 if ($ftt_access['group'] === 'staff') {
-  $permission_stat_count = statistics::permission_count(ftt_lists::get_trainees_by_staff($serving_one_permissions));
+  $permission_stat_count = statistics::permission_count(ftt_lists::get_trainees_by_staff($memberId));
   $missed_class_count = statistics::missed_class_count(ftt_lists::get_trainees_by_staff($memberId));
 } else {
   $permission_stat_count = statistics::permission_count($memberId);

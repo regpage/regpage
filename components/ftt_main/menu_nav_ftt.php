@@ -25,15 +25,20 @@ if ($extra_help_count == 0) {
 $extra_help_text .= "<sup style='color: red;'> <b> {$extra_help_count}</b></sup>";
 
 // счётчик разрешений в меню
+// счётчик проп. занятий в меню (в одном индексе с разрешениями)
 $permission_stat_count_main_text = 'Посещаемость';
 if ($ftt_access['group'] === 'staff') {
   $permission_stat_count_main = statistics::permission_count($gl_trainees_by_staff);
+  $missed_class_count_menu = statistics::missed_class_count(ftt_lists::get_trainees_by_staff($memberId));
 } else {
   $permission_stat_count_main = statistics::permission_count($memberId);
+  $missed_class_count_menu = statistics::missed_class_count($memberId);
 }
+$permission_stat_count_main += $missed_class_count_menu;
 if ($permission_stat_count_main == 0) {
   $permission_stat_count_main = '';
 }
+
 $permission_stat_count_main_text .= "<sup style='color: red;'> <b> {$permission_stat_count_main}</b></sup>";
 
 // счётчик объявлений в меню
