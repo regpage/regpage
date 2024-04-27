@@ -59,8 +59,8 @@
           <div class="col-1"><b>УО</b></div>
           <div class="col-1"><b>ЛМ</b></div>
           <div class="col-1"><b>МТ</b></div>
-          <div class="col-1"><b>ЧБ</b></div>
           <div class="col-1"><b>ЧС</b></div>
+          <div class="col-1"><b>ЧБ</b></div>
           <div class="col-3"><b>Комментарий</b></div>
           <div class="col-2"><b>Статус</b></div>
         <?php endif; ?>
@@ -119,11 +119,30 @@
           $ministry_reading = $value['ministry_reading'];
           $comment = $value['comment'];
           $name_trainee = short_name::no_middle($value['name']);
-          $bible_reading_text = $bible_reading.' мин.';
+          $bible_reading_text = '';
 
-          if ($bible_reading === '0') {
-            $bible_reading_text = '';
+          if (isset($chaptersRead['ot'][$date])) {
+            if ($chaptersRead['ot'][$date]['chapter_ot'] == 0) {
+              $bible_reading_text = $chaptersRead['ot'][$date]['book_ot'] . ' нет';
+            } else {
+              $bible_reading_text = $chaptersRead['ot'][$date]['book_ot'] . ' ' . $chaptersRead['ot'][$date]['chapter_ot'];
+            }
+
           }
+          if (isset($chaptersRead['nt'][$date])) {
+            if (!empty($bible_reading_text)) {
+              $bible_reading_text .= '; ';
+            }
+            if ($chaptersRead['nt'][$date]['chapter_nt'] == 0) {
+              $bible_reading_text .= $chaptersRead['nt'][$date]['book_nt'] . ' нет';
+            } else {
+              $bible_reading_text .= $chaptersRead['nt'][$date]['book_nt'] . ' ' . $chaptersRead['nt'][$date]['chapter_nt'];
+            }
+          }
+
+          /*if ($bible_reading === '0') {
+            //$bible_reading_text = '';
+          }*/
           $book = $value['bible_book'];
           $chapter = $value['bible_chapter'];
           $comment_short;
@@ -192,8 +211,8 @@
             <div class='col-1'><span class='trainee_name'>{$morning_revival}</span></div>
             <div class='col-1'><span class='trainee_name'>{$personal_prayer}</span></div>
             <div class='col-1'><span class='trainee_name'>{$common_prayer}</span></div>
-            <div class='col-1'><span class='trainee_name'>{$bible_reading}</span></div>
             <div class='col-1'><span class='trainee_name'>{$ministry_reading}</span></div>
+            <div class='col-1'><span class='trainee_name'>{$bible_reading_text}</span></div>
             <div class='col-3 col_n_3'>{$comment_short}</div>
             <div class='col-2 set_to_archive_container col_n_4'>{$checked_string}</div>
             <div class='comment_mbl pl-1'>$comment_short</div>

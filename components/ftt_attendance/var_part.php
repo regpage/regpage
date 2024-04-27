@@ -1,16 +1,21 @@
 <?php
+// include
+include_once 'db/classes/trainee_data.php';
+include_once 'db/classes/short_name.php';
+include_once 'db/classes/ftt_lists.php';
+include_once 'db/classes/date_convert.php';
+include_once 'db/classes/ftt_permissions.php';
+include_once 'db/classes/statistics.php';
+include_once 'db/ftt/ftt_attendance_db.php';
+include_once 'db/ftt/ftt_attendance_skip_db.php';
+include_once 'db/classes/ftt_reading/bible.php';
+include_once 'db/classes/ftt_reading/book_read.php';
+include_once 'db/classes/CutString.php';
 
-  include_once 'db/classes/trainee_data.php';
-  include_once 'db/classes/short_name.php';
-  include_once 'db/classes/ftt_lists.php';
-  include_once 'db/classes/date_convert.php';
-  include_once 'db/classes/ftt_permissions.php';
-  include_once 'db/classes/statistics.php';
-  include_once 'db/ftt/ftt_attendance_db.php';
-  include_once 'db/ftt/ftt_attendance_skip_db.php';
-  include_once 'db/classes/ftt_reading/bible.php';
-  include_once 'db/classes/ftt_reading/book_read.php';
-  include_once 'db/classes/CutString.php';
+if ($ftt_access['group'] === 'trainee') {
+  include_once 'db/classes/ftt_reading/chapters_read.php';
+  include_once 'components/ftt_attendance/content_part_ctrl.php';
+}
 
 // ПОСЕЩАЕМОСТЬ
 $bible_obj = new Bible;
@@ -137,4 +142,3 @@ if ($missed_class_count > 0) {
 
 $status_list = array(0 => ['secondary','не отправлен'], 1 => ['warning','на рассмотрении'], 2 => ['success','одобрен'], 3 => ['danger','отклонён']);
 $skip_status_list = array(0 => ['secondary','не отправлен'], 1 => ['warning','на рассмотрении'], 2 => ['success','выполнено'], 3 => ['danger','отклонён']);
-?>

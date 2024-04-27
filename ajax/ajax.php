@@ -20,5 +20,3 @@ function error_handler ($errno, $errstr, $errfile, $errline) {
 
 set_exception_handler('exception_handler');
 set_error_handler('error_handler');
-
-?>
