@@ -1620,6 +1620,7 @@ function sendTheOrder(ua) {
   var dateNow = dateStrToddmmyyyyToyyyymmdd(dateNow, true);
   var lastOrderTextIs = $('#orderDate').text();
   var lastOrderIs = $('#orderDateEdit').val();
+  var id_contact_send_order = $('#saveContact').attr('data-id');
 
   if ($('#orderDate').text() === '00.00.0000' || $('#orderDate').text() === '' || $('#orderDate').text() === 'null' || $('#orderDate').text() === null || $('#orderDate').text() === 'undefined' || $('#orderDate').text() === undefined) {
     isFirstOrder = true;
@@ -1646,7 +1647,7 @@ function sendTheOrder(ua) {
     if (!isFirstOrder) {
       text = text + ' Предыдущий заказ был ' + lastOrderTextIs + '.';
     }
-    $.get('/ajax/contacts.php?add_crm_id', {crm_id: crm_id, id: $('#saveContact').attr('data-id'), text: text, comment: commentNotForCrm, notes: notesOfAdmin})
+    $.get('/ajax/contacts.php?add_crm_id', {crm_id: crm_id, id: id_contact_send_order, text: text, comment: commentNotForCrm, notes: notesOfAdmin})
     .done(function(data){
     });
   }
@@ -1660,7 +1661,7 @@ function sendTheOrder(ua) {
             showHint('Заказ отправлен команде проекта BFA');
           } else {
             showError('Что то пошло не так, обратитесь в тех. поддержку');
-            console.log(data);
+            //console.log(data);
             $('#orderDateEdit').val(lastOrderIs);
             $('#orderDate').text(lastOrderTextIs);
             saveEditContactQuick();
@@ -1675,7 +1676,7 @@ function sendTheOrder(ua) {
             showHint('Заказ отправлен команде проекта BFA');
           } else {
             showError('Что то пошло не так, обратитесь в тех. поддержку');
-            console.log(data);
+            //console.log(data);
             $('#orderDateEdit').val(lastOrderIs);
             $('#orderDate').text(lastOrderTextIs);
             saveEditContactQuick();
@@ -1704,6 +1705,7 @@ function sendTheOrder(ua) {
     var url='ajax/contacts.php?set_log_CRM&message='+message+'&status='+status;
     fetch(url);
   }
+  // тправить заказ
   $('#orderSentToContact').click(function(e) {
 
     if ($('#kindOfList').val() === 'trash') {

@@ -3127,7 +3127,7 @@ function open_blank(el_this) {
       let result_arr = elem.attr("data-file");
       result_arr = result_arr.split(";")
       for (var i = 0; i < result_arr.length; i++) {
-        $("#skip_pic").append('<div class="col-10"><button type="button" data-toggle="modal" class="skip_modal_pic_preview_open btn btn-primary btn-sm mr-2 mb-2" data-target="#skip_modal_pic_preview">Просмотр</button><a class="skip_pic" href="' + result_arr[i] + '" target="_blank">скачать файл</a></div>'
+        $("#skip_pic").append('<div class="col-10"><button type="button" data-toggle="modal" class="skip_modal_pic_preview_open btn btn-primary btn-sm mr-2 mb-2" data-target="#skip_modal_pic_preview">Посмотреть файл</button><a class="skip_pic" href="' + result_arr[i] + '" target="_blank">скачать файл</a></div>'
         + '</div><div class="col-2 text-right"><i class="fa fa-trash text-danger cursor-pointer pic_skip_delete mr-3" aria-hidden="true" style="font-size: 1.5rem;"></i></div>');
       }
       $(".pic_skip_delete").click(function () {
@@ -3236,7 +3236,7 @@ function open_blank(el_this) {
           });
           for (let i = 0; i < result_arr.length; i++) {
             list_pics_lenght++;
-            let res = $("#skip_pic").append('<div class="col-10"><button type="button" data-toggle="modal" class="btn btn-primary btn-sm mr-2 mb-2 skip_modal_pic_preview_open" data-target="#skip_modal_pic_preview">Просмотр</button><a class="skip_pic" href="' + result_arr[i] + '" target="_blank">скачать файл</a></div>'
+            let res = $("#skip_pic").append('<div class="col-10"><button type="button" data-toggle="modal" class="btn btn-primary btn-sm mr-2 mb-2 skip_modal_pic_preview_open" data-target="#skip_modal_pic_preview">Посмотреть файл</button><a class="skip_pic" href="' + result_arr[i] + '" target="_blank">скачать файл</a></div>'
             + '</div><div class="col-2 text-right"><i id="skip_dlt_btn_'+list_pics_lenght+'" class="fa fa-trash text-danger cursor-pointer pic_skip_delete mr-3" aria-hidden="true" style="font-size: 1.5rem;"></i></div>');
 
             $("#skip_dlt_btn_"+list_pics_lenght).click(function () {
