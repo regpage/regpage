@@ -30,14 +30,16 @@ function db_newDailyAttendance () {
   $permissions = FttPermissions::get_by_date($todayDate);
   $bibleBooks = new Bible;
 
-  // получаем правила
+  // получаем правило "пауза в обучении" для добавление мероприятий в листы
+  // формируем "Стоплист" с ключами обучающихся для которых не будут добавлены мероприятия
   $rules = [];
   $res_rules = db_query("SELECT `member_key`, `pause_start`, `pause_stop`
     FROM  ftt_trainee
-    WHERE (`pause_start` <= NOW() AND `pause_stop` >= NOW()) OR (`pause_start` <= NOW() AND `pause_stop` IS NULL)");
+    WHERE (`pause_start` <= CURDATE() AND `pause_stop` >= CURDATE()) OR (`pause_start` <= CURDATE() AND `pause_stop` IS NULL)");
   while ($row = $res_rules->fetch_assoc()) $rules[$row['member_key']]=[$row['start'], $row['stop']];
 
   // получаем изменения в расписании
+  // здесь указан NOW() но ставнение происходит с датой в формате YYYY-MM-DD может работать не стабтильно
   $correction = [];
   $res_correction = db_query("SELECT * FROM ftt_session_correction WHERE (`date` > (NOW() - INTERVAL 1 DAY)) AND (`date` < (NOW() + INTERVAL 1 DAY))"); // AND `attendance` = 1
   while ($row = $res_correction->fetch_assoc()) $correction[] = $row;
