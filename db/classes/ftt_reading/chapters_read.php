@@ -16,7 +16,7 @@ class ChaptersRead
     if ($condition === 'week') {
       $condition = ' AND DATE(`date`) > (NOW() - INTERVAL 7 DAY) ';
     } elseif ($condition === 'month') {
-      $condition = ' DATE(`date`) > (NOW() - INTERVAL 1 MONTH) ';
+      $condition = 'AND DATE(`date`) > (NOW() - INTERVAL 1 MONTH) ';
     } elseif ($condition === '_all_') {
       $semsterBegin = date_convert::ddmmyyyy_to_yyyymmdd(ftt_info::begin());
       $condition = " AND DATE(`date`) >= '{$semsterBegin}' ";

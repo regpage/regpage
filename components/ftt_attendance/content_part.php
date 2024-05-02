@@ -69,11 +69,7 @@
       <hr id="hight_line" style="margin-left: 0px; margin-right: -15px; margin-top: 0px; margin-bottom: 0px; border-color: lightgray;">
       <div id="list_content" class="mb-2">
 
-        <?php
-          $filter_period_att = 'week';
-          if (isset($_COOKIE['filter_period_att'])) {
-            $filter_period_att = $_COOKIE['filter_period_att'];
-          }
+        <?php          
           if ($ftt_access['group'] === 'trainee') {
             $serving_trainee_disabled = 'disabled';
             $list_access = $memberId;
