@@ -13,6 +13,7 @@ if ($(window).width()<=769) {
   // header block
   $("#meet_serving_ones_list").hide();
   $("#meet_trainee_select").hide();
+  $("#fellowship_active").hide();
   $("#meet_flt_modal_open").show();
   // BLANK
   $("#mdl_meet_date").parent().removeClass("col-6").addClass("col-5").addClass("pr-0");

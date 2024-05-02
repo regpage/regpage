@@ -1,9 +1,5 @@
 <?php
 // Сортировка
-/*
-echo "<br>Раздел в разработке";
-exit;
-*/
 
 if (isset($_COOKIE['meet_sorting'])) {
   $meet_curent_sorting = $_COOKIE['meet_sorting'];
@@ -60,6 +56,13 @@ if (isset($_COOKIE['meet_flt_trainee']) && !empty($_COOKIE['meet_flt_trainee']))
 } else {
   $trainee_flt = '_all_';
 }
+
+if (isset($_COOKIE['meet_flt_active'])) {
+  $active_flt = $_COOKIE['meet_flt_active'];
+} else {
+  $active_flt = 1;
+}
+
 ?>
 <br>
 <div id="meet_list_header" class="btn-group mb-2">
@@ -82,7 +85,7 @@ if (isset($_COOKIE['meet_flt_trainee']) && !empty($_COOKIE['meet_flt_trainee']))
       echo "<option value='{$key}' {$selected}>{$value}</option>";
     endforeach; ?>
   </select>
-  <select id="meet_trainee_select" class="form-control form-control-sm">
+  <select id="meet_trainee_select" class="form-control form-control-sm mr-2">
     <option value="_all_">Все обучающиеся</option>
     <?php foreach ($trainee_list as $key => $value):
       $selected = "";
@@ -91,6 +94,10 @@ if (isset($_COOKIE['meet_flt_trainee']) && !empty($_COOKIE['meet_flt_trainee']))
       }
       echo "<option value='{$key}' {$selected}>{$value}</option>";
     endforeach; ?>
+  </select>
+  <select id="fellowship_active" class="form-control form-control-sm">
+    <option value="1" <?php if ($active_flt === '1') echo 'selected'; ?> >Активные</option>
+    <option value="0" <?php if ($active_flt === '0') echo 'selected'; ?>>Архивные</option>
   </select>
   <button type="button" id="meet_flt_modal_open" class="btn btn-primary btn-sm rounded mr-2" data-toggle="modal" data-target="#modal_meet_filters" style="display: none;">Фильтры</button>
 </div>
@@ -105,7 +112,7 @@ if (isset($_COOKIE['meet_flt_trainee']) && !empty($_COOKIE['meet_flt_trainee']))
   </div>
   <hr style="margin-left: -15px; margin-right: -15px; margin-top: 0px; margin-bottom: 0px; border-color: lightgray;">
 <?php
-  foreach (get_communication_records_staff($serving_ones_flt, $trainee_flt, $meet_curent_sorting) as $key => $value) {
+  foreach (get_communication_records_staff($serving_ones_flt, $trainee_flt, $active_flt, $meet_curent_sorting) as $key => $value) {
     $hide = '';
     if ($serving_ones_flt === $memberId) {
       $hide = 'd-none';

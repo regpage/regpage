@@ -40,8 +40,10 @@ function db_newDailyAttendance () {
 
   // получаем изменения в расписании
   // здесь указан NOW() но ставнение происходит с датой в формате YYYY-MM-DD может работать не стабтильно
+  // Можно привести `date` к формату DATE(`date`) время вероятно будет забито нулями
+  // возможно что код можно заменить на `date` = CURDATE() (DATE(`date`) > (NOW() - INTERVAL 1 DAY)) AND (DATE(`date`) < (NOW() + INTERVAL 1 DAY)
   $correction = [];
-  $res_correction = db_query("SELECT * FROM ftt_session_correction WHERE (`date` > (NOW() - INTERVAL 1 DAY)) AND (`date` < (NOW() + INTERVAL 1 DAY))"); // AND `attendance` = 1
+  $res_correction = db_query("SELECT * FROM ftt_session_correction WHERE `date` = CURDATE()"); // AND `attendance` = 1
   while ($row = $res_correction->fetch_assoc()) $correction[] = $row;
 
   //получаем расписание

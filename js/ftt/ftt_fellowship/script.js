@@ -372,27 +372,29 @@ $(document).ready(function(){
       showHint("Данные сохранены");
     });
   }
-
-  $("#meet_serving_ones_list, #meet_trainee_select").change(function (e) {
+  // filters desktop
+  $("#meet_serving_ones_list, #meet_trainee_select, #fellowship_active").change(function (e) {
     if (e.target.id === "meet_serving_ones_list") {
       setCookie('meet_flt_staff', $(this).val(), 356);
-      setTimeout(function () {
-        location.reload();
-      }, 50);
     } else if (e.target.id === "meet_trainee_select") {
       setCookie('meet_flt_trainee', $(this).val(), 356);
-      setTimeout(function () {
-        location.reload();
-      }, 50);
+    } else if (e.target.id === "fellowship_active") {
+      setCookie('meet_flt_active', $(this).val(), 356);
     }
+    setTimeout(function () {
+      location.reload();
+    }, 30);
     //flt_fellowship($(this));
   });
+
   // mobile filters
-  $("#flt_sevice_one_meet_mbl, #ftr_trainee_meet_mbl").change(function (e) {
+  $("#flt_sevice_one_meet_mbl, #ftr_trainee_meet_mbl, #fellowship_active_mbl").change(function (e) {
     if ($(this).attr("id") === "flt_sevice_one_meet_mbl") {
       setCookie('meet_flt_staff', $(this).val(), 356);
     } else if ($(this).attr("id") === "ftr_trainee_meet_mbl") {
       setCookie('meet_flt_trainee', $(this).val(), 356);
+    } else if ($(this).attr("id") === "fellowship_active_mbl") {
+      setCookie('meet_flt_active', $(this).val(), 356);
     }
   });
   // apply the filters of the modal

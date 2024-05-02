@@ -160,7 +160,7 @@
             echo "<option value='{$key}'>{$value}</option>";
           endforeach; ?>
         </select>
-        <select id="ftr_trainee_meet_mbl" class="form-control form-control-sm mr-2">
+        <select id="ftr_trainee_meet_mbl" class="form-control form-control-sm mr-2 mb-2">
           <option value="_all_">Все обучающиеся</option>
           <?php foreach ($trainee_list as $key => $value):
             $selected = "";
@@ -169,6 +169,10 @@
             }
             echo "<option value='{$key}' {$selected}>{$value}</option>";
           endforeach; ?>
+        </select>
+        <select id="fellowship_active_mbl" class="form-control form-control-sm mr-2">
+          <option value="1" <?php if ($active_flt === '1') echo 'selected'; ?>>Активные</option>
+          <option value="0" <?php if ($active_flt === '0') echo 'selected'; ?>>Архивные</option>
         </select>
       </div>
       <div class="modal-footer" style="">
