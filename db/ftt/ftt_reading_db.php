@@ -253,7 +253,7 @@ function get_read_book($member_key)
   $res6 = db_query("SELECT * FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `date` = '0000-00-00' AND `book_nt` != '' AND `chapter_nt` > 0");
   while ($row = $res6->fetch_assoc()) $result[] = [$row['book_nt'], $row['chapter_nt'], 0];
 
-  $result2 = [];
+  /*$result2 = [];
   $res2 = db_query("SELECT DISTINCT `book_ot`  FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `date` != '0000-00-00' ");
   while ($row = $res2->fetch_assoc()) $result2[] = $row['book_ot'];
 
@@ -273,12 +273,12 @@ function get_read_book($member_key)
           break;
         }
       }
-      /*$res4 = db_query("SELECT DISTINCT `chapter_ot`  FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `date` != '0000-00-00' AND `book_ot`= '{$value}' AND `chapter_ot`= '{$id_book_ot}'");
-      while ($row = $res4->fetch_assoc()) $result4[] = [$value, $row['chapter_ot'], 1];*/
+      $res4 = db_query("SELECT DISTINCT `chapter_ot`  FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `date` != '0000-00-00' AND `book_ot`= '{$value}' AND `chapter_ot`= '{$id_book_ot}'");
+      while ($row = $res4->fetch_assoc()) $result4[] = [$value, $row['chapter_ot'], 1];
     }
-  }
+  }*/
 
-  if (!empty($result3)) {
+  /*if (!empty($result3)) {
     foreach ($result3 as $key => $value) {
       $id_book_nt = '';
       foreach ($bible_books as $key_2 => $value_2) {
@@ -288,13 +288,13 @@ function get_read_book($member_key)
         }
       }
 
-      /*$res5 = db_query("SELECT DISTINCT `chapter_nt`  FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `date` != '0000-00-00' AND `book_nt`= '{$value}' AND `chapter_nt`= '{$id_book_nt}'");
-      while ($row = $res5->fetch_assoc()) $result4[] = [$value, $row['chapter_nt'], 1];*/
+      $res5 = db_query("SELECT DISTINCT `chapter_nt`  FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `date` != '0000-00-00' AND `book_nt`= '{$value}' AND `chapter_nt`= '{$id_book_nt}'");
+      while ($row = $res5->fetch_assoc()) $result4[] = [$value, $row['chapter_nt'], 1];
     }
-  }
+  }*/
   //return $result4;
 
-  $result = array_merge($result, $result4);
+  //$result = array_merge($result, $result4);
   return $result;
 }
 
@@ -308,13 +308,23 @@ function set_read_book($member_key, $part, $book, $chapter, $checked)
   $checked = $db->real_escape_string($checked);
   $id_check = '';
   $id_read = '';
+  $start_value = 0;
+  $start = get_start_position($member_key);
 
   if ($part === 'ot') {
     $book_field = 'book_ot';
     $chapters_field = 'chapter_ot';
+    $start_field = 'read_footnotes_ot';
+    if (isset($start['read_footnotes_ot'])) {
+      $start_value = $start['read_footnotes_ot'];
+    }
   } else {
     $book_field = 'book_nt';
     $chapters_field = 'chapter_nt';
+    $start_field = 'read_footnotes_nt';
+    if (isset($start['read_footnotes_nt'])) {
+      $start_value = $start['read_footnotes_nt'];
+    }
   }
 
   $res = db_query("SELECT `id` FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `date` = '0000-00-00' AND `{$book_field}` = '{$book}'");
@@ -326,8 +336,8 @@ function set_read_book($member_key, $part, $book, $chapter, $checked)
 
   if ($checked === 'true') {
     if (!$id_check) { // && !$id_read
-      $res = db_query("INSERT INTO `ftt_bible` (`member_key`, `{$book_field}`, `{$chapters_field}`)
-      VALUES ('{$member_key}', '{$book}', '{$chapter}')");
+      $res = db_query("INSERT INTO `ftt_bible` (`member_key`, `{$book_field}`, `{$chapters_field}`, `{$start_field}`)
+      VALUES ('{$member_key}', '{$book}', '{$chapter}', '{$start_value}')");
     }
   } else {
     if ($id_check) {
@@ -386,14 +396,35 @@ function set_read_book_by_book($member_key, $part, $books, $notes, $set)
   return $res;
 }
 
-// start position
-function get_start_position($member_key)
+// получаем старт чтения
+function get_start_position($member_key, $both=false)
 {
   global $db;
   $member_key = $db->real_escape_string($member_key);
+  $both = $db->real_escape_string($both);
   $result = [];
+  // получаем последний старт чтения для обучающегося
   $res = db_query("SELECT DISTINCT `book_ot`, `read_footnotes_nt`, `book_nt`, `read_footnotes_ot` FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `start` = 1 ORDER BY `date` ASC");
   while ($row = $res->fetch_assoc()) $result = $row;
+
+  // Если необходимо получить старт по обоим заветам. Предполагается что в последнем старте один или оба завета не отмечены для чтения
+  if ($both && ((isset($result['book_ot']) && empty($result['book_ot'])) || (isset($result['book_nt']) && empty($result['book_nt'])))) {
+    // пытаемся получить предыдущие старты для нз и вз
+    if (empty($result['book_ot'])) {
+      $res1 = db_query("SELECT DISTINCT `book_ot`, `read_footnotes_nt`, `book_nt`, `read_footnotes_ot` FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `start` = 1 AND `book_ot` != '' ORDER BY `date` ASC");
+      while ($row = $res1->fetch_assoc()) {
+        $result['book_ot'] = $row['book_ot'];
+        $result['read_footnotes_ot'] = $row['read_footnotes_ot'];
+      }
+    }
+    if (empty($result['book_nt'])) {
+      $res2 = db_query("SELECT DISTINCT `book_ot`, `read_footnotes_nt`, `book_nt`, `read_footnotes_ot` FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `start` = 1 AND `book_nt` != '' ORDER BY `date` ASC");
+      while ($row = $res2->fetch_assoc()) {
+        $result['book_nt'] = $row['book_nt'];
+        $result['read_footnotes_nt'] = $row['read_footnotes_nt'];
+      }
+    }
+  }
   return $result;
 }
 

@@ -125,15 +125,17 @@ $(document).ready(function(){
   });
 
   // *** С Л У Ж А Щ И Е *** //
-  // отметка книг
+  // отметка книг служащими (прочитаные / не прочитанные)
   $(".edit_read_books_str").click(function () {
+    // открываем окно
     $("#mdl_bible_check_book").modal("show");
+    // подставляем имя обучающегося в форму
     $("#ftr_trainee_reading_check_mbl").val($(this).parent().parent().find(".btn").attr("data-member_key"));
-
     // получаем прочитанные книги выбранного обучающегося
     fetch("ajax/ftt_reading_ajax.php?type=get_read_book&member_key=" + $("#ftr_trainee_reading_check_mbl").val())
     .then(response => response.json())
     .then(commits => {
+      // заполняем форму полученными данными
       let read_data = commits.result, disabled;
       for (let i = 0; i < read_data.length; i++) {
         if (read_data[i][2] === 1) {
@@ -144,6 +146,35 @@ $(document).ready(function(){
         $("#mdl_bible_books_check input[data-book='"+read_data[i][0]+"']").prop("checked", true);
       }
     });
+    // Получаем последнюю стартовую позицию
+    setTimeout(function () {
+      fetch("ajax/ftt_reading_ajax.php?type=get_start_position&member_key=" + $("#ftr_trainee_reading_check_mbl").val() + "&both=1")
+      .then(response => response.json())
+      .then(commits => {
+        // запролняем заголовок для ВЗ
+        if (commits.result.book_ot) {
+          // Если старт для ВЗ задан делаем пометку в заголовке "с/без прим."
+          if (commits.result.read_footnotes_ot === "1") {
+            $("#mdl_bible_books_check .col-6:first-child h5").html("ВЗ (с прим.)")
+          } else {
+            $("#mdl_bible_books_check .col-6:first-child h5").html("ВЗ (без прим.)")
+          }
+        } else {
+          $("#mdl_bible_books_check .col-6:first-child h5").html("ВЗ");
+        }
+        // запролняем заголовок для НЗ
+        if (commits.result.book_nt) {
+          // Если старт для НЗ задан делаем пометку в заголовке "с/без прим."
+          if (commits.result.read_footnotes_nt === "1") {
+            $("#mdl_bible_books_check .col-6:nth-child(2) h5").html("НЗ (с прим.)");
+          } else {
+            $("#mdl_bible_books_check .col-6:nth-child(2) h5").html("НЗ (без прим.)");
+          }
+        } else {
+          $("#mdl_bible_books_check .col-6:nth-child(2) h5").html("НЗ");
+        }
+      });
+    }, 10);
   });
 
   // правка
@@ -293,6 +324,7 @@ $(document).ready(function(){
       $(this).prop("checked", false);
       $(this).prop("disabled", false);
     });
+    let footnotes_ot="", footnotes_nt="";
     // получаем прочитанные книги выбранного обучающегося
     fetch("ajax/ftt_reading_ajax.php?type=get_read_book&member_key=" + $(this).val())
     .then(response => response.json())

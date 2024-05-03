@@ -63,7 +63,11 @@ if (isset($_GET['type']) && $_GET['type'] === 'get_history_reading_bible') {
 }
 
 if (isset($_GET['type']) && $_GET['type'] === 'get_start_position') {
-  echo json_encode(["result"=>get_start_position($_GET['member_key'])]);
+  if (isset($_GET['both'])) {
+    echo json_encode(["result"=>get_start_position($_GET['member_key'], $_GET['both'])]);
+  } else {
+    echo json_encode(["result"=>get_start_position($_GET['member_key'])]);
+  }
   exit();
 }
 
