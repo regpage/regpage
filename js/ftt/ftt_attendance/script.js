@@ -302,7 +302,6 @@ function open_blank(el_this) {
       tmp_day_of_week = el_this.text().trim();
   }
   // сбросить и скрыть рассчёт чтения Библии
-  $("#calculate_bible_read_text").hide();
   $("#calculate_bible_read_text").html("");
   // поля бланка для просмотра служащими отображаются в соответствии с семестром обучающегося
   if (!trainee_access) {
@@ -1225,7 +1224,9 @@ function open_blank(el_this) {
 
       });
     }, 100);
-
+    setTimeout(function () {
+      calculate_bible_read();
+    }, 10);    
   }
   //*** конец открытия бланка ***//
 
@@ -1952,34 +1953,28 @@ function open_blank(el_this) {
     }
   });
 
-  $("#calculate_bible_read_link").click(function() {
-    if ($("#calculate_bible_read_text").is(":visible")) {
-      $("#calculate_bible_read_text").hide();
-    } else {
-      $("#calculate_bible_read_text").html("<i>Загрузка...</i>");
-      $("#calculate_bible_read_text").show();
-      let semester_tmp = trainee_list_full[$("#modalAddEdit").attr("data-member_key")]["semester"];
-      fetch("ajax/ftt_reading_ajax.php?type=get_bible_deff&trainee_id=" + $("#modalAddEdit").attr("data-member_key")
-      + "&semester=" + semester_tmp)
-      .then(response => response.json())
-      .then(commits => {
-        let html = "";
-        if ((commits.result.ot_current && (semester_tmp  === "1" || semester_tmp  === "2")) || (semester_tmp  === "5" || semester_tmp  === "6")) {
-          html = "Чтобы успеть до конца текущего года обучения, нужно прочитывать не менее " + commits.result.ot_deff
-          + "  глав Ветхого Завета в день. ";
+  function calculate_bible_read() {
+    let semester_tmp = trainee_list_full[$("#modalAddEdit").attr("data-member_key")]["semester"];
+    fetch("ajax/ftt_reading_ajax.php?type=get_bible_deff&trainee_id=" + $("#modalAddEdit").attr("data-member_key")
+    + "&semester=" + semester_tmp)
+    .then(response => response.json())
+    .then(commits => {
+      let html = "";
+      if ((commits.result.ot_current && (semester_tmp  === "1" || semester_tmp  === "2")) || (semester_tmp  === "5" || semester_tmp  === "6")) {
+        html = "Чтобы успеть до конца текущего года обучения, нужно прочитывать не менее " + commits.result.ot_deff
+        + "  глав Ветхого Завета в день. ";
+      }
+      if ((commits.result.nt_current && (semester_tmp  === "1" || semester_tmp  === "2")) || (semester_tmp  === "3" || semester_tmp  === "4")) {
+        if (html) {
+          html += "<br>И не менее " + commits.result.nt_deff + "  глав Нового Завета в день.";
+        } else {
+          html = "Чтобы успеть до конца текущего года обучения, нужно прочитывать не менее " + commits.result.nt_deff
+          + " глав Нового Завета в день.";
         }
-        if ((commits.result.nt_current && (semester_tmp  === "1" || semester_tmp  === "2")) || (semester_tmp  === "3" || semester_tmp  === "4")) {
-          if (html) {
-            html += "<br>И не менее " + commits.result.nt_deff + "  глав Нового Завета в день.";
-          } else {
-            html = "Чтобы успеть до конца текущего года обучения, нужно прочитывать не менее " + commits.result.nt_deff
-            + " глав Нового Завета в день.";
-          }
-        }
-        $("#calculate_bible_read_text").html("<i>" + html + "</i>");
-      });
-    }
-  });
+      }
+      $("#calculate_bible_read_text").html("<i>" + html + "</i>");
+    });
+  }
 
   function read_books_check(current, previous) {
     let sim_1 = false;
@@ -3164,14 +3159,14 @@ function open_blank(el_this) {
         $("#pic_skip_delete").hide();
         $("#skip_modal_topic").attr("disabled", true);
         $("#skip_modal_comment").attr("disabled", true);
-        $("#skip_modal_file").attr("disabled", true);
+        //$("#skip_modal_file").attr("disabled", true);
       }
     } else if (elem.attr("data-status") === '2') {
         $("#save_skip_blank").hide();
         $("#pic_skip_delete").hide();
         $("#skip_modal_topic").attr("disabled", true);
         $("#skip_modal_comment").attr("disabled", true);
-        $("#skip_modal_file").attr("disabled", true);
+        //$("#skip_modal_file").attr("disabled", true);
         $("#skip_modal_done").attr("disabled", true);
         $("#skip_modal_done").prop("checked", true);
     } else if (elem.attr("data-status") === '3') {

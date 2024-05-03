@@ -138,11 +138,8 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-12 mb-2">
-              <span id="calculate_bible_read_link" class="text-danger cursor-pointer" style="font-size: 12px;">Расчётный объём чтения</span>
-            </div>
-            <div id="calculate_bible_read_text" class="col-12 mb-2" style="display:none;">
+          <div class="row">            
+            <div id="calculate_bible_read_text" class="col-12 mb-2" style="font-size: 12px;">
 
             </div>
           </div>
