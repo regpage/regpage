@@ -539,12 +539,11 @@ $(document).ready(function(){
     let counter = 0;
 
     $(this).find("option").each(function (e) {
-      counter = e;
-      if (e > 1) {
-        return;
-      }
+      counter++;
+      return;
     });
-    if (counter <= 1) {
+
+    if (counter < 1) {
       let text = "Вы прочитали все книги. Для выбора начала чтения с примечаниями обратитесь к служащим.";
       showHint(text);
     }
@@ -741,14 +740,14 @@ $(document).ready(function(){
         }
 
         // если указанная книга отмечена как прочитаная или если все книги прочитаны
-        if ((!$("#mdl_book_ot_start").val() && $("#mdl_book_ot_start option").val()) || ($("#mdl_ot_start").prop("checked") && ot_was_read)) {
+        if ($("#mdl_ot_start").prop("checked") && ((!$("#mdl_book_ot_start").val() && $("#mdl_book_ot_start option").val()) || ot_was_read)) {
           disabled_bookfields_start_mdl("o", false);
         } else if (!$("#mdl_ot_start").prop("checked") && ot_was_read) {
           disabled_bookfields_start_mdl("o", true);
           $("#mdl_ot_start").attr("disabled", false);
         }
 
-        if (!$("#mdl_book_nt_start").val() && $("#mdl_book_nt_start option").val() || ($("#mdl_nt_start").prop("checked") && nt_was_read)) {
+        if ($("#mdl_nt_start").prop("checked") && ((!$("#mdl_book_nt_start").val() && $("#mdl_book_nt_start option").val()) || nt_was_read)) {
           disabled_bookfields_start_mdl("n", false);
         } else if (!$("#mdl_nt_start").prop("checked") && nt_was_read) {
           disabled_bookfields_start_mdl("n", true);
