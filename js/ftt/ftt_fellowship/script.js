@@ -372,6 +372,14 @@ $(document).ready(function(){
       showHint("Данные сохранены");
     });
   }
+  // filters desktop trainee
+  $("#fellowship_active_trainee").change(function (e) {
+    setCookie('meet_flt_active_trainee', $(this).val(), 356);
+    setTimeout(function () {
+      location.reload();
+    }, 30);
+  });
+
   // filters desktop
   $("#meet_serving_ones_list, #meet_trainee_select, #fellowship_active").change(function (e) {
     if (e.target.id === "meet_serving_ones_list") {

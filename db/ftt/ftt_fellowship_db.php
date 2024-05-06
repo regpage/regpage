@@ -147,14 +147,21 @@ function get_communication_records_staff($serving_one, $trainee, $active, $sort=
   return $result;
 }
 
-// список записей обучающегося
-function get_communication_records($trainee, $sort='meet_sort_servingone-asc')
+// список записей на общение обучающегося
+function get_communication_records($trainee, $active, $sort='meet_sort_servingone-asc')
 {
   global $db;
   $trainee = $db->real_escape_string($trainee);
+  $active = $db->real_escape_string($active);
   $sort = $db->real_escape_string($sort);
   // Сортировка
 
+  // Условия
+  if ($active === '1') {
+    $condition = " ff.date >= CURDATE() ";
+  } else {
+    $condition = " ff.date < CURDATE() ";
+  }
   $order_by = 'ff.date, ff.time';
   if (!empty($sort) && $sort !== 'meet_sort_date-asc') {
     if ($sort === 'meet_sort_date-desc') {
@@ -170,7 +177,7 @@ function get_communication_records($trainee, $sort='meet_sort_servingone-asc')
   $res = db_query("SELECT ff.*, m.name
     FROM ftt_fellowship AS ff
     LEFT JOIN member m ON m.key = ff.serving_one
-    WHERE ff.trainee = '{$trainee}' AND ff.date >= CURDATE()
+    WHERE ff.trainee = '{$trainee}' AND {$condition}
     ORDER BY {$order_by}");
   while ($row = $res->fetch_assoc()) $result[] = $row;
   return $result;

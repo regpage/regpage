@@ -740,16 +740,17 @@ $(document).ready(function(){
         }
 
         // если указанная книга отмечена как прочитаная или если все книги прочитаны
+        // если книга отмечена для чтения то поля разблокируются
         if ($("#mdl_ot_start").prop("checked") && ((!$("#mdl_book_ot_start").val() && $("#mdl_book_ot_start option").val()) || ot_was_read)) {
           disabled_bookfields_start_mdl("o", false);
-        } else if (!$("#mdl_ot_start").prop("checked") && ot_was_read) {
+        } else if (!$("#mdl_ot_start").prop("checked") && ot_was_read) { // если книга не отмечена для чтения то поля блокируются
           disabled_bookfields_start_mdl("o", true);
           $("#mdl_ot_start").attr("disabled", false);
         }
-
+        // если книга отмечена для чтения то поля разблокируются
         if ($("#mdl_nt_start").prop("checked") && ((!$("#mdl_book_nt_start").val() && $("#mdl_book_nt_start option").val()) || nt_was_read)) {
           disabled_bookfields_start_mdl("n", false);
-        } else if (!$("#mdl_nt_start").prop("checked") && nt_was_read) {
+        } else if (!$("#mdl_nt_start").prop("checked") && nt_was_read) { // если книга не отмечена для чтения то поля блокируются
           disabled_bookfields_start_mdl("n", true);
           $("#mdl_nt_start").attr("disabled", false);
         }

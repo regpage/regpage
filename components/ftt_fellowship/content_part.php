@@ -28,11 +28,20 @@ if (isset($_COOKIE['meet_sorting'])) {
   $meet_sort_s_one_ico = 'hide_element';
   $meet_curent_sorting = 'meet_sort_date-desc';
 }
+if (isset($_COOKIE['meet_flt_active_trainee'])) {
+  $active_flt_trainee = $_COOKIE['meet_flt_active_trainee'];
+} else {
+  $active_flt_trainee = 1;
+}
 ?>
 
 <br>
 <div id="meet_list_header" class="btn-group mb-2">
   <button type="button" id="meet_add" class="btn btn-success btn-sm rounded mr-2" data-toggle="modal" data-target="#edit_meet_blank">Добавить</button>
+  <select id="fellowship_active_trainee" class="form-control form-control-sm">
+    <option value="1" <?php if ($active_flt_trainee === '1') echo 'selected'; ?> >Активные</option>
+    <option value="0" <?php if ($active_flt_trainee === '0') echo 'selected'; ?>>Архивные</option>
+  </select>
 </div>
 <div id="meet_list_content" class="container">
   <div class="row row_meet mb-1">
@@ -44,7 +53,7 @@ if (isset($_COOKIE['meet_sorting'])) {
   </div>
   <hr style="margin-left: -15px; margin-right: -15px; margin-top: 0px; margin-bottom: 0px; border-color: lightgray;">
 <?php
-  foreach (get_communication_records($memberId, $meet_curent_sorting) as $key => $value) {
+  foreach (get_communication_records($memberId, $active_flt_trainee, $meet_curent_sorting) as $key => $value) {
     $date = date_convert::yyyymmdd_to_ddmm($value['date']);
     $day_of_week = date_convert::week_days($value['date'], true);
     $comment_short = CutString::cut($value['comment_train'], 30);
