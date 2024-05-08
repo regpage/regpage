@@ -39,7 +39,7 @@ if (isset($_COOKIE['meet_flt_active_trainee'])) {
 <div id="meet_list_header" class="btn-group mb-2">
   <button type="button" id="meet_add" class="btn btn-success btn-sm rounded mr-2" data-toggle="modal" data-target="#edit_meet_blank">Добавить</button>
   <select id="fellowship_active_trainee" class="form-control form-control-sm">
-    <option value="1" <?php if ($active_flt_trainee === '1') echo 'selected'; ?> >Активные</option>
+    <option value="1" <?php if ($active_flt_trainee === '1') echo 'selected'; ?> >Текущие</option>
     <option value="0" <?php if ($active_flt_trainee === '0') echo 'selected'; ?>>Архивные</option>
   </select>
 </div>

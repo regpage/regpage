@@ -96,7 +96,7 @@ if (isset($_COOKIE['meet_flt_active'])) {
     endforeach; ?>
   </select>
   <select id="fellowship_active" class="form-control form-control-sm">
-    <option value="1" <?php if ($active_flt === '1') echo 'selected'; ?> >Активные</option>
+    <option value="1" <?php if ($active_flt === '1') echo 'selected'; ?> >Текущие</option>
     <option value="0" <?php if ($active_flt === '0') echo 'selected'; ?>>Архивные</option>
   </select>
   <button type="button" id="meet_flt_modal_open" class="btn btn-primary btn-sm rounded mr-2" data-toggle="modal" data-target="#modal_meet_filters" style="display: none;">Фильтры</button>

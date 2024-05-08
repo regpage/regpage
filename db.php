@@ -1084,7 +1084,7 @@ function db_getEventsByAdmin($adminId){
         SELECT e.key as id, e.name, e.start_date, e.end_date, e.regend_date, e.min_age, e.max_age,
         e.info, e.need_passport, e.event_type, e.web, e.need_flight, e.list_name, e.need_status, e.online,
         IF((SELECT COUNT(*) FROM reg rg WHERE rg.event_key=e.key AND (rg.regstate_key = '01' OR rg.regstate_key = '02' OR rg.regstate_key = '04' OR rg.regstate_key is NULL )) >= e.participants_count AND e.participants_count > 0, 1, 0) as stop_registration,
-        e.close_registration, e.need_transport, e.need_prepayment, e.private, e.need_tp, e.currency,
+        e.close_registration, e.need_transport, e.need_prepayment, e.private, e.need_tp, e.currency, e.contrib,
         (SELECT ea.member_key FROM event_access ea WHERE ea.member_key='$admin' AND ea.key=e.key) as admin_access
         FROM event e
         LEFT JOIN event_zones z ON z.event_key=e.key
@@ -1098,7 +1098,7 @@ function db_getEventsByAdmin($adminId){
         e.info, e.need_passport, e.event_type, e.web, e.need_flight, e.list_name, e.need_status, e.online,
         IF((SELECT COUNT(*) FROM reg rg WHERE rg.event_key=e.key AND (rg.regstate_key = '01' OR rg.regstate_key = '02' OR rg.regstate_key = '04' OR rg.regstate_key is NULL )) >= e.participants_count AND e.participants_count > 0, 1, 0) as stop_registration,
         e.close_registration,
-        e.need_transport, e.need_prepayment, e.private, e.need_tp, e.currency,
+        e.need_transport, e.need_prepayment, e.private, e.need_tp, e.currency, e.contrib,
         (SELECT ea.member_key FROM event_access ea WHERE ea.member_key='$admin' AND ea.key=e.key) as admin_access
         FROM event e
         INNER JOIN access a ON a.member_key='$adminId'
@@ -1112,7 +1112,7 @@ function db_getEventsByAdmin($adminId){
         e.info, e.need_passport, e.event_type, e.web, e.need_flight, e.list_name, e.need_status, e.online,
         IF((SELECT COUNT(*) FROM reg rg WHERE rg.event_key=e.key AND (rg.regstate_key = '01' OR rg.regstate_key = '02' OR rg.regstate_key = '04' OR rg.regstate_key is NULL )) >= e.participants_count AND e.participants_count > 0, 1, 0) as stop_registration,
         e.close_registration,
-        e.need_transport, e.need_prepayment, e.private, e.need_tp, e.currency,
+        e.need_transport, e.need_prepayment, e.private, e.need_tp, e.currency, e.contrib,
         (SELECT ea.member_key FROM event_access ea WHERE ea.member_key='$admin' AND ea.key=e.key) as admin_access
         FROM event e
         WHERE ((SELECT COUNT(*) FROM event_zones ez WHERE ez.event_key=e.key) = 0 OR e.author='$adminId') AND e.is_active=1 $request
@@ -1123,7 +1123,7 @@ function db_getEventsByAdmin($adminId){
     else{
         $res = db_query("SELECT e.key as id, e.name, e.start_date, e.end_date, e.regend_date, e.min_age, e.max_age,
         e.info, e.need_passport, e.event_type, e.web, e.need_flight, e.list_name,
-        e.need_transport, e.need_prepayment, e.private, e.need_tp, e.need_status, e.currency,  e.online,
+        e.need_transport, e.need_prepayment, e.private, e.need_tp, e.need_status, e.currency,  e.online, e.contrib,
         IF((SELECT COUNT(*) FROM reg rg WHERE rg.event_key=e.key AND (rg.regstate_key = '01' OR rg.regstate_key = '02' OR rg.regstate_key = '04' OR rg.regstate_key is NULL )) >= e.participants_count AND e.participants_count > 0, 1, 0) as stop_registration,
         e.close_registration,
         $admin as admin_access

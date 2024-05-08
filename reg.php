@@ -88,6 +88,7 @@
         $showLocalityField = !db_isSingleCityAdmin($memberId) || db_isAdminRespForReg($memberId, $event->id);
         $sort_field = isset ($_SESSION['sort_field_'.$event->id]) ? $_SESSION['sort_field_'.$event->id] : 'name';
         $sort_type = isset ($_SESSION['sort_type_'.$event->id]) ? $_SESSION['sort_type_'.$event->id] : 'asc';
+        //print_r($event);
     ?>
 
     <div class="tab-pane<?php echo (($selectedEventId == $event->id) || (!$activeIsSet && !$selectedEventId) ? " active" : ""); ?>"
@@ -95,8 +96,9 @@
         data-custom_list_item ="<?php echo $event->list_name; ?>"
         data-regend="<?php echo $event->regend_date; ?>" data-event_type="<?php echo $event->event_type; ?>" data-private="<?php echo $event->private; ?>" data-access="<?php echo $memberId == $event->admin_access ? 1: 0 ; ?>"
         data-show-locality-field="<?php echo $showLocalityField ? 1 : 0; ?>"
-        data-need_flight="<?php echo $event->need_flight; ?>" data-need_tp="<?php echo $event->need_tp; ?>" data-min_age="<?php echo $event->min_age; ?>" data-max_age="<?php echo $event->max_age; ?>" data-need_status="<?php echo $event->need_status; ?>"
-        data-online_event="<?php echo $event->online; ?>" data-currency="<?php echo $event->currency; ?>"
+        data-need_flight="<?php echo $event->need_flight; ?>" data-need_tp="<?php echo $event->need_tp; ?>" data-min_age="<?php echo $event->min_age; ?>"
+        data-max_age="<?php echo $event->max_age; ?>" data-need_status="<?php echo $event->need_status; ?>" data-online_event="<?php echo $event->online; ?>"
+        data-currency="<?php echo $event->currency; ?>"  data-need_prepayment="<?php echo $event->need_prepayment; ?>"
         >
         <div>
         <div class="btn-toolbar">
@@ -211,6 +213,9 @@
                               style="display: none;"
                             <?php endif; ?>>Служение</th>
                             <th class="date_th">Даты</th>
+                            <th class="prepaid_th"  <?php if (!in_array(17, $user_settings_arr)): ?>
+                              style="display: none;"
+                            <?php endif; ?>>Взнос</th>
                             <th><a id="sort-regstate" href="#" title="сортировать">Состояние</a>&nbsp;<i class="<?php echo $sort_field=='regstate' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none'; ?>"></i></th>
                         </tr>
                     </thead>
@@ -1442,6 +1447,12 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
           $('.filter-arrived').hide();
           isOnline = true;
         }
+
+        if ($('.tab-pane.active').attr('data-need_prepayment') === "1" && in_array(17, window.user_settings)) {
+          $('.prepaid_th').show();
+        } else {
+          $('.prepaid_th').hide();
+        }
         buildFilterLocalitiesList(eventId, localities);
 
         var showLocalityField = $("#eventTab-"+eventId).attr("data-show-locality-field") ===  '1';
@@ -1540,10 +1551,11 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
                + '</div>'
                // + ( m.coord == '1' ? '<div>Координатор</div>' : '')
                + '</td>'
-               + ((in_array(16, window.user_settings)) ? '<td class=""><span>'+(m.service != null ? m.service : '') +'</span></td>' : '')
+               + ((in_array(16, window.user_settings)) ? '<td class=""><span>' + (m.service != null ? m.service : '') + '</span></td>' : '')
                + (!isOnline ? '<td class="style-date"><span class="arrival" data-date="' + he(m.arr_date) + '" data-time="' + he(m.arr_time) + '">' : "") + formatDDMM( m.arr_date) + '</span> - '+
-                '<span class="departure" data-date="' + he(m.dep_date) + '" data-time="' + he(m.dep_time) + '">'+ formatDDMM(m.dep_date) + '</span><br>'+htmlPlace + ' ' +htmlPlaceFlag+'</td>'+
-                '<td>' + htmlLabelByRegState(m.regstate, m.web, htmlEditor) +
+                '<span class="departure" data-date="' + he(m.dep_date) + '" data-time="' + he(m.dep_time) + '">'+ formatDDMM(m.dep_date) + '</span><br>'+htmlPlace + ' ' + htmlPlaceFlag+'</td>'
+                + ((in_array(17, window.user_settings) && $('.tab-pane.active').attr('data-need_prepayment') === "1") ? '<td class=""><span>' + (m.prepaid && m.prepaid > 0 ? m.prepaid : '') + '</span></td>' : '')
+                + '<td>' + htmlLabelByRegState(m.regstate, m.web, htmlEditor) +
                 (!isOnline ? '<ul class="regstate-list-handle">'+ htmlListItemsByRegstate(m.regstate, m.attended) + '</ul>' : "")+
                 "<span class='regmem-icons' style='padding-left: 8px;'>"+ htmlEmail + htmlChanged + '<span style="font-size: 16px;">'+(m.admin_comment ? '</span><br><span class="user_setting_span" title="'
                 + m.admin_comment + '">'+short_admin_comment+'</span>' : "" ) + '</span></td>'
@@ -1566,9 +1578,10 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
                 + '<br>'+ (m.service ? he(m.service) : '') + '</span></div>' +
                  '<div>' + (!isOnline ? '<span class="arrival" data-date="' + he(m.arr_date) + '" data-time="' + he(m.arr_time) + '">' +
                 formatDDMM(m.arr_date) + '</span>'+
-                '<span class="departure" data-date="' + he(m.dep_date) + '" data-time="' + he(m.dep_time) + '">'+ ' - '+formatDDMM(
-                    m.dep_date) + '</span>' : "") + htmlPlace + ' ' +htmlPlaceFlag + '</div>'+
-                '<span>' + htmlLabelByRegState(m.regstate, m.web) +
+                '<span class="departure" data-date="' + he(m.dep_date) + '" data-time="' + he(m.dep_time) + '">'+ ' - '+formatDDMM(m.dep_date) + '</span>' : "")
+                + htmlPlace + ' ' +htmlPlaceFlag + '</div>'
+                + ((in_array(17, window.user_settings) && $('.tab-pane.active').attr('data-need_prepayment') === "1") ? '<div><span>' + (m.prepaid && m.prepaid > 0 ? 'Внесено ' + m.prepaid : '') + '</span></div>' : '')
+                + '<span>' + htmlLabelByRegState(m.regstate, m.web) +
                 (!isOnline ? '<ul class="regstate-list-handle">'+ htmlListItemsByRegstate(m.regstate, m.attended) + '</ul>' : "")+
                 " <span class='regmem-icons'>" + coordFlag + htmlService + htmlEmail + htmlChanged + /*htmlEditor +*/ '</span><span>'+(m.admin_comment ? '<br><span class="show-comment-mbl user_setting_span" title="'+m.admin_comment+'">'+short_admin_comment+'</span>' : "" )+'</span></span>'
                 + '</td></tr>');
@@ -2172,6 +2185,11 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
           $(".emDepDate").parent().show();
           $(".emArrTime").parent().show();
           $(".emDepTime").parent().show();
+        }
+        if ($('.tab-pane.active').attr('data-need_prepayment') === "1" && in_array(17, window.user_settings)) {
+          $('.prepaid_th').show();
+        } else {
+          $('.prepaid_th').hide();
         }
     });
 
