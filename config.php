@@ -39,6 +39,8 @@
         $appRootPath = 'https://test.zhichkinroman.ru/';
       }
     }
+
+    // Подключение.
     $db = new mysqli('localhost', $gl_db_user, $gl_db_pass, $gl_db_name);
 
     // db query settings
@@ -58,4 +60,10 @@
         $res=$db->multi_query ($query);
         if (!$res) throw new Exception ($db->error);
         return $res;
+    }
+
+    // Обезвреживание содержимого переданного аргумента.
+    function db_real_escape_string($data) {
+        global $db;
+        return $db->real_escape_string($data);
     }

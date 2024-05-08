@@ -43,5 +43,3 @@ if (isset($_GET['type']) && $_GET['type'] === 'change_field') {
 
   exit();
 }
-
-?>

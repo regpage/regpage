@@ -10,6 +10,10 @@ include_once '../db/classes/statistic/biblecounter.php';
 include_once "../db/ftt/ftt_reading_db.php";
 
 $adminId = db_getMemberIdBySessionId (session_id());
+if (!$adminId) {
+    header("HTTP/1.0 401 Unauthorized");
+    exit;
+}
 
 // bible reading start position
 if (isset($_GET['type']) && $_GET['type'] === 'set_start_reading_bible') {

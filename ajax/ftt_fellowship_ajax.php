@@ -15,6 +15,10 @@ include_once '../db/classes/time_convert.php';
 include_once "../extensions/write_to_log/write_to_log.php";
 
 $adminId = db_getMemberIdBySessionId (session_id());
+if (!$adminId) {
+    header("HTTP/1.0 401 Unauthorized");
+    exit;
+}
 // COMMUNICATION
 // get list
 if (isset($_GET['type']) && $_GET['type'] === 'get_communication_list') {
