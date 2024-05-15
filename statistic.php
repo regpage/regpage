@@ -303,7 +303,7 @@
     <script>
       var adminLocalityGlb = '<?php echo $adminLocality; ?>';
     </script>
-    <script src="/js/statistic.js?v1"></script>
+    <script src="/js/statistic.js?v2"></script>
 <?php
     include_once "footer.php";
 ?>

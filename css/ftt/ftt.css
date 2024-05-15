@@ -121,3 +121,11 @@
 .green_string:hover {
   background-color: #e0f3e0;
 }*/
+
+#main_container .nav-link.active {
+  background-color: #dee2e6;
+}
+
+#main_container .nav-link {
+  border: 1px lightgray solid;
+}

@@ -4,6 +4,9 @@
 require_once "config.php";
 // Подключаем систему аутификации.
 require_once 'db/classes/auth/auth.php';
+// Подключаем ведение лога
+include_once "extensions/write_to_log/write_to_log.php";
+
 // Задаём хедер, настройки и запускаем сессию.
 header("Content-Type: application/json; charset=utf-8");
 ini_set('session.cookie_lifetime', 60 * 60 * 24 * 365);  // 365 day cookie lifetime
@@ -43,15 +46,16 @@ if (isset($_GET['section']) && empty($_GET['section'])) {
 }
 
 // Подключаем соответствующий файл для раздела.
+$error = '';
 switch ($section) {
   case 'service':
-    require_once 'ajax/ftt_service_ajax.php';
+    //require_once 'ajax/ftt_service_ajax.php';
     break;
   case 'fellowship':
-    require_once 'ajax/ftt_fellowship_ajax.php';
+    require_once 'ajax/ftt_fellowship_extra_ajax.php';
     break;
   default:
-    $error = 'No section exist.'
+    $error = 'No section exist.';
     break;
 }
 

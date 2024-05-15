@@ -1,8 +1,12 @@
 $(document).ready(function(){
   var adminLocalitiesGlb = [];
-  $('#selStatisticLocality option').each(function() {
+  /*$('#selStatisticLocality option').each(function() {
     $(this).val() !== '_all_' ? adminLocalitiesGlb.push($(this).val()) : '';
-  });
+  });*/
+  // кастыль иначе страница безконца перезагружается
+
+  $("#selStatisticLocality").val() !== "_all_" ? adminLocalitiesGlb.push($("#selStatisticLocality").val()) : "";
+
 
   loadDashboard();
 

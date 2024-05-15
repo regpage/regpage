@@ -9,7 +9,7 @@
     include_once "components/ftt_main/var_part.php";
 
     // Переменные раздела
-    include_once "components/ftt_fellowship/var_part.php";
+    include_once "components/ftt_fellowship/ctrl_main.php";
 
     // HTML код основной страницы
     include_once "components/ftt_main/html_part_refactoring.php";

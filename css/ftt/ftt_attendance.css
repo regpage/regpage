@@ -41,10 +41,6 @@ label {
   margin-left: 0px !important;
 }
 
-#ftt_sub_container .nav-link {
-  border: 1px lightgray solid;
-}
-
 #modalUniTitle {
   margin-bottom: 0px;
 }
@@ -59,10 +55,6 @@ label {
 
 #bar_extra_help select, #bar_late select {
   margin-right: 10px;
-}
-
-#extra_help_staff .nav-link.active {
-  background-color: #dee2e6;
 }
 
 #extra_help_staff ul {

@@ -1,6 +1,15 @@
 // FTT FELLOWSHIP
 $(document).ready(function(){
   /*** FELLOWSHIP TAB START ***/
+  // Переключение вкладок
+  $("#main_container .nav-tabs .nav-link").click(function () {
+    let href = $(this).attr("href");
+    setCookie("fellowship_tab", href.slice(1));
+    setTimeout(function () {
+      location.reload();
+    }, 30);
+  });
+  // Добавить новое общение вручную
   $("#meet_add").click(function () {
     if ($("#meet_serving_ones_list_calendar").val() !== '_all_') {
       // это не возможно тк при закрытии бланка раздел перезагружается
@@ -770,4 +779,8 @@ $(document).ready(function(){
     });
   }
   /*** FELLOWSHIP TAB STOP ***/
+
+  /*** ACTIVITY TAB START ***/
+
+  /*** ACTIVITY TAB STOP ***/
 });
