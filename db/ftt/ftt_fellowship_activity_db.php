@@ -1,11 +1,12 @@
 <?php
+require_once 'db/classes/date_plus.php';
 // Список записей за 4 недели
-function get_fellowship_activity_list($serving_ones = '_all_', $sort='meet_sort_servingone-asc')
+function get_fellowship_activity_list($serving_ones = '_all_',  $sort='meet_sort_servingone-asc') // $trainee_flt = '_all_',
 {
   global $db;
   $serving_ones = $db->real_escape_string($serving_ones);
   $sort = $db->real_escape_string($sort);
-
+  $result = [];
   // Сортировка
   // сортировка по name бывает по обучающимся и по служащим
   // менять поле в строке JOIN на нужное
@@ -26,23 +27,49 @@ function get_fellowship_activity_list($serving_ones = '_all_', $sort='meet_sort_
 
   // УСЛОВИЯ
   // дата
-  $order_period = " (ff.date >= (CURDATE() - INTERVAL 28 DAY)) AND ff.trainee != '' ";
-  $date_current = getdate();
-  //$days_to_future = 28 - $date_current['wday'];
-  /*if ($date_current['wday'] > 0) {
-    //$order_period = " ((ff.date >= (CURDATE() - INTERVAL {$date_current['wday']} DAY)) AND (ff.date <= (CURDATE() + INTERVAL {$days_to_future} DAY))) ";
+  //$date_current = getdate();
 
+  $weeks = [];
+  $currDate = date('Y-m-d');
+  $dateDayNow = date('N');
+  $dateDay = 28;
+  if ($dateDayNow > 0 && $dateDayNow < 7) {
+    $dateDay += $dateDayNow;
+    $dateEndFour = date_plus::sub_d($currDate, $dateDayNow);
+    // 1th
+    $weeks[] = [date_plus::sub_d($dateEndFour, 27), date_plus::sub_d($dateEndFour, 21)];
+    // 2th
+    $weeks[] = [date_plus::sub_d($dateEndFour, 20), date_plus::sub_d($dateEndFour, 14)];
+    // 3th
+    $weeks[] = [date_plus::sub_d($dateEndFour, 13), date_plus::sub_d($dateEndFour, 7)];
+    // 41th
+    $weeks[] = [date_plus::sub_d($dateEndFour, 6), $dateEndFour];
+    // 5th
+    $weeks[] = [$dateEndFour, $currDate];
   } else {
-    $order_period = " ((ff.date >= CURDATE()) AND (ff.date <= (CURDATE() + INTERVAL 28 DAY))) ";
+    // 1th
+    $weeks[] = [date_plus::sub_d($currDate, 27), date_plus::sub_d($currDate, 21)];
+    // 2th
+    $weeks[] = [date_plus::sub_d($currDate, 20), date_plus::sub_d($currDate, 14)];
+    // 3th
+    $weeks[] = [date_plus::sub_d($currDate, 13), date_plus::sub_d($currDate, 7)];
+    // 41th
+    $weeks[] = [date_plus::sub_d($currDate, 6), $currDate];
   }
-  */
 
+
+  $order_period = " (ff.date >= (CURDATE() - INTERVAL {$dateDay} DAY)) AND ff.date <= CURDATE() AND ff.trainee != '' ";
+  $result['weeks'] = $weeks;
   // служащие
   if ($serving_ones === '_all_') {
     $serving_ones = array_merge(ftt_lists::get_fellowship_list(), ftt_lists::kbk_brothers());
-  } elseif ($serving_ones === 'pvom_br') {
-    $serving_ones = array_merge(ftt_lists::serving_ones_fellowship_brothers(), ftt_lists::kbk_brothers());
+    foreach (ftt_lists::trainee() as $key => $value) {
+      $result[$key] = [];
+    }
   } else {
+    foreach (ftt_lists::get_trainees_by_staff($serving_ones) as $key => $value) {
+      $result[$key] = [];
+    }
     $serving_ones = array($serving_ones => '');
   }
   $serving_ones_condition = '';
@@ -60,11 +87,6 @@ function get_fellowship_activity_list($serving_ones = '_all_', $sort='meet_sort_
   // condition
   $condition = $order_period . $serving_ones_condition;
   // запрос
-  $result = [];
-
-  foreach (ftt_lists::trainee() as $key => $value) {
-    $result[$key] = [];
-  }
 
   $res = db_query("SELECT ff.*, m.name
     FROM ftt_fellowship AS ff
@@ -73,7 +95,16 @@ function get_fellowship_activity_list($serving_ones = '_all_', $sort='meet_sort_
     ORDER BY {$order_by}");
   while ($row = $res->fetch_assoc()) {
     if (isset($result[$row['trainee']])) {
-      $result[$row['trainee']][] = $row;
+      $week = array('week' => 5);
+      // сравнить даты
+      foreach ($weeks as $key => $value) {
+        if ($row['date'] >= $value[0] && $row['date'] <= $value[1]) {
+          $week['week'] = $key;
+          break;
+        }
+      }
+      // добавить неделю
+      $result[$row['trainee']][] = array_merge($row, $week);
     } else {
       $result[$row['trainee']] = [];
       $result[$row['trainee']][] = $row;

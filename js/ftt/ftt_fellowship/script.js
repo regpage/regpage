@@ -781,6 +781,17 @@ $(document).ready(function(){
   /*** FELLOWSHIP TAB STOP ***/
 
   /*** ACTIVITY TAB START ***/
-
+  // filters desktop
+  $("#flt_fellowship_activity_servingone, #flt_fellowship_activity_trainee").change(function (e) {
+    if (e.target.id === "flt_fellowship_activity_servingone") {
+      setCookie('meet__activity_flt_staff', $(this).val(), 356);
+    } else if (e.target.id === "meet_trainee_select") {
+      setCookie('meet_activity_flt_trainee', $(this).val(), 356);
+    }
+    setTimeout(function () {
+      location.reload();
+    }, 30);
+    //flt_fellowship($(this));
+  });
   /*** ACTIVITY TAB STOP ***/
 });

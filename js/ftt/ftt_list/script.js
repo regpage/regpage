@@ -400,7 +400,7 @@ $(document).ready(function(){
       if (result === "OK") {
         location.href = "index";
       } else {
-        showError("Неудача.");
+        showError("Неудачная попытка аутификации.");
       }
     });
   });

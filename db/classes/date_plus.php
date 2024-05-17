@@ -4,7 +4,7 @@
  *
  */
 class date_plus {
-  //dd.mm.yyyy_to_yyyy-mm-dd
+  // вычитаем дни из даты
   static function sub_d($date, $days) {
     if (empty($date) || empty($days)) {
       return 'No date';

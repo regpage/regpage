@@ -10,4 +10,20 @@
 .str_record:hover, .str_record_staff:hover {
   background-color: #eee;
 }
+
+.fellowship_element {
+  display: inline-block;
+  width: 25px;
+  height: 20px;
+  margin-right: 5px;
+  background-color: darkblue;
+}
+
+.fellowship_element_bbd {
+  display: inline-block;
+  width: 35px;
+  height: 25px;
+  margin-right: 5px;
+  background-color: darkgreen;
+}
 /*meet*/

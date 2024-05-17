@@ -191,7 +191,7 @@ function getServiceOnesWithTrainees ()
       } else {
         $prophecy_text = '<br><b>Пророчествование в прошедшее воскресенье:<br></b>';
       }
-
+      // вычитаем
       $lTMeeting_date = date_plus::sub_d(date('Y-m-d'), date('w'));
       $prophecy_data = Prophecy::by_serving_one($traine_list, $lTMeeting_date);
       $lTMeeting_date_format = date_convert::yyyymmdd_to_ddmm($lTMeeting_date);
