@@ -37,9 +37,14 @@ if (isset($_GET['type']) && $_GET['type'] === 'set_communication_record') {
   echo json_encode(["result"=>set_communication_record($_GET['trainee'], $_GET['id'], $_GET['checked'], $_GET['date'], $_GET['time_from'], $_GET['time_to'], $_GET['comment'])]);
   exit();
 }
-
+// отменить запись
 if (isset($_GET['type']) && $_GET['type'] === 'cancel_communication_record') {
   echo json_encode(["result"=>cancel_communication_record($_GET['id'], $_GET['comment'])]);
+  exit();
+}
+// Удалить запись
+if (isset($_GET['type']) && $_GET['type'] === 'dlt_fellowship_record') {
+  echo json_encode(["result"=>dlt_fellowship_record($_GET['id'])]);
   exit();
 }
 

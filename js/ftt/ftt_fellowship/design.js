@@ -1,6 +1,9 @@
 //design
 if ($(window).width()<=769) {
   // ------ FELLOWSHIP ------
+  // всплывающие подсказки для моб. версии
+  $("#meet_list_content_staff span").tooltip();
+
   // fonts
   $("#mdl_edit_fellowship_staff").css("font-size", "16px");
   $("#mdl_meet_trainee_to_record").css("font-size", "16px");

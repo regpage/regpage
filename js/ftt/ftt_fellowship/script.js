@@ -310,10 +310,23 @@ $(document).ready(function(){
 
   $("#meet_cancel").click(function () {
     if (!$("#mdl_edit_fellowship_staff").attr("data-trainee")) {
+      showError("Ни кто не записан на это общение, нельзя отменить.");
       return;
     }
     if (confirm("Отменить запись на общение?")) {
       cancel_meet_blank($("#mdl_edit_fellowship_staff").attr("data-id"),$("#mdl_meet_comment_trainee").val());
+      setTimeout(function () {
+        $("#mdl_edit_fellowship_staff").modal("hide");
+      }, 750);
+    }
+  });
+
+  $("#dlt_fellowship_record").click(function () {
+    if (!$("#mdl_edit_fellowship_staff").attr("data-id")) {
+      return;
+    }
+    if (confirm("Удалить запись на общение?")) {
+      dlt_fellowship_record($("#mdl_edit_fellowship_staff").attr("data-id"));
       setTimeout(function () {
         $("#mdl_edit_fellowship_staff").modal("hide");
       }, 750);
@@ -331,11 +344,30 @@ $(document).ready(function(){
       }, 1500);
     });
   }
+  // Удалить запись на общение
+  function dlt_fellowship_record(id) {
+    fetch("ajax/ftt_fellowship_ajax.php?type=dlt_fellowship_record&id=" + id)
+    .then(response => response.json())
+    .then(commits => {
+      showHint("Запись успешно удалена");
+      setTimeout(function () {
+        location.reload();
+      }, 1500);
+    });
+  }
   // заполнеие бланка
   function fill_meet_staff_blank(elem, trainee) {
     if (trainee) {
       $("#mdl_edit_fellowship_staff input").attr("disabled", true);
       $("#mdl_edit_fellowship_staff select").attr("disabled", true);
+      if ($("#dlt_fellowship_record").length) {
+        $("#dlt_fellowship_record").remove();
+      }
+    }
+    if (elem.attr("data-trainee")) {
+      $("#meet_cancel").show();
+    } else {
+      $("#meet_cancel").hide();
     }
     // data
     $("#mdl_edit_fellowship_staff").attr("data-id", elem.attr("data-id"));

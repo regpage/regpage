@@ -13,4 +13,10 @@ class date_plus {
     $newDate = $date->sub(new DateInterval("P{$days}D"));
     return $newDate->format('Y-m-d');
   }
+  static function plus_d($date, $days) {
+    if (empty($date) || empty($days)) {
+      return 'No date';
+    }
+    return date('Y-m-d', strtotime($date . " +{$days} day"));
+  }
 }

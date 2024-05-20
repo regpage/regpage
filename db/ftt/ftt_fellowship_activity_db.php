@@ -45,7 +45,7 @@ function get_fellowship_activity_list($serving_ones = '_all_',  $sort='meet_sort
     // 41th
     $weeks[] = [date_plus::sub_d($dateEndFour, 6), $dateEndFour];
     // 5th
-    $weeks[] = [$dateEndFour, $currDate];
+    $weeks[] = [date_plus::plus_d($dateEndFour, 1), $currDate];
   } else {
     // 1th
     $weeks[] = [date_plus::sub_d($currDate, 27), date_plus::sub_d($currDate, 21)];

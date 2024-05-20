@@ -17,7 +17,7 @@
 <!-- Блок списка записей -->
 <div id="meet_list_content_staff" class="container">
   <div class="row row_meet mb-1">
-    <div class="col-2"><b>Обучающийся</b></div>
+    <div class="col-2 pl-0"><b>Обучающийся</b></div>
     <div class="col-2"><b><?php print(date_convert::yyyymmdd_to_ddmm($fellowshipList['weeks'][0][0]) . ' – ' . date_convert::yyyymmdd_to_ddmm($fellowshipList['weeks'][0][1])) ?></b></div>
     <div class="col-2"><b><?php print(date_convert::yyyymmdd_to_ddmm($fellowshipList['weeks'][1][0]) . ' – ' . date_convert::yyyymmdd_to_ddmm($fellowshipList['weeks'][1][1])) ?></b></div>
     <div class="col-2"><b><?php print(date_convert::yyyymmdd_to_ddmm($fellowshipList['weeks'][2][0]) . ' – ' . date_convert::yyyymmdd_to_ddmm($fellowshipList['weeks'][2][1])) ?></b></div>
@@ -31,9 +31,14 @@
   <?php foreach ($fellowshipList as $key => $value): ?>
     <?php if ($key === 'weeks') {
       continue;
-    } ?>
-    <div class="row border-bottom mt-1"><div class="col">
-      <?php echo $trainee_list[$key] . ':  '; ?>
+    }
+    $noAnyFellowship = '';
+    if (empty($value)) {
+      $noAnyFellowship = 'bg_lightpink';
+    }
+    ?>
+    <div class="row border-bottom pt-1 pb-1 <?php echo $noAnyFellowship; ?>"><div class="col pl-0">
+      <?php echo $trainee_list[$key] . '&nbsp;(' . $trainee_list_list[$key]['semester'] . ')'; ?>
     </div>
     <?php
     $firstCol = '<div class="col">';

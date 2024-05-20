@@ -291,7 +291,7 @@ function set_meet_staff_blank($data)
     WHERE `id` = '$id'");
    return $res;
 }
-
+// Отменить запись на общение
 function cancel_communication_record($id, $comment='')
 {
   global $db;
@@ -328,7 +328,15 @@ function cancel_communication_record($id, $comment='')
     }
    return $res;
 }
+// Удалить запись на общение
+function dlt_fellowship_record($id)
+{
+  $id = db_real_escape_string($id);
 
+  $res = db_query("DELETE FROM `ftt_fellowship` WHERE `id` = '$id'");
+
+  return $res;
+}
 
 function get_meet_by_date($date, $serving_ones = '_all_')
 {

@@ -4,6 +4,7 @@
 
     // establish mySQLi connection & database selection for realized
     $host = $_SERVER['HTTP_HOST'];
+    $gl_db_name = 'regpager_main';
     $gl_db_user = 'regpager_admin';
     $gl_db_pass = 'inChrist365';
     // host selection
