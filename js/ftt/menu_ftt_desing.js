@@ -26,7 +26,12 @@ if ($(window).width()<=769) { // Мобильная версия
   // шрифт мобильной версии
   $("#menu_nav_ftt").css("font-size", "16px");
   // Уведомление об общении
-  $(".fellowship_today").css("padding-left", "0px");
+  $(".fellowship_today, .warning_notice").css("padding-left", "0px");
+  $(".warning_notice").each(function (e) {
+    if ($(this).text() && e > 0) {
+      $(this).before("<br>");
+    }
+  });
 } else { // Десктоп версия
   // ширина контейнера кнопки
   $("#ftt_navs li").each(function () {

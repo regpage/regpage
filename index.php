@@ -105,7 +105,7 @@ else if (isset ($_SESSION["logged-in"])){
           $fellowship_today = Fellowship::now_trainee($memberId);
           $fellowship_text = '';
           $fellowship_text_name = '';
-          $fellowship_link = "<span class='link_custom fellowship_link' style='display: inline-block; padding-top: 10px; font-weight: normal;'>перейти в раздел</span>";
+          $fellowship_link = "<strong class='link_custom fellowship_link' style='display: inline-block; padding-left: 5px; padding-top: 16px; font-weight: normal;'> перейти в раздел</strong><br>";
           // Добавить отменённые, добавить для служащих. Продублировать в меню раздела пвом
           foreach ($fellowship_today as $key => $value) {
             $name_f = short_name::short($value['name']);
@@ -116,7 +116,7 @@ else if (isset ($_SESSION["logged-in"])){
             }
           }
           if (count($fellowship_today) > 0) {
-            $fellowship_text = "<strong class='fellowship_today' style='color: red; padding-left: 16px;  padding-right: 5px; padding-top: 10px; display: inline-block;'>Сегодня общение:  {$fellowship_text_name} </strong>";
+            $fellowship_text = "<strong class='fellowship_today' style='color: red; padding-left: 16px;  padding-right: 5px; padding-top: 16px; display: inline-block;'>Сегодня общение:  {$fellowship_text_name} </strong>";
           }
 
           $fellowship_cancel_today = Fellowship::canceled_trainee($memberId);
@@ -164,12 +164,22 @@ else if (isset ($_SESSION["logged-in"])){
           $others_counter = '';
         }
         // посещаемость и проп. занятия
+        $warning_extra_help_text = '';
+        $warning_missed_class_text = '';
         if ($ftt_access['group'] === 'staff') {
           $permission_stat_count_main = statistics::permission_count($gl_trainees_by_staff);
           $missed_class_count = statistics::missed_class_count(ftt_lists::get_trainees_by_staff($memberId));
         } else {
           $permission_stat_count_main = statistics::permission_count($memberId);
           $missed_class_count = statistics::missed_class_count($memberId);
+          // уведомление если 3 или более доп. помощи
+          if ($extra_help_count >= 3) {
+            $warning_extra_help_text = "<strong class='warning_notice' style='color: red; padding: 7px 10px 10px 16px; display: inline-block;'>Дополнительных заданий — {$extra_help_count} </strong>";
+          }
+          // уведомление если 3 или более проп. занятиях
+          if ($missed_class_count >= 3) {
+            $warning_missed_class_text = "<strong class='warning_notice' style='color: red; padding: 7px 10px 10px 16px; display: inline-block;'>Пропущенных занятий — {$missed_class_count} </strong>";
+          }
         }
         $permission_stat_count_main += $missed_class_count;
 
@@ -229,6 +239,12 @@ else if (isset ($_SESSION["logged-in"])){
               }
               if (!empty($fellowship_cancel_text) || !empty($fellowship_text)) {
                 echo $fellowship_link;
+              }
+              if (!empty($warning_extra_help_text)) {
+                echo $warning_extra_help_text;
+              }
+              if (!empty($warning_missed_class_text)) {
+                echo $warning_missed_class_text;
               }
               ?>
             </div>
@@ -556,7 +572,7 @@ else if (isset ($_SESSION["logged-in"])){
                 }
             }
         ?>
-        <div style="margin-top:10px;"><a id="frameArchive" style="margin-left:10px;">Показать архив мероприятий</a></div>
+        <!--<div style="margin-top:10px;"><a id="frameArchive" style="margin-left:10px;">Показать архив мероприятий</a></div>-->
         <?php endif; ?>
     </div>
 
@@ -1175,8 +1191,8 @@ $(document).ready(function(){
                     ( (memberId == '000005716') ?
                        ( isEventActive ? '<span  style="display: inline; margin-right: 5px; margin-left: 5px;"class="fa fa-check-circle  btnEventActivity" title="Сделать неактивным"></span>' : '<span style="display: inline; margin-right: 5px; margin-left: 5px;" class="fa fa-times btnEventActivity" title="Сделать активным"></span>') +
                         '<span style="display: inline; margin-right: 5px; margin-left: 5px;" class="fa fa-pencil btnEditEvent" title="Редактировать мероприятие"></span>'+
-                        '<span style="display: inline; margin-right: 5px;" class="fa fa-trash-o btnRemoveEvent" title="Удалить мероприятие" aria-hidden="true"></span>' : '')+
-                        ((event.archived === '0' && memberId === '000001679'/*(isEventsAdmin || archiveAccess != -1 || memberId === event.author)*/) ? '<span style="display: inline; margin-left: 5px;" class="fa fa-database btnGetArchive" title="Архивировать данные" aria-hidden="true"></span>' : '');
+                        '<span style="display: inline; margin-right: 5px;" class="fa fa-trash-o btnRemoveEvent" title="Удалить мероприятие" aria-hidden="true"></span>' : '');
+                        //+ ((event.archived === '0' && memberId === '000001679'/*(isEventsAdmin || archiveAccess != -1 || memberId === event.author)*/) ? '<span style="display: inline; margin-left: 5px;" class="fa fa-database btnGetArchive" title="Архивировать данные" aria-hidden="true"></span>' : '');
 
                 eventAttrs = ' class="event-row" '+border_top+' data-name="'+event.name+'" data-locality_name="'+event.locality_name+'" '+
                         'data-start_date="'+event.start_date+'" data-end_date="'+event.end_date+'" data-private="'+event.private+'" '+

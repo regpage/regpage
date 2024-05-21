@@ -14,7 +14,16 @@ if ($(window).width()<=769) {
   $(".ftt_menu_a[href='/ftt_extrahelp']").parent().hide();
   $(".ftt_menu_a[href='/ftt_reading']").parent().hide();
   $(".ftt_menu_a[href='/ftt_application']").parent().hide();
-
+  if (window.location.pathname === '/index.php' || window.location.pathname === '/index') {
+    // Уведомление об общении
+    $(".fellowship_today, .warning_notice").css("padding-left", "0px");
+    $(".fellowship_today").css("padding-bottom", "10px");
+    $(".warning_notice").each(function (e) {
+      if ($(this).text() && e > 0) {
+        $(this).before("<br>");
+      }
+    });
+  }
 } else {
   // прибить футер
   if (window.location.pathname === '/index.php' || window.location.pathname === '/index') {
