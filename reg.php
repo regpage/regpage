@@ -1553,12 +1553,15 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
                + '</td>'
                + ((in_array(16, window.user_settings)) ? '<td class=""><span>' + (m.service != null ? m.service : '') + '</span></td>' : '')
                + (!isOnline ? '<td class="style-date"><span class="arrival" data-date="' + he(m.arr_date) + '" data-time="' + he(m.arr_time) + '">' : "") + formatDDMM( m.arr_date) + '</span> - '+
-                '<span class="departure" data-date="' + he(m.dep_date) + '" data-time="' + he(m.dep_time) + '">'+ formatDDMM(m.dep_date) + '</span><br>'+htmlPlace + ' ' + htmlPlaceFlag+'</td>'
+                '<span class="departure" data-date="' + he(m.dep_date) + '" data-time="' + he(m.dep_time) + '">'+ formatDDMM(m.dep_date) + '</span><br>'
+                + htmlPlace + ' ' + htmlPlaceFlag
+                + (htmlPlaceFlag ? '' : "<span class='regmem-icons'>"+ htmlEmail + htmlChanged + '</span>')
+                + '</td>'
                 + ((in_array(17, window.user_settings) && $('.tab-pane.active').attr('data-need_prepayment') === "1") ? '<td class=""><span>' + (m.prepaid && m.prepaid > 0 ? m.prepaid : '') + '</span></td>' : '')
                 + '<td>' + htmlLabelByRegState(m.regstate, m.web, htmlEditor) +
-                (!isOnline ? '<ul class="regstate-list-handle">'+ htmlListItemsByRegstate(m.regstate, m.attended) + '</ul>' : "")+
-                "<span class='regmem-icons' style='padding-left: 8px;'>"+ htmlEmail + htmlChanged + '<span style="font-size: 16px;">'+(m.admin_comment ? '</span><br><span class="user_setting_span" title="'
-                + m.admin_comment + '">'+short_admin_comment+'</span>' : "" ) + '</span></td>'
+                (!isOnline ? '<ul class="regstate-list-handle">'+ htmlListItemsByRegstate(m.regstate, m.attended) + '</ul>' : "")
+                + '<span style="font-size: 16px;">'+(m.admin_comment ? '</span><br><span class="user_setting_span" title="'
+                + m.admin_comment + '">'+short_admin_comment+'</span>' : "" ) + '</td>'
                 + '</tr>'
             );
 
@@ -1579,11 +1582,13 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
                  '<div>' + (!isOnline ? '<span class="arrival" data-date="' + he(m.arr_date) + '" data-time="' + he(m.arr_time) + '">' +
                 formatDDMM(m.arr_date) + '</span>'+
                 '<span class="departure" data-date="' + he(m.dep_date) + '" data-time="' + he(m.dep_time) + '">'+ ' - '+formatDDMM(m.dep_date) + '</span>' : "")
-                + htmlPlace + ' ' +htmlPlaceFlag + '</div>'
+                + htmlPlace + ' ' +htmlPlaceFlag
+                + (htmlPlaceFlag ? '' : "<span class='regmem-icons' style='padding-left: 8px;'>" + coordFlag + htmlService + htmlEmail + htmlChanged + /*htmlEditor +*/ '</span>')
+                + '</div>'
                 + ((in_array(17, window.user_settings) && $('.tab-pane.active').attr('data-need_prepayment') === "1") ? '<div><span>' + (m.prepaid && m.prepaid > 0 ? 'Внесено ' + m.prepaid : '') + '</span></div>' : '')
                 + '<span>' + htmlLabelByRegState(m.regstate, m.web) +
-                (!isOnline ? '<ul class="regstate-list-handle">'+ htmlListItemsByRegstate(m.regstate, m.attended) + '</ul>' : "")+
-                " <span class='regmem-icons'>" + coordFlag + htmlService + htmlEmail + htmlChanged + /*htmlEditor +*/ '</span><span>'+(m.admin_comment ? '<br><span class="show-comment-mbl user_setting_span" title="'+m.admin_comment+'">'+short_admin_comment+'</span>' : "" )+'</span></span>'
+                (!isOnline ? '<ul class="regstate-list-handle">'+ htmlListItemsByRegstate(m.regstate, m.attended) + '</ul>' : "")
+                + '<span>'+(m.admin_comment ? '<br><span class="show-comment-mbl user_setting_span" title="'+m.admin_comment+'">'+short_admin_comment+'</span>' : "" )+'</span></span>'
                 + '</td></tr>');
         }
 

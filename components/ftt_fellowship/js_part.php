@@ -1,5 +1,12 @@
 <script>
-
+// ------ ACTIVITY TAB ------
+if ($(window).width()<=769) {
+  $(".row_meet").hide();
+  if ($("#fellowship_tab_activity").hasClass("active")) {
+    $("#meet_list_content_staff .activity_str .week_col").hide();
+    $("#meet_list_content_staff .activity_str .col_mbl").show();
+  }
+}
 // serving ones list
 /*let serving_ones_list_tmp;
 serving_ones_list_tmp = "<?php
@@ -23,7 +30,7 @@ for (let i = 0; i < trainee_list_tmp.length; i = i + 5) {
 }
 </script>
 <script src="/js/ftt/ftt_fellowship/script.js?v16"></script>
-<script src="/js/ftt/ftt_fellowship/design.js?v22"></script>
+<script src="/js/ftt/ftt_fellowship/design.js?v23"></script>
 <script src="/js/modules/week.js?v1"></script>
 <script src="/js/modules/time.js?v1"></script>
 <script src="/js/modules/date.js?v1"></script>

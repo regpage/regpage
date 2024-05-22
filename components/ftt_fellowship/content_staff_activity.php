@@ -17,13 +17,13 @@
 <!-- Блок списка записей -->
 <div id="meet_list_content_staff" class="container">
   <div class="row row_meet mb-1">
-    <div class="col-2 pl-0"><b>Обучающийся</b></div>
-    <div class="col-2"><b><?php print(date_convert::yyyymmdd_to_ddmm($fellowshipList['weeks'][0][0]) . ' – ' . date_convert::yyyymmdd_to_ddmm($fellowshipList['weeks'][0][1])) ?></b></div>
-    <div class="col-2"><b><?php print(date_convert::yyyymmdd_to_ddmm($fellowshipList['weeks'][1][0]) . ' – ' . date_convert::yyyymmdd_to_ddmm($fellowshipList['weeks'][1][1])) ?></b></div>
-    <div class="col-2"><b><?php print(date_convert::yyyymmdd_to_ddmm($fellowshipList['weeks'][2][0]) . ' – ' . date_convert::yyyymmdd_to_ddmm($fellowshipList['weeks'][2][1])) ?></b></div>
-    <div class="col-2"><b><?php print(date_convert::yyyymmdd_to_ddmm($fellowshipList['weeks'][3][0]) . ' – ' . date_convert::yyyymmdd_to_ddmm($fellowshipList['weeks'][3][1])) ?></b></div>
+    <div class="col pl-0"><b>Обучающийся</b></div>
+    <div class="col"><b><?php print(date_convert::yyyymmdd_to_ddmm($fellowshipList['weeks'][0][0]) . ' – ' . date_convert::yyyymmdd_to_ddmm($fellowshipList['weeks'][0][1])) ?></b></div>
+    <div class="col"><b><?php print(date_convert::yyyymmdd_to_ddmm($fellowshipList['weeks'][1][0]) . ' – ' . date_convert::yyyymmdd_to_ddmm($fellowshipList['weeks'][1][1])) ?></b></div>
+    <div class="col"><b><?php print(date_convert::yyyymmdd_to_ddmm($fellowshipList['weeks'][2][0]) . ' – ' . date_convert::yyyymmdd_to_ddmm($fellowshipList['weeks'][2][1])) ?></b></div>
+    <div class="col"><b><?php print(date_convert::yyyymmdd_to_ddmm($fellowshipList['weeks'][3][0]) . ' – ' . date_convert::yyyymmdd_to_ddmm($fellowshipList['weeks'][3][1])) ?></b></div>
     <?php if (isset($fellowshipList['weeks'][4][0])): ?>
-      <div class="col-2"><b><?php print(date_convert::yyyymmdd_to_ddmm($fellowshipList['weeks'][4][0]) . ' – ' . date_convert::yyyymmdd_to_ddmm($fellowshipList['weeks'][4][1])) ?></b></div>
+      <div class="col"><b><?php print(date_convert::yyyymmdd_to_ddmm($fellowshipList['weeks'][4][0]) . ' – ' . date_convert::yyyymmdd_to_ddmm($fellowshipList['weeks'][4][1])) ?></b></div>
     <?php endif; ?>
 
   </div>
@@ -37,15 +37,16 @@
       $noAnyFellowship = 'bg_lightpink';
     }
     ?>
-    <div class="row border-bottom pt-1 pb-1 <?php echo $noAnyFellowship; ?>"><div class="col pl-0">
+    <div class="row activity_str border-bottom pt-1 pb-1 <?php echo $noAnyFellowship; ?>"><div class="col pl-0">
       <?php echo $trainee_list[$key] . '&nbsp;(' . $trainee_list_list[$key]['semester'] . ')'; ?>
     </div>
     <?php
-    $firstCol = '<div class="col">';
-    $secondCol = '<div class="col">';
-    $thirdCol = '<div class="col">';
-    $fourthCol = '<div class="col">';
-    $fivthCol = '<div class="col">';
+    $mdlCol = '<div class="col col_mbl" style="display: none;">';
+    $firstCol = '<div class="col week_col">';
+    $secondCol = '<div class="col week_col">';
+    $thirdCol = '<div class="col week_col">';
+    $fourthCol = '<div class="col week_col">';
+    $fivthCol = '<div class="col week_col">';
     foreach ($value as $key_2 => $value_2):
       if (isset($serving_ones_list[$value_2['serving_one']])) {
         $colorClass = 'fellowship_element';
@@ -55,32 +56,39 @@
       switch ($value_2['week']) {
         case '0':
           $firstCol .= "<span class='{$colorClass}' title='" . date_convert::yyyymmdd_to_ddmm($value_2['date']) . " {$serving_ones_list[$value_2['serving_one']]}'></span>";
+          $mdlCol .= "<span class='{$colorClass}' title='" . date_convert::yyyymmdd_to_ddmm($value_2['date']) . " {$serving_ones_list[$value_2['serving_one']]}'></span>";
           break;
         case 1:
           $secondCol .= "<span class='{$colorClass}' title='" . date_convert::yyyymmdd_to_ddmm($value_2['date']) . " {$serving_ones_list[$value_2['serving_one']]}'></span>";
+          $mdlCol .= "<span class='{$colorClass}' title='" . date_convert::yyyymmdd_to_ddmm($value_2['date']) . " {$serving_ones_list[$value_2['serving_one']]}'></span>";
           break;
         case 2:
           $thirdCol .= "<span class='{$colorClass}' title='" . date_convert::yyyymmdd_to_ddmm($value_2['date']) . " {$serving_ones_list[$value_2['serving_one']]}'></span>";
+          $mdlCol .= "<span class='{$colorClass}' title='" . date_convert::yyyymmdd_to_ddmm($value_2['date']) . " {$serving_ones_list[$value_2['serving_one']]}'></span>";
           break;
         case 3:
           $fourthCol .= "<span class='{$colorClass}' title='" . date_convert::yyyymmdd_to_ddmm($value_2['date']) . " {$serving_ones_list[$value_2['serving_one']]}'></span>";
+          $mdlCol .= "<span class='{$colorClass}' title='" . date_convert::yyyymmdd_to_ddmm($value_2['date']) . " {$serving_ones_list[$value_2['serving_one']]}'></span>";
           break;
         case 4:
           $fivthCol .= "<span class='{$colorClass}' title='" . date_convert::yyyymmdd_to_ddmm($value_2['date']) . " {$serving_ones_list[$value_2['serving_one']]}'></span>";
+          $mdlCol .= "<span class='{$colorClass}' title='" . date_convert::yyyymmdd_to_ddmm($value_2['date']) . " {$serving_ones_list[$value_2['serving_one']]}'></span>";
           break;
         default:
           $fivthCol .= "<span class='{$colorClass}' title='" . date_convert::yyyymmdd_to_ddmm($value_2['date']) . " {$serving_ones_list[$value_2['serving_one']]}'></span>";
+          $mdlCol .= "<span class='{$colorClass}' title='" . date_convert::yyyymmdd_to_ddmm($value_2['date']) . " {$serving_ones_list[$value_2['serving_one']]}'></span>";
           break;
       }
     ?>
     <?php endforeach; ?>
     <?php
+    $mdlCol .= '</div>';
     $firstCol .= '</div>';
     $secondCol .= '</div>';
     $thirdCol .= '</div>';
     $fourthCol .= '</div>';
     $fivthCol .= '</div>';
-    echo "{$firstCol}{$secondCol}{$thirdCol}{$fourthCol}{$fivthCol}</div>"; ?>
+    echo "{$firstCol}{$secondCol}{$thirdCol}{$fourthCol}{$fivthCol}{$mdlCol}</div>"; ?>
   <?php endforeach; ?>
   <!-- Список записей а последние четыре недели -->
 

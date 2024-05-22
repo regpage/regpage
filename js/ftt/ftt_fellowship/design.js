@@ -1,9 +1,6 @@
 //design
 if ($(window).width()<=769) {
   // ------ FELLOWSHIP ------
-  // всплывающие подсказки для моб. версии
-  $("#meet_list_content_staff span").tooltip();
-
   // fonts
   $("#mdl_edit_fellowship_staff").css("font-size", "16px");
   $("#mdl_meet_trainee_to_record").css("font-size", "16px");
@@ -11,8 +8,7 @@ if ($(window).width()<=769) {
   $("button").css("font-size", "16px");
   $("input").css("font-size", "16px");
   $("select").css("font-size", "16px");
-  $("textarea").css("font-size", "16px");
-  $(".row_meet").hide();
+  $("textarea").css("font-size", "16px");  
   // header block
   $("#meet_serving_ones_list").hide();
   $("#meet_trainee_select").hide();
@@ -54,6 +50,11 @@ if ($(window).width()<=769) {
   });
   $(".str_record div:nth-child(5)").removeClass("col-3").addClass("col-12").css("padding-left", "75px");
   $(".str_record div:nth-child(6)").hide();
+  // ------ ACTIVITY TAB ------
+  if ($("#fellowship_tab_activity").hasClass("active")) {
+    // всплывающие подсказки для моб. версии
+    $("#meet_list_content_staff span").tooltip();
+  }
   if ($(window).width()<=390) {
 
   }

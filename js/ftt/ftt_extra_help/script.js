@@ -476,7 +476,12 @@ $('#modalAddEditExtraHelp .btn-secondary').click(function (e) {
     return;
   }
 
-  if ($('#modalAddEditExtraHelp').attr('data-reason') !== $("#reason_field").val() || $('#modalAddEditExtraHelp').attr('data-comment') !== $("#comment_field").val() || $('#modalAddEditExtraHelp').attr('data-date') !== $("#date_field").val() || ($('#modalAddEditExtraHelp').attr('data-trainee_id') !== $("#fio_field").val() && $("#fio_field").val() !== '_none_') || $('#modalAddEditExtraHelp').attr('data-archive') !== checked_check) {
+  if ($('#modalAddEditExtraHelp').attr('data-reason') !== $("#reason_field").val()
+  || ($('#modalAddEditExtraHelp').attr('data-comment') !== $("#comment_field").val() && $("#comment_field").val() !== undefined) 
+  || $('#modalAddEditExtraHelp').attr('data-date') !== $("#date_field").val()
+  || ($('#modalAddEditExtraHelp').attr('data-trainee_id') !== $("#fio_field").val()
+  && $("#fio_field").val() !== '_none_')
+  || $('#modalAddEditExtraHelp').attr('data-archive') !== checked_check) {
     if (confirm('Сохранить изменения?')) {
       if (validation_fields(e)) {
         if (!$('#modalAddEditExtraHelp').attr('data-author')) {
