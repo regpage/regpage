@@ -5,7 +5,7 @@ function checkMissedSessions($sheet_id)
   global $db;
   $sheet_id = $db->real_escape_string($sheet_id);
   $result = [];
-  
+
   $res = db_query("SELECT * FROM `ftt_attendance`
     WHERE `sheet_id` = '$sheet_id' AND `class` = '1' AND (`reason` != '' OR `absence` = '1')");
   while ($row = $res->fetch_assoc()) $result[] = $row;
@@ -20,7 +20,7 @@ function setMissedClasses($sheet_id='')
   $check = checkMissedSessions($sheet_id);
 
   if ($sheet_id === '') {
-    write_to_log::error('', 'Нет ID бланка. Пропущенные занятия не проверены');
+    //write_to_log::error('', 'Нет ID бланка. Пропущенные занятия не проверены');
     return 'Error. No ID.';
   }
 

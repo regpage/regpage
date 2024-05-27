@@ -576,7 +576,7 @@ $(document).ready(function(){
     let ot_was_read = true, nt_was_read = true, ot_was_read_notes, nt_was_read_notes;
     fetch("ajax/ftt_reading_ajax.php?type=get_read_books&member_key=" + $("#mdl_edit_read").attr("data-member_key"))
     .then(response => response.json())
-    .then(commits => {
+    .then(commits => {      
       // получаем options html прочитанных книг
       let data_reading = get_books_for_start(bible_arr, commits.result["books"]);
       let html_ot = data_reading["ot"];
@@ -829,7 +829,7 @@ $(document).ready(function(){
       }
     }
 
-    if (($("#mdl_ot_start").prop("checked") && !$("#mdl_ot_start").attr("disabled")) || ($("#mdl_nt_start").prop("checked") && !$("#mdl_nt_start").attr("disabled"))) {
+    if (!$("#mdl_ot_start").attr("disabled") || !$("#mdl_nt_start").attr("disabled")) {
       $("#set_start_reading_bible").attr("disabled", false);
     } else {
       $("#set_start_reading_bible").attr("disabled", true);

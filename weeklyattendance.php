@@ -1,6 +1,5 @@
 <?php
-//
-// строку ниже заменить на config.php
+// Недельная проверка
 include_once 'config.php';
 include_once 'logWriter.php';
 include_once 'db/classes/date_convert.php';
