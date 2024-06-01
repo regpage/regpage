@@ -814,7 +814,8 @@
     <button class="btn btn-default" data-dismiss="modal" aria-hidden="true" style="float: right; margin-right: 10px; margin-bottom: 10px;">Ok</button>
 
 </div>
-
+<!-- JS MODULES -->
+<script src="/js/modules/date.js?v1"></script>
 <script>
 
 let gl_members_brothers_p_v, gl_localities_brothers_p_v, gl_events_brothers_p_v;
@@ -839,8 +840,8 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
         }
 
         handleControlButtons();
-    });
 
+    });
 
     $('.searchMemberToAdd').keyup(function(){
        loadMembersList ();
@@ -2237,12 +2238,12 @@ function checkStopEventRegistration(eventId){
 
             var request = getRequestFromFilters(setFiltersForRequest(eventId));
             var needTransportTemp = $(".tab-pane.active").attr("data-transport") == "1" ? "0" : "";
-            console.log($(".beTransport").val());
+
             $.post("/ajax/set.php?members="+ids.join(',')+"&event="+eventId+request,
             {
-                arr_date: parseDate ($(".beArrDate").val()),
+                arr_date: $("#beArrDate").val(),
                 arr_time: parseTime ($(".beArrTime").val()),
-                dep_date: parseDate ($(".beDepDate").val()),
+                dep_date: $("#beDepDate").val(),
                 dep_time: parseTime ($(".beDepTime").val()),
                 accom: $(".beAccom").val() == "_none_" ? "" : $(".beAccom").val(),
                 transport: $(".beTransport").val() == "_none_" || $(".beTransport").val() == null ? needTransportTemp : $(".beTransport").val(),
@@ -2473,13 +2474,10 @@ function checkStopEventRegistration(eventId){
         else {
             $(".beGrpTransport, .beLblTransport").css('display', 'none');
         }
-
-        arriveDepart('data-start','.beArrDate');
-        arriveDepart('data-end','.beDepDate');
-
-        $(".beArrDate").val(formatDate(arr_date)).keyup();
+        // заполняем поля формы
+        $("#beArrDate").val(arr_date);
         $(".beArrTime").val(formatTime(arr_time));
-        $(".beDepDate").val(formatDate(dep_date)).keyup();
+        $("#beDepDate").val(dep_date);
         $(".beDepTime").val(formatTime(dep_time));
         $(".beAccom").val(accom).change();
         $(".beTransport").val(trans).change();
@@ -2937,11 +2935,23 @@ function checkStopEventRegistration(eventId){
     }
   arriveDepart('data-start','.emArrDate');
   arriveDepart('data-end','.emDepDate');
-
+  // настройка дат в окне павкетной установки данных в бланках
+  // задаём минимальное и максимальное значение
+  function arriveDepartBulk() {
+    let date_start = subtract_dates($('.tab-pane.active').attr("data-start"), 10);
+    let date_end = addition_dates($('.tab-pane.active').attr("data-end"), 10);
+    $("#beArrDate").attr("min", date_start).attr("max", date_end);
+    $("#beDepDate").attr("min", date_start).attr("max", date_end);
+  }
+  // задаём минимальное и максимальное значение выбора дат при пакетной установке
+  arriveDepartBulk();
+  // смена мероприятия
   $("#events-list").change(function () {
     arriveDepart('data-start','.emArrDate');
     arriveDepart('data-end','.emDepDate');
+    arriveDepartBulk();
   });
+
     // END Romans Code
 </script>
 <script src="/js/reg.js?v83"></script>

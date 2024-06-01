@@ -61,6 +61,7 @@ function get_current_age(date) {
   return ((new Date().getTime() - new Date(date)) / (24 * 3600 * 365.25 * 1000)) | 0;
 }
 
+// сравнить даты
 // принимает даты в формате гггг-мм-дд
 function compare_date(d1, d2) {
 	let current, dm;
@@ -88,4 +89,12 @@ function compare_date(d1, d2) {
    date_blank = date.toISOString().split("T")[0];
    return date.toISOString().split("T")[0];
  }
+// прибавить к дате
+function addition_dates(date, days) {
+  date = new Date(date);
+  let day = date.getDate();
+  days = day + days;
+  date.setDate(days);  
+  return date.toISOString().split("T")[0];
+}
 /* ==== STOP DATE ==== */

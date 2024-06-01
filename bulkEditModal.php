@@ -9,7 +9,7 @@
         <div class="controls">
             <div class="control-group row-fluid" style="width: 48%;">
                 <label class="span12">Дата приезда <a href="#" class="beTooltipArrDate" rel="tooltip" data-placement="right" data-toggle="tooltip" title="??" tabindex="-1"><i class="icon-question-sign"></i></a></label>
-                <input class="span12 beArrDate datepicker" type="text" maxlength="10" placeholder="ДД.ММ.ГГГГ" valid="date">
+                <input id="beArrDate" class="span12" type="date">
             </div>
             <div class="control-group row-fluid" style="width: 48%; float: right;">
                 <label class="span12">Время приезда<a href="#" class="beTooltipArr" rel="tooltip" data-placement="right" data-toggle="tooltip" title="Время приезда к месту проведения конференции (с учётом времени на дорогу от вокзала/аэропорта)" tabindex="-1"><i class="icon-question-sign"></i></a></label>
@@ -17,7 +17,7 @@
             </div>
             <div class="control-group row-fluid" style="width: 48%;">
                 <label class="span12">Дата отъезда <a href="#" class="beTooltipDepDate" rel="tooltip" data-placement="right" data-toggle="tooltip" title="??" tabindex="-1"><i class="icon-question-sign"></i></a></label>
-                <input class="span12 beDepDate datepicker" type="text" maxlength="10" placeholder="ДД.ММ.ГГГГ" valid="date">
+                <input id="beDepDate" class="span12" type="date">
             </div>
             <div class="control-group row-fluid" style="width: 48%; float: right;">
                 <label class="span12">Время отъезда<a href="#" class="beTooltipDep" rel="tooltip" data-placement="right" data-toggle="tooltip" title="Время отъезда от места проведения конференции, а не от вокзала" tabindex="-1"><i class="icon-question-sign"></i></a></label>

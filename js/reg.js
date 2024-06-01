@@ -404,7 +404,7 @@ $('#globalError').find('.close-alert').click(function () {
 });
 // STOP table present Hide Global Error
 
-// START table present
+// ---------- START table present ----------- //
 function loadDashboardTbl (eventId){
     if (!eventId) eventId = $("#events-list").val();
     var request = getRequestFromFilters(setFiltersForRequest(eventId));
