@@ -7,7 +7,7 @@ function checkMissedSessions($sheet_id)
   $result = [];
 
   $res = db_query("SELECT * FROM `ftt_attendance`
-    WHERE `sheet_id` = '$sheet_id' AND `class` = '1' AND (`reason` != '' OR `absence` = '1')");
+    WHERE `sheet_id` = '$sheet_id' AND `class` = '1' AND ((`reason` != '' AND `reason` != 'Р') OR `absence` = '1')");
   while ($row = $res->fetch_assoc()) $result[] = $row;
 
   return $result;
