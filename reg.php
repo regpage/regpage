@@ -209,9 +209,14 @@
                               <?php endif; ?>
 
                             </a>&nbsp;<i class="<?php echo $sort_field=='status' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none'; ?>"></i></th>
-                            <th id="header_point_cell" class="hide-tablet" <?php if (!in_array(16, $user_settings_arr)): ?>
+                            <th <?php if (!in_array(16, $user_settings_arr)): ?>
                               style="display: none;"
-                            <?php endif; ?>>Служение</th>
+                            <?php endif; ?>
+                            <?php if (in_array(16, $user_settings_arr)): ?>
+                              style="min-width: 60px;"
+                            <?php endif; ?>>
+                              <a id="sort-service" href='#' title="сортировать">Служ.</a>&nbsp;<i class="<?php echo $sort_field=='service' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none'; ?>"></i>
+                            </th>
                             <th class="date_th">Даты</th>
                             <th class="prepaid_th"  <?php if (!in_array(17, $user_settings_arr)): ?>
                               style="display: none;"

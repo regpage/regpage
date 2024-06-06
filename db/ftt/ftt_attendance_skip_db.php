@@ -1,13 +1,18 @@
 <?php
-/* MISSED CLASS */
+/* Пропущенные занятия */
 function checkMissedSessions($sheet_id)
 {
   global $db;
   $sheet_id = $db->real_escape_string($sheet_id);
   $result = [];
-
+  // если установлена причина или опоздание >= 20 мин
+  // если причина "Р" и опоздания нет или оно < 20 мин то проп. занятие не создаётся
   $res = db_query("SELECT * FROM `ftt_attendance`
-    WHERE `sheet_id` = '$sheet_id' AND `class` = '1' AND ((`reason` != '' AND `reason` != 'Р') OR `absence` = '1')");
+    WHERE `sheet_id` = '$sheet_id' AND `class` = '1' AND (
+    ((`reason` != '' AND `reason` != 'Р') OR `absence` = '1') OR
+    (`reason` = 'Р' AND `attend_time` = '') OR
+    (`reason` = 'Р' AND  ((TIME_FORMAT(`attend_time`, '%k%i') - TIME_FORMAT(`session_time`, '%k%i')) >= 20))
+    )");
   while ($row = $res->fetch_assoc()) $result[] = $row;
 
   return $result;

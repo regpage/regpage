@@ -44,7 +44,11 @@ function checkMissedSessions($sheet_id)
   $sheet_id = $db->real_escape_string($sheet_id);
   $result = [];
 
-  $res = db_query("SELECT * FROM `ftt_attendance` WHERE `sheet_id` = '$sheet_id' AND `class` = '1' AND ((`reason` != '' AND `reason` != 'Р') OR `absence` = '1')");
+  $res = db_query("SELECT * FROM `ftt_attendance` WHERE `sheet_id` = '$sheet_id' AND `class` = '1' AND (
+  ((`reason` != '' AND `reason` != 'Р') OR `absence` = '1') OR
+  (`reason` = 'Р' AND `attend_time` = '') OR
+  (`reason` = 'Р' AND  ((TIME_FORMAT(`attend_time`, '%k%i') - TIME_FORMAT(`session_time`, '%k%i')) >= 20))
+  )");
   while ($row = $res->fetch_assoc()) $result[] = $row;
 
   return $result;
