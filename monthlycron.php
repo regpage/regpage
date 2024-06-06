@@ -1,4 +1,7 @@
 <?php
+// право доступа
+require_once 'cronkey.php';
+
 // Автоматическое ежемесячное удаление мусора из контактов. Выполняется по заданию (cron)
 include_once 'db.php';
 include_once 'logWriter.php';

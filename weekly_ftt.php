@@ -1,4 +1,7 @@
 <?php
+// право доступа
+require_once 'cronkey.php';
+
 //Автоматическое удаление опозданий
 include_once 'config.php';
 include_once 'logWriter.php';

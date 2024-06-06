@@ -1,4 +1,7 @@
 <?php
+// право доступа
+require_once 'cronkey.php';
+
 //Автоматическое удаление отметок о прочтении объявлений
 include_once 'config.php';
 include_once 'logWriter.php';

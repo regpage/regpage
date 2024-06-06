@@ -32,5 +32,4 @@ function db_newDailyPractices(){
   }
 }
 
-db_newDailyPractices();
-?>
+// db_newDailyPractices();

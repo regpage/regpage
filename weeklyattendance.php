@@ -1,4 +1,7 @@
 <?php
+// право доступа
+require_once 'cronkey.php';
+
 // Недельная проверка
 include_once 'config.php';
 include_once 'logWriter.php';

@@ -1,4 +1,7 @@
 <?php
+// право доступа
+require_once 'cronkey.php';
+
 // Ежедневная рассылка статистики для служащих.
 
 header('Content-Type: text/html; charset=utf-8');
