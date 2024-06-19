@@ -51,6 +51,9 @@ class BibleCounter
     }
 
     $daysToEnd = ftt_info::days_to_end();
+    if ($daysToEnd == 0) {
+      $daysToEnd = 1;
+    }
     $deffOt = $sumChapters['ot'] - $readBook['chapters_ot'];
     $deffNt = $sumChapters['nt'] - $readBook['chapters_nt'];
     if ($semester === '1' || $semester === '2') { // нз и вз без примечаний за 1 год обучения

@@ -416,6 +416,7 @@
     </div>
     <div class="modal-body">
         <p>Найдены участники с указанными ФИО</p>
+        <h4 id="modalMatchMemWarning" style="color: white; background-color: red; padding: 5px;">Ни один участник не выбран (поставьте галочку)</h4>
         <table class="table table-hover table-condensed chkMember">
             <thead><tr><th>&nbsp;</th><th>Фамилия Имя Отчество</th><th>Дата рождения</th><th>Местность</th></tr></thead>
             <tbody>
@@ -1927,6 +1928,17 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
         }
 
         $("table.chkMember tbody").html (tableRows.join(''));
+        $("table.chkMember input").change(function () {
+          if ($(this).prop("checked")) {
+            $("table.chkMember input").each(function () {
+              $(this).prop("checked", false);
+            });
+            $(this).prop("checked", true);
+            $('#modalMatchMemWarning').hide();
+          } else {
+            $('#modalMatchMemWarning').show();
+          }
+        });
     }
 
     $('.chooseMemb').on('click', function(event){

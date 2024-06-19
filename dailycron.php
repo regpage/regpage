@@ -9,6 +9,7 @@ require_once 'cronkey.php';
 // строку ниже заменить на config.php
 include_once 'db.php';
 include_once 'logWriter.php';
+include_once 'db/classes/ftt_info.php';
 
 // ADMINS SESSIONS
 function db_checkDeleteTempAdminSessions() {
@@ -46,6 +47,15 @@ db_checkDeleteOldAdminSessions();
 //-------------------------------------//
 // ОБЩЕНИЕ СОЗДАНИЕ ЗАПИСЕЙ ИЗ РАСПИСАНИЯ
 function cron_set_fellowship_str() {
+  // Проверяем что расписание не выходит за период обучения
+  if (ftt_info::pause()) {
+    // отметка о выполнении
+    $faleName = $_SERVER['PHP_SELF'];
+    db_query("INSERT INTO `cron` (`date`,`script`, `status`, `comment`) VALUES (CURRENT_DATE(),'{$faleName}', '1', 'Вне периода')");
+    echo "Вне периода проведения обучения";
+    exit();
+  }
+
   $dayNumber = date("N", strtotime("+2 week"));
   $dayOfWeek = '';
   $result = [];
