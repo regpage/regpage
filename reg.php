@@ -2220,8 +2220,8 @@ function checkStopEventRegistration(eventId){
     $.post('/ajax/event.php?check_stop_reg', {eventId: eventId})
     .done(function(data){
         var text = '';
-        if (parseInt(data.res.participants_count) > 0){
-            if(data.res.close_registration === '1' || parseInt(data.res.count_members) >= parseInt(data.res.participants_count)){
+        if (parseInt(data.res.participants_count) > 0) {
+            if ((data.res.close_registration === '1' || parseInt(data.res.count_members) >= parseInt(data.res.participants_count))){
                 text = "<span class='registration-closed'><a style='color:red; font-weight: bold; padding-right: 8px;' data-toggle='modal'>Регистрация закрыта.</a></span>";
             }
             else{
@@ -2232,8 +2232,10 @@ function checkStopEventRegistration(eventId){
               text = "<span class='registration-closed'><a style='color:red; font-weight: bold; padding-right: 8px;' data-toggle='modal' >Регистрация закрыта.</a></span>";
           }
         }
-        if (text) {
+        if (text && $(".registration-closed").length === 0) {
           $('<span style="margin-top: 15px; display: inline-block;" class="close-event-registration">'+text+'</span>').insertBefore(".counterForResponseble");
+        } else if (text && $(".registration-closed").length > 0) {
+
         } else {
           $(".close-event-registration").remove();
         }

@@ -25,7 +25,7 @@ if (isset($_COOKIE['panel_tab_active']) && $_COOKIE['panel_tab_active'] === 'ftt
   $active_ftt = 'active';
 }
 
-write_to_log::info($memberId, 'Админ зашёл в панел администратора.');
+//write_to_log::info($memberId, 'Админ зашёл в панел администратора.');
 //$aaa = db_newDailyPracticesPac(9); Dont touch!!!
 ?>
 

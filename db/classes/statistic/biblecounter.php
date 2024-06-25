@@ -51,11 +51,16 @@ class BibleCounter
     }
 
     $daysToEnd = ftt_info::days_to_end();
+    // если период чтения закончился
     if ($daysToEnd == 0) {
       $daysToEnd = 1;
+    } else if ($modificator == 0 && $daysToEnd < 0) { // конец года
+      $daysToEnd = 1;
     }
+    // осталось прочитать глав
     $deffOt = $sumChapters['ot'] - $readBook['chapters_ot'];
     $deffNt = $sumChapters['nt'] - $readBook['chapters_nt'];
+
     if ($semester === '1' || $semester === '2') { // нз и вз без примечаний за 1 год обучения
       if ($startPosition['book_ot'] && empty($startPosition['book_nt'])) {
         $deffOt += $deffNt;
