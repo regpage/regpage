@@ -65,7 +65,8 @@ if (isset($_GET['member_key']) && $_GET['member_key'] !== $memberId) { // Есл
     if ($serviceone_role === -1) {
       $serviceone_role = 1;
     }
-  } elseif ($memberId === $request_data['interview_name']) {
+  }
+  if ($memberId === $request_data['interview_name']) {
     $is_interviewer = 1;
     if ($serviceone_role === -1) {
       $serviceone_role = 2;

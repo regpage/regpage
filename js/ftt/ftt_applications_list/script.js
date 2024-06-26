@@ -43,11 +43,17 @@ $(document).ready(function() {
        } else if (list[i].decision === "approve") {
          decision_text = '<span class="badge badge-success">принят</span>';
        }
-
+      let date_list_show = "";
+      if (list[i].stage > 0) {
+        date_list_show = list[i].send_date;
+      } else {
+        date_list_show = list[i].request_date;
+      }
+      
        //Рендорим список
        list_desk.push("<div class='row request-string' data-member_key='"+ list[i].member_key +"'><div class='col-3 pl-1'><span>"+list[i].name+
        "</span><br><span class='grey_text'>"+ data_page.category[list[i].category_key] +"</span></div><div class='col'>"+list[i].locality_name+"</div><div class='col'><span>"+list[i].cell_phone+"</span><br><span class='grey_text'>"+list[i].email+
-       "</span></div><div class='col-2'><span>"+request_status+"</span><br><span class='grey_text'>"+list[i].send_date+"</span></div><div class='col-2'>"+decision_text+"</div></div>");
+       "</span></div><div class='col-2'><span>"+request_status+"</span><br><span class='grey_text'>"+ date_list_show +"</span></div><div class='col-2'>"+decision_text+"</div></div>");
        //<div class='col-1 request-trash'>🗑</div>
      }
      $(list_id).html(list_desk);
