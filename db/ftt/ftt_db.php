@@ -9,10 +9,12 @@ function db_getAllRequests ($adminId, $role, $guest, $sorting){
   $sorting = $db->real_escape_string($sorting);
   $result = [];
   $condition = '';
-  if ($guest == 1) {
-    $condition .= " fr.guest = 1";
+  if ($guest == 2) {
+    $condition .= " fr.notice = 3 ";
+  } elseif ($guest == 1) {
+    $condition .= " fr.guest = 1 AND fr.notice != 3 ";
   } else {
-    $condition .= " fr.guest = 0";
+    $condition .= " fr.guest = 0 AND fr.notice != 3 ";
   }
   if ($sorting === 'sort_fio-desc') {
     $order_by = 'm.name DESC';
@@ -26,7 +28,7 @@ function db_getAllRequests ($adminId, $role, $guest, $sorting){
     $order_by = 'm.name DESC';
   }
 //fr.interview_name, fr.interview_status, fr.interview_info,  fr.interview_meetings, fr.interview_apprehension, fr.interview_coordination, fr.interview_signature, fr.interview_date,
-    $res=db_query ("SELECT fr.id as fr_id, fr.member_key, fr.request_date, fr.stage, fr.notice, fr.send_date, fr.decision,
+    $res=db_query ("SELECT fr.id as fr_id, fr.member_key, fr.request_date, fr.stage, fr.notice, fr.send_date, fr.decision, fr.guest,
       m.name, m.male, m.locality_key, m.cell_phone, m.email, m.category_key, l.name AS locality_name
     FROM ftt_request AS fr
     INNER JOIN member m ON m.key = fr.member_key
@@ -158,4 +160,13 @@ function dltRequestFor($id)
   return $res;
 }
 
-?>
+// архив заявлений перемещение из архива и в архив
+function setRequestToArchive($id, $to) {
+  global $db;
+  $id = $db->real_escape_string($id);
+  $to = $db->real_escape_string($to);
+
+  $res = db_query("UPDATE `ftt_request` SET `notice` = '{$to}' WHERE  `id` = '{$id}'"); //`notice` = 0,
+
+  return $res;
+}

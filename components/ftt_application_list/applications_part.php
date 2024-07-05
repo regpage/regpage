@@ -53,6 +53,7 @@
       <div class="col"><b>Телефон</b></div>
       <div class="col-2"><b>Статус</b></div>
       <div class="col-2"><b>Решение</b></div>
+      <div class="col-1"><b>Архив</b></div>
       <!--<div class="col-1">X</div>-->
     </div>
     <div id="requests-list" class="">
@@ -73,9 +74,36 @@
       <div class="col"><b>Телефон</b></div>
       <div class="col-2"><b>Статус</b></div>
       <div class="col-2"><b>Решение</b></div>
+      <div class="col-1"><b>Архив</b></div>
       <!--<div class="col-1">X</div>-->
     </div>
-    <div id="requests-guest-list"><span>З А Г Р У З К А</span></div>
+    <div id="requests-guest-list">
+      <span>З А Г Р У З К А</span>
+    </div
+
+    <!-- А Р Х И В -->
+    <div class="row">
+      <div class="col-2 pl-1 mt-3"><h3>Архив</h3></div>
+      <div class="col-1 mt-4"><span id="archive_hide_show" class="link_custom">Скрыть</span></div>
+    </div>
+    <div id="header_archive" class="row mb-1">
+      <div class="col-3 cursor-pointer text_blue pl-1">
+        <b class="sort_fio">ФИО <i class="<?php echo $sort_fio_g_ico; ?>"></i>
+        </b>
+      </div>
+      <div class="col cursor-pointer text_blue">
+        <b class="sort_locality">Местность <i class="<?php echo $sort_locality_g_ico; ?>"></i>
+        </b>
+      </div>
+      <div class="col"><b>Телефон</b></div>
+      <div class="col-2"><b>Статус</b></div>
+      <div class="col-2"><b>Решение</b></div>
+      <div class="col-1"><b>Архив</b></div>
+      <!--<div class="col-1">X</div>-->
+    </div>
+    <div id="requests-archive-list">
+      <span>З А Г Р У З К А</span>
+    </div>
   </div>
   <?php require_once 'components/ftt_application_list/request_application.php'; ?>
 </div>

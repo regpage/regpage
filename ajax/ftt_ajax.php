@@ -51,9 +51,15 @@ if (isset($_GET['type']) && $_GET['type'] === 'approve_request_for'){
     exit();
 }
 
-// Одобряем запрос заявления на ПВОМ
+// удаляем запрос заявления на ПВОМ
 if (isset($_GET['type']) && $_GET['type'] === 'dlt_request_for'){
     echo json_encode(["result"=>dltRequestFor($_GET['id'])]);
+    exit();
+}
+
+// перемещаем в архив запрос заявления на ПВОМ
+if (isset($_GET['type']) && $_GET['type'] === 'move_request_to_archive'){
+    echo json_encode(["result"=>setRequestToArchive($_GET['id'], $_GET['to'])]);
     exit();
 }
 
@@ -62,5 +68,3 @@ if (isset($_GET['type']) && $_GET['type'] === 'recruit_status'){
     echo json_encode(["result"=>fttParam::set('acceptance_of_applications', $_GET['status'])]);
     exit();
 }
-
-?>

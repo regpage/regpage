@@ -12,7 +12,7 @@ $(document).ready(function() {
   let requests = {};
 
   // Рендорим список заявлений
-   function rendoringListOfRequests(list, guest) {
+   function rendoringListOfRequests(list, guest, archive) {
      // Проверяем аргумент
      if (!list) {
        $("#requests-list").html("<h1>Нет заявлений.</h1>");
@@ -21,9 +21,12 @@ $(document).ready(function() {
 
      let list_id = "#requests-list";
 
-     if (guest) {
+     if (guest && !archive) {
        list_id = "#requests-guest-list";
        $("#requests-guest-list").prev().prev().find("h3").text("Гости (" + list.length+")");
+     } else if (archive) {
+      list_id = "#requests-archive-list";
+      $("#requests-archive-list").prev().prev().find("h3").text("Архив (" + list.length+")");
      } else {
        $("#requests-list").prev().prev().find("h3").text("Кандидаты (" + list.length+")");
      }
@@ -32,11 +35,13 @@ $(document).ready(function() {
      for (var i = 0; i < list.length; i++) {
        // подготавливаем данные
        let request_status = "";
-       if (list[i].stage == 0) {
+       if (list[i].stage == 0 || list[i].stage == -1) {
          request_status = '<span class="badge badge-secondary">черновик</span>';
        } else if (list[i].stage > 0 ) {
          request_status = '<span class="badge badge-info">отправлен</span>';
-       }
+       }/* else if (list[i].stage == -1) {
+        request_status = '<span class="badge badge-secondary">архив</span>';
+       }*/
        let decision_text = "";
        if (list[i].decision === "deny") {
          decision_text = '<span class="badge badge-danger">отклонён</span>';
@@ -49,11 +54,23 @@ $(document).ready(function() {
       } else {
         date_list_show = list[i].request_date;
       }
-      
+
+      let extra_field = "";
+      console.log(list[i]);
+      if (list[i].notice < 2) {
+        extra_field = "<div class='col-1 request_archive'><span class='link_custom'>В архив</span></div>";
+      } else if (list[i].notice == 3) {
+        extra_field = "<div class='col-1 request_archive str_archive'><span class='link_custom' title='Восстановить заявление из архива'><i class='fa fa-arrow-up' aria-hidden='true'></i></span>"
+        + (list[i].guest === "1" ? "<span> Гость</span>" : "") + "</div>";
+      } else {
+        extra_field = "<div class='col-1'></div>";
+      }
+
        //Рендорим список
-       list_desk.push("<div class='row request-string' data-member_key='"+ list[i].member_key +"'><div class='col-3 pl-1'><span>"+list[i].name+
+       list_desk.push("<div class='row request-string' data-member_key='"+ list[i].member_key +"' data-id='"+ list[i].fr_id +"'><div class='col-3 pl-1'><span>"+list[i].name+
        "</span><br><span class='grey_text'>"+ data_page.category[list[i].category_key] +"</span></div><div class='col'>"+list[i].locality_name+"</div><div class='col'><span>"+list[i].cell_phone+"</span><br><span class='grey_text'>"+list[i].email+
-       "</span></div><div class='col-2'><span>"+request_status+"</span><br><span class='grey_text'>"+ date_list_show +"</span></div><div class='col-2'>"+decision_text+"</div></div>");
+       "</span></div><div class='col-2'><span>"+request_status+"</span><br><span class='grey_text'>"+ date_list_show +"</span></div><div class='col-2'>"+decision_text
+      + "</div>" + extra_field + "</div>");
        //<div class='col-1 request-trash'>🗑</div>
      }
      $(list_id).html(list_desk);
@@ -63,8 +80,8 @@ $(document).ready(function() {
        let query = "application.php?member_key=" + $(this).attr("data-member_key");
        document.cookie = "application_back=1";
        window.location = query;
-
      });
+
      if ($(window).width()<=769) {
        $(".request-string div:nth-child(1)").removeClass("col-3").addClass("col-7");
        $(".request-string div:nth-child(2)").removeClass("col-2").addClass("col-5");
@@ -72,16 +89,59 @@ $(document).ready(function() {
        $(".request-string div:nth-child(4)").removeClass("col-2").addClass("col-5");
        $(".request-string div:nth-child(5)").addClass("pl-1");
 
-       $("#header_candidate div:nth-child(3)").hide();
-       $("#header_candidate div:nth-child(4)").hide();
-       $("#header_candidate div:nth-child(5)").hide();
+      $("#header_candidate div:nth-child(3)").hide();
+      $("#header_candidate div:nth-child(4)").hide();
+      $("#header_candidate div:nth-child(5)").hide();
 
-       $("#header_guest div:nth-child(3)").hide();
-       $("#header_guest div:nth-child(4)").hide();
-       $("#header_guest div:nth-child(5)").hide();
+      $("#header_guest div:nth-child(3)").hide();
+      $("#header_guest div:nth-child(4)").hide();
+      $("#header_guest div:nth-child(5)").hide();
+      // архивный список
+      $(".request_archive").removeClass("col-1").addClass("col-5");
+      $(".request_archive").prev().removeClass("col-2").addClass("col-7");
      }
    }
 
+  // преместить в архив, из архива
+  function application_to_from_archive(id, to) {
+    let text = "Перенести в архив?";
+    if (to) {
+      to = 0;
+      text = "Восстановить из архива?";
+    } else {
+      to = 3;
+    }
+
+    if (confirm(text)) {
+      fetch("ajax/ftt_ajax.php?type=move_request_to_archive&id=" + id + "&to=" + to)
+      .then(response => response.json())
+      .then(result => {
+        location.reload();
+      });
+    }
+  }
+
+  // сворачиваем / рвзворачиваем блок с архивными записями
+  $("#archive_hide_show").click(function () {
+    if ($("#requests-archive-list").is(":visible")) {
+      $("#archive_hide_show").text("Развернуть")
+      $("#requests-archive-list").slideUp("fast");
+      $("#header_archive").slideUp("fast");
+      setCookie("application_list_archive", 1, 365);
+    } else {
+      $("#archive_hide_show").text("Скрыть")
+      $("#requests-archive-list").slideDown("fast");
+      $("#header_archive").slideDown("fast");
+      setCookie("application_list_archive", 0, 365);
+    }
+  });
+  // поведение блока АРХИВ при старте страницы
+  // проверяем кукки
+  if (getCookie("application_list_archive") === "1" || !getCookie("application_list_archive")) {
+    $("#archive_hide_show").text("Развернуть")
+    $("#requests-archive-list").slideUp("fast");
+    $("#header_archive").slideUp("fast");
+  }
   // Получаем заявления
   // Все заявления для тех у кого зона ответственности ПВОМ
   //&admin_id=" + data_page.admin_id
@@ -89,15 +149,33 @@ $(document).ready(function() {
   fetch("ajax/ftt_ajax.php?type=all_requests&guest=0&role="+$("#list_requests").attr("data-role")+"&sort="
   + getCookie("sorting"))
   .then(response => response.json())
-  .then(result => rendoringListOfRequests(result.result));
+  .then(result => rendoringListOfRequests(result.result)); // рендорим список не гостей
 
   setTimeout(function () {
     // Получаем заявления гостей
     fetch("ajax/ftt_ajax.php?type=all_requests&guest=1&role="+$("#list_requests").attr("data-role")
     +"&sort="+getCookie("sorting_g"))
     .then(response => response.json())
-    .then(result => rendoringListOfRequests(result.result, true));
+    .then(result => rendoringListOfRequests(result.result, true)); // рендорим гостевой список
   }, 50);
+
+  setTimeout(function () {
+    // Получаем заявления гостей
+    fetch("ajax/ftt_ajax.php?type=all_requests&guest=2&role="+$("#list_requests").attr("data-role")
+    +"&sort="+getCookie("sorting_g"))
+    .then(response => response.json())
+    .then(result => {
+      // рендорим архивный список
+      if (!rendoringListOfRequests(result.result, false, true)) {
+        // перемещение заявлений из архива и в архив
+        $(".request_archive, .request_archive").click(function (e) {
+          e.stopPropagation();
+          e.preventDefault();
+          application_to_from_archive($(this).parent(".request-string").attr("data-id"), $(this).hasClass("str_archive"));
+        });
+      }
+    });
+  }, 100);
 
   // сортировка кандидаты
   $("#header_candidate .sort_fio, #header_candidate .sort_locality").click(function (e) {
