@@ -1344,16 +1344,21 @@ $(document).ready(function(){
     }
     // счётчик слов
     if ($(this).attr("data-field") === "request_info") {
+      // получаем тект
       let text_for_count = $(this).val();
+      // вычисляем количество слов в тексте
       if (text_for_count) {
         text_for_count = text_for_count.split(" ");
         text_for_count = text_for_count.length;
       } else {
         text_for_count = 0;
       }
-      $(this).next().css("color", "red").css("font-weight", "bold");
+      // вычисляем разницу с требуемым кол-вом слов
       text_for_count = 250 - text_for_count;
-      if (text_for_count <= 0) {
+      // задаём стиль уведомлению о кол-ве слов
+      $(this).next().css("color", "red").css("font-weight", "bold");
+      // есле лемит превышен не выводим кол-во слов
+      if (text_for_count < 0) {
         text_for_count = "";
       }
       $(this).next().text(text_for_count);
