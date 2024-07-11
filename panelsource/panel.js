@@ -156,7 +156,7 @@ $(document).ready(function(){
 
   });
 
-  // ПВОМ
+  // ******* П В О М  *********  //
   $("#modalUniversalOK").click(function () {
     if ($("#modalUniversalConfirm").attr("data-type") === "1") {
       fetch('panelsource/panelAjax.php?type=reset_semester')
@@ -210,6 +210,69 @@ $(document).ready(function(){
     .then(result => {
       if (result === "OK") {
         location.reload();
+      } else {
+        showError("Неудача.");
+      }
+    });
+  });
+
+  // ШАБЛОНЫ ДЛЯ РАЗДЕЛА ОБЩЕНИЕ
+  // удалить все шаблоны
+  $("#dlt_all_fellowship_tmpl").click(function () {
+    if (confirm("Удалить все шаблоны?")) {
+      fetch("panelsource/content/ftt/fellowship_cntrl.php?type=dlt_all")
+      .then(response => response.text())
+      .then(result => {
+        if (result) {
+          //location.reload();
+          $("#fellowship_tmpl_list").html("");
+          showHint("Успешно.");
+        } else {
+          showError("Неудача.");
+        }
+      });
+    }
+  });
+
+  // удалить шаблон
+  $(".dlt_fellowship_tmpl").click(function () {
+    if (confirm("Удалить все шаблоны?")) {
+      let parent = $(this).parent();
+      fetch("panelsource/content/ftt/fellowship_cntrl.php?type=dlt&member_key=" + parent.attr("data-member_key") + "&day=" + parent.find(".fellowship_tmpl_day").text().trim()
+        + "&time=" + parent.find(".fellowship_tmpl_time").text().trim() + "&duration=" + parent.find(".fellowship_tmpl_duration").text().trim())
+      .then(response => response.text())
+      .then(result => {
+        if (result) {
+          parent.remove();
+          showHint("Успешно.");
+          //location.reload();
+        } else {
+          showError("Неудача.");
+        }
+      });
+    }
+  });
+
+  // изменить шаблон
+  $("#SOMESOME").click(function () {
+    fetch("panelsource/fellowship_cntrl.php?type=set&member_key=" + $(this).attr("data-member_key"))
+    .then(response => response.text())
+    .then(result => {
+      if (result === "OK") {
+        //location.reload();
+      } else {
+        showError("Неудача.");
+      }
+    });
+  });
+
+  // добавить шаблон
+  $("#SOMESOME").click(function () {
+    fetch("panelsource/fellowship_cntrl.php?type=add&member_key=" + $(this).attr("data-member_key"))
+    .then(response => response.text())
+    .then(result => {
+      if (result === "OK") {
+        //location.reload();
       } else {
         showError("Неудача.");
       }

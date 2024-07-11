@@ -14,14 +14,25 @@ require_once 'components/ftt_reading/content_part_cntrl.php';
       <div class="text-center">
         <strong class="text-danger">
           <?php
+          $bible_reading_calculate_nt = 0;
+          $bible_reading_calculate_ot = 0;
+          // если книги прочитаны
+          if ($bible_reading_calculate['nt_deff'] > 0) {
+            $bible_reading_calculate_nt = $bible_reading_calculate['nt_deff'];
+          }
+
+          if ($bible_reading_calculate['ot_deff'] > 0) {
+            $bible_reading_calculate_ot = $bible_reading_calculate['ot_deff'];
+          }
+
           $text_deff = '';
           if ((!empty($bible_reading_calculate['ot_current']) && ($bible_reading_calculate['semester'] === '1' || $bible_reading_calculate['semester'] === '2')) || ($bible_reading_calculate['semester'] === '5' || $bible_reading_calculate['semester'] === '6')) {
-            $text_deff = "Чтобы успеть до конца текущего года обучения, нужно прочитывать не менее {$bible_reading_calculate['ot_deff']} глав Ветхого Завета в день. ";
+            $text_deff = "Чтобы успеть до конца текущего года обучения, нужно прочитывать не менее {$bible_reading_calculate_ot} глав Ветхого Завета в день. ";
           }
 
           if ((!empty($bible_reading_calculate['nt_current']) && ($bible_reading_calculate['semester'] === '1' || $bible_reading_calculate['semester'] === '2')) || ($bible_reading_calculate['semester'] === '3' || $bible_reading_calculate['semester'] === '4')) {
             if (empty($text_deff)) {
-              $text_deff .= "Чтобы успеть до конца текущего года обучения, нужно прочитывать не менее {$bible_reading_calculate['nt_deff']} глав Нового Завета в день.";
+              $text_deff .= "Чтобы успеть до конца текущего года обучения, нужно прочитывать не менее {$bible_reading_calculate_nt} глав Нового Завета в день.";
             } else {
               $text_deff .= "И не менее {$bible_reading_calculate['nt_deff']} глав Нового Завета в день.";
             }

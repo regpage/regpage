@@ -464,7 +464,9 @@ $(document).ready(function(){
         nt_temp = split_book($("#bible_book_nt option:nth-child(3)").attr("data-book") + " " + $("#bible_book_nt option:nth-child(3)").attr("data-chapter"));
       }
       let found_temp = bible_arr.find(e => e[0] === nt_temp[0]);
-      if (found_temp[1] === nt_temp[1]) {
+      //console.log(found_temp[1]);
+      //console.log(nt_temp[1]);
+      if (typeof found_temp !== 'undefined' && found_temp[1] === nt_temp[1]) {
         setTimeout(function () {
           let query_temp = "&member_key=" + member_key + "&book=" + nt_temp[0] + "&chapter=" + nt_temp[1];
           fetch("ajax/ftt_reading_ajax.php?type=set_read_book&part=nt&checked=true" + query_temp)
@@ -576,7 +578,7 @@ $(document).ready(function(){
     let ot_was_read = true, nt_was_read = true, ot_was_read_notes, nt_was_read_notes;
     fetch("ajax/ftt_reading_ajax.php?type=get_read_books&member_key=" + $("#mdl_edit_read").attr("data-member_key"))
     .then(response => response.json())
-    .then(commits => {      
+    .then(commits => {
       // получаем options html прочитанных книг
       let data_reading = get_books_for_start(bible_arr, commits.result["books"]);
       let html_ot = data_reading["ot"];
