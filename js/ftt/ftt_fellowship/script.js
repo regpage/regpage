@@ -295,12 +295,18 @@ $(document).ready(function(){
   $("#mdl_edit_fellowship_staff").on("hide.bs.modal",function () {
     reset_meet_staff_blank($(this));
   });
-
+  // править запись
   $("#mdl_btn_meet_ok").click(function () {
     if (trainee_access) {
       meet_comment_change($("#mdl_meet_comment_trainee").val(), 1);
     } else {
-      save_meet_staff_blank();
+      if ($("#mdl_edit_fellowship_staff").attr("data-id")) {
+        // править запись
+        save_meet_staff_blank();
+      } else {
+        // добавить запись
+        save_meet_staff_blank(1);
+      }
     }
     $("#mdl_edit_fellowship_staff").modal("hide");
     setTimeout(function () {
@@ -390,7 +396,7 @@ $(document).ready(function(){
     module_blank_clear(elem);
   }
 
-  function save_meet_staff_blank() {
+  function save_meet_staff_blank(add) {
     let data_temp = {};
     let data = new FormData();
     data_temp["id"] = $("#mdl_edit_fellowship_staff").attr("data-id");
@@ -402,8 +408,11 @@ $(document).ready(function(){
     data_temp["comment_train"] = $("#mdl_meet_comment_trainee").val();
     data_temp["comment_serv"] = ""; //$("#mdl_meet_comment_serving_one").val()
     data.set("data", JSON.stringify(data_temp));
-
-    fetch("ajax/ftt_fellowship_ajax.php?type=set_meet_staff_blank", {
+    let type = "set_meet_staff_blank";
+    if (add) {
+      type = "add_meet_staff_blank";
+    }
+    fetch("ajax/ftt_fellowship_ajax.php?type=" + type, {
       method: 'POST',
       body: data
     })

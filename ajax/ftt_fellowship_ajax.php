@@ -48,9 +48,14 @@ if (isset($_GET['type']) && $_GET['type'] === 'dlt_fellowship_record') {
   exit();
 }
 
-// set record
+// update record
 if (isset($_GET['type']) && $_GET['type'] === 'set_meet_staff_blank') {
   echo json_encode(["result"=>set_meet_staff_blank($_POST['data'])]);
+  exit();
+}
+// add record
+if (isset($_GET['type']) && $_GET['type'] === 'add_meet_staff_blank') {
+  echo json_encode(["result"=>add_meet_staff_blank($_POST['data'])]);
   exit();
 }
 /*

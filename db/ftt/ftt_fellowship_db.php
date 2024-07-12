@@ -291,6 +291,24 @@ function set_meet_staff_blank($data)
     WHERE `id` = '$id'");
    return $res;
 }
+// добавить новую запись
+function add_meet_staff_blank($data)
+{
+  global $db;
+  $data = json_decode($data);
+  $serving_one = $db->real_escape_string($data->serving_one);
+  $trainee = $db->real_escape_string($data->trainee);
+  $date = $db->real_escape_string($data->date);
+  $time = $db->real_escape_string($data->time);
+  $duration = $db->real_escape_string($data->duration);
+  $comment_train = $db->real_escape_string($data->comment_train);
+  $comment_serv = $db->real_escape_string($data->comment_serv);
+
+  $res = db_query("INSERT INTO `ftt_fellowship` (`serving_one`, `trainee`, `date`, `time`, `duration`, `comment_train`, `comment_serv`, `changed`)
+    VALUES ('{$serving_one}', '{$trainee}', '{$date}', '{$time}', '{$duration}', '{$comment_train}', '{$comment_serv}', 1)");
+
+  return $res;
+}
 // Отменить запись на общение
 function cancel_communication_record($id, $comment='')
 {
