@@ -236,10 +236,11 @@ $(document).ready(function(){
 
   // удалить шаблон
   $(".dlt_fellowship_tmpl").click(function () {
-    if (confirm("Удалить все шаблоны?")) {
+    if (confirm("Удалить шаблон?")) {
       let parent = $(this).parent();
-      fetch("panelsource/content/ftt/fellowship_cntrl.php?type=dlt&member_key=" + parent.attr("data-member_key") + "&day=" + parent.find(".fellowship_tmpl_day").text().trim()
-        + "&time=" + parent.find(".fellowship_tmpl_time").text().trim() + "&duration=" + parent.find(".fellowship_tmpl_duration").text().trim())
+      data_str.get(parent);
+      fetch("panelsource/content/ftt/fellowship_cntrl.php?type=dlt&member_key=" + data_str.key + "&day=" + data_str.day
+        + "&time=" + data_str.time + "&duration=" + data_str.duration)
       .then(response => response.text())
       .then(result => {
         if (result) {
@@ -253,32 +254,98 @@ $(document).ready(function(){
     }
   });
 
-  // изменить шаблон
-  $("#SOMESOME").click(function () {
-    fetch("panelsource/fellowship_cntrl.php?type=set&member_key=" + $(this).attr("data-member_key"))
-    .then(response => response.text())
-    .then(result => {
-      if (result === "OK") {
-        //location.reload();
-      } else {
-        showError("Неудача.");
-      }
-    });
-  });
-
   // добавить шаблон
-  $("#SOMESOME").click(function () {
-    fetch("panelsource/fellowship_cntrl.php?type=add&member_key=" + $(this).attr("data-member_key"))
+  $("#add_fellowship_tmpl").click(function () {
+    $(".modal-title").text("Добавить шаблон");
+    $("#add_fellowship_tmpl_modal").attr("data-add", "1");
+    fellowship_blank_fillup(data_str.get());
+  });
+  // изменить шаблон
+  $(".set_fellowship_tmpl").click(function () {
+    $(".modal-title").text("Изменить шаблон");
+    $("#add_fellowship_tmpl_modal").attr("data-add", "");
+    fellowship_blank_fillup(data_str.get($(this).parent()));
+  });
+
+  // добавить / изменить шаблон запрос
+  $("#set_fellowship_tmpl_modal").click(function (e) {
+    data_str.get("save");
+    if (!data_str.key || data_str.key === "_none_" || !data_str.day || data_str.day === "_none_" || !data_str.time || !data_str.duration) {
+      e.preventDefault();
+      e.stopPropagation();
+      showError("Заполните все поля в форме.");
+      return;
+    }
+
+    let type = "set";
+    if ($("#add_fellowship_tmpl_modal").attr("data-add") === "1") {
+      type = "add";
+    }
+    fetch("panelsource/content/ftt/fellowship_cntrl.php?type=" + type + "&member_key=" + data_str.key + "&day=" + data_str.day
+      + "&time=" + data_str.time + "&duration=" + data_str.duration
+      + "&cond_member_key=" + data_str.old_key + "&cond_day=" + data_str.old_day
+      + "&cond_time=" + data_str.old_time + "&cond_duration=" + data_str.old_duration)
     .then(response => response.text())
     .then(result => {
-      if (result === "OK") {
-        //location.reload();
+      if (result) {
+        showHint("Успешно.");
+        setCookie("panel_tab_active", "ftt");
+        setTimeout(function () {
+          location.reload();
+        }, 300);
       } else {
         showError("Неудача.");
       }
     });
   });
 
+  // объект с данными переданной строки или пустышка
+  data_str = {
+      get: function(elem) {
+        if (elem === "save") {
+          this.old_key = $("#add_fellowship_tmpl_modal").attr("data-member_key") || "";
+          this.old_day = $("#add_fellowship_tmpl_modal").attr("data-day") || "";
+          this.old_time = $("#add_fellowship_tmpl_modal").attr("data-time") || "";
+          this.old_duration = $("#add_fellowship_tmpl_modal").attr("data-duration") || "";
+          this.key = $("#fellowship_tmpl_serving_one_list_modal").val() || "";
+          this.day = $("#fellowship_tmpl_days_modal").val() || "";
+          this.time = $("#fellowship_tmpl_time_modal").val() || "";
+          this.duration = $("#fellowship_tmpl_duration_modal").val() || "";
+        } else if (elem) {
+          this.key = elem.attr("data-member_key").trim() || "_none_";
+          this.name = elem.find(".fellowship_tmpl_name").text().trim() || "";
+          this.day = elem.find(".fellowship_tmpl_day").text().trim() || "_none_";
+          this.time = elem.find(".fellowship_tmpl_time").text().trim() || "";
+          this.duration = elem.find(".fellowship_tmpl_duration").text().trim() || "";
+        } else {
+          this.name = "";
+          this.key = "_none_";
+          this.day = "_none_";
+          this.time = "";
+          this.duration = "";
+        }
+        return this;
+      },
+      name: "",
+      key: "",
+      day: "",
+      time: "",
+      duration: ""
+  }
+
+  // заполнение бланка добавление/изменения общения данными переданной строки
+  function fellowship_blank_fillup(data) {
+    // заполняем данные в шапку
+    $("#add_fellowship_tmpl_modal").attr("data-member_key", data.key);
+    $("#add_fellowship_tmpl_modal").attr("data-day", data.day);
+    $("#add_fellowship_tmpl_modal").attr("data-time", data.time);
+    $("#add_fellowship_tmpl_modal").attr("data-duration", data.duration);
+    // заполняем поля данными
+    $("#fellowship_tmpl_serving_one_list_modal").val(data.key);
+    $("#fellowship_tmpl_days_modal").val(data.day);
+    $("#fellowship_tmpl_time_modal").val(data.time);
+    $("#fellowship_tmpl_duration_modal").val(data.duration);
+  }
 
 // ready page stop here
 });

@@ -10,22 +10,21 @@ if (isset($GLOBALS['global_root_path'])) {
 // ajax запросы раздела
 if (isset($_GET['type'])) {
   if ($_GET['type'] === 'dlt_all') {
-    $result = db_dltFttFellowshipTmpl('_all_');
-    echo $result;
+    echo db_dltFttFellowshipTmpl('_all_');
     exit;
   } elseif ($_GET['type'] === 'dlt') {
-    $result = db_dltFttFellowshipTmpl($_GET['member_key'], $_GET['day'], $_GET['time'], $_GET['duration']);
-    echo $result;
+    echo db_dltFttFellowshipTmpl($_GET['member_key'], $_GET['day'], $_GET['time'], $_GET['duration']);
     exit;
   } elseif ($_GET['type'] === 'set') {
-
+    echo db_updFttFellowshipTmpl($_GET['member_key'], $_GET['day'], $_GET['time'], $_GET['duration'], $_GET['cond_member_key'], $_GET['cond_day'], $_GET['cond_time'], $_GET['cond_duration']);
     exit;
   } elseif ($_GET['type'] === 'add') {
-
+    echo db_addFttFellowshipTmpl($_GET['member_key'], $_GET['day'], $_GET['time'], $_GET['duration']);
     exit;
   }
 }
 
 // контроллер раздела
+$fellowship_serving_one_list = ftt_lists::get_fellowship_list();
 // получаем все шаблоны
 $fttFellowshipTmpl = db_getFttFellowshipTmpl();

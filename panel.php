@@ -380,7 +380,7 @@ var data_page = {};
 </script>
 
 
-<script src="/panelsource/panel.js?v31"></script>
+<script src="/panelsource/panel.js?v32"></script>
 
 <?php
 include_once 'panelsource/js_part.php';
