@@ -1149,9 +1149,7 @@ $("#periods, #periods_mbl").change(function (e) {
     } else {
       $(".filter_range").show();
       if (e.target.id !== "periods_mbl") {
-        setTimeout(function () {
-          location.reload();
-        }, 30);
+
       }
     }
   } else {
