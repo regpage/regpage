@@ -21,7 +21,7 @@ function getGospel($condition, $memberId, $sorting, $from = "", $to = "", $team 
 
   $order_by = '';
   if ($condition === 'month') {
-    $condition = 'DATE(fg.date) >= (NOW() - INTERVAL 1 MONTH)';
+    $condition = 'DATE(fg.date) >= (CURDATE() - INTERVAL 1 MONTH)';
   } elseif ($condition === 'range') {
     $condition = " fg.date >= '{$from}' AND fg.date <= '{$to}' ";
   } else {
@@ -428,7 +428,7 @@ function gospelPersonalStatByDates($team, $period, $from, $to)
   $condition = '1';
 
   if ($period === 'month') {
-    $condition = 'DATE(fg.date) >= (NOW() - INTERVAL 1 MONTH) ';
+    $condition = 'DATE(fg.date) >= (CURDATE() - INTERVAL 1 MONTH) ';
   } elseif ($period === 'range') {
     $condition = " fg.date >= '{$from}' AND fg.date <= '{$to}' ";
   }

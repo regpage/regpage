@@ -60,20 +60,20 @@ function getFttAttendanceSheetAndStrings($list_access, $condition, $admin_id = '
   if ($condition === 'week') {
     if ($list_access_condition) {
       // это работает только для обучающихся
-      $condition = $list_access_condition.' AND DATE(fas.date) > (NOW() - INTERVAL 7 DAY) ';
+      $condition = $list_access_condition.' AND DATE(fas.date) > (CURDATE() - INTERVAL 7 DAY) ';
     } else {
       // это работает только для сдужащих
       if ($last_date) {
         $condition = " fas.date = '$last_date' ";
       } else {
-        $condition = ' DATE(fas.date) > (NOW() - INTERVAL 7 DAY) ';
+        $condition = ' DATE(fas.date) > (CURDATE() - INTERVAL 7 DAY) ';
       }
     }
   } elseif ($condition === 'month') {
     if ($list_access_condition) {
-      $condition = $list_access_condition.' AND DATE(fas.date) > (NOW() - INTERVAL 1 MONTH) ';
+      $condition = $list_access_condition.' AND DATE(fas.date) > (CURDATE() - INTERVAL 1 MONTH) ';
     } else {
-      $condition = ' DATE(fas.date) > (NOW() - INTERVAL 1 MONTH) ';
+      $condition = ' DATE(fas.date) > (CURDATE() - INTERVAL 1 MONTH) ';
     }
   } elseif ($condition === '_all_') {
     if (!$list_access_condition) {
@@ -357,7 +357,7 @@ function getSessionStaff($value='') {
   3. Получаем расписание на заданое число
   4. Отправляем данные в представление
   5. При необходимости сохраняем (учитывать существующие строки). Ненужные строки удаляем.
-  $res_correction = db_query("SELECT * FROM ftt_session_correction WHERE (`date` > (NOW() - INTERVAL 1 DAY)) AND (`date` < (NOW() + INTERVAL 1 DAY)) AND `attendance` = 1");
+  $res_correction = db_query("SELECT * FROM ftt_session_correction WHERE (`date` > (CURDATE() - INTERVAL 1 DAY)) AND (`date` < (CURDATE() + INTERVAL 1 DAY)) AND `attendance` = 1");
   while ($row = $res_correction->fetch_assoc()) $correction[] = $row;
   */
   return 1;
