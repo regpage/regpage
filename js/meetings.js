@@ -2538,6 +2538,17 @@ var modalAddMembersTemplate = $("#modalAddMembersTemplate");
 })();
 function screenSizeMdl() {
   if ($(window).width() <= 769) {
+    // DESING
+    // labels
+    $("#func_count").parent().parent().find("label:nth-child(1)").css("margin-right", "75px");
+    $("#func_count").parent().parent().find("label:nth-child(2)").text("Свят.").css("margin-right", "6px");
+    $("#func_count").parent().parent().find("label:nth-child(3)").css("margin-right", "5px");
+    $("#func_count").parent().parent().find("label:nth-child(4)").text("Гост.").css("margin-right", "8px");
+    $("#func_count").parent().parent().find("label:nth-child(5)").text("Всего").css("margin-right", "8px");
+    $("#func_count").parent().parent().find("label:nth-child(6)").text("Фун.");
+    // fields
+    $("#func_count").parent().find("input[type='text']").css("margin-right", "6px");
+    $("#func_count").parent().find("input[type='text']").not(".datepicker").css("width", "37px").css("margin-right", "6px");
 
     if ($(window).width() < 769 && $(window).width() > 436) {
       $(".btn-toolbar").attr('style', '');
