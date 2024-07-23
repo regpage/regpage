@@ -1023,7 +1023,8 @@ function db_getMemberListCopy ($adminId, $sortField, $sortType)
                     (SELECT name FROM member m2 WHERE m2.key=m.admin_key) as admin_name, m.active, m.locality_key,
                     DATEDIFF(CURRENT_DATE, STR_TO_DATE(m.birth_date, '%Y-%m-%d'))/365 as age, m.birth_date,
                     m.school_comment, m.college_comment, m.college_start, m.college_end, m.school_start, m.school_end,
-                    m.comment, co.name as college_name, m.category_key, m.attend_meeting,
+                    m.comment, co.name as college_name, m.category_key,
+                    at.attend_meeting, at.attend_pm, at.attend_gm, at.attend_am, at.attend_vt,
                     CASE WHEN m.category_key='SC' OR m.category_key='PS' THEN 1 ELSE 0 END as school,
                     CASE WHEN m.school_start>0 THEN YEAR(NOW()) - m.school_start + 1 ELSE 0 END as school_level,
                     CASE WHEN m.college_start>0 THEN YEAR(NOW()) - m.college_start + 1 ELSE 0 END as college_level,
@@ -1037,6 +1038,7 @@ function db_getMemberListCopy ($adminId, $sortField, $sortType)
                     INNER JOIN member m ON m.locality_key = l.key
                     LEFT JOIN college co ON co.key = m.college_key
                     LEFT JOIN category ca ON ca.key = m.category_key
+                    LEFT JOIN attendance at ON at.member_key = m.key
                     WHERE a.member_key='$adminId'
                     UNION
                     SELECT m.key as id, m.name as name, IF (COALESCE(m.locality_key,'')='', m.new_locality, m.name) as locality,
@@ -1044,7 +1046,8 @@ function db_getMemberListCopy ($adminId, $sortField, $sortType)
                     (SELECT name FROM member m2 WHERE m2.key=m.admin_key) as admin_name, m.active, m.locality_key,
                     DATEDIFF(CURRENT_DATE, STR_TO_DATE(m.birth_date, '%Y-%m-%d'))/365 as age, m.birth_date,
                     m.school_comment, m.college_comment, m.college_start, m.college_end, m.school_start, m.school_end,
-                    m.comment, co.name as college_name, m.category_key, m.attend_meeting,
+                    m.comment, co.name as college_name, m.category_key,
+                    at.attend_meeting, at.attend_pm, at.attend_gm, at.attend_am, at.attend_vt,
                     CASE WHEN m.category_key='SC' OR m.category_key='PS' THEN 1 ELSE 0 END as school,
                     CASE WHEN m.school_start>0 THEN YEAR(NOW()) - m.school_start + 1 ELSE 0 END as school_level,
                     CASE WHEN m.college_start>0 THEN YEAR(NOW()) - m.college_start + 1 ELSE 0 END as college_level,
@@ -1054,6 +1057,7 @@ function db_getMemberListCopy ($adminId, $sortField, $sortType)
                     FROM member m
                     LEFT JOIN college co ON co.key = m.college_key
                     LEFT JOIN category ca ON ca.key = m.category_key
+                    LEFT JOIN attendance at ON at.member_key = m.key
                     WHERE m.admin_key='$adminId' and m.locality_key is NULL
                     ) q ORDER BY $active $sortField $sortType $sortAdd ");
 

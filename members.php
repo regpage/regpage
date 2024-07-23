@@ -19,7 +19,7 @@ $noEvent = true;
 $roleThisAdmin = db_getAdminRole($memberId);
 $selMemberLocality = isset ($_COOKIE['selMemberLocality']) ? $_COOKIE['selMemberLocality'] : '_all_';
 $selMemberCategory = isset ($_COOKIE['selMemberCategory']) ? $_COOKIE['selMemberCategory'] : '_all_';
-
+$selAttendMeeting = isset ($_COOKIE['selAttendMeeting']) ? $_COOKIE['selAttendMeeting'] : '_all_';
 $allLocalities = db_getLocalities();
 $adminLocality = db_getAdminLocality($memberId);
 
@@ -101,9 +101,13 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
             </div>
             <div class="btn-group">
     					<select id="selMemberAttendMeeting" class="span2">
-    						<option value='_all_' >Все участники</option>
-    						<option value='1' >Посещают собрания</option>
-    						<option value='0' >Не посещают собрания</option>
+                <option value='_all_' >Все участники</option>
+                <?php
+                $flt_members_attend_array = ['Не посещают собрания', 'Посещают Господню трапезу', 'Посещают молитвенные собрания', 'Посещают групповые собрания', 'Посещают другие собрания', 'Посещают какие-либо собрания', 'Участвуют в видеообучении'];
+                foreach ($flt_members_attend_array as $key => $value) {
+                  echo "<option value='{$key}'" . (strval($key) === $selAttendMeeting ? 'selected' : '') .">{$value}";
+                }
+                ?>
     					</select>
     				</div>
             <!--<div class="btn-group">
@@ -623,7 +627,7 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
 
     function loadDashboard (){
         $.getJSON('/ajax/members.php', { sortedFields : sortedFields()})
-            .done (function(data) {
+            .done (function(data) {              
                 refreshMembers (data.members); });
     }
 
@@ -651,7 +655,10 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
               // m.region += m.country;
             }
 
-            tableRows.push('<tr data-id="'+m.id+'" data-name="'+m.name+'" data-age="'+m.age+'" data-attendance="'+m.attend_meeting+'" data-locality="'+m.locality_key+'" data-category="'+m.category_key+'" class="'+(m.active==0?'inactive-member':'member-row')+'">'+
+            tableRows.push('<tr data-id="'+m.id+'" data-name="'+m.name+'" data-age="'+m.age+'" data-attendance="'+(m.attend_meeting ? m.attend_meeting : "") +'" pm="'
+              + (m.attend_pm ? m.attend_pm : "") +'" gm="' + (m.attend_gm ? m.attend_gm : "") + '" am="' + (m.attend_am ? m.attend_am : "") +'" vt="'
+            + (m.attend_vt ? m.attend_vt : "") +'" data-locality="'+m.locality_key+'" data-category="'
+              +m.category_key+'" class="'+(m.active==0?'inactive-member':'member-row')+'">'+
                 '<td>' + he(m.name) +
 (in_array(5, window.user_settings) ? '<br/>'+ '<span class="user_setting_span">'+m.category_name+'</span>' : '') +
                 '</td>' +
@@ -669,7 +676,10 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
                 '</tr>'
             );
 
-            phoneRows.push('<tr data-id="'+m.id+'" data-name="'+m.name+'" data-age="'+m.age+'" data-attendance="'+m.attend_meeting+'" data-locality="'+m.locality_key+'" data-category="'+m.category_key+'" class="'+(m.active==0?'inactive-member':'member-row')+'">'+
+            phoneRows.push('<tr data-id="'+m.id+'" data-name="'+m.name+'" data-age="'+m.age+'" data-attendance="'+(m.attend_meeting ? m.attend_meeting : "") +'" pm="'
+              + (m.attend_pm ? m.attend_pm : "") +'" gm="' + (m.attend_gm ? m.attend_gm : "") + '" am="' + (m.attend_am ? m.attend_am : "") +'" vt="'
+            + (m.attend_vt ? m.attend_vt : "") +'" data-locality="'+m.locality_key+'" data-category="'
+              +m.category_key+'" class="'+(m.active==0?'inactive-member':'member-row')+'">'+
                 '<td><span style="color: #006">' + he(m.name) + ' '
                 + (in_array(5, window.user_settings) ? '<br/>'+ '<span class="user_setting_span">'+m.category_name+'</span>' : '') +'</span>'+
                 '<i style="float: right; cursor:pointer;" class="'+(m.active==0?'icon-circle-arrow-up':'')+' icon-black" title="'+(m.active==0 ? 'Добавить в список':'Удалить из списка')+'"/>'+
@@ -1157,16 +1167,30 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
         $(".members-list " + ( isTabletMode ? " #membersPhone " : " #members" ) + " tbody tr").each(function(){
             var memberLocality = $(this).attr('data-locality'),
                 memberCategory = $(this).attr('data-category'),
-                attendMeeting = $(this).attr('data-attendance'),
                 memberName = $(this).find('td').first().text().toLowerCase(),
                 memberKey = $(this).attr('data-id');
-
-
+                attendMeeting = $(this).attr('data-attendance');
+            let am = $(this).attr('am'),
+            pm = $(this).attr('pm'),
+            gm = $(this).attr('gm'),
+            vt = $(this).attr('vt');
+            if (attendMeetingFilter !== '_all_') {
+              attendMeetingFilter
+            }
             if(((localityFilter === '_all_' || localityFilter === undefined) && categoryFilter === '_all_' && text === '' && attendMeetingFilter === '_all_') ||
 
                 (
                     (in_array(memberLocality, localityList) || localityFilter === '_all_' || (localityFilter === undefined && localityList.length === 0))  &&
-                    (memberCategory === categoryFilter || categoryFilter === '_all_') && (attendMeeting === attendMeetingFilter || attendMeetingFilter === '_all_') ) && (memberName.search(text) !== -1))
+                    (memberCategory === categoryFilter || categoryFilter === '_all_') && (attendMeetingFilter === '_all_'
+                    || ((attendMeetingFilter === "0" && (attendMeeting !== "1" && pm !== "1" && gm !== "1" && am !== "1"))
+                    || (attendMeetingFilter === "1" && attendMeeting === "1")
+                    || (attendMeetingFilter === "2" && pm === "1")
+                    || (attendMeetingFilter === "3" && gm === "1")
+                    || (attendMeetingFilter === "4" && am === "1")
+                    || (attendMeetingFilter === "5" && (attendMeeting === "1" || pm === "1" || gm === "1" || am === "1"))
+                    || (attendMeetingFilter === "6" && vt === "1")
+                    )))
+                    && (memberName.search(text) !== -1))
                 {
 
                 $(this).show();
