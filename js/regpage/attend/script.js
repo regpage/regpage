@@ -1,6 +1,8 @@
 /* ==== Attend START ==== */
 $(document).ready(function(){
   /* ==== DOCUMENT READY START ==== */
+  // применяем фильтры
+  filtersOfString();
   // save checkbox
   $("#attend_list input[type='checkbox']").change(function () {
     let table = "attendance";
@@ -281,6 +283,9 @@ $(document).ready(function(){
 
   $("#flt_members_attend, #flt_members_category, #flt_members_localities, #field_search_text").change(function () {
     filtersOfString();
+     if ($(this).attr("id") !== "field_search_text") {
+        setCookie($(this).attr("id"), $(this).val(), 356);
+     }
   });
 
   // Кастомные фильтры ДОРАБОТАТЬ
@@ -463,6 +468,9 @@ $(document).ready(function(){
       }
 
       $("#flt_members_localities").html(localities_list.join(''));
+      if (getCookie("flt_members_localities")) {
+        $("#flt_members_localities").val(getCookie("flt_members_localities"));
+      }
   }
 
   // --- PRINT LIST events --- //

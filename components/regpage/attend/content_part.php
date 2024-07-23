@@ -41,7 +41,12 @@
   <?php if (!$singleCity): ?>
   <div class="mr-2">
     <select id="flt_members_localities" class="form-control form-control-sm">
-      <?php FTT_Select_fields::rendering($adminLocalitiesList, '_all_', 'Все местности'); ?>
+      <?php
+      $flt_members_localities = '_all_';
+      if (isset($_COOKIE['flt_members_localities']) && !empty($_COOKIE['flt_members_localities'])) {
+        $flt_members_localities = $_COOKIE['flt_members_localities'];
+      }
+      FTT_Select_fields::rendering($adminLocalitiesList, $flt_members_localities, 'Все местности'); ?>
     </select>
   </div>
   <?php endif; ?>
@@ -53,21 +58,26 @@
         $memberCategoriesFilter[$key] = $value;
         if ($key === 'FT') {
           $memberCategoriesFilter['NF'] = 'Без обучающихся ПВОМ';
+          break;
         }
       }
-      FTT_Select_fields::rendering($memberCategoriesFilter, '_all_', 'Все участники'); ?>
+      $flt_members_category = '_all_';
+      if (isset($_COOKIE['flt_members_category']) && !empty($_COOKIE['flt_members_category'])) {
+        $flt_members_category = $_COOKIE['flt_members_category'];
+      }
+      FTT_Select_fields::rendering($memberCategoriesFilter, $flt_members_category, 'Все участники'); ?>
     </select>
   </div>
   <div class="mr-2">
   	<select id="flt_members_attend" class="form-control form-control-sm">
-      <option value="_all_">Все участники</option>
-  		<option value="1">Посещают Господню трапезу</option>
-      <option value="2">Посещают молитвенные собрания</option>
-      <option value="3">Посещают групповые собрания</option>
-      <option value="4">Посещают другие собрания</option>
-      <option value="5">Посещают какие-либо собрания</option>
-      <option value="6">Участвуют в видеообучении</option>
-      <option value="0">Не посещают собрания</option>
+      <?php
+      $flt_members_attend_array = ['Не посещают собрания', 'Посещают Господню трапезу', 'Посещают молитвенные собрания', 'Посещают групповые собрания', 'Посещают другие собрания', 'Посещают какие-либо собрания', 'Участвуют в видеообучении'];
+      $flt_members_attend = '_all_';
+      if (isset($_COOKIE['flt_members_attend']) && (!empty($_COOKIE['flt_members_attend']) || $_COOKIE['flt_members_attend'] === '0')) {
+        $flt_members_attend = $_COOKIE['flt_members_attend'];
+      }
+      FTT_Select_fields::rendering($flt_members_attend_array, $flt_members_attend, 'Все участники');
+      ?>
   	</select>
   </div>
   <div class="mr-2">

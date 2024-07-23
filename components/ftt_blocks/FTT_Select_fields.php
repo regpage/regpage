@@ -14,11 +14,11 @@
       foreach ($list as $key => $value) {
         $selected = '';
         if ($same_value) {
-          if ($value === $seleted_option) {
+          if (strval(trim($value)) === strval(trim($seleted_option))) {
             $selected = 'selected';
           }
         } else {
-          if ($key === $seleted_option) {
+          if (strval(trim($key)) === strval(trim($seleted_option))) {
             $selected = 'selected';
           }
         }
@@ -32,5 +32,3 @@
       }
     }
   }
-
-?>
