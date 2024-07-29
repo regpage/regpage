@@ -36,7 +36,7 @@ $(document).ready(function(){
     //setCookie('filter_serving_one', $(this).val(), 1);
     filter_trainee();
   });
-
+  // search field keyup
   $("#search_field").keyup(function(e) {
     if ($("#tab_trainee").hasClass("active")) {
       filter_trainee();

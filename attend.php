@@ -1,7 +1,7 @@
 <?php
     // preheader
-    require_once "preheader.php";
-
+    require_once "components/main/preheader.php";
+exit;
     // Глобальные переменные разделов
     require_once "components/regpage/main/var_main.php";
 
@@ -16,6 +16,9 @@
 
     // HTML код раздела
     require_once "components/regpage/main/content_container.php";
+
+    // HTML модальные окно бланка
+    include_once "components/main/blank.php";
 
     // Глобальный JS код для ftt
     require_once "components/regpage/main/js_main.php";

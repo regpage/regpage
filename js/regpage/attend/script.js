@@ -1,8 +1,15 @@
 /* ==== Attend START ==== */
 $(document).ready(function(){
   /* ==== DOCUMENT READY START ==== */
+  $("#spinner_attend").remove();
   // применяем фильтры
   filtersOfString();
+
+
+  $("#add_member").click(function () {
+    $("#modalAddEdit").modal("show");
+  });
+
   // save checkbox
   $("#attend_list input[type='checkbox']").change(function () {
     let table = "attendance";

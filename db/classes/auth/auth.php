@@ -26,8 +26,16 @@ class Auth
   {
     $sessionId = db_real_escape_string($sessionId);
 
-    $res = db_query ("SELECT member_key from admin where session='{$sessionId}'");
-    if ($row = $res->fetch_assoc()) return $row['member_key'];
+    $res=db_query ("SELECT admin_key from admin_session where id_session='{$sessionId}'");
+    if ($row = $res->fetch_assoc()) return $row['admin_key'];
     return NULL;
+  }
+
+  function last_visit_time_update ($sessionId)
+  {
+      global $db;
+      $datatime = date("Y-m-d H:i:s");
+      $sessionId = db_real_escape_string($sessionId);
+      db_query ("UPDATE admin_session SET time_last_visit = '{$datatime}' WHERE id_session='{$sessionId}'");
   }
 }

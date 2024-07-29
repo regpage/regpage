@@ -12,90 +12,79 @@
   <input type="search" id="field_search_text" class="form-control form-control-sm" placeholder="Поиск по фамилии" style="max-width: 468px;">
 </div>
 <div class="row mb-3">
-  <!--<div class="btn-group">
-    <a class="btn btn-success add-member" data-locality="001013" type="button"><i class="fa fa-plus icon-white"></i> <span class="hide-name">Добавить</span></a>
-  </div>
   <div class="btn-group">
-    <a class="btn dropdown-toggle btnDownloadMembers" data-toggle="dropdown" href="#">
-      <i class="fa fa-download"></i> <span class="hide-name">Скачать</span>
-    </a>
-  </div>
-  <div class="btn-group">
-    <a class="btn dropdown-toggle btnShowStatistic" data-toggle="dropdown" href="#">
-      <i class="fa fa-bar-chart"></i> <span class="hide-name">Статистика</span>
-    </a>
-  </div>
-  <div class="btn-group" style="display: none;">
-    <a id="" class="btn" type="button">
-      <i class="fa fa-sort"></i>
-    </a>
-  </div>
-  <?php // if (!$singleCity): ?>
-  <div class="">
-    <button id="btn_show_custom_filters" type="button" class="btn btn-primary btn-sm rounded mr-2">
-      <i class="fa fa-filter icon-white"></i>
-      <span class="hide-name">Фильтры</span>
+    <button type="button" id="add_member" class="btn btn-success btn-sm mr-2 rounded" data-locality="001013">
+      <span class="hide-name">Добавить</span> <!--<i class="fa fa-plus icon-white"></i>-->
     </button>
-  <?php // endif; ?>
-  </div>-->
+    <button type="button" class="btn btn-warning btn-sm btnDownloadMembers mr-2 rounded">
+      <span class="hide-name">Скачать</span> <!-- <i class="fa fa-download"></i>  -->
+    </button>
+    <button type="button" class="btn btn-info btn-sm btnShowStatistic mr-2 rounded">
+      <span class="hide-name">Статистика</span> <!-- <i class="fa fa-bar-chart"></i> -->
+    </button>
+  </div>
+  <div class="" style="display: none;">
+    <button id="" class="btn" type="button">
+      <i class="fa fa-sort"></i>
+    </button>
+  </div>
   <?php if (!$singleCity): ?>
-  <div class="mr-2">
-    <select id="flt_members_localities" class="form-control form-control-sm">
-      <?php
-      $flt_members_localities = '_all_';
-      if (isset($_COOKIE['flt_members_localities']) && !empty($_COOKIE['flt_members_localities'])) {
-        $flt_members_localities = $_COOKIE['flt_members_localities'];
-      }
-      FTT_Select_fields::rendering($adminLocalitiesList, $flt_members_localities, 'Все местности'); ?>
-    </select>
-  </div>
+  <button id="btn_show_custom_filters" type="button" class="btn btn-primary btn-sm rounded mr-2">
+    <span class="hide-name">Фильтры</span> <!-- <i class="fa fa-filter icon-white"></i> -->
+  </button>
   <?php endif; ?>
-  <div class="mr-2">
-    <select id="flt_members_category" class="form-control form-control-sm">
-      <?php
-      $memberCategoriesFilter = [];
-      foreach (MemberProperties::get_categories() as $key => $value) {
-        $memberCategoriesFilter[$key] = $value;
-        if ($key === 'FT') {
-          $memberCategoriesFilter['NF'] = 'Без обучающихся ПВОМ';
-          break;
-        }
-      }
-      $flt_members_category = '_all_';
-      if (isset($_COOKIE['flt_members_category']) && !empty($_COOKIE['flt_members_category'])) {
-        $flt_members_category = $_COOKIE['flt_members_category'];
-      }
-      FTT_Select_fields::rendering($memberCategoriesFilter, $flt_members_category, 'Все участники'); ?>
-    </select>
-  </div>
-  <div class="mr-2">
-  	<select id="flt_members_attend" class="form-control form-control-sm">
-      <?php
-      $flt_members_attend_array = ['Не посещают собрания', 'Посещают Господню трапезу', 'Посещают молитвенные собрания', 'Посещают групповые собрания', 'Посещают другие собрания', 'Посещают какие-либо собрания', 'Участвуют в видеообучении'];
-      $flt_members_attend = '_all_';
-      if (isset($_COOKIE['flt_members_attend']) && (!empty($_COOKIE['flt_members_attend']) || $_COOKIE['flt_members_attend'] === '0')) {
-        $flt_members_attend = $_COOKIE['flt_members_attend'];
-      }
-      FTT_Select_fields::rendering($flt_members_attend_array, $flt_members_attend, 'Все участники');
-      ?>
-  	</select>
-  </div>
-  <div class="mr-2">
-    <div class="dropdown">
-      <button type="button" class="btn btn-light btn-sm rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-        <i class="fa fa-print"></i>
-        <i class="fa fa-caret-down" aria-hidden="true"></i>
-      </button>
-      <div class="dropdown-menu">
-        <button id="btnPrintOpenModal" class="dropdown-item" type="button">Таблица посещаемости</button>
-        <button id="btnPrintOpenModalBlank" class="dropdown-item" type="button">Таблица посещаемости (бланк)</button>
-        <button id="btnPrintOpenModalControlListVT" class="dropdown-item" type="button">Контрольный список ВО</button>
-        <button id="btnPrintOpenModalControlListVTBlank" class="dropdown-item" type="button">Контрольный список ВО (бланк)</button>
-        <button id="btnPrintOpenModalBadgesVT" class="dropdown-item" type="button">Значки для Видеообучения</button>
-        <button id="btnPrintOpenModalVT" class="dropdown-item" type="button">Список участников Видеообучения</button>
-      </div>
+  <div class="dropdown mr-2">
+    <button type="button" class="btn btn-light btn-sm rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+      <i class="fa fa-print"></i>
+      <i class="fa fa-caret-down" aria-hidden="true"></i>
+    </button>
+    <div class="dropdown-menu">
+      <button id="btnPrintOpenModal" class="dropdown-item" type="button">Таблица посещаемости</button>
+      <button id="btnPrintOpenModalBlank" class="dropdown-item" type="button">Таблица посещаемости (бланк)</button>
+      <button id="btnPrintOpenModalControlListVT" class="dropdown-item" type="button">Контрольный список ВО</button>
+      <button id="btnPrintOpenModalControlListVTBlank" class="dropdown-item" type="button">Контрольный список ВО (бланк)</button>
+      <button id="btnPrintOpenModalBadgesVT" class="dropdown-item" type="button">Значки для Видеообучения</button>
+      <button id="btnPrintOpenModalVT" class="dropdown-item" type="button">Список участников Видеообучения</button>
     </div>
   </div>
+  <?php if (!$singleCity): ?>
+  <select id="flt_members_localities" class="form-control form-control-sm mr-2" style="width: 15%">
+    <?php
+    $flt_members_localities = '_all_';
+    if (isset($_COOKIE['flt_members_localities']) && !empty($_COOKIE['flt_members_localities'])) {
+      $flt_members_localities = $_COOKIE['flt_members_localities'];
+    }
+    FTT_Select_fields::rendering($adminLocalitiesList, $flt_members_localities, 'Все местности'); ?>
+  </select>
+  <?php endif; ?>
+
+  <select id="flt_members_category" class="form-control form-control-sm mr-2" style="width: 15%">
+    <?php
+    $memberCategoriesFilter = [];
+    foreach (MemberProperties::get_categories() as $key => $value) {
+      $memberCategoriesFilter[$key] = $value;
+      if ($key === 'FT') {
+        $memberCategoriesFilter['NF'] = 'Без обучающихся ПВОМ';
+        break;
+      }
+    }
+    $flt_members_category = '_all_';
+    if (isset($_COOKIE['flt_members_category']) && !empty($_COOKIE['flt_members_category'])) {
+      $flt_members_category = $_COOKIE['flt_members_category'];
+    }
+    FTT_Select_fields::rendering($memberCategoriesFilter, $flt_members_category, 'Все участники'); ?>
+  </select>
+
+  <select id="flt_members_attend" class="form-control form-control-sm mr-2" style="width: 16%">
+    <?php
+    $flt_members_attend_array = ['Не посещают собрания', 'Посещают Господню трапезу', 'Посещают молитвенные собрания', 'Посещают групповые собрания', 'Посещают другие собрания', 'Посещают какие-либо собрания', 'Участвуют в видеообучении'];
+    $flt_members_attend = '_all_';
+    if (isset($_COOKIE['flt_members_attend']) && (!empty($_COOKIE['flt_members_attend']) || $_COOKIE['flt_members_attend'] === '0')) {
+      $flt_members_attend = $_COOKIE['flt_members_attend'];
+    }
+    FTT_Select_fields::rendering($flt_members_attend_array, $flt_members_attend, 'Все участники');
+    ?>
+  </select>
 </div>
 <div id="col_name" class="row mb-2">
   <div class="col-2 pl-1" style="min-width: 280px;">

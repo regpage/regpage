@@ -14,6 +14,9 @@
     // HTML модальные окна основной страницы
     include_once "components/ftt_list/modals_part.php";
 
+    // HTML модальные окно бланка
+    include_once "components/main/blank.php";
+
     // JS
     include_once "components/ftt_list/js_part.php";
 

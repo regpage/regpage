@@ -1,6 +1,5 @@
 <!-- Спинер -->
 <?php require_once 'components/main/spinner.php'; ?>
-
 <!-- Кастомные фильтры -->
 <div id="modal_custom_filters" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
