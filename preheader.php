@@ -62,7 +62,7 @@ if ($isFttPage === '/ftt') {
   $isFttPage = false;
 }
 
-define("IS_FTT", $isFttPage);
+define("IS_FTT_PAGE", $isFttPage);
 
 // Бланки по ссылке. Эта проверка перенесена в index.php
 /* if ((!$memberId && isset ($_GET["link"])) || (!$memberId && isset ($_GET["invited"]))){

@@ -128,3 +128,24 @@
     </div>
   </div>
 </div>
+
+<!-- окно сброса взносов и комментариев -->
+<div id="modal_show_reset_fee_comment" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="mb-0">Сброс данных</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+      </div>
+      <div class="modal-body">
+        <div class="">
+          В текущем списке будут удалены данные из колонок «Взнос» и «Комментарий». Продолжить?
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btn_reset_fee_comment" class="btn btn-sm btn-danger" data-dismiss="modal" aria-hidden="true">Да</button>
+        <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true">Нет</button>
+      </div>
+    </div>
+  </div>
+</div>

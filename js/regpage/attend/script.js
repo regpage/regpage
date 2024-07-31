@@ -5,6 +5,36 @@ $(document).ready(function(){
   // применяем фильтры
   filtersOfString();
 
+  // сброс комментариев и взносов для списка (с учётом фильтров)
+  $("#btn_reset_fee_comment").click(function () {
+    $("#spinner").show();
+    let members_for_reset = [];
+    $("#attend_list .attend_str:visible").each(function () {
+      if ($(this).find(".vt_fee_field").val() > 0 || $(this).find(".vt_comment_field").val()) {
+        members_for_reset.push($(this).attr("data-member_key"));
+        $(this).find(".vt_fee_field").val(0);
+        $(this).find(".vt_comment_field").val("");
+        $(this).find(".vt_fee_text").text("");
+        $(this).find(".vt_comment_text").text("");
+      }
+    });
+    let data = new FormData()
+    if (members_for_reset.length === 0) {
+      $("#spinner").hide();
+      showHint("Взносы и комментарии отсутствуют в текущем списке.");
+      return;
+    }
+    data.set("data", JSON.stringify(members_for_reset))
+    fetch("/ajax/attend_ajax.php?type=reset_fee_comment", {
+      method: 'POST',
+      body: data
+    })
+    .then(response => response.text())
+    .then(commits => {
+      $("#spinner").hide();
+      showHint("Данные удалены.");
+    });
+  });
 
   $("#add_member").click(function () {
     $("#modalAddEdit").modal("show");

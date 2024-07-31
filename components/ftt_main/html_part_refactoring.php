@@ -7,6 +7,7 @@ if ($ftt_access['group'] === 'staff' || $ftt_access['group'] === 'trainee') {
 <!-- Основная страница разделов ПВОМ -->
 <div id="main_container" class="container-xl" style="margin-top: 10px; padding-left: 20px; padding-bottom: 25px; background-color: white; max-width: 1170px;">
           <?php
+          // В новом прехедере используется константа THIS_PAGE
           if ($thispage === 'ftt_schedule') {
             if ($ftt_access['group'] === 'staff') {
               include_once 'components/ftt_schedule/staff_content_part.php';

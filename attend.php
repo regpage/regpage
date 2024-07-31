@@ -1,16 +1,17 @@
 <?php
     // preheader
     require_once "components/main/preheader.php";
-exit;
+
     // Глобальные переменные разделов
     require_once "components/regpage/main/var_main.php";
-
+// exit;
     // Переменные раздела
     require_once "components/regpage/attend/var_part.php";
 
     // Header
     require_once "header2.php";
-
+    // временно
+    require_once "db.php";
     // Меню
     require_once "nav2.php";
 

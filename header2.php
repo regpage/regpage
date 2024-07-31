@@ -29,7 +29,7 @@
     <link href="css/style2.css?v18" rel="stylesheet">
     <!--  <link href="css/style_slide.css?v2" rel="stylesheet">-->
 
-<?php if (IS_FTT) { ?>
+<?php if (IS_FTT_PAGE) { ?>
     <!-- Основные стили ПВОМ -->
     <link href="css/ftt/ftt.css?v5" rel="stylesheet">
 <?php } ?>

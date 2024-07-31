@@ -12,6 +12,7 @@ if ($ftt_access['group'] === 'staff' || $ftt_access['group'] === 'trainee') {
       <!-- Блоки разделов  -->
         <div id="ftt_sub_container" class="container tab-pane active" style="background-color: white; min-width: 350px; padding-left: 5px; padding-right: 5px;">
           <?php
+          // В НОВОМ ПРЕХЕДЕРЕ ИСПОЛЬЗУЕТСЯ КОНСТАНТА THIS_PAGE
           if ($thispage === 'ftt_schedule') {
             if ($ftt_access['staff_time_zone'] === '03') {
               ?>

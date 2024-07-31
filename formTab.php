@@ -381,7 +381,9 @@ if ($noEvent) { ?>
             <input class="span12 emComment" type="text">
         </div>
     </div>
-    <?php if($thispage == 'members'){
+    <?php
+    // В НОВОМ ПРЕХЕДЕРЕ ИСПОЛЬЗУЕТСЯ КОНСТАНТА THIS_PAGE
+     if($thispage == 'members'){
       include_once 'components/members/ftt_part.php';
     } ?>
 <?php } else  {

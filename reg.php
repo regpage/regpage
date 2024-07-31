@@ -201,7 +201,7 @@
                             <?php endif; ?>>Телефон</th>
                             <th class="table_present" style="display: none;">Кат.</th><th class="table_present" style="display: none;">*</th><th class="table_present" style="display: none;">*</th>
                             <th class="table_present" style="display: none;">*</th><th class="table_present" style="display: none;">*</th>
-                            <th class="hide-tablet"><a id="sort-status" href='#' title="сортировать">
+                            <th class="hide-tablet" style="padding-right: 4px;"><a id="sort-status" href='#' title="сортировать">
                               <?php if (in_array(16, $user_settings_arr) && !in_array(15, $user_settings_arr)): ?>
                                 Стат.
                               <?php else: ?>

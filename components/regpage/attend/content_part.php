@@ -1,3 +1,14 @@
+<!-- СПИНЕР ЗАГРУЗОЧНЫЙ-->
+<div id="spinner_attend" class="modal"  role="dialog" data-backdrop="static"  style="display:block;">
+  <div class="modal-dialog modal-sm modal-dialog-centered" style="background-color: #fff0;">
+    <div class="modal-content" style="border: none; background-color: #fff0;">
+      <div class="modal-body" style="background-color: #fff0;">
+        <div class="spinner-border text-primary" style="margin-left: 100px;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="row" style="margin-bottom: 19px;">
   <!-- Список подразделов -->
   <select id="members-lists-combo" class="form-control form-control-sm mr-2" tooltip="Выберите нужный вам список здесь" style="max-width: 468px;">
@@ -13,13 +24,13 @@
 </div>
 <div class="row mb-3">
   <div class="btn-group">
-    <button type="button" id="add_member" class="btn btn-success btn-sm mr-2 rounded" data-locality="001013">
+    <button type="button" class="btn btn-success btn-sm add-member mr-2 rounded" data-locality="001013" disabled>
       <span class="hide-name">Добавить</span> <!--<i class="fa fa-plus icon-white"></i>-->
     </button>
-    <button type="button" class="btn btn-warning btn-sm btnDownloadMembers mr-2 rounded">
+    <button type="button" class="btn btn-warning btn-sm btnDownloadMembers mr-2 rounded" disabled>
       <span class="hide-name">Скачать</span> <!-- <i class="fa fa-download"></i>  -->
     </button>
-    <button type="button" class="btn btn-info btn-sm btnShowStatistic mr-2 rounded">
+    <button type="button" class="btn btn-info btn-sm btnShowStatistic mr-2 rounded" disabled>
       <span class="hide-name">Статистика</span> <!-- <i class="fa fa-bar-chart"></i> -->
     </button>
   </div>
@@ -29,24 +40,11 @@
     </button>
   </div>
   <?php if (!$singleCity): ?>
-  <button id="btn_show_custom_filters" type="button" class="btn btn-primary btn-sm rounded mr-2">
+  <button id="btn_show_custom_filters" type="button" class="btn btn-primary btn-sm rounded mr-2" disabled>
     <span class="hide-name">Фильтры</span> <!-- <i class="fa fa-filter icon-white"></i> -->
   </button>
   <?php endif; ?>
-  <div class="dropdown mr-2">
-    <button type="button" class="btn btn-light btn-sm rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-      <i class="fa fa-print"></i>
-      <i class="fa fa-caret-down" aria-hidden="true"></i>
-    </button>
-    <div class="dropdown-menu">
-      <button id="btnPrintOpenModal" class="dropdown-item" type="button">Таблица посещаемости</button>
-      <button id="btnPrintOpenModalBlank" class="dropdown-item" type="button">Таблица посещаемости (бланк)</button>
-      <button id="btnPrintOpenModalControlListVT" class="dropdown-item" type="button">Контрольный список ВО</button>
-      <button id="btnPrintOpenModalControlListVTBlank" class="dropdown-item" type="button">Контрольный список ВО (бланк)</button>
-      <button id="btnPrintOpenModalBadgesVT" class="dropdown-item" type="button">Значки для Видеообучения</button>
-      <button id="btnPrintOpenModalVT" class="dropdown-item" type="button">Список участников Видеообучения</button>
-    </div>
-  </div>
+
   <?php if (!$singleCity): ?>
   <select id="flt_members_localities" class="form-control form-control-sm mr-2" style="width: 15%">
     <?php
@@ -75,7 +73,7 @@
     FTT_Select_fields::rendering($memberCategoriesFilter, $flt_members_category, 'Все участники'); ?>
   </select>
 
-  <select id="flt_members_attend" class="form-control form-control-sm mr-2" style="width: 16%">
+  <select id="flt_members_attend" class="form-control form-control-sm mr-2" style="width: 15%">
     <?php
     $flt_members_attend_array = ['Не посещают собрания', 'Посещают Господню трапезу', 'Посещают молитвенные собрания', 'Посещают групповые собрания', 'Посещают другие собрания', 'Посещают какие-либо собрания', 'Участвуют в видеообучении'];
     $flt_members_attend = '_all_';
@@ -85,6 +83,26 @@
     FTT_Select_fields::rendering($flt_members_attend_array, $flt_members_attend, 'Все участники');
     ?>
   </select>
+
+  <div class="mr-2">
+    <div class="dropdown">
+      <button type="button" class="btn btn-light btn-sm rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+        <i class="fa fa-print"></i>
+        <i class="fa fa-caret-down" aria-hidden="true"></i>
+      </button>
+      <div class="dropdown-menu">
+        <button id="btnPrintOpenModal" class="dropdown-item" type="button">Таблица посещаемости</button>
+        <button id="btnPrintOpenModalBlank" class="dropdown-item" type="button">Таблица посещаемости (бланк)</button>
+        <button id="btnPrintOpenModalControlListVT" class="dropdown-item" type="button">Контрольный список ВО</button>
+        <button id="btnPrintOpenModalControlListVTBlank" class="dropdown-item" type="button">Контрольный список ВО (бланк)</button>
+        <button id="btnPrintOpenModalBadgesVT" class="dropdown-item" type="button">Значки для Видеообучения</button>
+        <button id="btnPrintOpenModalVT" class="dropdown-item" type="button">Список участников Видеообучения</button>
+      </div>
+    </div>
+  </div>
+  <button id="btn_show_modal_show_reset_fee_comment" type="button" class="btn btn-dark btn-sm rounded mr-2" data-toggle="modal" data-target="#modal_show_reset_fee_comment" title="Удалить данные из колонок «Взнос» и «Комментарий» в текущем списке.">
+    <i class="fa fa-trash icon-white"></i>
+  </button>
 </div>
 <div id="col_name" class="row mb-2">
   <div class="col-2 pl-1" style="min-width: 280px;">
@@ -160,7 +178,7 @@
           <input maxlength="5" type="number" class="form-control form-control-sm vt_fee_field"
           value="<?php echo $value->fee; ?>"
           style="display: none;" data-field="fee">
-          <span class="vt_fee_text" style="display: inline-block; width: 100%; height: 100%;"><?php echo $value->fee; ?></span>
+          <span class="vt_fee_text" style="display: inline-block; width: 100%; height: 100%;"><?php if ($value->fee > 0) {echo $value->fee;} ?></span>
         </div>
         <div class="col-1 pl-1 pr-1" style="min-width: 130px;">
           <input maxlength="25" type="text" class="form-control form-control-sm vt_comment_field"
