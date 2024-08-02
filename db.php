@@ -812,6 +812,7 @@ function db_getDashboardMembers ($adminId, $eventId, $sortField='name', $sortTyp
     $sortField = str_replace(' ', '', $sortField);
     $sortType = str_replace(' ', '', $sortType);
     $sortAdd = $sortField!='name' ? ', name' : '';
+    $sortField = $sortField === 'arr_date' ? "{$sortField} {$sortType}, q.arr_time " : $sortField;
     $searchText = !$searchText ? '' : ' AND (m.name LIKE "%'.$searchText.'%" OR  l.name LIKE "%'.$searchText.'%")';
 
     $regstate = $db->real_escape_string($regstate);
@@ -905,6 +906,7 @@ function db_getDashboardMembersService ($eventId, $attended, $regstate, $sortFie
     $sortField = str_replace(' ', '', $sortField);
     $sortType = str_replace(' ', '', $sortType);
     $sortAdd = $sortField!='name' ? ', name' : '';
+    $sortField = $sortField === 'arr_date' ? "{$sortField} {$sortType}, q.arr_time " : $sortField;
     $searchText = !$searchText ? '' : ' AND (m.name LIKE "%'.$searchText.'%")';
     $regstate = $db->real_escape_string($regstate);
     $regstateArr = [];
@@ -1211,12 +1213,12 @@ function db_setEventMember ($adminId, $get, $post){
     $_name = preg_replace("/#/", " ", $db->real_escape_string($post['name']));
     $_address = isset($post['address']) && strlen($post ['address']) ? $db->real_escape_string($post['address']) : '';
     $_arr_date = $_page == '/members' ? (DONT_CHANGE) : (isset($post['arr_date']) ? $db->real_escape_string($post['arr_date']) : null);
-    $_arr_time = $_page == '/members' ? (DONT_CHANGE) : (isset($post['arr_time']) ? $db->real_escape_string($post['arr_time']) : null);
+    $_arr_time = $_page == '/members' ? (DONT_CHANGE) : (isset($post['arr_time']) && $post['arr_time'] ? $db->real_escape_string($post['arr_time']) : null);
     $_birth_date = isset($post['birth_date']) ? $db->real_escape_string($post['birth_date']) : null;
     $_cell_phone = $db->real_escape_string($post['cell_phone']);
     $_comment = ($_page != '/reg' || $_page != '/admin') && isset($post['comment']) ? ($db->real_escape_string($post['comment']) ): ($post['comment'] ? $db->real_escape_string($post['comment']) : "");
     $_dep_date = $_page == '/members' ? (DONT_CHANGE) : (isset($post['dep_date']) ? $db->real_escape_string($post['dep_date']) : null);
-    $_dep_time = $_page == '/members' ? (DONT_CHANGE) : (isset($post['dep_time']) ? $db->real_escape_string($post['dep_time']) : null);
+    $_dep_time = $_page == '/members' ? (DONT_CHANGE) : (isset($post['dep_time']) && $post['dep_time'] ? $db->real_escape_string($post['dep_time']) : null);
     $_email = $db->real_escape_string($post['email']);
     $_locality_key = isset($post['locality_key']) && strlen($post ['locality_key']) ? $db->real_escape_string($post['locality_key']) : null;
     $_new_locality = isset($post['new_locality']) && strlen($post ['new_locality']) ? $db->real_escape_string($post['new_locality']) : null;

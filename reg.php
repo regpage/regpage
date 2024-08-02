@@ -201,14 +201,14 @@
                             <?php endif; ?>>Телефон</th>
                             <th class="table_present" style="display: none;">Кат.</th><th class="table_present" style="display: none;">*</th><th class="table_present" style="display: none;">*</th>
                             <th class="table_present" style="display: none;">*</th><th class="table_present" style="display: none;">*</th>
-                            <th class="hide-tablet" style="padding-right: 4px;"><a id="sort-status" href='#' title="сортировать">
+                            <th class="hide-tablet" style="padding-left: 0px; padding-right: 0px;"><a id="sort-status" href='#' title="сортировать">
                               <?php if (in_array(16, $user_settings_arr) && !in_array(15, $user_settings_arr)): ?>
                                 Стат.
                               <?php else: ?>
                                 Статус
                               <?php endif; ?>
 
-                            </a>&nbsp;<i class="<?php echo $sort_field=='status' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none'; ?>"></i></th>
+                            </a><i class="<?php echo $sort_field=='status' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none'; ?>"></i></th>
                             <th <?php if (!in_array(16, $user_settings_arr)): ?>
                               style="display: none;"
                             <?php endif; ?>
@@ -217,7 +217,11 @@
                             <?php endif; ?>>
                               <a id="sort-service" href='#' title="сортировать">Служ.</a>&nbsp;<i class="<?php echo $sort_field=='service' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none'; ?>"></i>
                             </th>
-                            <th class="date_th">Даты</th>
+                            <th class="date_th">
+                              <a id="sort-arr_date" href='#' title="сортировать">Даты</a>
+                              &nbsp;
+                              <i class="<?php echo $sort_field=='arr_date' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none'; ?>"></i>
+                            </th>
                             <th class="prepaid_th"  <?php if (!in_array(17, $user_settings_arr)): ?>
                               style="display: none;"
                             <?php endif; ?>>Взнос</th>
@@ -1552,23 +1556,24 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
                 '<td class="style-cell hide-tablet" ' + ((in_array(15, window.user_settings)) ? 'style="display:none;"' : '' )+ '>' + he(m.cell_phone) +
                 (in_array(3, window.user_settings) ? '<br>'+ '<span class="user_setting_span">'+m.email+'</span>' : '') +
                 '</td>' +
-               '<td class="style-serv hide-tablet"><div>'+ (m.status ? he(m.status) : '') +'<br>'+
+               '<td class="style-serv hide-tablet" style="padding-left: 0px;"><div>'+ (m.status ? he(m.status) : '') +'<br>'+
                '<span class="user_setting_span member_age_reg">' + getAgeWithSuffix(parseInt(get_current_age(m.birth_date)),get_current_age(m.birth_date)) + '</span>'
                // + '<span class="user_setting_span">'+(m.service ? he(m.service) : '')+ '</span>'
                + '</div>'
                // + ( m.coord == '1' ? '<div>Координатор</div>' : '')
                + '</td>'
                + ((in_array(16, window.user_settings)) ? '<td class=""><span>' + (m.service != null ? m.service : '') + '</span></td>' : '')
-               + (!isOnline ? '<td class="style-date"><span class="arrival" data-date="' + he(m.arr_date) + '" data-time="' + he(m.arr_time) + '">' : "") + formatDDMM( m.arr_date) + '</span> - '+
+               + (!isOnline ? '<td class="style-date"><span class="arrival" style="min-width: 35px; display: inline-block;" data-date="' + he(m.arr_date) + '" data-time="' + he(m.arr_time) + '">' : "") + formatDDMM( m.arr_date) + '</span> - '+
                 '<span class="departure" data-date="' + he(m.dep_date) + '" data-time="' + he(m.dep_time) + '">'+ formatDDMM(m.dep_date) + '</span><br>'
-                + htmlPlace + ' ' + htmlPlaceFlag
-                + (htmlPlaceFlag ? '' : "<span class='regmem-icons'>"+ htmlEmail + htmlChanged + '</span>')
-                + '</td>'
+                + "<span class='user_setting_span' style='min-width: 35px; display: inline-block;'>" + (m.arr_time ? m.arr_time.slice(0,5) : "") + "</span><span  class='user_setting_span'>&nbsp;&nbsp;&nbsp;&nbsp;" + (m.dep_time ? m.dep_time.slice(0,5) : "")
+                + '</span></td>'
                 + ((in_array(17, window.user_settings) && $('.tab-pane.active').attr('data-need_prepayment') === "1") ? '<td class=""><span>' + (m.prepaid && m.prepaid > 0 ? m.prepaid : '') + '</span></td>' : '')
                 + '<td>' + htmlLabelByRegState(m.regstate, m.web, htmlEditor) +
                 (!isOnline ? '<ul class="regstate-list-handle">'+ htmlListItemsByRegstate(m.regstate, m.attended) + '</ul>' : "")
                 + '<span style="font-size: 16px;">'+(m.admin_comment ? '</span><br><span class="user_setting_span" title="'
-                + m.admin_comment + '">'+short_admin_comment+'</span>' : "" ) + '</td>'
+                + m.admin_comment + '">'+short_admin_comment+'</span>' : "" )
+                + "<span style='float:right;'>&nbsp;" + htmlPlace + ' ' + htmlPlaceFlag + (htmlPlaceFlag ? '' : "<span class='regmem-icons'>" + htmlChanged + htmlEmail + '</span>')
+                + '</span></td>'
                 + '</tr>'
             );
 
