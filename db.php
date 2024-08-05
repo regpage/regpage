@@ -109,7 +109,8 @@ function db_getMemberNameEmailShort ($memberId)
     $firstname = $pieces[1];
     $secondname = $pieces[2];
 
-    $res = $pieces[0].$firstname{0}.$secondname{0};
+    $res = $pieces[0].$firstname[0].$secondname[0];
+    
     return $row ? array ($res, $row['email']) : array ('','');
 }
 
@@ -1231,7 +1232,7 @@ function db_setEventMember ($adminId, $get, $post){
     $_tp_date = isset($post['tp_date']) && strlen($post ['tp_date']) ? $db->real_escape_string($post['tp_date']) : null;
     $_tp_auth = isset($post['tp_auth']) && strlen($post ['tp_auth']) ? $db->real_escape_string($post['tp_auth']) : null;
     $_tp_name = isset($post['tp_name']) && strlen($post ['tp_name']) ? $db->real_escape_string($post['tp_name']) : null;
-    $_english_level = $_page =='/members' ? (DONT_CHANGE) : isset($post['english_level']) ? $db->real_escape_string($post['english_level']) : null;
+    $_english_level = $_page =='/members' ? (DONT_CHANGE) : (isset($post['english_level']) ? $db->real_escape_string($post['english_level']) : null);
     $_flight_num_arr = $_page =='/members' ? (DONT_CHANGE) : (isset($post['flight_num_arr']) ? $db->real_escape_string($post['flight_num_arr']) : null);
     $_flight_num_dep = $_page =='/members' ? (DONT_CHANGE) : (isset($post['flight_num_dep']) ? $db->real_escape_string($post['flight_num_dep']) : null);
     $_note = $_page =='/members' ? (DONT_CHANGE) : (isset($post['note']) ? $db->real_escape_string($post['note']) : null);

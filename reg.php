@@ -253,6 +253,7 @@
                                         }
                                         ?>
                                     </li>
+                                    <li><a id="sort-arr_date" data-sort="Участник" href="#" title="сортировать">Дата</a>&nbsp;<i class="<?php echo $sort_field=='arr_date' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none'; ?>"></i></li>
                                     <li><a id="sort-regstate" href="#" data-sort="Состояние" title="сортировать">Состояние</a>&nbsp;<i class="<?php echo $sort_field=='regstate' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none'; ?>"></i></li>
                                 </ul>
                             </div>
@@ -322,6 +323,7 @@
             <span class="eventMemberStatus"></span>
             <a href="#" rel="tooltip" data-toggle="tooltip" data-placement="right" title="" tabindex="-1" id="eventMemberPlace"><i class="icon-flag"></i></a>
             <span class="eventMemberArrived"></span>
+            <span id="questionable" class="link_custom" data-quest="" style="float: right;">будет точно</span>
         </div>
     </div>
     <div class="modal-body">
@@ -1486,17 +1488,17 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
             var htmlEditor = notMe ? 'Последние изменения: '+editors: '';
 
             // *** changes processed
-            var htmlChanged = (m.changed > 0 ? '<i class="icon-pencil" title="Изменения еще не обработаны командой регистрации"></i>' : '');
+            var htmlChanged = (m.changed > 0 ? '<i class="fa fa-pencil" style="color:grey" title="Изменения еще не обработаны командой регистрации"></i>' : '');
 
             // *** email sending result
             var htmlEmail = '';
             if (m.send_result!='')
                 if (m.send_result=='ok')
-                    htmlEmail = '<i class="icon-envelope show-messages" title="Письмо было отправлено"></i>';
+                  htmlEmail = '<i class="fa fa-envelope show-messages" style="color:grey" title="Письмо было отправлено"></i>';
                 else if (m.send_result=='queue')
                     htmlEmail = '<i class="icon-time" title="Письмо ждет отправки"></i>';
                 else
-                    htmlEmail = '<i class="icon-warning-sign" title="'+he(m.send_result)+'"></i>';
+                    htmlEmail = '<i class="fa fa-warning" title="'+he(m.send_result)+'" style="color:grey"></i>';
 
             // *** living place
             var htmlPlace = m.place!=null ? '<i class="icon-flag"></i>' : '';
@@ -1591,16 +1593,18 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
                 + '<span>, '
                 + getAgeWithSuffix(parseInt(get_current_age(m.birth_date)),get_current_age(m.birth_date)) + '</span>'
                 + '<br>'+ (m.service ? he(m.service) : '') + '</span></div>' +
-                 '<div>' + (!isOnline ? '<span class="arrival" data-date="' + he(m.arr_date) + '" data-time="' + he(m.arr_time) + '">' +
+                 '<div>' + (!isOnline ? '<span class="arrival" style="min-width: 35px; display: inline-block;" data-date="' + he(m.arr_date) + '" data-time="' + he(m.arr_time) + '">' +
                 formatDDMM(m.arr_date) + '</span>'+
                 '<span class="departure" data-date="' + he(m.dep_date) + '" data-time="' + he(m.dep_time) + '">'+ ' - '+formatDDMM(m.dep_date) + '</span>' : "")
-                + htmlPlace + ' ' +htmlPlaceFlag
-                + (htmlPlaceFlag ? '' : "<span class='regmem-icons' style='padding-left: 8px;'>" + coordFlag + htmlService + htmlEmail + htmlChanged + /*htmlEditor +*/ '</span>')
+                + "<br><span class='user_setting_span'><span style='min-width: 35px; display: inline-block;'>" + (m.arr_time ? m.arr_time.slice(0,5) : "") + "</span><span>&nbsp;&nbsp;&nbsp;&nbsp;" + (m.dep_time ? m.dep_time.slice(0,5) : "") + '</span></span>'
                 + '</div>'
                 + ((in_array(17, window.user_settings) && $('.tab-pane.active').attr('data-need_prepayment') === "1") ? '<div><span>' + (m.prepaid && m.prepaid > 0 ? 'Внесено ' + m.prepaid : '') + '</span></div>' : '')
                 + '<span>' + htmlLabelByRegState(m.regstate, m.web) +
                 (!isOnline ? '<ul class="regstate-list-handle">'+ htmlListItemsByRegstate(m.regstate, m.attended) + '</ul>' : "")
-                + '<span>'+(m.admin_comment ? '<br><span class="show-comment-mbl user_setting_span" title="'+m.admin_comment+'">'+short_admin_comment+'</span>' : "" )+'</span></span>'
+                + '<span>'+(m.admin_comment ? '<br><span class="user_setting_span"><span class="show-comment-mbl" title="'+m.admin_comment+'">'+short_admin_comment+'</span>' : "" )
+                + '<span style="float:right;">' + htmlPlace + ' ' +htmlPlaceFlag
+                + (htmlPlaceFlag ? '' : "<span class='regmem-icons' style='padding-left: 8px;'>" + coordFlag + htmlService + htmlEmail + htmlChanged /*htmlEditor +*/
+                + '</span>') + '</span></span></span></span>'
                 + '</td></tr>');
         }
 
@@ -2702,13 +2706,13 @@ function checkStopEventRegistration(eventId){
         if(w > 980) {
             $("div.tab-pane.active tr[class|='regmem'] input[type='checkbox']:checked").parent("td").siblings("td[class*='mname']").each(function (index, el) {
                 ids.push($(this).parents("tr").attr('class').replace(/^regmem-/, ''));
-                msg += el.textContent + ", ";
+                msg += $(this).find(".mname1").text() + ", ";
             });
         }
         else {
             $("div.tab-pane.active tr[class|='regmem'] input[type='checkbox']:checked").parents("tr[class|='regmem']").find(".mname").each(function (index, el) {
                 ids.push($(this).parents("tr[class|='regmem']").attr('class').replace(/^regmem-/, ''));
-                msg += el.textContent + ", ";
+                msg += $(this).find(".mname1").text() + ", ";
             });
         }
 
@@ -2978,7 +2982,7 @@ function checkStopEventRegistration(eventId){
 
     // END Romans Code
 </script>
-<script src="/js/reg.js?v83"></script>
+<script src="/js/reg.js?v85"></script>
 <script src="/js/regupload.js?v5"></script>
 <?php
     include_once "footer.php";

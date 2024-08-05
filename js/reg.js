@@ -46,6 +46,16 @@ if ($("#events-list").val() === "20222028") {
   $(".brothers_dotation_text").parent().hide();
 }
 */
+$('#questionable').click(function() {
+  if ($(this).attr("data-quest") === "1") {
+    $(this).text("будет точно");
+    $(this).attr("data-quest", "");
+  } else {
+    $(this).text("под вопросом");
+    $(this).attr("data-quest", "1");
+  }
+});
+
 // скрыть колонку дату и убрать проверку дат для онлайн мероприя
   if ($('.tab-pane.active').attr('data-online_event') === '1') {
     $('.date_th').hide();
@@ -454,17 +464,17 @@ function refreshEventMembersTbl (eventId, members, localities){
         var htmlEditor = notMe ? '<i class="icon-user" title="Последние изменения: '+editors+'"></i>': '';
 
         // *** changes processed
-        var htmlChanged = (m.changed > 0 ? '<i class="icon-pencil" title="Изменения еще не обработаны командой регистрации"></i>' : '');
+        var htmlChanged = (m.changed > 0 ? '<i class="fa fa-pencil" style="color:grey" title="Изменения еще не обработаны командой регистрации"></i>' : '');
 
         // *** email sending result
         var htmlEmail = '';
         if (m.send_result!='')
             if (m.send_result=='ok')
-                htmlEmail = '<i class="icon-envelope show-messages" title="Письмо было отправлено"></i>';
+              htmlEmail = '<i class="fa fa-envelope show-messages" title="Письмо было отправлено" style="color: grey;"></i>';
             else if (m.send_result=='queue')
                 htmlEmail = '<i class="icon-time" title="Письмо ждет отправки"></i>';
             else
-                htmlEmail = '<i class="icon-warning-sign" title="'+he(m.send_result)+'"></i>';
+                htmlEmail = '<i class="fa fa-warning" title="'+he(m.send_result)+'" style="color: grey;"></i>';
 
         // *** living place
         var htmlPlace = m.place!=null ? '<i class="icon-flag"></i>' : '';
