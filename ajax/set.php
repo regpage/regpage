@@ -89,6 +89,13 @@ if (isset($_GET['type']) && $_GET['type'] === 'get_brothers_dotation_list') {
 }
 */
 /* END */
+
+/* Задаём значение в поле questionable таблицы reg*/
+if (isset($_GET['type']) && $_GET['type'] === 'set_questionable') {
+  echo set_questionable($_GET['member_id'], $_GET['event_id'], $_GET['value']);
+  exit;
+}
+
 if (isset ($_GET['sort_field']))
 {
     $_SESSION['sort_field_'.$_GET ['event']]=$_GET ['sort_field'];

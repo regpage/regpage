@@ -323,7 +323,9 @@
             <span class="eventMemberStatus"></span>
             <a href="#" rel="tooltip" data-toggle="tooltip" data-placement="right" title="" tabindex="-1" id="eventMemberPlace"><i class="icon-flag"></i></a>
             <span class="eventMemberArrived"></span>
-            <span id="questionable" class="link_custom" data-quest="" style="float: right;">будет точно</span>
+            <span id="questionable" class="label label-secondary" data-quest="" style="margin-left: 20px;"><span></span>
+              <strong class="cursor-pointer">X</strong>
+            </span>
         </div>
     </div>
     <div class="modal-body">
@@ -1635,6 +1637,16 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
                 $('#modalEditMember').attr('data-locality_key', localityKeyMem);
                 $('#modalEditMember').modal('show');
                 $('.emName').removeClass('create-member');
+                /* Настраиваем в бланке опцию "приезд под вопросом" согласно значению поля questionable таблицы reg*/
+                if (data.eventmember.questionable === "0") {
+                  $("#questionable").css("background-color", "").removeClass("label-danger").addClass("label-secondary");
+                  $("#questionable").attr("data-quest", "");
+                  $("#questionable span").text("будет участвовать");
+                } else if (data.eventmember.questionable === "1") {
+                  $("#questionable").removeClass("label-secondary").addClass("label-danger").css("background-color", "#f57676");
+                  $("#questionable").attr("data-quest", "1");
+                  $("#questionable span").text("участие под вопросом");
+                }
             });
         });
 
@@ -2982,7 +2994,7 @@ function checkStopEventRegistration(eventId){
 
     // END Romans Code
 </script>
-<script src="/js/reg.js?v85"></script>
+<script src="/js/reg.js?v86"></script>
 <script src="/js/regupload.js?v5"></script>
 <?php
     include_once "footer.php";

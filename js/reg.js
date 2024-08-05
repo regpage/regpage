@@ -46,13 +46,31 @@ if ($("#events-list").val() === "20222028") {
   $(".brothers_dotation_text").parent().hide();
 }
 */
-$('#questionable').click(function() {
-  if ($(this).attr("data-quest") === "1") {
-    $(this).text("будет точно");
-    $(this).attr("data-quest", "");
+/* Задаём значение в поле questionable таблицы reg и настраиваем опцию в бланке в соответствии с заданым значением*/
+$('#questionable strong').click(function() {
+  let parent_element = $(this).parent();
+  let text_element = $(this).prev();
+  if (parent_element.attr("data-quest") === "1") {
+    fetch("/ajax/set.php?type=set_questionable&member_id=" + $('#modalEditMember').attr('data-member_id')
+      + "&event_id=" + $("#events-list").val() + "&value=0")
+    .then(response => response.text())
+    .then(commits => {
+      parent_element.css("background-color", "").removeClass("label-danger").addClass("label-secondary");
+      text_element.text("будет участвовать");
+      parent_element.attr("data-quest", "");
+      showHint("Данные сохранены.");
+    });
+
   } else {
-    $(this).text("под вопросом");
-    $(this).attr("data-quest", "1");
+    fetch("/ajax/set.php?type=set_questionable&member_id=" + $('#modalEditMember').attr('data-member_id')
+      + "&event_id=" + $("#events-list").val() + "&value=1")
+    .then(response => response.text())
+    .then(commits => {
+      parent_element.removeClass("label-secondary").addClass("label-danger").css("background-color", "#f57676");
+      text_element.text("участие под вопросом");
+      parent_element.attr("data-quest", "1");
+      showHint("Данные сохранены.");
+    })
   }
 });
 

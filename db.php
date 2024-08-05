@@ -110,7 +110,7 @@ function db_getMemberNameEmailShort ($memberId)
     $secondname = $pieces[2];
 
     $res = $pieces[0].$firstname[0].$secondname[0];
-    
+
     return $row ? array ($res, $row['email']) : array ('','');
 }
 
@@ -226,7 +226,7 @@ function db_getAdminAsMember ($memberId)
 
 $selectEventMember = "SELECT m.key as member_key, m.name, CASE WHEN m.male=1 THEN 'male' WHEN m.male=0 THEN 'female' ELSE '' END as gender, m.male,
                       m.birth_date, m.locality_key, m.address, m.home_phone, m.cell_phone, m.email,
-                      r.arr_date, r.arr_time, r.dep_date, r.dep_time, r.accom, r.coord, r.temp_phone, r.transport,
+                      r.arr_date, r.arr_time, r.dep_date, r.dep_time, r.accom, r.coord, r.temp_phone, r.transport, r.questionable,
                       r.mate_key, r.comment, r.admin_comment, r.status_key, m.category_key, m.document_key,
                       m.document_num, m.document_date, m.document_auth, m.new_locality, r.regstate_key, m.citizenship_key,
                       m.admin_key as mem_admin, r.admin_key as reg_admin, r.parking, e.name as event_name,
@@ -842,7 +842,7 @@ function db_getDashboardMembers ($adminId, $eventId, $sortField='name', $sortTyp
         (reg.changed>0 or m.changed>0) as changed, m.admin_key as mem_admin_key, e.web,
         reg.admin_key as reg_admin_key, (SELECT name FROM member m2 WHERE m2.key=m.admin_key) as mem_admin_name, m.male,
         (SELECT name FROM member m3 WHERE m3.key=reg.admin_key) as reg_admin_name, reg.send_result, stts.name as status, srv.name as service,
-        IF (reg.attended, IFNULL(reg.place,''), null) as place, reg.accom, reg.transport, reg.parking, reg.mate_key,
+        IF (reg.attended, IFNULL(reg.place,''), null) as place, reg.accom, reg.transport, reg.parking, reg.mate_key, reg.questionable,
         e.need_passport, e.need_tp, reg.admin_comment, reg.comment, e.list_name, reg.list_name as reg_list_name,
         IF((SELECT COUNT(*) FROM reg rg WHERE rg.event_key=e.key AND (rg.regstate_key = '01' OR rg.regstate_key = '02' OR rg.regstate_key = '04' OR rg.regstate_key is NULL )) >= e.participants_count AND e.participants_count > 0, 1, 0) as stop_registration,
         e.close_registration,
@@ -871,7 +871,7 @@ function db_getDashboardMembers ($adminId, $eventId, $sortField='name', $sortTyp
         (reg.changed>0 or m.changed>0) as changed, m.admin_key as mem_admin, e.web,
         reg.admin_key as reg_admin, (SELECT name FROM member m2 WHERE m2.key=m.admin_key) as mem_admin_name, m.male,
         (SELECT name FROM member m3 WHERE m3.key=reg.admin_key) as reg_admin_name, reg.send_result, stts.name as status, srv.name as service,
-        IF (reg.attended, IFNULL(reg.place,''), null) as place, reg.accom, reg.transport, reg.parking, reg.mate_key,
+        IF (reg.attended, IFNULL(reg.place,''), null) as place, reg.accom, reg.transport, reg.parking, reg.mate_key, reg.questionable,
         e.need_passport, e.need_tp, reg.admin_comment, reg.comment, e.list_name, reg.list_name as reg_list_name,
         IF((SELECT COUNT(*) FROM reg rg WHERE rg.event_key=e.key AND (rg.regstate_key = '01' OR rg.regstate_key = '02' OR rg.regstate_key = '04' OR rg.regstate_key is NULL )) >= e.participants_count AND e.participants_count > 0, 1, 0) as stop_registration,
         e.close_registration,
@@ -956,7 +956,7 @@ function db_getDashboardMembersService ($eventId, $attended, $regstate, $sortFie
         s.name as service, reg.attended, reg.prepaid, reg.aid_paid, reg.paid,
         (SELECT name FROM member m3 WHERE m3.key=reg.admin_key) as reg_admin_name,
         IF (reg.attended, IFNULL(reg.place,''), null) as place, reg.accom,
-        reg.transport, reg.parking, reg.service_key, reg.status_key, reg.admin_key, reg.arr_date,
+        reg.transport, reg.parking, reg.service_key, reg.status_key, reg.admin_key, reg.arr_date, reg.questionable,
         reg.arr_time, reg.dep_date, reg.dep_time, reg.regstate_key as regstate,
         (reg.changed>0 or m.changed>0) as changed, reg.contr_amount, reg.currency, e.list_name, reg.list_name as reg_list_name,
         reg.coord, reg.send_result, reg.admin_key as reg_admin_key, reg.admin_comment, reg.comment,
@@ -986,7 +986,7 @@ function db_getDashboardMembersService ($eventId, $attended, $regstate, $sortFie
         s.name as service, reg.attended, reg.prepaid, reg.aid_paid, reg.paid,
         (SELECT name FROM member m3 WHERE m3.key=reg.admin_key) as reg_admin_name,
         IF (reg.attended, IFNULL(reg.place,''), null) as place, reg.accom,
-        reg.transport, reg.parking, reg.service_key, reg.status_key, reg.admin_key, reg.arr_date,
+        reg.transport, reg.parking, reg.service_key, reg.status_key, reg.admin_key, reg.arr_date, reg.questionable,
         reg.arr_time, reg.dep_date, reg.dep_time, reg.regstate_key as regstate,
         (reg.changed>0 or m.changed>0) as changed, reg.contr_amount, reg.currency, e.list_name, reg.list_name as reg_list_name,
         reg.coord, reg.send_result, reg.admin_key as reg_admin_key, reg.admin_comment, reg.comment,
@@ -2194,6 +2194,19 @@ function db_getAdminMeetingLocalities($adminId){
     while ($row = $res->fetch_assoc()) $localities[$row['id']]=$row['name'];
     return $localities;
 }
+
+// устанавливаем значение в поле questionable в даблицу reg
+function set_questionable($memberId, $event, $value)
+{
+  $memberId = db_real_escape_string($memberId);
+  $event = db_real_escape_string($event);
+  $value = db_real_escape_string($value);
+
+  $res = db_query ("UPDATE reg SET questionable='{$value}', changed=1 WHERE member_key='{$memberId}' AND event_key='{$event}'");
+
+  return $res;
+}
+
 
 // USE IN MEETINGS & VISITS
 
