@@ -2023,3 +2023,8 @@ input.error, .control-group.error select, textarea.error {
   padding: 16px;
   z-index: 1;
 }
+
+.active_letter {
+  font-weight: bold;
+  text-decoration: underline;
+}

@@ -34,22 +34,21 @@ else if (isset ($_SESSION['sort_type_'.$_GET ['event']]))
 else
     $sort_type = 'asc';
 
-if(db_isAdminRespForReg($adminId, $_GET ['event'])){  
+if(db_isAdminRespForReg($adminId, $_GET ['event'])){
     echo json_encode(["members"=> db_getDashboardMembersService (
-        $_GET ['event'], 
+        $_GET ['event'],
         isset ($_GET['attended']) ? $_GET['attended'] : NULL,
         isset ($_GET['regstate']) ? $_GET['regstate'] : NULL,
-        $sort_field, $sort_type, 
+        $sort_field, $sort_type,
         isset ($_GET['searchText']) ? $_GET['searchText'] : NULL,
         isset ($_GET['coord']) ? $_GET['coord'] : NULL,
         isset ($_GET['service']) ? $_GET['service'] : NULL,
-        isset ($_GET['localityFilter']) ? $_GET['localityFilter'] : NULL),
+        isset ($_GET['localityFilter']) ? $_GET['localityFilter'] : NULL,
+        isset ($_GET['letter']) ? $_GET['letter'] : NULL),
         "localities"=>db_getEventLocalities ($_GET['event'])]);
 }
 else{
     echo json_encode(array ("members"=>db_getDashboardMembers ($adminId, $_GET ['event'], $sort_field, $sort_type, isset ($_GET['searchText'])? $_GET['searchText'] : NULL,
-            isset ($_GET['regstate']) ? $_GET['regstate'] : NULL, isset ($_GET['localityFilter']) ? $_GET['localityFilter'] : NULL),
+            isset ($_GET['regstate']) ? $_GET['regstate'] : NULL, isset ($_GET['localityFilter']) ? $_GET['localityFilter'] : NULL, isset ($_GET['letter']) ? $_GET['letter'] : NULL),
         "localities"=>db_getAdminEventLocalities ($_GET['event'], $adminId)));
 }
-
-?>

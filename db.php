@@ -805,16 +805,45 @@ function db_dequeueLetter ($id, $result)
                     DELETE FROM send_queue WHERE id = $id");
 }
 
-function db_getDashboardMembers ($adminId, $eventId, $sortField='name', $sortType='asc', $searchText, $regstate, $locality)
+function db_getDashboardMembers ($adminId, $eventId, $sortField='name', $sortType='asc', $searchText, $regstate, $locality, $letter = 'Все')
 {
     global $db;
     $adminId = $db->real_escape_string($adminId);
     $searchText = $db->real_escape_string($searchText);
+    $letter = db_real_escape_string($letter);
     $sortField = str_replace(' ', '', $sortField);
     $sortType = str_replace(' ', '', $sortType);
     $sortAdd = $sortField!='name' ? ', name' : '';
     $sortField = $sortField === 'arr_date' ? "{$sortField} {$sortType}, q.arr_time " : $sortField;
     $searchText = !$searchText ? '' : ' AND (m.name LIKE "%'.$searchText.'%" OR  l.name LIKE "%'.$searchText.'%")';
+
+    // отбор по первой букве фамилии
+    $letterCondition = '';
+    if (!empty($letter) && $letter !== 'Все') {
+      if (mb_strlen($letter) === 1) {
+        $letterCondition = " AND m.name LIKE '{$letter}%' ";
+      } elseif (mb_strlen($letter) === 2 || mb_strlen($letter) === 3) {
+        $letterCondition = ' AND (';
+        for ($i = 0; $i < mb_strlen($letter); $i++) {
+          if ($i > 0) {
+            $letterCondition .= ' OR ';
+          }
+          $letterCondition .= " m.name LIKE '" . mb_substr($letter, $i, 1) ."%' ";
+        }
+        $letterCondition .= ') ';
+      } elseif ($letter === 'Eng') {
+        $eng = ['A', 'B', 'C', 'D', 'E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','Y','V','W','X','Y','Z'];
+        $letterCondition = ' AND (';
+        foreach ($eng as $key => $value) {
+          if ($letterCondition !== ' AND (') {
+            $letterCondition .= 'OR';
+          }
+          $letterCondition .= " m.name LIKE '{$value}%' ";
+        }
+        $letterCondition .= ')';
+      }
+    }
+
 
     $regstate = $db->real_escape_string($regstate);
     $regstateArr = [];
@@ -864,7 +893,7 @@ function db_getDashboardMembers ($adminId, $eventId, $sortField='name', $sortTyp
     INNER JOIN event e ON e.key = reg.event_key
     LEFT JOIN document d ON d.key = m.document_key
     LEFT JOIN category ca ON m.category_key = ca.key
-    WHERE a.member_key='$adminId' AND reg.event_key='$eventId' $searchText $_regstate $_locality
+    WHERE a.member_key='$adminId' AND reg.event_key='$eventId' $searchText $_regstate $_locality $letterCondition
     UNION
     SELECT m.key as id, m.name as name, IF (COALESCE(l.name,'')='', m.new_locality, l.name) as locality, m.email as email,
         m.cell_phone as cell_phone, m.locality_key as locality_key, reg.arr_date, reg.arr_time, reg.dep_date, reg.dep_time, reg.regstate_key as regstate,
@@ -890,7 +919,7 @@ function db_getDashboardMembers ($adminId, $eventId, $sortField='name', $sortTyp
     INNER JOIN event e ON e.key = reg.event_key
     LEFT JOIN document d ON d.key = m.document_key
     LEFT JOIN category ca ON m.category_key = ca.key
-    WHERE (reg.admin_key = '$adminId') AND reg.event_key='$eventId' $searchText $_regstate $_locality
+    WHERE (reg.admin_key = '$adminId') AND reg.event_key='$eventId' $searchText $_regstate $_locality $letterCondition
     ) q ORDER BY q."."{$sortField} {$sortType} {$sortAdd}");
 
     $members = array ();
@@ -900,10 +929,11 @@ function db_getDashboardMembers ($adminId, $eventId, $sortField='name', $sortTyp
 
 
 // check using to remove
-function db_getDashboardMembersService ($eventId, $attended, $regstate, $sortField='name', $sortType='asc', $searchText, $coord, $service, $locality){
+function db_getDashboardMembersService ($eventId, $attended, $regstate, $sortField='name', $sortType='asc', $searchText, $coord, $service, $locality, $letter='Все'){
     global $db;
     $eventId = (int)$eventId;
     $searchText = $db->real_escape_string($searchText);
+    $letter = db_real_escape_string(trim($letter));
     $sortField = str_replace(' ', '', $sortField);
     $sortType = str_replace(' ', '', $sortType);
     $sortAdd = $sortField!='name' ? ', name' : '';
@@ -911,6 +941,34 @@ function db_getDashboardMembersService ($eventId, $attended, $regstate, $sortFie
     $searchText = !$searchText ? '' : ' AND (m.name LIKE "%'.$searchText.'%")';
     $regstate = $db->real_escape_string($regstate);
     $regstateArr = [];
+
+    // отбор по первой букве фамилии
+    $letterCondition = '';
+    if (!empty($letter) && $letter !== 'Все') {
+      if (mb_strlen($letter) === 1) {
+        $letterCondition = " AND m.name LIKE '{$letter}%' ";
+      } elseif (mb_strlen($letter) === 2 || mb_strlen($letter) === 3) {
+        $letterCondition = ' AND (';
+        for ($i = 0; $i < mb_strlen($letter); $i++) {
+          if ($i > 0) {
+            $letterCondition .= ' OR ';
+          }
+          $letterCondition .= " m.name LIKE '" . mb_substr($letter, $i, 1) ."%' ";
+        }
+        $letterCondition .= ') ';
+      } elseif ($letter === 'Eng') {
+        $eng = ['A', 'B', 'C', 'D', 'E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','Y','V','W','X','Y','Z'];
+        $letterCondition = ' AND (';
+        foreach ($eng as $key => $value) {
+          if ($letterCondition !== ' AND (') {
+            $letterCondition .= 'OR';
+          }
+          $letterCondition .= " m.name LIKE '{$value}%' ";
+        }
+        $letterCondition .= ')';
+      }
+    }
+
 
     if($regstate){
         switch($regstate){
@@ -976,7 +1034,7 @@ function db_getDashboardMembersService ($eventId, $attended, $regstate, $sortFie
         LEFT JOIN status stts ON stts.key = reg.status_key
         LEFT JOIN document d ON d.key = m.document_key
         LEFT JOIN category ca ON m.category_key = ca.key
-        WHERE reg.event_key=$eventId $searchText $_attended $_regstate $_service $_coord $_locality
+        WHERE reg.event_key=$eventId $searchText $_attended $_regstate $_service $_coord $_locality $letterCondition
         UNION
         SELECT m.key as id, m.name as name, '' as locality,
         m.email as email, m.cell_phone as cell_phone, m.birth_date, m.locality_key as locality_key,
@@ -1003,7 +1061,7 @@ function db_getDashboardMembersService ($eventId, $attended, $regstate, $sortFie
         LEFT JOIN status stts ON stts.key = reg.status_key
         LEFT JOIN document d ON d.key = m.document_key
         LEFT JOIN category ca ON m.category_key = ca.key
-        WHERE ( m.locality_key IS NULL OR m.locality_key ='' ) AND reg.event_key=$eventId $searchText $_attended $_regstate $_service $_coord $_locality)
+        WHERE ( m.locality_key IS NULL OR m.locality_key ='' ) AND reg.event_key=$eventId $searchText $_attended $_regstate $_service $_coord $_locality $letterCondition)
         q ORDER BY q."."{$sortField} {$sortType} {$sortAdd}");
 
     $members = array ();

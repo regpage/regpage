@@ -108,11 +108,29 @@
             <a class="btn btn-danger disabled chk-dep chk-remove role-edit" type="button"><i class="fa fa-ban icon-white"></i> <span class="hide-name">Отменить</span></a>
             <a class="btn btn-success chk-invite role-edit" type="button"><i class="fa fa-user icon-white" title="Пригласить пользователя"></i> <span class="hide-name">Пригласить</span></a>
             <a class="btn role-admin brothers_p_v" type="button"><i class="fa fa-users icon-white" title="Братья призывного возраста или без указаной даты рождения"></i> <span class="hide-name">Братья до 50</span></a>
+            <a class="btn role-admin brothers_p_v" type="button"><i class="fa fa-users icon-white" title="Братья призывного возраста или без указаной даты рождения"></i> <span class="hide-name">Братья до 50</span></a>
             <!--<span class="btn send-message-regteam" tabindex="-1" style="margin-right: 10px; font-family: Arial;" title="Отправить сообщение команде регистрации" data-toggle="modal" data-target="#modalEventSendMsg"><i class="fa fa-envelope"></i>  <b>Написать команде регистрации</b></span>-->
             <?php if($event->web == 1){ ?>
             <a class="btn btn-warning disabled chk-dep filter-icons bulkedit-prove" type="button"><i class="fa fa-asterisk" aria-hidden="true"></i> <span class="hide-name">Подтвердить</span></a>
             <a class="btn btn-danger disabled chk-dep filter-icons bulkedit-prove" type="button"><i class="fa fa-asterisk" aria-hidden="true"></i> <span class="hide-name">Отменить прибытие</span></a>
             <?php } ?>
+        </div>
+        <div class="letter_filter">
+          <!-- фильтр буквы -->
+          <?php
+          /*$letters = ['Все', 'Eng', 'А', 'Б', 'В', 'Г', 'Д', 'ЕЖ', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'УФ', 'ХЦ', 'Ч', 'ШЩ', 'ЭЮЯ'];
+          $letterFiler = 'Все';
+          if (isset($_COOKIE['letter_filer']) && !empty($_COOKIE['letter_filer'])) {
+            $letterFiler = $_COOKIE['letter_filer'];
+          }
+          foreach ($letters as $key => $value) {
+            $activeLetter = '';
+            if ($letterFiler === $value) {
+              $activeLetter = 'active_letter';
+            }
+            echo "<a class='btn btn-link {$activeLetter}' style='padding: 4px; margin-' type='button'><span>{$value}</span></a>";
+          }*/
+          ?>
         </div>
         <div class="btn-toolbar">
             <a class="btn event-info" type="button"><i class="icon-info-sign"></i> <span class="hide-name">О мероприятии</span></a>
@@ -1188,7 +1206,12 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
         */
 
         regstate = el.find('.filter-users').val();
-
+        let letter = "Все";
+        if (el.find('.letter_filter .active_letter').text()) {
+          letter = el.find('.letter_filter .active_letter').text();
+        } else if (getCookie("letter_filter_" + eventId)) {
+          letter = getCookie("letter_filter_" + eventId);
+        }
         var coord = hasAccessToAllLocals && el.find('.filter-coord').hasClass('active') ? 1 : '';
         var service = hasAccessToAllLocals && el.find('.filter-service').hasClass('active') ? 1 : '';
         var locality = el.find('.filterLocality-'+eventId).val();
@@ -1201,7 +1224,8 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
                    {name: "regstate", value: regstate || ''},
                    {name: "coord", value: coord},
                    {name: "service", value: service},
-                   {name: "localityFilter", value: localityFilter}];
+                   {name: "localityFilter", value: localityFilter},
+                   {name: "letter", value: letter}];
         return filters;
     }
 
@@ -1293,11 +1317,81 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
           refreshEventMembers(gl_events_brothers_p_v, filter_result, gl_localities_brothers_p_v);
         });
     }
+    // поиск по первым буквам
+    function letter_filter_click(el) {
+      setCookie("letter_filter_" + $("#events-list").val(), el.find("span").text(), 100);
+      $(".letter_filter a").removeClass("active_letter");
+      el.addClass("active_letter")
+      // dashboard reload
+      loadDashboard($("#events-list").val());
+    }
+
+    // буквенный фильтр
+    /* Е С Л И  ПРИШОЛ ПУСТОЙМАССИВ?*/
+    function letter_filter(eventId) {
+      // letters = ['Все', 'Eng', 'А', 'Б', 'В', 'Г', 'Д', 'ЕЖ', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'УФ', 'ХЦ', 'Ч', 'ШЩ', 'ЭЮЯ'];
+      fetch("/ajax/get.php?type=letter_filter&event_id=" + eventId)
+      .then(response => response.json())
+      .then(commits => {
+        let active = "Все";
+        if (getCookie("letter_filter_" + eventId)) {
+          active = getCookie("letter_filter_" + eventId);
+        }
+        let ez, uf, hts, shsh, eyuya;
+        let echo = "";
+        let letter_extra = ['Все', 'Eng'];
+        for (let i = 0; i < letter_extra.length; i++) {
+          let active_class = "";
+          if (active === letter_extra[i]) {
+            active_class = "active_letter";
+          }
+          echo += "<a class='btn btn-link "+active_class+"' style='padding: 4px; margin-' type='button'><span>" + letter_extra[i] + "</span></a>";
+        }
+        for (let i = 0; i < commits.letters.length; i++) {
+          // ПРОБЛЕМА ПАРНЫЕ НЕ БУДУТ ПОДСВЕЧЕНЫ ЕСЛИ АКТИВНАЯ БУКВА ВТОРАЯ В ПАРЕ
+          let active_class = "";
+          if (active === commits.letters[i]) {
+            active_class = "active_letter";
+          }
+          if (((commits.letters[i] === "E" || commits.letters[i] === "Ж") && ez)
+            || ((commits.letters[i] === "У" || commits.letters[i] === "Ф") && uf)
+            || ((commits.letters[i] === "Х" || commits.letters[i] === "Ц") && hts)
+            || ((commits.letters[i] === "Ш" || commits.letters[i] === "Щ") && shsh)
+            || ((commits.letters[i] === "Э" || commits.letters[i] === "Ю" || commits.letters[i] === "Я") && eyuya)) {
+
+          } else {
+            let value_letter = commits.letters[i];
+            if (commits.letters[i] === "E" || commits.letters[i] === "Ж") {
+              ez = 1;
+              value_letter = "ЕЖ";
+            } else if (commits.letters[i] === "У" || commits.letters[i] === "Ф") {
+              uf = 1;
+              value_letter = "УФ";
+            } else if (commits.letters[i] === "Х" || commits.letters[i] === "Ц") {
+              hts = 1
+              value_letter = "ХЦ";
+            } else if (commits.letters[i] === "Ш" || commits.letters[i] === "Щ") {
+              shsh = 1;
+              value_letter = "ШЩ";
+            } else if (commits.letters[i] === "Э" || commits.letters[i] === "Ю" || commits.letters[i] === "Я") {
+              eyuya = 1;
+              value_letter = "ЭЮЯ";
+            }
+
+            echo += "<a class='btn btn-link "+active_class+"' style='padding: 4px; margin-' type='button'><span>" + value_letter + "</span></a>";
+          }
+        }
+        $("#eventTab-"+eventId +" .letter_filter").html(echo);
+        $(".letter_filter a").click(function () {
+          letter_filter_click($(this));
+        });
+      });
+    }
 
     function loadDashboard (eventId){
+      letter_filter(eventId);
         if (!eventId) eventId = $("#events-list").val();
         var request = getRequestFromFilters(setFiltersForRequest(eventId));
-
         $.getJSON('/ajax/dashboard.php?event='+eventId+request)
         .done (function(data) {
             refreshEventMembers (eventId, data.members, data.localities);
@@ -1541,6 +1635,11 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
             } else {
               short_admin_comment = m.admin_comment;
             }
+            // отметка розовым строк в которых приезд под вопросом
+            let pink = "";
+            if (m.questionable === "1") {
+              pink = "style='background-color: #ffd6dd'";
+            }
             // счетчик участников с неотправленными данными
             /*
             if (!m.regstate || m.regstate == "" || m.regstate == " ") {
@@ -1549,7 +1648,7 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
             }*/
 
 
-            tableRows.push('<tr class="regmem-'+m.id+'" '+ dataItems +' >'+
+            tableRows.push('<tr class="regmem-'+m.id+'" '+ dataItems +' '+pink+'>'+
                 '<td class="style-checkbox"><input type="checkbox"></td>'+
                 '<td class="style-name mname '+(m.male==1?'male':'female')+'"><span class="mname1">'+ he(m.name) +
                 (in_array(1, window.user_settings) ? '</span><br/>'+ '<span class="mnameCategory user_setting_span">'+m.category_name+'</span>' : '</span>'+ '<span class="mnameCategory user_setting_span" style="display: none;">'+m.category_name+'</span>') +
@@ -1643,7 +1742,7 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
                   $("#questionable").attr("data-quest", "");
                   $("#questionable span").text("будет участвовать");
                 } else if (data.eventmember.questionable === "1") {
-                  $("#questionable").removeClass("label-secondary").addClass("label-danger").css("background-color", "#f57676");
+                  $("#questionable").removeClass("label-secondary").addClass("label-danger").css("background-color", "rgb(249 142 160)");
                   $("#questionable").attr("data-quest", "1");
                   $("#questionable span").text("участие под вопросом");
                 }
@@ -2994,7 +3093,7 @@ function checkStopEventRegistration(eventId){
 
     // END Romans Code
 </script>
-<script src="/js/reg.js?v86"></script>
+<script src="/js/reg.js?v87"></script>
 <script src="/js/regupload.js?v5"></script>
 <?php
     include_once "footer.php";

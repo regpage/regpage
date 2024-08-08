@@ -1,5 +1,6 @@
 <?php
 include_once "ajax.php";
+include_once "../db/regpage/letter_filter.php";
 
 if (isset ($_GET ['event_info']))
 {
@@ -161,6 +162,16 @@ if (isset($_GET['type']) && $_GET['type'] === 'get_services_event') {
 if (isset($_GET['type']) && $_GET['type'] === 'be_mate') {
   echo json_encode(["result"=>db_getEventMembers ($_GET ['event_id'])]);
   exit();
+}
+
+// фильтр по первой букве фамилии
+if (isset($_GET['type']) && $_GET['type'] === 'letter_filter') {
+  if(db_isAdminRespForReg($adminId, $_GET ['event_id'])){
+      echo json_encode(["letters"=> LetterFilter::regService ($_GET ['event_id'])]);
+  } else {
+      echo json_encode(array ("letters"=>LetterFilter::reg ($adminId, $_GET ['event_id'])));
+  }
+  exit;
 }
 
 if (isset ($_GET ['eventId']))

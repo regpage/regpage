@@ -59,6 +59,7 @@ $('#questionable strong').click(function() {
       text_element.text("будет участвовать");
       parent_element.attr("data-quest", "");
       showHint("Данные сохранены.");
+      $('.regmem-' + $('#modalEditMember').attr('data-member_id')).css("background-color", "");
     });
 
   } else {
@@ -66,10 +67,11 @@ $('#questionable strong').click(function() {
       + "&event_id=" + $("#events-list").val() + "&value=1")
     .then(response => response.text())
     .then(commits => {
-      parent_element.removeClass("label-secondary").addClass("label-danger").css("background-color", "#f57676");
+      parent_element.removeClass("label-secondary").addClass("label-danger").css("background-color", "rgb(249 142 160)");
       text_element.text("участие под вопросом");
       parent_element.attr("data-quest", "1");
       showHint("Данные сохранены.");
+      $('.regmem-' + $('#modalEditMember').attr('data-member_id')).css("background-color", "#ffd6dd");
     })
   }
 });
