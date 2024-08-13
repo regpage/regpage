@@ -43,6 +43,9 @@
                 <li><a class="role-send-msg" tabindex="-1" href="#" data-toggle="modal" data-target="#modalEventSendMsg">Команде регистрации</a></li>
             </ul>
         </div>
+        <!-- фильтр буквы в закреплённом меню -->
+        <div class="letter_filter" style="margin-left: 20px;">
+        </div>
     </div>
 <?php
     $textBlock = db_getTextBlock('admin_reg');
@@ -115,23 +118,6 @@
             <a class="btn btn-danger disabled chk-dep filter-icons bulkedit-prove" type="button"><i class="fa fa-asterisk" aria-hidden="true"></i> <span class="hide-name">Отменить прибытие</span></a>
             <?php } ?>
         </div>
-        <div class="letter_filter">
-          <!-- фильтр буквы -->
-          <?php
-          /*$letters = ['Все', 'Eng', 'А', 'Б', 'В', 'Г', 'Д', 'ЕЖ', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'УФ', 'ХЦ', 'Ч', 'ШЩ', 'ЭЮЯ'];
-          $letterFiler = 'Все';
-          if (isset($_COOKIE['letter_filer']) && !empty($_COOKIE['letter_filer'])) {
-            $letterFiler = $_COOKIE['letter_filer'];
-          }
-          foreach ($letters as $key => $value) {
-            $activeLetter = '';
-            if ($letterFiler === $value) {
-              $activeLetter = 'active_letter';
-            }
-            echo "<a class='btn btn-link {$activeLetter}' style='padding: 4px; margin-' type='button'><span>{$value}</span></a>";
-          }*/
-          ?>
-        </div>
         <div class="btn-toolbar">
             <a class="btn event-info" type="button"><i class="icon-info-sign"></i> <span class="hide-name">О мероприятии</span></a>
             <a class="btn statService" type="button"><i class="fa fa-bar-chart"></i> <span class="hide-name">Статистика</span></a>
@@ -202,6 +188,9 @@
         </div>
         <span class="counterForResponseble" style="text-align: left; color: red; font-weight: bold; padding-top: 15px; display: inline-block;">
         </span>
+        <!-- фильтр буквы -->
+        <div class="letter_filter">
+        </div>
         <div class="desctopVisible">
             <div id="statReg">
                 <table class="table table-hover reg-list">
@@ -1337,7 +1326,6 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
         if (getCookie("letter_filter_" + eventId)) {
           active = getCookie("letter_filter_" + eventId);
         }
-        let ez, uf, hts, shsh, eyuya;
         let echo = "";
         let letter_extra = ['Все', 'Eng'];
         for (let i = 0; i < letter_extra.length; i++) {
@@ -1345,43 +1333,18 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
           if (active === letter_extra[i]) {
             active_class = "active_letter";
           }
-          echo += "<a class='btn btn-link "+active_class+"' style='padding: 4px; margin-' type='button'><span>" + letter_extra[i] + "</span></a>";
+          echo += "<a class='btn btn-link "+active_class+"' style='padding: 8px 8px 0px 0px;' type='button'><span>" + letter_extra[i] + "</span></a>";
         }
         for (let i = 0; i < commits.letters.length; i++) {
-          // ПРОБЛЕМА ПАРНЫЕ НЕ БУДУТ ПОДСВЕЧЕНЫ ЕСЛИ АКТИВНАЯ БУКВА ВТОРАЯ В ПАРЕ
+          // сейчас не используется ПРОБЛЕМА ПАРНЫЕ НЕ БУДУТ ПОДСВЕЧЕНЫ ЕСЛИ АКТИВНАЯ БУКВА ВТОРАЯ В ПАРЕ
           let active_class = "";
           if (active === commits.letters[i]) {
             active_class = "active_letter";
           }
-          if (((commits.letters[i] === "E" || commits.letters[i] === "Ж") && ez)
-            || ((commits.letters[i] === "У" || commits.letters[i] === "Ф") && uf)
-            || ((commits.letters[i] === "Х" || commits.letters[i] === "Ц") && hts)
-            || ((commits.letters[i] === "Ш" || commits.letters[i] === "Щ") && shsh)
-            || ((commits.letters[i] === "Э" || commits.letters[i] === "Ю" || commits.letters[i] === "Я") && eyuya)) {
-
-          } else {
-            let value_letter = commits.letters[i];
-            if (commits.letters[i] === "E" || commits.letters[i] === "Ж") {
-              ez = 1;
-              value_letter = "ЕЖ";
-            } else if (commits.letters[i] === "У" || commits.letters[i] === "Ф") {
-              uf = 1;
-              value_letter = "УФ";
-            } else if (commits.letters[i] === "Х" || commits.letters[i] === "Ц") {
-              hts = 1
-              value_letter = "ХЦ";
-            } else if (commits.letters[i] === "Ш" || commits.letters[i] === "Щ") {
-              shsh = 1;
-              value_letter = "ШЩ";
-            } else if (commits.letters[i] === "Э" || commits.letters[i] === "Ю" || commits.letters[i] === "Я") {
-              eyuya = 1;
-              value_letter = "ЭЮЯ";
-            }
-
-            echo += "<a class='btn btn-link "+active_class+"' style='padding: 4px; margin-' type='button'><span>" + value_letter + "</span></a>";
+            echo += "<a class='btn btn-link "+active_class+"' style='padding: 8px 8px 0px 0px;' type='button'><span>" + commits.letters[i] + "</span></a>";
           }
-        }
         $("#eventTab-"+eventId +" .letter_filter").html(echo);
+        $(".aditional-menu .letter_filter").html(echo);
         $(".letter_filter a").click(function () {
           letter_filter_click($(this));
         });
@@ -1730,6 +1693,7 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
 
             $.getJSON('/ajax/get.php', { member: memberId, event: eventId, fullList: localityValid})
             .done (function(data){
+              console.log(data);
                 fillEditMember (memberId, data.eventmember, data.localities);
                 setAdminRole(memberId);
                 $('#modalEditMember').attr('data-member_id', memberId);

@@ -26,14 +26,52 @@ class LetterFilter
       WHERE (reg.admin_key = '{$adminId}') AND reg.event_key='{$eventId}'
       ) q ORDER BY q.name");
 
-      $letters = array();
+      $letters = [];
       while ($row = $res->fetch_assoc()) $letters[]=$row['letter'];
+
+      /*$shsh = 0;
+      $ez = 0;
+      $uf = 0;
+      $hts = 0;
+      $eyuya = 0;
+      while ($row = $res->fetch_assoc()) {
+        if ($row['letter'] === 'E' || $row['letter'] === 'Ж') {
+          if (!$ez) {
+            $ez = 1;
+            $letters[]='ЕЖ';
+          }
+        } elseif ($row['letter'] === 'У' || $row['letter'] === 'Ф') {
+          if (!$uf) {
+            $uf = 1;
+            $letters[]='УФ';
+          }
+        } elseif ($row['letter'] === 'Х' || $row['letter'] === 'Ц') {
+          if (!$hts) {
+            $hts = 1;
+            $letters[]='ХЦ';
+          }
+        } elseif ($row['letter'] === 'Ш' || $row['letter'] === 'Щ') {
+          if (!$shsh) {
+            $shsh = 1;
+            $letters[]='ШЩ';
+          }
+        } elseif ($row['letter'] === 'Э' || $row['letter'] === 'Ю' || $row['letter'] === 'Я') {
+          if (!$eyuya) {
+            $eyuya = 1;
+            $letters[]='ЭЮЯ';
+          }
+        } else {
+          $letters[]=$row['letter'];
+        }
+      }*/
+
       return $letters;
   }
 
   static function regService($eventId)
   {
     $eventId = db_real_escape_string($eventId);
+    $letters = [];
 
     $res=db_query ("SELECT DISTINCT LEFT(m.name, 1) as letter
       FROM member as m
@@ -41,8 +79,42 @@ class LetterFilter
       WHERE reg.event_key={$eventId}
       ORDER BY m.name");
 
-    $letters = array ();
     while ($row = $res->fetch_assoc()) $letters[]=$row['letter'];
+    /*$shsh = 0;
+    $ez = 0;
+    $uf = 0;
+    $hts = 0;
+    $eyuya = 0;
+    while ($row = $res->fetch_assoc()) {
+      if ($row['letter'] === 'E' || $row['letter'] === 'Ж') {
+        if (!$ez) {
+          $ez = 1;
+          $letters[]='ЕЖ';
+        }
+      } elseif ($row['letter'] === 'У' || $row['letter'] === 'Ф') {
+        if (!$uf) {
+          $uf = 1;
+          $letters[]='УФ';
+        }
+      } elseif ($row['letter'] === 'Х' || $row['letter'] === 'Ц') {
+        if (!$hts) {
+          $hts = 1;
+          $letters[]='ХЦ';
+        }
+      } elseif ($row['letter'] === 'Ш' || $row['letter'] === 'Щ') {
+        if (!$shsh) {
+          $shsh = 1;
+          $letters[]='ШЩ';
+        }
+      } elseif ($row['letter'] === 'Э' || $row['letter'] === 'Ю' || $row['letter'] === 'Я') {
+        if (!$eyuya) {
+          $eyuya = 1;
+          $letters[]='ЭЮЯ';
+        }
+      } else {
+        $letters[]=$row['letter'];
+      }
+    }*/
 
     return $letters;
   }
