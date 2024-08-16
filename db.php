@@ -820,9 +820,10 @@ function db_getDashboardMembers ($adminId, $eventId, $sortField='name', $sortTyp
     // отбор по первой букве фамилии
     $letterCondition = '';
     if (!empty($letter) && $letter !== 'Все') {
+      // фильтр по русским буквам
       if (mb_strlen($letter) === 1) {
         $letterCondition = " AND m.name LIKE '{$letter}%' ";
-      } elseif (mb_strlen($letter) === 2 || mb_strlen($letter) === 3) {
+      }/* elseif (mb_strlen($letter) === 2 || mb_strlen($letter) === 3) { // для объеденнённых букв ШЩ ЭЮЯ и тп (не используется)
         $letterCondition = ' AND (';
         for ($i = 0; $i < mb_strlen($letter); $i++) {
           if ($i > 0) {
@@ -831,12 +832,12 @@ function db_getDashboardMembers ($adminId, $eventId, $sortField='name', $sortTyp
           $letterCondition .= " m.name LIKE '" . mb_substr($letter, $i, 1) ."%' ";
         }
         $letterCondition .= ') ';
-      } elseif ($letter === 'Eng') {
+      }*/ elseif ($letter === 'Eng') { // фильтр по латинице
         $eng = ['A', 'B', 'C', 'D', 'E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','Y','V','W','X','Y','Z'];
         $letterCondition = ' AND (';
         foreach ($eng as $key => $value) {
           if ($letterCondition !== ' AND (') {
-            $letterCondition .= 'OR';
+            $letterCondition .= ' OR ';
           }
           $letterCondition .= " m.name LIKE '{$value}%' ";
         }
@@ -945,9 +946,10 @@ function db_getDashboardMembersService ($eventId, $attended, $regstate, $sortFie
     // отбор по первой букве фамилии
     $letterCondition = '';
     if (!empty($letter) && $letter !== 'Все') {
+      // фильтр по русским буквам
       if (mb_strlen($letter) === 1) {
         $letterCondition = " AND m.name LIKE '{$letter}%' ";
-      } elseif (mb_strlen($letter) === 2 || mb_strlen($letter) === 3) {
+      } /*elseif (mb_strlen($letter) === 2 || mb_strlen($letter) === 3) { // для объеденнённых букв ШЩ ЭЮЯ и тп (не используется)
         $letterCondition = ' AND (';
         for ($i = 0; $i < mb_strlen($letter); $i++) {
           if ($i > 0) {
@@ -956,12 +958,12 @@ function db_getDashboardMembersService ($eventId, $attended, $regstate, $sortFie
           $letterCondition .= " m.name LIKE '" . mb_substr($letter, $i, 1) ."%' ";
         }
         $letterCondition .= ') ';
-      } elseif ($letter === 'Eng') {
+      }*/ elseif ($letter === 'Eng') { // фильтр по латинице
         $eng = ['A', 'B', 'C', 'D', 'E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','Y','V','W','X','Y','Z'];
         $letterCondition = ' AND (';
         foreach ($eng as $key => $value) {
           if ($letterCondition !== ' AND (') {
-            $letterCondition .= 'OR';
+            $letterCondition .= ' OR ';
           }
           $letterCondition .= " m.name LIKE '{$value}%' ";
         }

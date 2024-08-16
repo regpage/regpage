@@ -1319,15 +1319,30 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
     /* Е С Л И  ПРИШОЛ ПУСТОЙМАССИВ?*/
     function letter_filter(eventId) {
       // letters = ['Все', 'Eng', 'А', 'Б', 'В', 'Г', 'Д', 'ЕЖ', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'УФ', 'ХЦ', 'Ч', 'ШЩ', 'ЭЮЯ'];
+      // английский алфавит для проверки
+      letters_eng = ['A', 'B', 'C', 'D', 'E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','Y','V','W','X','Y','Z'];
       fetch("/ajax/get.php?type=letter_filter&event_id=" + eventId)
       .then(response => response.json())
       .then(commits => {
+        let letter_extra = ['Все'];
+        let letters = [];
+        // проверяем наличие фамилий начинающихся с латинских букв
+        commits.letters.forEach(function (element, index, array) {
+          if (letters_eng.includes(element) && letter_extra.length === 1) {
+            // добавляем для латинских букв слово ENG
+            letter_extra.push('Eng');
+          } else if (letters_eng.includes(element) && letter_extra.length > 1) {
+            // не добавляем в список латинские буквы
+          } else {
+            letters.push(element);
+          }
+        });
+
         let active = "Все";
         if (getCookie("letter_filter_" + eventId)) {
           active = getCookie("letter_filter_" + eventId);
         }
         let echo = "";
-        let letter_extra = ['Все', 'Eng'];
         for (let i = 0; i < letter_extra.length; i++) {
           let active_class = "";
           if (active === letter_extra[i]) {
@@ -1335,13 +1350,13 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
           }
           echo += "<a class='btn btn-link "+active_class+"' style='padding: 8px 8px 0px 0px;' type='button'><span>" + letter_extra[i] + "</span></a>";
         }
-        for (let i = 0; i < commits.letters.length; i++) {
+        for (let i = 0; i < letters.length; i++) {
           // сейчас не используется ПРОБЛЕМА ПАРНЫЕ НЕ БУДУТ ПОДСВЕЧЕНЫ ЕСЛИ АКТИВНАЯ БУКВА ВТОРАЯ В ПАРЕ
           let active_class = "";
-          if (active === commits.letters[i]) {
+          if (active === letters[i]) {
             active_class = "active_letter";
           }
-            echo += "<a class='btn btn-link "+active_class+"' style='padding: 8px 8px 0px 0px;' type='button'><span>" + commits.letters[i] + "</span></a>";
+            echo += "<a class='btn btn-link "+active_class+"' style='padding: 8px 8px 0px 0px;' type='button'><span>" + letters[i] + "</span></a>";
           }
         $("#eventTab-"+eventId +" .letter_filter").html(echo);
         $(".aditional-menu .letter_filter").html(echo);
