@@ -236,9 +236,9 @@ $(document).ready(function(){
 
   // удалить шаблон
   $(".dlt_fellowship_tmpl").click(function () {
-    if (confirm("Удалить шаблон?")) {
-      let parent = $(this).parent();
-      data_str.get(parent);
+    let parent = $(this).parent();
+    data_str.get(parent);
+    if (confirm("Удалить шаблон" + " " + data_str.name + " " + data_str.day + " " + data_str.time + " " + data_str.duration + "?")) {
       fetch("panelsource/content/ftt/fellowship_cntrl.php?type=dlt&member_key=" + data_str.key + "&day=" + data_str.day
         + "&time=" + data_str.time + "&duration=" + data_str.duration)
       .then(response => response.text())
@@ -297,6 +297,21 @@ $(document).ready(function(){
         showError("Неудача.");
       }
     });
+  });
+
+  $("#add_fellowship_two_weeks").click(function () {
+    if (confirm("Добавить записи на ближайшие две недели?")) {
+      fetch("panelsource/necessary_scripts/add_fellowship.php?key=1cor15:45")
+      .then(response => response.text())
+      .then(result => {
+        if (result) {
+          showHint("Успешно.");
+          $("#answer_add_fellowship").html(result);
+        } else {
+          showError("Неудача.");
+        }
+      });
+    }
   });
 
   // объект с данными переданной строки или пустышка

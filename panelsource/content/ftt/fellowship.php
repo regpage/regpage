@@ -9,6 +9,9 @@ include_once 'panelsource/content/ftt/fellowship_cntrl.php';
     <p>По умолчанию функция отключена. Список служащих задаётся вручную. День старта по умолчанию завтра. Перед использованием рекомендуется выгрузить базу и дополнительно таблицу ftt_fellowship</p>
     <strong id="add_fellowship_two_weeks" class="cursor-pointer text-primary">Запустить скрипт</strong>
   </div>
+  <div id="answer_add_fellowship" class="col-10">
+
+  </div>
 </div>
 <hr class="mb-2 mt-3">
 <div class="row">

@@ -1,11 +1,13 @@
 <?php
 // === Функция ручного добавление записей Общения на две недели вперёд === //
 
-include_once 'config.php';
-include_once 'logWriter.php';
+include_once '../../config.php';
+//include_once '../../extensions/write_to_log/write_to_log.php';
 
-echo "Функция ручного добавление записей Общения на две недели вперёд ОТКЛЮЧЕНА.";
-exit();
+if (!isset($_GET['key']) || (isset($_GET['key']) && $_GET['key'] !== '1cor15:45')) {
+  echo "";
+  exit;
+}
 
 //-------------------------------------//
 // ОБЩЕНИЕ СОЗДАНИЕ ЗАПИСЕЙ ИЗ РАСПИСАНИЯ
@@ -49,7 +51,7 @@ function cron_set_fellowship_str() {
     $result = [];
     $res = db_query ("SELECT *
       FROM `ftt_fellowship_tmpl`
-      WHERE `day` = '{$daysOfWeek[$start]}' AND (`serving_one`='000010532' OR `serving_one`='000010642' OR `serving_one`='000009703' OR `serving_one`='000007096' OR `serving_one`='000003195' OR `serving_one`='000002097' OR `serving_one`='000002634')");
+      WHERE `day` = '{$daysOfWeek[$start]}'"); //  AND (`serving_one`='000010532' OR `serving_one`='000010642' OR `serving_one`='000009703' OR `serving_one`='000007096' OR `serving_one`='000003195' OR `serving_one`='000002097' OR `serving_one`='000002634')
     while ($row = $res->fetch_assoc()) $result[] = $row;
 
     if (count($result) > 0) {
@@ -71,7 +73,7 @@ function cron_set_fellowship_str() {
 
 // результат
 if (cron_set_fellowship_str()) {
-  echo '<a href="ftt_fellowship">Закончить<a>';
+  echo '<a href="ftt_fellowship">Перейти в раздел<a>';
 }
 // СТОП ОБЩЕНИЕ СОЗДАНИЕ ЗАПИСЕЙ ИЗ РАСПИСАНИЯ
 
