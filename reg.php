@@ -1708,7 +1708,7 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
 
             $.getJSON('/ajax/get.php', { member: memberId, event: eventId, fullList: localityValid})
             .done (function(data){
-              console.log(data);
+              //console.log(data);
                 fillEditMember (memberId, data.eventmember, data.localities);
                 setAdminRole(memberId);
                 $('#modalEditMember').attr('data-member_id', memberId);
@@ -1892,7 +1892,8 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
 
            $.getJSON('/ajax/set.php?set_state'+request, {event:eventId,  memberId: memberId, setstate: setstate })
            .done (function(data) {
-               refreshEventMembers (eventId, data.members, data.localities);
+              loadDashboard();
+              // refreshEventMembers (eventId, data.members, data.localities);
            });
         });
 
@@ -2123,11 +2124,11 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
 
         $.post("/ajax/set.php?member="+window.currentEditMemberId + request + create + (doRegister?"&register=yes":""), data)
         .done (function(data){
-            refreshEventMembers (eventId, data.members, data.localities);
+            //refreshEventMembers (eventId, data.members, data.localities);
             $('#modalEditMember').modal('hide');
             elem.removeClass('create');
             $('.emName ').removeClass('create');
-
+            loadDashboard();
             // #ПОДДЕРЖКА Дотации для 20 участников на манил
             /*
             if (eventId === '20222028') {
@@ -2371,8 +2372,9 @@ function checkStopEventRegistration(eventId){
                 mate: $(".beMate").val() == "_none_" ? "" : $(" .beMate").val(),
                 parking: "0",
             }).done (function(data) {
-                refreshEventMembers (eventId, data.members, data.localities);
+                // refreshEventMembers (eventId, data.members, data.localities);
                 $('#modalBulkEditor').modal('hide');
+                loadDashboard();
             });
         }
     });
@@ -2390,8 +2392,9 @@ function checkStopEventRegistration(eventId){
         if (members.length>0) {
             $.getJSON('/ajax/set.php?event='+eventId+request, { reg_new_members: members.join(',') })
             .done (function(data) {
-                refreshEventMembers (eventId, data.members, data.localities);
+                //refreshEventMembers (eventId, data.members, data.localities);
                 $('#modalAddMembers').modal('hide');
+                loadDashboard();
             });
         }
     });
@@ -2494,7 +2497,8 @@ function checkStopEventRegistration(eventId){
           // GENERAL QUERY
           $.getJSON('/ajax/set.php?event='+eventId+request, {register_members: ids.join(',') })
           .done (function(data) {
-              refreshEventMembers (eventId, data.members, data.localities);
+              // refreshEventMembers (eventId, data.members, data.localities);
+              loadDashboard();
               if (data.invalid && data.invalid.length>0)
                   alert("Следующие участники не были зарегистрированы:\n\n"+data.invalid.toString().replace(/,/g,'\n')+"\n\nПроверьте правильность заполнения всех полей и возрастные ограничения мероприятия!", false);
           });
@@ -2503,7 +2507,8 @@ function checkStopEventRegistration(eventId){
         // GENERAL QUERY
         $.getJSON('/ajax/set.php?event='+eventId+request, {register_members: ids.join(',') })
         .done (function(data) {
-            refreshEventMembers (eventId, data.members, data.localities);
+          loadDashboard();
+            //refreshEventMembers (eventId, data.members, data.localities);
             if (data.invalid && data.invalid.length>0)
                 alert("Следующие участники не были зарегистрированы:\n\n"+data.invalid.toString().replace(/,/g,'\n')+"\n\nПроверьте правильность заполнения всех полей и возрастные ограничения мероприятия!", false);
         });
@@ -2729,7 +2734,8 @@ function checkStopEventRegistration(eventId){
              dismiss_attended_members: alreadyArrivedIds && alreadyArrivedIds.length > 0 ? alreadyArrivedIds.join(',') : null
          })
          .done (function(data) {
-             refreshEventMembers (eventId, data.members, data.localities);
+            loadDashboard();
+             //refreshEventMembers (eventId, data.members, data.localities);
              if (data.invalid && data.invalid.length>0)
                 alert("Следующие участники не были зарегистрированы:\n\n"+data.invalid.toString().replace(/,/g,'\n')+"\n\nПроверьте правильность заполнения всех полей!", false);
          });
@@ -2747,7 +2753,8 @@ function checkStopEventRegistration(eventId){
             membersIds : ids.join(',')
         })
         .done (function(data) {
-            refreshEventMembers (event, data.members, data.localities);
+            loadDashboard();
+            //refreshEventMembers (event, data.members, data.localities);
         });
     }
 
@@ -2782,8 +2789,9 @@ function checkStopEventRegistration(eventId){
                 attended : modal.find(".emAttended").val() === '1' ? 1 : null
             })
             .done (function(data) {
-                refreshEventMembers (eventId, data.members, data.localities);
+                //refreshEventMembers (eventId, data.members, data.localities);
                 modal.modal('hide');
+                loadDashboard();
             });
         }
     });
@@ -2825,7 +2833,8 @@ function checkStopEventRegistration(eventId){
                 }
               }
               */
-                refreshEventMembers (eventId, data.members, data.localities);
+              loadDashboard();
+              //refreshEventMembers (eventId, data.members, data.localities);
             });
         }
     });
@@ -2958,8 +2967,8 @@ function checkStopEventRegistration(eventId){
                 (ids.length>1 ? 'Приглашения поставлены' : 'Приглашение поставлено') :
                 (ids.length>1 ? 'Сообщения поставлены' : 'Сообщение поставлено')) + ' в очередь на отправку и будет отправлено в течение нескольких минут');
             $("#modalSendLetter").modal('hide');
-
-            refreshEventMembers (eventId, data.members, data.localities);
+            loadDashboard();
+            //refreshEventMembers (eventId, data.members, data.localities);
         });
     });
 
