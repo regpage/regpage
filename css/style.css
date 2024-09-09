@@ -1345,7 +1345,12 @@ input.error, .control-group.error select, textarea.error {
     font-size: 12px;
     margin-left: 0;
 }
-
+.note_grey {
+    color: #AAA;
+    font-weight: normal;
+    font-size: 12px;
+    margin-left: 0;
+}
 /*** RESPONSIVENESS ***/
 
 /* Large Desktop */

@@ -460,7 +460,7 @@
             <label for="download-translate">Переводить на английский</label>
         </div>
 
-        <div class="search-checkbox">
+        <div class="search-checkbox" style="min-height: 385px;">
             <div class="search-checkbox-first-column">
               <div>
                   <input type="checkbox" id="member_name" disabled checked>
@@ -495,8 +495,16 @@
                     <label for="download-post">Почтовый адрес</label>
                 </div>
                 <div>
+                    <input type="checkbox" data-download="category_name" id="download-category_name">
+                    <label for="download-category_name">Категория</label>
+                </div>
+                <div>
                     <input type="checkbox" data-download="service" id="download-service">
                     <label for="download-service">Служение</label>
+                </div>
+                <div>
+                    <input type="checkbox" data-download="service_info" id="download-service_info">
+                    <label for="download-service_info">Информация о служении</label>
                 </div>
                 <div>
                     <input type="checkbox" data-download="coord" id="download-coord">
@@ -1613,6 +1621,13 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
             } else {
               short_admin_comment = m.admin_comment;
             }
+            // обрезаем инфо о служении
+            let short_service_info = '';
+            if (m.service_info.length > 13) {
+              short_service_info = m.service_info.substr(0,10) + '...';
+            } else {
+              short_service_info = m.service_info;
+            }
             // отметка розовым строк в которых приезд под вопросом
             let pink = "";
             if (m.questionable === "1") {
@@ -1643,7 +1658,8 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
                + '</div>'
                // + ( m.coord == '1' ? '<div>Координатор</div>' : '')
                + '</td>'
-               + ((in_array(16, window.user_settings)) ? '<td class=""><span>' + (m.service != null ? m.service : '') + '</span></td>' : '')
+               + ((in_array(16, window.user_settings)) ? '<td class=""><span>' + (m.service != null ? m.service : '') + '</span><br><span class="user_setting_span">'
+               + (short_service_info || "") + '</span></td>' : '')
                + (!isOnline ? '<td class="style-date"><span class="arrival" style="min-width: 35px; display: inline-block;" data-date="' + he(m.arr_date) + '" data-time="' + he(m.arr_time) + '">' : "") + formatDDMM( m.arr_date) + '</span> - '+
                 '<span class="departure" data-date="' + he(m.dep_date) + '" data-time="' + he(m.dep_time) + '">'+ formatDDMM(m.dep_date) + '</span><br>'
                 + "<span class='user_setting_span' style='min-width: 35px; display: inline-block;'>" + (m.arr_time ? m.arr_time.slice(0,5) : "") + "</span><span  class='user_setting_span'>&nbsp;&nbsp;&nbsp;&nbsp;" + (m.dep_time ? m.dep_time.slice(0,5) : "")
@@ -1671,7 +1687,7 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
                 '<div><span>' + (m.status ? he(m.status) : '')
                 + '<span>, '
                 + getAgeWithSuffix(parseInt(get_current_age(m.birth_date)),get_current_age(m.birth_date)) + '</span>'
-                + '<br>'+ (m.service ? he(m.service) : '') + '</span></div>' +
+                + '<br>'+ (m.service ? he(m.service) : '') + ' </span><span class="note_grey"> ' + short_service_info + '</span></div>' +
                  '<div>' + (!isOnline ? '<span class="arrival" style="min-width: 35px; display: inline-block;" data-date="' + he(m.arr_date) + '" data-time="' + he(m.arr_time) + '">' +
                 formatDDMM(m.arr_date) + '</span>'+
                 '<span class="departure" data-date="' + he(m.dep_date) + '" data-time="' + he(m.dep_time) + '">'+ ' - '+formatDDMM(m.dep_date) + '</span>' : "")
@@ -3084,7 +3100,7 @@ function checkStopEventRegistration(eventId){
 
     // END Romans Code
 </script>
-<script src="/js/reg.js?v88"></script>
+<script src="/js/reg.js?v89"></script>
 <script src="/js/regupload.js?v5"></script>
 <?php
     include_once "footer.php";

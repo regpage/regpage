@@ -545,8 +545,7 @@ else if (isset ($_POST ['members']) && isset ($_POST ['memberslength']) && isset
             $active_sheet->getColumnDimension($ind_count)->setWidth(20);
             $ind_count ++;
         }
-    }
-    else{
+    } else {
         $active_sheet->getColumnDimension('A')->setWidth(4);
         $active_sheet->getColumnDimension('B')->setWidth(33);
         $active_sheet->getColumnDimension('C')->setWidth(15);
@@ -775,6 +774,12 @@ else if (isset ($_POST ['members']) && isset ($_POST ['memberslength']) && isset
                 case 'male':
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue($ind.'1', "Пол");
                     break;
+                case 'category_name':
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue($ind.'1', "Категория");
+                    break;
+                case 'service_info':
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue($ind.'1', "Инфо о служении");
+                    break;
             }
             $ind ++;
         }
@@ -975,6 +980,12 @@ else if (isset ($_POST ['members']) && isset ($_POST ['memberslength']) && isset
                                 break;
                             case 'male':
                                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue($ind.''.$i, $membersAll[$m]['male'] == 1 ? 'Брат': 'Сестра');
+                                break;
+                            case 'service_info':
+                                $objPHPExcel->setActiveSheetIndex(0)->setCellValue($ind.''.$i, $membersAll[$m]['service_info']);
+                                break;
+                            case 'category_name':
+                                $objPHPExcel->setActiveSheetIndex(0)->setCellValue($ind.''.$i, $membersAll[$m]['category_name']);
                                 break;
                         }
                         $ind ++;

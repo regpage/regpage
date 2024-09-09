@@ -46,6 +46,13 @@ if ($("#events-list").val() === "20222028") {
   $(".brothers_dotation_text").parent().hide();
 }
 */
+// сброс информации о служении
+$(".emService").click(function () {
+  if (!$(this).val()) {
+    $(".emService_info").val("");
+  }
+});
+
 /* Задаём значение в поле questionable таблицы reg и настраиваем опцию в бланке в соответствии с заданым значением*/
 $('#questionable strong').click(function() {
   let parent_element = $(this).parent();
