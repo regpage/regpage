@@ -227,11 +227,12 @@
     <label class="span1">Взнос</label>
     <label class="span1 label-prepaid">Внесено</label>
     <label class="span1 label-currency">Валюта</label>
-    <?php if (!$isGuest && !$noEvent && !$indexPage) { ?>
+    <!--<?php if (!$isGuest && !$noEvent && !$indexPage) { ?>
         <label class="span1">Коорд. <a href="#" rel="tooltip" data-placement="bottom" data-toggle="tooltip" title="Условия: возраст до 55 лет, здоровье и способность позаботиться о святых" tabindex="-1"><i class="icon-question-sign"></i></a></label>
-    <?php } ?>
+    <?php } ?>-->
     <label class="span2">Разместить с</label>
     <label class="span3">Служение</label>
+    <label class="span1">Комментарий служения<a href="#" rel="tooltip" data-placement="bottom" data-toggle="tooltip" title="Коментарий для служения" tabindex="-1"><i class="icon-question-sign"></i></a></label>
 </div>
 <div class="controls controls-row">
     <div class="control-group"><input class="span1 emContrib" type="text" maxlength="4" disabled></div>
@@ -247,18 +248,19 @@
         </select>
     </div>
     <?php if (!$isGuest && !$noEvent && !$indexPage) { ?>
-    <div class="control-group">
+    <!-- <div class="control-group">
         <select class="span1 emCoord">
             <option value="0">---</option>
             <option value="1">РЕКОМЕНДУЕТСЯ</option>
         </select>
-    </div>
+    </div> -->
     <?php } ?>
     <select class="span2 emMate"></select>
     <select class="span3 emService">
         <option value='_none_' selected>&nbsp;</option>
         <?php foreach (db_getServices() as $id => $name) echo "<option value='$id'>".htmlspecialchars ($name)."</option>"; ?>
     </select>
+    <input type="text" class="span12 emService_info" maxLength="50">
 </div>
 <?php } } ?>
 <?php if($noEvent && !$isGuest && !$indexPage){ ?>

@@ -517,8 +517,7 @@ function fillEditMember (memberId, info, localities, newMemberBlank) {
     $(".emArrDate").val (info["arr_date"] ? formatDDMM (info["arr_date"]) : "").attr('data-double_date', info["arr_date"]).keyup();
     $(".emArrTime").val (info["arr_time"] ? formatTime (info["arr_time"]) : "").keyup();
     $(".emBirthdate").val (info["birth_date"] ? info["birth_date"] : "").keyup();
-    $(".emCellPhone").val (info["cell_phone"] ? info["cell_phone"] : "");
-    //$(".emTempPhone").val (info["temp_phone"] ? info["temp_phone"] : "");
+    $(".emCellPhone").val (info["cell_phone"] ? info["cell_phone"] : "");    
     $(".emDepDate").val (info["dep_date"] ? formatDDMM (info["dep_date"]) : "").attr('data-double_date', info["dep_date"]).keyup();
     $(".emDepTime").val (info["dep_time"] ? formatTime (info["dep_time"]) : "").keyup();
     $(".emEmail").val (info["email"] ? info["email"] : "").keyup();
@@ -1760,7 +1759,7 @@ renewComboLists('.members-lists-combo');
 $('#modalEditMember').on('show', function() {
   setTimeout(function () {
     showBlankEvents();
-        
+
     $('#semestrPvom').parent().hide();
     $('#semestrPvom').val('_none_');
 

@@ -226,12 +226,12 @@ function db_getAdminAsMember ($memberId)
 
 $selectEventMember = "SELECT m.key as member_key, m.name, CASE WHEN m.male=1 THEN 'male' WHEN m.male=0 THEN 'female' ELSE '' END as gender, m.male,
                       m.birth_date, m.locality_key, m.address, m.home_phone, m.cell_phone, m.email,
-                      r.arr_date, r.arr_time, r.dep_date, r.dep_time, r.accom, r.coord, r.temp_phone, r.transport, r.questionable,
+                      r.arr_date, r.arr_time, r.dep_date, r.dep_time, r.accom, r.coord, r.transport, r.questionable,
                       r.mate_key, r.comment, r.admin_comment, r.status_key, m.category_key, m.document_key,
                       m.document_num, m.document_date, m.document_auth, m.new_locality, r.regstate_key, m.citizenship_key,
                       m.admin_key as mem_admin, r.admin_key as reg_admin, r.parking, e.name as event_name,
                       e.key as event_key, e.need_passport, e.need_transport, e.need_prepayment, e.start_date, e.end_date, e.need_status,
-                      IF (rg.name='--',l.name,CONCAT (l.name,', ',rg.name)) as locality_name, r.permalink, r.attended,
+                      IF (rg.name='--',l.name,CONCAT (l.name,', ',rg.name)) as locality_name, r.permalink, r.attended, r.service_info,
                       r.place, r.prepaid, e.organizer, e.need_parking, e.need_service, e.need_accom,
                       CASE WHEN r.currency IS NULL THEN e.currency ELSE r.currency END as currency,
                       CASE WHEN r.contrib=0 THEN e.contrib ELSE r.contrib END as contrib, r.avtomobile, r.avtomobile_number,
@@ -876,7 +876,7 @@ function db_getDashboardMembers ($adminId, $eventId, $sortField='name', $sortTyp
         e.need_passport, e.need_tp, reg.admin_comment, reg.comment, e.list_name, reg.list_name as reg_list_name,
         IF((SELECT COUNT(*) FROM reg rg WHERE rg.event_key=e.key AND (rg.regstate_key = '01' OR rg.regstate_key = '02' OR rg.regstate_key = '04' OR rg.regstate_key is NULL )) >= e.participants_count AND e.participants_count > 0, 1, 0) as stop_registration,
         e.close_registration,
-        reg.prepaid, reg.attended, reg.aid_paid, reg.paid, reg.service_key, reg.status_key, reg.coord, reg.contr_amount, reg.currency,
+        reg.prepaid, reg.attended, reg.aid_paid, reg.paid, reg.service_key, reg.status_key, reg.coord, reg.contr_amount, reg.currency, reg.service_info,
         reg.visa, reg.note, reg.flight_num_arr, reg.flight_num_dep, m.english, m.birth_date,
         m.tp_name, m.tp_num, m.tp_auth, m.tp_date, m.address, reg.avtomobile, reg.avtomobile_number,
         (SELECT rg.name FROM region rg WHERE rg.key=l.region_key) as region,
@@ -905,7 +905,7 @@ function db_getDashboardMembers ($adminId, $eventId, $sortField='name', $sortTyp
         e.need_passport, e.need_tp, reg.admin_comment, reg.comment, e.list_name, reg.list_name as reg_list_name,
         IF((SELECT COUNT(*) FROM reg rg WHERE rg.event_key=e.key AND (rg.regstate_key = '01' OR rg.regstate_key = '02' OR rg.regstate_key = '04' OR rg.regstate_key is NULL )) >= e.participants_count AND e.participants_count > 0, 1, 0) as stop_registration,
         e.close_registration,
-        reg.prepaid, reg.attended, reg.aid_paid, reg.paid, reg.service_key, reg.status_key, reg.coord, reg.contr_amount, reg.currency,
+        reg.prepaid, reg.attended, reg.aid_paid, reg.paid, reg.service_key, reg.status_key, reg.coord, reg.contr_amount, reg.currency, reg.service_info,
         reg.visa, reg.note, reg.flight_num_arr, reg.flight_num_dep, m.english, m.birth_date,
         m.tp_name, m.tp_num, m.tp_auth, m.tp_date, m.address, reg.avtomobile, reg.avtomobile_number,
         (SELECT rg.name FROM region rg WHERE rg.key=l.region_key) as region,
@@ -1013,7 +1013,7 @@ function db_getDashboardMembersService ($eventId, $attended, $regstate, $sortFie
         (SELECT name FROM member m2 WHERE m2.key=m.admin_key) as mem_admin_name,
         m.admin_key as mem_admin_key, m.male, m.document_num as document_num,
         m.document_auth as document_auth, m.document_date as document_date, stts.name as status,
-        s.name as service, reg.attended, reg.prepaid, reg.aid_paid, reg.paid,
+        s.name as service, reg.attended, reg.prepaid, reg.aid_paid, reg.paid, reg.service_info,
         (SELECT name FROM member m3 WHERE m3.key=reg.admin_key) as reg_admin_name,
         IF (reg.attended, IFNULL(reg.place,''), null) as place, reg.accom,
         reg.transport, reg.parking, reg.service_key, reg.status_key, reg.admin_key, reg.arr_date, reg.questionable,
@@ -1043,7 +1043,7 @@ function db_getDashboardMembersService ($eventId, $attended, $regstate, $sortFie
         (SELECT name FROM member m2 WHERE m2.key=m.admin_key) as mem_admin_name,
         m.admin_key as mem_admin_key, m.male, m.document_num as document_num,
         m.document_auth as document_auth, m.document_date as document_date, stts.name as status,
-        s.name as service, reg.attended, reg.prepaid, reg.aid_paid, reg.paid,
+        s.name as service, reg.attended, reg.prepaid, reg.aid_paid, reg.paid, reg.service_info,
         (SELECT name FROM member m3 WHERE m3.key=reg.admin_key) as reg_admin_name,
         IF (reg.attended, IFNULL(reg.place,''), null) as place, reg.accom,
         reg.transport, reg.parking, reg.service_key, reg.status_key, reg.admin_key, reg.arr_date, reg.questionable,
@@ -1301,7 +1301,6 @@ function db_setEventMember ($adminId, $get, $post){
     $_mate_key = $_page == '/members' || $_page == '/index' ? (DONT_CHANGE) : (isset($post['mate_key']) ? $db->real_escape_string($post['mate_key']) : '');
     $_accom = $_page =='/members' ? (DONT_CHANGE) : (isset($post['accom']) && $post['accom']!='' ? $db->real_escape_string($post['accom']) : null);
     $_coord = $_page == '/members' || $_page == '/index' ? (DONT_CHANGE) : $db->real_escape_string($post['coord']);
-    $_temp_phone = DONT_CHANGE;
     $_transport = $_page =='/members' ? (DONT_CHANGE) : (isset($post['transport']) && $post['transport']!='' ? $db->real_escape_string($post['transport']) : null);
     $_citizenship_key = $db->real_escape_string($post['citizenship_key']);
     $_parking = $_page =='/members' ? (DONT_CHANGE) : (isset($post['parking']) && $post['parking']!='' ? $db->real_escape_string($post['parking']) : null);
@@ -1309,7 +1308,8 @@ function db_setEventMember ($adminId, $get, $post){
     $_avtomobile_number = $_page =='/members' ? (DONT_CHANGE) : (isset($post['avtomobile_number']) && $post['avtomobile_number']!='' ? $db->real_escape_string($post['avtomobile_number']) : '');
     $_prepaid = $_page == '/members' || $_page == '/index' ? (DONT_CHANGE) : (int)$post['prepaid'];
     $_currency = $_page == '/members' || $_page == '/index' ? (DONT_CHANGE) : (isset($post['currency']) ? $db->real_escape_string($post['currency']) : null);
-    $_service_key = $_page == '/members' ? (DONT_CHANGE) : (isset($post['service_key']) ? $db->real_escape_string($post['service_key']) : null); //|| $_page == '/index'
+    $_service_key = $_page == '/members' ? (DONT_CHANGE) : (isset($post['service_key']) ? $db->real_escape_string($post['service_key']) : null);
+    $_service_info = $_page == '/members' ? (DONT_CHANGE) : (isset($post['service_info']) ? $db->real_escape_string($post['service_info']) : null);
     $is_guest = $_page == '/index';
     $_aid = $_page == '/members' || $_page == '/index' ? (DONT_CHANGE) : (isset($post['aid']) ? (int)$post['aid'] : 0);
     $_contr_amount = $_page == '/members' || $_page == '/index' ? (DONT_CHANGE) : (isset($post['contr_amount']) ? (int)$post['contr_amount'] : 0);
@@ -1375,6 +1375,7 @@ function db_setEventMember ($adminId, $get, $post){
             if ($_prepaid===DONT_CHANGE) $_prepaid='0';
             if ($_currency===DONT_CHANGE) $_currency=null;
             if ($_service_key===DONT_CHANGE) $_service_key=null;
+            if ($_service_info===DONT_CHANGE) $_service_info=null;
             if ($_mate_key===DONT_CHANGE) $_mate_key=null;
 
             $_college='';
@@ -1396,7 +1397,7 @@ function db_setEventMember ($adminId, $get, $post){
             if ($_prepaid===DONT_CHANGE) $_prepaid = isset($m["prepaid"]) ? $m["prepaid"] : 0;
             if ($_currency===DONT_CHANGE) $_currency = isset($m["currency"]) ? $m["currency"] : null;
             if ($_service_key===DONT_CHANGE) $_service_key = isset($m["service_key"]) ? $m["service_key"] : null;
-
+            if ($_service_info===DONT_CHANGE) $_service_info = isset($m["service_info"]) ? $m["service_info"] : null;
             if ($_college ===DONT_CHANGE) $_college = $m["college_key"] ? $m["college_key"] : '';
             if ($_collegeComment===DONT_CHANGE) $_collegeComment = $m["college_comment"] ? $m["college_comment"] : '';
             if ($_collegeStart ===DONT_CHANGE) $_collegeStart = $m["college_start"] ? $m["college_start"] : 0;
@@ -1418,9 +1419,8 @@ function db_setEventMember ($adminId, $get, $post){
             || $_status_key != $m["status_key"]
             || $_mate_key != $m["mate_key"] || $_accom != $m["accom"] || $_parking != $m["parking"]
             || $_transport != $m["transport"]
-            // || $_temp_phone != $m["temp_phone"]
             || $_prepaid != $m["prepaid"] || $_currency != $m["currency"]
-            || $_service_key != $m["service_key"] || $_coord != $m["coord"]
+            || $_service_key != $m["service_key"] || $_service_info != $m["service_info"] || $_coord != $m["coord"]
             || $_flight_num_arr != $m["flight_num_arr"] || $_flight_num_dep != $m["flight_num_dep"]
             || $_note != $m["note"] || $_aid != $m['aid'] || $_contr_amount != $m['contr_amount']
             || $_trans_amount != $m['trans_amount'] || $_fellowship != $m['fellowship'] || $_visa != $m['visa']
@@ -1508,7 +1508,7 @@ function db_setEventMember ($adminId, $get, $post){
 
         $stmt =  !$_memberId || !$isUserAddedToreg ? $db->prepare ("INSERT INTO reg (arr_date, arr_time, dep_date, dep_time, accom,
                                               transport, mate_key, admin_key, status_key, $regCommentField, parking,
-                                              prepaid, currency, service_key, coord,
+                                              prepaid, currency, service_key, service_info,
                                               flight_num_arr, flight_num_dep, note,
                                               aid, contr_amount, trans_amount, list_name, fellowship, visa, avtomobile, avtomobile_number,
                                               changed, regstate_key, member_key, event_key, permalink, created, web, contrib)
@@ -1517,7 +1517,7 @@ function db_setEventMember ($adminId, $get, $post){
                                                 . ( !$_memberId ? "'$newMemberId'" : "'$_memberId'") .", '$_eventId', UUID(), NOW(), $_web, $_contrib)")
                                : $db->prepare ("UPDATE reg SET arr_date=?, arr_time=?, dep_date=?, dep_time=?, accom=?,
                                               transport=?, mate_key=?, admin_key=?, status_key=?,
-                                              $regCommentField=?, parking=?, prepaid=?, currency=?, service_key=?, coord=?,
+                                              $regCommentField=?, parking=?, prepaid=?, currency=?, service_key=?, service_info=?,
                                               flight_num_arr = ?, flight_num_dep = ?, note = ?,
                                               aid = ?, contr_amount = ?, trans_amount = ?, list_name=?, fellowship=?, visa=?, avtomobile =?, avtomobile_number=? "
                                               .( $_aid < 1 ? ", aid_paid=NULL " : "" )
@@ -1528,7 +1528,7 @@ function db_setEventMember ($adminId, $get, $post){
         if (!$stmt) throw new Exception ($db->error);
         $stmt->bind_param ("ssssssssssssssssssssssssss", $_arr_date, $_arr_time, $_dep_date, $_dep_time, $_accom,
             $_transport, $_mate_key, $_adminId, $_status_key, $_comment, $_parking,  $_prepaid, $_currency,
-            $_service_key, $_coord, $_flight_num_arr, $_flight_num_dep,
+            $_service_key, $_service_info, $_flight_num_arr, $_flight_num_dep,
             $_note, $_aid, $_contr_amount, $_trans_amount, $regListName, $_fellowship, $_visa, $_avtomobile, $_avtomobile_number);
 
         if (!$stmt->execute ()) throw new Exception ($db->error);
@@ -3488,10 +3488,10 @@ function db_checkIfEventMemberFieldsHasDifference($adminId, $_dataFields, $membe
             $_dataFields["accom"] != ($eventMember["accom"] == null ? '' : $eventMember["accom"]) ||
             $_dataFields["parking"] != ($eventMember["parking"] == null ? '' : $eventMember["parking"]) ||
             $_dataFields["transport"] != ($eventMember["transport"] == null ? '' : $eventMember["transport"]) ||
-            //$_dataFields["temp_phone"] != $eventMember["temp_phone"] ||
             //$_dataFields["prepaid"] != $eventMember["prepaid"] || false
             $_dataFields["currency"] != $eventMember["currency"] ||
             $_dataFields["service_key"] != ($eventMember["service_key"] == null ? '' : $eventMember["service_key"]) ||
+            $_dataFields["service_info"] != ($eventMember["service_info"] == null ? '' : $eventMember["service_info"]) ||            
             $_dataFields["coord"] != $eventMember["coord"] ||
             $_dataFields["flight_num_arr"] != ($eventMember["flight_num_arr"] == null ? '' : $eventMember["flight_num_arr"]) ||
             $_dataFields["flight_num_dep"] != ($eventMember["flight_num_dep"] == null ? '' : $eventMember["flight_num_dep"]) ||

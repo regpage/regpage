@@ -1086,7 +1086,7 @@ function getValuesRegformFields(form, isIndexPage, isInvitation){
         prepaid: form.find(".emPrepaid").val (),
         currency: form.find(".emCurrency").val () == "_none_" ? "" : form.find(".emCurrency").val(),
         service_key: form.find(".emService").val () == "_none_" ? "" : form.find(".emService").val(),
-
+        service_info: form.find(".emService_info").val () == "" ? "" : form.find(".emService_info").val(),
         aid : form.find('.emAid').val(),
         contr_amount : form.find('.emAid').val() < 1 ? 0 : form.find('.emContrAmount').val(),
         trans_amount : form.find('.emAid').val() < 1 ? 0 : form.find('.emTransAmount').val(),
@@ -1341,7 +1341,6 @@ function fillEditMember (memberId, info, localities, newMemberBlank) {
     $(".emArrTime").val (info["arr_time"] ? formatTime (info["arr_time"]) : "").keyup();
     $(".emBirthdate").val (info["birth_date"] ? info["birth_date"] : "").keyup();
     $(".emCellPhone").val (info["cell_phone"] ? info["cell_phone"] : "");
-    //$(".emTempPhone").val (info["temp_phone"] ? info["temp_phone"] : "");
     $(".emDepDate").val (info["dep_date"] ? formatDDMM (info["dep_date"]) : "").attr('data-double_date', info["dep_date"]).keyup();
     $(".emDepTime").val (info["dep_time"] ? formatTime (info["dep_time"]) : "").keyup();
     $(".emEmail").val (info["email"] ? info["email"] : "").keyup();
@@ -1537,6 +1536,8 @@ function fillEditMember (memberId, info, localities, newMemberBlank) {
 
     if (info["service_key"]) $('.emService').val (info["service_key"]); else $('.emService').val ("_none_");
     $(".emService").change();
+
+    if (info["service_info"]) $('.emService_info').val (info["service_info"]); else $('.emService_info').val ("");
 
     if (info["attended"]>0){
         $("#eventMemberPlace").show ();
@@ -1964,7 +1965,6 @@ function parseEventMemberDataToCheckChanges(info){
         russian_lg : info["russian_lg"] ? info["russian_lg"].toString() : "1",
         service_key : info["service_key"] ? info["service_key"].toString() : "_none_",
         status_key : info["status_key"] ? info["status_key"] : "01",
-        temp_phone : info["temp_phone"] ? info["temp_phone"] : "",
         tp_auth : info["tp_auth"] ? info["tp_auth"].toString() : "",
         tp_date : info["tp_date"] ? formatDate (info["tp_date"]) : "",
         tp_name : info["tp_name"] ? info["tp_name"].toString() : "",

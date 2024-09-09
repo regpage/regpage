@@ -1593,7 +1593,7 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
             var dataItems = 'data-accom="'+m.accom+'" data-transport="'+m.transport+'" data-locality_key="'+m.locality_key+'" data-male="'+m.male+'" '+
                     'data-parking="'+m.parking+'" data-regstate="'+m.regstate+'" data-prepaid="'+m.prepaid+'" data-locality="'+he(m.locality)+'"' +
                     'data-attended="'+m.attended+'" data-country="'+m.country+'" data-aid_paid="'+(m.aid_paid || 0)+'" data-paid="'+m.paid+'" '+
-                    'data-place="'+(m.place || "") +'" data-service="'+m.service_key+'" data-status="'+m.status_key+'" data-coord="'+m.coord+'" data-mate="'+m.mate_key+'" '+
+                    'data-place="'+(m.place || "") +'" data-service="'+m.service_key+'" data-status="'+m.status_key+'" data-coord="'+m.coord+'" data-service_info="'+m.service_info+'" data-mate="'+m.mate_key+'" '+
                     'data-aid_amount="'+m.contr_amount+'" data-comment="'+he(m.admin_comment.length > 0 ? 1 : 0)+'" data-currency="'+(m.currency || '') +'"';
             // console.log(m);
 
@@ -2527,7 +2527,7 @@ function checkStopEventRegistration(eventId){
         $("#bulkEditorEventTitle").text($('#events-list option:selected').text());
 
         var arr_date=null, arr_time=null, dep_date=null, dep_time=null, accom=null, trans=null,
-            service_key =null, coord = null, mate = null, memberId = null,
+            service_key =null, service_info =null, coord = null, mate = null, memberId = null,
             attended = null, place = null, aidneed=null, aidpaid=null, prepaid=null, paid = null, currency = null, status_key = null;
 
         $("div.tab-pane.active tr[class|='regmem'] input[type='checkbox']:checked").parents ("tr").each (function(){
@@ -2554,6 +2554,9 @@ function checkStopEventRegistration(eventId){
 
             if (service_key===null) service_key=$(this).attr('data-service');
             else if (service_key !== $(this).attr('data-service')) service_key="_none_";
+
+            if (service_info===null) service_info=$(this).attr('data-service_info');
+            else if (service_info !== $(this).attr('data-service_info')) service_info="";
 
             if (coord===null) coord=$(this).attr('data-coord');
             else if (coord !== $(this).attr('data-coord')) coord= "0";
@@ -3081,7 +3084,7 @@ function checkStopEventRegistration(eventId){
 
     // END Romans Code
 </script>
-<script src="/js/reg.js?v87"></script>
+<script src="/js/reg.js?v88"></script>
 <script src="/js/regupload.js?v5"></script>
 <?php
     include_once "footer.php";

@@ -507,7 +507,7 @@ function refreshEventMembersTbl (eventId, members, localities){
         var dataItems = 'data-accom="'+m.accom+'" data-transport="'+m.transport+'" data-locality_key="'+m.locality_key+'" data-male="'+m.male+'" '+
                 'data-parking="'+m.parking+'" data-regstate="'+m.regstate+'" data-prepaid="'+m.prepaid+'" data-locality="'+he(m.locality)+'"' +
                 'data-attended="'+m.attended+'" data-aid_paid="'+(m.aid_paid || 0)+'" data-paid="'+m.paid+'" '+
-                'data-place="'+(m.place || "") +'" data-service="'+m.service_key+'" data-status="'+m.status_key+'" data-coord="'+m.coord+'" data-mate="'+m.mate_key+'" '+
+                'data-place="'+(m.place || "") +'" data-service="'+m.service_key+'" data-service_info="'+m.service_info+'" data-status="'+m.status_key+'" data-coord="'+m.coord+'" data-mate="'+m.mate_key+'" '+
                 'data-aid_amount="'+m.contr_amount+'" data-comment="'+he(m.admin_comment.length > 0 ? 1 : 0)+'" data-currency="'+(m.currency || '') +'"';
         // console.log(m);
 
