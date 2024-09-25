@@ -1134,7 +1134,7 @@ function historyBuilder(data) {
         $('#nameContact').css('border-color', '#ced4da');
         $('#saveConfirm').show();
       }
-      $('#saveConfirm').find('h6').html('<b style="color: red;">Для сохранения без отправки данных в CRM измените статус.</b><br><br>Примечание к заказу');
+      $('#saveConfirm').find('strong').html('Для сохранения без отправки данных в CRM измените статус.');
       $('#adminNotes').val('');
     } else {
       saveEditContact();
@@ -1738,7 +1738,7 @@ function sendTheOrder(ua) {
       $('#saveConfirm').show();
     }
     //setStringToLog('КОНТАКТ ' + $('#nameContact').val() + ', ID - ' + $('#saveContact').attr('data-id')+' Нажатие на кнопку - ОТПРАВИТЬ ЗАКАЗ. Итог - переход к модальному окну подтверждения.', 'WARNING');
-    $('#saveConfirm').find('h6').html('Примечание к заказу');
+    //$('#saveConfirm').find('h6').html('Примечание к заказу');
     $('#adminNotes').val('');
   });
 
@@ -1749,6 +1749,13 @@ function sendTheOrder(ua) {
 
   $('#saveConfirmBtn').click(function() {
     //setStringToLog('КОНТАКТ ' + $('#nameContact').val() + ', ID - ' + $('#saveContact').attr('data-id')+' Нажатие на кнопку - ОТПРАВИТЬ в модальной форме заказа. Итог - необходимо проверить лог отправки в CRM.', 'WARNING');
+    if (!$("#adminNotes").val().trim()) {
+      showError("Пожалуйста, заполните поле комментарий.");
+      $("#adminNotes").css("border-color", "red");
+      return;
+    }
+    $("#adminNotes").css("border-color", "lightgrey");
+    // отправляем с учётом региона
     function sendOrderToCRMExtra() {
       if ($('#countryContact').val() === 'UA') {
         sendTheOrder('UA');

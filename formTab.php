@@ -307,7 +307,7 @@
         </select>
     </div>
     <div class="control-group row-fluid" style="width: 48%; float: right;">
-      <label class="span12">Информация о служении <a href="#" rel="tooltip" data-placement="bottom" data-toggle="tooltip" title="Коментарий для служения" tabindex="-1"><i class="icon-question-sign"></i></a></label>
+      <label class="span12">Информация о служении</label>
       <input type="text" class="span12 emService_info" maxLength="50">
     </div>
     <!-- <?php if (!$isGuest && !$indexPage) { ?>

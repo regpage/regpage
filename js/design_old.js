@@ -24,6 +24,10 @@ if ($(window).width()<=769) {
       }
     });
   }
+  if (window.location.pathname === '/reg.php' || window.location.pathname === '/reg' || window.location.pathname === '/index.php' || window.location.pathname === '/index') {
+    $("#modalEditMember .emService_info").prev().text("Инфо о служении");
+  }
+
 } else {
   // прибить футер
   if (window.location.pathname === '/index.php' || window.location.pathname === '/index') {

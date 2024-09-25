@@ -232,7 +232,7 @@
     <?php } ?>-->
     <label class="span2">Разместить с</label>
     <label class="span3">Служение</label>
-    <label class="span1">Информация о служении <a href="#" rel="tooltip" data-placement="bottom" data-toggle="tooltip" title="Коментарий для служения" tabindex="-1"><i class="icon-question-sign"></i></a></label>
+    <label class="span1">Информация о служении</label>
 </div>
 <div class="controls controls-row">
     <div class="control-group"><input class="span1 emContrib" type="text" maxlength="4" disabled></div>

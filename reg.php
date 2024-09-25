@@ -1623,8 +1623,10 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
             }
             // обрезаем инфо о служении
             let short_service_info = '';
-            if (m.service_info.length > 13) {
+            if (m.service_info.length > 13 && !in_array(15, window.user_settings)) {
               short_service_info = m.service_info.substr(0,10) + '...';
+            } else if (m.service_info.length > 25 && in_array(15, window.user_settings)) {
+              short_service_info = m.service_info.substr(0,22) + '...';
             } else {
               short_service_info = m.service_info;
             }
@@ -1681,14 +1683,14 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
                 "</span> " +
                 (showLocalityField ? '<div>' + he(m.locality ? (m.locality.length>20 ? m.locality.substring(0,18)+'...' : m.locality) : '') +(in_array(2, window.user_settings) ? '<br/>'+ '<span class="user_setting_span">'+(m.region || m.country)+'</span>' : '') +
                     '</div>' : '') +
-                '<div><span>'+ he(m.cell_phone) + '</span>'+ (m.cell_phone && m.email ? ', ' :' ' )+
-                (in_array(3, window.user_settings) ? '<br/>'+ '<span class="user_setting_span">'+m.email+'</span>' : '') +
+                '<div>' + ((!in_array(15, window.user_settings)) ? '<span>'+ he(m.cell_phone) + '</span>'+ (m.cell_phone && m.email ? ', ' :' ' ) : "") +
+                (in_array(3, window.user_settings) ?  (!in_array(15, window.user_settings) ? '<br>' : "") + '<span class="user_setting_span">'+m.email+'</span>' : '') +
                 '</div>'+
                 '<div><span>' + (m.status ? he(m.status) : '')
                 + '<span>, '
                 + getAgeWithSuffix(parseInt(get_current_age(m.birth_date)),get_current_age(m.birth_date)) + '</span>'
-                + '<br>'+ (m.service ? he(m.service) : '') + ' </span><span class="note_grey"> ' + short_service_info + '</span></div>' +
-                 '<div>' + (!isOnline ? '<span class="arrival" style="min-width: 35px; display: inline-block;" data-date="' + he(m.arr_date) + '" data-time="' + he(m.arr_time) + '">' +
+                + ((in_array(16, window.user_settings)) ? '<br>'+ (m.service ? he(m.service) : '') + ' </span><span class="note_grey"> ' + short_service_info + '</span></div>' : "")
+                + '<div>' + (!isOnline ? '<span class="arrival" style="min-width: 35px; display: inline-block;" data-date="' + he(m.arr_date) + '" data-time="' + he(m.arr_time) + '">' +
                 formatDDMM(m.arr_date) + '</span>'+
                 '<span class="departure" data-date="' + he(m.dep_date) + '" data-time="' + he(m.dep_time) + '">'+ ' - '+formatDDMM(m.dep_date) + '</span>' : "")
                 + "<br><span class='user_setting_span'><span style='min-width: 35px; display: inline-block;'>" + (m.arr_time ? m.arr_time.slice(0,5) : "") + "</span><span>&nbsp;&nbsp;&nbsp;&nbsp;" + (m.dep_time ? m.dep_time.slice(0,5) : "") + '</span></span>'

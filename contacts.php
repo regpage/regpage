@@ -282,7 +282,7 @@
             </div>
             <div class="" style="text-align: right; background-color: #f5f5f5; margin-left: -15px; margin-right: -15px; padding-top: 15px; padding-bottom: 15px; border-top: 1px solid lightgrey;">
 
-              <input id="orderSentToContact" class="btn btn-secondary btn-sm" type="button" data-id_admin="" data-id="" value="Отправить заказ" style="margin-right: 5px;" data-target="" data-toggle="modal">
+              <input id="orderSentToContact" class="btn btn-secondary btn-sm" type="button" data-id_admin="" data-id="" value="Создать заказ" style="margin-right: 5px;" data-target="" data-toggle="modal">
               <input id="deleteArchiveContactBtn" class="btn btn-danger btn-sm" type="button" value="Удалить" style="margin-right: 5px;" data-target="#deleteArchiveContactMdl" data-toggle="modal">
               <input id="saveContact" class="btn btn-info btn-sm" type="button" data-id_admin="" data-id="" value="Сохранить" style="margin-right: 5px;">
               <input class="btn my_btn_cancel btn-sm" id="cd-panel__close-watch" type="button" name="" value="Закрыть" style="margin-right: 15px;">
@@ -451,11 +451,12 @@
       <div class="modal-dialog">
         <div class="modal-content">
         <div class="modal-header">
-          <h5>Заказ будет отправлен на обработку</h5>
+          <h5>Новый заказ</h5>
           <button id="saveConfirmCrosForClose" type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
         </div>
         <div class="modal-body">
-          <h6>Примечание к заказу</h6>
+          <h6>Вы создаёте новый заказ на отправку ещё одного экземпляра Нового Завета. Пожалуйста, добавьте комментарий для святых, которые занимаются обработкой входящих заказов. *</h6>
+          <strong style="color: red;"></strong>
           <textarea id="adminNotes" name="name" rows="3" cols="56"></textarea>
         </div>
         <div class="modal-footer">
@@ -737,6 +738,7 @@
               <div class="col-sm-7 left_panel-select">
                       <select id="statusShow" class="form-control form-control-sm" name="">
                         <option value="_all_">Все статусы</option>
+                        <option value="">Без статуса</option>
                         <option value="7">В работе</option>
                         <option value="1">Недозвон</option>
                         <option value="2">Ошибка</option>
@@ -1084,7 +1086,7 @@
 
         //let idBlankGet = '<?php echo $idBlank; ?>';
     </script>
-    <script src="/js/contacts.js?v89"></script>
+    <script src="/js/contacts.js?v90"></script>
     <script src="/js/contactsupload.js?v5"></script>
 <?php
     include_once "footer2.php";
