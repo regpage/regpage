@@ -446,7 +446,7 @@
         </div>
     </div>
 <!-- STOP Modal message upload xlsx -->
-<!-- STOP Modal save confirm-->
+<!-- START Modal save confirm-->
     <div id="saveConfirm" data-width="400" class="modal" tabindex="-1" aria-hidden="true" style="display: none; background-color: rgba(255, 255, 255, 0.3);">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -455,9 +455,9 @@
           <button id="saveConfirmCrosForClose" type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
         </div>
         <div class="modal-body">
-          <h6>Вы создаёте новый заказ на отправку ещё одного экземпляра Нового Завета. Пожалуйста, добавьте комментарий для святых, которые занимаются обработкой входящих заказов. *</h6>
+          <h6>Вы создаёте новый заказ на отправку ещё одного экземпляра Нового Завета. Пожалуйста, добавьте комментарий для святых, которые занимаются обработкой входящих заказов.<br>Это поле обязательно для заполнения.</h6>
           <strong style="color: red;"></strong>
-          <textarea id="adminNotes" name="name" rows="3" cols="56"></textarea>
+          <textarea id="adminNotes" class="w-100" name="name" rows="3" cols="56"></textarea>
         </div>
         <div class="modal-footer">
           <button class="btn btn-sm btn-secondary" id="saveConfirmBtn" data-dismiss="" aria-hidden="true">Отправить</button>

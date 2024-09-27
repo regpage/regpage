@@ -110,12 +110,9 @@
           } else {
             $list_access = '_all_';
           }
-          $current_date_z = date("Y-m-d");
-          if ($serving_one_selected === '000010642') {
-            $data_for_list = getFttAttendanceSheetAndStrings('000010642', $filter_period_att);
-          } else {
-            $data_for_list = getFttAttendanceSheetAndStrings($list_access, $filter_period_att, $serving_one_selected);
-          }
+          $current_date_z = date("Y-m-d");          
+          $data_for_list = getFttAttendanceSheetAndStrings($list_access, $filter_period_att, $serving_one_selected);
+
 
           $counter_days = [];
           for ($i=0; $i < count($data_for_list); $i++) {
