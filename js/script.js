@@ -1428,10 +1428,14 @@ function fillEditMember (memberId, info, localities, newMemberBlank) {
 
     if ($(".emMate").length){
       var emMateHtml = "<option value='_none_'>&nbsp;</option>"; //, mateArr = []
-      //Разместить с новая версия
-      fetch("/ajax/get.php?type=be_mate&event_id=" + $("#events-list").val())
+      //Разместить с новая версия или служащий
+      let type = "be_mate";
+      if ($('.tab-pane.active').attr('data-event_type') === 'SCC' || $('.tab-pane.active').attr('data-event_type') === 'RYC' || $('.tab-pane.active').attr('data-event_type') === 'TSC' || $('.tab-pane.active').attr('data-event_type') === 'RTS') {
+        type = "em_mate";
+      }
+      fetch("/ajax/get.php?type="+type+"&event_id=" + $("#events-list").val())
       .then(response => response.json())
-      .then(commits => {
+      .then(commits => {        
         for (const variable in commits.result) {
           if (commits.result.hasOwnProperty(variable)) {
             if (variable.substr (0,2) != "99" && variable != memberId) {
@@ -1441,6 +1445,7 @@ function fillEditMember (memberId, info, localities, newMemberBlank) {
         }
         $(".emMate").html (emMateHtml).val (info["mate_key"] ? info["mate_key"] : "_none_");
       });
+
 
 /*
       //Разместить с старая версия

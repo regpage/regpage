@@ -145,9 +145,11 @@ $('#questionable strong').click(function() {
       }
       */
     } else {
+
+      $('.emMateLbl').text('Разместить с');
       if ($('.emAccom').prev().text() === 'Группа') {
         $('.emAccom').prev().text('Размещение*');
-        $('.emMateLbl').text('Разместить с');
+        //$('.emMateLbl').text('Разместить с');
         // убрать
         if ($('.emAccom').attr('disabled')) {
           $('.emAccom').attr('disabled', false);

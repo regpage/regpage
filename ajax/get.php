@@ -163,7 +163,10 @@ if (isset($_GET['type']) && $_GET['type'] === 'be_mate') {
   echo json_encode(["result"=>db_getEventMembers ($_GET ['event_id'])]);
   exit();
 }
-
+if (isset($_GET['type']) && $_GET['type'] === 'em_mate') {
+  echo json_encode(["result"=>db_getEventMembersStatusServ($adminId, $_GET ['event_id'])]);
+  exit();
+}
 // фильтр по первой букве фамилии
 if (isset($_GET['type']) && $_GET['type'] === 'letter_filter') {
   if(db_isAdminRespForReg($adminId, $_GET ['event_id'])){
