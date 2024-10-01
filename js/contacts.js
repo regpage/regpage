@@ -396,7 +396,7 @@ function contactsStringsLoad(x, idStr, sort) {
      // Check a send function
      if ($(this).attr('data-order_date') === '' || $(this).attr('data-order_date') === 'null' || $(this).attr('data-order_date') === 'undefined' || $(this).attr('data-order_date') === '00.00.0000') {
        $('#orderSentToContact').attr('disabled', false);
-       $('#orderSentToContact').val('Отправить заказ');
+       $('#orderSentToContact').val('Новый заказ');
        $('#orderDateEdit').val('');
      } else {
        $('#orderSentToContact').attr('disabled', true);
@@ -409,19 +409,19 @@ function contactsStringsLoad(x, idStr, sort) {
 
        if (((currentDate.getFullYear() - dateOrder.getFullYear()) > 1) || ((currentDate.getFullYear() - dateOrder.getFullYear()) < 0)) {
          $('#orderSentToContact').attr('disabled', false);
-         $('#orderSentToContact').val('Отправить заказ');
+         $('#orderSentToContact').val('Новый заказ');
        } else if ((currentDate.getFullYear() - dateOrder.getFullYear()) === 1) {
          if (((currentDate.getMonth()-dateOrder.getMonth()) === -11) && (currentDate.getDate() < dateOrder.getDate())) {
            $('#orderSentToContact').attr('disabled', true);
            $('#orderSentToContact').val('Заказ отправлен');
          } else {
            $('#orderSentToContact').attr('disabled', false);
-           $('#orderSentToContact').val('Отправить заказ');
+           $('#orderSentToContact').val('Новый заказ');
          }
        } else if ((currentDate.getFullYear() - dateOrder.getFullYear()) === 0 ) {
          if (((currentDate.getMonth() - dateOrder.getMonth()) > 1) || ((currentDate.getMonth() - dateOrder.getMonth()) === 1 && (currentDate.getDate()>=dateOrder.getDate()))) {
            $('#orderSentToContact').attr('disabled', false);
-           $('#orderSentToContact').val('Отправить заказ');
+           $('#orderSentToContact').val('Новый заказ');
          } else if ((currentDate.getMonth() - dateOrder.getMonth()) <= 0) {
            $('#orderSentToContact').attr('disabled', true);
            $('#orderSentToContact').val('Заказ отправлен');
@@ -455,7 +455,7 @@ function contactsStringsLoad(x, idStr, sort) {
 
        if ($('#orderDate').text() === '' || $('#orderDate').text() === 'null' || $('#orderDate').text() === 'undefined' || $('#orderDate').text() === '00.00.0000') {
          $('#orderSentToContact').attr('disabled', false);
-         $('#orderSentToContact').val('Отправить заказ');
+         $('#orderSentToContact').val('Новый заказ');
        } else if(((currentDateEx.getFullYear()- dateOrderEx.getFullYear()) === 1) && ((currentDateEx.getMonth()-dateOrderEx.getMonth()) === -11) && (currentDateEx.getDate() < dateOrderEx.getDate())) {
          $('#orderSentToContact').attr('disabled', true);
          $('#orderSentToContact').val('Заказ отправлен');
@@ -1533,7 +1533,7 @@ function historyBuilder(data) {
     }
     clearingBlankOfContact();
     $('#orderSentToContact').attr('disabled', false);
-    $('#orderSentToContact').val('Отправить заказ');
+    $('#orderSentToContact').val('Новый заказ');
     if ($('.cd-panel-watch').hasClass('cd-panel--is-visible-watch')) {
 
     } else {
@@ -1723,7 +1723,7 @@ function sendTheOrder(ua) {
     !$('#addressContact').val() ? $('#addressContact').css('border-color', 'red') : $('#addressContact').css('border-color', '#ced4da');
     if (!$('#nameContact').val() || !$('#phoneContact').val() || !$('#regionContact').val() || !$('#localityContact').val() || !$('#indexContact').val() || !$('#addressContact').val()) {
       showError('Заполните поля выделенные красным цветом.');
-      //setStringToLog('КОНТАКТ ' + $('#nameContact').val() + ', ID - ' + $('#saveContact').attr('data-id')+' Нажатие на кнопку - ОТПРАВИТЬ ЗАКАЗ. Итог - неудача, НЕ ВСЕ ПОЛЯ ЗАПОЛНЕНЫ.', 'FATAL');
+      //setStringToLog('КОНТАКТ ' + $('#nameContact').val() + ', ID - ' + $('#saveContact').attr('data-id')+' Нажатие на кнопку - Новый ЗАКАЗ. Итог - неудача, НЕ ВСЕ ПОЛЯ ЗАПОЛНЕНЫ.', 'FATAL');
       e.stopPropagation();
       return
     } else {
@@ -1737,7 +1737,7 @@ function sendTheOrder(ua) {
       $('#phoneContact').css('border-color', '#ced4da');
       $('#saveConfirm').show();
     }
-    //setStringToLog('КОНТАКТ ' + $('#nameContact').val() + ', ID - ' + $('#saveContact').attr('data-id')+' Нажатие на кнопку - ОТПРАВИТЬ ЗАКАЗ. Итог - переход к модальному окну подтверждения.', 'WARNING');
+    //setStringToLog('КОНТАКТ ' + $('#nameContact').val() + ', ID - ' + $('#saveContact').attr('data-id')+' Нажатие на кнопку - Новый ЗАКАЗ. Итог - переход к модальному окну подтверждения.', 'WARNING');
     //$('#saveConfirm').find('h6').html('Примечание к заказу');
     $('#adminNotes').val('');
   });

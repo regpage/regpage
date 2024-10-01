@@ -364,24 +364,14 @@ function db_getEventMembersStatusServ($adminId, $eventId){
     $adminId = $db->real_escape_string($adminId);
     $eventId = $db->real_escape_string($eventId);
 
-    $res=db_query ("SELECT DISTINCT * FROM
-        (SELECT DISTINCT m.key as id, m.name as name
-        FROM access as a
-        LEFT JOIN country c ON c.key = a.country_key
-        LEFT JOIN region r ON r.key = a.region_key OR c.key=r.country_key
-        INNER JOIN locality l ON l.region_key = r.key OR l.key=a.locality_key
-        INNER JOIN member m ON m.locality_key = l.key
-        INNER JOIN reg re ON re.member_key = m.key
-        WHERE a.member_key='{$adminId}' AND re.event_key='{$eventId}' AND re.status_key = '02'
-        UNION
-        SELECT DISTINCT m.key as id, m.name as name
-        FROM access as a
-        LEFT JOIN country c ON c.key = a.country_key
-        LEFT JOIN region r ON r.key = a.region_key OR c.key=r.country_key
-        INNER JOIN locality l ON l.region_key = r.key OR l.key=a.locality_key
-        INNER JOIN member m ON m.locality_key = l.key
-        INNER JOIN reg re ON re.member_key = m.key
-        WHERE a.member_key='{$adminId}' AND re.event_key='{$eventId}' AND re.status_key = '02') q ORDER BY q.name");
+        $res=db_query ("SELECT DISTINCT m.key as id, m.name as name
+            FROM access as a
+            LEFT JOIN country c ON c.key = a.country_key
+            LEFT JOIN region r ON r.key = a.region_key OR c.key=r.country_key
+            INNER JOIN locality l ON l.region_key = r.key OR l.key=a.locality_key
+            INNER JOIN member m ON m.locality_key = l.key
+            INNER JOIN reg re ON re.member_key = m.key
+            WHERE a.member_key='{$adminId}' AND re.event_key='{$eventId}' AND m.category_key != 'SC' ORDER BY m.name");
 
     $members = array();
     while ($row = $res->fetch_assoc()) $members[$row['id']]=$row['name'];
