@@ -763,7 +763,7 @@ function open_blank(el_this) {
       let element, field, value, id, data;
       element = $(this);
       field = $(this).attr("data-field");
-      value = $(this).val();
+      value = String($(this).val());
       id = $(this).parent().parent().parent().attr("data-id");
       // продолжительность мероприятия
       let session_duration = $(this).parent().find(".name_session").attr("data-text");
@@ -1005,7 +1005,7 @@ function open_blank(el_this) {
           });
         }
         // save
-        data = "&id="+id+"&field="+field+"&value="+value+"&value_late="+late+"&value_absence="+absence;
+        data = "&id="+id+"&field="+field+"&value="+String(value)+"&value_late="+late+"&value_absence="+absence;
         fetch('ajax/ftt_attendance_ajax.php?type=updade_data_blank' + data)
         .then(response => response.json())
         .then(commits => {
