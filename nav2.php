@@ -6,7 +6,7 @@ $res = '';
 db_checkNotice($memberId) ? $noticeOn = '' : $noticeOn = 'none';
 $tempTmp = db_checkNotice($memberId);
 $contact_page_name = 'Контакты';
-if ($ftt_access['group'] === 'trainee') {
+if (isset($ftt_access['group']) && $ftt_access['group'] === 'trainee') {
   $contact_page_name = 'ПВОМ';
 }
 
@@ -141,7 +141,7 @@ switch ($h) {
             <ul class="navbar-nav" style="background-color: #1b1b1b; padding-left: 15px;">
             <?php
             if(!isset($isGuest) && isset($memberId)){
-              if ($ftt_access['group'] === 'trainee') {
+              if (isset($ftt_access['group']) && $ftt_access['group'] === 'trainee') {
                 $main_point = 'Полновременное обучение';
               } else {
                 $main_point = 'Главная';
@@ -152,7 +152,7 @@ switch ($h) {
             }
 
             if(!isset($isGuest) && db_isAdmin($memberId) || db_hasAdminFullAccess($memberId)) {
-              if ($ftt_access['group'] !== 'trainee') {
+              if (isset($ftt_access['group']) && $ftt_access['group'] !== 'trainee') {
                 echo '<li class="nav-item"';
                 if (strpos ($s,"/reg")!==FALSE || strpos ($s,"/admin")!==FALSE) {echo " class='active'";}
                 echo"><a class='nav-link' href='/reg'>Регистрация</a></li>";
@@ -160,7 +160,7 @@ switch ($h) {
             }
 
             if(!isset($isGuest) && db_isAdmin($memberId)) {
-              if ($ftt_access['group'] !== 'trainee') {
+              if (isset($ftt_access['group']) && $ftt_access['group'] !== 'trainee') {
                 echo '<li class="nav-item ';
                 if (strpos($s,"/members") !== FALSE || strpos($s,"/youth") !== FALSE
                 || strpos($s,"/list") !== FALSE || strpos($s,"/attend") !== FALSE) {
@@ -172,14 +172,14 @@ switch ($h) {
               }
             }
 
-            if (!isset($isGuest) && $ftt_access['group'] === 'staff') {
+            if (!isset($isGuest) && isset($ftt_access['group']) && $ftt_access['group'] === 'staff') {
                 echo '<li class="nav-item ';
                 if (strpos($s,"/ftt_list")!==FALSE) {echo ' active"';} else {echo ' "';}
                 echo'><a class="nav-link" href="/ftt_list">ПВОМ</a></li>';
             }
 
             if((!isset($isGuest) && db_isAdmin($memberId) && (!in_array('8', db_getUserSettings($memberId)))) || (db_hasAdminFullAccess($memberId) && (!in_array('8', db_getUserSettings($memberId))))) {
-              if ($ftt_access['group'] !== 'trainee') {
+              if (isset($ftt_access['group']) && $ftt_access['group'] !== 'trainee') {
                 echo '<li class="nav-item"';
                 if (strpos ($s,"/meetings")!==FALSE || strpos ($s,"/visits")!==FALSE ) {echo " class='active'";}
                 echo"><a class='nav-link' href='/meetings'>Собрания</a></li>";
@@ -187,7 +187,7 @@ switch ($h) {
             }
 
             // доступ до раздел видеообучение
-            if(!isset($isGuest) && $ftt_access['group'] !== 'trainee') {
+            if(!isset($isGuest) && isset($ftt_access['group']) && $ftt_access['group'] !== 'trainee') {
               if (get_admin_data::vt($memberId)) {
                 echo '<li class="nav-item"';
                 if (strpos ($s,"/vtraining")!==FALSE) {echo " class='active'";}
@@ -201,13 +201,13 @@ switch ($h) {
                 echo"><a class='nav-link' href='/practices'>Практики</a></li>";
               }
             }*/
-            if(isset($memberId) && ((in_array('14', db_getUserSettings($memberId))) || db_getAnyActiveContactStr($memberId)) && !isset($isGuest) && $ftt_access['group'] !== 'trainee' && $ftt_access['group'] !== 'staff') {
+            if(isset($memberId) && ((in_array('14', db_getUserSettings($memberId))) || db_getAnyActiveContactStr($memberId)) && !isset($isGuest) && isset($ftt_access['group']) && $ftt_access['group'] !== 'trainee' && $ftt_access['group'] !== 'staff') {
                 echo '<li ';
                 if ($res === 'Контакты') {echo " class='nav-item active'";}else{echo " class='nav-item'";}
                 echo"><a class='nav-link' href='/contacts'>Контакты</a></li>";
             }
 
-            if(!isset($isGuest) && $memberId && $ftt_access['group'] !== 'trainee'){
+            if(!isset($isGuest) && $memberId && isset($ftt_access['group']) && $ftt_access['group'] !== 'trainee'){
 
                 echo '<li  class="nav-item"';
                 if (strpos ($s,"/settings")!==FALSE) {echo " class='active'";}
@@ -255,10 +255,10 @@ switch ($h) {
             else {
                 echo '<li class="nav-item"';
                 if (strpos ($s,"/index")!==FALSE) echo 'class="active"';
-                echo '><a href="/index">Войти</a></li>';
+                echo '><a class="nav-link" href="/index">Войти</a></li>';
                 echo '<li class="nav-item"';
                 if (strpos ($s,"/signup")!==FALSE) echo 'class="active"';
-                echo '><a href="/signup">Создать учётную запись</a></li>';
+                echo '><a class="nav-link" href="/signup">Создать аккаунт</a></li>';
             }
             ?>
             <i class="fa fa-bell bell-alarm cursor-pointer" style="<?php echo db_checkNotice($memberId); ?>" title="У вас есть новые карточки"></i>
@@ -268,7 +268,7 @@ switch ($h) {
               echo '<i class="fa fa-wrench cursor-pointer" style="color: silver; font-size: 20px; margin-top: 5px; margin-left: 10px;" title="Дополнительные опции"></i>';
             }
 
-            if ($ftt_access['group'] === 'staff' || $memberId === '000005716') {
+            if ((isset($ftt_access['group']) && $ftt_access['group'] === 'staff') || $memberId === '000005716') {
               echo '<i class="fa fa-cog cursor-pointer" style="color: silver; font-size: 20px; margin-top: 5px; margin-left: 10px;" title="Управление данными ПВОМ"></i>';
             }
             ?>

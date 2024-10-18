@@ -1,4 +1,9 @@
 <?php
+// Этот заголовок должен быть общим для айаксов
+// Задаём хедер, настройки и запускаем сессию.
+header("Content-Type: application/json; charset=utf-8");
+ini_set('session.cookie_lifetime', 60 * 60 * 24 * 365);  // 365 day cookie lifetime
+session_start();
 // API для ajax(JS) запросов из браузера
 // Подключаем БД.
 require_once "config.php";
@@ -6,15 +11,8 @@ require_once "config.php";
 require_once 'db/classes/auth/auth.php';
 // Подключаем ведение лога
 include_once "extensions/write_to_log/write_to_log.php";
-
-// Задаём хедер, настройки и запускаем сессию.
-header("Content-Type: application/json; charset=utf-8");
-ini_set('session.cookie_lifetime', 60 * 60 * 24 * 365);  // 365 day cookie lifetime
-session_start ();
-
 // Получаем админа по сессии.
 $adminId = Auth::get_member_key_by_session(session_id());
-
 // Проверка аутификации. Если пользователь не аутифицирован по сессии, то останавливаем выполнение скрипта.
 if (!$adminId) {
     header("HTTP/1.0 401 Unauthorized");
@@ -39,10 +37,10 @@ set_exception_handler('exception_handler');
 set_error_handler('error_handler');
 
 // Запрос содержит имя раздела? Иначе останавливаем выполнение скрипта.
-if (isset($_GET['section']) && empty($_GET['section'])) {
+if (isset($_GET['section']) && !empty($_GET['section'])) {
   $section = $_GET['section'];
 }  else {
-  exit();
+  exit;
 }
 
 // Подключаем соответствующий файл для раздела.

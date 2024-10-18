@@ -29,4 +29,3 @@
 
     // Footer
     require_once "footer2.php";
-?>

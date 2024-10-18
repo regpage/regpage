@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
   <!-- Global site tag (gtag.js) - Google Analytics
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-144838221-1"></script>-->
@@ -12,7 +12,7 @@
 </script>
     <meta charset="utf-8">
     <title>
-    <?php if ($ftt_access['group'] === 'trainee'): ?>
+    <?php if (isset($ftt_access['group']) && $ftt_access['group'] === 'trainee'): ?>
       ПВОМ
     <?php else: ?>
       Страница регистрации

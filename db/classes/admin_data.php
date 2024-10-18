@@ -40,7 +40,7 @@ class get_admin_data {
         $res_2 = db_query("SELECT `member_key`, `service`, `coordinator` FROM ftt_trainee WHERE `member_key` = '$admin_id'");
           while ($row = $res_2->fetch_assoc()) $result_2[]=$row;
 
-          if ($result_2[0]['member_key']) {
+          if (isset($result_2[0]['member_key']) && !empty($result_2[0]['member_key'])) {
             # Ответственные в парам
             $service_param = getValueFttParamByName('extrahelp_service_id');
             // проверить при одном служении возвращает ли МАССИВ

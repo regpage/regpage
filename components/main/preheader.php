@@ -86,28 +86,38 @@ if (strlen($_SERVER['REQUEST_URI']) == 3) {
   exit;
 }
 
-// переадресация на страницу авторизации если пользователь не админ, а запрашиваемая страница для зарегистрированых пользователей
-if (!MEMBER_ID && preg_match("/(login.php)|(signup.php)|(passrec.php)/", $_SERVER["SCRIPT_NAME"])==0){
+// гостевой режим с авторизацией по пермалинку
+if (!MEMBER_ID && THIS_PAGE === 'arrdep' && isset($_GET['link']) && !empty($_GET['link'])) {
+  define("IS_GUEST", true);
+  $isGuest = true;
+} else {
+  define("IS_GUEST", false);  
+}
+
+// переадресация на страницу авторизации если пользователь не админ, а запрашиваемая страница предназначена для зарегистрированых пользователей
+if (!MEMBER_ID && !IS_GUEST && preg_match("/(login.php)|(signup.php)|(passrec.php)/", $_SERVER["SCRIPT_NAME"])==0){
     header("Location: ".APP_ROOT_PATH."login?returl=".urlencode ($_SERVER["REQUEST_URI"]));
   	exit;
 }
 
-// получаем данные администратора
-$admin_data = get_admin_data::data(MEMBER_ID);
+if (!IS_GUEST) {
+  // получаем данные администратора
+  $admin_data = get_admin_data::data(MEMBER_ID);
 
-//  П В О М
-// правила отображения разделов для обучающихся
-$ftt_access = get_admin_data::ftt(MEMBER_ID);
+  //  П В О М
+  // правила отображения разделов для обучающихся
+  $ftt_access = get_admin_data::ftt(MEMBER_ID);
 
-// переадресация на главную обучающихся с перечисленных в коде разделов на главную.
-if ($ftt_access !== 'denied') {
-  if ($ftt_access['group'] === 'trainee' && (THIS_PAGE === 'meetings' || THIS_PAGE === 'reg' || THIS_PAGE === 'members')) {
+  // переадресация на главную обучающихся с перечисленных в коде разделов на главную.
+  if ($ftt_access !== 'denied') {
+    if ($ftt_access['group'] === 'trainee' && (THIS_PAGE === 'meetings' || THIS_PAGE === 'reg' || THIS_PAGE === 'members')) {
+      header("Location: ".APP_ROOT_PATH);
+      exit;
+    }
+  } elseif ($ftt_access === 'denied' && IS_FTT_PAGE) {
     header("Location: ".APP_ROOT_PATH);
     exit;
   }
-} elseif ($ftt_access === 'denied' && IS_FTT_PAGE) {
-  header("Location: ".APP_ROOT_PATH);
-  exit;
 }
 
 // переадресация на главную если пользователь админ, но не админ мероприятия и него нет зон, а запрашиваемая страница не существует или её нет в списке в данном условии
