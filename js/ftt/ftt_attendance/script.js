@@ -3059,7 +3059,6 @@ function open_blank(el_this) {
     clear_skip_blank();
     fill_skip_blank($(this))
     $("#edit_skip_blank").modal("show");
-
   });
 
   // filters
@@ -3067,9 +3066,86 @@ function open_blank(el_this) {
     filterSkip();
   });
 
+  // добавить бланк пропущенного занятия
+  // создаётся только для существующих бланков посещаемости
+  $("#modal_edit_skip_open").click(function (e) {
+    clear_skip_blank();
+    $("#edit_skip_blank input, #edit_skip_blank select, #edit_skip_blank button").attr("disabled", false);
+    $("#delete_skip_blank").hide();
+  });
+
+  // заполняем даталист с занятиями
+  $("#trainee_select_skip, #skip_modal_date").change(function (e) {
+    // сбрасываем данные бланка используемые при формировании списка занятий
+    $("#skip_modal_session").val("");
+    $("#edit_skip_blank").attr("data-id_attendance", "");
+    $("#edit_skip_blank").attr("data-sheet_id", "");
+
+    if ($("#trainee_select_skip").val() && $("#skip_modal_date").val()) {
+      data_list_skip_session($("#trainee_select_skip").val(), $("#skip_modal_date").val())
+    }
+  });
+  // получаем и рендерим мероприятия
+  // ДОБАВИТЬ СПИСОК КОГДА УЧЁТ НЕ ВЕДЁТСЯ
+  function data_list_skip_session(trainee_key, date) {
+    // получаем список занятий для выбранного обучающегося на заданый день недели
+    // при смене даты или мероприятия или обучающегося при условием, что все они заполнены прописывается ИД бланка в данные DATA
+    // при выборе занятия проверить дату и найти лист посещаемости с которым соотнести лист отсутствия
+    let day = (getNameDayOfWeekByDayNumber(date, false, false, true));
+    if (day === 0) {
+      day = "day" + 7;
+    } else {
+      day = "day" + day;
+    }
+    fetch("ajax/ftt_attendance_ajax.php?type=get_sessions_classes&semester=" + trainee_list_full[trainee_key]['semester'] + "&time_zone=" + trainee_list_full[trainee_key]['time_zone'] + "&member_key=" + trainee_key + "&day=" + day + "&date=" + date)
+    .then(response => response.json())
+    .then(commits => {
+      // блокируем поле названия мероприятия
+      $("#skip_modal_session").attr("disabled", true);
+      // добаляем занятия в дата лист
+      $("#edit_skip_blank").attr("data-sheet_id", commits.sheet_id);
+      // добаляем занятия в дата лист
+      let html = "";
+
+      for (const variable in commits.attendance_classes) {
+        if (commits.attendance_classes.hasOwnProperty(variable)) {
+          html += "<option value='" + commits.attendance_classes[variable].session_name + "' data-value='" + commits.attendance_classes[variable].id + "'>";
+        }
+      }
+      for (const variable in commits.result) {
+        if (html) {
+            break;
+        }
+        if (commits.result.hasOwnProperty(variable)) {
+          html += "<option value='" + commits.result[variable].session_name + "' data-value='" + commits.result[variable].id + "'>";
+        }
+      }
+      if (html) {
+        // разблокируем поле названия мероприятия если спискок присутствует
+        $("#skip_modal_session").attr("disabled", false);
+      }
+      $("#skip_modal_session_datalist").html(html);
+    });
+    // получаем id мероприятия
+    $("#skip_modal_session").change(function () {
+      let sim = false;
+      $("#skip_modal_session_datalist option").each(function () {
+        if ($(this).val().trim() === $("#skip_modal_session").val().trim()) {
+          $("#edit_skip_blank").attr("data-id_attendance", $(this).attr("data-value"));
+          sim = true;
+        }
+      });
+      if (!sim) {
+        $("#edit_skip_blank").attr("data-id_attendance", "");
+      }
+    });
+  }
+
+  // очистить бланк пропущенного занятия
   function clear_skip_blank() {
     // fields
     $("#edit_skip_blank input").val("");
+    $("#skip_modal_session_datalist").html("");
     $("#edit_skip_blank input[type='checkbox']").prop("checked", false);
     $("#edit_skip_blank select").val("");
     $("#show_status_in_skip_blank").removeClass("badge-secondary").removeClass("badge-danger").removeClass("badge-warning").removeClass("badge-success").text("");
@@ -3081,6 +3157,7 @@ function open_blank(el_this) {
     $("#edit_skip_blank").attr("data-member_key", "");
     $("#edit_skip_blank").attr("data-serving_one", "");
     $("#edit_skip_blank").attr("data-status", "");
+    $("#edit_skip_blank").attr("data-sheet_id", "");
     //info
     $('#author_of_skip').parent().hide();
     $('#author_of_skip').text("");
@@ -3274,10 +3351,13 @@ function open_blank(el_this) {
     }, 30);
     $("#edit_skip_blank").modal("hide");
   });
-
+  // сохранить бланк
   function save_skip_blank(send) {
     let skip_data_blank = new FormData();
     skip_data_blank_val = {};
+    skip_data_blank_val["custom_session"] = $("#skip_modal_session").val();
+    skip_data_blank_val["sheet_id"] = $("#edit_skip_blank").attr("data-sheet_id") || "";
+    skip_data_blank_val["id_attendance"] = $("#edit_skip_blank").attr("data-id_attendance") || "";
     skip_data_blank_val["id"] = $("#edit_skip_blank").attr("data-id");
     skip_data_blank_val["topic"] = $("#skip_modal_topic").val();
     skip_data_blank_val["comment"] = $("#skip_modal_comment").val();
@@ -3301,10 +3381,11 @@ function open_blank(el_this) {
     .then(response => response.text())
     .then(commits => {
       setTimeout(function () {
-        location.reload();
+        //location.reload();
       }, 50);
     });
   }
+  // фильтры
   function cookie_filters() {
     setCookie("skip_sorting_true", 1, 1);
     setCookie("flt_skip_done", $("#flt_skip_done").val(), 1);

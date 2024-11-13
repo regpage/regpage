@@ -87,14 +87,20 @@ function setSkipBlank($data)
 {
   global $db;
   $data = json_decode($data);
+  $sheet_id = $db->real_escape_string($data->sheet_id);
   $id = $db->real_escape_string($data->id);
   $topic = $db->real_escape_string($data->topic);
   $status = $db->real_escape_string($data->status);
   $comment = $db->real_escape_string($data->comment);
+  $id_attendance = $db->real_escape_string($data->id_attendance);
 
-  $res = db_query("UPDATE `ftt_skip` SET `topic` = '{$topic}', `status` = '{$status}', `comment` = '{$comment}', `changed` = 1  WHERE `id` = '$id'");
+  if (!empty($id)) {
+    $res = db_query("UPDATE `ftt_skip` SET `topic` = '{$topic}', `status` = '{$status}', `comment` = '{$comment}', `changed` = 1  WHERE `id` = '$id'");
+  } else {
+    $res = db_query("INSERT INTO `ftt_skip` (`topic`, `status`, `comment`, `id_attendance_sheet`, `id_attendance`, `changed`) VALUES ('{$topic}', '{$status}', '{$comment}', '{$sheet_id}', '{$id_attendance}', 1)");
+  }
 
-
+  return $res;
 }
 
 function setPics($id, $file)

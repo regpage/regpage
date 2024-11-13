@@ -18,7 +18,7 @@ data-id="" data-member_key="" data-serving_one="" data-status="">
         <div class="row">
           <div class="col-4" style="max-width: 150px;">
             <label class="required-for-label" style="min-width: 130px;">Дата пропуска</label>
-            <input type="date" id="skip_modal_date" class="form-control form-control-sm mb-2" value="" disabled>
+            <input type="date" id="skip_modal_date" class="form-control form-control-sm mb-2" value="" disabled max="<?php echo date("Y-m-d"); ?>">
           </div>
           <div class="col-2 pr-1" style="margin-top:30px;">
             <span id="day_of_week_skip_blank"></span>
@@ -28,7 +28,10 @@ data-id="" data-member_key="" data-serving_one="" data-status="">
           </div>
         </div>
         <div class="">
-          <input type="text" id="skip_modal_session" class="form-control form-control-sm mt-2" placeholder="Мероприятие" disabled>
+          <input type="text" id="skip_modal_session" list="skip_modal_session_datalist" class="form-control form-control-sm mt-2" placeholder="Мероприятие" disabled>
+          <datalist id="skip_modal_session_datalist">
+
+          </datalist>
         </div>
         <div class="">
           <input type="text" id="skip_modal_topic" class="form-control form-control-sm mt-2" value="" placeholder="Тема">

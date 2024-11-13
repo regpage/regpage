@@ -16,6 +16,8 @@ include_once '../db/classes/CutString.php';
 include_once '../db/classes/ftt_reading/bible.php';
 include_once '../db/classes/statistic/biblereading.php';
 include_once '../db/classes/ftt_lists.php';
+include_once '../db/classes/ftt_attendance/ftt_attendance.php';
+include_once '../db/classes/sessions/sessions.php';
 
 // Подключаем ведение лога
 include_once "../extensions/write_to_log/write_to_log.php";
@@ -234,8 +236,16 @@ if (isset($_GET['type']) && $_GET['type'] === 'delete_permission_blank') {
 }
 
 // SKIP
+// получаем занятия
+if (isset($_GET['type']) && $_GET['type'] === 'get_sessions_classes') {
+  $sheet_id = FttAttendance::getIdByDate($_GET['member_key'], $_GET['date']);
+  $attendance_classes = FttAttendance::getAttendanceIdBySheetId($sheet_id);
+  echo json_encode(['result'=>Sessions::get_classes($_GET['time_zone'], $_GET['semester'], $_GET['day']), 'sheet_id' => $sheet_id, 'attendance_classes' => $attendance_classes]);
+  exit();
+}
+
 if (isset($_GET['type']) && $_GET['type'] === 'set_skip_blank') {
-  setSkipBlank($_POST['data']);
+  echo json_encode(["result"=>setSkipBlank($_POST['data'])]);
   exit();
 }
 

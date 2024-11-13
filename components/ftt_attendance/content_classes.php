@@ -39,6 +39,7 @@ if (isset($_COOKIE['skip_sorting'])) {
 <!-- Кнопки и фильтры -->
 <div id="skip_list_header" class="btn-group mb-2">
   <button type="button" id="modal_filters_skip_open" class="btn btn-primary btn-sm rounded mr-2" data-toggle="modal" data-target="#modal_filters_skip" style="display: none;">Фильтры</button>
+  <button type="button" id="modal_edit_skip_open" class="btn btn-success btn-sm rounded mr-2" data-toggle="modal" data-target="#edit_skip_blank">Добавить</button>
   <select id="flt_skip_done" class="form-control form-control-sm mr-2">
   <?php
   $skip_done_list = array('0' =>'Текущие', '2' =>'Выполненные');
