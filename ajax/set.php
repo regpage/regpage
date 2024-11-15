@@ -264,7 +264,7 @@ else if (isset ($_GET ['member']) && isset ($_GET ['event']))
     }
 }
 else if (isset ($_GET ['members']) && isset ($_GET ['event']) && !isset($_GET['checkServ']))
-{
+{  
     db_setEventMembers ($adminId, $_GET ['event'], preg_split("/,/", $_GET ['members'], -1, PREG_SPLIT_NO_EMPTY),
                         $_POST["arr_date"], $_POST["arr_time"], $_POST["dep_date"], $_POST["dep_time"],
                         $_POST["accom"], $_POST["transport"], isset($_POST["status"])? $_POST["status"] : NULL, $_POST["coord"], isset($_POST["service"])? $_POST["service"] : NULL,

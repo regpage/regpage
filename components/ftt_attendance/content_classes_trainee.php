@@ -55,11 +55,20 @@ if (isset($_COOKIE['skip_sorting'])) {
 foreach (getMissedClasses($skip_curent_sorting, $memberId) as $key => $value) {
   $dayOfTheWeek = date_convert::week_days($value['date_blank'], true);
   // name & time preparing
-  $session_name_echo = explode(',', $value['session_name']);
-  $session_time_and_during = $session_name_echo[1];
-  $session_name_echo = $session_name_echo[0];
-  $session_time_echo = explode('мин.', $session_time_and_during);
-  $session_during = trim($session_time_echo[0]);
+  // если не было получено название занятия (бланк не привязан с позиции в бланке посещаемости)
+  if (empty($value['session_name'])) {
+    $session_name_echo = $value['custom_session'];
+    $session_time_and_during = '';
+    $session_time_echo = '';
+    $session_during = '';
+  } else {
+    $session_name_echo = explode(',', $value['session_name']);
+    $session_time_and_during = $session_name_echo[1];
+    $session_name_echo = $session_name_echo[0];
+    $session_time_echo = explode('мин.', $session_time_and_during);
+    $session_during = trim($session_time_echo[0]);
+  }
+
   if (isset($value['session_name']) && mb_substr(trim($value['session_name']), -1) === ')' && mb_substr($value['session_name'], -7, -6) === '(') {
     $session_time_echo = mb_substr(trim($value['session_name']), -6, -1);
   } else {
@@ -76,14 +85,20 @@ foreach (getMissedClasses($skip_curent_sorting, $memberId) as $key => $value) {
   $seconds = $all_seconds % 60;
   $hours = floor($total_minutes / 60);
   $minutes = $total_minutes % 60;
-  $session_name_echo = $session_name_echo . ' ('. $session_time_echo . ' – ' . sprintf('%02d:%02d', $hours, $minutes). ')';
+  // если не было получено название занятия (бланк не привязан с позиции в бланке посещаемости)
+  if (!empty($value['session_name'])) {
+    $session_name_echo = $session_name_echo . ' ('. $session_time_echo . ' – ' . sprintf('%02d:%02d', $hours, $minutes). ')';
+  } else {
+    $value['session_name'] = $value['custom_session'];
+  }
+
   // short comment
   if (mb_strlen($value['comment']) > 80) {
     $short_comment = mb_substr($value['comment'], 0, 80).'...';
   } else {
     $short_comment = $value['comment'];
   }
-
+  // badge
   $skip_badge_status = "<span class='float-right badge badge-".$skip_status_list[$value['status']][0]."'>".$skip_status_list[$value['status']][1]."</span>";
 
   $nameTrainee = short_name::no_middle($value['name']);

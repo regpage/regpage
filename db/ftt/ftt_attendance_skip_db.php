@@ -93,11 +93,12 @@ function setSkipBlank($data)
   $status = $db->real_escape_string($data->status);
   $comment = $db->real_escape_string($data->comment);
   $id_attendance = $db->real_escape_string($data->id_attendance);
+  $custom_session = $db->real_escape_string($data->custom_session);
 
   if (!empty($id)) {
     $res = db_query("UPDATE `ftt_skip` SET `topic` = '{$topic}', `status` = '{$status}', `comment` = '{$comment}', `changed` = 1  WHERE `id` = '$id'");
   } else {
-    $res = db_query("INSERT INTO `ftt_skip` (`topic`, `status`, `comment`, `id_attendance_sheet`, `id_attendance`, `changed`) VALUES ('{$topic}', '{$status}', '{$comment}', '{$sheet_id}', '{$id_attendance}', 1)");
+    $res = db_query("INSERT INTO `ftt_skip` (`custom_session`, `topic`, `status`, `comment`, `id_attendance_sheet`, `id_attendance`, `changed`) VALUES ('{$custom_session}', '{$topic}', '{$status}', '{$comment}', '{$sheet_id}', '{$id_attendance}', 1)");
   }
 
   return $res;

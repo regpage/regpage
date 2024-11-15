@@ -26,7 +26,7 @@ set_exception_handler('exception_handler');
 set_error_handler('error_handler');
 
 if (isset($_GET['type']) && $_GET['type'] === 'arrdep') {
-  function arrdep($eventKey, $memberKey, $arrDate, $depDate,$arrTime, $depTime, $memberComment)
+  function arrdep($eventKey, $memberKey, $arrDate, $depDate,$arrTime, $depTime, $accom, $regstate, $memberComment)
   {
     $eventKey = db_real_escape_string($eventKey);
     $memberKey = db_real_escape_string($memberKey);
@@ -34,14 +34,37 @@ if (isset($_GET['type']) && $_GET['type'] === 'arrdep') {
     $depDate = db_real_escape_string($depDate);
     $arrTime = db_real_escape_string($arrTime);
     $depTime = db_real_escape_string($depTime);
+		$regstate = db_real_escape_string($regstate);
 		$memberComment = db_real_escape_string($memberComment);
+		$regstateUpdate = '';
+		if ($regstate === '03' || $regstate === '05') {
+			$regstateUpdate = " `regstate_key`='01', ";
+		}
 
     $res = db_query("UPDATE `reg`
-      SET `arr_date`='{$arrDate}', `dep_date`='{$depDate}', `arr_time`='{$arrTime}', `dep_time`='{$depTime}', `comment`='{$memberComment}'
+      SET `arr_date`='{$arrDate}', `dep_date`='{$depDate}', `arr_time`='{$arrTime}', `dep_time`='{$depTime}', `accom`='{$accom}', `comment`='{$memberComment}', {$regstateUpdate} `changed`='1'
       WHERE `event_key`='{$eventKey}' AND `member_key`='{$memberKey}'");
       return $res;
   }
 
-  echo arrdep($_GET['event_key'], $_GET['member_key'], $_GET['arr_date'], $_GET['dep_date'] ,$_GET['arr_time'], $_GET['dep_time'], $_GET['member_comment']);
+  echo arrdep($_GET['event_key'], $_GET['member_key'], $_GET['arr_date'], $_GET['dep_date'] ,$_GET['arr_time'], $_GET['dep_time'], $_GET['accom'], $_GET['regstate'], $_GET['member_comment']);
+  exit;
+}
+// запись состояния регистрации (например отмены)
+if (isset($_GET['type']) && $_GET['type'] === 'regstate') {
+  function set_reg_state($eventKey, $memberKey, $memberComment, $regKey)
+  {
+    $eventKey = db_real_escape_string($eventKey);
+    $memberKey = db_real_escape_string($memberKey);
+		$memberComment = db_real_escape_string($memberComment);
+		$regKey = db_real_escape_string($regKey);
+
+    $res = db_query("UPDATE `reg`
+      SET `regstate_key`='{$regKey}', `comment`='{$memberComment}', `changed`='1'
+      WHERE `event_key`='{$eventKey}' AND `member_key`='{$memberKey}'");
+      return $res;
+  }
+
+  echo set_reg_state($_GET['event_key'], $_GET['member_key'], $_GET['member_comment'], $_GET['reg_state']);
   exit;
 }

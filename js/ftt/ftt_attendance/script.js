@@ -3117,7 +3117,8 @@ function open_blank(el_this) {
             break;
         }
         if (commits.result.hasOwnProperty(variable)) {
-          html += "<option value='" + commits.result[variable].session_name + "' data-value='" + commits.result[variable].id + "'>";
+          html += "<option value='" + commits.result[variable].session_name + "'>";
+          // "' data-value='" + commits.result[variable].id +
         }
       }
       if (html) {
@@ -3170,6 +3171,7 @@ function open_blank(el_this) {
     // colors
     $("#skip_modal_topic").css("border-color", "lightgrey");
     $("#skip_modal_file").parent().css("border", "none");
+    $("#delete_skip_blank").show();
   }
 
   function fill_skip_blank(elem) {
@@ -3353,6 +3355,7 @@ function open_blank(el_this) {
   });
   // сохранить бланк
   function save_skip_blank(send) {
+    // заполняем объект данными бланка
     let skip_data_blank = new FormData();
     skip_data_blank_val = {};
     skip_data_blank_val["custom_session"] = $("#skip_modal_session").val();
@@ -3381,7 +3384,7 @@ function open_blank(el_this) {
     .then(response => response.text())
     .then(commits => {
       setTimeout(function () {
-        //location.reload();
+        location.reload();
       }, 50);
     });
   }
@@ -3434,6 +3437,7 @@ function open_blank(el_this) {
       location.reload();
     }, 30);
   });
+  // удалить картинку
   function skip_pic_delete(elem) {
     let patch = elem.parent().prev().find(".skip_pic").attr("href");
     if (!patch) {

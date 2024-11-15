@@ -2375,6 +2375,32 @@ function checkStopEventRegistration(eventId){
 
             var request = getRequestFromFilters(setFiltersForRequest(eventId));
             var needTransportTemp = $(".tab-pane.active").attr("data-transport") == "1" ? "0" : "";
+            /*let data = new FormData();
+            let data_member = {
+              arr_date: $("#beArrDate").val(),
+              arr_time: parseTime ($(".beArrTime").val()),
+              dep_date: $("#beDepDate").val(),
+              dep_time: parseTime ($(".beDepTime").val()),
+              accom: $(".beAccom").val() == "_none_" ? "" : $(".beAccom").val(),
+              transport: $(".beTransport").val() == "_none_" || $(".beTransport").val() == null ? needTransportTemp : $(".beTransport").val(),
+              status: $(".beStatus").val() == "_none_" ? "" : $(" .beStatus").val(),
+              service: $(".beService").val() == "_none_" ? "" : $(" .beService").val(),
+              coord: $(".beCoord").val() || 1,
+              mate: $(".beMate").val() == "_none_" ? "" : $(" .beMate").val(),
+              parking: "0"
+            };
+            data.set("data", JSON.stringify(data_member));
+            fetch("/ajax/set.php?members="+ids.join(',')+"&event="+eventId+request, {
+              method: 'POST',
+              body: data
+            })
+            .then(response => response.json())
+            .then(commits => {
+              console.log(commits);
+              // refreshEventMembers (eventId, data.members, data.localities);
+              $('#modalBulkEditor').modal('hide');
+              loadDashboard();
+            });*/
 
             $.post("/ajax/set.php?members="+ids.join(',')+"&event="+eventId+request,
             {
@@ -2386,14 +2412,15 @@ function checkStopEventRegistration(eventId){
                 transport: $(".beTransport").val() == "_none_" || $(".beTransport").val() == null ? needTransportTemp : $(".beTransport").val(),
                 status: $(".beStatus").val() == "_none_" ? "" : $(" .beStatus").val(),
                 service: $(".beService").val() == "_none_" ? "" : $(" .beService").val(),
-                coord: $(".beCoord").val(),
+                coord: $(".beCoord").val() || "",
                 mate: $(".beMate").val() == "_none_" ? "" : $(" .beMate").val(),
-                parking: "0",
+                parking: "0"
             }).done (function(data) {
                 // refreshEventMembers (eventId, data.members, data.localities);
                 $('#modalBulkEditor').modal('hide');
                 loadDashboard();
             });
+
         }
     });
 

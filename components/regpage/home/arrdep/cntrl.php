@@ -12,3 +12,7 @@ if (empty($info['dep_time'])) {
 } else {
   $depTime = substr($info['dep_time'],0,5);
 }
+
+$accomOptions = array(0 => ['_none_', '&nbsp;'],
+  '1' => ['1', 'ТРЕБУЕТСЯ'],
+  '2' => ['0', 'НЕ ТРЕБУЕТСЯ']);
