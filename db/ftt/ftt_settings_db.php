@@ -45,8 +45,8 @@ function resetSemester($adminId, $all){
 
       foreach ($paths as $file) {
         $root = __DIR__;
-        $root = explode('ajax', $root);
-        if (file_exists($root[0].$file)) {
+        $root = explode('db/ftt', $root);
+        if (file_exists($root[0].$file) && !empty($file)) {
           unlink($root[0].$file);
         }
       }
@@ -123,8 +123,8 @@ function resetSkip($adminId) {
 
     foreach ($paths as $file) {
       $root = __DIR__;
-      $root = explode('ajax', $root);
-      if (file_exists($root[0].$file)) {
+      $root = explode('db/ftt', $root);
+      if (file_exists($root[0].$file) && !empty($file)) {
         unlink($root[0].$file);
       }
     }
@@ -173,8 +173,8 @@ function resetGraduate($adminId) {
 
     foreach ($paths as $file) {
       $root = __DIR__;
-      $root = explode('ajax', $root);
-      if (file_exists($root[0].$file)) {
+      $root = explode('db/ftt', $root);
+      if (file_exists($root[0].$file) && !empty($file)) {
         unlink($root[0].$file);
       }
     }

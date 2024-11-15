@@ -35,12 +35,12 @@ $(document).ready(function(){
         if (result == 1) {
           showHint("Операция успешно завершена.");
           setTimeout(function () {
-            location.reload();
+            //location.reload();
           }, 1500);
         } else {
           showError("Что то пошло не так.");
           setTimeout(function () {
-            location.reload();
+            //location.reload();
           }, 1500);
         }
       });
@@ -52,12 +52,12 @@ $(document).ready(function(){
         if (result == 1) {
           showHint("Операция успешно завершена.");
           setTimeout(function () {
-            location.reload();
+            //location.reload();
           }, 1500);
         } else {
           showError("Что то пошло не так.");
           setTimeout(function () {
-            location.reload();
+            //location.reload();
           }, 1500);
         }
       });
@@ -94,12 +94,12 @@ $(document).ready(function(){
       if (result == 1) {
         showHint("Операция успешно завершена.");
         setTimeout(function () {
-          location.reload();
+          //location.reload();
         }, 1500);
       } else {
         showError("Что то пошло не так.");
         setTimeout(function () {
-          location.reload();
+          //location.reload();
         }, 1500);
       }
     });
