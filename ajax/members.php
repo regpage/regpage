@@ -138,4 +138,10 @@ if (isset($_GET['trainee_data'])) {
   exit();
 }
 
+if (isset($_GET['type']) && $_GET['type'] === 'get_statistic') {
+  include_once '../db/regpage/classes/members/attend_statistic.php';
+  echo json_encode(["statistic" => AttendanceStatistic::getMemberAtMeetings($_POST['keys'])]);  
+  exit();
+}
+
 echo json_encode(array("members" => db_getMemberListCopy($adminId, $sort_field, $sort_type)));

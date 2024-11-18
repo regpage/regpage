@@ -627,7 +627,7 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
 
     function loadDashboard (){
         $.getJSON('/ajax/members.php', { sortedFields : sortedFields()})
-            .done (function(data) {              
+            .done (function(data) {
                 refreshMembers (data.members); });
     }
 
@@ -874,9 +874,10 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
             countAttendancesRespBrothers = 0, countAttendancesFullTimers = 0, countAttendancesTrainees = 0,
             countAttendancesOthers = 0, countAttendancesSaintsByOldAge = 0,
             averageAge = 0, averageAgeAttendances = 0;
-
+        let members_keys_stat = [];
         $(".members-list " + ( isTabletMode ? " #membersPhone " : " #members " ) + " tbody tr").each(function(){
             if($(this).css('display') !== 'none' && !$(this).hasClass('inactive-member')){
+              members_keys_stat.push('"' + $(this).attr('data-id') + '"');
                 countMembers ++;
 
                 var name = $(this).attr('data-name'),
@@ -886,8 +887,7 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
 
                 if(!age || age == 'null'){
                     memberAgeIsNullList.push(name);
-                }
-                else{
+                } else {
                     if(age >=12 && age <= 17){
                         averageAge += parseInt(age);
                         countScholarsByAge++;
@@ -962,27 +962,27 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
 
         $("#modalStatistic h5").text('');
         var statistic =
-                (countPreScholars >0 ? "<tr><td>Дошкольники</td><td class='text-align'>"+countPreScholars+"</td><td class='text-align'>"+countAttendancesPreScholars+"</td></tr>" : "" )+
-                ( countScholars >0 ? "<tr><td>Школьники</td><td class='text-align'>"+countScholars+"</td><td class='text-align'>"+countAttendancesScholars+"</td></tr>" : "" ) +
-                ( countStudents >0 ? "<tr><td>Студенты</td><td class='text-align'>"+countStudents+"</td><td class='text-align'>"+countAttendancesStudents+"</td></tr>" : "" )+
-                (countSaints >0 ? "<tr><td>Святые в церк. жизни</td><td class='text-align'>"+countSaints+"</td><td class='text-align'>"+countAttendancesSaints+"</td></tr>" : "")+
-                ( countRespBrothers >0 ? "<tr><td>Ответственные братья</td><td class='text-align'>"+countRespBrothers+"</td><td class='text-align'>"+countAttendancesRespBrothers+"</td></tr>" : "" )+
-                ( countFullTimers >0 ? "<tr><td>Полновременные служащие</td><td class='text-align'>"+countFullTimers+"</td><td class='text-align'>"+countAttendancesFullTimers+"</td></tr>" : "" )+
-                ( countTrainees >0 ? "<tr><td >Полновременно обучающиеся</td><td class='text-align'>"+countTrainees+"</td><td class='text-align'>"+countAttendancesTrainees+"</td></tr>" : "" )+
-                ( countBelivers >0 ? "<tr><td>Верующие</td><td class='text-align'>"+countBelivers+"</td><td class='text-align'>"+countAttendancesBelivers+"</td></tr>" : "" )+
-                ( countOthers >0 ? "<tr><td>Другие</td><td class='text-align'>"+countOthers+"</td><td class='text-align'>"+countAttendancesOthers+"</td></tr>" : "" ) +
-                "<tr><td><strong>Всего</strong></td><td class='text-align'><strong>" + countMembers + "</strong></td><td class='text-align'><strong>"+countAttendances+"</strong></td></tr>";
+                (countPreScholars >0 ? "<tr><td>Дошкольники</td><td class='text-align'>"+countPreScholars+"</td><td class='text-align cat_ps'>"+countAttendancesPreScholars+"</td></tr>" : "" )+
+                ( countScholars >0 ? "<tr><td>Школьники</td><td class='text-align'>"+countScholars+"</td><td class='text-align cat_sc'>"+countAttendancesScholars+"</td></tr>" : "" ) +
+                ( countStudents >0 ? "<tr><td>Студенты</td><td class='text-align'>"+countStudents+"</td><td class='text-align cat_st'>"+countAttendancesStudents+"</td></tr>" : "" )+
+                (countSaints >0 ? "<tr><td>Святые в церк. жизни</td><td class='text-align'>"+countSaints+"</td><td class='text-align cat_sn'>"+countAttendancesSaints+"</td></tr>" : "")+
+                ( countRespBrothers >0 ? "<tr><td>Ответственные братья</td><td class='text-align'>"+countRespBrothers+"</td><td class='text-align cat_rb'>"+countAttendancesRespBrothers+"</td></tr>" : "" )+
+                ( countFullTimers >0 ? "<tr><td>Полновременные служащие</td><td class='text-align'>"+countFullTimers+"</td><td class='text-align cat_fs'>"+countAttendancesFullTimers+"</td></tr>" : "" )+
+                ( countTrainees >0 ? "<tr><td >Полновременно обучающиеся</td><td class='text-align'>"+countTrainees+"</td><td class='text-align ft'>"+countAttendancesTrainees+"</td></tr>" : "" )+
+                ( countBelivers >0 ? "<tr><td>Верующие</td><td class='text-align'>"+countBelivers+"</td><td class='text-align cat_bl'>"+countAttendancesBelivers+"</td></tr>" : "" )+
+                ( countOthers >0 ? "<tr><td>Другие</td><td class='text-align'>"+countOthers+"</td><td class='text-align cat_ot'>"+countAttendancesOthers+"</td></tr>" : "" ) +
+                "<tr><td><strong>Всего</strong></td><td class='text-align'><strong>" + countMembers + "</strong></td><td class='text-align cat_all'><strong>"+countAttendances+"</strong></td></tr>";
 
         var additionalStatistic =
-            (countScholarsByAge >0 ? "<tr><td>12-17 лет</td><td class='text-align'>"+countScholarsByAge+"</td><td class='text-align'>"+
+            (countScholarsByAge >0 ? "<tr><td>12-17 лет</td><td class='text-align'>"+countScholarsByAge+"</td><td class='text-align scholar_age'>"+
                 countAttendancesScholarsByAge+"</td></tr>" : "")+
-            ( countStudentsByAge >0 ? "<tr><td>18-25 лет</td><td class='text-align'>"+countStudentsByAge+"</td><td class='text-align'>"+countAttendancesStudentsByAge+"</td></tr>" : "" ) +
-            ( countSaintsByAge >0 ? "<tr><td>26-60 лет</td><td class='text-align'>"+countSaintsByAge+"</td><td class='text-align'>"+countAttendancesSaintsByAge+"</td></tr>" : "" )+
-            ( countOlderByAge >0 ? "<tr><td>старше 60</td><td class='text-align'>"+countOlderByAge+"</td><td class='text-align'>"+countAttendancesSaintsByOldAge+"</td></tr>" : "" )+
-            "<tr><td><strong>Всего</strong></td><td class='text-align'><strong>" + (countScholarsByAge+countStudentsByAge+countSaintsByAge + countOlderByAge) + "</strong></td><td class='text-align'><strong>"+(countAttendancesScholarsByAge+countAttendancesStudentsByAge+countAttendancesSaintsByAge + countAttendancesSaintsByOldAge)+"</strong></td></tr>"+
+            ( countStudentsByAge >0 ? "<tr><td>18-25 лет</td><td class='text-align'>"+countStudentsByAge+"</td><td class='text-align student_age'>"+countAttendancesStudentsByAge+"</td></tr>" : "" ) +
+            ( countSaintsByAge >0 ? "<tr><td>26-60 лет</td><td class='text-align'>"+countSaintsByAge+"</td><td class='text-align saint_age'>"+countAttendancesSaintsByAge+"</td></tr>" : "" )+
+            ( countOlderByAge >0 ? "<tr><td>старше 60</td><td class='text-align'>"+countOlderByAge+"</td><td class='text-align older_age'>"+countAttendancesSaintsByOldAge+"</td></tr>" : "" )+
+            "<tr><td><strong>Всего</strong></td><td class='text-align'><strong>" + (countScholarsByAge+countStudentsByAge+countSaintsByAge + countOlderByAge) + "</strong></td><td class='text-align all_age'><strong>"+(countAttendancesScholarsByAge+countAttendancesStudentsByAge+countAttendancesSaintsByAge + countAttendancesSaintsByOldAge)+"</strong></td></tr>"+
             ( countScholarsByAge>0 || countStudentsByAge> 0 || countSaintsByAge >0 ? "<tr><td>Средний возраст</td><td class='text-align'>"+(
                 parseInt(averageAge / (countScholarsByAge + countStudentsByAge + countSaintsByAge + countOlderByAge)))+"</td>"+
-            "<td class='text-align'>"+ (
+            "<td class='text-align average_age'>"+ (
                 parseInt(averageAgeAttendances / (countAttendancesScholarsByAge + countAttendancesStudentsByAge + countAttendancesSaintsByAge + countAttendancesSaintsByOldAge))) +"</td></tr>" : "" );
 
         if(memberAgeIsNullList.length == 0){
@@ -1017,7 +1017,85 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
             (filterLocality === 'Все местности' ? ' (' + localitiesByFilter.length + ')' : ' (' + filterLocality + ')'));
         $("#modalStatistic").find(".modal-body").html(tableTemplate + additionalTableTemplate);
         //$("#modalStatistic").find(".modal-footer").html("<div style='float:left;'><strong>Количество местностей — "+localitiesByFilter.length+"</strong></div>");
+        // добавляем посещаемость
+        setTimeout(function () {
+          let members_keys_statistic = new FormData();
+          members_keys_statistic.set("keys", members_keys_stat.join(','));
+          fetch('ajax/members.php?type=get_statistic', {
+            method: 'POST',
+            body: members_keys_statistic
+          })
+          .then(response => response.json())
+          .then(commits => {
+            //console.log(commits.statistic);
+            let cat_total = 0;
+            let age_total = 0;
+            if (commits.statistic.PS) {
+              $(".cat_ps").text(commits.statistic.PS);
+              cat_total += commits.statistic.PS;
+            }
+            if (commits.statistic.SC) {
+              $(".cat_sc").text(commits.statistic.SC);
+              cat_total += commits.statistic.SC;
+            }
+            if (commits.statistic.ST) {
+              $(".cat_st").text(commits.statistic.ST);
+              cat_total += commits.statistic.ST;
+            }
+            if (commits.statistic.SN) {
+              $(".cat_sn").text(commits.statistic.SN);
+              cat_total += commits.statistic.SN;
+            }
+            if (commits.statistic.RB) {
+              $(".cat_rb").text(commits.statistic.RB);
+              cat_total += commits.statistic.RB;
+            }
+            if (commits.statistic.FS) {
+              $(".cat_fs").text(commits.statistic.FS);
+              cat_total += commits.statistic.FS;
+            }
+            if (commits.statistic.FT) {
+              $(".cat_ft").text(commits.statistic.FT);
+              cat_total += commits.statistic.FT;
+            }
+            if (commits.statistic.BL) {
+              $(".cat_bl").text(commits.statistic.BL);
+              cat_total += commits.statistic.BL;
+            }
+            if (commits.statistic.OT) {
+              $(".cat_ot").text(commits.statistic.OT);
+              cat_total += commits.statistic.OT;
+            }
+            if (cat_total > 0) {
+              $(".cat_all").text(cat_total);
+            }
+            if (commits.statistic["12_17"]) {
+              $(".scholar_age").text(commits.statistic["12_17"]);
+              age_total += commits.statistic["12_17"];
+            }
+            if (commits.statistic["18_25"]) {
+              $(".student_age").text(commits.statistic["18_25"]);
+              age_total += commits.statistic["18_25"];
+            }
+            if (commits.statistic["26_60"]) {
+              $(".saint_age").text(commits.statistic["26_60"]);
+              age_total += commits.statistic["26_60"];
+            }
+            if (commits.statistic["older_60"]) {
+              $(".older_age").text(commits.statistic["older_60"]);
+              age_total += commits.statistic["older_60"];
+            }
+            if (age_total > 0) {
+              $(".all_age").text(cat_total);
+            }
+            if (commits.statistic.average_age) {
+              $(".average_age").text(Math.round(commits.statistic.average_age / age_total));
+            }
+          });
+        }, 100);
+
         $("#modalStatistic").modal('show');
+
     });
 
     $(".add-member").click(function(){
