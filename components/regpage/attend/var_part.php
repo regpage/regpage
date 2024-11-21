@@ -7,6 +7,8 @@ require_once 'db/classes/member.php';
 require_once 'db/classes/localities.php';
 require_once 'db/classes/settings.php';
 require_once 'db/classes/short_name.php';
+include_once 'db/classes/date_convert.php';
+include_once 'db/classes/member_properties.php';
 
 // Sorting
 $sort_fio_ico = '';
@@ -34,7 +36,7 @@ if (isset($_COOKIE['sorting-attend']) && !empty($_COOKIE['sorting-attend'])) {
 } else {
   $sort_fio_ico = 'fa fa-sort-desc';
 }
-
+$categories_list = MemberProperties::get_categories();
 $membersList = Members::getListAttend($memberId, $sort_setting[0], $sort_setting[1]);
 $adminLocalitiesList = localities::getAdminLocalities($memberId);
 $singleCity = localities::isSingleCityAdmin($memberId);

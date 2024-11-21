@@ -40,7 +40,6 @@ $categories_list = MemberProperties::get_categories();
 // список из зоны ответственности админа
 // Ислючить при запросе тех кто в списке обучающихся
 // Members::db_get_members_by_admin('000001679');
-$localities_select = localities::get_localities(true);
 $localities = [];
 $localities_staff = [];
 
@@ -95,5 +94,3 @@ $tab_active = "tab_trainee";
 if (isset($_COOKIE['tab_selected'])) {
   $tab_active = $_COOKIE['tab_selected'];
 }
-
-?>

@@ -1,5 +1,5 @@
 
-<!-- КАРТОЧКА УЧАСТНИКА ПВОМ
+<!-- КАРТОЧКА УЧАСТНИКА ПВОМ НЕ ИСПОЛЬЗУЕТСЯ
 <div id="modalAddEdit" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true"
 data-member_key="">
   <div class="modal-dialog">
@@ -57,7 +57,7 @@ data-member_key="">
               <option value="_none_" selected>
                 <option value="_new_">Добавить новую местность
                 <option disabled>---------------------------
-                <?php foreach ($localities_select as $id => $name){
+                <?php foreach (localities::get_localities() as $id => $name){
                   if ($id) {
                     echo "<option value='$id'>".htmlspecialchars ($name)."</option>";
                   }
@@ -67,7 +67,7 @@ data-member_key="">
             <span id="reset_locality" class="close_x cursor-pointer h4">&times;</span>
             <datalist id="localities_list">
               <option value="">
-              <?php foreach ($localities_select as $id => $name){
+              <?php foreach (localities::get_localities() as $id => $name){
                 if ($id) {
                   echo "<option value='$name' data-id='$id'>";
                 }

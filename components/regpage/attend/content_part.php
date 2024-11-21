@@ -24,13 +24,13 @@
 </div>
 <div class="row mb-3">
   <div class="btn-group">
-    <button type="button" class="btn btn-success btn-sm add-member mr-2 rounded" data-locality="001013" disabled>
+    <button id="add_member_show_modal" type="button" class="btn btn-success btn-sm add-member mr-2 rounded" data-locality="001013" disabled>
       <span class="hide-name">Добавить</span> <!--<i class="fa fa-plus icon-white"></i>-->
     </button>
-    <button type="button" class="btn btn-warning btn-sm btnDownloadMembers mr-2 rounded" disabled>
-      <span class="hide-name">Скачать</span> <!-- <i class="fa fa-download"></i>  -->
+    <!-- <button type="button" class="btn btn-warning btn-sm btnDownloadMembers mr-2 rounded" disabled>
+      <span class="hide-name">Скачать</span> --> <!-- <i class="fa fa-download"></i>  -->
     </button>
-    <button type="button" class="btn btn-info btn-sm btnShowStatistic mr-2 rounded" disabled>
+    <button type="button" class="btn btn-info btn-sm btnShowStatistic mr-2 rounded">
       <span class="hide-name">Статистика</span> <!-- <i class="fa fa-bar-chart"></i> -->
     </button>
   </div>
@@ -40,8 +40,8 @@
     </button>
   </div>
   <?php if (!$singleCity): ?>
-  <button id="btn_show_custom_filters" type="button" class="btn btn-primary btn-sm rounded mr-2" disabled>
-    <span class="hide-name">Фильтры</span> <!-- <i class="fa fa-filter icon-white"></i> -->
+  <!--<button id="btn_show_custom_filters" type="button" class="btn btn-primary btn-sm rounded mr-2" disabled>
+    <span class="hide-name">Фильтры</span>--> <!-- <i class="fa fa-filter icon-white"></i> -->
   </button>
   <?php endif; ?>
 
@@ -127,9 +127,7 @@
 <div class="row">
   <div id="attend_list" class="container pl-2">
     <?php
-    //print_r($membersList);
      foreach ($membersList as $key => $value):
-      // print_r($value);
       if (!empty($value->editors) && strlen($value->editors) > 9) {
         $editorsKeys = explode(',',$value->editors);
         if (isset($editorsKeys[1])) {
@@ -146,7 +144,8 @@
        ?>
       <div class="row attend_str pl-1" data-member_key="<?php echo $value->id; ?>"
         data-locality_key="<?php echo $value->locality_key; ?>"
-        data-category_key="<?php echo $value->category_key; ?>">
+        data-category_key="<?php echo $value->category_key; ?>"
+        data-age="<?php echo $value->age; ?>">
         <div class="col-2 pl-0" style="min-width: 280px;">
           <span class="data_name"><?php echo $value->name; ?></span>
           <?php if (in_array(5, $userSettings)): ?>

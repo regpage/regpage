@@ -64,7 +64,7 @@ function setMissedClasses($sheet_id='')
   $check = checkMissedSessions($sheet_id);
 
   if ($sheet_id === '') {
-    write_to_log::error('', 'Нет ID бланка. Пропущенные занятия не проверены');
+    //write_to_log::error('', 'Нет ID бланка. Пропущенные занятия не проверены');
     return 'Error. No ID.';
   }
 

@@ -272,3 +272,11 @@ li.modal-reference {
   color: #08c;
   cursor: pointer;
 }
+
+.close_x {
+  position: absolute;
+  display: none;
+  padding: 0 5px;
+  right: 13px;
+  top: 23px;
+}

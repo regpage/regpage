@@ -223,7 +223,7 @@ $(document).ready(function(){
         extra_comment = flt_semester;
       }
     }
-    if (extra_comment) {
+    if (extra_comment && to_public) {
       comment = "Получатели " + extra_comment + ". " + $("#announcement_staff_comment").val();
     } else {
       comment = $("#announcement_staff_comment").val();
@@ -292,7 +292,7 @@ $(document).ready(function(){
     if (to_public && validation) {
       showError(validation);
       return;
-    }    
+    }
     fetch("ajax/ftt_announcement_ajax.php?type=save_announcement", {
       method: 'POST',
       body: get_data_fields(to_public)

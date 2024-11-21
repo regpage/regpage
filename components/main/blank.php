@@ -1,4 +1,13 @@
-
+<?php
+require_once 'db/regpage/classes/members/documents.php';
+require_once 'db/regpage/classes/members/colleges.php';
+require_once 'db/classes/localities.php';
+require_once 'db/classes/member_properties.php';
+$localitiesForBlank = localities::get_localities();
+if (!isset($categories_list)) {
+  $categories_list = MemberProperties::get_categories();
+}
+?>
 <!-- КАРТОЧКА УЧАСТНИКА ПВОМ -->
 <div id="modalAddEdit" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true"
 data-member_key="">
@@ -57,7 +66,7 @@ data-member_key="">
               <option value="_none_" selected>
                 <option value="_new_">Добавить новую местность
                 <option disabled>---------------------------
-                <?php foreach ($localities_select as $id => $name){
+                <?php foreach ($localitiesForBlank as $id => $name){
                   if ($id) {
                     echo "<option value='$id'>".htmlspecialchars ($name)."</option>";
                   }
@@ -67,7 +76,7 @@ data-member_key="">
             <span id="reset_locality" class="close_x cursor-pointer h4">&times;</span>
             <datalist id="localities_list">
               <option value="">
-              <?php foreach ($localities_select as $id => $name){
+              <?php foreach ($localitiesForBlank as $id => $name){
                 if ($id) {
                   echo "<option value='$name' data-id='$id'>";
                 }
@@ -120,7 +129,7 @@ data-member_key="">
                 <label class="">Тип документа<?php // if $noEvent // e('<sup>*</sup>'); ?></label>
                 <select id="emDocumentType" class="form-control form-control-sm" <?php // if $noEvent // e('valid="required"');?>>
                     <option value='_none_' selected>&nbsp;</option>
-                    <?php // foreach (db_getDocuments() as $id => $name) echo "<option value='$id'>".htmlspecialchars ($name)."</option>"; ?>
+                    <?php foreach (Documents::getTypes() as $id => $name) echo "<option value='$id'>".htmlspecialchars ($name)."</option>"; ?>
                 </select>
             </div>
             <div class="col-6 passport-info">
@@ -180,12 +189,12 @@ data-member_key="">
         <div class="row college-fields">
             <div class="col-12">
                 <label class="">Учебное заведение <span class="emCourseLevel"></span></label>
-                <input id="emCollege" class="form-control form-control-sm" type="text" >
-                <i class="fa fa-times fa-lg clear-college"></i>
-                <!--<select class="span12 emCollege">
-                    <option value='_none_' selected>&nbsp;</option>
-                    <?php //foreach ($colleges as $id => $name) echo "<option value='$id'>".htmlspecialchars ($name)."</option>"; ?>
-                </select>-->
+                <input id="emCollege" class="form-control form-control-sm" type="text" list="college_datalist">
+                <!-- <i class="fa fa-times fa-lg clear-college"></i>-->
+                <datalist id="college_datalist">
+                    <option value='_none_'></option>
+                    <?php foreach (Colleges::getList() as $id => $name) echo "<option data-id='{$id}' value='".htmlspecialchars($name)."'>"; ?>
+                </datalist>
             </div>
 
             <div class="col-6">

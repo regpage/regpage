@@ -149,3 +149,18 @@
     </div>
   </div>
 </div>
+
+<!-- Registration state statistics -->
+<div id="modalStatistic" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" data-width="600">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="mb-0">Статистика</h5>        
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+      </div>
+      <div class="modal-body">
+        <div id="showStatistic"></div><div class="count-localities" style="margin-bottom: 15px;"></div>
+      </div>
+    </div>
+  </div>
+</div>
