@@ -4,6 +4,11 @@ $(document).ready(function(){
   // применяем фильтры
   filtersOfString();
 
+  // RENDERING
+  setTimeout(function () {
+    get_localities();
+  }, 100);
+
   // сброс комментариев и взносов для списка (с учётом фильтров)
   $("#btn_reset_fee_comment").click(function () {
     $("#spinner").show();
@@ -438,14 +443,16 @@ $(document).ready(function(){
   });
   // Добавить нового участника
   $("#add_member_show_modal").click(function() {
+    clear_blank();
     $("#modalAddEdit").modal("show");
   });
   // редактировать бланк
   $(".attend_str>div:last-child, .attend_str>div:first-child, .attend_str>div:nth-child(2)").click(function() {
+    fill_blank($(this).parent());
     $("#modalAddEdit").modal("show");
   });
-  // RENDERING
-  get_localities();
+
+  // удаляем спиннер
   $("#spinner_attend").remove();
 
   // Статистика
@@ -674,8 +681,17 @@ $(document).ready(function(){
       }, 100);
 
       $("#modalStatistic").modal('show');
-
   });
-
+  // сохранение
+  $("#save_blank").click(function() {
+      if (valid_fields()) {
+        showError('Заполните обязательные поля.');
+        return;
+      } else {
+        $("#modalAddEdit").modal("hide");
+        $("#spinner").modal("show");
+        save_blank(get_data_blank());
+      }
+  });
   /* ==== DOCUMENT READY STOP ==== */
 });

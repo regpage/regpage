@@ -48,12 +48,16 @@ class Member
 
       return $result;
   }
-  /*
-  static function member_full($value='')
+
+  static function get_full($member_key)
   {
-  l.name AS locality_name,m.name, m.male,m.birth_date, m.cell_phone, m.email, m.attend_meeting,m.locality_key,
-  LEFT JOIN locality l ON l.key = m.locality_key
+
+    $member_key = db_real_escape_string($member_key);
+    $result=[];
+
+    $res = db_query("SELECT m.* FROM member m WHERE m.key = '{$member_key}'");
+      while ($row = $res->fetch_assoc()) $result=$row;
+
+      return $result;
   }
-  */
 }
- ?>

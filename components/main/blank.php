@@ -112,7 +112,7 @@ data-member_key="">
         <div class="row">
           <div class="col-12">
               <label class="">Дата крещения</label>
-              <input id="emBaptized" class="form-control form-control-sm" type="date" valid="date">
+              <input id="emBaptized" class="form-control form-control-sm" type="date" data-field="baptized" data-table="member">
           </div>
         </div>
         <div id="handle-passport-info" class="row mt-2 mb-2">
@@ -127,41 +127,41 @@ data-member_key="">
           <div class="row">
             <div class="col-12 passport-info">
                 <label class="">Тип документа<?php // if $noEvent // e('<sup>*</sup>'); ?></label>
-                <select id="emDocumentType" class="form-control form-control-sm" <?php // if $noEvent // e('valid="required"');?>>
+                <select id="emDocumentType" class="form-control form-control-sm" data-field="document_key" data-table="member" <?php // if $noEvent // e('valid="required"');?>>
                     <option value='_none_' selected>&nbsp;</option>
                     <?php foreach (Documents::getTypes() as $id => $name) echo "<option value='$id'>".htmlspecialchars ($name)."</option>"; ?>
                 </select>
             </div>
             <div class="col-6 passport-info">
                 <label class="">Номер документа<?php // if $noEvent // e('<sup>*</sup>'); ?></label>
-                <input id="emDocumentNum" class="form-control form-control-sm" type="text" maxlength="20" <?php // if $noEvent // e('valid="required"');?>>
+                <input id="emDocumentNum" class="form-control form-control-sm" type="text" data-field="document_num" data-table="member" maxlength="20" <?php // if $noEvent // e('valid="required"');?>>
             </div>
             <div class="col-6 passport-info">
                 <label class="">Дата выдачи<?php // if $noEvent // e('<sup>*</sup>'); ?></label>
-                <input id="emDocumentDate" class="form-control form-control-sm" type="date" valid="<?php // if $noEvent // e('required, ');?>date">
+                <input id="emDocumentDate" class="form-control form-control-sm" type="date" data-field="document_date" data-table="member" valid="<?php // if $noEvent // e('required, ');?>date">
             </div>
             <div class="col-12 passport-info">
                 <label class="">Кем выдан<?php // if $noEvent // e('<sup>*</sup>'); ?></label>
-                <input id="emDocumentAuth" class="form-control form-control-sm" type="text" maxlength="150" <?php // if $noEvent // e('valid="required"');?>>
+                <input id="emDocumentAuth" class="form-control form-control-sm" type="text" data-field="document_auth" data-table="member" maxlength="150" <?php // if $noEvent // e('valid="required"');?>>
             </div>
           </div>
 
           <div class="row tp-passport-info mt-2">
               <div class="col-12">
                   <label class="">Номер загранпаспорта<?php // if $noEvent // e('<sup>*</sup>'); ?></label>
-                      <input id="emDocumentNumTp" class="form-control form-control-sm" type="text" maxlength="20" <?php // if $noEvent // e('valid="required"');?>>
+                      <input id="emDocumentNumTp" class="form-control form-control-sm" type="text" data-field="tp_num" data-table="member" maxlength="20" <?php // if $noEvent // e('valid="required"');?>>
               </div>
               <div class="col-12">
                   <label class="">Страна, которой выдан паспорт (латинскими буквами)<?php // if $noEvent // e('<sup>*</sup>'); ?></label>
-                      <input id="emDocumentAuthTp" class="form-control form-control-sm" type="text" maxlength="20" valid="<?php // if $noEvent // e('required, ');?>">
+                      <input id="emDocumentAuthTp" class="form-control form-control-sm" type="text" data-field="tp_auth" data-table="member" maxlength="20" valid="<?php // if $noEvent // e('required, ');?>">
               </div>
               <div class="col-12">
                   <label class="">Дата окончания действия загранпаспорта<?php // if $noEvent // e('<sup>*</sup>'); ?></label>
-                      <input id="emDocumentDateTp" class="form-control form-control-sm" type="date" valid="<?php // if $noEvent // e('required, ');?>date">
+                      <input id="emDocumentDateTp" class="form-control form-control-sm" type="date" data-field="tp_date" data-table="member" valid="<?php // if $noEvent // e('required, ');?>date">
               </div>
               <div class="col-12">
                   <label class="">Фамилия и имя латинскими буквами (как указано в загранпаспорте)<?php // if $noEvent // e('<sup>*</sup>'); ?></label>
-                      <input id="emDocumentNameTp" class="form-control form-control-sm" type="text" maxlength="150" <?php // if $noEvent // e('valid="required"');?>>
+                      <input id="emDocumentNameTp" class="form-control form-control-sm" type="text" data-field="tp_name" data-table="member" maxlength="150" <?php // if $noEvent // e('valid="required"');?>>
               </div>
           </div>
         </div>
@@ -175,41 +175,40 @@ data-member_key="">
             </div>-->
             <div class="col-6">
                 <label class="">Год начала учёбы в школе</label>
-                <input id="emSchoolStart" class="form-control form-control-sm" type="text" placeholder="ГГГГ" maxlength="4" >
+                <input id="emSchoolStart" class="form-control form-control-sm" type="text" data-field="school_start" data-table="member" placeholder="ГГГГ" maxlength="4" >
             </div>
             <div class="col-6">
                 <label class="">Год окончания школы</label>
-                <input id="emSchoolEnd" class="form-control form-control-sm" type="text" placeholder="ГГГГ" maxlength="4" >
+                <input id="emSchoolEnd" class="form-control form-control-sm" type="text" data-field="school_end" data-table="member" placeholder="ГГГГ" maxlength="4" >
             </div>
             <div class="col-12">
                 <label class="">Примечание о школе</label>
-                <input id="emSchoolComment" class="form-control form-control-sm" type="text" maxlength="100" >
+                <input id="emSchoolComment" class="form-control form-control-sm" type="text" data-field="school_comment" data-table="member" maxlength="100" >
             </div>
         </div>
         <div class="row college-fields">
             <div class="col-12">
                 <label class="">Учебное заведение <span class="emCourseLevel"></span></label>
-                <input id="emCollege" class="form-control form-control-sm" type="text" list="college_datalist">
+                <select id="emCollege" class="form-control form-control-sm" data-field="college_key" data-table="member">
+                  <option value='_none_'></option>
+                  <?php foreach (Colleges::getList() as $id => $name) echo "<option value='{$id}'>".htmlspecialchars($name); ?>
+                </select>
                 <!-- <i class="fa fa-times fa-lg clear-college"></i>-->
-                <datalist id="college_datalist">
-                    <option value='_none_'></option>
-                    <?php foreach (Colleges::getList() as $id => $name) echo "<option data-id='{$id}' value='".htmlspecialchars($name)."'>"; ?>
-                </datalist>
             </div>
 
             <div class="col-6">
                 <label class="">Год поступления</label>
-                <input id="emCollegeStart" class="form-control form-control-sm" type="text" placeholder="ГГГГ" maxlength="4" >
+                <input id="emCollegeStart" class="form-control form-control-sm" type="text" data-field="college_start" data-table="member" placeholder="ГГГГ" maxlength="4" >
             </div>
 
             <div class="col-6">
                 <label class="">Год окончания</label>
-                <input id="emCollegeEnd" class="form-control form-control-sm" type="text" placeholder="ГГГГ" maxlength="4" >
+                <input id="emCollegeEnd" class="form-control form-control-sm" type="text" data-field="college_end" data-table="member" placeholder="ГГГГ" maxlength="4" >
             </div>
 
             <div class="col-12">
                 <label class="">Примечание об учебном заведении</label>
-                <input id="emCollegeComment" class="form-control form-control-sm" type="text" maxlength="100" >
+                <input id="emCollegeComment" class="form-control form-control-sm" type="text" data-field="college_comment" data-table="member" maxlength="100">
             </div>
         </div>
 

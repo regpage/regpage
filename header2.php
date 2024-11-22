@@ -63,10 +63,10 @@
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_reading.php') { ?>
     <link href="css/ftt/ftt_reading.css?v2" rel="stylesheet">
 <?php } ?>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/bootstrap-4.4.1/css/bootstrap.min.css">
+    <script src="extensions/jquery_3.6.0/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="css/bootstrap-4.4.1/js/bootstrap.min.js"></script>
     <!--<script src="js/script.js?v182" type="text/javascript"></script>-->
     <script src="js/script2.js?v19" type="text/javascript"></script>
     <script src="js/modules/footer_btm.js?v2"></script>

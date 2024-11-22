@@ -5,6 +5,7 @@ include_once "ajax.php";
 include_once "../db/classes/db_operations.php";
 include_once "../db/classes/filters_custom.php";
 include_once "../db/regpage/attend_db.php";
+include_once "../db/classes/member.php";
 // Подключаем ведение лога
 //include_once "../extensions/write_to_log/write_to_log.php";
 
@@ -15,6 +16,10 @@ if (!$adminId) {
     exit;
 }
 
+if (isset($_GET['type']) && $_GET['type'] === 'get_member_data') {
+  echo json_encode(["result"=>Member::get_full($_GET['id'])]);
+  exit();
+}
 
 if (isset($_GET['type']) && $_GET['type'] === 'reset_fee_comment') {
   echo resetFeeAndComment($_POST['data']);

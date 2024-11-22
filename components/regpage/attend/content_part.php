@@ -1,9 +1,10 @@
 <!-- СПИНЕР ЗАГРУЗОЧНЫЙ-->
-<div id="spinner_attend" class="modal"  role="dialog" data-backdrop="static"  style="display:block;">
-  <div class="modal-dialog modal-sm modal-dialog-centered" style="background-color: #fff0;">
+<div id="spinner_attend" class="modal"  role="dialog" data-backdrop="static"  style="display:block; background: #deddddab;">
+  <div class="modal-dialog modal-sm modal-dialog-centered" style="background-color: #fff0; ">
     <div class="modal-content" style="border: none; background-color: #fff0;">
-      <div class="modal-body" style="background-color: #fff0;">
-        <div class="spinner-border text-primary" style="margin-left: 100px;"></div>
+      <div class="modal-body" style="background-color: #fff0; text-align: center;">
+        <img src="img/ajax_loader.gif" alt="">
+        <!-- <div class="spinner-border text-primary" style="margin-left: 100px;"></div>-->
       </div>
     </div>
   </div>
@@ -24,7 +25,7 @@
 </div>
 <div class="row mb-3">
   <div class="btn-group">
-    <button id="add_member_show_modal" type="button" class="btn btn-success btn-sm add-member mr-2 rounded" data-locality="001013" disabled>
+    <button id="add_member_show_modal" type="button" class="btn btn-success btn-sm add-member mr-2 rounded" data-locality="001013">
       <span class="hide-name">Добавить</span> <!--<i class="fa fa-plus icon-white"></i>-->
     </button>
     <!-- <button type="button" class="btn btn-warning btn-sm btnDownloadMembers mr-2 rounded" disabled>

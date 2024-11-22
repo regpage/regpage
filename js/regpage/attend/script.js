@@ -495,3 +495,180 @@
 
     printElem(element);
   }
+// BLANK
+// получаем данные пользователя
+function get_member_data(member_key, age) {
+  fetch("ajax/attend_ajax.php?type=get_member_data&id=" + member_key)
+  .then(response => response.json())
+  .then(commits => {
+    //let fields = ['key', 'name', 'male', 'birth_date', 'locality_key', 'category_key', 'address', 'home_phone', 'cell_phone', 'email', 'document_key', 'document_num', 'document_date', 'document_auth', 'document_dep_code', 'citizenship_key', 'changed', 'new_locality', 'comment', 'admin_key', 'active', 'tp_num', 'tp_date', 'tp_auth', 'tp_name', 'english', 'school_start', 'school_end', 'college_start', 'college_end', 'college_key', 'college_comment', 'school_comment', 'russian_lg', 'baptized', 'attend_meeting', 'serving', 'college', 'document'];
+    /*for (let i = 0; i < fields.length; i++) {
+      $("#" + fields[i]).val(commits.result[fields[i] + "_key"]);
+      $("#" + fields[i]).val(commits.result[fields[i]]);
+    }*/
+    console.log(commits);
+    $("#citizenship").val(commits.result["citizenship_key"]);
+    $("#address").val(commits.result["address"]);
+    $("#category").val(commits.result["category_key"]);
+    $("#russianLanguage").val(commits.result["russian_lg"]);
+    $("#comment").val(commits.result["comment"]);
+    $("#emNewLocality").val(commits.result["new_locality"]);
+    $("#gender").val(commits.result["male"]);
+    $("#birth_date").val(commits.result["birth_date"]);
+    $("#email").val(commits.result["email"]);
+    $("#phone").val(commits.result["cell_phone"]);
+
+
+    $("#emBaptized").val(commits.result["baptized"]);
+
+    $("#emDocumentType").val(commits.result["document_key"]);
+    $("#emDocumentNum").val(commits.result["document_num"]);
+    $("#emDocumentDate").val(commits.result["document_date"]);
+    $("#emDocumentAuth").val(commits.result["document_auth"]);
+
+    $("#emDocumentNumTp").val(commits.result["tp_num"]);
+    $("#emDocumentAuthTp").val(commits.result["tp_auth"]);
+    $("#emDocumentDateTp").val(commits.result["tp_date"]);
+    $("#emDocumentNameTp").val(commits.result["tp_name"]);
+
+    handleSchoolAndCollegeFields(age, commits.result["category_key"], commits.result["school_start"], commits.result["school_end"], commits.result["college_start"], commits.result["college_end"], commits.result["college_key"], commits.result["college_comment"], "", "", commits.result["school_comment"]);
+
+    $("#comment").val(commits.result["comment"]);
+
+    if (commits.result["new_locality"]) {
+      $("#locality").hide();
+      $("#emNewLocality").show();
+      $("#reset_locality").show();
+    } else {
+      $("#locality").show();
+      $("#emNewLocality").hide();
+      $("#reset_locality").hide();
+    }
+  });
+}
+
+// заполнение бланка
+function fill_blank(str) {
+  clear_blank();
+  $("#modalAddEdit").attr("data-member_key", str.attr("data-member_key"));
+  $("#name").val(str.find(".data_name").text());
+  $("#locality").val(str.attr("data-locality_key"));
+  get_member_data(str.attr("data-member_key"), str.find(".data_age").text());
+}
+
+// очистка бланка
+function clear_blank() {
+  $("#modalAddEdit input").val("");
+  $("#modalAddEdit").val("_none_");
+  $("#modalAddEdit").attr("data-member_key", "");
+  $("#localityControlGroup").parent().parent().hide();
+}
+
+// получаем данные полей бланка
+function get_data_blank() {
+  let data = {};
+  data["condition"] = {};
+  data["condition"]["field"] = "key";
+  data["condition"]["value"] = $("#modalAddEdit").attr("data-member_key");
+  data["table"] = "member";
+  data["changed"] = 1;
+  $("#modalAddEdit input").each(function () {
+    data[$(this).attr("data-field")] = $(this).val();
+  });
+  $("#modalAddEdit select").each(function () {
+    data[$(this).attr("data-field")] = $(this).val();
+  });
+  return data;
+}
+// сохранение бланка
+function save_blank(data) {
+  let data_post = new FormData();
+  data_post.set("data", JSON.stringify(data));
+  fetch("ajax/ftt_list_ajax.php?type=save_blank", {
+    method: 'POST',
+    body: data_post
+  })
+  .then(response => response.text())
+  .then(commits => {
+    $("#spinner").modal("hide");
+    location.reload();
+  });
+}
+
+// валидация полей бланка
+function valid_fields() {
+  let required_fields = document.querySelectorAll(".required_field");
+  let empty = 0, error;
+  required_fields.forEach(el => {
+    if ((el.id === "locality" && el.value === "_none_") || (el.id === "emNewLocality" && !el.value)) {
+      empty++;
+    } else if (!el.value || el.value === "_none_") {
+      error = 1;
+    }
+  });
+  if (empty === 2 || error) {
+    return 1;
+  } else {
+    return false;
+  }
+}
+
+// настройка бланка для студентов и школьников
+function handleSchoolAndCollegeFields(age, categoryKey, schoolStart, schoolEnd, collegeStart, collegeEnd, college, collegeComment, collegeName, collegeShortName, schoolComment){
+
+  /*$("#emSchoolStart").val(commits.result["school_start"] == 0 ? "" : commits.result["school_start"]);
+  $("#emSchoolEnd").val(commits.result["school_end"] == 0 ? "" : commits.result["school_end"]);
+  $("#emSchoolComment").val(commits.result["school_comment"] == 0 ? "" : commits.result["school_comment"]);
+
+  $("#emCollege").val(commits.result["college_key"]);
+  $("#emCollegeStart").val(commits.result["college_start"] == 0 ? "" : commits.result["college_start"]);
+  $("#emCollegeEnd").val(commits.result["college_end"] == 0 ? "" : commits.result["college_end"]);
+  $("#emCollegeComment").val(commits.result["college_comment"] == 0 ? "" : commits.result["college_comment"]);*/
+
+  let isSchool = categoryKey === "SC" || categoryKey === "PS" || ( !isNaN(age) && age < 18 && age > 6 );
+  let isCollege = categoryKey === "ST" || ( categoryKey === "SC" && !isNaN(age) && age > 15 ) || (!isNaN(age) && age > 18 && age < 25);
+
+  $('.school-fields').css('display', isSchool ? 'block' : 'none');
+  $('.college-fields').css('display', isCollege ?'block' : 'none');
+  let currentYear = new Date().getFullYear();
+
+  if(isSchool){
+      $('.emSchoolStart').val(schoolStart>0 ? schoolStart : '');
+      $('.emSchoolEnd').val(schoolEnd>0 ? schoolEnd : '');
+      $('.emSchoolComment').val(schoolComment || '');
+      var classLevel = schoolStart && schoolStart.length === 4 ? currentYear - schoolStart + 1 : '';
+      $('.emClassLevel').html(classLevel > 0 && classLevel < 12 ? '('+classLevel+' класс)' : '');
+      if(classLevel >= 9){
+          $('.college-fields').css('display', 'block');
+      }
+  }
+
+  if(isCollege){
+      $('.emCollegeStart').val(collegeStart >0 ? collegeStart : '');
+      $('.emCollegeEnd').val(collegeEnd >0 ? collegeEnd : '');
+      $("#emCollege").val(commits.result["college_key"]);
+      //$('.emCollege').val(collegeShortName && collegeName ? collegeShortName + ' ('+collegeName+')' : '');
+      $('.emCollege').attr('data-college', college);
+      $('.emCollegeComment').val(collegeComment || '');
+
+      currentYear = parseInt(currentYear);
+      var startCollege = collegeStart && collegeStart.length === 4 ? parseInt(collegeStart) : null ;
+      var endCollege = collegeEnd && collegeEnd.length === 4 ? parseInt(collegeEnd) : null ;
+      var courseLevel = startCollege ? currentYear - startCollege + 1 : null;
+
+      if(startCollege && endCollege){
+          if(currentYear < startCollege){
+              courseLevel = "планирует поступить";
+          } else if (currentYear === endCollege) {
+              var currentMonth = new Date().getMonth();
+              courseLevel = currentMonth >= 6 ? "обучение завершено" : courseLevel + " курс, окончание в этом году";
+          } else if (currentYear > endCollege) {
+              courseLevel = "учёба завершена";
+          } else {
+                courseLevel = courseLevel+" курс";
+            }
+        }
+
+        $('.emCourseLevel').html(courseLevel ? '('+courseLevel+')' : '');
+    }
+}
