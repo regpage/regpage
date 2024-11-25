@@ -2842,10 +2842,6 @@ function db_sendMsgToRespOneSync($type='', $data){
                 break;
         }
         // $headers = "MIME-Version: 1.0\r\nContent-type: text/html; charset=utf-8\r\nFrom: REG-PAGE<info@reg-page.ru>\r\nReply-To: REG-PAGE<info@reg-page.ru>\r\n";
-        // доп. оповещение о создании новых пользователей и участников
-        if ($type === USER_TYPE || $type === MEMBER_TYPE) {
-          EMAILS::sendEmail('maria95stepanyan@gmail.com', $title, $body, 'info@reg-page.ru');
-        }
         $email = db_getEmailRespOneSync();
         if($email){
             $emailArr = explode(',', $email);
