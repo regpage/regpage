@@ -506,7 +506,7 @@ function get_member_data(member_key, age) {
       $("#" + fields[i]).val(commits.result[fields[i] + "_key"]);
       $("#" + fields[i]).val(commits.result[fields[i]]);
     }*/
-    console.log(commits);
+
     $("#citizenship").val(commits.result["citizenship_key"]);
     $("#address").val(commits.result["address"]);
     $("#category").val(commits.result["category_key"]);
@@ -559,7 +559,9 @@ function fill_blank(str) {
 // очистка бланка
 function clear_blank() {
   $("#modalAddEdit input").val("");
-  $("#modalAddEdit").val("_none_");
+  $("#modalAddEdit select").val("_none_");
+  $("#gender").val(1);
+  $("#russianLanguage").val(1);
   $("#modalAddEdit").attr("data-member_key", "");
   $("#localityControlGroup").parent().parent().hide();
 }
@@ -581,10 +583,14 @@ function get_data_blank() {
   return data;
 }
 // сохранение бланка
-function save_blank(data) {
+function save_blank(data, add) {
   let data_post = new FormData();
   data_post.set("data", JSON.stringify(data));
-  fetch("ajax/ftt_list_ajax.php?type=save_blank", {
+  let ajax_path = "ajax/ftt_list_ajax.php?type=save_blank";
+  if (add) {
+    ajax_path = "ajax/attend_ajax.php?type=add_blank";
+  }
+  fetch(ajax_path, {
     method: 'POST',
     body: data_post
   })
@@ -628,28 +634,40 @@ function handleSchoolAndCollegeFields(age, categoryKey, schoolStart, schoolEnd, 
   let isSchool = categoryKey === "SC" || categoryKey === "PS" || ( !isNaN(age) && age < 18 && age > 6 );
   let isCollege = categoryKey === "ST" || ( categoryKey === "SC" && !isNaN(age) && age > 15 ) || (!isNaN(age) && age > 18 && age < 25);
 
-  $('.school-fields').css('display', isSchool ? 'block' : 'none');
-  $('.college-fields').css('display', isCollege ?'block' : 'none');
+
+  if (isSchool) {
+    // $('.school-fields').css('display', isSchool ? 'block' : 'none');
+    $('.school-fields').show();
+  } else {
+    $('.school-fields').hide();
+  }
+  if (isCollege) {
+    //$('.college-fields').css('display', isCollege ?'block' : 'none');
+    $('.college-fields').show();
+  } else {
+    $('.college-fields').hide();
+  }
+
   let currentYear = new Date().getFullYear();
 
   if(isSchool){
-      $('.emSchoolStart').val(schoolStart>0 ? schoolStart : '');
-      $('.emSchoolEnd').val(schoolEnd>0 ? schoolEnd : '');
-      $('.emSchoolComment').val(schoolComment || '');
+      $('#emSchoolStart').val(schoolStart>0 ? schoolStart : '');
+      $('#emSchoolEnd').val(schoolEnd>0 ? schoolEnd : '');
+      $('#emSchoolComment').val(schoolComment || '');
       var classLevel = schoolStart && schoolStart.length === 4 ? currentYear - schoolStart + 1 : '';
-      $('.emClassLevel').html(classLevel > 0 && classLevel < 12 ? '('+classLevel+' класс)' : '');
+      $('#emClassLevel').html(classLevel > 0 && classLevel < 12 ? '('+classLevel+' класс)' : '');
       if(classLevel >= 9){
           $('.college-fields').css('display', 'block');
       }
   }
 
   if(isCollege){
-      $('.emCollegeStart').val(collegeStart >0 ? collegeStart : '');
-      $('.emCollegeEnd').val(collegeEnd >0 ? collegeEnd : '');
-      $("#emCollege").val(commits.result["college_key"]);
-      //$('.emCollege').val(collegeShortName && collegeName ? collegeShortName + ' ('+collegeName+')' : '');
-      $('.emCollege').attr('data-college', college);
-      $('.emCollegeComment').val(collegeComment || '');
+      $('#emCollegeStart').val(collegeStart >0 ? collegeStart : '');
+      $('#emCollegeEnd').val(collegeEnd >0 ? collegeEnd : '');
+      $("#emCollege").val(college);
+      //$('#emCollege').val(collegeShortName && collegeName ? collegeShortName + ' ('+collegeName+')' : '');
+      //$('#emCollege').attr('data-college', college);
+      $('#emCollegeComment').val(collegeComment || '');
 
       currentYear = parseInt(currentYear);
       var startCollege = collegeStart && collegeStart.length === 4 ? parseInt(collegeStart) : null ;

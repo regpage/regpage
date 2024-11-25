@@ -6,10 +6,10 @@ $(document).ready(function(){
   // UNIVERSAL
   function badge_changer(element, badge) {
     let badge_list = {
-      success: "опубликованно",
+      success: "опубликовано",
       dark: "",
       secondary: "архив",
-      warning: "не опубликованно"
+      warning: "не опубликовано"
     }
     if (!element.hasClass("badge-"+badge)) {
       if (element.hasClass("badge-success")) {
@@ -77,7 +77,7 @@ $(document).ready(function(){
     }
     if (status === "архив") {
       status = "secondary";
-    } else if (status === "опубликованно") {
+    } else if (status === "опубликовано") {
       status = "success";
     } else {
       status = "warning";

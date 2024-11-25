@@ -16,6 +16,12 @@ if (!$adminId) {
     exit;
 }
 
+// add blank
+if (isset($_GET['type']) && $_GET['type'] === 'add_blank') {
+  echo json_encode(["result"=>DbOperation::add_multi($_POST['data'])]);
+  exit();
+}
+
 if (isset($_GET['type']) && $_GET['type'] === 'get_member_data') {
   echo json_encode(["result"=>Member::get_full($_GET['id'])]);
   exit();

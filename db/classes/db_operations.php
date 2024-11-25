@@ -82,6 +82,46 @@ class DbOperation {
 
     return $result;
   }
+
+  static function add_multi($data)
+  {
+    global $db;
+    $data = json_decode($data);
+    $table = $db->real_escape_string($data->table);
+    $condition_field = $db->real_escape_string($data->condition->field);
+    $condition_value = $db->real_escape_string($data->condition->value);
+    $fields = '';
+    $values = '';
+
+    if ($table === 'member') {
+      $fields = '`key`';
+      $values .= self::getNewMemberKey();
+    }
+
+    foreach ($data as $key => $value) {
+      if ($key !== 'table' && $key !== 'condition') {
+        if ($fields) {
+          $fields .= ', ';
+          $values .= ', ';
+        }
+        $key = $db->real_escape_string($key);
+        $value = $db->real_escape_string($value);
+        $fields .= "`{$key}`";
+        $values .= "'{$value}'";
+      }
+    }
+    $res = db_query("INSERT INTO `{$table}` ({$fields}) VALUES ({$values})");
+
+    return $res;
+  }
+  static function getNewMemberKey()
+  {
+      $res=db_query ("SELECT `key` as id FROM member WHERE `key` LIKE '99%' ORDER BY `key` DESC LIMIT 1");
+      $row = $res->fetch_object();
+      $key = "990000000";
+      if ($row && strlen($row->id)==9) $key = (string)($row->id + 1);
+      return $key;
+  }
 }
 
 /**

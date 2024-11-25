@@ -1,8 +1,8 @@
 <!-- СПИНЕР ЗАГРУЗОЧНЫЙ-->
-<div id="spinner_attend" class="modal"  role="dialog" data-backdrop="static"  style="display:block; background: #deddddab;">
-  <div class="modal-dialog modal-sm modal-dialog-centered" style="background-color: #fff0; ">
-    <div class="modal-content" style="border: none; background-color: #fff0;">
-      <div class="modal-body" style="background-color: #fff0; text-align: center;">
+<div id="spinner_attend" class="modal"  role="dialog" data-backdrop="static"  style="display:block; background: #000; opacity: .5;">
+  <div class="modal-dialog modal-sm modal-dialog-centered" style="background-color: #000;">
+    <div class="modal-content" style="border: none;">
+      <div class="modal-body" style="background-color: #000; text-align: center;">
         <img src="img/ajax_loader.gif" alt="">
         <!-- <div class="spinner-border text-primary" style="margin-left: 100px;"></div>-->
       </div>

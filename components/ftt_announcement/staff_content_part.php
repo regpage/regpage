@@ -70,7 +70,7 @@
               $list = $value['list'];
 
               $is_active = true;
-              $badge_text = 'не опубликованно';
+              $badge_text = 'не опубликовано';
               $badge_class = 'warning';
 
               $recipients_groups_text = '';
@@ -107,7 +107,7 @@
               }
 
               if ($publication && $is_active) {
-                $text_badge = 'опубликованно';
+                $text_badge = 'опубликовано';
                 $publication_badge = "<span class='badge badge-success'>{$text_badge}</span>";
             } else {
               $publication_badge = "<span class='badge badge-{$badge_class}'>{$badge_text}</span>";

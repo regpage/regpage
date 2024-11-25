@@ -690,7 +690,11 @@ $(document).ready(function(){
       } else {
         $("#modalAddEdit").modal("hide");
         $("#spinner").modal("show");
-        save_blank(get_data_blank());
+        if ($("#modalAddEdit").attr("data-member_key")) {
+          save_blank(get_data_blank());
+        } else {
+          save_blank(get_data_blank(), true);
+        }
       }
   });
   /* ==== DOCUMENT READY STOP ==== */
