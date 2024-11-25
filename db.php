@@ -2842,6 +2842,10 @@ function db_sendMsgToRespOneSync($type='', $data){
                 break;
         }
         // $headers = "MIME-Version: 1.0\r\nContent-type: text/html; charset=utf-8\r\nFrom: REG-PAGE<info@reg-page.ru>\r\nReply-To: REG-PAGE<info@reg-page.ru>\r\n";
+        // доп. оповещение о создании новых пользователей и участников
+        if ($type === USER_TYPE || $type === MEMBER_TYPE) {
+          EMAILS::sendEmail('maria95stepanyan@gmail.com', $title, $body, 'info@reg-page.ru');
+        }
         $email = db_getEmailRespOneSync();
         if($email){
             $emailArr = explode(',', $email);
@@ -3491,7 +3495,7 @@ function db_checkIfEventMemberFieldsHasDifference($adminId, $_dataFields, $membe
             //$_dataFields["prepaid"] != $eventMember["prepaid"] || false
             $_dataFields["currency"] != $eventMember["currency"] ||
             $_dataFields["service_key"] != ($eventMember["service_key"] == null ? '' : $eventMember["service_key"]) ||
-            $_dataFields["service_info"] != ($eventMember["service_info"] == null ? '' : $eventMember["service_info"]) ||            
+            $_dataFields["service_info"] != ($eventMember["service_info"] == null ? '' : $eventMember["service_info"]) ||
             $_dataFields["coord"] != $eventMember["coord"] ||
             $_dataFields["flight_num_arr"] != ($eventMember["flight_num_arr"] == null ? '' : $eventMember["flight_num_arr"]) ||
             $_dataFields["flight_num_dep"] != ($eventMember["flight_num_dep"] == null ? '' : $eventMember["flight_num_dep"]) ||
