@@ -1,4 +1,5 @@
 <?php
+// КОНТРОЛЛЕР СТРАНИЦЫ РАЗДЕЛА ПОСЕЩАЕМОСТЬ
 // Classes
 // components
 // db
@@ -42,3 +43,44 @@ $adminLocalitiesList = localities::getAdminLocalities($memberId);
 $singleCity = localities::isSingleCityAdmin($memberId);
 
 $userSettings = Settings::getUserSettings($memberId);
+// Фильтр посещаемость
+$flt_members_attend_array = ['Не посещают собрания', 'Посещают Господню трапезу', 'Посещают молитвенные собрания', 'Посещают групповые собрания', 'Посещают другие собрания', 'Посещают какие-либо собрания', 'Участвуют в видеообучении'];
+$flt_members_attend = '_all_';
+if (isset($_COOKIE['flt_members_attend']) && (!empty($_COOKIE['flt_members_attend']) || $_COOKIE['flt_members_attend'] === '0')) {
+  $flt_members_attend = $_COOKIE['flt_members_attend'];
+}
+// Фильтр категории
+$memberCategoriesFilter = [];
+foreach (MemberProperties::get_categories() as $key => $value) {
+  $memberCategoriesFilter[$key] = $value;
+  if ($key === 'FT') {
+    $memberCategoriesFilter['NF'] = 'Без обучающихся ПВОМ';
+    break;
+  }
+}
+$flt_members_category = '_all_';
+if (isset($_COOKIE['flt_members_category']) && !empty($_COOKIE['flt_members_category'])) {
+  $flt_members_category = $_COOKIE['flt_members_category'];
+}
+// Фильтр местности
+$flt_members_localities = '_all_';
+if (isset($_COOKIE['flt_members_localities']) && !empty($_COOKIE['flt_members_localities'])) {
+  $flt_members_localities = $_COOKIE['flt_members_localities'];
+}
+// готовим текст для поля редакторы
+function prepareDataEditors($value='')
+{
+  if (!empty($value->editors) && strlen($value->editors) > 9) {
+    $editorsKeys = explode(',',$value->editors);
+    if (isset($editorsKeys[1])) {
+      $editorsText = 'Редакторы — ' . short_name::short(Member::get_name($editorsKeys[0])) . ', ' . short_name::short(Member::get_name($editorsKeys[1]));
+    } else {
+      $editorsText = 'Редактор — ' . short_name::short(Member::get_name($editorsKeys[0]));
+    }
+  } elseif(!empty($value->editors)) {
+    $editorsText = 'Редактор — '. short_name::short(Member::get_name($value->editors));
+  } else {
+    $editorsText = '';
+  }
+  return $editorsText;
+}

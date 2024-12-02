@@ -49,38 +49,17 @@
   <?php if (!$singleCity): ?>
   <select id="flt_members_localities" class="form-control form-control-sm mr-2" style="width: 15%">
     <?php
-    $flt_members_localities = '_all_';
-    if (isset($_COOKIE['flt_members_localities']) && !empty($_COOKIE['flt_members_localities'])) {
-      $flt_members_localities = $_COOKIE['flt_members_localities'];
-    }
     FTT_Select_fields::rendering($adminLocalitiesList, $flt_members_localities, 'Все местности'); ?>
   </select>
   <?php endif; ?>
 
   <select id="flt_members_category" class="form-control form-control-sm mr-2" style="width: 15%">
     <?php
-    $memberCategoriesFilter = [];
-    foreach (MemberProperties::get_categories() as $key => $value) {
-      $memberCategoriesFilter[$key] = $value;
-      if ($key === 'FT') {
-        $memberCategoriesFilter['NF'] = 'Без обучающихся ПВОМ';
-        break;
-      }
-    }
-    $flt_members_category = '_all_';
-    if (isset($_COOKIE['flt_members_category']) && !empty($_COOKIE['flt_members_category'])) {
-      $flt_members_category = $_COOKIE['flt_members_category'];
-    }
     FTT_Select_fields::rendering($memberCategoriesFilter, $flt_members_category, 'Все участники'); ?>
   </select>
 
   <select id="flt_members_attend" class="form-control form-control-sm mr-2" style="width: 15%">
     <?php
-    $flt_members_attend_array = ['Не посещают собрания', 'Посещают Господню трапезу', 'Посещают молитвенные собрания', 'Посещают групповые собрания', 'Посещают другие собрания', 'Посещают какие-либо собрания', 'Участвуют в видеообучении'];
-    $flt_members_attend = '_all_';
-    if (isset($_COOKIE['flt_members_attend']) && (!empty($_COOKIE['flt_members_attend']) || $_COOKIE['flt_members_attend'] === '0')) {
-      $flt_members_attend = $_COOKIE['flt_members_attend'];
-    }
     FTT_Select_fields::rendering($flt_members_attend_array, $flt_members_attend, 'Все участники');
     ?>
   </select>
@@ -128,20 +107,10 @@
 <div class="row">
   <div id="attend_list" class="container pl-2">
     <?php
+    // рендеринг списка
      foreach ($membersList as $key => $value):
-      if (!empty($value->editors) && strlen($value->editors) > 9) {
-        $editorsKeys = explode(',',$value->editors);
-        if (isset($editorsKeys[1])) {
-          $editorsText = 'Редакторы — ' . short_name::short(Member::get_name($editorsKeys[0])) . ', ' . short_name::short(Member::get_name($editorsKeys[1]));
-        } else {
-          $editorsText = 'Редактор — ' . short_name::short(Member::get_name($editorsKeys[0]));
-        }
-      } elseif(!empty($value->editors)) {
-        $editorsText = 'Редактор — '. short_name::short(Member::get_name($value->editors));
-      } else {
-        $editorsText = '';
-      }
-
+       // готовим текст для поля редакторы
+       $editorsText = prepareDataEditors($value);
        ?>
       <div class="row attend_str pl-1" data-member_key="<?php echo $value->id; ?>"
         data-locality_key="<?php echo $value->locality_key; ?>"
