@@ -1,5 +1,9 @@
 <?php
 // КОНТРОЛЛЕР СТРАНИЦЫ РАЗДЕЛА ПОСЕЩАЕМОСТЬ
+// право доступа
+if (THIS_PAGE === 'attend' && !IS_ZONE_ADMIN) {
+  header("Location: index");
+}
 // Classes
 // components
 // db
@@ -7,8 +11,6 @@ require_once 'db/classes/members.php';
 require_once 'db/classes/member.php';
 require_once 'db/classes/localities.php';
 require_once 'db/classes/settings.php';
-require_once 'db/classes/short_name.php';
-include_once 'db/classes/date_convert.php';
 include_once 'db/classes/member_properties.php';
 
 // Sorting

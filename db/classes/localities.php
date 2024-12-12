@@ -70,7 +70,7 @@ class localities
       return $country;
   }
 
-  static function get_countries ($sorted_ones)
+  static function get_countries ($sorted_ones=false)
   {
       $res=db_query ($sorted_ones ? "SELECT `key` as id, name FROM country WHERE COALESCE(`order`,0)>0 ORDER BY `order`" :
                      "SELECT `key` as id, name FROM country WHERE COALESCE(`order`,0)=0 ORDER BY name");

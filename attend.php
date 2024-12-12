@@ -28,4 +28,4 @@
     require_once "components/regpage/attend/js_part.php";
 
     // Footer
-    require_once "footer2.php";
+    require_once "components/main/footer.php";

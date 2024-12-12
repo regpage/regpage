@@ -60,6 +60,8 @@
     <link href="css/regpage/attend.css?v2" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_fellowship.php') { ?>
     <link href="css/ftt/ftt_fellowship.css?v4" rel="stylesheet">
+<?php } elseif ($_SERVER['PHP_SELF'] === '/calls.php') { ?>
+      <link href="css/regpage/calls.css?v1" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_reading.php') { ?>
     <link href="css/ftt/ftt_reading.css?v2" rel="stylesheet">
 <?php } ?>

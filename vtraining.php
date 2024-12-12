@@ -1,6 +1,6 @@
 <?php
     // preheader
-    require_once "preheader.php";
+    require_once "components/main/preheader.php";
 
     // Глобальные переменные разделов
     require_once "components/regpage/main/var_main.php";
@@ -10,7 +10,8 @@
 
     // Header
     require_once "header2.php";
-
+    // временно
+    require_once "db.php";
     // Меню
     require_once "nav2.php";
 
@@ -24,5 +25,5 @@
     require_once "components/regpage/vtraining/js_part.php";
 
     // Footer
-    require_once "footer2.php";
+    require_once "components/main/footer.php";
 ?>

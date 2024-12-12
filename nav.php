@@ -49,6 +49,9 @@ switch ($h) {
     case '/contacts.php':
        $res = 'Контакты';
        break;
+    case '/calls.php':
+       $res = 'Звонки';
+       break;
     case '/panel.php':
       $res = 'Панель';
        break;
@@ -201,6 +204,13 @@ switch ($h) {
                 echo '<li  class="nav-item"';
                 if (strpos ($s,"/contacts")!==FALSE) {echo " class='active'";}
                 echo"><a class='nav-link' href='/contacts'>Контакты</a></li>";
+            }
+          // доступы
+          require_once "db/classes/access.php";
+          if(isset($memberId) && !isset($isGuest) && Access::callsSection($memberId)) {
+                echo '<li  class="nav-item"';
+                if (strpos ($s,"/calls")!==FALSE) {echo " class='active'";}
+                echo"><a class='nav-link' href='/calls'>Звонки</a></li>";
             }
 
     /*        if(isset($memberId) && $ftt_access['group'] !== 'trainee'){

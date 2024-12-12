@@ -53,6 +53,9 @@ switch ($h) {
     case '/contacts.php':
         $res = $contact_page_name;
         break;
+    case '/calls.php':
+        $res = 'Звонки';
+        break;
     case '/panel.php':
         $res = 'Панель';
         break;
@@ -201,10 +204,16 @@ switch ($h) {
                 echo"><a class='nav-link' href='/practices'>Практики</a></li>";
               }
             }*/
-            if(isset($memberId) && ((in_array('14', db_getUserSettings($memberId))) || db_getAnyActiveContactStr($memberId)) && !isset($isGuest) && isset($ftt_access['group']) && $ftt_access['group'] !== 'trainee' && $ftt_access['group'] !== 'staff') {
+            if (isset($memberId) && ((in_array('14', db_getUserSettings($memberId))) || db_getAnyActiveContactStr($memberId)) && !isset($isGuest) && isset($ftt_access['group']) && $ftt_access['group'] !== 'trainee' && $ftt_access['group'] !== 'staff') {
                 echo '<li ';
                 if ($res === 'Контакты') {echo " class='nav-item active'";}else{echo " class='nav-item'";}
                 echo"><a class='nav-link' href='/contacts'>Контакты</a></li>";
+            }
+
+          if (isset($memberId) && !isset($isGuest) && Access::callsSection($memberId)) {
+                echo '<li ';
+                if ($res === 'Звонки') {echo " class='nav-item active'";} else {echo " class='nav-item'";}
+                echo"><a class='nav-link' href='/calls'>Звонки</a></li>";
             }
 
             if(!isset($isGuest) && $memberId && isset($ftt_access['group']) && $ftt_access['group'] !== 'trainee'){

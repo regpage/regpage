@@ -28,6 +28,8 @@ include_once 'extensions/write_to_log/write_to_log.php';
 include_once "db.php";
 // данные админа
 include_once "db/classes/admin_data.php";
+// доступы
+require_once "db/classes/access.php";
 
 /* авторизация на сайте */
 // получаем админа по сессии

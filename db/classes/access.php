@@ -33,4 +33,40 @@ class Access
       return false;
     }
   }
+
+  static function hasRightToHandleEvents($memberId) {
+
+      $memberId = db_real_escape_string($memberId);
+
+      $res = db_query("SELECT event FROM admin WHERE member_key='$memberId'");
+
+      if($res->num_rows > 0){
+          $row= $res->fetch_object();
+          if($row->event == 1)
+              return true;
+      }
+      return false;
+  }
+
+  static function callsSection($memberId) {
+
+      $memberId = db_real_escape_string($memberId);
+      $res = db_query("SELECT `member_key` FROM `calls_users` WHERE `member_key`='{$memberId}'");
+      if ($res->num_rows > 0){
+        return true;
+      }
+
+      return false;
+  }
+
+  static function callsRole($memberId) {
+
+      $memberId = db_real_escape_string($memberId);
+      $result = [];
+      $res = db_query("SELECT * FROM `calls_users` WHERE `member_key`='{$memberId}'");
+      while ($row = $res->fetch_assoc()) $result = $row;
+
+      return $result;
+  }
+
 }

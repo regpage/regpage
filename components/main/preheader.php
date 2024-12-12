@@ -42,7 +42,7 @@ if (!isset($_COOKIE['PHPSESSID']) && !isset($_SERVER['HTTP_USER_AGENT'])) {
 require_once 'extensions/write_to_log/write_to_log.php';
 // подключение необходимых функций и конфигов
 require_once "config.php";
-// аутификация
+// запросы к БД
 require_once "db/classes/common/db_query.php";
 // аутификация
 require_once "db/classes/auth/auth.php";
@@ -91,7 +91,7 @@ if (!MEMBER_ID && THIS_PAGE === 'arrdep' && isset($_GET['link']) && !empty($_GET
   define("IS_GUEST", true);
   $isGuest = true;
 } else {
-  define("IS_GUEST", false);  
+  define("IS_GUEST", false);
 }
 
 // переадресация на страницу авторизации если пользователь не админ, а запрашиваемая страница предназначена для зарегистрированых пользователей
@@ -121,7 +121,7 @@ if (!IS_GUEST) {
 }
 
 // переадресация на главную если пользователь админ, но не админ мероприятия и него нет зон, а запрашиваемая страница не существует или её нет в списке в данном условии
-if (MEMBER_ID && count(Access::getAdminEventsRespForReg(MEMBER_ID)) == 0 && !IS_ZONE_ADMIN && preg_match("/(index.php)|(signup.php)|(passrec.php)|(login.php)|(ftt_application.php)|(ftt_list.php)|(ftt_schedule.php)|(ftt_absence.php)|(ftt_announcement.php)|(ftt_extrahelp.php)|(ftt_attendance.php)|(ftt_gospel.php)|(ftt_service.php)|(application.php)|(contacts.php)|(profile.php)|(settings.php)|(meetings.php)|(opros.php)|(attend.php)|(ftt_fellowship.php)|(ftt_reading.php)|(ftt_settings.php)|(vtraining.php)|(ch_statistic.php)/", $_SERVER["SCRIPT_NAME"])==0){ //|(links.php)|(practices.php)
+if (MEMBER_ID && count(Access::getAdminEventsRespForReg(MEMBER_ID)) == 0 && !IS_ZONE_ADMIN && preg_match("/(index.php)|(signup.php)|(passrec.php)|(login.php)|(ftt_application.php)|(ftt_list.php)|(ftt_schedule.php)|(ftt_absence.php)|(ftt_announcement.php)|(ftt_extrahelp.php)|(ftt_attendance.php)|(ftt_gospel.php)|(ftt_service.php)|(application.php)|(contacts.php)|(profile.php)|(settings.php)|(meetings.php)|(opros.php)|(attend.php)|(ftt_fellowship.php)|(ftt_reading.php)|(ftt_settings.php)|(vtraining.php)|(ch_statistic.php)|(calls.php)/", $_SERVER["SCRIPT_NAME"])==0){ //|(links.php)|(practices.php)
     header("Location: ".APP_ROOT_PATH);
   	exit;
 }

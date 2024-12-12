@@ -1,0 +1,13 @@
+.call_str {
+  border-top: 1px solid #eee;
+  margin-bottom: 3px;
+  padding-top: 3px;
+}
+.call_str:hover {
+  cursor: pointer;
+  background-color: #eee;
+}
+
+#btns_flts_panel select {
+  width: 15%;
+}

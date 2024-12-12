@@ -280,3 +280,13 @@ li.modal-reference {
   right: 13px;
   top: 23px;
 }
+
+@media (max-width: 769px) {
+  #main_container_reg {
+    padding-left: 25px;
+  }
+}
+
+label sup {
+  color: red;
+}

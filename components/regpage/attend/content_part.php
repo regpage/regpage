@@ -48,8 +48,7 @@
 
   <?php if (!$singleCity): ?>
   <select id="flt_members_localities" class="form-control form-control-sm mr-2" style="width: 15%">
-    <?php
-    FTT_Select_fields::rendering($adminLocalitiesList, $flt_members_localities, 'Все местности'); ?>
+    <?php FTT_Select_fields::rendering($adminLocalitiesList, $flt_members_localities, 'Все местности'); ?>
   </select>
   <?php endif; ?>
 

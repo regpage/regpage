@@ -6,6 +6,18 @@
  */
 class TextBlock extends DBQuery
 {
+
+  static function getText($block)
+  {
+    $text = parent::get('str', 'textblock', 'value', 'name', $block);    
+
+    if (empty($text)) {
+      return '';
+    } else {
+      return $text;
+    }
+  }
+
   private static function db_get()
   {
     $page = explode('.', substr($_SERVER['PHP_SELF'], 1))[0];
@@ -30,4 +42,5 @@ class TextBlock extends DBQuery
       echo "<div class='textblock container'><div class='alert'>". $textBlock ."</div></div>";
     }
   }
+
 }

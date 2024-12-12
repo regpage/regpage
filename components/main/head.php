@@ -23,42 +23,43 @@
 <?php if (IS_FTT_PAGE) { ?>
     <!-- Основные стили ПВОМ -->
     <link href="css/ftt/ftt.css?v5" rel="stylesheet">
+    <?php echo '<link href="css/ftt/' . THIS_PAGE . '.css?v3" rel="stylesheet">'; ?>
 <?php } ?>
 
-
-<?php if ($_SERVER['PHP_SELF'] === '/contacts.php') { ?>
+<?php
+// заменить назнание файла названием раздела и убрать этот код
+if ($_SERVER['PHP_SELF'] === '/contacts.php') { ?>
     <link href="css/contacts.css?v10" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_application.php') { ?>
-    <link href="css/ftt/ftt_application.css?v3" rel="stylesheet">
+<!--    <link href="css/ftt/ftt_application.css?v3" rel="stylesheet"> -->
 <?php } elseif ($_SERVER['PHP_SELF'] === '/application.php') { ?>
     <link href="css/ftt/ftt_request.css?v2" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_schedule.php') { ?>
-    <link href="css/ftt/ftt_schedule.css?v3" rel="stylesheet">
+<!--    <link href="css/ftt/ftt_schedule.css?v3" rel="stylesheet"> -->
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_extrahelp.php') { ?>
-    <link href="css/ftt/ftt_extra_help.css?v4" rel="stylesheet">
+<!--    <link href="css/ftt/ftt_extra_help.css?v4" rel="stylesheet"> -->
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_gospel.php') { ?>
-    <link href="css/ftt/ftt_gospel.css?v10" rel="stylesheet">
+<!--    <link href="css/ftt/ftt_gospel.css?v10" rel="stylesheet"> -->
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_gospel_statistic.php') { ?>
     <link href="css/ftt/diagrams.css?v1" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_attendance.php') { ?>
-    <link href="css/ftt/ftt_attendance.css?v22" rel="stylesheet">
+<!--    <link href="css/ftt/ftt_attendance.css?v22" rel="stylesheet"> -->
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_list.php') { ?>
-    <link href="css/ftt/ftt_list.css?v5" rel="stylesheet">
+<!--    <link href="css/ftt/ftt_list.css?v5" rel="stylesheet"> -->
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_announcement.php') { ?>
-    <link href="css/ftt/ftt_announcement.css?v3" rel="stylesheet">
+<!--    <link href="css/ftt/ftt_announcement.css?v3" rel="stylesheet"> -->
 <?php } elseif ($_SERVER['PHP_SELF'] === '/attend.php') { ?>
     <link href="css/regpage/attend.css?v2" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_fellowship.php') { ?>
-    <link href="css/ftt/ftt_fellowship.css?v4" rel="stylesheet">
+  <!--  <link href="css/ftt/ftt_fellowship.css?v4" rel="stylesheet">-->
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_reading.php') { ?>
-    <link href="css/ftt/ftt_reading.css?v2" rel="stylesheet">
+  <!--  <link href="css/ftt/ftt_reading.css?v2" rel="stylesheet"> -->
 <?php } ?>
     <link rel="stylesheet" href="css/bootstrap-4.4.1/css/bootstrap.min.css">
     <script src="extensions/jquery_3.6.0/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="css/bootstrap-4.4.1/js/bootstrap.min.js"></script>
-    <!--<script src="js/script.js?v182" type="text/javascript"></script>-->
     <script src="js/script2.js?v19" type="text/javascript"></script>
     <script src="js/modules/footer_btm.js?v2"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>

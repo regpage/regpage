@@ -1,7 +1,9 @@
 <?php
-    require_once "preheader.php";
+    require_once "components/main/preheader.php";
 
     include_once "header2.php";
+    // временно
+    require_once "db.php";
     // Меню
     include_once "nav2.php";
 
@@ -17,4 +19,4 @@
     // JS
     include_once "components/regpage/ch_statistic/js_part.php";
 
-    include_once "footer2.php";
+    include_once "components/main/footer.php";

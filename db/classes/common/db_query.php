@@ -39,15 +39,38 @@ class DBQuery
       }
     }
 
-    $res=db_query ("SELECT `{$field}` FROM {$table} WHERE {$fieldCondition} {$sort}");
+    $res=db_query ("SELECT {$field} FROM {$table} WHERE {$fieldCondition} {$sort}");
     if ($type === 'str') {
       $result = '';
       while ($row = $res->fetch_assoc()) $result=$row[$field];
+    } elseif ($type === 'list') {
+      $result = [];
+      while ($row = $res->fetch_assoc()) $result[]=$row;
     } else {
       $result = [];
       while ($row = $res->fetch_assoc()) $result[]=$row[$field];
     }
 
     return $result;
+  }
+  static function getKeyValue($table) {
+    $table = db_real_escape_string($table);
+    $result = [];
+    $res = db_query("SELECT m.key, m.name
+      FROM {$table} tb
+      INNER JOIN member m ON m.key = tb.member_key
+      ORDER BY m.name");
+    while ($row = $res->fetch_assoc()) $result[$row['key']] = short_name::no_middle($row['name']);
+
+    return $result;
+  }
+  static function dlt($table, $field, $value) {
+    $table = db_real_escape_string($table);
+    $field = db_real_escape_string($field);
+    $value = db_real_escape_string($value);
+
+    $res = db_query("DELETE FROM {$table} WHERE {$field} = '{$value}'");
+    
+    return $res;
   }
 }

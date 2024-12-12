@@ -1,24 +1,30 @@
 <?php
-    // preheader
-    require_once "components/main/preheader.php";
+// ==== РАЗДЕЛ ЗВОНКИ ==== //
+// preheader
+require_once "components/main/preheader.php";
 
-    // Глобальные переменные разделов
-    require_once "components/regpage/main/var_main.php";
-// exit;
-    // Переменные раздела
-    require_once "components/regpage/calls/ctrl.php";
+// Глобальные переменные разделов
+require_once "components/regpage/main/var_main.php";
 
-    // Header
-    require_once "components/main/header.php";
+// Переменные раздела
+require_once "components/regpage/calls/ctrl.php";
 
-    // Меню
-    require_once "components/main/nav.php";
+// Header
+//require_once "components/main/head.php";
+require_once "header2.php";
 
-    // HTML код раздела
-    require_once "components/regpage/main/content_container.php";
+// временно
+require_once "db.php";
 
-    // JS раздела
-    require_once "components/regpage/calls/js_part.php";
+// Меню
+//require_once "components/main/nav.php";
+require_once "nav2.php";
 
-    // Footer
-    require_once "components/main/footer.php";    
+// HTML код раздела
+require_once "components/regpage/main/content_container.php";
+
+// JS раздела
+require_once "components/regpage/calls/js.php";
+
+// Footer
+require_once "components/main/footer.php";
