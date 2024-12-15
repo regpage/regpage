@@ -103,7 +103,7 @@ data-member_key="">
             <label>Email</label>
             <input type="email" id="email" class="form-control form-control-sm" maxlength="50" data-field="email" data-table="member">
           </div>
-          <div class="col-6 mb-2">
+          <div class="col-6">
               <label>Моб. телефон</label>
               <input type="text" id="phone" class="form-control form-control-sm" maxlength="50" placeholder="+XXXXXXXXXX" data-field="cell_phone" data-table="member">
           </div>

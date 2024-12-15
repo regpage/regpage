@@ -4,10 +4,18 @@ $(document).ready(function(){
   // добавить новый звонок
   $("#addCalls").click(function () {
     module_blank_clear($("#modal_call_edit_add"));
+    $("#mdl_fld_country").val("RU");
+    $("#call_date").text(dateStrFromyyyymmddToddmmyyyy(date_now_gl()));    
+    /* ОТРЫВАЕТСЯ БЛАНК */
     $("#mdl_btn_dlt_call").hide();
   });
+
   // открыть строку
   $(".call_str").click(function () {
+    /* ОТРЫВАЕТСЯ БЛАНК */
+    if ($(this).find(".col_status").text().trim() !== "Входящая") {
+      $("#mdl_btn_dlt_call").hide();
+    }
     module_blank_clear($("#modal_call_edit_add"));
     fetch("api_reg.php?section=calls&type=get_call&id=" + $(this).attr("data-id"))
     .then(response => response.json()) // text
@@ -17,22 +25,36 @@ $(document).ready(function(){
       $("#modal_call_edit_add").attr("data-id", data_list["id"]);
       for (const string in data_list) {
         if (data_list.hasOwnProperty(string)) {
-          $("#modal_call_edit_add [data-field='"+string+"']").val(data_list[string]);
-          data_list[string];
+          if (string === "created_date") {
+            $("#call_date").text(dateStrFromyyyymmddToddmmyyyy(data_list[string].slice(0,10)));
+          } else {
+            $("#modal_call_edit_add [data-field='"+string+"']").val(data_list[string]);
+          }
         }
       }
 
       $("#modal_call_edit_add").modal("show");
-
-      if (!$("#mdl_btn_dlt_call").is(":visible")) {
-        $("#mdl_btn_dlt_call").show();
-      }
     });
 
   });
 
   // добавить новый звонок
   $("#mdl_btn_save_call").click(function () {
+    // проверки
+    if (!$("#mdl_fld_phone").val() || !$("#mdl_fld_fio").val()) {
+      showError("Заполните обязательные поля.");
+      if (!$("#mdl_fld_phone").val()) {
+        $("#mdl_fld_phone").css("border-color", "red");
+      } else {
+        $("#mdl_fld_phone").css("border-color", "#ced4da");
+      }
+      if (!$("#mdl_fld_fio").val()) {
+        $("#mdl_fld_fio").css("border-color", "red");
+      } else {
+        $("#mdl_fld_fio").css("border-color", "#ced4da");
+      }
+      return;
+    }
     let data = {};
     if ($("#modal_call_edit_add").attr("data-id")) {
       data["id"] = $("#modal_call_edit_add").attr("data-id");
@@ -42,9 +64,11 @@ $(document).ready(function(){
     $("#modal_call_edit_add input, #modal_call_edit_add select, #modal_call_edit_add textarea").each(function () {
       if ($(this).attr("data-field") && $(this).is(":visible")) {
         let text;
-        if ($(this).val() === "_none_" || !$(this).val()) {
+        if ($(this).val() === "_none_" || !$(this).val() || $(this).val() === "_all_") {
           if ($(this).attr("data-field") === "male") {
             text = "NULL";
+          } else if ($(this).attr("data-field") === "status") {
+            text = "Входящая";
           } else {
             text = "";
           }
@@ -77,7 +101,8 @@ $(document).ready(function(){
   // создание временного элемента (в виде точки рядом с вызывающим элементом) с последующим его удалением
   // помещением строки в буфер
   $('#btn_copy_to_buffer').click(function() {
-    $("#mdl_fld_copy_text").val($("#mdl_fld_locality").val() + "\r\n" + $("#mdl_fld_index").val() + "\r\n" + $("#mdl_fld_address").val());
+    $("#mdl_fld_copy_text").val($("#mdl_fld_region").val() + "\r\n" + $("#mdl_fld_area").val() + "\r\n"
+    + $("#mdl_fld_locality").val() + "\r\n" + $("#mdl_fld_address").val());
     let copyText = document.getElementById("mdl_fld_copy_text");
     $("#mdl_fld_copy_text").show();
     copyText.select();

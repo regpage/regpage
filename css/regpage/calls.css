@@ -1,13 +1,49 @@
 .call_str {
   border-top: 1px solid #eee;
-  margin-bottom: 3px;
-  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-top: 5px;
 }
 .call_str:hover {
   cursor: pointer;
   background-color: #eee;
 }
 
-#btns_flts_panel select {
+#btns_flts_panel select, #btns_flts_panel input {
   width: 15%;
+}
+
+.badge {
+  font-size: 85% !important;
+}
+
+#modal_tab_call {
+  border: none;
+}
+
+#modal_tab_call .nav-link {
+  border: none;
+  background-color: #ffffff00;
+  padding-left: 0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+#modal_tab_call .nav-link.active {
+  color: #333;
+}
+
+#call_time_zone {
+  /*-moz-appearance: none;*/
+  font-size: 16px;
+  border: none;
+  border-bottom: 2px gray dotted;
+  background-color: inherit;
+  color: gray;
+}
+
+#call_time_zone option {
+  font-size: 16px !important;
+  color: gray !important;
 }

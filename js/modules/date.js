@@ -56,6 +56,23 @@ function dateStrFromyyyymmddToddmm(date, separator) {
   return date
 }
 
+function dateStrFromyyyymmddToddmmyyyy(date, separator) {
+  var yyyy, mm, dd;
+
+  if (!date) {
+    console.log('function should receive the next parameter: DATE');
+    return;
+  }
+
+  separator ? '' : separator = '.';
+  yyyy = date.slice(0,4);
+  mm = date.slice(5,7);
+  dd = date.slice(8,10);
+  date = dd + separator + mm + separator + yyyy;
+
+  return date
+}
+
 // ПОЛУЧИТЬ ВОЗРАСТ ПО ДАТЕ рождения
 function get_current_age(date) {
   return ((new Date().getTime() - new Date(date)) / (24 * 3600 * 365.25 * 1000)) | 0;
@@ -94,7 +111,7 @@ function addition_dates(date, days) {
   date = new Date(date);
   let day = date.getDate();
   days = day + days;
-  date.setDate(days);  
+  date.setDate(days);
   return date.toISOString().split("T")[0];
 }
 /* ==== STOP DATE ==== */

@@ -1,11 +1,11 @@
 <!-- окно добавления и правки звонков -->
-<div id="modal_call_edit_add" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" data-id="">
+<div id="modal_call_edit_add" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" data-id="" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="mb-0">Заявка <span id="call_date">00-00-0000</span>
-          <select id="call_time_zone" class="ml-3" style="text-decoration: underline dotted; border: none; background-color: inherit; color: #333;" data-field="time_zone">
-            <option value="">Часовой пояс
+          <select id="call_time_zone" class="ml-3" style="" data-field="time_zone">
+            <option value="_all_">Часовой пояс
             <option value="МСК-1">МСК-1
             <option value="МСК+0">МСК+0
             <option value="МСК+1">МСК+1
@@ -19,38 +19,38 @@
             <option value="МСК+9">МСК+9
           </select>
         </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        <button type="button" class="close" data-dismiss="modal">x</button>
       </div>
       <div class="modal-body">
         <div class="container-fluid">
           <div class="row">
-            <div class="col-7">
+            <div class="col-7 pl-0">
               <div class="row mb-2">
                 <div class="col">
                   <label>ФИО<sup>*</sup></label>
-                  <input type="text" class="form-control form-control-sm" value="" data-field="name">
+                  <input type="text" id="mdl_fld_fio" class="form-control form-control-sm" value="" data-field="name">
                 </div>
               </div>
               <div class="row mb-2">
-                <div class="col">
+                <div class="col pr-1">
                   <label>Телефон<sup>*</sup></label>
-                  <input type="text" class="form-control form-control-sm" value="" data-field="phone">
+                  <input type="text" id="mdl_fld_phone" class="form-control form-control-sm" value="" data-field="phone">
                 </div>
-                <div class="col">
+                <div class="col pl-1">
                   <label>Email</label>
                   <input type="text" class="form-control form-control-sm" value="" data-field="email">
                 </div>
               </div>
               <div class="row mb-2">
-                <div class="col">
+                <div class="col pr-1">
                   <label>Страна</label>
-                  <select class="form-control form-control-sm" value="" data-field="country_key">
-                      <?php FTT_Select_fields::rendering($callsCountryListQuick, '', '_none_'); ?>
+                  <select id="mdl_fld_country" class="form-control form-control-sm" value="" data-field="country_key">
+                      <?php FTT_Select_fields::rendering($callsCountryListQuick, '', ''); ?>
                       <option disabled>-----------</option>
                       <?php FTT_Select_fields::rendering($callsCountryList, '', ''); ?>
                   </select>
                 </div>
-                <div class="col">
+                <div class="col pl-1">
                   <label>Пол</label>
                   <select class="form-control form-control-sm" value="" data-field="male">
                     <option value="_none_">
@@ -60,17 +60,17 @@
                 </div>
               </div>
               <div class="row mb-2">
-                <div class="col">
+                <div class="col pr-1">
                   <label>Область</label>
-                  <input type="text" class="form-control form-control-sm" value="" data-field="region">
+                  <input type="text" id="mdl_fld_region" class="form-control form-control-sm" value="" data-field="region">
                 </div>
-                <div class="col">
-                  <label>Район(прим)</label>
-                  <input type="text" class="form-control form-control-sm" value="" data-field="area">
+                <div class="col pl-1">
+                  <label>Район (при наличии)</label>
+                  <input type="text" id="mdl_fld_area" class="form-control form-control-sm" value="" data-field="area">
                 </div>
               </div>
               <div class="row mb-2">
-                <div class="col">
+                <div class="col pr-1">
                     <label>Насел. пункт</label>
                   <input type="text" id="mdl_fld_locality" list="mdl_fld_datalist_localities" class="form-control form-control-sm" value="" data-field="locality">
                   <datalist id="mdl_fld_datalist_localities">
@@ -80,39 +80,40 @@
                     <?php endforeach; ?>
                   </datalist>
                 </div>
-                <div class="col">
+                <div class="col pl-1">
                   <label>Индекс</label>
                   <input type="text" id="mdl_fld_index" class="form-control form-control-sm" value="" data-field="index_post">
                 </div>
               </div>
               <div class="row mb-2">
-                <div class="col-10">
+                <div class="col-11 pr-0">
                   <label>Адрес</label>
                   <input type="text" id="mdl_fld_address" class="form-control form-control-sm" value="" data-field="address">
                 </div>
-                <div class="col-2">
-                  <label class="text-light pr-2"> </label>
-                  <button type="button" id="btn_copy_to_buffer" class="btn btn-light btn-sm mb-0 pt-0" style="font-size: 18px;"><i class="fa fa-copy"></i></button>
+                <div class="col-1 text-left p-0" style="max-width: 48px;">
+                  <label class="text-white"></label><br>
+                  <button type="button" id="btn_copy_to_buffer" class="btn btn-light btn-sm mb-0 ml-1 pt-1 pl-0 pr-0 pb-0" style="font-size: 18px;"><i class="fa fa-copy"></i></button>
                   <textarea id="mdl_fld_copy_text" class="p-0 m-0" style="display: none; max-width: 0px; max-height: 0px;"></textarea>
                 </div>
               </div>
             </div>
-            <div class="col-5">
-              <div class="row mb-3 pb-1">
-                <div class="col-6">
+            <div class="col-5 pl-0 pr-0">
+              <div class="row mb-2">
+                <div class="col-6 pr-1">
                   <label>Статус</label>
                   <select class="form-control form-control-sm" value="" data-field="status">
-                    <option value="Входящая">Входящая
-                    <option value="В работе">В работе
-                    <option value="Недозвон">Недозвон
-                    <option value="Ошибка">Ошибка
-                    <option value="Отказ">Отказ
-                    <option value="Повтор">Повтор
-                    <option value="Уточнение">Уточнение
-                    <option value="Заказ">Заказ
+                    <option value="_none_"></option>
+                    <!--<option value="Входящая">Входящая</option> -->
+                    <option value="В работе">В работе</option>
+                    <option value="Недозвон">Недозвон</option>
+                    <option value="Ошибка">Ошибка</option>
+                    <option value="Отказ">Отказ</option>
+                    <option value="Повтор">Повтор</option>
+                    <option value="Уточнение">Уточнение</option>
+                    <option value="Заказ">Заказ</option>
                   </select>
                 </div>
-                <div class="col-6">
+                <div class="col-6 pl-1">
                   <label>Оператор</label>
                   <select class="form-control form-control-sm" value="" data-field="operator">
                     <?php FTT_Select_fields::rendering($callsUsersList, '', '_none_'); ?>
@@ -131,7 +132,7 @@
                   </ul>
                   <div class="tab-content" id="call_tablist">
                     <div class="tab-pane fade show active" id="call_comment" role="tabpanel" aria-labelledby="comment-tab">
-                      <textarea class="form-control form-control-sm" rows="12"  data-field="comment"></textarea>
+                      <textarea class="form-control form-control-sm"  style="height: 274px;" data-field="comment"></textarea>
                     </div>
                     <div class="tab-pane fade" id="call_history" role="tabpanel" aria-labelledby="history-tab">
                       <div id="mdl_cal_history_content" class="pt-2">Скоро здесь будет история...</div>
@@ -150,9 +151,9 @@
         </div>
         <div class="float-right">
           <button id="mdl_btn_new_order" type="button" class="btn btn-primary btn-sm" type="button">Новый заказ</button>
-          <button id="mdl_btn_cancel" type="button" class="btn btn-warning btn-sm" type="button">Отменить</button>
-          <button id="mdl_btn_save_call" type="button" class="btn btn-success btn-sm" type="button">Сохранить</button>
-          <button type="button" class="btn btn-secondary btn-sm" type="button" data-dismiss="modal" aria-hidden="true">Закрыть</button>
+          <button id="mdl_btn_cancel" type="button" class="btn btn-warning btn-sm ml-1" type="button">Отменить</button>
+          <button id="mdl_btn_save_call" type="button" class="btn btn-success btn-sm ml-1" type="button">Сохранить</button>
+          <button type="button" class="btn btn-secondary btn-sm ml-1" type="button" data-dismiss="modal">Закрыть</button>
         </div>
         </div>
       </div>
@@ -167,7 +168,7 @@
       <div class="modal-header">
         <h5 class="mb-0" class="modal-title">Подтвердите действие</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+          <span>&times;</span>
         </button>
       </div>
       <div class="modal-body">

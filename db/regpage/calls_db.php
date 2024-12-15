@@ -70,10 +70,19 @@ class CallsDB extends DBQuery
 
         if (empty($keys)) {
           $keys .= $key;
-          $values .= "'{$value}'";
+          if ($value === 'NULL') {
+            $values .= "{$value}";
+          } else {
+            $values .= "'{$value}'";
+          }
+
         } else {
           $keys .= ", {$key}";
-          $values .= ", '{$value}'";
+          if ($value === 'NULL') {
+            $values .= ", {$value}";
+          } else {
+            $values .= ", '{$value}'";
+          }
         }
       }
 
