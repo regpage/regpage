@@ -1,11 +1,52 @@
 /* ==== Calls START ==== */
 $(document).ready(function(){
   /* ==== DOCUMENT READY START ==== */
+  // КУККИ
+  // setCookie("calls-flt_author", "");
+  // список применённых фильтров
+  if ($("#flt_author").val() !== "_all_") {
+    $("#flt_list").text("Включенные фильтры: " + $("#flt_author option:selected").text());
+  }
+
+  if ($("#flt_gender").val() !== "_all_") {
+    if ($("#flt_list").text()) {
+      $("#flt_list").text($("#flt_list").text() + ", " + $("#flt_gender option:selected").text());
+    } else {
+      $("#flt_list").text("Включенные фильтры: " + $("#flt_gender option:selected").text());
+    }
+  }
+
+  if ($("#flt_search").val()) {
+    if ($("#flt_list").text()) {
+      $("#flt_list").text($("#flt_list").text() + ", " + $("#flt_search").val());
+    } else {
+      $("#flt_list").text("Включенные фильтры: " + $("#flt_search").val());
+    }
+  }
+
+  if ($("#flt_list").text()) {
+    $("#flt_list").html($("#flt_list").text() + " <i id='flt_list_cancel' class='cursor-pointer fa fa-close h6'></i>" );
+  }
+  // сброс списка фильтров
+  $("#flt_list_cancel").click(function () {
+    if (gl_calls_user_data["role"] === "1") {
+      setCookie("calls-flt_author", window.adminId, 356);
+    } else {
+      setCookie("calls-flt_author", "_all_", 356);
+    }
+    if (gl_calls_user_data["male"] === "1") {
+      setCookie("calls-flt_gender", "_all_", 356);
+    }
+    setCookie("calls-flt_search", "", 356);
+    setTimeout(function () {
+      location.reload();
+    }, 30);
+  });
   // добавить новый звонок
   $("#addCalls").click(function () {
     module_blank_clear($("#modal_call_edit_add"));
     $("#mdl_fld_country").val("RU");
-    $("#call_date").text(dateStrFromyyyymmddToddmmyyyy(date_now_gl()));    
+    $("#call_date").text(dateStrFromyyyymmddToddmmyyyy(date_now_gl()));
     /* ОТРЫВАЕТСЯ БЛАНК */
     $("#mdl_btn_dlt_call").hide();
   });
@@ -153,5 +194,31 @@ $(document).ready(function(){
     }, 30);
   });
 
+  // Вкладки переключение
+  $("#main_container_reg .nav-link").click(function () {
+    if (!$(this).hasClass("active")) {
+      setCookie('tab-calls', $(this).attr("data-tab_name"), 356);
+      setTimeout(function () {
+        location.reload();
+      }, 30);
+    }
+  });
+
+  // filters
+  $("#flt_author, #flt_gender").change(function () {
+    setCookie("calls-" + $(this).attr("id"), $(this).val(), 356);
+    setTimeout(function () {
+      location.reload();
+    }, 30);
+  });
+  // search
+  $("#flt_search").change(function () {
+    if (!$(this).val() || $(this).val().length > 2) {
+      setCookie("calls-" + $(this).attr("id"), $(this).val(), 356);
+      setTimeout(function () {
+        location.reload();
+      }, 30);
+    }
+  });
   /* ==== DOCUMENT READY STOP ==== */
 });

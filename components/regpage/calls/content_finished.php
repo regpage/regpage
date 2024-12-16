@@ -19,7 +19,7 @@
 
 <div class="row mr-0 ml-0">
   <div class="calls_list container pl-0">
-  <?php foreach (CallsDB::getCalls('c.done', '1', $sort_setting[0], $sort_setting[1]) as $key => $value): ?>
+  <?php foreach (CallsDB::getCalls('finished', '', $sort_setting[0], $sort_setting[1]) as $key => $value): ?>
     <div class="row call_str pl-0" data-id="<?php echo $value['id'] ?>" data-date="<?php echo $value['created_date'] ?>">
       <div class="col pl-2">
         <div class="">

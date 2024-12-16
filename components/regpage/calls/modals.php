@@ -34,11 +34,11 @@
               <div class="row mb-2">
                 <div class="col pr-1">
                   <label>Телефон<sup>*</sup></label>
-                  <input type="text" id="mdl_fld_phone" class="form-control form-control-sm" value="" data-field="phone">
+                  <input type="tel" id="mdl_fld_phone" class="form-control form-control-sm" value="" data-field="phone">
                 </div>
                 <div class="col pl-1">
                   <label>Email</label>
-                  <input type="text" class="form-control form-control-sm" value="" data-field="email">
+                  <input type="email" class="form-control form-control-sm" value="" data-field="email">
                 </div>
               </div>
               <div class="row mb-2">

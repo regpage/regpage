@@ -12,18 +12,43 @@ class CallsDB extends DBQuery
     return parent::get('list', 'calls', '*', 'id', $id);
   }
 
-  static function getCalls($conditionField = '', $conditionValue = '', $sortField = 'created_date', $sortType='DESC')
+  static function getCalls($conditionField = '', $conditionValue = '', $sortField = 'created_date', $sortType='DESC', $fltGender = '_all_', $fltAuthor = '_all_', $fltSearch = '')
   {
     $conditionField = db_real_escape_string($conditionField);
     $conditionValue = db_real_escape_string($conditionValue);
     $sortField = db_real_escape_string($sortField);
     $sortType = db_real_escape_string($sortType);
     $result = [];
-
+    //
     if (empty($conditionField)) {
       $condition = 1;
-    } else {
-      $condition = "{$conditionField} = '{$conditionValue}'";
+    } elseif ($conditionField === 'currents') {
+      $condition = " (status != 'Входящая' AND done = 0) OR (status = 'Уточнение' AND done = 1) ";
+    } elseif ($conditionField === 'finished') {
+      $condition = " status != 'Уточнение' AND done = 1 ";
+    } elseif ($conditionField === 'incomming') {
+      if ($fltAuthor === '_all_') {
+        $condition = " status = 'Входящая' ";
+      } else {
+        $condition = " (status = 'Входящая' AND author_key = '{$fltAuthor}') ";
+      }
+    }
+    // фильтр пол
+    if ($fltGender !== '_all_') {
+      if ($condition !== 1) {
+        $condition .= " AND c.male = '{$fltGender}' ";
+      } else {
+        $condition = " c.male = '{$fltGender}' ";
+      }
+    }
+
+    // поиск
+    if (!empty($fltSearch)) {
+      if ($condition !== 1) {
+        $condition .= " AND (c.phone LIKE '%{$fltSearch}%' OR c.name LIKE '%{$fltSearch}%') ";
+      } else {
+        $condition = " c.phone LIKE '%{$fltSearch}%' OR c.name LIKE '%{$fltSearch}%' ";
+      }
     }
 
     $res=db_query ("SELECT c.*, m.name operator_name

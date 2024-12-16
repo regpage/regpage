@@ -76,6 +76,19 @@ class date_convert {
     }
   }
 
+  static function yyyymmddhhmmss_to_ddmm ($date)  {
+    if (!$date) {
+      return 'No date';
+    }
+    $date = explode(' ', $date);
+    $date = explode('-', $date[0]);
+    if (isset($date[2])) {
+      return $date[2].'.'.$date[1];
+    } else {
+      return 'Date is incorrect.';
+    }
+  }
+
   static function week_days($date='', $short=false) {
 		$day;
 		if ($date) {
@@ -116,5 +129,3 @@ class date_convert {
       return $age;
   }
 }
-
- ?>
