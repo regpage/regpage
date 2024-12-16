@@ -9,6 +9,12 @@ require_once 'db/classes/localities.php';
 // db
 require_once 'db/regpage/calls_db.php';
 
+if (isset($_COOKIE['tab-calls']) && !empty($_COOKIE['tab-calls'])) {
+  $tabCalls = $_COOKIE['tab-calls'];
+} else {
+  $tabCalls = 'incomming';
+}
+
 // Sorting
 $sort_fio_ico = '';
 $sort_locality_ico = '';
@@ -38,6 +44,20 @@ if (isset($_COOKIE['sorting-calls']) && !empty($_COOKIE['sorting-calls'])) {
   }
 } else {
   $sort_fio_ico = 'fa fa-sort-desc';
+}
+
+if (false) {
+  // вкладка в работе
+
+} elseif (false) {
+  // вкладка завершённые
+
+} elseif (false) {
+  // вкладка статистика
+
+} else {
+  // вкладка входящие
+
 }
 
 $callsUsersList = CallsDB::getUsers();

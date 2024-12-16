@@ -12,7 +12,7 @@ class CallsDB extends DBQuery
     return parent::get('list', 'calls', '*', 'id', $id);
   }
 
-  static function getCalls($conditionField = 'author_key', $conditionValue = '', $sortField = 'created_date', $sortType='DESC')
+  static function getCalls($conditionField = '', $conditionValue = '', $sortField = 'created_date', $sortType='DESC')
   {
     $conditionField = db_real_escape_string($conditionField);
     $conditionValue = db_real_escape_string($conditionValue);
@@ -20,10 +20,16 @@ class CallsDB extends DBQuery
     $sortType = db_real_escape_string($sortType);
     $result = [];
 
+    if (empty($conditionField)) {
+      $condition = 1;
+    } else {
+      $condition = "{$conditionField} = '{$conditionValue}'";
+    }
+
     $res=db_query ("SELECT c.*, m.name operator_name
     FROM calls c
     LEFT JOIN member m ON m.key = c.operator
-    WHERE 1 ORDER BY {$sortField} {$sortType}");
+    WHERE {$condition} ORDER BY {$sortField} {$sortType}");
     while ($row = $res->fetch_assoc()) $result[]=$row;
 
     return $result;
