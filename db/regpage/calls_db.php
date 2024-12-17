@@ -67,8 +67,6 @@ class CallsDB extends DBQuery
 
   static function saveCall($data)
   {
-    $data = json_decode($data);
-
     if (isset($data->id)) {
       $setQuery = '';
       foreach ($data as $key => $value) {
@@ -118,6 +116,25 @@ class CallsDB extends DBQuery
       }
 
       $res=db_query("INSERT INTO `calls` ({$keys}) VALUES ({$values})");
+    }
+
+    // уведомление оператору о назначении
+    if (!empty($data->operator) && MEMBER_ID !== $data->operator && $data->status === 'В работе') {
+      global $db;
+      require_once 'db/classes/member.php';
+      require_once 'db/classes/short_name.php';
+      require_once 'db/classes/date_convert.php';
+      if (!isset($data->id)) {
+        $data->id = $db->insert_id;
+        $date = date('d-m-Y');
+      } else {
+        $date = date_convert::yyyymmdd_to_ddmmyyyy(DBQuery::get('str', 'calls', 'created_date', 'id', $data->id));
+      }
+
+      $name = short_name::no_middle(Member::get_name(MEMBER_ID));
+
+      $bodyEmail = "Пользователь {$name} назначил вас оператором по заявке от {$date}: <br> Имя: {$data->name} <br> Телефон: {$data->phone} <br> Перейти к заявке https://reg-page.ru/calls?tab=cuurents&id={$data->id}";
+      Emailing::send_by_key($data->operator, 'Вы назначены оператором для звонка по проекту BFA', $bodyEmail);
     }
 
     return $res;

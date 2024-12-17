@@ -1,7 +1,7 @@
 <?php
 // сохранить звонок
 if (isset($_GET['type']) && $_GET['type'] === 'save_call'){
-    echo CallsDB::saveCall($_POST['data']);
+    echo CallsDB::saveCall(json_decode($_POST['data']));
     exit();
 }
 

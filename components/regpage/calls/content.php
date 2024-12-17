@@ -59,7 +59,8 @@
       <button id="btn_search" class="btn btn-success btn-sm" type="submit"><i class="fa fa-search"></i></button>
     </div>
 </div>
-<div class="row pl-2">
+<!-- список фильтров  -->
+<div class="row pl-0">
   <strong id="flt_list" class="text-danger"></strong>
 </div>
 <?php

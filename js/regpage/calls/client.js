@@ -254,8 +254,5 @@ $(document).ready(function(){
       }, 30);
     }
   });
-
-
-
   /* ==== DOCUMENT READY STOP ==== */
 });

@@ -47,6 +47,8 @@ if (isset($_GET['section']) && !empty($_GET['section'])) {
 
 // частоиспользуемые классы
 require_once "db/classes/common/db_query.php";
+// Емайлинг
+require_once 'db/classes/emailing.php';
 // Подключаем соответствующий файл для раздела.
 
 $error = '';
