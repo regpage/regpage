@@ -13,6 +13,7 @@ require_once 'db/classes/auth/auth.php';
 include_once "extensions/write_to_log/write_to_log.php";
 // Получаем админа по сессии.
 $adminId = Auth::get_member_key_by_session(session_id());
+define("MEMBER_ID", $adminId);
 // Проверка аутификации. Если пользователь не аутифицирован по сессии, то останавливаем выполнение скрипта.
 
 if (!$adminId) {

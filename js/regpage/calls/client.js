@@ -54,43 +54,64 @@ $(document).ready(function(){
       location.reload();
     }, 30);
   });
-  // добавить новый звонок
+  // сброс поля поиск
+  // search
+  $('#flt_search').click(function(event){
+    event.stopPropagation();
+    if ($(this).val().length > 0) {
+      setTimeout(function () {
+        if (!$('#flt_search').val()) {
+          setCookie("calls-flt_search", '', 356);
+          setTimeout(function () {
+            location.reload();
+          }, 30);
+        }
+      }, 30);
+    }
+  });
+
+  // открыть новый бланк добавить новый звонок
   $("#addCalls").click(function () {
+    $("#mdl_fld_status option").show();
+    $("#mdl_fld_operator").attr("disabled", false);
     module_blank_clear($("#modal_call_edit_add"));
     $("#mdl_fld_country").val("RU");
     $("#call_date").text(dateStrFromyyyymmddToddmmyyyy(date_now_gl()));
     /* ОТРЫВАЕТСЯ БЛАНК */
     $("#mdl_btn_dlt_call").hide();
+    $("#mdl_btn_new_order").hide();
   });
 
   // открыть строку
   $(".call_str").click(function () {
     /* ОТРЫВАЕТСЯ БЛАНК */
-    if ($(this).find(".col_status").text().trim() !== "Входящая") {
-      $("#mdl_btn_dlt_call").hide();
-    }
+    $("#mdl_fld_status option").show();
+    $("#mdl_fld_operator").attr("disabled", false);
     module_blank_clear($("#modal_call_edit_add"));
-    fetch("api_reg.php?section=calls&type=get_call&id=" + $(this).attr("data-id"))
-    .then(response => response.json()) // text
-    .then(commits => {
-      //fullfill_blank(commits.result);
-      let data_list = commits.result[0]
-      $("#modal_call_edit_add").attr("data-id", data_list["id"]);
-      for (const string in data_list) {
-        if (data_list.hasOwnProperty(string)) {
-          if (string === "created_date") {
-            $("#call_date").text(dateStrFromyyyymmddToddmmyyyy(data_list[string].slice(0,10)));
-          } else {
-            $("#modal_call_edit_add [data-field='"+string+"']").val(data_list[string]);
-          }
-        }
-      }
-
-      $("#modal_call_edit_add").modal("show");
-    });
-
+    // открываем и показываем бланк
+    get_and_show_blank_data($(this).attr("data-id"));
   });
-
+  // взять в работу
+  $(".get_to_work").click(function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    // скрываем строку заявки взятой в работу в списке
+    $(this).parent().parent().parent().hide();
+    // настраиваем бланк
+    $("#mdl_btn_dlt_call").hide();
+    $("#mdl_btn_new_order").hide();
+    $("#mdl_fld_operator").attr("disabled", true);
+    // открываем и показываем бланк
+    get_and_show_blank_data($(this).parent().parent().parent().attr("data-id"), "get_to_work");
+  });
+  // ручная смена статуса
+  $("#mdl_fld_status").change(function () {
+    if ($(this).val() !== "_none_") {
+      $("#mdl_btn_new_order").show();
+    } else {
+      $("#mdl_btn_new_order").hide();
+    }
+  });
   // добавить новый звонок
   $("#mdl_btn_save_call").click(function () {
     // проверки
@@ -223,15 +244,18 @@ $(document).ready(function(){
       location.reload();
     }, 30);
   });
+
   // search
   $("#flt_search").change(function () {
-    if (!$(this).val() || $(this).val().length > 2) {      
+    if (!$(this).val() || $(this).val().length > 2) {
       set_сookie_encode("calls-" + $(this).attr("id"), $(this).val(), {expires: 365});
       setTimeout(function () {
         location.reload();
       }, 30);
     }
   });
+
+
 
   /* ==== DOCUMENT READY STOP ==== */
 });

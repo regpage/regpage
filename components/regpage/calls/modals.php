@@ -101,9 +101,9 @@
               <div class="row mb-2">
                 <div class="col-6 pr-1">
                   <label>Статус</label>
-                  <select class="form-control form-control-sm" value="" data-field="status">
+                  <select id="mdl_fld_status" class="form-control form-control-sm" value="" data-field="status">
                     <option value="_none_"></option>
-                    <!--<option value="Входящая">Входящая</option> -->
+                    <!-- <option value="Входящая" style="display: none;">Входящая</option> -->
                     <option value="В работе">В работе</option>
                     <option value="Недозвон">Недозвон</option>
                     <option value="Ошибка">Ошибка</option>
@@ -115,7 +115,7 @@
                 </div>
                 <div class="col-6 pl-1">
                   <label>Оператор</label>
-                  <select class="form-control form-control-sm" value="" data-field="operator">
+                  <select id="mdl_fld_operator" class="form-control form-control-sm" value="" data-field="operator">
                     <?php FTT_Select_fields::rendering($callsUsersList, '', '_none_'); ?>
                   </select>
                 </div>

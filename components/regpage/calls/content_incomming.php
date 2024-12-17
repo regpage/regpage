@@ -22,7 +22,7 @@
 <div class="row mr-0 ml-0">
   <div class="calls_list container pl-0">
   <?php foreach (CallsDB::getCalls('incomming', $callsUserData['role'], $sort_setting[0], $sort_setting[1], $fltGender, $fltAuthor, $fltSearch) as $key => $value): ?>
-    <div class="row call_str pl-0" data-id="<?php echo $value['id'] ?>" data-date="<?php echo $value['created_date'] ?>">
+    <div class="row call_str pl-0" data-id="<?php echo $value['id'] ?>">
       <div class="col pl-2">
         <div class="">
           <?php echo date_convert::yyyymmddhhmmss_to_ddmm($value['created_date']); ?>
@@ -50,7 +50,7 @@
       </div>
       <div class="col">
         <div class="">
-          <button type="button" class="btn btn-light btn-sm">Взять в работу</button>
+          <button type="button" class="btn btn-light btn-sm get_to_work">Взять в работу</button>
         </div>
       </div>
     </div>

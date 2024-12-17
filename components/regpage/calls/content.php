@@ -28,7 +28,7 @@
   <div class="btn-group">
     <?php if ($tabCalls === 'incomming'): ?>
       <button id="addCalls" class="btn btn-success btn-sm mr-2" type="button" title="Добавить новый звонок" data-toggle="modal" data-target="#modal_call_edit_add">
-        <i class="fa fa-plus"></i> Добавить
+        <i class="fa fa-plus"></i> Новая заявка
       </button>
     <?php endif; ?>
   </div>
