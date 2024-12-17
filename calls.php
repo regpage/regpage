@@ -22,7 +22,8 @@ require_once "nav2.php";
 
 // HTML код раздела
 require_once "components/regpage/main/content_container.php";
-
+// модальные окна
+include_once "components/regpage/calls/modals.php";
 // JS раздела
 require_once "components/regpage/calls/js.php";
 

@@ -47,7 +47,7 @@
         <option value="Заказ">Заказ
       </select>-->
       <select id="flt_operator" class="form-control form-control-sm mr-2">
-        <?php FTT_Select_fields::rendering($callsUsersList, $fltGender, 'Все операторы'); ?>
+        <?php FTT_Select_fields::rendering($callsUsersList, $fltOperator, 'Все операторы'); ?>
       </select>
     <?php endif; ?>
     <?php if ($callsUserData['male'] === '1'): ?>
@@ -55,7 +55,7 @@
       <?php FTT_Select_fields::rendering(['1'=>'муж.', '0'=>'жен.'], $fltGender, 'Все'); ?>
       </select>
     <?php endif; ?>
-    <input type="search" id="flt_search" class="form-control form-control-sm ml-2" value="<?php echo $fltSearch; ?>"><div class="input-group-append">
+    <input type="search" id="flt_search" class="form-control form-control-sm ml-2" value="<?php echo urldecode($fltSearch); ?>"><div class="input-group-append">
       <button id="btn_search" class="btn btn-success btn-sm" type="submit"><i class="fa fa-search"></i></button>
     </div>
 </div>

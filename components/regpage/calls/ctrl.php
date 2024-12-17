@@ -35,6 +35,10 @@ if (isset($_COOKIE['calls-flt_gender']) && $callsUserData['male'] === '1') {
   $fltGender = $_COOKIE['calls-flt_gender'];
 }
 
+if (isset($_COOKIE['calls-flt_operator']) && !empty($_COOKIE['calls-flt_operator'])) {
+  $fltOperator = $_COOKIE['calls-flt_operator'];
+}
+
 if (isset($_COOKIE['calls-flt_search']) && mb_strlen($_COOKIE['calls-flt_search']) > 2) {
   $fltSearch = $_COOKIE['calls-flt_search'];
 }

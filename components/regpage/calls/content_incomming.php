@@ -1,3 +1,4 @@
+<!-- ВХОДЯЩИЕ ЗАЯВКИ -->
 <!-- заголовки колонок -->
 <div class="row pb-2 mr-0 border-bottom">
   <div class="col pl-2">
@@ -17,6 +18,7 @@
   </div>
 </div>
 
+<!-- список -->
 <div class="row mr-0 ml-0">
   <div class="calls_list container pl-0">
   <?php foreach (CallsDB::getCalls('incomming', $callsUserData['role'], $sort_setting[0], $sort_setting[1], $fltGender, $fltAuthor, $fltSearch) as $key => $value): ?>

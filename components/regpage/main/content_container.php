@@ -13,8 +13,7 @@
   } elseif (THIS_PAGE === 'arrdep') {
     include_once 'components/regpage/home/arrdep/content.php';
   } elseif (THIS_PAGE === 'calls') {
-    include_once 'components/regpage/calls/content.php';
-    include_once "components/regpage/calls/modals.php";
+    include_once 'components/regpage/calls/content.php';    
   }
   ?>
 </div>

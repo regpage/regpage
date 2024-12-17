@@ -3,16 +3,25 @@ $(document).ready(function(){
   /* ==== DOCUMENT READY START ==== */
   // КУККИ
   // setCookie("calls-flt_author", "");
+
   // список применённых фильтров
   if ($("#flt_author").val() !== "_all_") {
-    $("#flt_list").text("Включенные фильтры: " + $("#flt_author option:selected").text());
+    $("#flt_list").text("Включенные фильтры: автор — " + $("#flt_author option:selected").text());
   }
 
-  if ($("#flt_gender").val() !== "_all_") {
+  if ($("#flt_gender").val() !== "_all_" && $("#flt_gender").val()) {
     if ($("#flt_list").text()) {
       $("#flt_list").text($("#flt_list").text() + ", " + $("#flt_gender option:selected").text());
     } else {
       $("#flt_list").text("Включенные фильтры: " + $("#flt_gender option:selected").text());
+    }
+  }
+
+  if ($("#flt_operator").val() !== "_all_" && $("#flt_operator").val()) {
+    if ($("#flt_list").text()) {
+      $("#flt_list").text($("#flt_list").text() + ", оператор — " + $("#flt_operator option:selected").text());
+    } else {
+      $("#flt_list").text("Включенные фильтры: оператор — " + $("#flt_operator option:selected").text());
     }
   }
 
@@ -36,6 +45,9 @@ $(document).ready(function(){
     }
     if (gl_calls_user_data["male"] === "1") {
       setCookie("calls-flt_gender", "_all_", 356);
+    }
+    if ($("#flt_operator").val()) {
+      setCookie("calls-flt_operator", "_all_", 356);
     }
     setCookie("calls-flt_search", "", 356);
     setTimeout(function () {
@@ -205,7 +217,7 @@ $(document).ready(function(){
   });
 
   // filters
-  $("#flt_author, #flt_gender").change(function () {
+  $("#flt_author, #flt_gender, #flt_operator").change(function () {
     setCookie("calls-" + $(this).attr("id"), $(this).val(), 356);
     setTimeout(function () {
       location.reload();
@@ -213,12 +225,13 @@ $(document).ready(function(){
   });
   // search
   $("#flt_search").change(function () {
-    if (!$(this).val() || $(this).val().length > 2) {
-      setCookie("calls-" + $(this).attr("id"), $(this).val(), 356);
+    if (!$(this).val() || $(this).val().length > 2) {      
+      set_сookie_encode("calls-" + $(this).attr("id"), $(this).val(), {expires: 365});
       setTimeout(function () {
         location.reload();
       }, 30);
     }
   });
+
   /* ==== DOCUMENT READY STOP ==== */
 });
