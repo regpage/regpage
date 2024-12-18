@@ -91,6 +91,6 @@ if ($tabCalls === 'currents') { // вкладка в работе
 }
 
 $callsUsersList = CallsDB::getUsers();
-//$callsLocalityList = localities::get_localities();
-//$callsCountryList = localities::get_countries();
-//$callsCountryListQuick = localities::get_countries(true);
+$callsLocalityList = localities::get_localities();
+$callsCountryList = localities::get_countries();
+$callsCountryListQuick = localities::get_countries(true);

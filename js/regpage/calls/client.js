@@ -87,6 +87,7 @@ $(document).ready(function(){
     /* ОТРЫВАЕТСЯ БЛАНК */
     $("#mdl_fld_status option").show();
     $("#mdl_fld_operator").attr("disabled", false);
+    $("#modal_call_edit_add").attr("data-done", "");
     module_blank_clear($("#modal_call_edit_add"));
     // открываем и показываем бланк
     get_and_show_blank_data($(this).attr("data-id"));
@@ -106,69 +107,30 @@ $(document).ready(function(){
   });
   // ручная смена статуса
   $("#mdl_fld_status").change(function () {
-    if ($(this).val() !== "_none_") {
-      $("#mdl_btn_new_order").show();
-    } else {
+    if ($("#mdl_fld_operator").val() === "_none_" || !$("#mdl_fld_operator").val()) {
+      $("#mdl_fld_operator").val(window.adminId);
+    }
+    if ($("#modal_call_edit_add").attr("data-done") !== "1" && ($(this).val() === "_none_" || $(this).val() === "Заказ")) {
       $("#mdl_btn_new_order").hide();
+      $("#mdl_btn_cancel").show();
+      $("#mdl_btn_order_finished").hide();
+    } else if ($("#modal_call_edit_add").attr("data-done") !== "1" && ($(this).val() !== "_none_" && $(this).val() !== "Заказ")) {
+      $("#mdl_btn_new_order").show();
+      $("#mdl_btn_cancel").show();
+      $("#mdl_btn_order_finished").hide();
+    } else if ($("#modal_call_edit_add").attr("data-done") === "1" && $(this).val() !== "Заказ") {
+      $("#mdl_btn_new_order").hide();
+      $("#mdl_btn_cancel").hide();
+      $("#mdl_btn_order_finished").show();
+    } else {
+      $("#mdl_btn_new_order").show();
+      $("#mdl_btn_cancel").show();
+      $("#mdl_btn_order_finished").hide();
     }
   });
-  // добавить новый звонок
+  // добавить новый звонок (сохранить)
   $("#mdl_btn_save_call").click(function () {
-    // проверки
-    if (!$("#mdl_fld_phone").val() || !$("#mdl_fld_fio").val()) {
-      showError("Заполните обязательные поля.");
-      if (!$("#mdl_fld_phone").val()) {
-        $("#mdl_fld_phone").css("border-color", "red");
-      } else {
-        $("#mdl_fld_phone").css("border-color", "#ced4da");
-      }
-      if (!$("#mdl_fld_fio").val()) {
-        $("#mdl_fld_fio").css("border-color", "red");
-      } else {
-        $("#mdl_fld_fio").css("border-color", "#ced4da");
-      }
-      return;
-    }
-    let data = {};
-    if ($("#modal_call_edit_add").attr("data-id")) {
-      data["id"] = $("#modal_call_edit_add").attr("data-id");
-    } else {
-      data["author_key"] = window.adminId;
-    }
-    $("#modal_call_edit_add input, #modal_call_edit_add select, #modal_call_edit_add textarea").each(function () {
-      if ($(this).attr("data-field") && $(this).is(":visible")) {
-        let text;
-        if ($(this).val() === "_none_" || !$(this).val() || $(this).val() === "_all_") {
-          if ($(this).attr("data-field") === "male") {
-            text = "NULL";
-          } else if ($(this).attr("data-field") === "status") {
-            text = "Входящая";
-          } else {
-            text = "";
-          }
-        } else {
-          text = $(this).val();
-          text = text.replaceAll("'", "&#39;");
-        }
-        data[$(this).attr("data-field")] = text.replaceAll("`", "&#39;");
-      }
-    });
-    // готоввим данные
-    let form_data = new FormData();
-    form_data.set("data", JSON.stringify(data));
-    fetch("api_reg.php?section=calls&type=save_call", {
-      method: 'POST',
-      body: form_data
-    })
-    .then(response => response.text()) // json
-    .then(commits => {
-      // console.log(commits.result);
-      $("#modal_call_edit_add").modal("hide");
-      showHint("Запись сохранена.");
-      setTimeout(function () {
-        location.reload();
-      }, 700);
-    });
+    save_call(1);
   });
   // копирование в буфер
   // сделать модуль принимающий строку для копирования,
@@ -185,12 +147,13 @@ $(document).ready(function(){
     $("#mdl_fld_copy_text").val("");
   });
 
-  // удаляем карточку
+  // удаляем карточку (открыть окно подтверждения)
   $("#mdl_btn_dlt_call").click(function () {
     $("#mld_confirm_dlt p").text("Удалить карточку звонка " + $("#modal_call_edit_add input[data-field='name']").val() + "?");
     $("#mld_confirm_dlt").modal("show");
   });
 
+  // подтверждение удаление
   $("#mdl_btn_dlt_call_confirm").click(function () {
     fetch("api_reg.php?section=calls&type=dlt_call&id=" + $("#modal_call_edit_add").attr("data-id"))
     .then(response => response.text()) // text
@@ -203,6 +166,27 @@ $(document).ready(function(){
         }, 700);
       }
     });
+  });
+
+  // отменить заявку
+  $("#mdl_btn_cancel").click(function () {
+    if (is_require_filds_empty(["#mdl_fld_fio","#mdl_fld_phone","#mdl_fld_comment"])) {
+      return;
+    }
+    save_call();
+    setTimeout(function () {
+      fetch("api_reg.php?section=calls&type=cancel_call&id=" + $("#modal_call_edit_add").attr("data-id"))
+      .then(response => response.text()) // json
+      .then(commits => {
+        if (commits) {
+          $("#modal_call_edit_add").modal("hide");
+          showHint("Звонок отменён.");
+          setTimeout(function () {
+            location.reload();
+          }, 700);
+        }
+      });
+    }, 30);
   });
 
   // sorting
@@ -254,5 +238,6 @@ $(document).ready(function(){
       }, 30);
     }
   });
+
   /* ==== DOCUMENT READY STOP ==== */
 });

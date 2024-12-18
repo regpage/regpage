@@ -28,9 +28,9 @@ class CallsDB extends DBQuery
       $condition = " status != 'Уточнение' AND done = 1 ";
     } elseif ($conditionField === 'incomming') {
       if ($fltAuthor === '_all_') {
-        $condition = " status = 'Входящая' ";
+        $condition = " status = 'Входящая' AND done = 0 ";
       } else {
-        $condition = " (status = 'Входящая' AND author_key = '{$fltAuthor}') ";
+        $condition = " (status = 'Входящая' AND done = 0 AND author_key = '{$fltAuthor}') ";
       }
     }
     // фильтр пол
@@ -67,7 +67,16 @@ class CallsDB extends DBQuery
 
   static function saveCall($data)
   {
+    global $db;
     if (isset($data->id)) {
+      $checkData = CallsDB::getCall($data->id)[0];
+      // проверяем изменения для истории
+      // сравнить операторов и статусы
+      if (($data->operator === $checkData['operator']) && ($data->status !== $checkData['status'])) {
+        $nameUser = short_name::no_middle(Member::get_name(MEMBER_ID));
+        $data->history = $checkData['history'] . "Установлен статус {$data->status} ({$nameUser})";
+      }
+      // готовим запрос
       $setQuery = '';
       foreach ($data as $key => $value) {
         $key = db_real_escape_string($key);
@@ -93,6 +102,9 @@ class CallsDB extends DBQuery
     } else {
       $keys = '';
       $values = '';
+      $dateNewCall = date('d-m-Y H:i');
+      $nameAuthorNewCall = short_name::no_middle(Member::get_name(MEMBER_ID));
+      $data->history = "Заявка создана {$dateNewCall} ({$nameAuthorNewCall})<br>";
       foreach ($data as $key => $value) {
         $key = db_real_escape_string($key);
         $value = db_real_escape_string($value);
@@ -116,24 +128,23 @@ class CallsDB extends DBQuery
       }
 
       $res=db_query("INSERT INTO `calls` ({$keys}) VALUES ({$values})");
+
+      $checkData = CallsDB::getCall($db->insert_id)[0];
     }
 
     // уведомление оператору о назначении
     if (!empty($data->operator) && MEMBER_ID !== $data->operator && $data->status === 'В работе') {
-      global $db;
-      require_once 'db/classes/member.php';
-      require_once 'db/classes/short_name.php';
-      require_once 'db/classes/date_convert.php';
       if (!isset($data->id)) {
         $data->id = $db->insert_id;
-        $date = date('d-m-Y');
-      } else {
-        $date = date_convert::yyyymmdd_to_ddmmyyyy(DBQuery::get('str', 'calls', 'created_date', 'id', $data->id));
       }
 
+      $date = date_convert::yyyymmdd_to_ddmmyyyy($checkData['created_date']);
       $name = short_name::no_middle(Member::get_name(MEMBER_ID));
-
-      $bodyEmail = "Пользователь {$name} назначил вас оператором по заявке от {$date}: <br> Имя: {$data->name} <br> Телефон: {$data->phone} <br> Перейти к заявке https://reg-page.ru/calls?tab=cuurents&id={$data->id}";
+      $nameOperator = short_name::no_middle(Member::get_name($data->operator));
+      $dateStart =  date('d-m-Y H:i');
+      $history = $checkData['history'] . "Заявка взята в работу {$dateStart} ({$nameOperator})<br>";
+      DBQuery::set('calls', 'history', $history, 'id', $data->id);
+      $bodyEmail = "Пользователь {$name} назначил вас оператором по заявке от {$date}: <br> Имя: {$data->name} <br> Телефон: {$data->phone} <br> Перейти к заявке https://reg-page.ru/calls?tab=currents&id={$data->id}";
       Emailing::send_by_key($data->operator, 'Вы назначены оператором для звонка по проекту BFA', $bodyEmail);
     }
 
@@ -143,5 +154,12 @@ class CallsDB extends DBQuery
   static function dltCall($id)
   {
     return parent::dlt('calls', 'id', $id);
+  }
+
+  static function cancelCall($id)
+  {
+    DBQuery::set('calls', 'done', 1, 'id', $id);
+    $res = DBQuery::set('calls', 'end_date', date('Y-m-d H:i:s'), 'id', $id);
+    return $res;
   }
 }

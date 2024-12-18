@@ -70,7 +70,21 @@ class DBQuery
     $value = db_real_escape_string($value);
 
     $res = db_query("DELETE FROM {$table} WHERE {$field} = '{$value}'");
-    
+
+    return $res;
+  }
+
+  static function set($table, $field, $value, $condition_field, $condition_value)
+  {
+    // {$changed_field}{$equal}{$changed}
+    $table = db_real_escape_string($table);
+    $field = db_real_escape_string($field);
+    $value = db_real_escape_string($value);
+    $condition_field = db_real_escape_string($condition_field);
+    $condition_value = db_real_escape_string($condition_value);
+
+    $res = db_query("UPDATE `{$table}` SET `{$field}` = '{$value}'  WHERE `{$condition_field}` = '{$condition_value}'");
+
     return $res;
   }
 }

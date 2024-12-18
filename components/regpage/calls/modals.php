@@ -132,7 +132,7 @@
                   </ul>
                   <div class="tab-content" id="call_tablist">
                     <div class="tab-pane fade show active" id="call_comment" role="tabpanel" aria-labelledby="comment-tab">
-                      <textarea class="form-control form-control-sm"  style="height: 274px;" data-field="comment"></textarea>
+                      <textarea id="mdl_fld_comment" class="form-control form-control-sm"  style="height: 274px;" data-field="comment"></textarea>
                     </div>
                     <div class="tab-pane fade" id="call_history" role="tabpanel" aria-labelledby="history-tab">
                       <div id="mdl_cal_history_content" class="pt-2">Скоро здесь будет история...</div>
@@ -150,6 +150,7 @@
           <button id="mdl_btn_dlt_call" type="button" class="btn btn-danger btn-sm" type="button"><i class="fa fa-trash"></i></button>
         </div>
         <div class="float-right">
+          <button id="mdl_btn_order_finished" type="button" class="btn btn-light btn-sm" disabled type="button" style="display: none;">Заявка завершена</button>
           <button id="mdl_btn_new_order" type="button" class="btn btn-primary btn-sm" type="button">Новый заказ</button>
           <button id="mdl_btn_cancel" type="button" class="btn btn-warning btn-sm ml-1" type="button">Отменить</button>
           <button id="mdl_btn_save_call" type="button" class="btn btn-success btn-sm ml-1" type="button">Сохранить</button>
