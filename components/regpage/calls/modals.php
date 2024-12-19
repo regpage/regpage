@@ -38,7 +38,7 @@
                 </div>
                 <div class="col pl-1">
                   <label>Email</label>
-                  <input type="email" class="form-control form-control-sm" value="" data-field="email">
+                  <input id="mdl_fld_email" type="email" class="form-control form-control-sm" value="" data-field="email">
                 </div>
               </div>
               <div class="row mb-2">
@@ -52,7 +52,7 @@
                 </div>
                 <div class="col pl-1">
                   <label>Пол</label>
-                  <select class="form-control form-control-sm" value="" data-field="male">
+                  <select id="mdl_fld_male" class="form-control form-control-sm" value="" data-field="male">
                     <option value="_none_">
                     <option value="1">муж.
                     <option value="0">жен.
@@ -135,7 +135,7 @@
                       <textarea id="mdl_fld_comment" class="form-control form-control-sm"  style="height: 274px;" data-field="comment"></textarea>
                     </div>
                     <div class="tab-pane fade" id="call_history" role="tabpanel" aria-labelledby="history-tab">
-                      <div id="mdl_cal_history_content" class="pt-2">Скоро здесь будет история...</div>
+                      <div id="mdl_cal_history_content" class="pt-2">Здесь будет история...</div>
                     </div>
                   </div>
                 </div>
@@ -162,7 +162,7 @@
   </div>
 </div>
 
-<!-- Окно подтверждение -->
+<!-- Окно подтверждение удаление -->
 <div id="mld_confirm_dlt" class="modal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -177,6 +177,28 @@
       </div>
       <div class="modal-footer">
         <button id="mdl_btn_dlt_call_confirm" type="button" class="btn btn-primary">Удалить</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Окно подтверждение отправки в СРМ -->
+<div id="mld_confirm_crm_send" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="mb-0" class="modal-title">Подтвердите действие</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Вы создаёте новый заказ в CRM. При необходимости добавьте комментарий к заказу.</p>
+        <textarea id="mdl_fld_comment_extra" name="name" rows="8" class="w-100"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button id="mdl_btn_new_order_send" type="button" class="btn btn-primary">Создать</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
       </div>
     </div>

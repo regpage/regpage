@@ -55,11 +55,22 @@ class ftt_info {
     }
   }
 
+  // Перерыв в создании бланков общения
+  static function pauseForFellowship() {
+    $date_today = self::now_mls();
+    $start = strtotime(date_convert::ddmmyyyy_to_yyyymmdd(self::param('attendance_start'))) - 604800 * 2;
+    $end = strtotime(date_convert::ddmmyyyy_to_yyyymmdd(self::param('attendance_end'))) - 604800 * 2;
+    if ($date_today < $start || $date_today > $end) {
+      return 1;
+    }
+  }
+
   // Дней до конца обучения / дней после окончания (отрицательное число)
   static function days_to_end() {
     $different = strtotime(date_convert::ddmmyyyy_to_yyyymmdd(self::param('attendance_end'))) - self::now_mls();
     return $different / (24*60*60);
   }
+
 }
 
 ?>

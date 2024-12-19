@@ -49,12 +49,12 @@ db_checkDeleteOldAdminSessions();
 function cron_set_fellowship_str() {
   // Проверяем что расписание не выходит за период обучения
   // ИНТЕРВАЛ ДАТ ДОЛЖЕН БЫТЬ = ДАТА СТАРТА РАСПИСАНИЯ - 7 ДНЕЙ И ДАТА завершения РАСПИСАНИЯ - 14 ДНЕЙ
-  if (ftt_info::pause()) {
+  if (ftt_info::pauseForFellowship()) {
     // отметка о выполнении
     $faleName = $_SERVER['PHP_SELF'];
     db_query("INSERT INTO `cron` (`date`,`script`, `status`, `comment`) VALUES (CURRENT_DATE(),'{$faleName}', '1', 'Вне периода')");
-    echo "Вне периода проведения обучения";
-    exit();
+    echo "Вне периода проведения обучения. ";
+    return;
   }
 
   $dayNumber = date("N", strtotime("+2 week"));

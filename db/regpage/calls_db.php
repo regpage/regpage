@@ -72,7 +72,7 @@ class CallsDB extends DBQuery
       $checkData = CallsDB::getCall($data->id)[0];
       // проверяем изменения для истории
       // сравнить операторов и статусы
-      if (($data->operator === $checkData['operator']) && ($data->status !== $checkData['status'])) {
+      if (isset($data->operator) && isset($data->status) && ($data->operator === $checkData['operator']) && ($data->status !== $checkData['status'])) {
         $nameUser = short_name::no_middle(Member::get_name(MEMBER_ID));
         $data->history = $checkData['history'] . "Установлен статус {$data->status} ({$nameUser})";
       }
@@ -133,7 +133,7 @@ class CallsDB extends DBQuery
     }
 
     // уведомление оператору о назначении
-    if (!empty($data->operator) && MEMBER_ID !== $data->operator && $data->status === 'В работе') {
+    if (isset($data->operator) && !empty($data->operator) && $checkData['operator'] !== $data->operator && MEMBER_ID !== $data->operator && $data->status === 'В работе') {
       if (!isset($data->id)) {
         $data->id = $db->insert_id;
       }

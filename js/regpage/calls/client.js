@@ -137,14 +137,57 @@ $(document).ready(function(){
   // создание временного элемента (в виде точки рядом с вызывающим элементом) с последующим его удалением
   // помещением строки в буфер
   $('#btn_copy_to_buffer').click(function() {
-    $("#mdl_fld_copy_text").val($("#mdl_fld_region").val() + "\r\n" + $("#mdl_fld_area").val() + "\r\n"
-    + $("#mdl_fld_locality").val() + "\r\n" + $("#mdl_fld_address").val());
+    $("#mdl_fld_copy_text").val($("#mdl_fld_region").val() + " " + $("#mdl_fld_area").val() + " "
+    + $("#mdl_fld_locality").val() + " " + $("#mdl_fld_address").val());
     let copyText = document.getElementById("mdl_fld_copy_text");
     $("#mdl_fld_copy_text").show();
     copyText.select();
     document.execCommand('copy');
     $("#mdl_fld_copy_text").hide();
     $("#mdl_fld_copy_text").val("");
+  });
+
+  $("#mdl_btn_new_order").click(function () {
+    if (is_require_filds_empty(["#mdl_fld_fio", "#mdl_fld_phone", "#mdl_fld_country", "#mdl_fld_male", "#mdl_fld_region", "#mdl_fld_locality", "#mdl_fld_address", "#mdl_fld_operator"])) {
+      return;
+    }
+    save_call();
+
+    // продолжить здесь
+    $("#mld_confirm_crm_send").modal("show");
+  });
+  // отправляем заказ в CRM (подтверждение отправки)
+  $("#mdl_btn_new_order_send").click(function () {
+    let form_data = new FormData();
+    //{name: name, value3: country, value4: region, value5: area, value6: locality, value7: address, value8: index, value1: howMuch, phone: phone, email: email, value2: comment}
+
+    form_data.set("name", $("#mdl_fld_fio").val());
+    form_data.set("phone", $("#mdl_fld_phone").val());
+    form_data.set("email", $("#mdl_fld_email").val());
+    form_data.set("info", $("#mdl_fld_email").val());
+    form_data.set("value1", "1");
+    form_data.set("value2", $("#mdl_fld_comment").val());
+    form_data.set("value3", $("#mdl_fld_country option:selected").text());
+    form_data.set("value4", $("#mdl_fld_region").val());
+    form_data.set("value5", $("#mdl_fld_area").val());
+    form_data.set("value6", $("#mdl_fld_locality").val());
+    form_data.set("value7", $("#mdl_fld_address").val());
+    form_data.set("value8", $("#mdl_fld_index").val());
+    fetch("api_reg.php?section=calls&type=crm_send&out=1&id=" + $("#modal_call_edit_add").attr("data-id"), {
+      method: 'POST',
+      body: form_data
+    })
+    .then(response => response.text()) // text
+    .then(commits => {
+      if (commits) {
+        $("#mld_confirm_crm_send").modal("hide");
+        showHint("Заказ отправлен в CRM.");
+        setTimeout(function () {
+          //$("#mld_confirm_crm_send").modal("hide");
+          //location.reload();
+        }, 700);
+      }
+    });
   });
 
   // удаляем карточку (открыть окно подтверждения)
