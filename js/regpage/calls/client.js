@@ -3,7 +3,8 @@ $(document).ready(function(){
   /* ==== DOCUMENT READY START ==== */
   // КУККИ
   // setCookie("calls-flt_author", "");
-
+  // обработка поля телефон, инициализация 
+  masking.init();
   // список применённых фильтров
   if ($("#flt_author").val() !== "_all_") {
     $("#flt_list").text("Включенные фильтры: автор — " + $("#flt_author option:selected").text());
@@ -72,10 +73,17 @@ $(document).ready(function(){
 
   // открыть новый бланк добавить новый звонок
   $("#addCalls").click(function () {
+    let fields_id = ["#mdl_fld_fio", "#mdl_fld_phone", "#mdl_fld_country", "#mdl_fld_male", "#mdl_fld_region", "#mdl_fld_locality", "#mdl_fld_address", "#mdl_fld_operator","#mdl_fld_comment"];
+    for (const element of fields_id) {
+      $(element).css("border-color", "#ced4da");
+    }
     $("#mdl_fld_status option").show();
     $("#mdl_fld_operator").attr("disabled", false);
     module_blank_clear($("#modal_call_edit_add"));
     $("#mdl_fld_country").val("RU");
+    $("#call_time_zone").val("");
+    $("#mdl_fld_status option[value='Входящая']").show();
+    $("#mdl_fld_status").val("Входящая");
     $("#call_date").text(dateStrFromyyyymmddToddmmyyyy(date_now_gl()));
     /* ОТРЫВАЕТСЯ БЛАНК */
     $("#mdl_btn_dlt_call").hide();

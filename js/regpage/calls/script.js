@@ -2,10 +2,18 @@
 // заполняем открытый бланк
 function fullfill_blank (data_list) {
   // Настраиваем бланк
+  // сбрасываем красные рамки
+  let fields_id = ["#mdl_fld_fio", "#mdl_fld_phone", "#mdl_fld_country", "#mdl_fld_male", "#mdl_fld_region", "#mdl_fld_locality", "#mdl_fld_address", "#mdl_fld_operator","#mdl_fld_comment"];
+  for (const element of fields_id) {
+    $(element).css("border-color", "#ced4da");
+  }
+  // в соответствии с статусом
   if (data_list.status === "Входящая") {
+    $("#mdl_fld_status option[value='Входящая']").show();
     $("#mdl_btn_dlt_call").show();
     $("#mdl_btn_new_order").hide();
   } else {
+    $("#mdl_fld_status option[value='Входящая']").hide();
     $("#mdl_btn_dlt_call").hide();
     $("#mdl_btn_new_order").show();
   }
@@ -46,12 +54,15 @@ function fullfill_blank (data_list) {
         $("#call_date").text(dateStrFromyyyymmddToddmmyyyy(data_list[string].slice(0,10)));
       } else if (string === "history") {
         $("#mdl_cal_history_content").html(data_list[string]);
+      } else if (string === "phone" && data_list[string]) {
+        $("#modal_call_edit_add [data-field='"+string+"']").val(phone_number_prepare(data_list[string]));
       } else {
         $("#modal_call_edit_add [data-field='"+string+"']").val(data_list[string]);
       }
     }
   }
 }
+
 // получаем данные бланка и показываем заполненный бланк
 function get_and_show_blank_data(id, get_to_work) {
   if (get_to_work) {
@@ -122,8 +133,18 @@ function save_call(then) {
           text = "";
         }
       } else {
-        text = $(this).val();
-        text = text.replaceAll("'", "&#39;");
+        if ($(this).attr("data-field") === "phone") {
+          text = $(this).val();
+          if (text.length === 1 && text[0] === "+") {
+            text = "";
+          } else if (text[0] === "+") {
+            text = text.substring(1);
+            text = text.replace(/\s/g, '');
+          }
+        } else {
+          text = $(this).val();
+          text = text.replaceAll("'", "&#39;");
+        }
       }
       data[$(this).attr("data-field")] = text.replaceAll("`", "&#39;");
     }

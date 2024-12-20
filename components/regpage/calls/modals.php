@@ -5,7 +5,7 @@
       <div class="modal-header">
         <h5 class="mb-0">Заявка <span id="call_date">00-00-0000</span>
           <select id="call_time_zone" class="ml-3" style="" data-field="time_zone">
-            <option value="_all_">Часовой пояс
+            <option value="">Часовой пояс
             <option value="МСК-1">МСК-1
             <option value="МСК+0">МСК+0
             <option value="МСК+1">МСК+1
@@ -28,17 +28,17 @@
               <div class="row mb-2">
                 <div class="col">
                   <label>ФИО<sup>*</sup></label>
-                  <input type="text" id="mdl_fld_fio" class="form-control form-control-sm" value="" data-field="name">
+                  <input type="text" id="mdl_fld_fio" class="form-control form-control-sm" value="" data-field="name" maxlength="50">
                 </div>
               </div>
               <div class="row mb-2">
                 <div class="col pr-1">
                   <label>Телефон<sup>*</sup></label>
-                  <input type="tel" id="mdl_fld_phone" class="form-control form-control-sm" value="" data-field="phone">
+                  <input type="tel" id="mdl_fld_phone" name="phone" class="form-control form-control-sm masked" value="" pattern="[0-9]{3} [0-9]{3} [0-9]{4}"  placeholder="+X XXX XXX XXXX" data-field="phone" maxlength="17">
                 </div>
                 <div class="col pl-1">
                   <label>Email</label>
-                  <input id="mdl_fld_email" type="email" class="form-control form-control-sm" value="" data-field="email">
+                  <input id="mdl_fld_email" type="email" class="form-control form-control-sm" value="" data-field="email" maxlength="50">
                 </div>
               </div>
               <div class="row mb-2">
@@ -62,17 +62,17 @@
               <div class="row mb-2">
                 <div class="col pr-1">
                   <label>Область</label>
-                  <input type="text" id="mdl_fld_region" class="form-control form-control-sm" value="" data-field="region">
+                  <input type="text" id="mdl_fld_region" class="form-control form-control-sm" value="" data-field="region" maxlength="50">
                 </div>
                 <div class="col pl-1">
                   <label>Район (при наличии)</label>
-                  <input type="text" id="mdl_fld_area" class="form-control form-control-sm" value="" data-field="area">
+                  <input type="text" id="mdl_fld_area" class="form-control form-control-sm" value="" data-field="area" maxlength="50">
                 </div>
               </div>
               <div class="row mb-2">
                 <div class="col pr-1">
                     <label>Насел. пункт</label>
-                  <input type="text" id="mdl_fld_locality" list="mdl_fld_datalist_localities" class="form-control form-control-sm" value="" data-field="locality">
+                  <input type="text" id="mdl_fld_locality" list="mdl_fld_datalist_localities" class="form-control form-control-sm" value="" data-field="locality" maxlength="50">
                   <datalist id="mdl_fld_datalist_localities">
                     <option value="">
                     <?php foreach ($callsLocalityList as $key => $value): ?>
@@ -82,17 +82,13 @@
                 </div>
                 <div class="col pl-1">
                   <label>Индекс</label>
-                  <input type="text" id="mdl_fld_index" class="form-control form-control-sm" value="" data-field="index_post">
+                  <input type="text" id="mdl_fld_index" class="form-control form-control-sm" value="" data-field="index_post" maxlength="12">
                 </div>
               </div>
               <div class="row mb-2">
-                <div class="col-11 pr-0">
-                  <label>Адрес</label>
-                  <input type="text" id="mdl_fld_address" class="form-control form-control-sm" value="" data-field="address">
-                </div>
-                <div class="col-1 text-left p-0" style="max-width: 48px;">
-                  <label class="text-white"></label><br>
-                  <button type="button" id="btn_copy_to_buffer" class="btn btn-light btn-sm mb-0 ml-1 pt-1 pl-0 pr-0 pb-0" style="font-size: 18px;"><i class="fa fa-copy"></i></button>
+                <div class="col">
+                  <label>Адрес <span id="btn_copy_to_buffer" class="link_custom_gray" style="">Копировать</span></label>
+                  <input type="text" id="mdl_fld_address" class="form-control form-control-sm" value="" data-field="address" maxlength="250">
                   <textarea id="mdl_fld_copy_text" class="p-0 m-0" style="display: none; max-width: 0px; max-height: 0px;"></textarea>
                 </div>
               </div>
@@ -102,8 +98,7 @@
                 <div class="col-6 pr-1">
                   <label>Статус</label>
                   <select id="mdl_fld_status" class="form-control form-control-sm" value="" data-field="status">
-                    <option value="_none_"></option>
-                    <!-- <option value="Входящая" style="display: none;">Входящая</option> -->
+                    <option value="Входящая" style="display: none;">Входящая</option>
                     <option value="В работе">В работе</option>
                     <option value="Недозвон">Недозвон</option>
                     <option value="Ошибка">Ошибка</option>

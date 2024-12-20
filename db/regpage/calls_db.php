@@ -64,12 +64,37 @@ class CallsDB extends DBQuery
   static function getUsers() {
     return parent::getKeyValue('calls_users');
   }
+  // проверяем дубликаты номера телефона в базе
+  static function checkPhoneNumber($data, $checkData = [])
+  {
+    $result = '';
+    if (isset($data->phone) && !empty($data->phone) && strlen(substr($data->phone, 1)) === 10
+    && ((isset($data->id) && !empty($data->id) && isset($checkData['phone']) && $checkData['phone'] !== $data->phone)
+    || (!isset($data->id) || empty($data->id)))) {
+      $dubleId = DBQuery::get('list', 'calls', '*', 'phone', '%'.$data->phone.'%', 'LIKE');
+      foreach ($dubleId as $key => $value) {
+        $date = date_convert::yyyymmdd_to_ddmmyyyy(substr($value['created_date'], 0, 10));
+        $operator = short_name::no_middle(Member::get_name($value['operator']));
+        $result .= "Была заявка {$date}\r\nСтатус: {$value['status']}\r\nОператор: {$operator}\r\nКомментарий: {$value['comment']}";
+      }
+    }
 
+    return $result;
+  }
+  // обновляем / добавляем звонок
   static function saveCall($data)
   {
     global $db;
     if (isset($data->id)) {
       $checkData = CallsDB::getCall($data->id)[0];
+      $extraComment = self::checkPhoneNumber($data, $checkData);
+      if (!empty($extraComment) && isset($data->comment)) {
+        if (empty($data->comment)) {
+          $data->comment = $extraComment;
+        } else {
+          $data->comment .= "\r\n" . $extraComment;
+        }
+      }
       // проверяем изменения для истории
       // сравнить операторов и статусы
       if (isset($data->operator) && isset($data->status) && ($data->operator === $checkData['operator']) && ($data->status !== $checkData['status'])) {

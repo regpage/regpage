@@ -36,7 +36,7 @@
       </div>
       <div class="col">
         <div class="">
-          <?php echo $value['phone'];
+          <?php echo phoneNumberPrepare($value['phone']);
           if (!empty($value['time_zone'])) {
             echo " {$value['time_zone']}";
           }

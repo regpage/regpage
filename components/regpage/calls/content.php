@@ -77,4 +77,3 @@ if ($tabCalls === 'currents') {
   // вкладка входящие
   require_once 'components/regpage/calls/content_incomming.php';
 }
-?>

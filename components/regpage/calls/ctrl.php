@@ -76,7 +76,7 @@ if (isset($_COOKIE['sorting-calls']) && !empty($_COOKIE['sorting-calls'])) {
 
 // вкладки
 $tab_currents_active = '';
-$tab_finfshed_active = '';
+$tab_finished_active = '';
 $tab_statistics_active = '';
 $tab_incomming_active = '';
 
@@ -94,3 +94,19 @@ $callsUsersList = CallsDB::getUsers();
 $callsLocalityList = localities::get_localities();
 $callsCountryList = localities::get_countries();
 $callsCountryListQuick = localities::get_countries(true);
+
+// подготавливаем номер телефона
+function phoneNumberPrepare($tel) {
+  if (empty($tel)) {
+    return '';
+  }
+  $result = "+";
+  for ($i = 0; $i < strlen($tel); $i++) {
+    if ($i === 0 || $i === 3 || $i === 6) {
+      $result .= $tel[$i] . " ";
+    } else {
+      $result .= $tel[$i];
+    }
+  }
+  return $result;
+}
