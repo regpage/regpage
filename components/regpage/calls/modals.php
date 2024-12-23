@@ -33,8 +33,8 @@
               </div>
               <div class="row mb-2">
                 <div class="col pr-1">
-                  <label>Телефон<sup>*</sup></label>
-                  <input type="tel" id="mdl_fld_phone" name="phone" class="form-control form-control-sm masked" value="" pattern="[0-9]{3} [0-9]{3} [0-9]{4}"  placeholder="+X XXX XXX XXXX" data-field="phone" maxlength="17">
+                  <label>Телефон<sup>*</sup></label> <!-- masked pattern="[0-9]{3} [0-9]{3} [0-9]{4}" placeholder="+X XXX XXX XXXX"  -->
+                  <input type="tel" id="mdl_fld_phone" name="phone" class="form-control form-control-sm" value="" data-field="phone">
                 </div>
                 <div class="col pl-1">
                   <label>Email</label>

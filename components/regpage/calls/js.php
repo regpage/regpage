@@ -3,9 +3,10 @@
 <script src="js/modules/date.js?v1"></script>
 <script src="js/modules/cookie.js?v1"></script>
 <script src="js/modules/phone_field.js?v1"></script>
-<script src="js/regpage/calls/script.js?v4"></script>
-<script src="js/regpage/calls/client.js?v5"></script>
+<script src="js/regpage/calls/script.js?v5"></script>
+<script src="js/regpage/calls/client.js?v6"></script>
 <script src="js/regpage/calls/design.js?v0"></script>
+<script src="https://unpkg.com/imask"></script>
 
 <script>
   let gl_calls_user_data = {};

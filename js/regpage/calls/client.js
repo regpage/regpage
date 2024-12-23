@@ -3,8 +3,59 @@ $(document).ready(function(){
   /* ==== DOCUMENT READY START ==== */
   // КУККИ
   // setCookie("calls-flt_author", "");
-  // обработка поля телефон, инициализация 
-  masking.init();
+  // обработка поля телефон, инициализация
+
+  // маска для ввода телефона
+  $("#mdl_fld_phone").on("paste", function(e) {
+    tel_mask_paste($(this), e, e.target.selectionStart);
+  });
+
+  $("#mdl_fld_phone").on("keydown", function(e) { // попробовать keydown keyup // change paste
+    /***  Р Е Д А К Т И Р О В А Н И Е  ***/
+    // ВВОД
+    // РЕДАКТИРОВАНИЕ
+    // Можно копировать данные и вставлять обратно выставляя курсор на прежнюю позицию
+    if ((e.key === "x" && e.ctrlKey) || (e.key === "z" && e.ctrlKey) || (e.key === "v" && e.ctrlKey) || (e.ctrlKey || e.key === "ArrowDown" || e.key === "ArrowLeft" || e.key === "ArrowRight" || e.key === "ArrowUp" || e.key === "End" || e.key === "Home")) {
+      return;
+    }
+    // тип действия
+    if (e.key === 'Backspace' || e.key === 'Delete') { // удаление символов
+      tel_mask_delete($(this), e, e.target.selectionStart);
+    } else if ($(this).val().length === e.target.selectionStart) { // последовательный ввод курсор в конце
+      tel_mask_input($(this), e, e.target.selectionStart);
+    } else if ($(this).val().length !== e.target.selectionStart) { // редактирование
+      tel_mask_edit($(this), e, e.target.selectionStart);
+    }
+
+    /*** ДОБАВЛЯТЬ ПРОБЕЛИ ПРИ ИЗМЕНЕНИИ ДЛИННЫ ПРИ РЕДАТИРОВАНИИ РАССТАВЛЯТЬ ***/
+    // НЕ РИАГИРОВАТЬ НА КОНТОЛ СТРЕЛКИ И КОНТРОЛ С И КАНТРОЛ V
+    //
+    /*document.querySelector('input[type="tel"]').addEventListener('keypress', function(e) {
+      if (e.key === '+' && (this.value.includes('+') || this.value.length > 0)) {
+        e.preventDefault();  // Не допускаем повторения плюса!
+      } else if (!/[0-9]/.test(e.key) && e.key !== '+') {
+        e.preventDefault();  // Что за незаконный вторженец? Не цифра!
+      } else if (this.value.length > 14) {
+        e.preventDefault();  // превышен размер
+      }
+    });*/
+    /*console.log("p: " + selection_position);
+    console.log("l: " + $(this)[0].value.length);
+    console.log("------------------");*/
+    /*if (!is_edit && $(this)[0].value.length === 1 && e.key !== '+') {
+      $(this)[0].value = "+" + $(this)[0].value + " ";
+      selection_position += 2;
+    }*/
+    //if (!is_edit && (/*$(this)[0].value.length === 2 ||*/ $(this)[0].value.length === 6 || $(this)[0].value.length === 10) /* && ($(this)[0].value.length === selection_position || $(this)[0].value.length === 2)*/) {
+    //  $(this)[0].value = $(this)[0].value + " ";
+    //    }
+
+
+    // позиция курсора
+    //if ($(this)[0].value.length > 0) {
+      //e.target.setSelectionRange(selection_position, selection_position);
+    //}
+  });
   // список применённых фильтров
   if ($("#flt_author").val() !== "_all_") {
     $("#flt_list").text("Включенные фильтры: автор — " + $("#flt_author option:selected").text());
