@@ -167,3 +167,29 @@ function save_call(then) {
     }
   });
 }
+
+function fio_tel_paste(one, two, three) {
+  document.addEventListener('paste', function(e) {
+    let text = (e.clipboardData || window.clipboardData).getData('text').trim();
+    if (!text) {
+      return;
+    }
+    let text_position_number = text.search(/\d/);
+    let text_position_charter = text.match(/[a-zA-Zа-яA-ЯЁё]/);
+    if (text_position_number >= 0 && text_position_charter["index"] >= 0) {
+      let text_number;
+      let text_fio;
+      if (text_position_number > text_position_charter["index"]) {
+        text_number = text.substring(text_position_number);
+        text_fio = text.substring(text_position_charter["index"], text_position_number);
+      } else {
+        text_number = text.substring(text_position_number, text_position_charter["index"]);
+        text_fio = text.substring(text_position_charter["index"]);
+      }
+      setTimeout(function () {
+        $("#mdl_fld_fio").val(text_fio.replace(/[^\s+a-zA-Zа-яA-ЯЁё]/g, ''));
+        $("#mdl_fld_phone").val(phone_number_prepare(text_number.replace(/[^+\d]/g, '')));
+      }, 10);
+    }
+  });
+}

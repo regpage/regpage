@@ -5,6 +5,10 @@ $(document).ready(function(){
   // setCookie("calls-flt_author", "");
   // обработка поля телефон, инициализация
 
+  // вставка и разбор фио и телефон
+  $("#mdl_fld_fio").on("paste", function(e) {
+    fio_tel_paste($(this), e);
+  });
   // маска для ввода телефона
   $("#mdl_fld_phone").on("paste", function(e) {
     tel_mask_paste($(this), e, e.target.selectionStart);

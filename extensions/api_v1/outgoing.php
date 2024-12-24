@@ -82,6 +82,7 @@ $answer = json_decode($out, true);
 
 if ($answer['message'] === 'success') {
   //logFileWriter($memberId, 'ЗВОНКИ. Заказ передан в CRM. Присвоен ID '.$answer['id'], 'DEBUG');
+  DBQuery::set('calls', 'crm_id', $answer['id'], 'id', $_GET['id']);
   echo $answer['id'];
   //header("Location: https://www.bibleforall.ru/");
 } else {
