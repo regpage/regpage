@@ -30,35 +30,6 @@ $(document).ready(function(){
     } else if ($(this).val().length !== e.target.selectionStart) { // редактирование
       tel_mask_edit($(this), e, e.target.selectionStart);
     }
-
-    /*** ДОБАВЛЯТЬ ПРОБЕЛИ ПРИ ИЗМЕНЕНИИ ДЛИННЫ ПРИ РЕДАТИРОВАНИИ РАССТАВЛЯТЬ ***/
-    // НЕ РИАГИРОВАТЬ НА КОНТОЛ СТРЕЛКИ И КОНТРОЛ С И КАНТРОЛ V
-    //
-    /*document.querySelector('input[type="tel"]').addEventListener('keypress', function(e) {
-      if (e.key === '+' && (this.value.includes('+') || this.value.length > 0)) {
-        e.preventDefault();  // Не допускаем повторения плюса!
-      } else if (!/[0-9]/.test(e.key) && e.key !== '+') {
-        e.preventDefault();  // Что за незаконный вторженец? Не цифра!
-      } else if (this.value.length > 14) {
-        e.preventDefault();  // превышен размер
-      }
-    });*/
-    /*console.log("p: " + selection_position);
-    console.log("l: " + $(this)[0].value.length);
-    console.log("------------------");*/
-    /*if (!is_edit && $(this)[0].value.length === 1 && e.key !== '+') {
-      $(this)[0].value = "+" + $(this)[0].value + " ";
-      selection_position += 2;
-    }*/
-    //if (!is_edit && (/*$(this)[0].value.length === 2 ||*/ $(this)[0].value.length === 6 || $(this)[0].value.length === 10) /* && ($(this)[0].value.length === selection_position || $(this)[0].value.length === 2)*/) {
-    //  $(this)[0].value = $(this)[0].value + " ";
-    //    }
-
-
-    // позиция курсора
-    //if ($(this)[0].value.length > 0) {
-      //e.target.setSelectionRange(selection_position, selection_position);
-    //}
   });
   // список применённых фильтров
   if ($("#flt_author").val() !== "_all_") {
@@ -125,7 +96,14 @@ $(document).ready(function(){
       }, 30);
     }
   });
-
+  // при выборе оператора в ручную статус не может быть Входящая
+  $("#mdl_fld_operator").change(function () {
+    if ($("#mdl_fld_operator").val() !== "_none_" && $("#mdl_fld_status").val() === "Входящая") {
+      $("#mdl_fld_status").val("В работе");
+    } else if ($("#mdl_fld_operator").val() === "_none_") {
+      $("#mdl_fld_status").val("Входящая");
+    }
+  });
   // открыть новый бланк добавить новый звонок
   $("#addCalls").click(function () {
     let fields_id = ["#mdl_fld_fio", "#mdl_fld_phone", "#mdl_fld_country", "#mdl_fld_male", "#mdl_fld_region", "#mdl_fld_locality", "#mdl_fld_address", "#mdl_fld_operator","#mdl_fld_comment"];
@@ -170,15 +148,19 @@ $(document).ready(function(){
   });
   // ручная смена статуса
   $("#mdl_fld_status").change(function () {
-    if ($("#mdl_fld_operator").val() === "_none_" || !$("#mdl_fld_operator").val()) {
+    if ($("#mdl_fld_status").val() !== "Входящая" && ($("#mdl_fld_operator").val() === "_none_" || !$("#mdl_fld_operator").val())) {
       $("#mdl_fld_operator").val(window.adminId);
+    } else if ($("#mdl_fld_status").val() === "Входящая") {
+      $("#mdl_fld_operator").val("_none_");
     }
     if ($("#modal_call_edit_add").attr("data-done") !== "1" && ($(this).val() === "_none_" || $(this).val() === "Заказ")) {
       $("#mdl_btn_new_order").hide();
       $("#mdl_btn_cancel").show();
       $("#mdl_btn_order_finished").hide();
     } else if ($("#modal_call_edit_add").attr("data-done") !== "1" && ($(this).val() !== "_none_" && $(this).val() !== "Заказ")) {
-      $("#mdl_btn_new_order").show();
+      if ($("#modal_call_edit_add").attr("data-id")) {
+        $("#mdl_btn_new_order").show();
+      }
       $("#mdl_btn_cancel").show();
       $("#mdl_btn_order_finished").hide();
     } else if ($("#modal_call_edit_add").attr("data-done") === "1" && $(this).val() !== "Заказ") {
@@ -186,7 +168,9 @@ $(document).ready(function(){
       $("#mdl_btn_cancel").hide();
       $("#mdl_btn_order_finished").show();
     } else {
-      $("#mdl_btn_new_order").show();
+      if ($("#modal_call_edit_add").attr("data-id")) {
+        $("#mdl_btn_new_order").show();
+      }
       $("#mdl_btn_cancel").show();
       $("#mdl_btn_order_finished").hide();
     }
@@ -227,15 +211,18 @@ $(document).ready(function(){
     form_data.set("name", $("#mdl_fld_fio").val());
     form_data.set("phone", $("#mdl_fld_phone").val());
     form_data.set("email", $("#mdl_fld_email").val());
-    form_data.set("info", $("#mdl_fld_email").val());
+    form_data.set("info", '');
     form_data.set("value1", "1");
-    form_data.set("value2", $("#mdl_fld_comment").val());
+    form_data.set("value2", $("#mdl_fld_comment").val() + "\r\n" + $("#mdl_fld_comment_extra").val());
     form_data.set("value3", $("#mdl_fld_country option:selected").text());
     form_data.set("value4", $("#mdl_fld_region").val());
     form_data.set("value5", $("#mdl_fld_area").val());
     form_data.set("value6", $("#mdl_fld_locality").val());
     form_data.set("value7", $("#mdl_fld_address").val());
     form_data.set("value8", $("#mdl_fld_index").val());
+    form_data.set("male", $("#mdl_fld_male option:selected").text().trim());
+    //form_data.set("note", $("#mdl_fld_comment_extra").val());
+
     fetch("api_reg.php?section=calls&type=crm_send&out=1&id=" + $("#modal_call_edit_add").attr("data-id"), {
       method: 'POST',
       body: form_data
@@ -243,12 +230,13 @@ $(document).ready(function(){
     .then(response => response.text()) // text
     .then(commits => {
       if (commits) {
+        $(".calls_list .call_str[data-id='" + $("#modal_call_edit_add").attr("data-id") + "']").remove();
         $("#mld_confirm_crm_send").modal("hide");
+        $("#modal_call_edit_add").modal("hide");
         showHint("Заказ отправлен в CRM.");
-        setTimeout(function () {
-          //$("#mld_confirm_crm_send").modal("hide");
+        /*setTimeout(function () {
           //location.reload();
-        }, 700);
+        }, 700);*/
       }
     });
   });

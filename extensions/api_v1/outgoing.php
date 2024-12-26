@@ -19,6 +19,7 @@ $value5 = $_POST['value5'];
 $value6 = $_POST['value6'];
 $value7 = $_POST['value7'];
 $value8 = $_POST['value8'];
+//$gender = $_POST['male'];
 
 //logFileWriter($memberId, 'ЗВОНКИ. Данные заказа для отправки в CRM. Переданы данные: '.$name.'; '.$phone.'; '.$email.'; '.$info.'; '.$value1.'; '.$value2.'; '.$value3.'; '.$value4.'; '.$value5.'; '.$value6.'; '.$value7.'; '.$value8, 'DEBUG');
 
@@ -63,7 +64,8 @@ $data = [
 ['input_id' => 131592, 'value' => $value5], // район
 ['input_id' => 131595, 'value' => $value6], // местность
 ['input_id' => 131598, 'value' => $value7], // адрес
-['input_id' => 131601, 'value' => $value8]  // индекс
+['input_id' => 131601, 'value' => $value8],  // индекс
+/*['input_id' => 131757, 'value' => $gender]*/  // пол
 ]
 ]
 ];

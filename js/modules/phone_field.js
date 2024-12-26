@@ -24,11 +24,18 @@ function tel_mask_input(elem, e, selection_position) {
     e.preventDefault();  // превышен размер
     return;
   }
-  if (elem.val().length === 0 && e.key !== '+') {
+  if (elem.val().length === 0 && e.key !== '+' || elem.val().length === 1 && e.key !== '7') {
     e.preventDefault();  // добавляем +
-    elem.val("+" + e.key + " ");
+    if (e.key == 7) {
+      elem.val("+" + e.key + " ");
+    } else if (e.key == 8) {
+       elem.val("+7 ");
+    } else {
+       elem.val("+7 " + String(e.key));
+    }
+    return;
   }
-
+    
   // добавляем пробел после блока символов
   if ((elem.val().length === 2 || elem.val().length === 6 || elem.val().length === 10) /* && (elem.value.length === selection_position || elem.value.length === 2)*/) {
     elem.val(elem.val() + " ");

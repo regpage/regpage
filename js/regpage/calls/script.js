@@ -10,10 +10,12 @@ function fullfill_blank (data_list) {
   // в соответствии с статусом
   if (data_list.status === "Входящая") {
     $("#mdl_fld_status option[value='Входящая']").show();
+    $("#mdl_fld_operator option[value='_none_']").show();
     $("#mdl_btn_dlt_call").show();
     $("#mdl_btn_new_order").hide();
   } else {
     $("#mdl_fld_status option[value='Входящая']").hide();
+    $("#mdl_fld_operator option[value='_none_']").hide();
     $("#mdl_btn_dlt_call").hide();
     $("#mdl_btn_new_order").show();
   }

@@ -43,10 +43,10 @@ if (isset($_GET['type']) && $_GET['type'] === 'crm_send'){
   $name = short_name::no_middle(Member::get_name(MEMBER_ID));
   $dataCall = CallsDB::getCall($_GET['id'])[0];
   $dataHistory = $dataCall['history'] . "Заявка отправлена в СРМ {$date} ({$name}) <br>";
-  $data = (object) ['id' => $_GET['id'], 'done' => 1, 'end_date' => date('Y-m-d H:i:s'), 'history' => $dataHistory];
+  $data = (object) ['id' => $_GET['id'], 'status' => 'Заказ', 'done' => 1, 'end_date' => date('Y-m-d H:i:s'), 'history' => $dataHistory];
   CallsDB::saveCall($data);
   if (isset($_GET['out'])) {
-    $_POST['info'] = 'Оператор ' . short_name::no_middle(Member::get_name($dataCall['operator'])) . '. ' . $_POST['info'];
+    $_POST['info'] = 'Звонил(а) ' . short_name::no_middle(Member::get_name($dataCall['operator']));
     require_once 'api_v1.php';
   }
   exit();

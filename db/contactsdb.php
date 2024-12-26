@@ -714,7 +714,7 @@ function getShortStatResp($adminId) {
   $resp3 = [];
   for ($x = 0; $x < count($resp_arr); $x++) {
     $key = $resp_arr[$x];
-    $res3 = db_query ("SELECT COUNT(*) count FROM contacts WHERE `responsible`='$key' AND `notice` <> 2 AND `notice` <> 3");
+    $res3 = db_query ("SELECT COUNT(*) count FROM contacts WHERE `responsible`='{$key}' AND `notice` <> 2 AND `notice` <> 3");
     while ($row3 = $res3->fetch_assoc()) $resp3[$key]=$row3['count'];
   }
   $resp2 = [];
