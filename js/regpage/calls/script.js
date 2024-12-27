@@ -37,7 +37,7 @@ function fullfill_blank (data_list) {
     }
   } else if (data_list.done === '0') {
     $("#mdl_btn_cancel").show();
-    $("#mdl_btn_new_order").attr("disabled", false).removeClass("btn-light").addClass("btn-primary").text("Новый заказ");
+    $("#mdl_btn_new_order").attr("disabled", false);
     if ($("#mdl_fld_status").val() === "_none_" || $("#mdl_fld_status").val() === "Заказ") {
       $("#mdl_btn_new_order").hide();
       $("#mdl_btn_cancel").show();

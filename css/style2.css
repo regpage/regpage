@@ -286,7 +286,7 @@ li.modal-reference {
     padding-left: 25px;
     font-size: 1.2em;
   }
-  #main_container_reg button, #main_container_reg input, #main_container_reg select, .modal-body select, .modal-body input, .modal-body textarea, .modal-body .nav-link, .modal-body .link_custom_gray, .modal-body label, .modal-footer button, #mdl_cal_history_content {
+  #main_container_reg button, #main_container_reg input, #main_container_reg select, .modal-body select, .modal-body input, .modal-body textarea, .modal-body .nav-link, .modal-body .link_custom_gray, .modal-body label, .modal-footer button, #mdl_cal_history_content, #mdl_mbl_sort b {
     font-size: 1.2em !important;
   }
   .call_str>div {

@@ -233,13 +233,14 @@
             <?php endif; ?>
           </div>
           <div class="col-12">
-            <!--<input type="search" id="flt_search" class="form-control form-control-sm ml-2" value="<?php echo urldecode($fltSearch); ?>"><div class="input-group-append">
-              <button id="btn_search" class="btn btn-success btn-sm" type="submit"><i class="fa fa-search"></i></button>
+            <!--<input type="search_mbl" id="flt_search" class="form-control form-control-sm ml-2" value="<?php echo urldecode($fltSearch); ?>"><div class="input-group-append">
+              <button id="btn_search_mbl" class="btn btn-success btn-sm" type="submit"><i class="fa fa-search"></i></button>
             </div>-->
           </div>
         </div>
       </div>
       <div class="modal-footer">
+        <button type="button" id="flt_mbl_apply" class="btn btn-primary" data-dismiss="modal">Применить</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
       </div>
     </div>
@@ -257,7 +258,15 @@
         </button>
       </div>
       <div class="modal-body">
-        ,t ,t,t,
+        <div class="row">
+          <!-- заголовки колонок -->
+          <div class="col">
+            <b class="sort_col" data-sort="c.created_date">Дата <i class="<?php echo $sort_created_date_ico ?>"></i></b>
+          </div>
+          <div class="col">
+            <b class="sort_col" data-sort="c.name">ФИО <i class="<?php echo $sort_fio_ico ?>"></i></b>
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>

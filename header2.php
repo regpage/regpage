@@ -26,7 +26,7 @@
     <meta name="mailru-domain" content="z83V20hFDKLekMbc">
     <link href="favicon.ico" rel="shortcut icon">
     <link href="css/font-awesome.min.css" rel="stylesheet">
-    <link href="css/style2.css?v25" rel="stylesheet">
+    <link href="css/style2.css?v27" rel="stylesheet">
     <!--  <link href="css/style_slide.css?v2" rel="stylesheet">-->
 
 <?php if (IS_FTT_PAGE) { ?>
@@ -61,7 +61,7 @@
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_fellowship.php') { ?>
     <link href="css/ftt/ftt_fellowship.css?v4" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/calls.php') { ?>
-      <link href="css/regpage/calls.css?v3" rel="stylesheet">
+      <link href="css/regpage/calls.css?v10" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_reading.php') { ?>
     <link href="css/ftt/ftt_reading.css?v2" rel="stylesheet">
 <?php } ?>

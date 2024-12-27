@@ -163,7 +163,7 @@ $(document).ready(function(){
       }
       $("#mdl_btn_cancel").show();
       $("#mdl_btn_order_finished").hide();
-    } else if ($("#modal_call_edit_add").attr("data-done") === "1" && $(this).val() !== "Заказ") {
+    } else if ($("#modal_call_edit_add").attr("data-done") === "1") {
       $("#mdl_btn_new_order").hide();
       $("#mdl_btn_cancel").hide();
       $("#mdl_btn_order_finished").show();
@@ -316,17 +316,26 @@ $(document).ready(function(){
   });
 
   // filters
-  $("#flt_author, #flt_gender, #flt_operator, #flt_author_mbl, #flt_gender_mbl, #flt_operator_mbl").change(function () {    
-    let cookie_name = $(this).attr("id");
-    if (cookie_name.includes("_mbl")) {
-      cookie_name = cookie_name.split("_mbl")[0];
-    }
-    setCookie("calls-" + cookie_name, $(this).val(), 356);
+  $("#flt_author, #flt_gender, #flt_operator").change(function () {
+    setCookie("calls-" + $(this).attr("id"), $(this).val(), 356);
     setTimeout(function () {
       location.reload();
     }, 30);
   });
-
+  // фильтры моб версия
+  $("#flt_mbl_apply").click(function () {
+    for (const elem of ["flt_author_mbl", "flt_gender_mbl", "flt_operator_mbl"]) {
+      if ($("#" + elem).is(":visible")) {
+        if (elem.includes("_mbl")) {
+          let cookie_name = elem.split("_mbl")[0];
+          setCookie("calls-" + cookie_name, $("#" + elem).val(), 356);
+        }
+      }
+    }
+    setTimeout(function () {
+      location.reload();
+    }, 30);
+  });
   // search
   $("#flt_search").change(function () {
     if (!$(this).val() || $(this).val().length > 2) {
