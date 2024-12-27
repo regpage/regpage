@@ -190,7 +190,11 @@ function fio_tel_paste(one, two, three) {
       }
       setTimeout(function () {
         $("#mdl_fld_fio").val(text_fio.replace(/[^\s+a-zA-Zа-яA-ЯЁё]/g, ''));
-        $("#mdl_fld_phone").val(phone_number_prepare(text_number.replace(/[^+\d]/g, '')));
+        if (text_number) {
+          $("#mdl_fld_phone").val(tel_mask_paste($("#mdl_fld_phone"), '', text_number));
+        } else {
+          $("#mdl_fld_phone").val("");
+        }
       }, 10);
     }
   });

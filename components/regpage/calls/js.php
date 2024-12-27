@@ -2,11 +2,10 @@
 <script src="js/modules/name.js?v1"></script>
 <script src="js/modules/date.js?v1"></script>
 <script src="js/modules/cookie.js?v1"></script>
-<script src="js/modules/phone_field.js?v2"></script>
-<script src="js/regpage/calls/script.js?v6"></script>
-<script src="js/regpage/calls/client.js?v10"></script>
+<script src="js/modules/phone_field.js?v3"></script>
+<script src="js/regpage/calls/script.js?v7"></script>
+<script src="js/regpage/calls/client.js?v11"></script>
 <script src="js/regpage/calls/design.js?v0"></script>
-<script src="https://unpkg.com/imask"></script>
 
 <script>
   let gl_calls_user_data = {};

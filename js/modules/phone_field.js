@@ -35,7 +35,7 @@ function tel_mask_input(elem, e, selection_position) {
     }
     return;
   }
-    
+
   // добавляем пробел после блока символов
   if ((elem.val().length === 2 || elem.val().length === 6 || elem.val().length === 10) /* && (elem.value.length === selection_position || elem.value.length === 2)*/) {
     elem.val(elem.val() + " ");
@@ -106,14 +106,35 @@ function tel_mask_delete(elem, e, selection_position) {
 // не удалять первую позицию "+" если строка заполнена "+" удалять последним, так же можно перебрасывать курсор или удалять и после подставлять "+" в случае необходимости
 }
 
-// вставка
-function tel_mask_paste(elem, e, selection_position) {
-  // проверка номера
+// вставка проверка номера
+function tel_mask_paste(elem, e, number) {
   setTimeout(function () {
-    let text = e.target.value.replace(/[^0-9]/g, '');
-    text = phone_number_prepare(text);
-    elem.val(text);
-    // позиция курсора
-    e.target.setSelectionRange(selection_position, selection_position);
+    let text = "";
+    if (number) { // передан номер
+      text = number.replace(/[^\d]/g, '');
+    } else { // передан элемент
+      // это важно тк иначе можно получить старое содержание элемента при вставке (принять и поместить в конец стека выполняемых задач)
+      text = e.target.value.replace(/[^\d]/g, '');
+    }
+    // обрабатываем, подставляем 7 если нужно
+    if (text) {
+      if (text[0] === "+") {
+        text = text.slice(1);
+      }
+      if (text) {
+        if (text[0] != "7" && text[0] != "8") {
+          text = String("7") + text;
+        } else if (text[0] == "8") {
+          text = text.slice(1);
+          if (text) {
+            text = String("7") + text;
+          }
+        }
+      }
+      // заполняем поле
+      elem.val(phone_number_prepare(text));
+    } else {
+      elem.val("");
+    }
   }, 10);
 }

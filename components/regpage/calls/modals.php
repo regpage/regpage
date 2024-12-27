@@ -24,7 +24,7 @@
       <div class="modal-body">
         <div class="container-fluid">
           <div class="row">
-            <div class="col-7 pl-0">
+            <div class="col-md-7 col-xs-12 pl-0">
               <div class="row mb-2">
                 <div class="col">
                   <label>ФИО<sup>*</sup></label>
@@ -93,7 +93,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-5 pl-0 pr-0">
+            <div class="col-md-5 col-xs-12 pl-0 pr-0">
               <div class="row mb-2">
                 <div class="col-6 pr-1">
                   <label>Статус</label>
@@ -195,6 +195,72 @@
       <div class="modal-footer">
         <button id="mdl_btn_new_order_send" type="button" class="btn btn-primary">Создать</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Окно фильтров -->
+<div id="mdl_mbl_flt" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="mb-0" class="modal-title">Фильтры</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Фильтры и кнопки -->
+        <div class="row">
+          <div class="col-12">
+            <select id="flt_author_mbl" class="form-control form-control-sm mr-2 mb-2">
+              <?php FTT_Select_fields::rendering($callsUsersList, $fltAuthor, 'Все авторы'); ?>
+            </select>
+          </div>
+          <div class="col-12">
+            <?php if ($tabCalls !== 'incomming'): ?>
+              <select id="flt_operator_mbl" class="form-control form-control-sm mr-2 mb-2">
+                <?php FTT_Select_fields::rendering($callsUsersList, $fltOperator, 'Все операторы'); ?>
+              </select>
+            <?php endif; ?>
+          </div>
+          <div class="col-12">
+            <?php if ($callsUserData['male'] === '1'): ?>
+              <select id="flt_gender_mbl" class="form-control form-control-sm mr-2 mb-2">
+              <?php FTT_Select_fields::rendering(['1'=>'муж.', '0'=>'жен.'], $fltGender, 'Все'); ?>
+              </select>
+            <?php endif; ?>
+          </div>
+          <div class="col-12">
+            <!--<input type="search" id="flt_search" class="form-control form-control-sm ml-2" value="<?php echo urldecode($fltSearch); ?>"><div class="input-group-append">
+              <button id="btn_search" class="btn btn-success btn-sm" type="submit"><i class="fa fa-search"></i></button>
+            </div>-->
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Окно сортировки -->
+<div id="mdl_mbl_sort" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="mb-0" class="modal-title">Сортировка</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ,t ,t,t,
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
       </div>
     </div>
   </div>

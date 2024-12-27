@@ -1,5 +1,5 @@
 <!-- заголовки колонок -->
-<div class="row pb-2 mr-0 border-bottom">
+<div class="row pb-2 mr-0 border-bottom d-none d-sm-flex">
   <div class="col pl-1">
     <b class="sort_col" data-sort="m.name">ФИО <i class="<?php echo $sort_fio_ico ?>"></i></b>
   </div>

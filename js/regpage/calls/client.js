@@ -11,7 +11,7 @@ $(document).ready(function(){
   });
   // маска для ввода телефона
   $("#mdl_fld_phone").on("paste", function(e) {
-    tel_mask_paste($(this), e, e.target.selectionStart);
+    tel_mask_paste($(this), e);
   });
 
   $("#mdl_fld_phone").on("keydown", function(e) { // попробовать keydown keyup // change paste
@@ -316,8 +316,12 @@ $(document).ready(function(){
   });
 
   // filters
-  $("#flt_author, #flt_gender, #flt_operator").change(function () {
-    setCookie("calls-" + $(this).attr("id"), $(this).val(), 356);
+  $("#flt_author, #flt_gender, #flt_operator, #flt_author_mbl, #flt_gender_mbl, #flt_operator_mbl").change(function () {    
+    let cookie_name = $(this).attr("id");
+    if (cookie_name.includes("_mbl")) {
+      cookie_name = cookie_name.split("_mbl")[0];
+    }
+    setCookie("calls-" + cookie_name, $(this).val(), 356);
     setTimeout(function () {
       location.reload();
     }, 30);

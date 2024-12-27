@@ -47,3 +47,8 @@
   font-size: 16px !important;
   color: gray !important;
 }
+@media (max-width: 769px) {
+  #btns_flts_panel input {
+    width: 50%;
+  }
+}

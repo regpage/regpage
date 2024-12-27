@@ -12,7 +12,7 @@ class CallsDB extends DBQuery
     return parent::get('list', 'calls', '*', 'id', $id);
   }
 
-  static function getCalls($conditionField = '', $conditionValue = '', $sortField = 'created_date', $sortType='DESC', $fltGender = '_all_', $fltAuthor = '_all_', $fltSearch = '')
+  static function getCalls($conditionField = '', $conditionValue = '', $sortField = 'c.created_date', $sortType='DESC', $fltGender = '_all_', $fltAuthor = '_all_', $fltSearch = '', $fltOperator = '_all_')
   {
     $conditionField = db_real_escape_string($conditionField);
     $conditionValue = db_real_escape_string($conditionValue);
@@ -23,14 +23,24 @@ class CallsDB extends DBQuery
     if (empty($conditionField)) {
       $condition = 1;
     } elseif ($conditionField === 'currents') {
-      $condition = " (status != 'Входящая' AND done = 0) OR (status = 'Уточнение' AND done = 1) ";
+      $condition = " ((c.status != 'Входящая' AND c.done = 0) OR (c.status = 'Уточнение' AND c.done = 1)) ";
     } elseif ($conditionField === 'finished') {
-      $condition = " status != 'Уточнение' AND done = 1 ";
+      $condition = " c.status != 'Уточнение' AND c.done = 1 ";
     } elseif ($conditionField === 'incomming') {
-      if ($fltAuthor === '_all_') {
-        $condition = " status = 'Входящая' AND done = 0 ";
+      $condition = " c.status = 'Входящая' AND c.done = 0 ";
+    }
+    if ($fltAuthor !== '_all_') {
+      if ($condition !== 1) {
+        $condition .= " AND c.author_key = '{$fltAuthor}' ";
       } else {
-        $condition = " (status = 'Входящая' AND done = 0 AND author_key = '{$fltAuthor}') ";
+        $condition = " c.author_key = '{$fltAuthor}') ";
+      }
+    }
+    if ($fltOperator !== '_all_' && $conditionField !== 'incomming') {
+      if ($condition !== 1) {
+        $condition .= " AND c.operator = '{$fltOperator}' ";
+      } else {
+        $condition = " c.operator = '{$fltOperator}' ";
       }
     }
     // фильтр пол

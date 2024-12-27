@@ -280,10 +280,18 @@ li.modal-reference {
   right: 13px;
   top: 23px;
 }
-
+/* НОВЫЙ КОНТЕЙНЕР */
 @media (max-width: 769px) {
   #main_container_reg {
     padding-left: 25px;
+    font-size: 1.2em;
+  }
+  #main_container_reg button, #main_container_reg input, #main_container_reg select, .modal-body select, .modal-body input, .modal-body textarea, .modal-body .nav-link, .modal-body .link_custom_gray, .modal-body label, .modal-footer button, #mdl_cal_history_content {
+    font-size: 1.2em !important;
+  }
+  .call_str>div {
+    padding-left: 0px;
+    padding-bottom: 10px;
   }
 }
 

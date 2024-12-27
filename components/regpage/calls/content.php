@@ -28,11 +28,17 @@
   <div class="btn-group">
     <?php if ($tabCalls === 'incomming'): ?>
       <button id="addCalls" class="btn btn-success btn-sm mr-2" type="button" title="Добавить новый звонок" data-toggle="modal" data-target="#modal_call_edit_add">
-        <i class="fa fa-plus"></i> Новая заявка
+        <i class="fa fa-plus"></i> <span class="d-none d-md-inline">Новая заявка</span>
       </button>
     <?php endif; ?>
+    <button class="btn btn-primary btn-sm mr-2 d-md-none" type="button" data-toggle="modal" data-target="#mdl_mbl_flt">
+      <i class="fa fa-filter"></i>
+    </button>
+    <button class="btn btn-primary btn-sm mr-2 d-md-none" type="button" data-toggle="modal" data-target="#mdl_mbl_sort">
+      <i class="fa fa-sort"></i>
+    </button>
   </div>
-    <select id="flt_author" class="form-control form-control-sm mr-2">
+    <select id="flt_author" class="form-control form-control-sm mr-2 d-none d-md-block">
       <?php FTT_Select_fields::rendering($callsUsersList, $fltAuthor, 'Все авторы'); ?>
     </select>
     <?php if ($tabCalls !== 'incomming'): ?>
@@ -46,12 +52,12 @@
         <option value="Уточнение">Уточнение
         <option value="Заказ">Заказ
       </select>-->
-      <select id="flt_operator" class="form-control form-control-sm mr-2">
+      <select id="flt_operator" class="form-control form-control-sm mr-2 d-none d-md-block">
         <?php FTT_Select_fields::rendering($callsUsersList, $fltOperator, 'Все операторы'); ?>
       </select>
     <?php endif; ?>
     <?php if ($callsUserData['male'] === '1'): ?>
-      <select id="flt_gender" class="form-control form-control-sm mr-2" value="">
+      <select id="flt_gender" class="form-control form-control-sm mr-2 d-none d-md-block">
       <?php FTT_Select_fields::rendering(['1'=>'муж.', '0'=>'жен.'], $fltGender, 'Все'); ?>
       </select>
     <?php endif; ?>

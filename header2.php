@@ -26,7 +26,7 @@
     <meta name="mailru-domain" content="z83V20hFDKLekMbc">
     <link href="favicon.ico" rel="shortcut icon">
     <link href="css/font-awesome.min.css" rel="stylesheet">
-    <link href="css/style2.css?v19" rel="stylesheet">
+    <link href="css/style2.css?v25" rel="stylesheet">
     <!--  <link href="css/style_slide.css?v2" rel="stylesheet">-->
 
 <?php if (IS_FTT_PAGE) { ?>
@@ -67,12 +67,12 @@
 <?php } ?>
     <link rel="stylesheet" href="css/bootstrap-4.4.1/css/bootstrap.min.css">
     <script src="extensions/jquery_3.6.0/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="extensions/proper1.16.0/popper.min.js"></script>
     <script src="css/bootstrap-4.4.1/js/bootstrap.min.js"></script>
     <!--<script src="js/script.js?v182" type="text/javascript"></script>-->
     <script src="js/script2.js?v19" type="text/javascript"></script>
     <script src="js/modules/footer_btm.js?v2"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="extensions/gstatic_chart/loader.js"></script> <!-- https://www.gstatic.com/charts/loader.js -->
   <?php if ($_SERVER['PHP_SELF'] === '/index.php' || $_SERVER['PHP_SELF'] === '/members.php') { ?>
 
     <!-- ЧАТ -->
