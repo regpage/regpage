@@ -20,17 +20,14 @@ function fullfill_blank (data_list) {
     $("#mdl_btn_new_order").show();
   }
   if (data_list.done === '1') {
+    $("#mdl_btn_order_finished").show();
+    $("#mdl_btn_new_order").hide();
+    $("#mdl_btn_cancel").hide();
     if (data_list.status === "Заказ") {
-      $("#mdl_btn_new_order").show();
-      $("#mdl_btn_cancel").show();
-      $("#mdl_btn_order_finished").hide();
       $("#mdl_fld_status option").hide();
       $("#mdl_fld_status option[value='Уточнение']").show();
       $("#mdl_fld_status option[value='Заказ']").show();
     } else {
-      $("#mdl_btn_new_order").hide();
-      $("#mdl_btn_cancel").hide();
-      $("#mdl_btn_order_finished").show();
       $("#mdl_fld_status option").show();
       $("#mdl_fld_status option[value='Уточнение']").hide();
       $("#mdl_fld_status option[value='В работе']").hide();
@@ -38,14 +35,13 @@ function fullfill_blank (data_list) {
   } else if (data_list.done === '0') {
     $("#mdl_btn_cancel").show();
     $("#mdl_btn_new_order").attr("disabled", false);
+    $("#mdl_btn_order_finished").hide();
     if ($("#mdl_fld_status").val() === "_none_" || $("#mdl_fld_status").val() === "Заказ") {
       $("#mdl_btn_new_order").hide();
       $("#mdl_btn_cancel").show();
-      $("#mdl_btn_order_finished").hide();
     } else if ($("#mdl_fld_status").val() !== "_none_" && $("#mdl_fld_status").val() !== "Заказ") {
       $("#mdl_btn_new_order").show();
       $("#mdl_btn_cancel").show();
-      $("#mdl_btn_order_finished").hide();
     }
   }
   $("#modal_call_edit_add").attr("data-id", data_list["id"]);

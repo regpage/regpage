@@ -24,7 +24,7 @@
       <div class="modal-body">
         <div class="container-fluid">
           <div class="row">
-            <div class="col-md-7 col-xs-12 pl-0">
+            <div class="col-md-7 col-xs-12 pl-0 pr-0 pr-md-3">
               <div class="row mb-2">
                 <div class="col">
                   <label>ФИО<sup>*</sup></label>
@@ -87,7 +87,7 @@
               </div>
               <div class="row mb-2">
                 <div class="col">
-                  <label>Адрес <span id="btn_copy_to_buffer" class="link_custom_gray" style="">Копировать</span></label>
+                  <label>Адрес <span id="btn_copy_to_buffer" style="">Копировать</span></label>
                   <input type="text" id="mdl_fld_address" class="form-control form-control-sm" value="" data-field="address" maxlength="250">
                   <textarea id="mdl_fld_copy_text" class="p-0 m-0" style="display: none; max-width: 0px; max-height: 0px;"></textarea>
                 </div>
@@ -127,7 +127,7 @@
                   </ul>
                   <div class="tab-content" id="call_tablist">
                     <div class="tab-pane fade show active" id="call_comment" role="tabpanel" aria-labelledby="comment-tab">
-                      <textarea id="mdl_fld_comment" class="form-control form-control-sm"  style="height: 274px;" data-field="comment"></textarea>
+                      <textarea id="mdl_fld_comment" class="form-control form-control-sm"  style="height: 280px;" data-field="comment"></textarea>
                     </div>
                     <div class="tab-pane fade" id="call_history" role="tabpanel" aria-labelledby="history-tab">
                       <div id="mdl_cal_history_content" class="pt-2">Здесь будет история...</div>
@@ -140,17 +140,13 @@
         </div>
       </div>
       <div class="modal-footer">
-        <div class="w-100">
-          <div class="float-left">
-          <button id="mdl_btn_dlt_call" type="button" class="btn btn-danger btn-sm" type="button"><i class="fa fa-trash"></i></button>
-        </div>
-        <div class="float-right">
-          <button id="mdl_btn_order_finished" type="button" class="btn btn-light btn-sm" disabled type="button" style="display: none;">Заявка завершена</button>
-          <button id="mdl_btn_new_order" type="button" class="btn btn-primary btn-sm" type="button">Новый заказ</button>
-          <button id="mdl_btn_cancel" type="button" class="btn btn-warning btn-sm ml-1" type="button">Отменить</button>
-          <button id="mdl_btn_save_call" type="button" class="btn btn-success btn-sm ml-1" type="button">Сохранить</button>
-          <button type="button" class="btn btn-secondary btn-sm ml-1" type="button" data-dismiss="modal">Закрыть</button>
-        </div>
+        <div class="text-right">
+          <button id="mdl_btn_dlt_call" type="button" class="btn btn-danger btn-sm mb-2" type="button"><i class="fa fa-trash"></i></button>
+          <button id="mdl_btn_order_finished" type="button" class="btn btn-light btn-sm mb-2" disabled type="button" style="display: none;">Заявка завершена</button>
+          <button id="mdl_btn_new_order" type="button" class="btn btn-primary btn-sm ml-1 mb-2" type="button">Новый заказ</button>
+          <button id="mdl_btn_cancel" type="button" class="btn btn-warning btn-sm ml-1 mb-2" type="button">Отменить</button>
+          <button id="mdl_btn_save_call" type="button" class="btn btn-success btn-sm ml-1 mb-2" type="button">Сохранить</button>
+          <button type="button" class="btn btn-secondary btn-sm ml-1 mb-2" type="button" data-dismiss="modal">Закрыть</button>
         </div>
       </div>
     </div>
