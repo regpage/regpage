@@ -11,11 +11,17 @@ require_once 'db/classes/CutString.php';
 // db
 require_once 'db/regpage/calls_db.php';
 
-if (isset($_COOKIE['tab-calls']) && !empty($_COOKIE['tab-calls'])) {
-  $tabCalls = $_COOKIE['tab-calls'];
+if (isset($_GET['id']) && !empty($_GET['id']) && isset($_GET['tab']) && !empty($_GET['tab'])) {
+  $tabCalls = $_GET['tab'];
 } else {
-  $tabCalls = 'incomming';
+  if (isset($_COOKIE['tab-calls']) && !empty($_COOKIE['tab-calls'])) {
+    $tabCalls = $_COOKIE['tab-calls'];
+  } else {
+    $tabCalls = 'incomming';
+  }
 }
+
+
 
 // fitres
 $fltGender = '_all_';

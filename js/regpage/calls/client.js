@@ -345,6 +345,20 @@ $(document).ready(function(){
       }, 30);
     }
   });
+  // закрытие бланка
+  $("#modal_call_edit_add").on('hide.bs.modal', function (event) {
+    if (open_id) {
+      location.href = "calls";
+    }
+  });
+  // открываем бланк по ссылке
+  if (open_id) {
+    if (/^\d+$/.test(open_id)) {
+      get_and_show_blank_data(open_id);
+    } else {
+      showError("Запрошен некорректный ID бланка.");
+    }
+  }
 
   /* ==== DOCUMENT READY STOP ==== */
 });

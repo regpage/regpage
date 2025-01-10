@@ -33,7 +33,7 @@
               </div>
               <div class="row mb-2">
                 <div class="col pr-1">
-                  <label>Телефон<sup>*</sup></label> <!-- masked pattern="[0-9]{3} [0-9]{3} [0-9]{4}" placeholder="+X XXX XXX XXXX"  -->
+                  <label>Телефон<sup>*</sup></label>
                   <input type="tel" id="mdl_fld_phone" name="phone" class="form-control form-control-sm" value="" data-field="phone">
                 </div>
                 <div class="col pl-1">
@@ -87,7 +87,7 @@
               </div>
               <div class="row mb-2">
                 <div class="col">
-                  <label>Адрес <span id="btn_copy_to_buffer" style="">Копировать</span></label>
+                  <label>Адрес <span id="btn_copy_to_buffer" class="px-1">Копировать</span></label>
                   <input type="text" id="mdl_fld_address" class="form-control form-control-sm" value="" data-field="address" maxlength="250">
                   <textarea id="mdl_fld_copy_text" class="p-0 m-0" style="display: none; max-width: 0px; max-height: 0px;"></textarea>
                 </div>

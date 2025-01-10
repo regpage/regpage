@@ -4,10 +4,14 @@
 <script src="js/modules/cookie.js?v1"></script>
 <script src="js/modules/phone_field.js?v3"></script>
 <script src="js/regpage/calls/script.js?v9"></script>
-<script src="js/regpage/calls/client.js?v14"></script>
+<script src="js/regpage/calls/client.js?v15"></script>
 <script src="js/regpage/calls/design.js?v4"></script>
 
 <script>
+  let open_id;
+  <?php if (isset($_GET['id']) && !empty($_GET['id'])) { ?>
+    open_id = "<?php echo $_GET['id']; ?>";
+  <?php } ?>
   let gl_calls_user_data = {};
   gl_calls_user_data["role"] = "<?php echo $callsUserData['role']; ?>";
   gl_calls_user_data["male"] = "<?php echo $callsUserData['male']; ?>";
