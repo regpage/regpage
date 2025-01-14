@@ -5,7 +5,7 @@
 <script src="js/modules/phone_field.js?v3"></script>
 <script src="js/regpage/calls/script.js?v9"></script>
 <script src="js/regpage/calls/client.js?v15"></script>
-<script src="js/regpage/calls/design.js?v4"></script>
+<script src="js/regpage/calls/design.js?v5"></script>
 
 <script>
   let open_id;

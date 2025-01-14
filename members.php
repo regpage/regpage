@@ -968,7 +968,7 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
                 (countSaints >0 ? "<tr><td>Святые в церк. жизни</td><td class='text-align'>"+countSaints+"</td><td class='text-align cat_sn'>"+countAttendancesSaints+"</td></tr>" : "")+
                 ( countRespBrothers >0 ? "<tr><td>Ответственные братья</td><td class='text-align'>"+countRespBrothers+"</td><td class='text-align cat_rb'>"+countAttendancesRespBrothers+"</td></tr>" : "" )+
                 ( countFullTimers >0 ? "<tr><td>Полновременные служащие</td><td class='text-align'>"+countFullTimers+"</td><td class='text-align cat_fs'>"+countAttendancesFullTimers+"</td></tr>" : "" )+
-                ( countTrainees >0 ? "<tr><td >Полновременно обучающиеся</td><td class='text-align'>"+countTrainees+"</td><td class='text-align ft'>"+countAttendancesTrainees+"</td></tr>" : "" )+
+                ( countTrainees >0 ? "<tr><td >Полновременно обучающиеся</td><td class='text-align'>"+countTrainees+"</td><td class='text-align cat_ft'>"+countAttendancesTrainees+"</td></tr>" : "" )+
                 ( countBelivers >0 ? "<tr><td>Верующие</td><td class='text-align'>"+countBelivers+"</td><td class='text-align cat_bl'>"+countAttendancesBelivers+"</td></tr>" : "" )+
                 ( countOthers >0 ? "<tr><td>Другие</td><td class='text-align'>"+countOthers+"</td><td class='text-align cat_ot'>"+countAttendancesOthers+"</td></tr>" : "" ) +
                 "<tr><td><strong>Всего</strong></td><td class='text-align'><strong>" + countMembers + "</strong></td><td class='text-align cat_all'><strong>"+countAttendances+"</strong></td></tr>";
@@ -1086,7 +1086,7 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
               age_total += commits.statistic["older_60"];
             }
             if (age_total > 0) {
-              $(".all_age").text(cat_total);
+              $(".all_age").text(age_total);
             }
             if (commits.statistic.average_age) {
               $(".average_age").text(Math.round(commits.statistic.average_age / age_total));

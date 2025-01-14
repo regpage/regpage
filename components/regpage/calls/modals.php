@@ -71,7 +71,7 @@
               </div>
               <div class="row mb-2">
                 <div class="col pr-1">
-                    <label>Насел. пункт</label>
+                    <label>Населённый пункт</label>
                   <input type="text" id="mdl_fld_locality" list="mdl_fld_datalist_localities" class="form-control form-control-sm" value="" data-field="locality" maxlength="50">
                   <datalist id="mdl_fld_datalist_localities">
                     <option value="">

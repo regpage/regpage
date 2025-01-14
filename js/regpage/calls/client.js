@@ -66,7 +66,7 @@ $(document).ready(function(){
   // сброс списка фильтров
   $("#flt_list_cancel").click(function () {
     if (gl_calls_user_data["role"] === "1") {
-      setCookie("calls-flt_author", window.adminId, 356);
+      setCookie("calls-flt_author", "_all_", 356);
     } else {
       setCookie("calls-flt_author", "_all_", 356);
     }

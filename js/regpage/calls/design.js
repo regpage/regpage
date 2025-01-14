@@ -4,6 +4,7 @@ if ($(window).width()<=769) {
   $("#modal_call_edit_add .btn-secondary").text("Зак.");
   $("#mdl_btn_new_order").text("Нов. заказ");*/
   $("#mdl_fld_area").prev().text("Район (при нал.)");
+  $("#mdl_fld_locality").prev().text("Насел. пункт");  
 
 } else if ($(window).width() > 769 && $(window).width() <= 1199) {
 
