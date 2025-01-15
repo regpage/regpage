@@ -71,14 +71,15 @@
               </div>
               <div class="row mb-2">
                 <div class="col pr-1">
-                    <label>Населённый пункт</label>
-                  <input type="text" id="mdl_fld_locality" list="mdl_fld_datalist_localities" class="form-control form-control-sm" value="" data-field="locality" maxlength="50">
-                  <datalist id="mdl_fld_datalist_localities">
+                  <label>Населённый пункт</label>
+                  <input type="text" id="mdl_fld_locality" class="form-control form-control-sm" value="" data-field="locality" maxlength="50">
+                  <!-- list="mdl_fld_datalist_localities" -->
+                  <!-- <datalist id="mdl_fld_datalist_localities">
                     <option value="">
-                    <?php foreach ($callsLocalityList as $key => $value): ?>
-                        <option value="<?php echo $value; ?>">
-                    <?php endforeach; ?>
-                  </datalist>
+                    <?php // foreach ($callsLocalityList as $key => $value): ?>
+                        <option value="<?php // echo $value; ?>">
+                    <?php // endforeach; ?>
+                  </datalist> -->
                 </div>
                 <div class="col pl-1">
                   <label>Индекс</label>
@@ -144,7 +145,7 @@
           <button id="mdl_btn_dlt_call" type="button" class="btn btn-danger btn-sm mb-2" type="button"><i class="fa fa-trash"></i></button>
           <button id="mdl_btn_order_finished" type="button" class="btn btn-light btn-sm mb-2" disabled type="button" style="display: none;">Заявка завершена</button>
           <button id="mdl_btn_new_order" type="button" class="btn btn-primary btn-sm ml-1 mb-2" type="button">Новый заказ</button>
-          <button id="mdl_btn_cancel" type="button" class="btn btn-warning btn-sm ml-1 mb-2" type="button">Отменить</button>
+          <button id="mdl_btn_cancel" type="button" class="btn btn-warning btn-sm ml-1 mb-2" type="button">Отменить заявку</button>
           <button id="mdl_btn_save_call" type="button" class="btn btn-success btn-sm ml-1 mb-2" type="button">Сохранить</button>
           <button type="button" class="btn btn-secondary btn-sm ml-1 mb-2" type="button" data-dismiss="modal">Закрыть</button>
         </div>

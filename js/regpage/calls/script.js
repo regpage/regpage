@@ -172,8 +172,16 @@ function fio_tel_paste(one, two, three) {
     if (!text) {
       return;
     }
+    // особое правило
+    if (text.includes("Телефон:") && text.includes("Ваше имя:")) {
+      text = text.split("Телефон:");
+      text = text[1].split("Ваше имя:");
+      text = text[1] + " " + text[0];
+    }
+
     let text_position_number = text.search(/\d/);
     let text_position_charter = text.match(/[a-zA-Zа-яA-ЯЁё]/);
+
     if (text_position_number >= 0 && text_position_charter["index"] >= 0) {
       let text_number;
       let text_fio;
