@@ -1,27 +1,13 @@
 <!-- ТЕКУЩИЕ ЗАЯВКИ -->
-<!-- заголовки колонок -->
-<div class="row pb-2 mr-0 border-bottom d-none d-sm-flex">
-  <div class="col-1 pl-0">
-    <b class="sort_col" data-sort="c.created_date">Дата <i class="<?php echo $sort_created_date_ico ?>"></i></b>
-  </div>
-  <div class="col-3 pl-3">
-    <b class="sort_col" data-sort="c.name">ФИО <i class="<?php echo $sort_fio_ico ?>"></i></b>
-  </div>
-  <div class="col-3 pl-3">
-    <b>Телефон</b>
-  </div>
-  <div class="col-3 pl-3">
-    <b>Комментарий</b>
-  </div>
-  <div class="col-2 pl-3">
-    <b></b>
-  </div>
-</div>
 
 <!-- список -->
 <div class="row mr-0 ml-0">
   <div class="calls_list container pl-0">
-  <?php foreach (CallsDB::getCalls('currents', '', $sort_setting[0], $sort_setting[1], $fltGender, $fltAuthor, $fltSearch, $fltOperator) as $key => $value): // $callsUserData['role'] ?>
+  <?php
+  $countPositions = 0;
+  foreach (CallsDB::getCalls('currents', '', $sort_setting[0], $sort_setting[1], $fltGender, $fltAuthor, $fltSearch, $fltOperator, 50,  0) as $key => $value): // $callsUserData['role']
+    $countPositions++;
+  ?>
     <div class="row call_str pl-0" data-id="<?php echo $value['id'] ?>">
       <div class="col-md-1 col-3 pl-0">
         <div class="">
@@ -29,23 +15,23 @@
           <?php echo date_convert::week_days($value['created_date'], true); ?>
         </div>
       </div>
-      <div class="col-md-3 col-9">
+      <div class="col-md-2 col-9">
+        <div class="">
+          <?php echo '<a href="tel:' . phoneNumberPrepare($value['phone']) . '" class="d-sm-none pr-3">' . phoneNumberPrepare($value['phone']) . '</a> <span class="d-none d-sm-inline"> ' . phoneNumberPrepare($value['phone']) . '</span>';
+          if (!empty($value['time_zone'])) {
+            echo " {$value['time_zone']} ";
+          }
+          ?>
+        </div>
+      </div>
+      <div class="col-md-3 col-12">
         <div class="">
           <?php echo $value['name']; ?>
         </div>
       </div>
-      <div class="col-md-3 col-5">
+      <div class="col-md-4 d-none d-sm-inline">
         <div class="">
-          <?php echo phoneNumberPrepare($value['phone']); ?>
-        </div>
-      </div>
-      <div class="col-md-3 col-7">
-        <div class="">
-          <?php
-          if (!empty($value['time_zone'])) {
-            echo " {$value['time_zone']} ";
-          }
-          echo CutString::cut($value['comment'], 20); ?>
+          <?php echo CutString::cut($value['comment'], 38); ?>
         </div>
       </div>
       <div class="col-md-2 col-12">
@@ -68,10 +54,18 @@
               $badgeClass = "success";
             }
             echo "<span class='badge badge-{$badgeClass}'>{$value['status']}</span>";
+            echo '<span class="d-sm-none pl-3">' . CutString::cut($value['comment'], 30) . '</span>';
           ?>
         </div>
       </div>
     </div>
   <?php endforeach; ?>
+  <?php if ($countPositions === 50): ?>
+    <div class="row">
+        <div class="col text-center">
+          <span class="link">Показать ещё</span>
+        </div>
+    </div>
+  <?php endif; ?>
   </div>
 </div>

@@ -27,7 +27,7 @@
             <div class="col-md-7 col-xs-12 pl-0 pr-0 pr-md-3">
               <div class="row mb-2">
                 <div class="col">
-                  <label>ФИО<sup>*</sup></label>
+                  <label>ФИО<sup>*</sup><!-- <span id="fio_tel_paste_fld" class="gray_link_dots">Вставить</span>--></label>
                   <input type="text" id="mdl_fld_fio" class="form-control form-control-sm" value="" data-field="name" maxlength="50">
                 </div>
               </div>
@@ -88,7 +88,7 @@
               </div>
               <div class="row mb-2">
                 <div class="col">
-                  <label>Адрес <span id="btn_copy_to_buffer" class="px-1">Копировать</span></label>
+                  <label>Адрес <span id="btn_copy_to_buffer" class="gray_link_dots">Копировать</span></label>
                   <input type="text" id="mdl_fld_address" class="form-control form-control-sm" value="" data-field="address" maxlength="250">
                   <textarea id="mdl_fld_copy_text" class="p-0 m-0" style="display: none; max-width: 0px; max-height: 0px;"></textarea>
                 </div>

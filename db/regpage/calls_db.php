@@ -7,11 +7,12 @@
 
 class CallsDB extends DBQuery
 {
+  // получаем звонк по id
   static function getCall($id)
   {
     return parent::get('list', 'calls', '*', 'id', $id);
   }
-
+  // получаем список звонков
   static function getCalls($conditionField = '', $conditionValue = '', $sortField = 'c.created_date', $sortType='DESC', $fltGender = '_all_', $fltAuthor = '_all_', $fltSearch = '', $fltOperator = '_all_', $limit = 50, $offset = 0)
   {
     $conditionField = db_real_escape_string($conditionField);
@@ -19,7 +20,7 @@ class CallsDB extends DBQuery
     $sortField = db_real_escape_string($sortField);
     $sortType = db_real_escape_string($sortType);
     $result = [];
-    //
+    // формируем условие
     if (empty($conditionField)) {
       $condition = 1;
     } elseif ($conditionField === 'currents') {
@@ -46,9 +47,9 @@ class CallsDB extends DBQuery
     // фильтр пол
     if ($fltGender !== '_all_') {
       if ($condition !== 1) {
-        $condition .= " AND c.male = '{$fltGender}' ";
+        $condition .= " AND (c.male = '{$fltGender}' OR c.male IS NULL) ";
       } else {
-        $condition = " c.male = '{$fltGender}' ";
+        $condition = " (c.male = '{$fltGender}'  OR c.male IS NULL) ";
       }
     }
 
@@ -64,7 +65,7 @@ class CallsDB extends DBQuery
     $res=db_query ("SELECT c.*, m.name operator_name
     FROM calls c
     LEFT JOIN member m ON m.key = c.operator
-    WHERE {$condition} ORDER BY {$sortField} {$sortType} LIMIT {$limit} OFFSET {$offset}");
+    WHERE {$condition} ORDER BY {$sortField} {$sortType}"); //  LIMIT {$limit} OFFSET {$offset}
     while ($row = $res->fetch_assoc()) $result[]=$row;
 
     return $result;

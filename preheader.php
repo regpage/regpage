@@ -53,6 +53,7 @@ $memberId ? db_lastVisitTimeUpdate(session_id()) : '';
 global $appRootPath;
 $global_root_path = __DIR__.DIRECTORY_SEPARATOR;
 $thispage = explode('.', substr($_SERVER['PHP_SELF'], 1))[0];
+define("THIS_PAGE", $thispage);
 // гостевой режим с авторизацией по пермалинку
 if (!$memberId && ($thispage === 'arrdep' || $thispage === 'invites') && isset($_GET['link']) && !empty($_GET['link'])) {
   $isGuest = true;
@@ -72,7 +73,6 @@ if ($isFttPage === '/ftt') {
 }
 
 define("IS_FTT_PAGE", $isFttPage);
-
 // Бланки по ссылке. Эта проверка перенесена в index.php
 /* if ((!$memberId && isset ($_GET["link"])) || (!$memberId && isset ($_GET["invited"]))){
 } else*/

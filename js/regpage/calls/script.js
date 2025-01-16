@@ -166,12 +166,47 @@ function save_call(then) {
   });
 }
 
-function fio_tel_paste(one, two, three) {
+function fio_tel_paste(paste_text) {
+  if (paste_text) {
+    paste_text = paste_text.replace(/\+/g, '');
+    // особое правило
+    if (paste_text.includes("Телефон:") && paste_text.includes("Ваше имя:")) {
+      paste_text = paste_text.split("Телефон:");
+      paste_text = paste_text[1].split("Ваше имя:");
+      paste_text = paste_text[1] + " " + paste_text[0];
+    }
+
+    let text_position_number = paste_text.search(/\d/);
+    let text_position_charter = paste_text.match(/[a-zA-Zа-яA-ЯЁё]/);
+
+    if (text_position_number >= 0 && text_position_charter["index"] >= 0) {
+      let text_number;
+      let text_fio;
+      if (text_position_number > text_position_charter["index"]) {
+        text_number = paste_text.substring(text_position_number);
+        text_fio = paste_text.substring(text_position_charter["index"], text_position_number);
+      } else {
+        text_number = paste_text.substring(text_position_number, text_position_charter["index"]);
+        text_fio = paste_text.substring(text_position_charter["index"]);
+      }
+      setTimeout(function () {
+        $("#mdl_fld_fio").val(text_fio.replace(/[^\s+a-zA-Zа-яA-ЯЁё]/g, '').trim());
+        if (text_number) {
+          $("#mdl_fld_phone").val(tel_mask_paste($("#mdl_fld_phone"), '', text_number));
+        } else {
+          $("#mdl_fld_phone").val("");
+        }
+      }, 10);
+    }
+
+    return;
+  }
   document.addEventListener('paste', function(e) {
     let text = (e.clipboardData || window.clipboardData).getData('text').trim();
     if (!text) {
       return;
     }
+    text = text.replace(/\+/g, '');
     // особое правило
     if (text.includes("Телефон:") && text.includes("Ваше имя:")) {
       text = text.split("Телефон:");
@@ -193,7 +228,7 @@ function fio_tel_paste(one, two, three) {
         text_fio = text.substring(text_position_charter["index"]);
       }
       setTimeout(function () {
-        $("#mdl_fld_fio").val(text_fio.replace(/[^\s+a-zA-Zа-яA-ЯЁё]/g, ''));
+        $("#mdl_fld_fio").val(text_fio.replace(/[^\s+a-zA-Zа-яA-ЯЁё]/g, '').trim());
         if (text_number) {
           $("#mdl_fld_phone").val(tel_mask_paste($("#mdl_fld_phone"), '', text_number));
         } else {

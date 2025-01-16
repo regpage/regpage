@@ -21,7 +21,7 @@ if (isset($_GET['type']) && $_GET['type'] === 'get_call'){
     $date = date('m-d-Y H:i');
     $name = short_name::no_middle(Member::get_name(MEMBER_ID));
     $dataHistory = CallsDB::getCall($_GET['id']);
-    $dataHistory = $dataHistory[0]['history'] . "Заявка взята в работу {$date} ({$name}) <br>";
+    $dataHistory = $dataHistory[0]['history'] . "{$date} Заявка взята в работу ({$name}) <br>";
     $data = (object) ['id' => $_GET['id'],'status' => 'В работе', 'operator' => MEMBER_ID, 'start_date' => date('Y-m-d H:i:s'), 'history' => $dataHistory];
     CallsDB::saveCall($data);
     echo json_encode(["result"=>CallsDB::getCall($_GET['id'])]);

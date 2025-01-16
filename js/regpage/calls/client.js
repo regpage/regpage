@@ -1,13 +1,20 @@
 /* ==== Calls START ==== */
 $(document).ready(function(){
   /* ==== DOCUMENT READY START ==== */
-  // КУККИ
-  // setCookie("calls-flt_author", "");
   // обработка поля телефон, инициализация
-
+  $("#fio_tel_paste_fld").click(function () {
+    navigator.clipboard
+    .readText()
+    .then(text => {
+      fio_tel_paste(text);
+    })
+    .catch(err => {
+      // сообщение вслучае ошибки
+    });
+  })
   // вставка и разбор фио и телефон
   $("#mdl_fld_fio").on("paste", function(e) {
-    fio_tel_paste($(this), e);
+    fio_tel_paste();
   });
   // маска для ввода телефона
   $("#mdl_fld_phone").on("paste", function(e) {
@@ -65,17 +72,9 @@ $(document).ready(function(){
   }
   // сброс списка фильтров
   $("#flt_list_cancel").click(function () {
-    if (gl_calls_user_data["role"] === "1") {
-      setCookie("calls-flt_author", "_all_", 356);
-    } else {
-      setCookie("calls-flt_author", "_all_", 356);
-    }
-    if (gl_calls_user_data["male"] === "1") {
-      setCookie("calls-flt_gender", "_all_", 356);
-    }
-    if ($("#flt_operator").val()) {
-      setCookie("calls-flt_operator", "_all_", 356);
-    }
+    setCookie("calls-flt_author", "_all_", 356);
+    setCookie("calls-flt_gender", "_all_", 356);
+    setCookie("calls-flt_operator", "_all_", 356);
     setCookie("calls-flt_search", "", 356);
     setTimeout(function () {
       location.reload();
@@ -174,6 +173,10 @@ $(document).ready(function(){
       $("#mdl_btn_cancel").show();
       $("#mdl_btn_order_finished").hide();
     }
+  });
+  // звонок при клике по номеру привентируем открытие бланка
+  $(".call_str a").click(function (e) {
+    e.stopPropagation();
   });
   // добавить новый звонок (сохранить)
   $("#mdl_btn_save_call").click(function () {
@@ -340,6 +343,11 @@ $(document).ready(function(){
   $("#flt_search").change(function () {
     if (!$(this).val() || $(this).val().length > 2) {
       set_сookie_encode("calls-" + $(this).attr("id"), $(this).val(), {expires: 365});
+      for (const elem of ["flt_author", "flt_gender", "flt_operator"]) {
+        if ($("#" + elem).is(":visible")) {
+          setCookie("calls-" + elem, $("#" + elem).val(), 356);
+        }
+      }
       setTimeout(function () {
         location.reload();
       }, 30);
@@ -359,6 +367,25 @@ $(document).ready(function(){
       showError("Запрошен некорректный ID бланка.");
     }
   }
+  // КУККИ
+  // если автор то сбрасываем для автора если оператор то для оператора если предпочитается пол то выстовляем пол
+  if (gl_calls_user_data["role"] === "1") {
+    setCookie("calls-flt_author", "_all_", 356);
+    setCookie("calls-flt_operator", window.adminId, 356);
+  } else {
+    setCookie("calls-flt_author", window.adminId, 356);
+    setCookie("calls-flt_operator", "_all_", 356);
+  }
+
+  if (gl_calls_user_data["male"] === "1") {
+    setCookie("calls-flt_gender", "1", 356);
+  } else if (gl_calls_user_data["male"] === "0") {
+    setCookie("calls-flt_gender", "0", 356);
+  } else {
+    setCookie("calls-flt_gender", "_all_", 356);
+  }
+  // кукки поиска
+  setCookie("calls-flt_search", "", 356);
 
   /* ==== DOCUMENT READY STOP ==== */
 });

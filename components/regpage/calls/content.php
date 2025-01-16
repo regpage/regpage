@@ -56,7 +56,7 @@
         <?php FTT_Select_fields::rendering($callsUsersList, $fltOperator, 'Все операторы'); ?>
       </select>
     <?php endif; ?>
-    <?php if ($callsUserData['male'] === '1'): ?>
+    <?php if ($tabCalls === 'incomming'): // $callsUserData['male'] === '1' ?>
       <select id="flt_gender" class="form-control form-control-sm mr-2 d-none d-md-block">
       <?php FTT_Select_fields::rendering(['1'=>'муж.', '0'=>'жен.'], $fltGender, 'Все'); ?>
       </select>
@@ -68,6 +68,24 @@
 <!-- список фильтров  -->
 <div class="row pl-0">
   <strong id="flt_list" class="text-danger"></strong>
+</div>
+<!-- заголовки колонок -->
+<div class="row pb-2 mr-0 border-bottom d-none d-sm-flex">
+  <div class="col-1 pl-0">
+    <b class="sort_col" data-sort="c.created_date">Дата <i class="<?php echo $sort_created_date_ico ?>"></i></b>
+  </div>
+  <div class="col-2 pl-3">
+    <b>Телефон</b>
+  </div>
+  <div class="col-3 pl-3">
+    <b class="sort_col" data-sort="c.name">ФИО <i class="<?php echo $sort_fio_ico ?>"></i></b>
+  </div>
+  <div class="col-4 pl-3">
+    <b>Комментарий</b>
+  </div>
+  <div class="col-2 pl-3">
+    <b></b>
+  </div>
 </div>
 <?php
 if ($tabCalls === 'currents') {

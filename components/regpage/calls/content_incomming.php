@@ -1,22 +1,4 @@
 <!-- ВХОДЯЩИЕ ЗАЯВКИ -->
-<!-- заголовки колонок -->
-<div class="row pb-2 mr-0 border-bottom d-none d-sm-flex">
-  <div class="col-1 pl-0">
-    <b class="sort_col" data-sort="c.created_date">Дата <i class="<?php echo $sort_created_date_ico ?>"></i></b>
-  </div>
-  <div class="col-3 pl-3">
-    <b class="sort_col" data-sort="c.name">ФИО <i class="<?php echo $sort_fio_ico ?>"></i></b>
-  </div>
-  <div class="col-3 pl-3">
-    <b>Телефон</b>
-  </div>
-  <div class="col-3 pl-3">
-    <b>Комментарий</b>
-  </div>
-  <div class="col-2 pl-3">
-    <b></b>
-  </div>
-</div>
 
 <!-- список -->
 <div class="row mr-0 ml-0">
@@ -29,28 +11,29 @@
           <?php echo date_convert::week_days($value['created_date'], true); ?>
         </div>
       </div>
-      <div class="col-md-3 col-9">
+      <div class="col-md-2 col-9">
+        <div class="">
+          <?php echo '<a href="tel:' . phoneNumberPrepare($value['phone']) . '" class="d-sm-none pr-3">' . phoneNumberPrepare($value['phone']) . '</a> <span class="d-none d-sm-inline"> ' . phoneNumberPrepare($value['phone']) . '</span>';
+          if (!empty($value['time_zone'])) {
+            echo " {$value['time_zone']} ";
+          }
+          ?>
+        </div>
+      </div>
+      <div class="col-md-3 col-12">
         <div class="">
           <?php echo $value['name']; ?>
         </div>
       </div>
-      <div class="col-md-3 col-5">
+      <div class="col-md-4 d-none d-sm-inline">
         <div class="">
-          <?php echo phoneNumberPrepare($value['phone']); ?>
-        </div>
-      </div>
-      <div class="col-md-3 col-7">
-        <div class="">
-          <?php
-          if (!empty($value['time_zone'])) {
-            echo " {$value['time_zone']} ";
-          }
-          echo CutString::cut($value['comment'], 20); ?>
+          <?php echo CutString::cut($value['comment'], 38); ?>
         </div>
       </div>
       <div class="col-md-2 col-12">
         <div class="">
           <button type="button" class="btn btn-light btn-sm get_to_work">Взять в работу</button>
+          <?php echo '<span class="d-sm-none pl-3">' . CutString::cut($value['comment'], 15) . '</span>'; ?>
         </div>
       </div>
     </div>
