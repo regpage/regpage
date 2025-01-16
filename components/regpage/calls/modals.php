@@ -99,7 +99,7 @@
                 <div class="col-6 pr-1">
                   <label>Статус</label>
                   <select id="mdl_fld_status" class="form-control form-control-sm" value="" data-field="status">
-                    <option value="Входящая" style="display: none;">Входящая</option>
+                    <?php if ($tabCalls === 'incomming'): ?><option value="Входящая" style="display: none;">Входящая</option><?php endif; ?>
                     <option value="В работе">В работе</option>
                     <option value="Недозвон">Недозвон</option>
                     <option value="Ошибка">Ошибка</option>

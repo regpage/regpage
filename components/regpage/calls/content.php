@@ -69,6 +69,7 @@
 <div class="row pl-0">
   <strong id="flt_list" class="text-danger"></strong>
 </div>
+<?php if ($tabCalls !== 'statistics'): ?>
 <!-- заголовки колонок -->
 <div class="row pb-2 mr-0 border-bottom d-none d-sm-flex">
   <div class="col-1 pl-0">
@@ -87,6 +88,7 @@
     <b></b>
   </div>
 </div>
+<?php endif; ?>
 <?php
 if ($tabCalls === 'currents') {
   // вкладка текущие

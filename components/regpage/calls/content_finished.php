@@ -22,7 +22,7 @@
       </div>
       <div class="col-md-3 col-12">
         <div class="">
-          <?php echo $value['name']; ?>
+          <span class="d-sm-none pr-3 font-weight-bold"><?php echo $value['name']; ?></span> <span class="d-none d-sm-inline"><?php echo $value['name']; ?></span>
         </div>
       </div>
       <div class="col-md-4 d-none d-sm-inline">
