@@ -77,3 +77,11 @@
 .get_to_work {
   background-color: #dde0e3 !important;
 }
+
+#main_container_reg .nav-link.active {
+    background-color: #dee2e6;
+}
+
+#main_container_reg .nav-link {
+    border: 1px lightgray solid;
+}

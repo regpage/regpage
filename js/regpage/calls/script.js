@@ -29,7 +29,7 @@ function fullfill_blank (data_list) {
       $("#mdl_fld_status option[value='Заказ']").show();
     } else {
       $("#mdl_fld_status option").show();
-      $("#mdl_fld_status option[value='Уточнение']").hide();
+      $("#mdl_fld_status option[value='Заказ']").hide();
       $("#mdl_fld_status option[value='В работе']").hide();
     }
   } else if (data_list.done === '0') {
