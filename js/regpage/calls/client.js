@@ -225,7 +225,8 @@ $(document).ready(function(){
     form_data.set("value8", $("#mdl_fld_index").val());
     form_data.set("male", $("#mdl_fld_male option:selected").text().trim());
     //form_data.set("note", $("#mdl_fld_comment_extra").val());
-
+    $("#mld_confirm_crm_send").modal("hide");
+    $("#modal_call_edit_add").modal("hide");
     fetch("api_reg.php?section=calls&type=crm_send&out=1&id=" + $("#modal_call_edit_add").attr("data-id"), {
       method: 'POST',
       body: form_data
@@ -234,8 +235,6 @@ $(document).ready(function(){
     .then(commits => {
       if (commits) {
         $(".calls_list .call_str[data-id='" + $("#modal_call_edit_add").attr("data-id") + "']").remove();
-        $("#mld_confirm_crm_send").modal("hide");
-        $("#modal_call_edit_add").modal("hide");
         showHint("Заказ отправлен в CRM.");
         /*setTimeout(function () {
           //location.reload();

@@ -4,7 +4,7 @@
 <script src="js/modules/cookie.js?v1"></script>
 <script src="js/modules/phone_field.js?v3"></script>
 <script src="js/regpage/calls/script.js?v14"></script>
-<script src="js/regpage/calls/client.js?v20"></script>
+<script src="js/regpage/calls/client.js?v21"></script>
 <script src="js/regpage/calls/design.js?v5"></script>
 
 <script>

@@ -17,7 +17,7 @@ class RWLog {
 	$logAdminName = '';
 	$logAdminRole = '';
 		//global $globalPathes;
-    $file = realpath('.').DIRECTORY_SEPARATOR.'logs'. DIRECTORY_SEPARATOR.'logFile_'.date("d-m-Y").'.log'; // __DIR__ OR realpath('.'). DIRECTORY_SEPARATOR;
+    $file = realpath('.'). DIRECTORY_SEPARATOR.'logFile_'.date("d-m-Y").'.log'; // __DIR__ OR realpath('.'). DIRECTORY_SEPARATOR;
     //Добавим разделитель, чтобы мы смогли отличить каждую запись
     $text = ' ==================================================='.PHP_EOL;
     $text .=  date('d-m-Y H:i:s') .PHP_EOL; //Добавим актуальную дату после текста или дампа массива

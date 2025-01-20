@@ -113,6 +113,7 @@ function save_call(then) {
     }
     return;
   }
+  $("#modal_call_edit_add").modal("hide");
   let data = {};
   if ($("#modal_call_edit_add").attr("data-id")) {
     data["id"] = $("#modal_call_edit_add").attr("data-id");
@@ -157,7 +158,6 @@ function save_call(then) {
   .then(response => response.text()) // json
   .then(commits => {
     if (then) {
-      $("#modal_call_edit_add").modal("hide");
       showHint("Запись сохранена.");
       setTimeout(function () {
         location.reload();
