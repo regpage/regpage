@@ -3,8 +3,8 @@
 <script src="js/modules/date.js?v1"></script>
 <script src="js/modules/cookie.js?v1"></script>
 <script src="js/modules/phone_field.js?v3"></script>
-<script src="js/regpage/calls/script.js?v17"></script>
-<script src="js/regpage/calls/client.js?v24"></script>
+<script src="js/regpage/calls/script.js?v19"></script>
+<script src="js/regpage/calls/client.js?v26"></script>
 <script src="js/regpage/calls/design.js?v5"></script>
 
 <script>

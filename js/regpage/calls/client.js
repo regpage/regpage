@@ -20,7 +20,22 @@ $(document).ready(function(){
   $("#mdl_fld_phone").on("paste", function(e) {
     tel_mask_paste($(this), e);
   });
+  // проверка наличия номера в базе
+  $("#mdl_fld_phone").change(function() {
+    if (!$(this).val() || $(this).val().length < 4) {
+      return;
+    }
 
+    fetch("api_reg.php?section=calls&type=check_phone_dinamic&status=" + $("#mdl_fld_status").val()
+    + "&phone=" + $(this).val().replace(/[^\d]/g, '') + "&id=" + $("#modal_call_edit_add").attr("data-id"))
+    .then(response => response.text()) // text
+    .then(commits => {
+      if (commits) {
+        showHelp("Этот номер уже существует в базе на сайте регистрации");
+      }
+    });
+  });
+  //
   $("#mdl_fld_phone").on("keydown", function(e) { // попробовать keydown keyup // change paste
     /***  Р Е Д А К Т И Р О В А Н И Е  ***/
     // ВВОД
@@ -319,7 +334,11 @@ $(document).ready(function(){
   // filters
   $("#flt_author, #flt_gender, #flt_operator").change(function () {
     if (!$("#flt_search").val() || $("#flt_search").val().length > 2) {
-      set_сookie_encode("calls-flt_search", $("#flt_search").val(), {expires: 1});
+      let text = $("#flt_search").val();
+      if (text.match(/[a-zA-Zа-яA-ЯЁё]/) === null) {
+        text = text.replace(/[^\d]/g, '');
+      }
+      set_сookie_encode("calls-flt_search", text, {expires: 1});
     }
     filters_to_cookie(["flt_author", "flt_gender", "flt_operator"]);
     setTimeout(function () {
@@ -332,7 +351,7 @@ $(document).ready(function(){
     for (const elem of ["flt_author_mbl", "flt_gender_mbl", "flt_operator_mbl"]) {
       if ($("#" + elem).length) {
         let cookie_name = elem.split("_mbl")[0];
-        setCookie("calls-" + cookie_name, $("#" + elem).val(), 356);        
+        setCookie("calls-" + cookie_name, $("#" + elem).val(), 356);
       }
     }
     setTimeout(function () {
@@ -343,7 +362,11 @@ $(document).ready(function(){
   // search
   $("#flt_search").change(function () {
     if (!$(this).val() || $(this).val().length > 2) {
-      set_сookie_encode("calls-" + $(this).attr("id"), $(this).val(), {expires: 365});
+      let text = $(this).val();
+      if (text.match(/[a-zA-Zа-яA-ЯЁё]/) === null) {
+        text = text.replace(/[^\d]/g, '');
+      }
+      set_сookie_encode("calls-flt_search", text, {expires: 365});
       filters_to_cookie(["flt_author", "flt_gender", "flt_operator"]);
       setTimeout(function () {
         location.reload();

@@ -78,11 +78,11 @@ class CallsDB extends DBQuery
   // проверяем дубликаты номера телефона в базе
   static function checkPhoneNumber($data, $checkData = [])
   {
-    $result = '';
-    if (isset($data->phone) && !empty($data->phone) && strlen(substr($data->phone, 1)) === 10
+    $result = ''; // && strlen(substr($data->phone, 1)) === 10
+    if (isset($data->phone) && !empty($data->phone)
     && ((isset($data->id) && !empty($data->id) && isset($checkData['phone']) && $checkData['phone'] !== $data->phone)
     || (!isset($data->id) || empty($data->id)))) {
-      $dubleId = DBQuery::get('list', 'calls', '*', 'phone', '%'.$data->phone.'%', 'LIKE');
+      $dubleId = DBQuery::get('list', 'calls', '*', 'phone', $data->phone);
       foreach ($dubleId as $key => $value) {
         $date = date_convert::yyyymmdd_to_ddmmyyyy(substr($value['created_date'], 0, 10));
         $operator = short_name::no_middle(Member::get_name($value['operator']));
@@ -99,7 +99,8 @@ class CallsDB extends DBQuery
     if (isset($data->id)) {
       $checkData = self::getCall($data->id)[0];
       $extraComment = self::checkPhoneNumber($data, $checkData);
-      if (!empty($extraComment) && isset($data->comment)) {
+      if (!empty($extraComment)) {
+        // $data->status = 'Повтор'; проверки добавить
         if (empty($data->comment)) {
           $data->comment = $extraComment;
         } else {
@@ -138,6 +139,16 @@ class CallsDB extends DBQuery
     } else {
       $keys = '';
       $values = '';
+      // проверяем номер телефона
+      $extraComment = self::checkPhoneNumber($data);
+      if (!empty($extraComment)) {
+        $data->status = 'Повтор';
+        if (empty($data->comment)) {
+          $data->comment = $extraComment;
+        } else {
+          $data->comment .= "\r\n" . $extraComment;
+        }
+      }
       $dateNewCall = date('d-m-Y H:i');
       $nameAuthorNewCall = short_name::no_middle(Member::get_name(MEMBER_ID));
       $data->history = "{$dateNewCall} Заявка создана ({$nameAuthorNewCall})<br>";

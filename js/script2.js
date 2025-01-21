@@ -124,7 +124,7 @@ function showError(html, autohide) {
 }
 // Help show
 function showHelp(html, autohide, time) {
-	if (time || typeof time === "undefined") time = 8000;
+	if (time || typeof time === "undefined") time = 4000;
 	$("#globalHelp > span").html (html);
 	$("#globalHelp").fadeIn();
 	if (autohide || typeof autohide === "undefined") window.setTimeout(function() { $("#globalHelp").fadeOut (); }, time);

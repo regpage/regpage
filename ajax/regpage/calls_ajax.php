@@ -51,6 +51,10 @@ if (isset($_GET['type']) && $_GET['type'] === 'crm_send'){
   exit();
 }
 
+
+if (isset($_GET['type']) && $_GET['type'] === 'check_phone_dinamic'){
+  echo CallsDB::checkPhoneNumber((object)['id'=>$_GET['id'],'phone'=>$_GET['phone'],'status'=>$_GET['status']]);
+}
 // проверка существования номера телефона в CRM
 if (isset($_GET['type']) && $_GET['type'] === 'crm_check_phone'){
   $name = short_name::no_middle(Member::get_name(MEMBER_ID));

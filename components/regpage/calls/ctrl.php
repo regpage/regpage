@@ -21,8 +21,6 @@ if (isset($_GET['id']) && !empty($_GET['id']) && isset($_GET['tab']) && !empty($
   }
 }
 
-
-
 // fitres
 if ($callsUserData['male'] === '0' || $callsUserData['male'] === '1') {
   $fltGender = $callsUserData['male'];
@@ -42,7 +40,7 @@ if (isset($_COOKIE['calls-flt_author']) && !empty($_COOKIE['calls-flt_author']))
   $fltAuthor = $_COOKIE['calls-flt_author'];
 }
 
-if (isset($_COOKIE['calls-flt_gender']) && !empty($_COOKIE['calls-flt_gender'])) {
+if (isset($_COOKIE['calls-flt_gender']) && ($_COOKIE['calls-flt_gender'] === "0" || $_COOKIE['calls-flt_gender'] === "1")) { //!empty($_COOKIE['calls-flt_gender']) && 
   $fltGender = $_COOKIE['calls-flt_gender'];
 }
 
