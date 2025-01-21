@@ -212,7 +212,7 @@
         <div class="row">
           <div class="col-12">
             <select id="flt_author_mbl" class="form-control form-control-sm mr-2 mb-2">
-              <?php FTT_Select_fields::rendering($callsUsersList, $fltAuthor, 'Все авторы'); ?>
+              <?php FTT_Select_fields::rendering($callsUsersList, $fltAuthor, 'Все администраторы'); ?>
             </select>
           </div>
           <div class="col-12">

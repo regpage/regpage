@@ -58,7 +58,7 @@ if (isset($_COOKIE['calls-flt_search']) && mb_strlen($_COOKIE['calls-flt_search'
 $sort_fio_ico = '';
 $sort_created_date_ico = '';
 $sort_birth_date_ico = '';
-$sort_setting = array('name', 'ASC');
+$sort_setting = array('created_date', 'DESC');
 
 if (isset($_COOKIE['sorting-calls']) && !empty($_COOKIE['sorting-calls'])) {
   $sort_setting = explode('-', $_COOKIE['sorting-calls']);
@@ -79,10 +79,10 @@ if (isset($_COOKIE['sorting-calls']) && !empty($_COOKIE['sorting-calls'])) {
   } elseif ($_COOKIE['sorting-calls'] === 'operator_name-asc') {
     $sort_operator_ico = 'fa fa-sort-desc';
   } */else {
-    $sort_fio_ico = 'fa fa-sort-desc';
+    $sort_created_date_ico = 'fa fa-sort-desc';
   }
 } else {
-  $sort_fio_ico = 'fa fa-sort-desc';
+  $sort_created_date_ico = 'fa fa-sort-desc';
 }
 
 // вкладки

@@ -72,9 +72,7 @@ $(document).ready(function(){
   }
   // сброс списка фильтров
   $("#flt_list_cancel").click(function () {
-    setCookie("calls-flt_author", "_all_", 356);
-    setCookie("calls-flt_gender", "_all_", 356);
-    setCookie("calls-flt_operator", "_all_", 356);
+    filters_to_cookie(["flt_author", "flt_gender", "flt_operator"], "_all_");
     setCookie("calls-flt_search", "", 356);
     setTimeout(function () {
       location.reload();
@@ -195,6 +193,7 @@ $(document).ready(function(){
     document.execCommand('copy');
     $("#mdl_fld_copy_text").hide();
     $("#mdl_fld_copy_text").val("");
+    showHint("Адрес скопирован.");
   });
 
   $("#mdl_btn_new_order").click(function () {
@@ -319,34 +318,33 @@ $(document).ready(function(){
 
   // filters
   $("#flt_author, #flt_gender, #flt_operator").change(function () {
-    setCookie("calls-" + $(this).attr("id"), $(this).val(), 356);
+    if (!$("#flt_search").val() || $("#flt_search").val().length > 2) {
+      set_сookie_encode("calls-flt_search", $("#flt_search").val(), {expires: 1});
+    }
+    filters_to_cookie(["flt_author", "flt_gender", "flt_operator"]);
     setTimeout(function () {
       location.reload();
     }, 30);
   });
   // фильтры моб версия
   $("#flt_mbl_apply").click(function () {
+    // синхронизация фильтров в моб. версии
     for (const elem of ["flt_author_mbl", "flt_gender_mbl", "flt_operator_mbl"]) {
-      if ($("#" + elem).is(":visible")) {
-        if (elem.includes("_mbl")) {
-          let cookie_name = elem.split("_mbl")[0];
-          setCookie("calls-" + cookie_name, $("#" + elem).val(), 356);
-        }
+      if ($("#" + elem).length) {
+        let cookie_name = elem.split("_mbl")[0];
+        setCookie("calls-" + cookie_name, $("#" + elem).val(), 356);        
       }
     }
     setTimeout(function () {
       location.reload();
     }, 30);
   });
+
   // search
   $("#flt_search").change(function () {
     if (!$(this).val() || $(this).val().length > 2) {
       set_сookie_encode("calls-" + $(this).attr("id"), $(this).val(), {expires: 365});
-      for (const elem of ["flt_author", "flt_gender", "flt_operator"]) {
-        if ($("#" + elem).is(":visible")) {
-          setCookie("calls-" + elem, $("#" + elem).val(), 356);
-        }
-      }
+      filters_to_cookie(["flt_author", "flt_gender", "flt_operator"]);
       setTimeout(function () {
         location.reload();
       }, 30);

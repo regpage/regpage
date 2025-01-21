@@ -238,3 +238,15 @@ function fio_tel_paste(paste_text) {
     }
   });
 }
+
+function filters_to_cookie(arr, all) {
+  if (!arr.length) {
+    return;
+  }
+  for (const elem of arr) {
+    if ($("#" + elem).length) {
+      let value = all || $("#" + elem).val();
+      setCookie("calls-" + elem, value, 1);
+    }
+  }
+}

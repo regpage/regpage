@@ -39,7 +39,7 @@
     </button>
   </div>
     <select id="flt_author" class="form-control form-control-sm mr-2 d-none d-md-block">
-      <?php FTT_Select_fields::rendering($callsUsersList, $fltAuthor, 'Все авторы'); ?>
+      <?php FTT_Select_fields::rendering($callsUsersList, $fltAuthor, 'Все администраторы'); ?>
     </select>
     <?php if ($tabCalls !== 'incomming'): ?>
       <!--<select id="flt_statuses" class="form-control form-control-sm ml-2" value="">
