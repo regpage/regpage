@@ -1,5 +1,52 @@
+
+<!-- Окно поиска -->
+<div id="mld_search" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="mb-0" class="modal-title">Поиск</h5>
+        <input type="search" id="flt_search_mdl" class="form-control form-control-sm ml-3" style="max-width: 200px;">
+        <div class="input-group-append">
+          <button type="button" id="" class="btn btn-success btn-sm"><i class="fa fa-search"></i></button>
+        </div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- заголовки колонок -->
+        <div class="pb-2 mr-0 border-bottom d-none d-sm-flex">
+          <div class="col-1 pl-0">
+            <b class="" data-sort="">Этап <i class=""></i></b>
+          </div>
+          <div class="col-1 pl-3">
+            <b class="sort_col_mdl" data-sort="c.created_date">Дата <i class="fa fa-sort-asc"></i></b>
+          </div>
+          <div class="col-2 pl-3">
+            <b>Телефон</b>
+          </div>
+          <div class="col-3 pl-3">
+            <b class="sort_col_mdl" data-sort="c.name">ФИО <i class=""></i></b>
+          </div>
+          <div class="col-3 pl-3">
+            <b>Комментарий</b>
+          </div>
+          <div class="col-2 pl-3">
+            <b></b>
+          </div>
+        </div>
+        <div id="search_results" class="container">
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- окно добавления и правки звонков -->
-<div id="modal_call_edit_add" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" data-id="" aria-hidden="true">
+<div id="modal_call_edit_add" class="modal fade" data-backdrop="static" tabindex="-1" role="dialog" data-id="" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -99,7 +146,7 @@
                 <div class="col-6 pr-1">
                   <label>Статус</label>
                   <select id="mdl_fld_status" class="form-control form-control-sm" value="" data-field="status">
-                    <?php if ($tabCalls === 'incomming'): ?><option value="Входящая" style="display: none;">Входящая</option><?php endif; ?>
+                    <option value="Входящая" style="display: none;">Входящая</option>
                     <option value="В работе">В работе</option>
                     <option value="Недозвон">Недозвон</option>
                     <option value="Ошибка">Ошибка</option>

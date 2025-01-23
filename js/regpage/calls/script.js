@@ -31,6 +31,7 @@ function fullfill_blank (data_list) {
       $("#mdl_fld_status option").show();
       $("#mdl_fld_status option[value='Заказ']").hide();
       $("#mdl_fld_status option[value='В работе']").hide();
+      $("#mdl_fld_status option[value='Входящая']").hide();
     }
   } else if (data_list.done === '0') {
     $("#mdl_btn_cancel").show();
@@ -238,7 +239,7 @@ function fio_tel_paste(paste_text) {
     }
   });
 }
-
+// записываем фильтры в кукки
 function filters_to_cookie(arr, all) {
   if (!arr.length) {
     return;
@@ -249,4 +250,64 @@ function filters_to_cookie(arr, all) {
       setCookie("calls-" + elem, value, 1);
     }
   }
+}
+
+// результаты поиска в окне
+function search_results(text) {
+  fetch("api_reg.php?section=calls&type=get_search_result&text=" + text)
+  .then(response => response.json()) // text
+  .then(commits => {
+    search_results_render(commits.result);
+  });
+}
+// рендерим результаты поиска
+function search_results_render(data) {
+  let html = "";
+  for (const str in data) {
+    if (data.hasOwnProperty(str)) {
+
+    }
+  }
+  for (const str of data) {
+    let stage = "";
+    if ((str.status !== "Входящая" && str.done === "0") || (str.status === "Уточнение" && str.done === "1")) { // текущие
+      stage = 'Текущие';
+    } else if (str.status !== "Уточнение" && str.done === "1") {
+      stage = 'Завершённые';
+    } else if (str.status === "Входящая") {
+      stage = 'Входящие';
+    }
+    let comment = str.comment;
+    if (comment) {
+      comment = str.comment.slice(0,30)+"...";
+    }
+    let badgeClass = "";
+    if (str.status === 'В работе') {
+      badgeClass = "secondary";
+    } else if (str.status === 'Недозвон') {
+      badgeClass = "warning";
+    } else if (str.status === 'Ошибка') {
+      badgeClass = "dark";
+    } else if (str.status === 'Отказ') {
+      badgeClass = "danger";
+    } else if (str.status === 'Повтор') {
+      badgeClass = "info";
+    } else if (str.status === 'Уточнение') {
+      badgeClass = "primary";
+    } else if (str.status === 'Заказ') {
+      badgeClass = "success";
+    } else if (str.status === 'Входящая') {
+      badgeClass = "light";
+    }
+
+    html += '<div class="row call_str_mdl pl-0" data-id="'+str.id+'"><div class="col-md-1 col-3 pl-0"><div>'
+    + stage +'</div></div><div class="col-md-1 col-3 pl-3"><div>'
+    + dateStrFromyyyymmddToddmm(str.created_date) +'</div></div><div class="col-md-2 col-9"><div ><a href="tel:+'
+    + str.phone+'" class="d-sm-none pr-3">+'+str.phone+'</a><span class="d-none d-sm-inline">+'
+    + str.phone+'</span></div></div><div class="col-md-3 col-12"><div ><span class="d-sm-none pr-3 font-weight-bold">'
+    + str.name+'</span><span class="d-none d-sm-inline">'+str.name+'</span></div></div><div class="col-md-3 d-none d-sm-inline"><div>'
+    + comment+'</div></div><div class="col-md-2 col-12"><div ><span class="badge badge-' + badgeClass + '">'
+    + str.status+'</span><span class="d-sm-none pl-3">'+comment+'</span></div></div></div>';
+  }
+  $("#search_results").html(html);
 }

@@ -74,13 +74,13 @@ $(document).ready(function(){
     }
   }
 
-  if ($("#flt_search").val()) {
+  /*if ($("#flt_search").val()) {
     if ($("#flt_list").text()) {
       $("#flt_list").text($("#flt_list").text() + ", " + $("#flt_search").val());
     } else {
       $("#flt_list").text("Включенные фильтры: " + $("#flt_search").val());
     }
-  }
+  }*/
 
   if ($("#flt_list").text()) {
     $("#flt_list").html($("#flt_list").text() + " <i id='flt_list_cancel' class='cursor-pointer fa fa-close h6'></i>" );
@@ -88,14 +88,14 @@ $(document).ready(function(){
   // сброс списка фильтров
   $("#flt_list_cancel").click(function () {
     filters_to_cookie(["flt_author", "flt_gender", "flt_operator"], "_all_");
-    setCookie("calls-flt_search", "", 356);
+    //setCookie("calls-flt_search", "", 356);
     setTimeout(function () {
       location.reload();
     }, 30);
   });
   // сброс поля поиск
   // search
-  $('#flt_search').click(function(event){
+  /*$('#flt_search').click(function(event){
     event.stopPropagation();
     if ($(this).val().length > 0) {
       setTimeout(function () {
@@ -107,7 +107,19 @@ $(document).ready(function(){
         }
       }, 30);
     }
+  });*/
+
+  // поиск после изменения поля ввода поиска
+  $("#flt_search_mdl").change(function(){
+    let text = $(this).val();
+    if (text.match(/[a-zA-Zа-яA-ЯЁё]/) === null) {
+      text = text.replace(/[^\d]/g, '');
+    }
+    if (text.length > 2) {
+      search_results(text);
+    }
   });
+
   // при выборе оператора в ручную статус не может быть Входящая
   $("#mdl_fld_operator").change(function () {
     if ($("#mdl_fld_operator").val() !== "_none_" && $("#mdl_fld_status").val() === "Входящая") {
@@ -135,7 +147,7 @@ $(document).ready(function(){
     $("#mdl_btn_new_order").hide();
   });
 
-  // открыть строку
+  // открыть строку в списке
   $(".call_str").click(function () {
     /* ОТРЫВАЕТСЯ БЛАНК */
     $("#mdl_fld_status option").show();
@@ -144,6 +156,24 @@ $(document).ready(function(){
     module_blank_clear($("#modal_call_edit_add"));
     // открываем и показываем бланк
     get_and_show_blank_data($(this).attr("data-id"));
+  });
+  // звонок при клике по номеру привентируем открытие бланка
+  $(".call_str a").click(function (e) {
+    e.stopPropagation();
+  });
+  // открыть строку в списке результатов поиска
+  $("#search_results").on("click", ".call_str_mdl", function () {
+    /* ОТРЫВАЕТСЯ БЛАНК */
+    $("#mdl_fld_status option").show();
+    $("#mdl_fld_operator").attr("disabled", false);
+    $("#modal_call_edit_add").attr("data-done", "");
+    module_blank_clear($("#modal_call_edit_add"));
+    // открываем и показываем бланк
+    get_and_show_blank_data($(this).attr("data-id"));
+  });
+  // звонок при клике по номеру в результатах поиска привентируем открытие бланка
+  $("#search_results").on("click", "a", function (e) {
+    e.stopPropagation();
   });
   // взять в работу
   $(".get_to_work").click(function (e) {
@@ -166,7 +196,6 @@ $(document).ready(function(){
       $("#mdl_fld_operator").val("_none_");
     }
     if ($("#modal_call_edit_add").attr("data-done") !== "1" && ($(this).val() === "_none_" || $(this).val() === "Заказ")) {
-      $("#mdl_btn_new_order").hide();
       $("#mdl_btn_cancel").show();
       $("#mdl_btn_order_finished").hide();
     } else if ($("#modal_call_edit_add").attr("data-done") !== "1" && ($(this).val() !== "_none_" && $(this).val() !== "Заказ")) {
@@ -187,12 +216,10 @@ $(document).ready(function(){
       $("#mdl_btn_order_finished").hide();
     }
   });
-  // звонок при клике по номеру привентируем открытие бланка
-  $(".call_str a").click(function (e) {
-    e.stopPropagation();
-  });
+
   // добавить новый звонок (сохранить)
   $("#mdl_btn_save_call").click(function () {
+    filters_to_cookie(["flt_author", "flt_gender", "flt_operator"]);
     save_call(1);
   });
   // копирование в буфер
@@ -301,6 +328,7 @@ $(document).ready(function(){
 
   // sorting
   $(".sort_col").click(function () {
+    filters_to_cookie(["flt_author", "flt_gender", "flt_operator"]);
     if ($(this).find("i").hasClass("fa-sort-desc")) {
       $(this).find("i").removeClass("fa-sort-desc");
       $(this).find("i").addClass("fa-sort-asc");
@@ -333,13 +361,13 @@ $(document).ready(function(){
 
   // filters
   $("#flt_author, #flt_gender, #flt_operator").change(function () {
-    if (!$("#flt_search").val() || $("#flt_search").val().length > 2) {
+    /*if (!$("#flt_search").val() || $("#flt_search").val().length > 2) {
       let text = $("#flt_search").val();
       if (text.match(/[a-zA-Zа-яA-ЯЁё]/) === null) {
         text = text.replace(/[^\d]/g, '');
       }
       set_сookie_encode("calls-flt_search", text, {expires: 1});
-    }
+    }*/
     filters_to_cookie(["flt_author", "flt_gender", "flt_operator"]);
     setTimeout(function () {
       location.reload();
@@ -360,7 +388,7 @@ $(document).ready(function(){
   });
 
   // search
-  $("#flt_search").change(function () {
+  /*$("#flt_search").change(function () {
     if (!$(this).val() || $(this).val().length > 2) {
       let text = $(this).val();
       if (text.match(/[a-zA-Zа-яA-ЯЁё]/) === null) {
@@ -372,7 +400,7 @@ $(document).ready(function(){
         location.reload();
       }, 30);
     }
-  });
+  });*/
   // закрытие бланка
   $("#modal_call_edit_add").on('hide.bs.modal', function (event) {
     if (open_id) {
@@ -405,7 +433,7 @@ $(document).ready(function(){
     setCookie("calls-flt_gender", "_all_", 356);
   }
   // кукки поиска
-  setCookie("calls-flt_search", "", 356);
+  //setCookie("calls-flt_search", "", 356);
 
   /* ==== DOCUMENT READY STOP ==== */
 });

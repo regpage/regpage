@@ -37,7 +37,6 @@
       <div class="col-md-2 col-12">
         <div class="">
           <?php
-
             if ($value['status'] === 'В работе') {
               $badgeClass = "secondary";
             } elseif ($value['status'] === 'Недозвон') {

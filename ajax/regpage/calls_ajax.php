@@ -51,7 +51,7 @@ if (isset($_GET['type']) && $_GET['type'] === 'crm_send'){
   exit();
 }
 
-
+// проверяем наличие номера телефона в базе, ищем дубли
 if (isset($_GET['type']) && $_GET['type'] === 'check_phone_dinamic'){
   echo CallsDB::checkPhoneNumber((object)['id'=>$_GET['id'],'phone'=>$_GET['phone'],'status'=>$_GET['status']]);
 }
@@ -67,4 +67,8 @@ if (isset($_GET['type']) && $_GET['type'] === 'crm_check_phone'){
     require_once 'api_v1.php';
   }
   exit();
+}
+
+if (isset($_GET['type']) && $_GET['type'] === 'get_search_result'){
+  echo json_encode(["result"=>CallsDB::getCalls('', '', 'c.created_date', 'DESC', '_all_', '_all_', $_GET['text'], '_all_')]);
 }

@@ -268,7 +268,7 @@ li.modal-reference {
   color: #08c;
 }
 
-.sort_col {
+.sort_col, .sort_col_mdl {
   color: #08c;
   cursor: pointer;
 }

@@ -1,9 +1,9 @@
-.call_str {
+.call_str, .call_str_mdl {
   border-top: 1px solid #eee;
   padding-bottom: 5px;
   padding-top: 5px;
 }
-.call_str:hover {
+.call_str:hover, .call_str_mdl:hover {
   cursor: pointer;
   background-color: #eee;
 }
@@ -70,8 +70,11 @@
     font-size: 18px !important;
     min-width: 178px;
   }
-  .gray_link_dots {
+  .gray_link_dots, #flt_search_mdl, .btn {
     font-size: 18px !important;
+  }
+  #search_results div {
+    font-size: 18px;
   }
 }
 .get_to_work {

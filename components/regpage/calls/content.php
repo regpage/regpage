@@ -61,9 +61,10 @@
       <?php FTT_Select_fields::rendering(['1'=>'муж.', '0'=>'жен.'], $fltGender, 'Все'); ?>
       </select>
     <?php endif; ?>
-    <input type="search" id="flt_search" class="form-control form-control-sm ml-2" value="<?php echo urldecode($fltSearch); ?>"><div class="input-group-append">
-      <button id="btn_search" class="btn btn-success btn-sm" type="submit"><i class="fa fa-search"></i></button>
-    </div>
+    <!--<input type="search" id="flt_search" class="form-control form-control-sm ml-2" value="<?php echo urldecode($fltSearch); ?>">
+    <div class="input-group-append">-->
+      <button type="button" id="btn_search_mdl_show" class="btn btn-success btn-sm" data-toggle="modal" data-target="#mld_search"><i class="fa fa-search"></i></button>
+    <!-- </div> -->
 </div>
 <!-- список фильтров  -->
 <div class="row pl-0">
