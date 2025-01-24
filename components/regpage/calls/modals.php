@@ -20,13 +20,13 @@
             <b class="" data-sort="">Этап <i class=""></i></b>
           </div>
           <div class="col-1 pl-3">
-            <b class="sort_col_mdl" data-sort="c.created_date">Дата <i class="fa fa-sort-asc"></i></b>
+            <b>Дата <i class="fa fa-sort-asc"></i></b>
           </div>
           <div class="col-2 pl-3">
             <b>Телефон</b>
           </div>
           <div class="col-3 pl-3">
-            <b class="sort_col_mdl" data-sort="c.name">ФИО <i class=""></i></b>
+            <b>ФИО</b>
           </div>
           <div class="col-3 pl-3">
             <b>Комментарий</b>
@@ -238,6 +238,27 @@
       </div>
       <div class="modal-footer">
         <button id="mdl_btn_new_order_send" type="button" class="btn btn-primary">Создать</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Окно подтверждение восстановение из завершённых -->
+<div id="mld_confirm_recover_call" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="mb-0" class="modal-title">Подтвердите действие</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Переместить заказ из завершённых в работу?</p>
+      </div>
+      <div class="modal-footer">
+        <button id="mdl_btn_recover_call" type="button" class="btn btn-primary">Переместить</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
       </div>
     </div>

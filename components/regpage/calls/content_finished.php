@@ -3,7 +3,9 @@
 <!-- список -->
 <div class="row mr-0 ml-0">
   <div class="calls_list container pl-0">
-  <?php foreach (CallsDB::getCalls('finished', '', $sort_setting[0], $sort_setting[1], $fltGender, $fltAuthor, $fltSearch, $fltOperator) as $key => $value): // $callsUserData['role'] ?>
+  <?php
+  $callPositions = CallsDB::getCalls('finished', '', $sort_setting[0], $sort_setting[1], $fltGender, $fltAuthor, $fltSearch, $fltOperator, $countStrings,  0);
+  foreach ($callPositions as $key => $value): // $callsUserData['role'] ?>
     <div class="row call_str pl-0" data-id="<?php echo $value['id'] ?>">
       <div class="col-md-1 col-3 pl-0">
         <div class="">
@@ -56,5 +58,14 @@
       </div>
     </div>
   <?php endforeach; ?>
+  <?php
+  $countCallPositions = count($callPositions);
+   if ($countCallPositions >= 50 && ($countCallPositions % 50 === 0)): ?>
+    <div class="row pt-3">
+        <div class="col text-center">
+          <span id="get_more_strings" class="link_custom" data-check="<?php echo $countCallPositions % 50 === 0 ?>" data-count="<?php echo $countCallPositions; ?>">Показать ещё</span>
+        </div>
+    </div>
+  <?php endif; ?>
   </div>
 </div>

@@ -4,9 +4,8 @@
 <div class="row mr-0 ml-0">
   <div class="calls_list container pl-0">
   <?php
-  $countPositions = 0;
-  foreach (CallsDB::getCalls('currents', '', $sort_setting[0], $sort_setting[1], $fltGender, $fltAuthor, $fltSearch, $fltOperator, 50,  0) as $key => $value): // $callsUserData['role']
-    $countPositions++;
+  $callPositions = CallsDB::getCalls('currents', '', $sort_setting[0], $sort_setting[1], $fltGender, $fltAuthor, $fltSearch, $fltOperator);
+  foreach ($callPositions as $key => $value):
   ?>
     <div class="row call_str pl-0" data-id="<?php echo $value['id'] ?>">
       <div class="col-md-1 col-3 pl-0">
@@ -59,12 +58,5 @@
       </div>
     </div>
   <?php endforeach; ?>
-  <?php if ($countPositions === 50): ?>
-    <div class="row">
-        <div class="col text-center">
-          <span class="link">Показать ещё</span>
-        </div>
-    </div>
-  <?php endif; ?>
   </div>
 </div>

@@ -1,4 +1,20 @@
 <?php
+// подготавливаем номер телефона
+function phoneNumberPrepare($tel) {
+  if (empty($tel)) {
+    return '';
+  }
+  $result = "+";
+  for ($i = 0; $i < strlen($tel); $i++) {
+    if ($i === 0 || $i === 3 || $i === 6) {
+      $result .= $tel[$i] . " ";
+    } else {
+      $result .= $tel[$i];
+    }
+  }
+  return $result;
+}
+
 /**
  * getCall() - получаем 1 звонок по id
  * getCalls() - получаем все звонк отсотрированные по дате добавления
@@ -19,6 +35,12 @@ class CallsDB extends DBQuery
     $conditionValue = db_real_escape_string($conditionValue);
     $sortField = db_real_escape_string($sortField);
     $sortType = db_real_escape_string($sortType);
+    $fltGender = db_real_escape_string($fltGender);
+    $fltSearch = db_real_escape_string($fltSearch);
+    $fltOperator = db_real_escape_string($fltOperator);
+    $fltAuthor = db_real_escape_string($fltAuthor);
+    $limit = db_real_escape_string($limit);
+    $offset = db_real_escape_string($offset);
     $result = [];
     // формируем условие
     if (empty($conditionField)) {
@@ -65,7 +87,7 @@ class CallsDB extends DBQuery
     $res=db_query ("SELECT c.*, m.name operator_name
     FROM calls c
     LEFT JOIN member m ON m.key = c.operator
-    WHERE {$condition} ORDER BY {$sortField} {$sortType}"); //  LIMIT {$limit} OFFSET {$offset}
+    WHERE {$condition} ORDER BY {$sortField} {$sortType} LIMIT {$limit} OFFSET {$offset}");
     while ($row = $res->fetch_assoc()) $result[]=$row;
 
     return $result;
@@ -214,4 +236,25 @@ class CallsDB extends DBQuery
     $res = DBQuery::set('calls', 'end_date', date('Y-m-d H:i:s'), 'id', $id);
     return $res;
   }
+  // ндексы для закладок
+  // получаем список звонков
+  static function getCountCalls($operator = '_none_')
+  {
+    $operator = db_real_escape_string($operator);
+    $result = '';
+    // формируем условие
+    if ($operator === '_none_') {
+      $condition = " `status` = 'Входящая' ";
+    } else {
+      $condition = " `operator` = '{$operator}' AND `done` = 0 ";
+    }
+
+    $res=db_query ("SELECT COUNT(`id`) result FROM calls WHERE {$condition}");
+    while ($row = $res->fetch_assoc()) $result=$row['result'];
+    if ($result === '0') {
+      $result = '';
+    }
+    return $result;
+  }
+
 }

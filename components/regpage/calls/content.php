@@ -3,22 +3,22 @@
   <ul class="nav nav-tabs" role="tablist">
     <li class="nav-item">
       <a class="nav-link <?php echo $tab_incomming_active; ?>" data-toggle="tab" href="#" data-tab_name="incomming">
-        Входящие
+        Входящие<sup class="text-danger"><?php echo $indexTabIncomming; ?></sup>
       </a>
     </li>
     <li class="nav-item">
       <a class="nav-link <?php echo $tab_currents_active; ?>" data-toggle="tab" href="#" data-tab_name="currents">
-         В работе <?php // echo $permission_statistics; ?>
+         В работе<sup class="text-danger"><?php echo $indexTabInWork; ?></sup>
       </a>
     </li>
     <li class="nav-item">
       <a class="nav-link <?php echo $tab_finished_active; ?>" data-toggle="tab" href="#" data-tab_name="finished">
-         Завершённые <?php // echo $permission_statistics; ?>
+         Завершённые
       </a>
     </li>
     <li class="nav-item">
       <a class="nav-link <?php echo $tab_statistics_active; ?>" data-toggle="tab" href="#" data-tab_name="statistics">
-        Статистика <?php // echo $missed_class_statistics; ?>
+        Статистика
       </a>
     </li>
   </ul>

@@ -10,7 +10,7 @@ require_once 'db/classes/CutString.php';
 
 // db
 require_once 'db/regpage/calls_db.php';
-
+// активная вкладка
 if (isset($_GET['id']) && !empty($_GET['id']) && isset($_GET['tab']) && !empty($_GET['tab'])) {
   $tabCalls = $_GET['tab'];
 } else {
@@ -36,11 +36,17 @@ if ($callsUserData['role'] === '0') {
   $fltAuthor = '_all_';
 }
 
+// количество ззаписией в списке
+$countStrings = 50;
+if (isset($_COOKIE['calls-count']) && $_COOKIE['calls-count'] > 1) {
+  $countStrings = $_COOKIE['calls-count'];
+}
+
 if (isset($_COOKIE['calls-flt_author']) && !empty($_COOKIE['calls-flt_author'])) {
   $fltAuthor = $_COOKIE['calls-flt_author'];
 }
 
-if (isset($_COOKIE['calls-flt_gender']) && ($_COOKIE['calls-flt_gender'] === "0" || $_COOKIE['calls-flt_gender'] === "1")) { //!empty($_COOKIE['calls-flt_gender']) && 
+if (isset($_COOKIE['calls-flt_gender']) && ($_COOKIE['calls-flt_gender'] === "0" || $_COOKIE['calls-flt_gender'] === "1")) { //!empty($_COOKIE['calls-flt_gender']) &&
   $fltGender = $_COOKIE['calls-flt_gender'];
 }
 
@@ -104,18 +110,6 @@ $callsLocalityList = localities::get_localities();
 $callsCountryList = localities::get_countries();
 $callsCountryListQuick = localities::get_countries(true);
 
-// подготавливаем номер телефона
-function phoneNumberPrepare($tel) {
-  if (empty($tel)) {
-    return '';
-  }
-  $result = "+";
-  for ($i = 0; $i < strlen($tel); $i++) {
-    if ($i === 0 || $i === 3 || $i === 6) {
-      $result .= $tel[$i] . " ";
-    } else {
-      $result .= $tel[$i];
-    }
-  }
-  return $result;
-}
+// индексы для вкладок
+$indexTabIncomming = CallsDB::getCountCalls();
+$indexTabInWork = CallsDB::getCountCalls(MEMBER_ID);

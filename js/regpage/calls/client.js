@@ -88,11 +88,21 @@ $(document).ready(function(){
   // сброс списка фильтров
   $("#flt_list_cancel").click(function () {
     filters_to_cookie(["flt_author", "flt_gender", "flt_operator"], "_all_");
-    //setCookie("calls-flt_search", "", 356);
+    //setCookie("calls-flt_search", "", 1);
     setTimeout(function () {
       location.reload();
     }, 30);
   });
+  // количество фильтров
+  $("#get_more_strings").click(function () {
+    filters_to_cookie(["flt_author", "flt_gender", "flt_operator"], "_all_");
+    setCookie("calls-count", Number($(this).attr("data-count")) + 50, 1);
+    setTimeout(function () {
+      location.reload();
+    }, 30);
+  });
+
+
   // сброс поля поиск
   // search
   /*$('#flt_search').click(function(event){
@@ -215,6 +225,27 @@ $(document).ready(function(){
       $("#mdl_btn_cancel").show();
       $("#mdl_btn_order_finished").hide();
     }
+    if ($("#modal_call_edit_add").attr("data-done") === "1" && $(this).val() === "В работе") {
+      $("#mld_confirm_recover_call").modal("show");
+    }
+  });
+
+  $("#mdl_btn_recover_call").click(function () {
+    $("#mdl_btn_order_finished").hide();
+    $("#mdl_btn_new_order").show();
+    $("#mdl_btn_cancel").show();
+    $("#mdl_btn_save_call").show();
+    $("#modal_call_edit_add").attr("data-done", "0");
+    $("#mdl_fld_status option").show();
+    $("#mdl_fld_status option[value='Входящая']").hide();
+    fetch("api_reg.php?section=calls&type=recover_call&id=" + $("#modal_call_edit_add").attr("data-id"))
+    .then(response => response.text()) // json
+    .then(commits => {
+      if (commits) {
+        $("#mld_confirm_recover_call").modal("hide");
+        showHint("Звонок перемещён в работу.");
+      }
+    });
   });
 
   // добавить новый звонок (сохранить)
@@ -328,6 +359,7 @@ $(document).ready(function(){
 
   // sorting
   $(".sort_col").click(function () {
+    setCookie("calls-count", $("#get_more_strings").attr("data-count"), 1);
     filters_to_cookie(["flt_author", "flt_gender", "flt_operator"]);
     if ($(this).find("i").hasClass("fa-sort-desc")) {
       $(this).find("i").removeClass("fa-sort-desc");
@@ -368,6 +400,8 @@ $(document).ready(function(){
       }
       set_сookie_encode("calls-flt_search", text, {expires: 1});
     }*/
+    // отключено нужна доработка, при включении фильтра должно сохранятся число максимально запрошенных записей
+    //setCookie("calls-count", $("#get_more_strings").attr("data-count"), 1);
     filters_to_cookie(["flt_author", "flt_gender", "flt_operator"]);
     setTimeout(function () {
       location.reload();
@@ -376,6 +410,8 @@ $(document).ready(function(){
   // фильтры моб версия
   $("#flt_mbl_apply").click(function () {
     // синхронизация фильтров в моб. версии
+    // отключено описание в другом вызове
+    //setCookie("calls-count", $("#get_more_strings").attr("data-count"), 1);
     for (const elem of ["flt_author_mbl", "flt_gender_mbl", "flt_operator_mbl"]) {
       if ($("#" + elem).length) {
         let cookie_name = elem.split("_mbl")[0];
@@ -432,6 +468,8 @@ $(document).ready(function(){
   } else {
     setCookie("calls-flt_gender", "_all_", 356);
   }
+  // кукки пагинации
+  setCookie("calls-count", 50, 1);
   // кукки поиска
   //setCookie("calls-flt_search", "", 356);
 

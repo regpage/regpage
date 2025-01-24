@@ -16,6 +16,17 @@ if (isset($_GET['type']) && $_GET['type'] === 'cancel_call'){
     exit();
 }
 
+// восстановить звонок в работу
+if (isset($_GET['type']) && $_GET['type'] === 'recover_call'){
+    DBQuery::set('calls', 'done', 0, 'id', $_GET['id']);
+    DBQuery::set('calls', 'status', 'В работе', 'id', $_GET['id']);
+    $name = short_name::no_middle(Member::get_name(MEMBER_ID));
+    $dataHistory = CallsDB::getCall($_GET['id']);
+    $dataHistory = $dataHistory[0]['history'] . date('d-m-Y H:i') . " Установлен статус В работе ({$name}) <br>";
+    echo DBQuery::set('calls', 'history', $dataHistory, 'id', $_GET['id']);
+    exit();
+}
+
 // получить звонок
 if (isset($_GET['type']) && $_GET['type'] === 'get_call'){
   if (isset($_GET['get_to_work']) && $_GET['get_to_work'] === '1') {

@@ -3,7 +3,9 @@
 <!-- список -->
 <div class="row mr-0 ml-0">
   <div class="calls_list container pl-0">
-  <?php foreach (CallsDB::getCalls('incomming', $callsUserData['role'], $sort_setting[0], $sort_setting[1], $fltGender, $fltAuthor, $fltSearch) as $key => $value): ?>
+  <?php
+  $callPositions = CallsDB::getCalls('incomming', $callsUserData['role'], $sort_setting[0], $sort_setting[1], $fltGender, $fltAuthor, $fltSearch);
+  foreach ($callPositions as $key => $value): ?>
     <div class="row call_str pl-0" data-id="<?php echo $value['id'] ?>">
       <div class="col-md-1 col-3 pl-md-0">
         <div class="">

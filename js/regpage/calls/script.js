@@ -25,12 +25,12 @@ function fullfill_blank (data_list) {
     $("#mdl_btn_cancel").hide();
     if (data_list.status === "Заказ") {
       $("#mdl_fld_status option").hide();
+      $("#mdl_fld_status option[value='В работе']").show();
       $("#mdl_fld_status option[value='Уточнение']").show();
       $("#mdl_fld_status option[value='Заказ']").show();
     } else {
       $("#mdl_fld_status option").show();
       $("#mdl_fld_status option[value='Заказ']").hide();
-      $("#mdl_fld_status option[value='В работе']").hide();
       $("#mdl_fld_status option[value='Входящая']").hide();
     }
   } else if (data_list.done === '0') {
@@ -300,9 +300,9 @@ function search_results_render(data) {
       badgeClass = "light";
     }
 
-    html += '<div class="row call_str_mdl pl-0" data-id="'+str.id+'"><div class="col-md-1 col-3 pl-0"><div>'
-    + stage +'</div></div><div class="col-md-1 col-3 pl-3"><div>'
-    + dateStrFromyyyymmddToddmm(str.created_date) +'</div></div><div class="col-md-2 col-9"><div ><a href="tel:+'
+    html += '<div class="row call_str_mdl pl-0" data-id="'+str.id+'"><div class="col-md-1 col-12 pl-sm-0 pl-3"><div>'
+    + stage +'</div></div><div class="col-md-1 col-2 pl-3">'
+    + dateStrFromyyyymmddToddmm(str.created_date) +'</div><div class="col-md-2 col-9"><div ><a href="tel:+'
     + str.phone+'" class="d-sm-none pr-3">+'+str.phone+'</a><span class="d-none d-sm-inline">+'
     + str.phone+'</span></div></div><div class="col-md-3 col-12"><div ><span class="d-sm-none pr-3 font-weight-bold">'
     + str.name+'</span><span class="d-none d-sm-inline">'+str.name+'</span></div></div><div class="col-md-3 d-none d-sm-inline"><div>'
