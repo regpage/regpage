@@ -1,25 +1,24 @@
 <?php
 // ссылка запроса в СРМ
-$link = 'https://bibleforall.envycrm.com/crm/api/v1/deal/search/?api_key=ecdfd3e079da4ab92942a50d8dd67991b5878f21';
+$link = 'https://bibleforall.envycrm.com/crm/api/v1/lead/search/?api_key=ecdfd3e079da4ab92942a50d8dd67991b5878f21';
 // проверка на существование номера телефона в СРМ
 $data = [
   'values' => [ // массив значений системных и произвольных полей
-    'phone' => $_POST['phone'], // телефон
+    'phone' => $_GET['phone'] // телефон    
   ]
 ];
 
-require_once 'extensions/api_v1/sender.php';
+require 'extensions/api_v1/sender.php';
 
 // Ответ
-if ($answer['message'] === 'success') {
-  echo $answer['id'];
+// если заявка найдена
+print_r($answer);
+if ($answer['message'] === 'success' && $answer['lead'] === 'null') {
+  echo 'lead=0&';
+} elseif ($answer['message'] === 'success') {
+  echo "lead={$answer['lead']['id']}&";
 } else {
-  if ($answer['id']) {
-    $textAnswer = $answer['id'];
-  } else {
-    $textAnswer = 'ЗНАЧЕНИЕ В ОТВЕТЕ ОТСУТСТВУЕТ';
-  }
-
+  echo "error A101 {$answer['message']}";
   //EMAIL TO DEVELOPER
   /*$email = 'zhichkinroman@gmail.com';
   $message = 'Админ: '.MEMBER_ID.' Не удалось получить ответ от CRM при отправке заказа при проверке номера телефона '.$_POST['phone'].' с сайта reg-page.ru. Ответ с сервера: '.$textAnswer;

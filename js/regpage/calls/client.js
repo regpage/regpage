@@ -25,15 +25,25 @@ $(document).ready(function(){
     if (!$(this).val() || $(this).val().length < 4) {
       return;
     }
-
     fetch("api_reg.php?section=calls&type=check_phone_dinamic&status=" + $("#mdl_fld_status").val()
     + "&phone=" + $(this).val().replace(/[^\d]/g, '') + "&id=" + $("#modal_call_edit_add").attr("data-id"))
     .then(response => response.text()) // text
     .then(commits => {
       if (commits) {
-        showHelp("Этот номер уже существует в базе на сайте регистрации");
+        showHelp("Этот номер уже существует в базе на сайте регистрации.");
       }
     });
+    setTimeout(function () {
+      fetch("api_v1.php?out=1&type=crm_check_phone"
+      + "&phone=" + $("#mdl_fld_phone").val().replace(/[^\d]/g, ''))
+      .then(response => response.text()) // text
+      .then(commits => {
+        if (commits) {
+          console.log(commits);
+          showHelp("Этот номер уже существует в СРМ.");
+        }
+      });
+    }, 10);
   });
   //
   $("#mdl_fld_phone").on("keydown", function(e) { // попробовать keydown keyup // change paste
@@ -129,7 +139,10 @@ $(document).ready(function(){
       search_results(text);
     }
   });
-
+  // устанавливаем курсор в поле поиска
+  $('#mld_search').on('shown.bs.modal', function (e) {
+    $("#flt_search_mdl").focus();
+  });
   // при выборе оператора в ручную статус не может быть Входящая
   $("#mdl_fld_operator").change(function () {
     if ($("#mdl_fld_operator").val() !== "_none_" && $("#mdl_fld_status").val() === "Входящая") {
