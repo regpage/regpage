@@ -1,20 +1,59 @@
-<!-- заголовки колонок -->
-<div class="row pb-2 mr-0 border-bottom d-none d-sm-flex">
-  <div class="col pl-1">
-    <b class="sort_col" data-sort="m.name">ФИО <i class="<?php echo $sort_fio_ico ?>"></i></b>
-  </div>
-  <div class="col pl-3">
-    <b class="sort_col" data-sort="c.locality">Местность <i class="<?php echo $sort_locality_ico ?>"></i></b>
-  </div>
-  <div class="col pl-3">
-    <span>Телефон</span>
-  </div>
-  <div class="col pl-3">
-    <b class="sort_col" data-sort="c.status">Статус <i class="<?php echo $sort_status_ico ?>"></i></b>
-  </div>
-  <div class="col pl-3">
-    <b class="sort_col" data-sort="operator_name">Ответственный <i class="<?php echo $sort_operator_ico ?>"></i></b>
+<div class="row">
+  <div id="statistics_list" class="container pl-0 ml-0">
+    <!-- заголовки колонок -->
+    <div class="row pb-2 border-bottom d-none d-sm-flex">
+      <div class="col-2">
+        <b>Служащие</b>
+      </div>
+      <div class="col text-right">
+        <b>Входящие</b>
+      </div>
+      <div class="col text-right">
+        <b>Недозвон</b>
+      </div>
+      <div class="col text-right">
+        <b>Ошибка</b>
+      </div>
+      <div class="col text-right">
+        <b>Отказ</b>
+      </div>
+      <div class="col text-right">
+        <b>Повтор</b>
+      </div>
+      <div class="col text-right">
+        <b>Уточнение</b>
+      </div>
+      <div class="col text-right">
+        <b>Заказ</b>
+      </div>
+    </div>
+    <?php foreach (CallsDB::getStatisticsCalls($fltAllUsers, $dateBegin, $dateEnd) as $key => $value): ?>
+      <div class="row call_stat_str">
+        <div class="col-2">
+          <?php echo $value['name'] ?>
+        </div>
+        <div class="col text-right">
+          <?php echo $value['incomming'] ?>
+        </div>
+        <div class="col text-right">
+          <?php echo $value['no_answer'] ?>
+        </div>
+        <div class="col text-right">
+          <?php echo $value['error'] ?>
+        </div>
+        <div class="col text-right">
+          <?php echo $value['refused'] ?>
+        </div>
+        <div class="col text-right">
+          <?php echo $value['reply'] ?>
+        </div>
+        <div class="col text-right">
+          <?php echo $value['specify'] ?>
+        </div>
+        <div class="col text-right">
+          <?php echo $value['order'] ?>
+        </div>
+      </div>
+    <?php endforeach; ?>
   </div>
 </div>
-<br>
-ВКЛАДКА В РАЗРАБОТКЕ

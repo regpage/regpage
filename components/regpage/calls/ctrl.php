@@ -35,8 +35,31 @@ if ($callsUserData['role'] === '0') {
 } else {
   $fltAuthor = '_all_';
 }
+// статистика
+if (isset($_COOKIE['tab-calls']) && $_COOKIE['tab-calls'] === 'statistics') {
+  require_once 'db/classes/member.php';
+  $tabCalls = $_COOKIE['tab-calls'];
+  // фильтр дата начала
+  if (isset($_COOKIE['calls-flt_date_begin']) && !empty($_COOKIE['calls-flt_date_begin'])) {
+    $dateBegin = $_COOKIE['calls-flt_date_begin'];
+  } else {
+    $dateBegin = date_format(date_sub(date_create(date('Y-m-d')), date_interval_create_from_date_string("7 days")), 'Y-m-d');
+  }
+  // фильтр дата конца
+  if (isset($_COOKIE['calls-flt_date_end']) && !empty($_COOKIE['calls-flt_date_end'])) {
+    $dateEnd = $_COOKIE['calls-flt_date_end'];
+  } else {
+    $dateEnd = date('Y-m-d');
+  }
+  // фильтр пользователей
+  if (isset($_COOKIE['calls-flt_all_users']) && !empty($_COOKIE['calls-flt_all_users'])) {
+    $fltAllUsers = $_COOKIE['calls-flt_all_users'];
+  } else {
+    $fltAllUsers = '_all_';
+  }
+}
 
-// количество ззаписией в списке
+// количество записией в списке
 $countStrings = 50;
 if (isset($_COOKIE['calls-count']) && $_COOKIE['calls-count'] > 1) {
   $countStrings = $_COOKIE['calls-count'];

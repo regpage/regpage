@@ -38,20 +38,12 @@
       <i class="fa fa-sort"></i>
     </button>
   </div>
+  <?php if ($tabCalls !== 'statistics'): ?>
     <select id="flt_author" class="form-control form-control-sm mr-2 d-none d-md-block">
       <?php FTT_Select_fields::rendering($callsUsersList, $fltAuthor, 'Все администраторы'); ?>
     </select>
-    <?php if ($tabCalls !== 'incomming'): ?>
-      <!--<select id="flt_statuses" class="form-control form-control-sm ml-2" value="">
-        <option value="Входящая">Входящая
-        <option value="В работе">В работе
-        <option value="Недозвон">Недозвон
-        <option value="Ошибка">Ошибка
-        <option value="Отказ">Отказ
-        <option value="Повтор">Повтор
-        <option value="Уточнение">Уточнение
-        <option value="Заказ">Заказ
-      </select>-->
+  <?php endif; ?>
+    <?php if ($tabCalls !== 'incomming' && $tabCalls !== 'statistics'): ?>
       <select id="flt_operator" class="form-control form-control-sm mr-2 d-none d-md-block">
         <?php FTT_Select_fields::rendering($callsUsersList, $fltOperator, 'Все операторы'); ?>
       </select>
@@ -61,9 +53,20 @@
       <?php FTT_Select_fields::rendering(['1'=>'муж.', '0'=>'жен.'], $fltGender, 'Все'); ?>
       </select>
     <?php endif; ?>
+    <?php if ($tabCalls === 'statistics'): ?>
+      <select id="flt_all_users" class="form-control form-control-sm mr-2 d-none d-md-block">
+        <?php FTT_Select_fields::rendering($callsUsersList, $fltAllUsers, 'Все'); ?>
+      </select>
+      <span class="pt-1 pr-2 pl-1">с </span>
+      <input type="date" id="flt_date_begin" class="form-control form-control-sm mr-2 d-none d-md-block" value="<?php echo $dateBegin ?>">
+      <span class="pt-1 pr-2">по </span>
+      <input type="date" id="flt_date_end" class="form-control form-control-sm mr-2 d-none d-md-block" value="<?php echo $dateEnd ?>">
+    <?php endif; ?>
     <!--<input type="search" id="flt_search" class="form-control form-control-sm ml-2" value="<?php echo urldecode($fltSearch); ?>">
     <div class="input-group-append">-->
+    <?php if ($tabCalls !== 'statistics'): ?>
       <button type="button" id="btn_search_mdl_show" class="btn btn-success btn-sm" data-toggle="modal" data-target="#mld_search"><i class="fa fa-search"></i></button>
+    <?php endif; ?>
     <!-- </div> -->
 </div>
 <!-- список фильтров  -->

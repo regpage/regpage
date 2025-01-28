@@ -33,7 +33,8 @@ $(document).ready(function(){
         showHelp("Этот номер уже существует в базе на сайте регистрации.");
       }
     });
-    setTimeout(function () {
+    // проверка наличия номера в срм не работает не находит номера по прямому запросу
+    /*setTimeout(function () {
       fetch("api_v1.php?out=1&type=crm_check_phone"
       + "&phone=" + $("#mdl_fld_phone").val().replace(/[^\d]/g, ''))
       .then(response => response.text()) // text
@@ -43,7 +44,7 @@ $(document).ready(function(){
           showHelp("Этот номер уже существует в СРМ.");
         }
       });
-    }, 10);
+    }, 10);*/
   });
   //
   $("#mdl_fld_phone").on("keydown", function(e) { // попробовать keydown keyup // change paste
@@ -64,7 +65,7 @@ $(document).ready(function(){
     }
   });
   // список применённых фильтров
-  if ($("#flt_author").val() !== "_all_") {
+  if ($("#flt_author").val() !== "_all_" && $("#flt_author").val()) {
     $("#flt_list").text("Включенные фильтры: автор — " + $("#flt_author option:selected").text());
   }
 
@@ -111,6 +112,14 @@ $(document).ready(function(){
       location.reload();
     }, 30);
   });
+  // фильтры статистики
+  $("#flt_date_begin, #flt_date_end, #flt_all_users").change(function () {
+    filters_to_cookie(["flt_all_users", "flt_date_begin", "flt_date_end"]);
+    setTimeout(function () {
+      location.reload();
+    }, 30);
+  });
+
 
 
   // сброс поля поиск

@@ -1,20 +1,5 @@
 <?php
-// подготавливаем номер телефона
-function phoneNumberPrepare($tel) {
-  if (empty($tel)) {
-    return '';
-  }
-  $result = "+";
-  for ($i = 0; $i < strlen($tel); $i++) {
-    if ($i === 0 || $i === 3 || $i === 6) {
-      $result .= $tel[$i] . " ";
-    } else {
-      $result .= $tel[$i];
-    }
-  }
-  return $result;
-}
-
+require_once 'db/modules/phoneedit.php';
 /**
  * getCall() - получаем 1 звонок по id
  * getCalls() - получаем все звонк отсотрированные по дате добавления
@@ -257,4 +242,41 @@ class CallsDB extends DBQuery
     return $result;
   }
 
+  static function getStatisticsCalls($operator, $dateBegin, $dateEnd)
+  {
+    if ($operator === '_all_') {
+      $users = self::getUsers();
+    } else {
+      $users = [];
+      $users[$operator] = short_name::no_middle(Member::get_name($operator));
+    }
+
+    $data = [];
+    foreach ($users as $key => $value) {
+      // возвращаемый массив
+      $data[$key] = ['name' => $value, 'incomming' => 0, 'no_answer' => 0, 'error' => 0, 'refused' => 0, 'reply' => 0, 'specify' => 0, 'order' => 0];
+      // входящие
+      $res=db_query ("SELECT count(*) AS incomming FROM `calls` WHERE `author_key` = '{$key}' AND `created_date` >= '{$dateBegin}' AND `created_date` <= '{$dateEnd}'");
+      while ($row = $res->fetch_assoc()) $data[$key]['incomming']=$row['incomming'];
+      // недозвон
+      $res=db_query ("SELECT count(*) AS incomming FROM `calls` WHERE `operator` = '{$key}' AND `status` = 'Недозвон' AND `end_date` >= '{$dateBegin}' AND `end_date` <= '{$dateEnd}'");
+      while ($row = $res->fetch_assoc()) $data[$key]['no_answer']=$row['incomming'];
+      // Ошибка
+      $res=db_query ("SELECT count(*) AS incomming FROM `calls` WHERE `operator` = '{$key}' AND `status` = 'Ошибка' AND `end_date` >= '{$dateBegin}' AND `end_date` <= '{$dateEnd}'");
+      while ($row = $res->fetch_assoc()) $data[$key]['error']=$row['incomming'];
+      // Отказ
+      $res=db_query ("SELECT count(*) AS incomming FROM `calls` WHERE `operator` = '{$key}' AND `status` = 'Отказ' AND `end_date` >= '{$dateBegin}' AND `end_date` <= '{$dateEnd}'");
+      while ($row = $res->fetch_assoc()) $data[$key]['refused']=$row['incomming'];
+      // Повтор
+      $res=db_query ("SELECT count(*) AS incomming FROM `calls` WHERE `operator` = '{$key}' AND `status` = 'Повтор' AND `end_date` >= '{$dateBegin}' AND `end_date` <= '{$dateEnd}'");
+      while ($row = $res->fetch_assoc()) $data[$key]['reply']=$row['incomming'];
+      // Уточнение
+      $res=db_query ("SELECT count(*) AS incomming FROM `calls` WHERE `operator` = '{$key}' AND `status` = 'Уточнение' AND `end_date` >= '{$dateBegin}' AND `end_date` <= '{$dateEnd}'");
+      while ($row = $res->fetch_assoc()) $data[$key]['specify']=$row['incomming'];
+      // Заказ
+      $res=db_query ("SELECT count(*) AS incomming FROM `calls` WHERE `operator` = '{$key}' AND `status` = 'Заказ' AND `end_date` >= '{$dateBegin}' AND `end_date` <= '{$dateEnd}'");
+      while ($row = $res->fetch_assoc()) $data[$key]['order']=$row['incomming'];
+    }
+    return $data;
+  }
 }

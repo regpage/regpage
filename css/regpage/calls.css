@@ -1,9 +1,9 @@
-.call_str, .call_str_mdl {
+.call_str, .call_str_mdl, .call_stat_str {
   border-top: 1px solid #eee;
   padding-bottom: 5px;
   padding-top: 5px;
 }
-.call_str:hover, .call_str_mdl:hover {
+.call_str:hover, .call_str_mdl:hover, .call_stat_str:hover {
   cursor: pointer;
   background-color: #eee;
 }
