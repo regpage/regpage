@@ -29,30 +29,40 @@
     </div>
     <?php foreach (CallsDB::getStatisticsCalls($fltAllUsers, $dateBegin, $dateEnd) as $key => $value): ?>
       <div class="row call_stat_str">
-        <div class="col-2">
-          <?php echo $value['name'] ?>
-        </div>
-        <div class="col text-right">
-          <?php echo $value['incomming'] ?>
-        </div>
-        <div class="col text-right">
-          <?php echo $value['no_answer'] ?>
-        </div>
-        <div class="col text-right">
-          <?php echo $value['error'] ?>
-        </div>
-        <div class="col text-right">
-          <?php echo $value['refused'] ?>
-        </div>
-        <div class="col text-right">
-          <?php echo $value['reply'] ?>
-        </div>
-        <div class="col text-right">
-          <?php echo $value['specify'] ?>
-        </div>
-        <div class="col text-right">
-          <?php echo $value['order'] ?>
-        </div>
+        <?php if ($value['name'] !== 'Всего обработано заявок'): ?>
+          <div class="col-2">
+            <?php echo $value['name'] ?>
+          </div>
+          <div class="col text-right">
+            <?php echo $value['incomming'] ?>
+          </div>
+          <div class="col text-right">
+            <?php echo $value['no_answer'] ?>
+          </div>
+          <div class="col text-right">
+            <?php echo $value['error'] ?>
+          </div>
+          <div class="col text-right">
+            <?php echo $value['refused'] ?>
+          </div>
+          <div class="col text-right">
+            <?php echo $value['reply'] ?>
+          </div>
+          <div class="col text-right">
+            <?php echo $value['specify'] ?>
+          </div>
+          <div class="col text-right">
+            <?php echo $value['order'] ?>
+          </div>
+        <?php endif; ?>
+        <?php if ($value['name'] === 'Всего обработано заявок'): ?>
+          <div class="col-3">
+            <?php echo $value['name'] . ' — ' . $value['incomming'] ?>
+          </div>
+          <div class="col-3">
+            <?php echo $value['no_answer'] . ' — ' . $value['error'] ?>            
+          </div>
+        <?php endif; ?>
       </div>
     <?php endforeach; ?>
   </div>

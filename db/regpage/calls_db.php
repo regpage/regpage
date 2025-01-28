@@ -252,6 +252,7 @@ class CallsDB extends DBQuery
     }
 
     $data = [];
+    // личная статистика
     foreach ($users as $key => $value) {
       // возвращаемый массив
       $data[$key] = ['name' => $value, 'incomming' => 0, 'no_answer' => 0, 'error' => 0, 'refused' => 0, 'reply' => 0, 'specify' => 0, 'order' => 0];
@@ -277,6 +278,20 @@ class CallsDB extends DBQuery
       $res=db_query ("SELECT count(*) AS incomming FROM `calls` WHERE `operator` = '{$key}' AND `status` = 'Заказ' AND `end_date` >= '{$dateBegin}' AND `end_date` <= '{$dateEnd}'");
       while ($row = $res->fetch_assoc()) $data[$key]['order']=$row['incomming'];
     }
+
+    // общая статистика
+    $data['period'] = ['name' => 'Всего обработано заявок', 'incomming' => 0, 'no_answer' => 'в предыдущем периоде', 'error' => 0, 'refused' => 0, 'reply' => 0, 'specify' => 0, 'order' => 0];
+    // за выбранный период
+    $res=db_query ("SELECT count(*) AS incomming FROM `calls` WHERE `created_date` >= '{$dateBegin}' AND `created_date` <= '{$dateEnd}'");
+    while ($row = $res->fetch_assoc()) $data['period']['incomming']=$row['incomming'];
+    // за предыдущий подобный период
+    $diference = strtotime($dateEnd) - strtotime($dateBegin); // разница между двумя датами в секундах
+    $days = round($diference / 86400); // секунды в сутках
+    $dateEnd = $dateBegin;
+    $dateBegin = date_format(date_sub(date_create($dateBegin), date_interval_create_from_date_string("{$days} days")), 'Y-m-d');
+    $res=db_query ("SELECT count(*) AS incomming FROM `calls` WHERE `created_date` >= '{$dateBegin}' AND `created_date` <= '{$dateEnd}'");
+    while ($row = $res->fetch_assoc()) $data['period']['error']=$row['incomming'];
+
     return $data;
   }
 }
