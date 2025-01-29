@@ -434,7 +434,7 @@ $(document).ready(function(){
     // синхронизация фильтров в моб. версии
     // отключено описание в другом вызове
     //setCookie("calls-count", $("#get_more_strings").attr("data-count"), 1);
-    for (const elem of ["flt_author_mbl", "flt_gender_mbl", "flt_operator_mbl"]) {
+    for (const elem of ["flt_author_mbl", "flt_gender_mbl", "flt_operator_mbl", "flt_all_users_mbl", "flt_date_begin_mbl", "flt_date_end_mbl"]) {
       if ($("#" + elem).length) {
         let cookie_name = elem.split("_mbl")[0];
         setCookie("calls-" + cookie_name, $("#" + elem).val(), 356);
@@ -492,6 +492,11 @@ $(document).ready(function(){
   }
   // кукки пагинации
   setCookie("calls-count", 50, 1);
+  if (getCookie("tab-calls") === "statistics") {    
+    setCookie("calls-flt_all_users", "_all_", 1);
+    setCookie("calls-flt_date_begin", "", 1);
+    setCookie("calls-flt_date_end", "", 1);
+  }
   // кукки поиска
   //setCookie("calls-flt_search", "", 356);
 

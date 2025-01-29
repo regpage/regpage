@@ -278,18 +278,21 @@
       <div class="modal-body">
         <!-- Фильтры и кнопки -->
         <div class="row">
+          <?php if ($tabCalls !== 'statistics'): ?>
           <div class="col-12">
             <select id="flt_author_mbl" class="form-control form-control-sm mr-2 mb-2">
               <?php FTT_Select_fields::rendering($callsUsersList, $fltAuthor, 'Все администраторы'); ?>
             </select>
           </div>
+          <?php endif; ?>
           <div class="col-12">
-            <?php if ($tabCalls !== 'incomming'): ?>
+            <?php if ($tabCalls !== 'incomming' && $tabCalls !== 'statistics'): ?>
               <select id="flt_operator_mbl" class="form-control form-control-sm mr-2 mb-2">
                 <?php FTT_Select_fields::rendering($callsUsersList, $fltOperator, 'Все операторы'); ?>
               </select>
             <?php endif; ?>
           </div>
+          <?php if ($tabCalls !== 'statistics'): ?>
           <div class="col-12">
             <?php if ($callsUserData['male'] === '1'): ?>
               <select id="flt_gender_mbl" class="form-control form-control-sm mr-2 mb-2">
@@ -297,6 +300,26 @@
               </select>
             <?php endif; ?>
           </div>
+          <?php endif; ?>
+          <?php if ($tabCalls === 'statistics'): ?>
+          <div class="col-12 mb-3">
+            <select id="flt_all_users_mbl" class="form-control form-control-sm mr-2">
+              <?php FTT_Select_fields::rendering($callsUsersList, $fltAllUsers, 'Все'); ?>
+            </select>
+          </div>
+          <div class="col-1 pt-1">
+            <span>с </span>
+          </div>
+          <div class="col-5 pl-0">
+            <input type="date" id="flt_date_begin_mbl" class="form-control form-control-sm" value="<?php echo $dateBegin ?>" min="2025-01-01" max="<?php echo date('Y-m-d') ?>">
+          </div>
+          <div class="col-1 pt-1 pl-0">
+            <span>по </span>
+          </div>
+          <div class="col-5 pl-0">
+            <input type="date" id="flt_date_end_mbl" class="form-control form-control-sm" value="<?php echo $dateEnd ?>" min="2025-01-01" max="<?php echo date('Y-m-d') ?>">
+          </div>
+          <?php endif; ?>
           <div class="col-12">
             <!--<input type="search_mbl" id="flt_search" class="form-control form-control-sm ml-2" value="<?php echo urldecode($fltSearch); ?>"><div class="input-group-append">
               <button id="btn_search_mbl" class="btn btn-success btn-sm" type="submit"><i class="fa fa-search"></i></button>

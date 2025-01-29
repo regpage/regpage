@@ -34,9 +34,11 @@
     <button class="btn btn-primary btn-sm mr-2 d-md-none" type="button" data-toggle="modal" data-target="#mdl_mbl_flt">
       <i class="fa fa-filter"></i>
     </button>
+    <?php if ($tabCalls !== 'statistics'): ?>
     <button class="btn btn-primary btn-sm mr-2 d-md-none" type="button" data-toggle="modal" data-target="#mdl_mbl_sort">
       <i class="fa fa-sort"></i>
     </button>
+    <?php endif; ?>
   </div>
   <?php if ($tabCalls !== 'statistics'): ?>
     <select id="flt_author" class="form-control form-control-sm mr-2 d-none d-md-block">
@@ -57,10 +59,10 @@
       <select id="flt_all_users" class="form-control form-control-sm mr-2 d-none d-md-block">
         <?php FTT_Select_fields::rendering($callsUsersList, $fltAllUsers, 'Все'); ?>
       </select>
-      <span class="pt-1 pr-2 pl-1">с </span>
-      <input type="date" id="flt_date_begin" class="form-control form-control-sm mr-2 d-none d-md-block" value="<?php echo $dateBegin ?>">
-      <span class="pt-1 pr-2">по </span>
-      <input type="date" id="flt_date_end" class="form-control form-control-sm mr-2 d-none d-md-block" value="<?php echo $dateEnd ?>">
+      <span class="pt-1 pr-2 pl-1 d-none d-md-inline">с </span>
+      <input type="date" id="flt_date_begin" class="form-control form-control-sm mr-2 d-none d-md-block" value="<?php echo $dateBegin ?>" min="2025-01-01" max="<?php echo date('Y-m-d') ?>">
+      <span class="pt-1 pr-2 d-none d-md-inline">по </span>
+      <input type="date" id="flt_date_end" class="form-control form-control-sm mr-2 d-none d-md-block" value="<?php echo $dateEnd ?>" min="2025-01-01" max="<?php echo date('Y-m-d') ?>">
     <?php endif; ?>
     <!--<input type="search" id="flt_search" class="form-control form-control-sm ml-2" value="<?php echo urldecode($fltSearch); ?>">
     <div class="input-group-append">-->
