@@ -3,7 +3,7 @@ require_once 'db/modules/phoneedit.php';
 /**
  * getCall() - получаем 1 звонок по id
  * getCalls() - получаем все звонк отсотрированные по дате добавления
- * getUsers() - список пользователей раздела Зввонки
+ * getUsers() - список пользователей раздела Звонки
  */
 
 class CallsDB extends DBQuery
@@ -107,7 +107,7 @@ class CallsDB extends DBQuery
       $checkData = self::getCall($data->id)[0];
       $extraComment = self::checkPhoneNumber($data, $checkData);
       if (!empty($extraComment)) {
-        // $data->status = 'Повтор'; проверки добавить
+          $data->status = 'Повтор';
         if (empty($data->comment)) {
           $data->comment = $extraComment;
         } else {

@@ -1,6 +1,16 @@
 /* ==== Calls START ==== */
 $(document).ready(function(){
   /* ==== DOCUMENT READY START ==== */
+  // показать уведомление
+  if (getCookie("showhint") === "1") {
+    showHint("Запись сохранена.");
+  } else if (getCookie("showhint") === "2") {
+    showHint("Запись удалена.");
+  } else if (getCookie("showhint") === "3") {
+    showHint("Звонок отменён.");
+  }
+
+  setCookie("showhint", "");
   // обработка поля телефон, инициализация
   $("#fio_tel_paste_fld").click(function () {
     navigator.clipboard
@@ -350,10 +360,10 @@ $(document).ready(function(){
     .then(commits => {
       if (commits) {
         $("#mld_confirm_dlt").modal("hide");
-        showHint("Запись удалена.");
+        setCookie("showhint", 2, 1);
         setTimeout(function () {
           location.reload();
-        }, 700);
+        }, 30);
       }
     });
   });
@@ -370,10 +380,10 @@ $(document).ready(function(){
       .then(commits => {
         if (commits) {
           $("#modal_call_edit_add").modal("hide");
-          showHint("Звонок отменён.");
+          setCookie("showhint", 3, 1);
           setTimeout(function () {
             location.reload();
-          }, 700);
+          }, 30);
         }
       });
     }, 30);

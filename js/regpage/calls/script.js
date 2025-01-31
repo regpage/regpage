@@ -159,10 +159,10 @@ function save_call(then) {
   .then(response => response.text()) // json
   .then(commits => {
     if (then) {
-      showHint("Запись сохранена.");
+      setCookie("showhint", 1, 1);
       setTimeout(function () {
         location.reload();
-      }, 700);
+      }, 30);
     }
   });
 }

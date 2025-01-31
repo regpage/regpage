@@ -64,7 +64,11 @@ if (isset($_GET['type']) && $_GET['type'] === 'crm_send'){
 
 // проверяем наличие номера телефона в базе, ищем дубли
 if (isset($_GET['type']) && $_GET['type'] === 'check_phone_dinamic'){
-  echo CallsDB::checkPhoneNumber((object)['id'=>$_GET['id'],'phone'=>$_GET['phone'],'status'=>$_GET['status']]);
+  $checkData = [];
+  if (isset($_GET['id']) && !empty($_GET['id'])) {
+    $checkData = CallsDB::getCall($_GET['id'])[0];
+  }
+  echo CallsDB::checkPhoneNumber((object)['id'=>$_GET['id'],'phone'=>$_GET['phone'],'status'=>$_GET['status']], $checkData);
 }
 // проверка существования номера телефона в CRM
 if (isset($_GET['type']) && $_GET['type'] === 'crm_check_phone'){
