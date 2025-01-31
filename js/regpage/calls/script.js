@@ -72,8 +72,15 @@ function get_and_show_blank_data(id, get_to_work) {
   fetch("api_reg.php?section=calls&type=get_call&id=" + id + get_to_work)
   .then(response => response.json()) // text
   .then(commits => {
-    fullfill_blank(commits.result[0]);
-    $("#modal_call_edit_add").modal("show");
+    if (commits.result === "busy") {
+      setCookie("showhint", 4, 1);
+      setTimeout(function () {
+        location.reload();
+      }, 30);
+    } else {
+      fullfill_blank(commits.result[0]);
+      $("#modal_call_edit_add").modal("show");
+    }
   });
 }
 

@@ -32,6 +32,10 @@ if (isset($_GET['type']) && $_GET['type'] === 'get_call'){
   if (isset($_GET['get_to_work']) && $_GET['get_to_work'] === '1') {
     $name = short_name::no_middle(Member::get_name(MEMBER_ID));
     $dataHistory = CallsDB::getCall($_GET['id']);
+    if (!empty($dataHistory[0]['operator'])) {
+      echo json_encode(["result"=>'busy']);
+      exit();
+    }
     $dataHistory = $dataHistory[0]['history'] . date('d-m-Y H:i') . " Заявка взята в работу ({$name}) <br>";
     $data = (object) ['id' => $_GET['id'],'status' => 'В работе', 'operator' => MEMBER_ID, 'start_date' => date('Y-m-d H:i:s'), 'history' => $dataHistory];
     CallsDB::saveCall($data);

@@ -8,6 +8,8 @@ $(document).ready(function(){
     showHint("Запись удалена.");
   } else if (getCookie("showhint") === "3") {
     showHint("Звонок отменён.");
+  } else if (getCookie("showhint") === "4") {
+    showHint("Заявка уже находится в работе.");
   }
 
   setCookie("showhint", "");
@@ -371,6 +373,10 @@ $(document).ready(function(){
   // отменить заявку
   $("#mdl_btn_cancel").click(function () {
     if (is_require_filds_empty(["#mdl_fld_fio","#mdl_fld_phone","#mdl_fld_comment"])) {
+      return;
+    }
+    if ($("#mdl_fld_status").val() !== "Недозвон" && $("#mdl_fld_status").val() !== "Ошибка" && $("#mdl_fld_status").val() !== "Повтор" && $("#mdl_fld_status").val() !== "Отказ") {
+      showHint("Заявку можно отменить только со статусами Недозвон, Ошибка, Отказ или Повтор!", 4000);
       return;
     }
     save_call();
