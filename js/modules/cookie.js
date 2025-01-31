@@ -30,9 +30,7 @@ function getCookie(name){
 function setCookieNew(name, value, options = {}) {
 
   options = {
-    path: '/',
-    // при необходимости добавьте другие значения по умолчанию
-    ...options
+    path: '/'
   };
 
   if (options.expires instanceof Date) {

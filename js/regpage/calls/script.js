@@ -263,11 +263,6 @@ function search_results(text) {
 // рендерим результаты поиска
 function search_results_render(data) {
   let html = "";
-  for (const str in data) {
-    if (data.hasOwnProperty(str)) {
-
-    }
-  }
   for (const str of data) {
     let stage = "";
     if ((str.status !== "Входящая" && str.done === "0") || (str.status === "Уточнение" && str.done === "1")) { // текущие
@@ -308,6 +303,9 @@ function search_results_render(data) {
     + str.name+'</span><span class="d-none d-sm-inline">'+str.name+'</span></div></div><div class="col-md-3 d-none d-sm-inline"><div>'
     + comment+'</div></div><div class="col-md-2 col-12"><div ><span class="badge badge-' + badgeClass + '">'
     + str.status+'</span><span class="d-sm-none pl-3">'+comment+'</span></div></div></div>';
+  }
+  if (!html) {
+    html = "<div class='row pl-0 pt-2'><div class='col-12 pl-sm-0 pl-3'>Нет результатов</div></div>";
   }
   $("#search_results").html(html);
 }

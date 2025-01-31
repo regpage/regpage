@@ -310,7 +310,7 @@ $(document).ready(function(){
     form_data.set("email", $("#mdl_fld_email").val());
     form_data.set("info", '');
     form_data.set("value1", "1");
-    form_data.set("value2", $("#mdl_fld_comment").val() + "\r\n" + $("#mdl_fld_comment_extra").val());
+    form_data.set("value2", $("#mdl_fld_comment_extra").val());
     form_data.set("value3", $("#mdl_fld_country option:selected").text());
     form_data.set("value4", $("#mdl_fld_region").val());
     form_data.set("value5", $("#mdl_fld_area").val());
@@ -492,7 +492,7 @@ $(document).ready(function(){
   }
   // кукки пагинации
   setCookie("calls-count", 50, 1);
-  if (getCookie("tab-calls") === "statistics") {    
+  if (getCookie("tab-calls") === "statistics") {
     setCookie("calls-flt_all_users", "_all_", 1);
     setCookie("calls-flt_date_begin", "", 1);
     setCookie("calls-flt_date_end", "", 1);
