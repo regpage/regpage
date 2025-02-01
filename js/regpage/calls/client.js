@@ -46,17 +46,38 @@ $(document).ready(function(){
       }
     });
     // проверка наличия номера в срм не работает не находит номера по прямому запросу
-    /*setTimeout(function () {
-      fetch("api_v1.php?out=1&type=crm_check_phone"
+    setTimeout(function () {
+      $("#spinner_crm").show();
+      fetch("api_v1.php?out=1&type=crm_check_phone_lead"
       + "&phone=" + $("#mdl_fld_phone").val().replace(/[^\d]/g, ''))
       .then(response => response.text()) // text
       .then(commits => {
-        if (commits) {
-          console.log(commits);
+        $("#spinner_crm").hide();
+        if (commits === "&") {
+          return;
+        }
+        let temp = commits.split("&");
+        if ((temp[0] && !isNaN(temp[0])) || (temp[1] && !isNaN(temp[1]))) {
           showHelp("Этот номер уже существует в СРМ.");
         }
       });
-    }, 10);*/
+    }, 10);
+    setTimeout(function () {
+      $("#spinner_crm").show();
+      fetch("api_v1.php?out=1&type=crm_check_phone_deal"
+      + "&phone=" + $("#mdl_fld_phone").val().replace(/[^\d]/g, ''))
+      .then(response => response.text()) // text
+      .then(commits => {
+        $("#spinner_crm").hide();
+        if (commits === "&") {
+          return;
+        }
+        let temp = commits.split("&");
+        if ((temp[0] && !isNaN(temp[0])) || (temp[1] && !isNaN(temp[1]))) {
+          showHelp("Этот номер уже существует в СРМ.");
+        }
+      });
+    }, 20);
   });
   //
   $("#mdl_fld_phone").on("keydown", function(e) { // попробовать keydown keyup // change paste
@@ -477,6 +498,7 @@ $(document).ready(function(){
   });*/
   // закрытие бланка
   $("#modal_call_edit_add").on('hide.bs.modal', function (event) {
+    $("#spinner_crm").hide()
     if (open_id) {
       location.href = "calls";
     }

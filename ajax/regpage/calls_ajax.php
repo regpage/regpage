@@ -73,21 +73,21 @@ if (isset($_GET['type']) && $_GET['type'] === 'check_phone_dinamic'){
     $checkData = CallsDB::getCall($_GET['id'])[0];
   }
   echo CallsDB::checkPhoneNumber((object)['id'=>$_GET['id'],'phone'=>$_GET['phone'],'status'=>$_GET['status']], $checkData);
+  exit();
 }
-// проверка существования номера телефона в CRM
-if (isset($_GET['type']) && $_GET['type'] === 'crm_check_phone'){
-  $name = short_name::no_middle(Member::get_name(MEMBER_ID));
-  $dataCall = CallsDB::getCall($_GET['id'])[0];
-  $dataHistory = $dataCall['history'] . "Заявка отправлена в СРМ " . date('d-m-Y H:i') . " ({$name}) <br>";
-  $data = (object) ['id' => $_GET['id'], 'status' => 'Заказ', 'done' => 1, 'end_date' => date('Y-m-d H:i:s'), 'history' => $dataHistory];
-  CallsDB::saveCall($data);
-  if (isset($_GET['out'])) {
-    $_POST['info'] = 'Звонил(а) ' . short_name::no_middle(Member::get_name($dataCall['operator']));
-    require_once 'api_v1.php';
-  }
+
+// проверка существования номера телефона в CRM заявки
+if (isset($_GET['type']) && $_GET['type'] === 'crm_check_phone_lead'){
+  require_once 'api_v1.php';
+  exit();
+}
+// проверка существования номера телефона в CRM сделки
+if (isset($_GET['type']) && $_GET['type'] === 'crm_check_phone_deal'){
+  //require_once 'api_v1.php';
   exit();
 }
 
 if (isset($_GET['type']) && $_GET['type'] === 'get_search_result'){
   echo json_encode(["result"=>CallsDB::getCalls('', '', 'c.created_date', 'DESC', '_all_', '_all_', $_GET['text'], '_all_')]);
+  exit();
 }

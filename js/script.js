@@ -163,7 +163,7 @@ function showError(html, autohide) {
   if (a.length === 0) {
     //window.location = "login.php?returl="+/\/[^\/]+$/g.exec (document.URL);
     var b = window.location.href;
-    window.location = b;
+    //window.location = b;
   }
 	$("#globalError").fadeIn();
 	if (autohide || typeof autohide === "undefined") window.setTimeout(function() { $("#globalError").fadeOut (); }, 4000);
@@ -1435,7 +1435,7 @@ function fillEditMember (memberId, info, localities, newMemberBlank) {
       }
       fetch("/ajax/get.php?type="+type+"&event_id=" + $("#events-list").val())
       .then(response => response.json())
-      .then(commits => {        
+      .then(commits => {
         for (const variable in commits.result) {
           if (commits.result.hasOwnProperty(variable)) {
             if (variable.substr (0,2) != "99" && variable != memberId) {

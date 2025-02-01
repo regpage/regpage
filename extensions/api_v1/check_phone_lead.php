@@ -1,31 +1,15 @@
 <?php
-// ссылка запроса в СРМ
 $link = 'https://bibleforall.envycrm.com/crm/api/v1/lead/search/?api_key=ecdfd3e079da4ab92942a50d8dd67991b5878f21';
-// проверка на существование номера телефона в СРМ
-$data = [
-  'values' => [ // массив значений системных и произвольных полей
-    'phone' => $_GET['phone'] // телефон    
-  ]
-];
-
+// данные для запроса в срм
+$data = ['phone' => $_GET['phone']]; // телефон
+// подключаем curl
 require 'extensions/api_v1/sender.php';
-
-// Ответ
-// если заявка найдена
-print_r($answer);
-if ($answer['message'] === 'success' && $answer['lead'] === 'null') {
-  echo 'lead=0&';
+// разбираем ответ
+if ($answer['message'] === 'success' && isset($answer['leads'][0]['id'])) {
+  echo "{$answer['leads'][0]['id']}&";
 } elseif ($answer['message'] === 'success') {
-  echo "lead={$answer['lead']['id']}&";
+  echo '&';
 } else {
-  echo "error A101 {$answer['message']}";
-  //EMAIL TO DEVELOPER
-  /*$email = 'zhichkinroman@gmail.com';
-  $message = 'Админ: '.MEMBER_ID.' Не удалось получить ответ от CRM при отправке заказа при проверке номера телефона '.$_POST['phone'].' с сайта reg-page.ru. Ответ с сервера: '.$textAnswer;
-  $res = EMAILS::sendEmail ($email, "Новый заказ с сайта регистрации", $message);
-  if(!$res){
-    ToLogs::error('Сбой Звонки АПИ СРМ ','Сбой в отправке письма разработчику. Содержание письма: ' . $message);
-  }
-  */
-  echo 'Failed';
+  // lead=errorA101&
+  echo 'error&';
 }

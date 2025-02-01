@@ -80,7 +80,10 @@
               </div>
               <div class="row mb-2">
                 <div class="col pr-1">
-                  <label>Телефон<sup>*</sup></label>
+                  <label class="mr-2">Телефон<sup>*</sup></label>
+                  <div id="spinner_crm" class="spinner-border text-primary" role="status" style="width: 1rem; height: 1rem; display: none;">
+                      <span class="sr-only">Loading...</span>
+                  </div>
                   <input type="tel" id="mdl_fld_phone" name="phone" class="form-control form-control-sm" value="" data-field="phone">
                 </div>
                 <div class="col pl-1">
