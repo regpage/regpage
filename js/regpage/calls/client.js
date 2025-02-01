@@ -37,44 +37,42 @@ $(document).ready(function(){
     if (!$(this).val() || $(this).val().length < 4) {
       return;
     }
+    let phone = $(this).val().replace(/[^\d]/g, '');
     fetch("api_reg.php?section=calls&type=check_phone_dinamic&status=" + $("#mdl_fld_status").val()
-    + "&phone=" + $(this).val().replace(/[^\d]/g, '') + "&id=" + $("#modal_call_edit_add").attr("data-id"))
+    + "&phone=" + phone + "&id=" + $("#modal_call_edit_add").attr("data-id"))
     .then(response => response.text()) // text
     .then(commits => {
       if (commits) {
         showHelp("Этот номер уже существует в базе на сайте регистрации.");
       }
     });
-    // проверка наличия номера в срм не работает не находит номера по прямому запросу
+    // проверка наличия номера в срм заявки
     setTimeout(function () {
+      // запускаем спиннер
       $("#spinner_crm").show();
       fetch("api_v1.php?out=1&type=crm_check_phone_lead"
-      + "&phone=" + $("#mdl_fld_phone").val().replace(/[^\d]/g, ''))
-      .then(response => response.text()) // text
+      + "&phone=" + phone)
+      .then(response => response.json()) // text
       .then(commits => {
-        $("#spinner_crm").hide();
-        if (commits === "&") {
-          return;
-        }
-        let temp = commits.split("&");
-        if ((temp[0] && !isNaN(temp[0])) || (temp[1] && !isNaN(temp[1]))) {
-          showHelp("Этот номер уже существует в СРМ.");
+        for (const lead in commits.leads.result) {
+          if (commits.leads.result.hasOwnProperty(lead)) {            
+            if (commits.leads.result[lead].phone == phone) {
+              showHelp("Этот номер уже существует в заявках СРМ.");
+            }
+          }
         }
       });
     }, 10);
+    // проверка наличия номера в срм сделки
     setTimeout(function () {
-      $("#spinner_crm").show();
       fetch("api_v1.php?out=1&type=crm_check_phone_deal"
-      + "&phone=" + $("#mdl_fld_phone").val().replace(/[^\d]/g, ''))
+      + "&phone=" + phone)
       .then(response => response.text()) // text
       .then(commits => {
+        // скрываем спиннер
         $("#spinner_crm").hide();
-        if (commits === "&") {
-          return;
-        }
-        let temp = commits.split("&");
-        if ((temp[0] && !isNaN(temp[0])) || (temp[1] && !isNaN(temp[1]))) {
-          showHelp("Этот номер уже существует в СРМ.");
+        if (commits && !isNaN(commits)) {
+          showHelp("Этот номер уже существует в сделках СРМ.");
         }
       });
     }, 20);
