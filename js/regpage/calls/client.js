@@ -26,7 +26,14 @@ $(document).ready(function(){
   })
   // вставка и разбор фио и телефон
   $("#mdl_fld_fio").on("paste", function(e) {
-    fio_tel_paste();
+    navigator.clipboard
+    .readText()
+    .then(text => {
+      fio_tel_paste(text);
+    })
+    .catch(err => {
+      // сообщение вслучае ошибки
+    });
   });
   // маска для ввода телефона
   $("#mdl_fld_phone").on("paste", function(e) {
@@ -34,48 +41,7 @@ $(document).ready(function(){
   });
   // проверка наличия номера в базе
   $("#mdl_fld_phone").change(function() {
-    if (!$(this).val() || $(this).val().length < 4) {
-      return;
-    }
-    let phone = $(this).val().replace(/[^\d]/g, '');
-    fetch("api_reg.php?section=calls&type=check_phone_dinamic&status=" + $("#mdl_fld_status").val()
-    + "&phone=" + phone + "&id=" + $("#modal_call_edit_add").attr("data-id"))
-    .then(response => response.text()) // text
-    .then(commits => {
-      if (commits) {
-        showHelp("Этот номер уже существует в базе на сайте регистрации.");
-      }
-    });
-    // проверка наличия номера в срм заявки
-    setTimeout(function () {
-      // запускаем спиннер
-      $("#spinner_crm").show();
-      fetch("api_v1.php?out=1&type=crm_check_phone_lead"
-      + "&phone=" + phone)
-      .then(response => response.json()) // text
-      .then(commits => {
-        for (const lead in commits.leads.result) {
-          if (commits.leads.result.hasOwnProperty(lead)) {            
-            if (commits.leads.result[lead].phone == phone) {
-              showHelp("Этот номер уже существует в заявках СРМ.");
-            }
-          }
-        }
-      });
-    }, 10);
-    // проверка наличия номера в срм сделки
-    setTimeout(function () {
-      fetch("api_v1.php?out=1&type=crm_check_phone_deal"
-      + "&phone=" + phone)
-      .then(response => response.text()) // text
-      .then(commits => {
-        // скрываем спиннер
-        $("#spinner_crm").hide();
-        if (commits && !isNaN(commits)) {
-          showHelp("Этот номер уже существует в сделках СРМ.");
-        }
-      });
-    }, 20);
+    check_phone_dinamic($(this).val());
   });
   //
   $("#mdl_fld_phone").on("keydown", function(e) { // попробовать keydown keyup // change paste
@@ -193,7 +159,7 @@ $(document).ready(function(){
   });
   // открыть новый бланк добавить новый звонок
   $("#addCalls").click(function () {
-    let fields_id = ["#mdl_fld_fio", "#mdl_fld_phone", "#mdl_fld_country", "#mdl_fld_male", "#mdl_fld_region", "#mdl_fld_locality", "#mdl_fld_address", "#mdl_fld_operator","#mdl_fld_comment"];
+    let fields_id = ["#mdl_fld_fio", "#mdl_fld_phone", "#mdl_fld_country", "#mdl_fld_male", "#mdl_fld_region", "#mdl_fld_locality", "#mdl_fld_address", "#mdl_fld_operator","#mdl_fld_comment, #mdl_fld_status"];
     for (const element of fields_id) {
       $(element).css("border-color", "#ced4da");
     }
@@ -208,6 +174,7 @@ $(document).ready(function(){
     /* ОТРЫВАЕТСЯ БЛАНК */
     $("#mdl_btn_dlt_call").hide();
     $("#mdl_btn_new_order").hide();
+    $("#mdl_btn_cancel").hide();    
   });
 
   // открыть строку в списке
@@ -496,7 +463,14 @@ $(document).ready(function(){
   });*/
   // закрытие бланка
   $("#modal_call_edit_add").on('hide.bs.modal', function (event) {
-    $("#spinner_crm").hide()
+    $("#spinner_crm").hide();
+    // очищаем временные хранилища данных
+    $("#modal_call_edit_add").attr("data-temp_comment", "");
+    $("#modal_call_edit_add").attr("data-temp_operator", "");
+    $("#modal_call_edit_add").attr("data-temp_status", "");
+    if ($("#modal_call_edit_add").attr("data-temp_comment") || $("#modal_call_edit_add").attr("data-temp_operator") || $("#modal_call_edit_add").attr("data-temp_status")) {
+
+    }
     if (open_id) {
       location.href = "calls";
     }

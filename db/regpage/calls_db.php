@@ -106,14 +106,14 @@ class CallsDB extends DBQuery
     if (isset($data->id)) {
       $checkData = self::getCall($data->id)[0];
       $extraComment = self::checkPhoneNumber($data, $checkData);
-      if (!empty($extraComment)) {
+      /*if (!empty($extraComment)) {
           $data->status = 'Повтор';
         if (empty($data->comment)) {
           $data->comment = $extraComment;
         } else {
           $data->comment .= "\r\n" . $extraComment;
         }
-      }
+      }*/
       // проверяем изменения для истории
       // сравнить операторов и статусы
       if (isset($data->operator) && isset($data->status) && ($data->operator === $checkData['operator']) && ($data->status !== $checkData['status'])) {
@@ -148,14 +148,14 @@ class CallsDB extends DBQuery
       $values = '';
       // проверяем номер телефона
       $extraComment = self::checkPhoneNumber($data);
-      if (!empty($extraComment)) {
+      /*if (!empty($extraComment)) {
         $data->status = 'Повтор';
         if (empty($data->comment)) {
           $data->comment = $extraComment;
         } else {
           $data->comment .= "\r\n" . $extraComment;
         }
-      }
+      }*/
       $dateNewCall = date('d-m-Y H:i');
       $nameAuthorNewCall = short_name::no_middle(Member::get_name(MEMBER_ID));
       $data->history = "{$dateNewCall} Заявка создана ({$nameAuthorNewCall})<br>";

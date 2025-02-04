@@ -186,7 +186,10 @@ function fio_tel_paste(paste_text) {
 
     let text_position_number = paste_text.search(/\d/);
     let text_position_charter = paste_text.match(/[a-zA-Zа-яA-ЯЁё]/);
-
+    if (!text_position_charter) {
+      showError("В буфере обмена отсутствуют БУКВЫ");
+      return;
+    }
     if (text_position_number >= 0 && text_position_charter["index"] >= 0) {
       let text_number;
       let text_fio;
@@ -205,11 +208,13 @@ function fio_tel_paste(paste_text) {
           $("#mdl_fld_phone").val("");
         }
       }, 10);
+      if (text_number) {
+        check_phone_dinamic(text_number);
+      }
     }
-
     return;
   }
-  document.addEventListener('paste', function(e) {
+  /*document.addEventListener('paste', function(e) {
     let text = (e.clipboardData || window.clipboardData).getData('text').trim();
     if (!text) {
       return;
@@ -224,7 +229,11 @@ function fio_tel_paste(paste_text) {
 
     let text_position_number = text.search(/\d/);
     let text_position_charter = text.match(/[a-zA-Zа-яA-ЯЁё]/);
-
+    // если в тексте нет букв
+    if (!text_position_charter) {
+      showError("В буфере обмена отсутствуют БУКВЫ");
+      return;
+    }
     if (text_position_number >= 0 && text_position_charter["index"] >= 0) {
       let text_number;
       let text_fio;
@@ -243,8 +252,11 @@ function fio_tel_paste(paste_text) {
           $("#mdl_fld_phone").val("");
         }
       }, 10);
+      if (text_number) {
+        //check_phone_dinamic(text_number);
+      }
     }
-  });
+  });*/
 }
 // записываем фильтры в кукки
 function filters_to_cookie(arr, all) {
@@ -273,7 +285,7 @@ function search_results_render(data) {
   for (const str of data) {
     let stage = "";
     if ((str.status !== "Входящая" && str.done === "0") || (str.status === "Уточнение" && str.done === "1")) { // текущие
-      stage = 'Текущие';
+      stage = 'В работе';
     } else if (str.status !== "Уточнение" && str.done === "1") {
       stage = 'Завершённые';
     } else if (str.status === "Входящая") {
@@ -315,4 +327,98 @@ function search_results_render(data) {
     html = "<div class='row pl-0 pt-2'><div class='col-12 pl-sm-0 pl-3'>Нет результатов</div></div>";
   }
   $("#search_results").html(html);
+}
+
+function blank_repeat_fill_in(comment, operator) {
+  $("#mdl_fld_comment").val($("#mdl_fld_comment").val() + "\r\n" + comment).css("border-color", "blue");
+  $("#mdl_fld_operator").val(operator).css("border-color", "blue");
+  $("#mdl_fld_status").val("Повтор").css("border-color", "blue");
+}
+
+function blank_repeat_reset_installations() {
+  if ($("#modal_call_edit_add").attr("data-temp_comment") || $("#modal_call_edit_add").attr("data-temp_operator") || $("#modal_call_edit_add").attr("data-temp_status")) {
+    // сброс в случае если правка уже осуществрялась
+    $("#mdl_fld_comment").val($("#modal_call_edit_add").attr("data-temp_comment"));
+    $("#mdl_fld_operator").val($("#modal_call_edit_add").attr("data-temp_operator"));
+    $("#mdl_fld_status").val($("#modal_call_edit_add").attr("data-temp_status"));
+    // очищаем временные хранилища данных
+    $("#modal_call_edit_add").attr("data-temp_comment", "");
+    $("#modal_call_edit_add").attr("data-temp_operator", "");
+    $("#modal_call_edit_add").attr("data-temp_status", "");
+  }
+}
+
+function check_phone_dinamic(phone) {
+  // сброс установок связанных со статусом Повтор
+  blank_repeat_reset_installations();
+  if (!phone || phone.length < 4) {
+    return;
+  }
+  // спинер и кнопки
+  $("#spinner_crm").show();
+  $("#mdl_btn_save_call").attr("disabled", true);
+  // собрать старые данные комментария и статуса и записать во временное поле
+  $("#modal_call_edit_add").attr("data-temp_comment", $("#mdl_fld_comment").val());
+  $("#modal_call_edit_add").attr("data-temp_operator", $("#mdl_fld_operator").val());
+  $("#modal_call_edit_add").attr("data-temp_status", $("#mdl_fld_status").val());
+
+  // убрать отменить заявку из бланка нового звонка тк она ещё не создана
+  // изменить статус на повтор и дополнить комментарий
+  // сделать откат в случае изменения номенра и прохода проверки иначе перезаписать новыми данными
+  // очищать бланк при открытии
+  // убрать проверки при сохранении
+  // подсветить изменённые поля синим на 4 секунды?
+  // уведомление Диме о повторе
+  // при сохранении делать проверку мало ли кто то добавил параллельно
+  // Запросы
+  phone = phone.replace(/[^\d]/g, '');
+  // запрос к Звонкам проверка наличия номера в базе на сайте регистрации
+  fetch("api_reg.php?section=calls&type=check_phone_dinamic&status=" + $("#mdl_fld_status").val()
+  + "&phone=" + phone + "&id=" + $("#modal_call_edit_add").attr("data-id"))
+  .then(response => response.text()) // json
+  .then(commits => {
+    if (commits) {
+      blank_repeat_fill_in(commits, "000004947");
+      showHelp("Этот номер уже был в «Звонках».");
+      $("#mdl_btn_save_call").attr("disabled", false);
+    }
+  });
+  // запрос к срм лиды(заявки) проверка наличия номера в срм
+  // проверка наличия номера в срм заявки
+  setTimeout(function () {
+    fetch("api_v1.php?out=1&type=crm_check_phone_lead"
+    + "&phone=" + phone)
+    .then(response => response.json()) // text
+    .then(commits => {
+      for (const lead in commits.leads.result) {
+        if (commits.leads.result.hasOwnProperty(lead)) {
+          if (commits.leads.result[lead].phone == phone) {
+            blank_repeat_fill_in("Была заявка в CRM " + commits.leads.result[lead].created_at +  "\r\n", "000004947");
+            showHelp("Этот номер уже был в CRM.");
+          }
+        }
+      }
+      $("#mdl_btn_save_call").attr("disabled", false);
+    });
+  }, 20);
+  // запрос к срм сделки(Заказы) проверка наличия номера в срм
+  setTimeout(function () {
+    fetch("api_v1.php?out=1&type=crm_check_phone_deal"
+    + "&phone=" + phone)
+    .then(response => response.text()) // json
+    .then(commits => {
+      // скрываем спиннер
+      $("#spinner_crm").hide();
+      $("#mdl_btn_save_call").attr("disabled", false);
+      if (commits && commits !== "error") {
+        blank_repeat_fill_in("Был заказ в CRM " + commits + "\r\n", "000004947");
+        showHelp("Этот номер уже был в CRM.");
+      }
+    });
+  }, 20);
+  setTimeout(function () {
+    if ($("#mdl_btn_save_call").attr("disabled")) {
+      $("#mdl_btn_save_call").attr("disabled", false);
+    }
+  }, 5000);
 }
