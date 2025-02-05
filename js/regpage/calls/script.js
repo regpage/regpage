@@ -45,6 +45,7 @@ function fullfill_blank (data_list) {
       $("#mdl_btn_cancel").show();
     }
   }
+
   $("#modal_call_edit_add").attr("data-id", data_list["id"]);
   $("#modal_call_edit_add").attr("data-done", data_list["done"]);
   for (const string in data_list) {
@@ -59,6 +60,10 @@ function fullfill_blank (data_list) {
         $("#modal_call_edit_add [data-field='"+string+"']").val(data_list[string]);
       }
     }
+  }
+  // отображаем кнопку Удалить при статусе повтор
+  if ($("#mdl_fld_status").val() === "Повтор") {
+    $("#mdl_btn_dlt_call").show();
   }
 }
 

@@ -172,9 +172,9 @@ $(document).ready(function(){
     $("#mdl_fld_status").val("Входящая");
     $("#call_date").text(dateStrFromyyyymmddToddmmyyyy(date_now_gl()));
     /* ОТРЫВАЕТСЯ БЛАНК */
-    $("#mdl_btn_dlt_call").hide();
+    $("#mdl_btn_dlt_call").show();
     $("#mdl_btn_new_order").hide();
-    $("#mdl_btn_cancel").hide();    
+    $("#mdl_btn_cancel").hide();
   });
 
   // открыть строку в списке
@@ -343,6 +343,11 @@ $(document).ready(function(){
 
   // подтверждение удаление
   $("#mdl_btn_dlt_call_confirm").click(function () {
+    if (!$("#modal_call_edit_add").attr("data-id")) {
+      $("#mld_confirm_dlt").modal("hide");
+      $("#modal_call_edit_add").modal("hide");
+      return;
+    }
     fetch("api_reg.php?section=calls&type=dlt_call&id=" + $("#modal_call_edit_add").attr("data-id"))
     .then(response => response.text()) // text
     .then(commits => {

@@ -93,7 +93,18 @@ class CallsDB extends DBQuery
       foreach ($dubleId as $key => $value) {
         $date = date_convert::yyyymmdd_to_ddmmyyyy(substr($value['created_date'], 0, 10));
         $operator = short_name::no_middle(Member::get_name($value['operator']));
-        $result .= "Была заявка {$date}\r\nСтатус: {$value['status']}\r\nОператор: {$operator}\r\nКомментарий: {$value['comment']}";
+        $blockComment = '';
+        $blockOperator = '';
+        // блок комментария
+        if (!empty($value['comment'])) {
+          $blockComment = "Комментарий: {$value['comment']}\r\n";
+        }
+        // блок оператора
+        if (!empty($value['operator'])) {
+          $blockOperator = "Оператор: {$operator}\r\n";
+        }
+        // текст примечания
+        $result .= "Была заявка {$date}\r\n{$value['name']}\r\nСтатус: {$value['status']}\r\n{$blockOperator}{$blockComment}\r\n";
       }
     }
 
