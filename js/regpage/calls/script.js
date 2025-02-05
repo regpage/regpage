@@ -335,7 +335,11 @@ function search_results_render(data) {
 }
 
 function blank_repeat_fill_in(comment, operator) {
-  $("#mdl_fld_comment").val($("#mdl_fld_comment").val() + "\r\n" + comment).css("border-color", "blue");
+  let cor = "";
+  if ($("#mdl_fld_comment").val()) {
+    cor = "\r\n";
+  }
+  $("#mdl_fld_comment").val($("#mdl_fld_comment").val() + cor + comment).css("border-color", "blue");
   $("#mdl_fld_operator").val(operator).css("border-color", "blue");
   $("#mdl_fld_status").val("Повтор").css("border-color", "blue");
 }
@@ -356,6 +360,7 @@ function blank_repeat_reset_installations() {
 function check_phone_dinamic(phone) {
   // сброс установок связанных со статусом Повтор
   blank_repeat_reset_installations();
+
   if (!phone || phone.length < 4) {
     return;
   }
@@ -366,6 +371,7 @@ function check_phone_dinamic(phone) {
   $("#modal_call_edit_add").attr("data-temp_comment", $("#mdl_fld_comment").val());
   $("#modal_call_edit_add").attr("data-temp_operator", $("#mdl_fld_operator").val());
   $("#modal_call_edit_add").attr("data-temp_status", $("#mdl_fld_status").val());
+
 
   // убрать отменить заявку из бланка нового звонка тк она ещё не создана
   // изменить статус на повтор и дополнить комментарий
@@ -398,14 +404,14 @@ function check_phone_dinamic(phone) {
       for (const lead in commits.leads.result) {
         if (commits.leads.result.hasOwnProperty(lead)) {
           if (commits.leads.result[lead].phone == phone) {
-            blank_repeat_fill_in("Была заявка в CRM " + commits.leads.result[lead].created_at +  "\r\n", "000004947");
+            blank_repeat_fill_in("Была заявка в CRM " + commits.leads.result[lead].created_at + "\r\nФИО: " + commits.leads.result[lead].name + "\r\n", "000004947");
             showHelp("Этот номер уже был в CRM.");
           }
         }
       }
       $("#mdl_btn_save_call").attr("disabled", false);
     });
-  }, 20);
+  }, 10);
   // запрос к срм сделки(Заказы) проверка наличия номера в срм
   setTimeout(function () {
     fetch("api_v1.php?out=1&type=crm_check_phone_deal"

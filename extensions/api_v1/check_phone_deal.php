@@ -9,7 +9,7 @@ $data = ['phone' => $_GET['phone']]; // телефон
 require 'extensions/api_v1/sender.php';
 // Ответ
 if ($answer['message'] === 'success' && isset($answer['clients'][0]['deals_for_event'][0]['id'])) {
-  echo date_convert::yyyymmdd_to_ddmmyyyy(explode(" ", $answer['clients'][0]['deals_for_event'][0]['created_at'])[0]);
+  echo date_convert::yyyymmdd_to_ddmmyyyy(explode(" ", $answer['clients'][0]['deals_for_event'][0]['created_at'])[0]) . "\r\nФИО: " . $answer['clients'][0]['name'];
 } elseif ($answer['message'] === 'success') {
   echo '';
 } else {

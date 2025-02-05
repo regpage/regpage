@@ -83,7 +83,7 @@ if (isset($_GET['type']) && $_GET['type'] === 'crm_check_phone_lead'){
 }
 // проверка существования номера телефона в CRM сделки
 if (isset($_GET['type']) && $_GET['type'] === 'crm_check_phone_deal'){
-  //require_once 'api_v1.php';
+  require_once 'api_v1.php';
   exit();
 }
 

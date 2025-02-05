@@ -117,8 +117,6 @@ $(document).ready(function(){
     }, 30);
   });
 
-
-
   // сброс поля поиск
   // search
   /*$('#flt_search').click(function(event){

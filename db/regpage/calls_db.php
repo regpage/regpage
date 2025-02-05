@@ -97,14 +97,14 @@ class CallsDB extends DBQuery
         $blockOperator = '';
         // блок комментария
         if (!empty($value['comment'])) {
-          $blockComment = "Комментарий: {$value['comment']}\r\n";
+          $blockComment = "Комментарий: " . trim($value['comment']) . "\r\n";
         }
         // блок оператора
         if (!empty($value['operator'])) {
           $blockOperator = "Оператор: {$operator}\r\n";
         }
         // текст примечания
-        $result .= "Была заявка {$date}\r\n{$value['name']}\r\nСтатус: {$value['status']}\r\n{$blockOperator}{$blockComment}\r\n";
+        $result .= "Была заявка {$date}\r\nФИО: {$value['name']}\r\nСтатус: {$value['status']}\r\n{$blockOperator}{$blockComment}";
       }
     }
 
