@@ -298,7 +298,7 @@ function search_results_render(data) {
     }
     let comment = str.comment;
     if (comment) {
-      comment = str.comment.slice(0,30)+"...";
+      comment = str.comment.slice(0,30) + "...";
     }
     let badgeClass = "";
     if (str.status === 'В работе') {
@@ -318,15 +318,22 @@ function search_results_render(data) {
     } else if (str.status === 'Входящая') {
       badgeClass = "light";
     }
-
-    html += '<div class="row call_str_mdl pl-0" data-id="'+str.id+'"><div class="col-md-1 col-12 pl-sm-0 pl-3"><div>'
-    + stage +'</div></div><div class="col-md-1 col-2 pl-3">'
-    + dateStrFromyyyymmddToddmm(str.created_date) +'</div><div class="col-md-2 col-9"><div ><a href="tel:+'
-    + str.phone+'" class="d-sm-none pr-3">+'+str.phone+'</a><span class="d-none d-sm-inline">+'
-    + str.phone+'</span></div></div><div class="col-md-3 col-12"><div ><span class="d-sm-none pr-3 font-weight-bold">'
-    + str.name+'</span><span class="d-none d-sm-inline">'+str.name+'</span></div></div><div class="col-md-3 d-none d-sm-inline"><div>'
-    + comment+'</div></div><div class="col-md-2 col-12"><div ><span class="badge badge-' + badgeClass + '">'
-    + str.status+'</span><span class="d-sm-none pl-3">'+comment+'</span></div></div></div>';
+    let time_str = str.created_date.split(" ");
+    time_str = time_str[1].slice(0,5);
+    let operator_txt = "не назначен";
+    if (str.operator) {
+      operator_txt = $("#flt_author option[value='" + str.operator + "']").text();
+    }
+    let author_txt = $("#flt_author option[value='" + str.author_key + "']").text();
+    html += '<div class="row call_str_mdl pl-0" data-id="' + str.id + '"><div class="col-md-1 col-12 pl-sm-0 pl-3"><div>'
+    + stage +'</div></div><div class="col-2 pl-3">'
+    + dateStrFromyyyymmddToddmm(str.created_date) + ' ' + time_str + '</div><div class="col-md-2 col-9"><div ><a href="tel:+'
+    + str.phone + '" class="d-sm-none pr-3">+' + str.phone + '</a><span class="d-none d-sm-inline">+'
+    + str.phone + '</span></div></div><div class="col-md-2 col-12"><div ><span class="d-sm-none pr-3 font-weight-bold">'
+    + str.name + '</span><span class="d-none d-sm-inline">' + str.name + '</span></div></div><div class="col-md-3 d-none d-sm-inline"><div>'
+    + comment + '</div></div><div class="col-md-2 col-12"><div ><span class="badge badge-' + badgeClass + '" title="Администратор: '
+    + author_txt + '\r\nОператор: ' + operator_txt + '">'
+    + str.status + '</span><span class="d-sm-none pl-3">' + comment + '</span></div></div></div>';
   }
   if (!html) {
     html = "<div class='row pl-0 pt-2'><div class='col-12 pl-sm-0 pl-3'>Нет результатов</div></div>";

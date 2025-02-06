@@ -19,13 +19,13 @@
           <div class="col-1 pl-0">
             <b class="" data-sort="">Этап <i class=""></i></b>
           </div>
-          <div class="col-1 pl-3">
+          <div class="col-2 pl-3">
             <b>Дата <i class="fa fa-sort-asc"></i></b>
           </div>
           <div class="col-2 pl-3">
             <b>Телефон</b>
           </div>
-          <div class="col-3 pl-3">
+          <div class="col-2 pl-3">
             <b>ФИО</b>
           </div>
           <div class="col-3 pl-3">
