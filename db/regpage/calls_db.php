@@ -114,17 +114,10 @@ class CallsDB extends DBQuery
   static function saveCall($data)
   {
     global $db;
+    $isNew = false;
     if (isset($data->id)) {
       $checkData = self::getCall($data->id)[0];
       $extraComment = self::checkPhoneNumber($data, $checkData);
-      /*if (!empty($extraComment)) {
-          $data->status = 'Повтор';
-        if (empty($data->comment)) {
-          $data->comment = $extraComment;
-        } else {
-          $data->comment .= "\r\n" . $extraComment;
-        }
-      }*/
       // проверяем изменения для истории
       // сравнить операторов и статусы
       if (isset($data->operator) && isset($data->status) && ($data->operator === $checkData['operator']) && ($data->status !== $checkData['status'])) {
@@ -155,18 +148,11 @@ class CallsDB extends DBQuery
 
       $res=db_query("UPDATE calls SET {$setQuery} WHERE id='{$data->id}'");
     } else {
+      $isNew = true;
       $keys = '';
       $values = '';
       // проверяем номер телефона
       $extraComment = self::checkPhoneNumber($data);
-      /*if (!empty($extraComment)) {
-        $data->status = 'Повтор';
-        if (empty($data->comment)) {
-          $data->comment = $extraComment;
-        } else {
-          $data->comment .= "\r\n" . $extraComment;
-        }
-      }*/
       $dateNewCall = date('d-m-Y H:i');
       $nameAuthorNewCall = short_name::no_middle(Member::get_name(MEMBER_ID));
       $data->history = "{$dateNewCall} Заявка создана ({$nameAuthorNewCall})<br>";
@@ -213,6 +199,17 @@ class CallsDB extends DBQuery
       $nameOperator = short_name::no_middle(Member::get_name($data->operator));
       $dateStart =  date('d-m-Y H:i');
       $history = $checkData['history'] . "{$dateStart} Заявка взята в работу ({$nameOperator})<br>";
+      DBQuery::set('calls', 'history', $history, 'id', $data->id);
+      $bodyEmail = "Пользователь {$name} назначил вас оператором по заявке от {$date}: <br> Имя: {$data->name} <br> Телефон: {$data->phone} <br> Перейти к заявке https://reg-page.ru/calls?tab=currents&id={$data->id}";
+      Emailing::send_by_key($data->operator, 'Вы назначены оператором для звонка по проекту BFA', $bodyEmail);
+    }
+    // уведомление о повторе
+    if ((isset($data->operator) && !empty($data->operator) && $data->operator === '000004947' && $data->status === 'Повтор' && $isNew) || (isset($data->operator) && !empty($data->operator) && $data->operator === '000004947' && $data->status === 'Повтор' && $checkData['status'] !== $data->status && !$isNew)) {
+      $date = date_convert::yyyymmdd_to_ddmmyyyy(explode(' ' ,$checkData['created_date'])[0]);
+      $name = short_name::no_middle(Member::get_name(MEMBER_ID));
+      $nameOperator = short_name::no_middle(Member::get_name($data->operator));
+      $dateStart =  date('d-m-Y H:i');
+      $history = $checkData['history'] . "{$dateStart} Повторная заявка передана на проверку ({$nameOperator})<br>";
       DBQuery::set('calls', 'history', $history, 'id', $data->id);
       $bodyEmail = "Пользователь {$name} назначил вас оператором по заявке от {$date}: <br> Имя: {$data->name} <br> Телефон: {$data->phone} <br> Перейти к заявке https://reg-page.ru/calls?tab=currents&id={$data->id}";
       Emailing::send_by_key($data->operator, 'Вы назначены оператором для звонка по проекту BFA', $bodyEmail);
