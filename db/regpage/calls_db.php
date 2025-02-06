@@ -83,6 +83,20 @@ class CallsDB extends DBQuery
     return parent::getKeyValue('calls_users');
   }
   // проверяем дубликаты номера телефона в базе
+  static function getIDDoublePhoneNumber($phone)
+  {
+    if (!empty($phone)) {
+      $doubleId = DBQuery::get('list', 'calls', '*', 'phone', $phone);
+      foreach ($doubleId as $key => $value) {
+        if ($value['status'] !== 'Повтор') {
+          return $value['id'];
+        }
+      }
+    }
+
+    return '';
+  }
+  // проверяем дубликаты номера телефона в базе
   static function checkPhoneNumber($data, $checkData = [])
   {
     $result = ''; // && strlen(substr($data->phone, 1)) === 10
@@ -117,7 +131,8 @@ class CallsDB extends DBQuery
     $isNew = false;
     if (isset($data->id)) {
       $checkData = self::getCall($data->id)[0];
-      $extraComment = self::checkPhoneNumber($data, $checkData);
+      // проверяем на дубликат номер телефона
+      //$extraComment = self::checkPhoneNumber($data, $checkData);
       // проверяем изменения для истории
       // сравнить операторов и статусы
       if (isset($data->operator) && isset($data->status) && ($data->operator === $checkData['operator']) && ($data->status !== $checkData['status'])) {
@@ -151,14 +166,32 @@ class CallsDB extends DBQuery
       $isNew = true;
       $keys = '';
       $values = '';
-      // проверяем номер телефона
-      $extraComment = self::checkPhoneNumber($data);
+      $simDouble = false;
+      // проверяем на дубликат
+      if ($data->status === 'Входящая') {
+        // проверяем номер телефона
+        if (is_numeric(self::getIDDoublePhoneNumber($data->phone))) {
+          $simDouble = true;
+          $extraComment = self::checkPhoneNumber($data);
+          $data->status = 'Повтор';
+          $data->operator = '000004947';
+          if (empty($data->comment)) {
+            $data->comment = $extraComment;
+          } else {
+            $data->comment = trim($data->comment) . '\r\n' . $extraComment;
+          }
+        }
+      }
+
       $dateNewCall = date('d-m-Y H:i');
       $nameAuthorNewCall = short_name::no_middle(Member::get_name(MEMBER_ID));
       $data->history = "{$dateNewCall} Заявка создана ({$nameAuthorNewCall})<br>";
+      if ($simDouble) {
+        $data->history .= date('d-m-Y H:i') . " Повтор (определено при сохранении)<br>";
+      }
       // если заявка при создании назначена
       if (isset($data->operator) && $data->operator === MEMBER_ID && $data->status === 'В работе') {
-        $data->history .=  date('d-m-Y H:i') ." Заявка взята в работу ({$nameAuthorNewCall})<br>";
+        $data->history .=  date('d-m-Y H:i') . " Заявка взята в работу ({$nameAuthorNewCall})<br>";
       }
       foreach ($data as $key => $value) {
         $key = db_real_escape_string($key);
