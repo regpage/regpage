@@ -169,6 +169,7 @@ $(document).ready(function(){
     $("#mdl_fld_status option[value='Входящая']").show();
     $("#mdl_fld_status").val("Входящая");
     $("#call_date").text(dateStrFromyyyymmddToddmmyyyy(date_now_gl()));
+    $("#mdl_cal_history_content").text("Здесь будет история...");
     /* ОТРЫВАЕТСЯ БЛАНК */
     $("#mdl_btn_dlt_call").show();
     $("#mdl_btn_new_order").hide();

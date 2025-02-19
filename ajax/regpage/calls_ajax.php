@@ -22,7 +22,7 @@ if (isset($_GET['type']) && $_GET['type'] === 'recover_call'){
     DBQuery::set('calls', 'status', 'В работе', 'id', $_GET['id']);
     $name = short_name::no_middle(Member::get_name(MEMBER_ID));
     $dataHistory = CallsDB::getCall($_GET['id']);
-    $dataHistory = $dataHistory[0]['history'] . date('d-m-Y H:i') . " Установлен статус В работе ({$name}) <br>";
+    $dataHistory = $dataHistory[0]['history'] . date('d.m.Y H:i') . " Установлен статус В работе ({$name}) <br>";
     echo DBQuery::set('calls', 'history', $dataHistory, 'id', $_GET['id']);
     exit();
 }
@@ -36,7 +36,7 @@ if (isset($_GET['type']) && $_GET['type'] === 'get_call'){
       echo json_encode(["result"=>'busy']);
       exit();
     }
-    $dataHistory = $dataHistory[0]['history'] . date('d-m-Y H:i') . " Заявка взята в работу ({$name}) <br>";
+    $dataHistory = $dataHistory[0]['history'] . date('d.m.Y H:i') . " Заявка взята в работу ({$name}) <br>";
     $data = (object) ['id' => $_GET['id'],'status' => 'В работе', 'operator' => MEMBER_ID, 'start_date' => date('Y-m-d H:i:s'), 'history' => $dataHistory];
     CallsDB::saveCall($data);
     echo json_encode(["result"=>CallsDB::getCall($_GET['id'])]);
@@ -56,7 +56,7 @@ if (isset($_GET['type']) && $_GET['type'] === 'dlt_call'){
 if (isset($_GET['type']) && $_GET['type'] === 'crm_send'){
   $name = short_name::no_middle(Member::get_name(MEMBER_ID));
   $dataCall = CallsDB::getCall($_GET['id'])[0];
-  $dataHistory = $dataCall['history'] . "Заявка отправлена в СРМ " . date('d-m-Y H:i') . " ({$name}) <br>";
+  $dataHistory = $dataCall['history'] . "Заявка отправлена в СРМ " . date('d.m.Y H:i') . " ({$name}) <br>";
   $data = (object) ['id' => $_GET['id'], 'status' => 'Заказ', 'done' => 1, 'end_date' => date('Y-m-d H:i:s'), 'history' => $dataHistory];
   CallsDB::saveCall($data);
   if (isset($_GET['out'])) {

@@ -129,15 +129,33 @@ class CallsDB extends DBQuery
   {
     global $db;
     $isNew = false;
+    $simChangedStatus = false;
     if (isset($data->id)) {
       $checkData = self::getCall($data->id)[0];
       // проверяем на дубликат номер телефона
       //$extraComment = self::checkPhoneNumber($data, $checkData);
-      // проверяем изменения для истории
-      // сравнить операторов и статусы
+
+      // проверяем изменения для истории сравнить операторов и статусы
       if (isset($data->operator) && isset($data->status) && ($data->operator === $checkData['operator']) && ($data->status !== $checkData['status'])) {
         $nameUser = short_name::no_middle(Member::get_name(MEMBER_ID));
-        $data->history = $checkData['history'] . date('d-m-Y H:i') . " Установлен статус {$data->status} ({$nameUser})<br>";
+        $data->history = $checkData['history'] . date('d.m.Y H:i') . " Установлен статус {$data->status} ({$nameUser})<br>";
+        $simChangedStatus = true;
+      }
+      // проверяем изменения для истории сравнить операторов
+      if (isset($data->operator) && !empty($data->operator) && isset($data->status) && !empty($checkData['operator']) && $data->operator !== $checkData['operator'] && $data->status !== 'В работе') {
+        $newOperatorName = short_name::no_middle(Member::get_name($data->operator));
+        $nameAdmin = short_name::no_middle(Member::get_name(MEMBER_ID));
+        if ($simChangedStatus === false) {
+          $data->history = $checkData['history'] . date('d.m.Y H:i') . " Назначен новый оператор {$newOperatorName} (назначил {$nameAdmin})<br>";
+        } else {
+          $data->history = $data->history . date('d.m.Y H:i') . " Назначен новый оператор {$newOperatorName} (назначил {$nameAdmin})<br>";
+        }
+        // письмо новому оператору
+        $date = date_convert::yyyymmdd_to_ddmmyyyy(explode(' ' ,$checkData['created_date'])[0]);
+        //$date = date_convert::yyyymmdd_to_ddmmyyyy($date[0]); //  . ' ' . substr($date[1], 0, 5)
+        $name = short_name::no_middle(Member::get_name(MEMBER_ID));
+        $bodyEmail = "Пользователь {$name} назначил вас оператором по заявке от {$date}: <br> Имя: {$data->name} <br> Телефон: {$data->phone} <br> Перейти к заявке https://reg-page.ru/calls?tab=currents&id={$data->id}";
+        Emailing::send_by_key($data->operator, 'Вы назначены оператором для звонка по проекту BFA', $bodyEmail);
       }
       // готовим запрос
       $setQuery = '';
@@ -183,15 +201,15 @@ class CallsDB extends DBQuery
         }
       }
 
-      $dateNewCall = date('d-m-Y H:i');
+      $dateNewCall = date('d.m.Y H:i');
       $nameAuthorNewCall = short_name::no_middle(Member::get_name(MEMBER_ID));
       $data->history = "{$dateNewCall} Заявка создана ({$nameAuthorNewCall})<br>";
       if ($simDouble) {
-        $data->history .= date('d-m-Y H:i') . " Повтор (определено при сохранении)<br>";
+        $data->history .= date('d.m.Y H:i') . " Повтор (определено при сохранении)<br>";
       }
       // если заявка при создании назначена
       if (isset($data->operator) && $data->operator === MEMBER_ID && $data->status === 'В работе') {
-        $data->history .=  date('d-m-Y H:i') . " Заявка взята в работу ({$nameAuthorNewCall})<br>";
+        $data->history .=  date('d.m.Y H:i') . " Заявка взята в работу ({$nameAuthorNewCall})<br>";
       }
       foreach ($data as $key => $value) {
         $key = db_real_escape_string($key);
@@ -226,12 +244,16 @@ class CallsDB extends DBQuery
 
     // уведомление оператору о назначении
     if (isset($data->operator) && !empty($data->operator) && $checkData['operator'] !== $data->operator && MEMBER_ID !== $data->operator && $data->status === 'В работе') {
-      $date = explode(' ' ,$checkData['created_date']);
-      $date = date_convert::yyyymmdd_to_ddmmyyyy($date[0]); //  . ' ' . substr($date[1], 0, 5)
+      $date = date_convert::yyyymmdd_to_ddmmyyyy(explode(' ' ,$checkData['created_date'])[0]); //  . ' ' . substr($date[1], 0, 5)
       $name = short_name::no_middle(Member::get_name(MEMBER_ID));
       $nameOperator = short_name::no_middle(Member::get_name($data->operator));
-      $dateStart =  date('d-m-Y H:i');
-      $history = $checkData['history'] . "{$dateStart} Заявка взята в работу ({$nameOperator})<br>";
+      $dateStart =  date('d.m.Y H:i');
+      if (empty($checkData['operator'])) {
+        $noticeText = "Заявка назначена в работу оператору";
+      } else {
+        $noticeText = "Назначен новый оператор";
+      }
+      $history = $checkData['history'] . "{$dateStart} {$noticeText} {$nameOperator} (назначил {$name})<br>";
       DBQuery::set('calls', 'history', $history, 'id', $data->id);
       $bodyEmail = "Пользователь {$name} назначил вас оператором по заявке от {$date}: <br> Имя: {$data->name} <br> Телефон: {$data->phone} <br> Перейти к заявке https://reg-page.ru/calls?tab=currents&id={$data->id}";
       Emailing::send_by_key($data->operator, 'Вы назначены оператором для звонка по проекту BFA', $bodyEmail);
@@ -241,7 +263,7 @@ class CallsDB extends DBQuery
       $date = date_convert::yyyymmdd_to_ddmmyyyy(explode(' ' ,$checkData['created_date'])[0]);
       $name = short_name::no_middle(Member::get_name(MEMBER_ID));
       $nameOperator = short_name::no_middle(Member::get_name($data->operator));
-      $dateStart =  date('d-m-Y H:i');
+      $dateStart =  date('d.m.Y H:i');
       $history = $checkData['history'] . "{$dateStart} Повторная заявка передана на проверку ({$nameOperator})<br>";
       DBQuery::set('calls', 'history', $history, 'id', $data->id);
       $bodyEmail = "Пользователь {$name} назначил вас оператором по заявке от {$date}: <br> Имя: {$data->name} <br> Телефон: {$data->phone} <br> Перейти к заявке https://reg-page.ru/calls?tab=currents&id={$data->id}";
