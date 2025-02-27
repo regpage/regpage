@@ -157,13 +157,37 @@ $('.saveProfile').click(function(){
     var el = $('#user-profile');
     let locality_prepare = '';
     let locality_new_prepare = '';
+    // проверка обязательных полей, кроме местности, сброс и установка рамок для полей
+    let fields_for_check = [[".emName", "ФИО"], [".emGender", "пол"], [".emCitizenship", "гражданство"]];
+    let error_field;
+    for (let i = 0; i < fields_for_check.length; i++) {
+      if (!el.find(fields_for_check[i][0]).val() || el.find(fields_for_check[i][0]).val() === "_none_") {
+        if (!error_field) {
+          error_field = fields_for_check[i][1];
+        }
+        el.find(fields_for_check[i][0]).css("border-color", "red");
+      } else {
+        el.find(fields_for_check[i][0]).css("border-color", "#ccc");
+      }
+    }
+    if (error_field) {
+      showError('Поле "' + error_field + '" должно быть заполненно.');
+      return;
+    }
+    // проверки местности
+    if (el.find(".emLocality").val() == "_none_" && !el.find(".emLocalityNew").val()) {
+      el.find(".emLocality").css("border-color", "red");
+      showError('Поле "местность" или "новая местность" должны быть заполненны.');
+      return;
+    }
+
     if (el.find(".emLocalityNew").val()) {
       locality_new_prepare = el.find(".emLocalityNew").val();
       el.find(".emLocality").val("_none_");
-    } else if (el.find(".emLocality").val() == "_none_" && !el.find(".emLocalityNew").val()) {
-      showError('Поле "местность" или "новая местность" должны быть заполненны.');
+      el.find(".emLocality").css("border-color", "#ccc");
     } else if (el.find(".emLocality").val() && !el.find(".emLocalityNew").val()) {
       locality_prepare = el.find(".emLocality").val();
+      el.find(".emLocality").css("border-color", "#ccc");
     }
 
     $.post("/ajax/set.php?set_profile",{
@@ -191,6 +215,11 @@ $('.saveProfile').click(function(){
         showHint("Ваши данные успешно сохранены!");
     });
 });
+
+if ($('#user-profile .emLocalityNew').val()) {
+  $(".block-new-locality").show();
+  $(".handle-new-locality").hide();  
+}
 
 $('#modalShowChangeLoginInfoBtn').click(function(){
   window.location = '/login';

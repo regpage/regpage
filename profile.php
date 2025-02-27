@@ -74,7 +74,7 @@
     <div style="margin-bottom: 10px; color: cadetblue;">
         <span class="handle-new-locality">Вашего населённого пункта нет в списке?</span>
     </div>
-    <div class="control-group row-fluid block-new-locality">
+    <div class="control-group row-fluid block-new-locality" style="display: none;">
         <input class="span12 emLocalityNew" placeholder="Введите название населённого пункта в этом поле" value="<?php echo $member['new_locality']; ?>" type="text" maxlength="50">
     </div>
     <!--<div class="control-group row-fluid">
@@ -291,4 +291,4 @@ var memberId = '<?php echo $memberId; ?>';
         }
     });
 </script>
-<script src="/js/profile.js?v4"></script>
+<script src="/js/profile.js?v5"></script>
