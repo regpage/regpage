@@ -130,6 +130,7 @@ class CallsDB extends DBQuery
     global $db;
     $isNew = false;
     $simChangedStatus = false;
+    $checkingSecurity = false;
     if (isset($data->id)) {
       $checkData = self::getCall($data->id)[0];
       // проверяем на дубликат номер телефона
@@ -185,6 +186,19 @@ class CallsDB extends DBQuery
       $keys = '';
       $values = '';
       $simDouble = false;
+      // проверка безопастности подозрительный заказчик
+      // добавить управление на сайт
+      $checkingSecurity = self::checkingSecurity($data->locality);
+      // добавляем комментарий
+      if ($checkingSecurity) {
+        $data->operator = '000004947';
+        $data->status = 'Уточнение';
+        if (empty($data->comment)) {
+          $data->comment = $checkingSecurity;
+        } else {
+          $data->comment = trim($data->comment) . '\r\n' . $checkingSecurity;
+        }
+      }
       // проверяем на дубликат
       if ($data->status === 'Входящая') {
         // проверяем номер телефона
@@ -204,8 +218,13 @@ class CallsDB extends DBQuery
       $dateNewCall = date('d.m.Y H:i');
       $nameAuthorNewCall = short_name::no_middle(Member::get_name(MEMBER_ID));
       $data->history = "{$dateNewCall} Заявка создана ({$nameAuthorNewCall})<br>";
+      // история, подозрительная заявка
+      if ($checkingSecurity) {
+        $data->history .= "{$dateNewCall} Установлен статус Уточнение (автоматически)<br>";
+        $data->history .= "{$dateNewCall} Назначен новый оператор " . short_name::no_middle(Member::get_name('000004947')) . " (автоматически)<br>";
+      }
       if ($simDouble) {
-        $data->history .= date('d.m.Y H:i') . " Повтор (определено при сохранении)<br>";
+        $data->history .= "{$dateNewCall} Повтор (определено при сохранении)<br>";
       }
       // если заявка при создании назначена
       if (isset($data->operator) && $data->operator === MEMBER_ID && $data->status === 'В работе') {
@@ -268,6 +287,22 @@ class CallsDB extends DBQuery
       DBQuery::set('calls', 'history', $history, 'id', $data->id);
       $bodyEmail = "Пользователь {$name} назначил вас оператором по заявке от {$date}: <br> Имя: {$data->name} <br> Телефон: {$data->phone} <br> Перейти к заявке https://reg-page.ru/calls?tab=currents&id={$data->id}";
       Emailing::send_by_key($data->operator, 'Вы назначены оператором для звонка по проекту BFA', $bodyEmail);
+    }
+    // уведомление о подозрении
+    if ($checkingSecurity) {
+      $textSecurityEmailing = "Заявка от " . date('d.m.Y H:i') . "<br>ФИО: {$data->name}<br>Город: {$data->locality}<br>Телефон: {$data->phone} <br> Перейти к заявке https://reg-page.ru/calls?tab=currents&id={$data->id}";
+      # уведомление администратора
+      $resultSecurityEmailing = mail(
+        'zhichkinroman@gmail.com,and1ievsky@gmail.com', # To a.rudanok@gmail.com
+        '=?utf-8?B?'.base64_encode('Проверить экспресс заказ').'?=', # Subject
+        $textSecurityEmailing, # Text of the message
+        join("\r\n", array( # другие заголовки
+        'From: noreply@reg-page.ru',
+        'Content-Type: text/html; charset=utf-8',
+        'Reply-To: noreply@reg-page.ru',
+        'X-Mailer: PHP/'.phpversion()
+  		  ))
+      );
     }
 
     return $res;
@@ -356,5 +391,49 @@ class CallsDB extends DBQuery
     while ($row = $res->fetch_assoc()) $data['period']['error']=$row['incomming'];
 
     return $data;
+  }
+
+  # функция проверки города
+  static function checkCities($city) {
+    $city = trim($city);
+
+    # передана пустая строка
+    if (empty($city)) {
+      return false;
+    }
+
+    # список городов для проверки
+    $cities = parent::get('list', 'calls_blacklist', 'value');
+    $city = mb_strtolower($city);
+
+    # поиск совпадений
+    foreach ($cities as $value) {
+      # если название города из списка городов состоит из двух слов
+      if (strpos(trim($value['value']), ' ') !== false) {
+        $temp = explode(' ', trim($value['value']));
+        if (isset($temp[1])) {
+          if (stripos($city, $temp[0]) !== false && stripos($city, $temp[1]) !== false) {
+            # найдено совпадение
+            return true;
+          }
+        }
+      } elseif (stripos($city, $value['value']) !== false) { # если название города из списка городов состоит из одного слова
+        # найдено совпадение
+        return true;
+      }
+    }
+    # не обнаружено совпадений
+    return false;
+  }
+
+  static function checkingSecurity($city='')
+  {
+    # проверка подозрительной активности
+    if (!self::checkCities($city)) {
+      return false;
+    }
+
+    # возвращаем комментарий
+    return 'Экспресс заказ: Заказчик требует проверки.';
   }
 }
