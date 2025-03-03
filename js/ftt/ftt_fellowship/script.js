@@ -404,7 +404,11 @@ $(document).ready(function(){
     data_temp["time"] = $("#mdl_meet_time").val();
     data_temp["duration"] = $("#mdl_meet_duration").val();
     data_temp["serving_one"] = $("#mdl_meet_serving_ones_list").val();
-    data_temp["trainee"] = $("#mdl_meet_trainee_list").val();
+    if ($("#mdl_meet_trainee_list").val() === "_none_") {
+      data_temp["trainee"] = "";
+    } else {
+      data_temp["trainee"] = $("#mdl_meet_trainee_list").val();
+    }
     data_temp["comment_train"] = $("#mdl_meet_comment_trainee").val();
     data_temp["comment_serv"] = ""; //$("#mdl_meet_comment_serving_one").val()
     data.set("data", JSON.stringify(data_temp));

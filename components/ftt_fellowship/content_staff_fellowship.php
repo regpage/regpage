@@ -52,10 +52,10 @@
   foreach (get_communication_records_staff($serving_ones_flt, $trainee_flt, $active_flt, $meet_curent_sorting) as $key => $value) {
     $hide = '';
     if ($serving_ones_flt === $memberId) {
-      $hide = 'd-none';
+      //$hide = 'd-none';
     }
     $bg_busy = '';
-    if (!empty($value['trainee'])) {
+    if (!empty($value['trainee']) && $value['trainee'] !== '_none_') {
       $bg_busy = 'green_string';
     }
     $time_to = '';

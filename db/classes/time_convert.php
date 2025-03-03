@@ -19,7 +19,7 @@ class time_convert {
     if ($minutes === 0) {
       $minutes = '00';
     } elseif ($minutes < 10) {
-      $minutes = '0' + strval($minutes);
+      $minutes = '0' . strval($minutes);
     }
 
     return $hours . ':' . $minutes;
