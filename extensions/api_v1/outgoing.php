@@ -76,32 +76,43 @@ curl_setopt($curl,CURLOPT_POST,true);
 curl_setopt($curl,CURLOPT_POSTFIELDS, json_encode(['request' => $data]));
 curl_setopt($curl,CURLOPT_HEADER,false);
 
+
 $out=curl_exec($curl);
 $code=curl_getinfo($curl,CURLINFO_HTTP_CODE);
 curl_close($curl);
 
 $answer = json_decode($out, true);
 
-if ($answer['message'] === 'success') {
+if (isset($answer['message']) && $answer['message'] === 'success') {
   //logFileWriter($memberId, 'ЗВОНКИ. Заказ передан в CRM. Присвоен ID '.$answer['id'], 'DEBUG');
   DBQuery::set('calls', 'crm_id', $answer['id'], 'id', $_GET['id']);
   echo $answer['id'];
   //header("Location: https://www.bibleforall.ru/");
 } else {
-  if ($answer['id']) {
+  if (isset($answer['id']) && $answer['id']) {
     $textAnswer = $answer['id'];
   } else {
     $textAnswer = 'ЗНАЧЕНИЕ В ОТВЕТЕ ОТСУТСТВУЕТ';
   }
   //logFileWriter($memberId, 'ЗВОНКИ. Возможно заказ '.$name.' НЕ ПЕРЕДАН в CRM. НЕТ ОТВЕТА С ID от сервера. Ответ: '.$textAnswer, 'ERROR');
 
-  //EMAIL TO DEVELOPER
-  /*$email = 'zhichkinroman@gmail.com';
-  $error = null;
-  $message = 'Админ: '.$memberId.' Не удалось получить ответ от CRM при отправке заказа на имя '.$name.' с сайта reg-page.ru. Ответ с сервера: '.$textAnswer;
-  $res = EMAILS::sendEmail ($email, "Новый заказ с сайта регистрации", $message);
-  if($res != null){
-    $error = $res;
+  // Уведомление разработчика о сбое
+  $emails = 'zhichkinroman@gmail.com'; # To a.rudanok@gmail.com,and1ievsky@gmail.com
+  $message = 'ЗВОНКИ.<br>Админ: '.$memberId.'<br>Не удалось получить ответ от CRM при отправке заказа с сайта reg-page.ru:<br>имя '.$name.'<br>тел. ' . $phone . '<br>Ответ с сервера: '.$textAnswer;
+  $mail = mail(
+    $emails, # To
+    '=?utf-8?B?'.base64_encode('Звонки. Сбой при отправке заказа в CRM').'?=', # Subject
+    $message, # Text of the message
+    join("\r\n", array( # другие заголовки
+    'From: noreply@reg-page.ru',
+    'Content-Type: text/html; charset=utf-8',
+    'Reply-To: noreply@reg-page.ru',
+    'X-Mailer: PHP/'.phpversion()
+    ))
+  );
+  // $error = null;
+  /*if($mail != null){
+    $error = $mail;
   }
   if($error == null){
     $textmext = 'Не удалось получить ответ от CRM. Отправлено уведомление по email разработчику.';
