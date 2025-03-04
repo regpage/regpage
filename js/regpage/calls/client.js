@@ -324,12 +324,14 @@ $(document).ready(function(){
     })
     .then(response => response.text()) // text
     .then(commits => {
-      if (commits) {
+      if (!isNaN(commits) && commits) { //commits !== "Failed" ||
         $(".calls_list .call_str[data-id='" + $("#modal_call_edit_add").attr("data-id") + "']").remove();
         showHint("Заказ отправлен в CRM.");
         /*setTimeout(function () {
           //location.reload();
         }, 700);*/
+      } else {
+        showError("Сбой при отправке заказа в CRM. Попробуйте повторить позже.");
       }
     });
   });
