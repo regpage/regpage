@@ -62,7 +62,7 @@ function setAddExtraHelp($data){
   db_query("LOCK TABLES ftt_extra_help WRITE");
   $res = db_query("INSERT INTO `ftt_extra_help`(`date`, `member_key`, `reason`, `archive`, `author`, `comment`, `archive_date`, `serving_one`, `changed`)
   VALUES ('$date','$member_key','$reason','$archive','$author','$comment','$archive_date', '$serving_one', 1)");
-  if ($res) {    
+  if ($res) {
     $result = $db->insert_id;
     db_query("UNLOCK TABLES;");
     $res3 = db_query("SELECT feh.id AS feh_id, feh.date, feh.member_key, feh.reason, feh.archive, feh.author,
@@ -118,7 +118,7 @@ function setExtraHelpDone($id, $archive, $adminId) {
   $archive = $db->real_escape_string($archive);
   $adminId = $db->real_escape_string($adminId);
   if ($archive == 1) {
-    $res = db_query("UPDATE `ftt_extra_help` SET `archive`='$archive', `serving_one`= '$adminId', `archive_date`=NOW(), `changed`= 1 WHERE `id` = $id");
+    $res = db_query("UPDATE `ftt_extra_help` SET `archive`='$archive', `serving_one`= '$adminId', `archive_date`=CURDATE(), `changed`= 1 WHERE `id` = $id");
   } else {
     $res = db_query("UPDATE `ftt_extra_help` SET `archive`='$archive', `serving_one`= '', `archive_date`='0000-00-00', `changed`= 1 WHERE `id` = $id");
   }

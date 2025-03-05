@@ -210,7 +210,7 @@ function  db_crmIdSet($idCRM, $id, $memberId, $text, $comment, $notes){
   $memberId = $db->real_escape_string($memberId);
   $text = $db->real_escape_string($text);
   $comment = $db->real_escape_string($comment);
-  db_query("UPDATE contacts SET `crm_id` = '$idCRM', `order_date` = NOW(), `comment` = '$comment' WHERE `id` = '$id'");
+  db_query("UPDATE contacts SET `crm_id` = '$idCRM', `order_date` = CURDATE(), `comment` = '$comment' WHERE `id` = '$id'");
   db_query("INSERT INTO chat (`group_id`, `member_key`, `message`) VALUES ('$id', '$memberId', '$text')");
   if ($notes) {
     $notes = $db->real_escape_string($notes);
@@ -367,9 +367,9 @@ function db_addStatusHistoryStr($status, $idContact)
   while ($row = $res->fetch_assoc()) $check=$row['id_contact'];
 
   if ($check) {
-    db_query("UPDATE contacts_statistic SET `date_changed` = NOW() WHERE `status` = '$status' AND `id_contact` = '$idContact'");
+    db_query("UPDATE contacts_statistic SET `date_changed` = CURDATE() WHERE `status` = '$status' AND `id_contact` = '$idContact'");
   } else {
-    db_query("INSERT INTO contacts_statistic (`date_changed`, `status`, `id_contact`) VALUES (NOW(), '$status', '$idContact')");
+    db_query("INSERT INTO contacts_statistic (`date_changed`, `status`, `id_contact`) VALUES (CURDATE(), '$status', '$idContact')");
   }
 }
 

@@ -267,7 +267,7 @@ function set_late_automatic($member_key, $date, $delay, $session_name, $end_time
          $attendance_and_late = $result[$i]['id_attendance'].':'.$result[$i]['id'].',';
          $attendance_and_late .= $result[$i+1]['id_attendance'].':'.$result[$i+1]['id'].',';
          $attendance_and_late .= $result[$i+2]['id_attendance'].':'.$result[$i+2]['id'];
-        $res4 = db_query("INSERT INTO `ftt_extra_help` (`date`, `member_key`, `reason`, `attendance_and_late`, `changed`) VALUES (NOW(), '$member_key', '$reason_text', '$attendance_and_late', 1)");
+        $res4 = db_query("INSERT INTO `ftt_extra_help` (`date`, `member_key`, `reason`, `attendance_and_late`, `changed`) VALUES (CURDATE(), '$member_key', '$reason_text', '$attendance_and_late', 1)");
       }
     }
   return count($result).' '.$count_lates;
@@ -496,8 +496,8 @@ function set_permission($sessions, $adminId)
     $date_decision = "''";
     $is_send_blank = true;
   } elseif ($status === '2' || $status === '3') {
-    $date_decision_update = ' `decision_date`= NOW(), ';
-    $date_decision = 'NOW()';
+    $date_decision_update = ' `decision_date`= CURDATE(), ';
+    $date_decision = 'CURDATE()';
   } else if ($status === '0' || empty($status)) {
     $date_send = "''";
     $date_decision = "''";
