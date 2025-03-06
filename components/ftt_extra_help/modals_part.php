@@ -144,7 +144,10 @@
           <div class="col-7">
           <div class="form-group">
               <label class="label-google" for="session_name_field">Мероприятие*</label>
-              <input class="input-google" id="session_name_field">
+              <input class="input-google" id="session_name_field" list="session_name_field_datalist">
+              <datalist id="session_name_field_datalist">
+
+              </datalist>
             </div>
           </div>
           <div class="col-5">

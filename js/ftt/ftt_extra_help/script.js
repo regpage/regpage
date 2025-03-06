@@ -389,6 +389,46 @@ function get_data_fields() {
  }
  }
 
+// формируем список мероприятий для бланка опозданий
+$("#date_field_late, #fio_field_late").change(function () {
+  if ($("#date_field_late").val() && $("#fio_field_late").val() && $("#fio_field_late").val() !== "_none_") {
+    late_modal_render_datalist($("#fio_field_late").val(), $("#date_field_late").val());
+  }
+});
+
+$("#modalAddEditLate").on("shown.bs.modal", function () {
+  setTimeout(function () {
+    if ($("#date_field_late").val() && $("#fio_field_late").val() && $("#fio_field_late").val() !== "_none_") {
+      late_modal_render_datalist($("#fio_field_late").val(), $("#date_field_late").val());
+    } else {
+      $("#session_name_field_datalist").html("");
+    }
+  }, 500);
+});
+
+function late_modal_render_datalist(member_key, date) {
+  let semester_range;
+  let day_of_date = "day"+getNameDayOfWeekByDayNumber(date, false, false, true);
+  if (day_of_date === "day0") {
+    day_of_date = "day7";
+  }
+  trainee_list_full[member_key]["semester"] > 4 ? semester_range = 2 : semester_range = 1;
+  let time_zone = trainee_list_full[member_key]["time_zone"];
+  fetch("ajax/ftt_attendance_ajax.php?type=get_sessions_staff&semester_range="
+  +semester_range+"&time_zone=" + time_zone + "&date="+date+"&day="+day_of_date)
+  .then(response => response.json())
+  .then(commits => {
+    let html = "";
+    for (const variable in commits.result) {
+      if (commits.result.hasOwnProperty(variable)) {
+        if (commits.result[variable][day_of_date] && commits.result[variable].attendance === "1") {
+          html += "<option value='"+ commits.result[variable][day_of_date] + " " + commits.result[variable].session_name + "'>";
+        }
+      }
+    }
+    $("#session_name_field_datalist").html(html);
+  });
+}
 // save data
 function save_extra_help_data() {
   let data = get_data_fields();
@@ -477,7 +517,7 @@ $('#modalAddEditExtraHelp .btn-secondary').click(function (e) {
   }
 
   if ($('#modalAddEditExtraHelp').attr('data-reason') !== $("#reason_field").val()
-  || ($('#modalAddEditExtraHelp').attr('data-comment') !== $("#comment_field").val() && $("#comment_field").val() !== undefined) 
+  || ($('#modalAddEditExtraHelp').attr('data-comment') !== $("#comment_field").val() && $("#comment_field").val() !== undefined)
   || $('#modalAddEditExtraHelp').attr('data-date') !== $("#date_field").val()
   || ($('#modalAddEditExtraHelp').attr('data-trainee_id') !== $("#fio_field").val()
   && $("#fio_field").val() !== '_none_')
