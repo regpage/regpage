@@ -131,26 +131,25 @@ class CallsDB extends DBQuery
     $isNew = false;
     $simChangedStatus = false;
     $checkingSecurity = false;
+    $data->history = '';
     if (isset($data->id)) {
       $checkData = self::getCall($data->id)[0];
+      $data->history .= $checkData['history'];
       // проверяем на дубликат номер телефона
       //$extraComment = self::checkPhoneNumber($data, $checkData);
 
       // проверяем изменения для истории сравнить операторов и статусы
       if (isset($data->operator) && isset($data->status) && ($data->operator === $checkData['operator']) && ($data->status !== $checkData['status'])) {
         $nameUser = short_name::no_middle(Member::get_name(MEMBER_ID));
-        $data->history = $checkData['history'] . date('d.m.Y H:i') . " Установлен статус {$data->status} ({$nameUser})<br>";
+        $data->history .= date('d.m.Y H:i') . " Установлен статус {$data->status} ({$nameUser})<br>";
         $simChangedStatus = true;
       }
       // проверяем изменения для истории сравнить операторов
       if (isset($data->operator) && !empty($data->operator) && isset($data->status) && !empty($checkData['operator']) && $data->operator !== $checkData['operator'] && $data->status !== 'В работе') {
         $newOperatorName = short_name::no_middle(Member::get_name($data->operator));
         $nameAdmin = short_name::no_middle(Member::get_name(MEMBER_ID));
-        if ($simChangedStatus === false) {
-          $data->history = $checkData['history'] . date('d.m.Y H:i') . " Назначен новый оператор {$newOperatorName} (назначил {$nameAdmin})<br>";
-        } else {
-          $data->history = $data->history . date('d.m.Y H:i') . " Назначен новый оператор {$newOperatorName} (назначил {$nameAdmin})<br>";
-        }
+        $data->history .= date('d.m.Y H:i') . " Назначен новый оператор {$newOperatorName} (назначил {$nameAdmin})<br>";
+
         // письмо новому оператору
         $date = date_convert::yyyymmdd_to_ddmmyyyy(explode(' ' ,$checkData['created_date'])[0]);
         //$date = date_convert::yyyymmdd_to_ddmmyyyy($date[0]); //  . ' ' . substr($date[1], 0, 5)
@@ -179,30 +178,19 @@ class CallsDB extends DBQuery
           }
         }
       }
-
+      // сохраняем изменения
       $res=db_query("UPDATE calls SET {$setQuery} WHERE id='{$data->id}'");
     } else {
       $isNew = true;
       $keys = '';
       $values = '';
       $simDouble = false;
-      // проверка безопастности подозрительный заказчик
-      // добавить управление на сайт
-      $checkingSecurity = self::checkingSecurity($data->locality);
-      // добавляем комментарий
-      if ($checkingSecurity) {
-        $data->operator = '000004947';
-        $data->status = 'Уточнение';
-        if (empty($data->comment)) {
-          $data->comment = $checkingSecurity;
-        } else {
-          $data->comment = trim($data->comment) . '\r\n' . $checkingSecurity;
-        }
-      }
       // проверяем на дубликат
-      if ($data->status === 'Входящая') {
+      // почему проверяются только Входящие при создании
+      //if ($data->status === 'Входящая') {
         // проверяем номер телефона
         if (is_numeric(self::getIDDoublePhoneNumber($data->phone))) {
+          // устанавливаем статус назначаем оператора и добавляем комментарий
           $simDouble = true;
           $extraComment = self::checkPhoneNumber($data);
           $data->status = 'Повтор';
@@ -213,22 +201,18 @@ class CallsDB extends DBQuery
             $data->comment = trim($data->comment) . '\r\n' . $extraComment;
           }
         }
-      }
+      //}
 
       $dateNewCall = date('d.m.Y H:i');
       $nameAuthorNewCall = short_name::no_middle(Member::get_name(MEMBER_ID));
-      $data->history = "{$dateNewCall} Заявка создана ({$nameAuthorNewCall})<br>";
-      // история, подозрительная заявка
-      if ($checkingSecurity) {
-        $data->history .= "{$dateNewCall} Установлен статус Уточнение (автоматически)<br>";
-        $data->history .= "{$dateNewCall} Назначен новый оператор " . short_name::no_middle(Member::get_name('000004947')) . " (автоматически)<br>";
-      }
+      $data->history .= "{$dateNewCall} Заявка создана ({$nameAuthorNewCall})<br>";
+
       if ($simDouble) {
         $data->history .= "{$dateNewCall} Повтор (определено при сохранении)<br>";
       }
       // если заявка при создании назначена
       if (isset($data->operator) && $data->operator === MEMBER_ID && $data->status === 'В работе') {
-        $data->history .=  date('d.m.Y H:i') . " Заявка взята в работу ({$nameAuthorNewCall})<br>";
+        $data->history .= "{$dateNewCall} Заявка взята в работу ({$nameAuthorNewCall})<br>";
       }
       foreach ($data as $key => $value) {
         $key = db_real_escape_string($key);
@@ -251,7 +235,7 @@ class CallsDB extends DBQuery
           }
         }
       }
-
+      // добавляем новый звонок
       $res=db_query("INSERT INTO `calls` ({$keys}) VALUES ({$values})");
       $data->id = $db->insert_id;
       $checkData = self::getCall($data->id)[0];
@@ -259,6 +243,10 @@ class CallsDB extends DBQuery
       if (isset($data->operator) && !empty($data->operator) && $data->operator !== MEMBER_ID && $data->status === 'В работе') {
         $checkData['operator'] = MEMBER_ID;
       }
+    }
+    // проверка безопастности подозрительный заказчик
+    if (!empty($data->locality) && stripos($data->comment, 'Заказчик требует проверки') === false) {
+      $checkingSecurity = self::checkingSecurity($data->locality);
     }
 
     // уведомление оператору о назначении
@@ -272,37 +260,41 @@ class CallsDB extends DBQuery
       } else {
         $noticeText = "Назначен новый оператор";
       }
-      $history = $checkData['history'] . "{$dateStart} {$noticeText} {$nameOperator} (назначил {$name})<br>";
-      DBQuery::set('calls', 'history', $history, 'id', $data->id);
+      $data->history .= "{$dateStart} {$noticeText} {$nameOperator} (назначил {$name})<br>";
+      DBQuery::set('calls', 'history', $data->history, 'id', $data->id);
       $bodyEmail = "Пользователь {$name} назначил вас оператором по заявке от {$date}: <br> Имя: {$data->name} <br> Телефон: {$data->phone} <br> Перейти к заявке https://reg-page.ru/calls?tab=currents&id={$data->id}";
       Emailing::send_by_key($data->operator, 'Вы назначены оператором для звонка по проекту BFA', $bodyEmail);
     }
     // уведомление о повторе
-    if ((isset($data->operator) && !empty($data->operator) && $data->operator === '000004947' && $data->status === 'Повтор' && $isNew) || (isset($data->operator) && !empty($data->operator) && $data->operator === '000004947' && $data->status === 'Повтор' && $checkData['status'] !== $data->status && !$isNew)) {
+    if ((isset($data->operator) && $data->operator === '000004947' && $data->status === 'Повтор' && $isNew) || (isset($data->operator) && $data->operator === '000004947' && $data->status === 'Повтор' && $checkData['status'] !== $data->status && !$isNew)) {
       $date = date_convert::yyyymmdd_to_ddmmyyyy(explode(' ' ,$checkData['created_date'])[0]);
       $name = short_name::no_middle(Member::get_name(MEMBER_ID));
       $nameOperator = short_name::no_middle(Member::get_name($data->operator));
       $dateStart =  date('d.m.Y H:i');
-      $history = $checkData['history'] . "{$dateStart} Повторная заявка передана на проверку ({$nameOperator})<br>";
-      DBQuery::set('calls', 'history', $history, 'id', $data->id);
+      $data->history .= "{$dateStart} Повторная заявка передана на проверку ({$nameOperator})<br>";
+      DBQuery::set('calls', 'history', $data->history, 'id', $data->id);
       $bodyEmail = "Пользователь {$name} назначил вас оператором по заявке от {$date}: <br> Имя: {$data->name} <br> Телефон: {$data->phone} <br> Перейти к заявке https://reg-page.ru/calls?tab=currents&id={$data->id}";
       Emailing::send_by_key($data->operator, 'Вы назначены оператором для звонка по проекту BFA', $bodyEmail);
     }
-    // уведомление о подозрении
+    // подозрительный заказчик
     if ($checkingSecurity) {
-      $textSecurityEmailing = "Заявка от " . date('d.m.Y H:i') . "<br>ФИО: {$data->name}<br>Город: {$data->locality}<br>Телефон: {$data->phone} <br> Перейти к заявке https://reg-page.ru/calls?tab=currents&id={$data->id}";
+      // назначаем оператора и статус
+      $data->operator = '000004947';
+      $data->status = 'Уточнение';
+      // добавляем комментарий
+      if (empty($data->comment)) {
+        $data->comment = $checkingSecurity;
+      } else {
+        $data->comment = trim($data->comment) . '\r\n' . $checkingSecurity;
+      }
+      // история, подозрительная заявка
+      $data->history .= date('d.m.Y H:i') ." Установлен статус Уточнение (автоматически)<br>";
+      $data->history .= date('d.m.Y H:i') . " Назначен новый оператор " . short_name::no_middle(Member::get_name('000004947')) . " (автоматически)<br>";
+      // обновляем данные звонка
+      $res=db_query("UPDATE `calls` SET  `operator` = '{$data->operator}', `status` = '{$data->status}', `comment` = '{$data->comment}', `history` = '{$data->history}'  WHERE `id`='{$data->id}'");
       # уведомление администратора
-      $resultSecurityEmailing = mail(
-        'zhichkinroman@gmail.com,and1ievsky@gmail.com', # To a.rudanok@gmail.com
-        '=?utf-8?B?'.base64_encode('Проверить экспресс заказ').'?=', # Subject
-        $textSecurityEmailing, # Text of the message
-        join("\r\n", array( # другие заголовки
-        'From: noreply@reg-page.ru',
-        'Content-Type: text/html; charset=utf-8',
-        'Reply-To: noreply@reg-page.ru',
-        'X-Mailer: PHP/'.phpversion()
-  		  ))
-      );
+      $textSecurityEmailing = "Заявка от " . date('d.m.Y H:i') . "<br>ФИО: {$data->name}<br>Город: {$data->locality}<br>Телефон: {$data->phone} <br> Перейти к заявке https://reg-page.ru/calls?tab=currents&id={$data->id}";
+      Emailing::send('zhichkinroman@gmail.com,and1ievsky@gmail.com', 'Проверить экспресс заказ', $textSecurityEmailing); # To a.rudanok@gmail.com
     }
 
     return $res;
