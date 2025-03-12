@@ -55,8 +55,7 @@ $(document).ready(function() {
         date_list_show = list[i].request_date;
       }
 
-      let extra_field = "";
-      console.log(list[i]);
+      let extra_field = "";      
       if (list[i].notice < 2) {
         extra_field = "<div class='col-1 request_archive'><span class='link_custom'>В архив</span></div>";
       } else if (list[i].notice == 3) {

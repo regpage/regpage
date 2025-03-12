@@ -359,7 +359,7 @@ setTimeout(function () {
       } else if (arr_str[arr_str.length-1] === 'Единичный' || arr_str[arr_str.length-1] === 'Партионный' || arr_str[arr_str.length-1] === 'Упрощенный предоплаченный') {
 				// log
 				toLogFile('Отправление по сделке № '+arr_str[0]+' с трек-номером '+arr_str[1]+' принято к отправлению '+Math.round(resdate)+' дней назад.');
-      } else if (arr_str[arr_str.length-1] === 'Прибыло в место вручения' || arr_str[arr_str.length-1] === 'Временное отсутствие адресата' || arr_str[arr_str.length-1] === 'Адресат заберет отправление сам' || arr_str[arr_str.length-1] === 'Иная' || arr_str[arr_str.length-1] ===  'Неудачная доставка' || arr_str[arr_str.length-1] ===  'Адресат не доступен') {
+      } else if (arr_str[arr_str.length-1] === 'Прибыло в место вручения' || arr_str[arr_str.length-1] === 'Передано почтальону' || arr_str[arr_str.length-1] === 'Временное отсутствие адресата' || arr_str[arr_str.length-1] === 'Адресат заберет отправление сам' || arr_str[arr_str.length-1] === 'Иная' || arr_str[arr_str.length-1] ===  'Неудачная доставка' || arr_str[arr_str.length-1] ===  'Адресат не доступен') {
         if (resdate < 51 && arr_str[6] == '419655' && mode === 'fully') {
           // task
           fetch(pathGlo+'/v1/crm/set_task.php?deal='+arr_str[0]+'&time=64800&comm=ОЖИДАЕТ ВРУЧЕНИЯ С '+arr_str[arr_str.length-3].substr(0,10)+': '+ arr_str[arr_str.length-2]);
@@ -388,7 +388,7 @@ setTimeout(function () {
 					}
         }
         console.log(arr_str[arr_str.length-1]);
-      } else if (arr_str[arr_str.length-1] === 'Вручение адресату' || arr_str[arr_str.length-1] === 'Адресату почтальоном' || arr_str[arr_str.length-1] === 'Адресату с контролем ответа') {
+      } else if (arr_str[arr_str.length-1] === 'Вручение адресату' || arr_str[arr_str.length-1] === 'Вручение адресату по ПЭП' || arr_str[arr_str.length-1] === 'Адресату по QR коду' || arr_str[arr_str.length-1] === 'Адресату почтальоном' || arr_str[arr_str.length-1] === 'Адресату с контролем ответа') {
         if (resdate > 51) {
 						if (mode === 'fully') {
 							// task

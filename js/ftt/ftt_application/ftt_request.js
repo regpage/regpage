@@ -735,9 +735,39 @@ $(document).ready(function(){
     }
     // блоки рекомендации и собеседования
     if ($(this).attr("id") === "point_need_recommend") {
-      $(this).prop("checked") ? $("#recommended_block").show() : $("#recommended_block").hide();
+      if ($(this).prop("checked")) {
+        $("#recommended_block").show();
+      } else {
+        $("#recommended_block").hide();
+        // меняем статус если он = рекомендации
+        // меняем статус в случае если указан статус рекомендации тк рекомендация отключена УТОЧНИТЬ НА КАКОЙ
+        if ($("#main_container").attr("data-status") === "2" || $("#main_container").attr("data-status") === "3") {
+          //setCookie("show_recommend", 1);
+          setTimeout(function () {
+            fetch("ajax/ftt_request_ajax.php?type=set_status&status=1&id="+$("#main_container").attr("data-id"))
+            .then(response => response.json())
+            .then(result => {
+              location.reload();
+            });
+          }, 100);
+        }
+      }
     } else if ($(this).attr("id") === "point_need_interview") {
-      $(this).prop("checked") ? $("#interview_block").show() : $("#interview_block").hide();
+      if ($(this).prop("checked")) {
+        $("#interview_block").show()
+      } else {
+        $("#interview_block").hide();
+        // меняем статус в случае если указан статус собеседования тк собеседование отключено УТОЧНИТЬ НА КАКОЙ
+        if ($("#main_container").attr("data-status") === "4") {
+          setTimeout(function () {
+            fetch("ajax/ftt_request_ajax.php?type=set_status&status=5&id="+$("#main_container").attr("data-id"))
+            .then(response => response.json())
+            .then(result => {
+              location.reload();
+            });
+          }, 100);
+        }
+      }
     }
 
     /*if (!$(this).is(":checked") && $(this).attr("id") !== "policy_agree") {
@@ -775,7 +805,6 @@ $(document).ready(function(){
     fetch("ajax/ftt_request_ajax.php?type=set&table="+table+"&field="+field+"&data="+value+"&id="+id+"&guest="+is_guest)
     .then(response => response.json())
     .then(result => {
-      console.log(result.result)
       if (result.result > 1) {
         $("#main_container").attr("data-id", result.result);
       }
