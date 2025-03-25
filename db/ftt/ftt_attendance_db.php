@@ -42,7 +42,7 @@ function getFttAttendanceSheetAndStrings($list_access, $condition, $admin_id = '
   $admin_id = $db->real_escape_string($admin_id);
   $list_access_condition;
   $order_by = '';
-  $last_date;
+  $last_date = '';
   // Проверяем что расписание не выходит за период обучения
   if (ftt_info::days_to_end() < -7 && $list_access === '_all_') {
     $last_date_res = db_query("SELECT MAX(fas.date) AS largest_date FROM ftt_attendance_sheet AS fas");
@@ -53,7 +53,7 @@ function getFttAttendanceSheetAndStrings($list_access, $condition, $admin_id = '
   if ($list_access === '_all_') {
     $list_access_condition = '';
   } else {
-    $list_access_condition = " fas.member_key='$list_access' ";
+    $list_access_condition = " fas.member_key='{$list_access}' ";
   }
 
   // периоды (для служащих всегда  week)
@@ -62,9 +62,9 @@ function getFttAttendanceSheetAndStrings($list_access, $condition, $admin_id = '
       // это работает только для обучающихся
       $condition = $list_access_condition.' AND DATE(fas.date) > (CURDATE() - INTERVAL 7 DAY) ';
     } else {
-      // это работает только для сдужащих
-      if ($last_date) {
-        $condition = " fas.date = '$last_date' ";
+      // это работает только для служащих
+      if (!empty($last_date)) {
+        $condition = " fas.date = '{$last_date}' ";
       } else {
         $condition = ' DATE(fas.date) > (CURDATE() - INTERVAL 7 DAY) ';
       }
@@ -102,10 +102,7 @@ function getFttAttendanceSheetAndStrings($list_access, $condition, $admin_id = '
 
   $header = [];
   $strings = [];
-  $res = db_query("SELECT fas.id, fas.member_key, fas.date, fas.comment, fas.status, fas.date_send, fas.bible,
-     fas.morning_revival, fas.personal_prayer, fas.common_prayer, fas.prophecy, fas.bible_reading, fas.ministry_reading, fas.mark,
-     fas.bible_book, fas.bible_chapter,
-     m.name, tra.serving_one, tra.pause_start, tra.pause_stop, tra.pause_comment
+  $res = db_query("SELECT fas.*, m.name, tra.serving_one, tra.pause_start, tra.pause_stop, tra.pause_comment, tra.participation_type
     FROM ftt_attendance_sheet AS fas
     INNER JOIN member m ON m.key = fas.member_key
     INNER JOIN ftt_trainee tra ON tra.member_key = fas.member_key

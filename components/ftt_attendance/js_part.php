@@ -1,5 +1,6 @@
 <script>
-let ftt_access_trainee = "<?php echo strval($ftt_access['ftt_service']); ?>";
+// проверить соответствие типов ftt_access_trainee число илли строка?
+let ftt_access_trainee = "<?php if ($ftt_access['group'] === 'trainee') echo strval($ftt_access['ftt_service']); ?>";
 ftt_access_trainee === 6 ? ftt_access_trainee = true : ftt_access_trainee = false;
 let coordinator = "<?php echo $serving_trainee; ?>";
 if (!ftt_access_trainee && coordinator) {
@@ -79,7 +80,7 @@ if ($(window).width()<=769) {
   $(".row_meet").hide();
 }
 </script>
-<script src="/js/ftt/ftt_attendance/script.js?v207"></script>
+<script src="/js/ftt/ftt_attendance/script.js?v212"></script>
 <script src="/js/ftt/ftt_attendance/design.js?v34"></script>
 <script src="/js/modules/week.js?v1"></script>
 <script src="/js/modules/time.js?v1"></script>

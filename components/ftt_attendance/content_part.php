@@ -69,7 +69,7 @@
       <hr id="hight_line" style="margin-left: 0px; margin-right: -15px; margin-top: 0px; margin-bottom: 0px; border-color: lightgray;">
       <div id="list_content" class="mb-2">
 
-        <?php          
+        <?php
           if ($ftt_access['group'] === 'trainee') {
             $serving_trainee_disabled = 'disabled';
             $list_access = $memberId;
@@ -112,7 +112,9 @@
           $personal_prayer = $value['personal_prayer'];
           $common_prayer = $value['common_prayer'];
           $bible_reading = $value['bible_reading'];
+          $group_study = $value['group_study'];
           $ministry_reading = $value['ministry_reading'];
+          $gospel = $value['gospel'];
           $comment = $value['comment'];
           $name_trainee = short_name::no_middle($value['name']);
           $bible_reading_text = '';
@@ -194,7 +196,7 @@
             $show_string = '';
           }*/
           if ($trainee_data['semester'] < 5) {
-            echo "<div class='row list_string' data-id='{$id}' data-date='{$date}' data-member_key='{$member_key}' data-status='{$status}' data-date_send='{$date_send}' data-bible='{$bible}' data-morning_revival='{$morning_revival}' data-personal_prayer='{$personal_prayer}' data-common_prayer='{$common_prayer}' data-prophecy='{$prophecy}' data-bible_reading='{$bible_reading}' data-ministry_reading='{$ministry_reading}' data-bible_book='{$book}' data-bible_chapter='{$chapter}' data-comment='{$comment}' data-toggle='modal' data-target='#modalAddEdit'>
+            echo "<div class='row list_string' data-id='{$id}' data-date='{$date}' data-member_key='{$member_key}' data-status='{$status}' data-date_send='{$date_send}' data-bible='{$bible}' data-morning_revival='{$morning_revival}' data-personal_prayer='{$personal_prayer}' data-common_prayer='{$common_prayer}' data-prophecy='{$prophecy}' data-bible_reading='{$bible_reading}' data-ministry_reading='{$ministry_reading}' data-gospel='{$gospel}' data-group_study='{$group_study}' data-bible_book='{$book}' data-bible_chapter='{$chapter}' data-comment='{$comment}' data-toggle='modal' data-target='#modalAddEdit'>
             <div class='col-2 col_n_1 pl-1'><span class='date_str' data-short='{$day_of_week_short}'>{$short_date}</span><span class='pl-2'> {$day_of_week}</span></div>
             <div class='col-3'><span class='trainee_name'>{$bible_reading_text}</span></div>
             <div class='col-5 col_n_3'>{$comment_short}</div>
@@ -202,7 +204,7 @@
             <div class='comment_mbl pl-1'>$comment_short</div>
             </div>";
           } else {
-            echo "<div class='row list_string' data-id='{$id}' data-date='{$date}' data-member_key='{$member_key}' data-status='{$status}' data-date_send='{$date_send}' data-bible='{$bible}' data-morning_revival='{$morning_revival}' data-personal_prayer='{$personal_prayer}' data-common_prayer='{$common_prayer}' data-prophecy='{$prophecy}' data-bible_reading='{$bible_reading}' data-ministry_reading='{$ministry_reading}' data-bible_book='{$book}' data-bible_chapter='{$chapter}' data-comment='{$comment}' data-toggle='modal' data-target='#modalAddEdit'>
+            echo "<div class='row list_string' data-id='{$id}' data-date='{$date}' data-member_key='{$member_key}' data-status='{$status}' data-date_send='{$date_send}' data-bible='{$bible}' data-morning_revival='{$morning_revival}' data-personal_prayer='{$personal_prayer}' data-common_prayer='{$common_prayer}' data-prophecy='{$prophecy}' data-bible_reading='{$bible_reading}' data-ministry_reading='{$ministry_reading}'  data-gospel='{$gospel}' data-group_study='{$group_study}' data-bible_book='{$book}' data-bible_chapter='{$chapter}' data-comment='{$comment}' data-toggle='modal' data-target='#modalAddEdit'>
             <div class='col-2 col_n_1 pl-1'><span class='date_str' data-short='{$day_of_week_short}'>{$short_date}</span> <span> {$day_of_week}</span></div>
             <div class='col-1'><span class='trainee_name'>{$morning_revival}</span></div>
             <div class='col-1'><span class='trainee_name'>{$personal_prayer}</span></div>

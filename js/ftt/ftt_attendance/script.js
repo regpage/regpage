@@ -35,6 +35,12 @@ $(document).ready(function(){
     }
   });
 
+  $("#bible_field").change(function () {
+    if ($(this).prop("checked")) {
+      showHelp("Пожалуйста, поясните в комментарии на каком именно собрании вы были.");
+    }
+  });
+
   // save select field
   function save_select_field(element, value) {
     let field = element.attr("data-field");
@@ -154,6 +160,10 @@ $(document).ready(function(){
    let create_extrahelp = [];
    let create_late = [];
    let reason;
+   if ($("#bible_field").prop("checked") && !$("#comment_modal").val()) {
+     showError('Укажите в комментарии на каком именно собрании вы были.');
+     return;
+   }
    /*if (!trainee_access && ($("#modalAddEdit").attr("data-author") !== admin_id_gl && $("#modalAddEdit").attr("data-author")) && $("#modalAddEdit").attr("data-status") !== "1") {
      showError('Нельзя сохранить.');
      return;
@@ -327,34 +337,73 @@ function open_blank(el_this) {
    }
 
    if (trainee_list_full[el_this.attr("data-member_key")]["semester"] < 5) {
-     $(".practice_field").each(function () {
-       if ($(this).attr("type") === "checkbox") {
-         // $(this).parent().parent().parent().show();
-       } else {
-         if ($(this).attr("id") === "comment_modal") {
+     if (el_this.attr("data-participation_type") === "1") {
+       $(".practice_field").each(function () {
+         if ($(this).attr("type") === "checkbox") {
            $(this).parent().parent().parent().show();
          } else {
-           // *** BIBLE HERE *** //
-           if ($(this).attr("id") === "bible_reading") {
+           if ($(this).attr("id") === "comment_modal") {
+             $(this).parent().parent().parent().show();
+           } else {
+             // *** BIBLE HERE *** //
+             if ($(this).attr("id") === "bible_reading" || $(this).attr("id") === "morning_revival" || $(this).attr("id") === "group_study" || $(this).attr("id") === "common_prayer" || $(this).attr("id") === "gospel_practice" || $(this).attr("id") === "personal_prayer" || $(this).attr("id") === "ministry_reading") {
+               $(this).parent().parent().parent().show();
+             } else {
+               $(this).parent().parent().parent().hide();
+             }
+           }
+         }
+       });
+     } else {
+       $(".practice_field").each(function () {
+         if ($(this).attr("type") === "checkbox") {
+           $(this).parent().parent().parent().hide();
+         } else {
+           if ($(this).attr("id") === "comment_modal") {
+             $(this).parent().parent().parent().show();
+           } else {
+             // *** BIBLE HERE *** //
+             if ($(this).attr("id") === "bible_reading") {
+               $(this).parent().parent().parent().show();
+             } else {
+               $(this).parent().parent().parent().hide();
+             }
+           }
+         }
+       });
+     }
+   } else if(trainee_list_full[el_this.attr("data-member_key")]["semester"] > 4) {
+     if (el_this.attr("data-participation_type") === "1") {
+       $(".practice_field").each(function () {
+         if ($(this).attr("type") === "checkbox") {
+           $(this).parent().parent().parent().show();
+         } else if ($(this).attr("type") === "number") {
+          $(this).parent().parent().parent().show();
+         } else {
+           if ($(this).attr("id") === "comment_modal") {
              $(this).parent().parent().parent().show();
            } else {
              $(this).parent().parent().parent().hide();
            }
          }
-       }
-     });
-   } else if(trainee_list_full[el_this.attr("data-member_key")]["semester"] > 4) {
-     $(".practice_field").each(function () {
-       if ($(this).attr("type") === "number") {
-        $(this).parent().parent().parent().show();
-       } else {
-         if ($(this).attr("id") === "comment_modal") {
-           $(this).parent().parent().parent().show();
+       });
+     } else {
+       $(".practice_field").each(function () {
+         if ($(this).attr("type") === "number") {
+           if ($(this).attr("id") === "group_study" || $(this).attr("id") === "gospel_practice") {
+             $(this).parent().parent().parent().hide();
+           } else {
+             $(this).parent().parent().parent().show();
+           }
          } else {
-           $(this).parent().parent().parent().hide();
+           if ($(this).attr("id") === "comment_modal") {
+             $(this).parent().parent().parent().show();
+           } else {
+             $(this).parent().parent().parent().hide();
+           }
          }
-       }
-     });
+       });
+     }
    }
   }
   let part_text = "";
@@ -1014,11 +1063,9 @@ function open_blank(el_this) {
         });
       } else if($(this).hasClass("practice_field")) {
         if ($(this).attr("type") === "checkbox" && $(this).prop("checked")) {
-          $("#current_extra_help").find("[data-id="+$("#modalAddEdit").attr("data-id")+"]").find(".trainee_name").text("Да");
           value = 1;
         } else if ($(this).attr("type") === "checkbox") {
           value = 0;
-          $("#current_extra_help").find("[data-id="+$("#modalAddEdit").attr("data-id")+"]").find(".trainee_name").text("");
         }
         if (field === "comment") {
           value = value.replace(/'/g, '"');
@@ -1084,10 +1131,13 @@ function open_blank(el_this) {
     }
   });
 
-    $("#morning_revival").val(el_this.attr("data-morning_revival"));
+    $("#morning_revival").val(el_this.attr("data-morning_revival")); // изучение в группах
     $("#personal_prayer").val(el_this.attr("data-personal_prayer"));
     $("#common_prayer").val(el_this.attr("data-common_prayer"));
     $("#sunday_prophecy").val(el_this.attr("data-prophecy"));
+    $("#gospel_practice").val(el_this.attr("data-gospel"));
+    $("#group_study").val(el_this.attr("data-group_study"));
+    $("#bible_field").prop("checked", Number(el_this.attr("data-bible_reading")));
     //$("#bible_reading").val(el_this.attr("data-bible_reading"));
 //    $("#bible_book").val(el_this.attr("data-bible_book"));
 //    $("#bible_chapter").val(el_this.attr("data-bible_chapter"));
@@ -1228,7 +1278,6 @@ function open_blank(el_this) {
     }, 10);
   }
   //*** конец открытия бланка ***//
-
   // клик по строке, загружаем форму
   $("#list_content .list_string").click(function () {
     open_blank($(this));
@@ -1399,7 +1448,7 @@ function open_blank(el_this) {
    });
  });
 
- $("#bible_reading, #morning_revival, #personal_prayer, #common_prayer, #ministry_reading").click(function () {
+ $("#bible_reading, #morning_revival, #personal_prayer, #common_prayer, #ministry_reading, #gospel_practice, #group_study").click(function () {
    if ($(this).val() === "0") {
      $(this).val("");
    }

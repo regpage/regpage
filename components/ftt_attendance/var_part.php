@@ -21,7 +21,12 @@ if ($ftt_access['group'] === 'trainee') {
 $bible_obj = new Bible;
 // access
 // данные обучающегося
-$trainee_data = trainee_data::get_data($memberId);
+if ($ftt_access['group'] === 'trainee') {
+  $trainee_data = trainee_data::get_data($memberId);
+} else {
+  $trainee_data = [];
+}
+
 $serving_trainee = '';
 $read_book_arr = [];
 // служащие из обучающихся

@@ -22,29 +22,48 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
 
         </div>
         <div id="modal-block_2">
-            <!--<div class="row">
-              <div class="col-12">
-                <label>Чтение Библии (20 мин. в день) <input id="bible_field" type="checkbox" value="" class="align-middle practice_field" data-field="bible"></label>
+          <?php if($ftt_access['group'] === 'staff' || ((isset($trainee_data['semester']) && $trainee_data['semester'] > 4) || (isset($trainee_data['participation_type']) && $trainee_data['participation_type'] == 1))) { ?>
+          <div class="row">
+            <div class="col-12">
+              <h6 class="hide_element">Утреннее оживление</h6>
+              <div class="input-group mb-3">
+                <span class="align-self-center name_session">Утреннее оживление</span>
+                <input type="number" id="morning_revival" class="form-control practice_field short_number_field text-right" data-field="morning_revival" value="" min="0" max="99" style="font-size: 14px; max-width: 95px !important;">
+                <span class="pl-2 align-self-center">мин. (30 мин. в день)</span>
               </div>
-            </div>-->
-        <?php if($ftt_access['group'] === 'staff' || (isset($trainee_data['semester']) && $trainee_data['semester'] > 4)) { ?>
+            </div>
+          </div>
+          <?php } ?>
+          <?php if($ftt_access['group'] === 'staff' || (isset($trainee_data['participation_type']) && $trainee_data['participation_type'] == 1)) { ?>
             <div class="row">
               <div class="col-12">
-                <h6 class="hide_element">Утреннее оживление</h6>
+                <h6 class="hide_element">Изучение в группах</h6>
                 <div class="input-group mb-3">
-                  <span class="align-self-center name_session">Утреннее оживление</span>
-                  <input type="number" id="morning_revival" class="form-control practice_field short_number_field text-right" data-field="morning_revival" value="" min="0" max="30" style="font-size: 14px; max-width: 95px !important;">
-                  <span class="pl-2 align-self-center">мин. (30 мин. в день)</span>
+                  <span class="align-self-center name_session">Изучение в группах</span>
+                  <input type="number" id="group_study" class="form-control practice_field short_number_field text-right" data-field="group_study" value="" min="0" max="99" style="font-size: 14px; max-width: 95px !important;">
+                  <span class="pl-2 align-self-center">мин. (60 мин. в день)</span>
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col-12">
+                <h6 class="hide_element">Благовестие</h6>
+                <div class="input-group mb-3">
+                  <span class="align-self-center name_session">Благовестие</span>
+                  <input type="number" id="gospel_practice" class="form-control practice_field short_number_field text-right" data-field="gospel" value="" min="0" max="500" style="font-size: 14px; max-width: 95px !important;">
+                  <span class="pl-2 align-self-center">мин. (120-180 мин. в нед.)</span>
+                </div>
+              </div>
+            </div>
+          <?php } ?>
+          <?php if($ftt_access['group'] === 'staff' || ((isset($trainee_data['semester']) && $trainee_data['semester'] > 4) || (isset($trainee_data['participation_type']) && $trainee_data['participation_type'] == 1))) { ?>
+            <div class="row">
+              <div class="col-12">
                 <h6 class="hide_element">Личная молитва</h6>
                 <div class="input-group mb-3">
                   <span class="align-self-center name_session">Личная молитва</span>
-                  <input type="number" id="personal_prayer" class="form-control practice_field short_number_field text-right" data-field="personal_prayer" value="" min="0" max="30" style="font-size: 14px; max-width: 95px !important;">
-                  <span class="align-self-center pl-2">мин. (30 мин. в день)</span>
+                  <input type="number" id="personal_prayer" class="form-control practice_field short_number_field text-right" data-field="personal_prayer" value="" min="0" max="99" style="font-size: 14px; max-width: 95px !important;">
+                  <span class="align-self-center pl-2">мин. (<?php if(isset($trainee_data['semester']) && $trainee_data['semester'] > 4) { ?>30<?php } else { ?>15<?php } ?> мин. в день)</span>
                 </div>
               </div>
             </div>
@@ -53,25 +72,24 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
                 <h6 class="hide_element">Молитва с товарищем</h6>
                 <div class="input-group mb-3">
                   <span  class="align-self-center name_session">Молитва с товарищем</span>
-                  <input type="number" id="common_prayer" class="form-control practice_field short_number_field text-right" data-field="common_prayer" value="" min="0" max="60" style="font-size: 14px; max-width: 95px !important;">
-                  <span class="align-self-center pl-2">мин. (60 мин. в неделю)</span>
+                  <input type="number" id="common_prayer" class="form-control practice_field short_number_field text-right" data-field="common_prayer" value="" min="0" max="99" style="font-size: 14px; max-width: 95px !important;">
+                  <span class="align-self-center pl-2">мин. (<?php if(isset($trainee_data['semester']) && $trainee_data['semester'] > 4) { ?>60<?php } else { ?>30<?php } ?> мин. в неделю)</span>
                 </div>
               </div>
             </div>
           <?php } ?>
-            <?php if($ftt_access['group'] === 'staff' || (isset($trainee_data['semester']) && $trainee_data['semester'] > 4)) { ?>
+            <?php if($ftt_access['group'] === 'staff' || ((isset($trainee_data['semester']) && $trainee_data['semester'] > 4) || isset($trainee_data['participation_type']) && $trainee_data['participation_type'] == 1)) { ?>
             <div class="row">
               <div class="col-12">
-                <h6 class="hide_element">Чтение служения</h6>
+                <h6 class="hide_element">Личное изучение</h6>
                 <div class="input-group mb-3">
-                  <span class="align-self-center name_session">Чтение служения</span>
-                  <input type="number" id="ministry_reading" class="form-control practice_field short_number_field text-right" data-field="ministry_reading" value="" min="0" max="30" style="font-size: 14px; max-width: 95px !important;">
+                  <span class="align-self-center name_session">Личное изучение</span>
+                  <input type="number" id="ministry_reading" class="form-control practice_field short_number_field text-right" data-field="ministry_reading" value="" min="0" max="99" style="font-size: 14px; max-width: 95px !important;">
                   <span class="align-self-center pl-2">мин. (30 мин. в день)</span>
                 </div>
               </div>
             </div>
           <?php } ?>
-          <!-- Чтение Библии -->
           <div class="row">
             <div class="col-12">
               <h6 class="hide_element">Пророчествование на собрании</h6>
@@ -138,11 +156,22 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
               </div>
             </div>
           </div>
-          <div class="row">            
+          <div class="row">
             <div id="calculate_bible_read_text" class="col-12 mb-2" style="font-size: 12px;">
 
             </div>
           </div>
+          <?php if($ftt_access['group'] === 'staff' || (isset($trainee_data['participation_type']) && $trainee_data['participation_type'] == 1)) { ?>
+          <div class="row">
+            <div class="col-12">
+              <h6 class="hide_element">Участие в собрании</h6>
+              <div class="input-group mb-3">
+                <span class="align-self-center name_session" title="Поясните в комментарии в каком именно собрании вы участвовали.">Участие в собрании</span>
+                <input id="bible_field" type="checkbox" value="" class="practice_field align-middle ml-1" data-field="bible_reading">
+              </div>
+            </div>
+          </div>
+          <?php } ?>
           <div class="row">
             <div class="col-12">
               <div class="input-group">
