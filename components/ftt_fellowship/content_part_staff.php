@@ -3,7 +3,7 @@
 <ul class="nav nav-tabs" role="tablist">
   <li class="nav-item">
     <a class="nav-link <?php echo $fellowship_tab_active; ?>" data-toggle="tab" href="#fellowship_tab_main">
-      Служащие ПВОМ <?php // echo $announcements_statistics; ?>
+      Служащие ПВОМ
     </a>
   </li>
   <li class="nav-item">

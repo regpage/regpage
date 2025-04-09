@@ -83,4 +83,6 @@
   if ($ftt_access['group'] === 'staff') {
     //$list_serving_ones_full = ftt_lists::serving_ones_full();
     $list_trainee_full = ftt_lists::trainee_list();
+  } else {
+    $list_trainee_full = [];
   }

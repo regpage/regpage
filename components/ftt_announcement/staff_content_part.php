@@ -5,7 +5,7 @@
     <ul class="nav nav-tabs" role="tablist">
       <li class="nav-item">
         <a class="nav-link <?php echo $tab_two_active; ?>" data-toggle="tab" href="#announcement_tab_2">
-          Входящие <?php echo $announcements_statistics; ?>
+          Входящие <?php echo "<sup style='color: red;'> <b> {$announcement_unread_count}</b></sup>"; ?>
         </a>
       </li>
       <li class="nav-item">

@@ -5,8 +5,7 @@ function getExtraHelp($adminId, $serving_trainee, $sorting=''){
   global $db;
   $adminId = $db->real_escape_string($adminId);
   $serving_trainee = $db->real_escape_string($serving_trainee);
-  $sorting = $db->real_escape_string($sorting);
-  $sort = $db->real_escape_string($sort);
+  $sorting = $db->real_escape_string($sorting);  
   if ($serving_trainee === 2) {
     $condition = "feh.author='{$adminId}'";
   } else {
