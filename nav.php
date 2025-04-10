@@ -199,8 +199,8 @@ switch ($h) {
                 if (strpos ($s,"/statistic")!==FALSE) {echo " class='active'";}
                 echo"><a href='/statistic'>Статистика</a></li>";
             }*/
-
-            if(isset($memberId) && !isset($isGuest) && ((in_array('14', db_getUserSettings($memberId))) || db_getAnyActiveContactStr($memberId)) && $ftt_access['group'] !== 'trainee' && $ftt_access['group'] !== 'staff') {
+            //  && $ftt_access['group'] !== 'trainee' && $ftt_access['group'] !== 'staff'
+            if (isset($memberId) && !isset($isGuest) && (in_array('14', db_getUserSettings($memberId)) || db_getAnyActiveContactStr($memberId))) {
                 echo '<li  class="nav-item"';
                 if (strpos ($s,"/contacts")!==FALSE) {echo " class='active'";}
                 echo"><a class='nav-link' href='/contacts'>Контакты</a></li>";
@@ -259,7 +259,7 @@ switch ($h) {
 
                 echo '<li';
                         if (strpos ($s,'/profile')!==FALSE) echo ' class="active"';
-                        echo '><a href="/profile" title="'.$_name.'" style="margin-right:0px;">Профиль</a></li>';
+                        echo '><a href="/profile" title="'.$_name.'" style="margin-right:0px; margin-left:0px;"><i class="fa fa-user" aria-hidden="true"></i></a></li>';
                         echo'<li><a href="/" class="logout" title="Выйти"><i class="fa fa-sign-out" style="font-size: 18px; margin-top:2px;" aria-hidden="true"></i></a></li>';
                         //$access_areas = db_getAdminAccess ($memberId);
 /*
@@ -337,7 +337,7 @@ referenceSysAnew();
         var getSessionIdLogOut = "<?php print(session_id()); ?>"
         $.get('ajax/login.php?logout', {memberId: memberId, sessionId: getSessionIdLogOut})
         .done (function() {
-            window.location ='<?php $_SESSION["sess_last_page"]; ?>';
+            window.location ='<?php if (isset($_SESSION["sess_last_page"])) echo $_SESSION["sess_last_page"]; ?>';
         })
         .fail(function() {
             window.location = "/";
@@ -360,7 +360,6 @@ referenceSysAnew();
       $(".dropdown-menu.pull-right a").css("white-space","normal");
 
       if (event.target.id === "button_help_nav") {
-        console.log(event.target);
         if ($(".dropdown-menu.pull-right").is(":visible")) {
           $(event.target).parent().removeClass("open");
         } else {

@@ -86,7 +86,7 @@ if ($indexStaffFellowship > 0) {
   $indexStaffFellowshipText .= "<sup style='color: red;'> <b> {$indexStaffFellowship}</b></sup>";
 }
 $ftt_devisions = array('ftt_schedule' => 'Расписание', 'ftt_announcement' => $announcement_unread_count_text,
-'ftt_attendance' => $permission_stat_count_main_text, 'ftt_fellowship' => $indexStaffFellowshipText, 'ftt_service' => 'Служение', 'ftt_gospel' => 'Благовестие', 'contacts' => 'Контакты', 'ftt_extrahelp' => $extra_help_text, 'ftt_reading' => 'Чтение','ftt_application' => $requests_for_application_text);
+'ftt_attendance' => $permission_stat_count_main_text, 'ftt_prophecy' => 'Пророчество', 'ftt_fellowship' => $indexStaffFellowshipText, 'ftt_service' => 'Служение', 'ftt_gospel' => 'Благовестие', 'ftt_extrahelp' => $extra_help_text, 'ftt_reading' => 'Чтение','ftt_application' => $requests_for_application_text); // 'contacts' => 'Контакты', 
 if ($ftt_access['group'] === 'staff') { //
 
 }

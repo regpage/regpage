@@ -70,7 +70,7 @@ if ($ftt_access['group'] === 'staff' || $ftt_access['group'] === 'trainee') {
               include_once 'components/ftt_settings/content_part_staff.php';
               include_once "components/ftt_settings/modals_part.php";
             } elseif ($thispage === 'ftt_prophecy') {
-              include_once "components/ftt_prophecy/{$ftt_access['group']}/content.php";              
+              include_once "components/ftt_prophecy/{$ftt_access['group']}/ctrl_content.php";              
             }
           }
           ?>

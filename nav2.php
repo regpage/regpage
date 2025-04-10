@@ -204,7 +204,8 @@ switch ($h) {
                 echo"><a class='nav-link' href='/practices'>Практики</a></li>";
               }
             }*/
-            if (isset($memberId) && ((in_array('14', db_getUserSettings($memberId))) || db_getAnyActiveContactStr($memberId)) && !isset($isGuest) && isset($ftt_access['group']) && $ftt_access['group'] !== 'trainee' && $ftt_access['group'] !== 'staff') {
+            //  && isset($ftt_access['group']) && $ftt_access['group'] !== 'trainee' && $ftt_access['group'] !== 'staff'
+            if (isset($memberId) && ((in_array('14', db_getUserSettings($memberId))) || db_getAnyActiveContactStr($memberId)) && !isset($isGuest)) {
                 echo '<li ';
                 if ($res === 'Контакты') {echo " class='nav-item active'";}else{echo " class='nav-item'";}
                 echo"><a class='nav-link' href='/contacts'>Контакты</a></li>";
@@ -257,7 +258,7 @@ switch ($h) {
                       //  </a>
                         '<li class="nav-item"><a class="nav-link ';
                         if (strpos ($s,'/profile')!==FALSE) echo ' active ';
-                        echo '" href="/profile" title="'.$_name.'" style="margin-right:0px;">Профиль</a></li>';
+                        echo '" href="/profile" title="'.$_name.'" style="margin-right:0px;"><i class="fa fa-user" style="color: silver;"></i></a></li>';
                         echo'<li class="nav-item"><a class="logout nav-link" href="/" title="Выйти"><i class="fa fa-sign-out" aria-hidden="true" style="font-size: 18px; margin-top:2px;"></i></a></li>';
                     //</li>';
             }
@@ -274,7 +275,7 @@ switch ($h) {
             <?php
             //
             if ($memberId === '000001679' || $memberId === '000005716') {
-              echo '<i class="fa fa-wrench cursor-pointer" style="color: silver; font-size: 20px; margin-top: 5px; margin-left: 10px;" title="Дополнительные опции"></i>';
+              echo '<i class="fa fa-wrench cursor-pointer" style="color: silver; font-size: 20px; margin-top: 5px;" title="Дополнительные опции"></i>';
             }
 
             if ((isset($ftt_access['group']) && $ftt_access['group'] === 'staff') || $memberId === '000005716') {
