@@ -69,8 +69,10 @@ if ($ftt_access['group'] === 'staff' || $ftt_access['group'] === 'trainee') {
             if ($ftt_access['group'] === 'staff') {
               include_once 'components/ftt_settings/content_part_staff.php';
               include_once "components/ftt_settings/modals_part.php";
-            } elseif ($thispage === 'ftt_prophecy') {
-              include_once "components/ftt_prophecy/{$ftt_access['group']}/ctrl_content.php";              
+            }
+          } elseif ($thispage === 'ftt_prophecy') {
+            if (file_exists("{$global_root_path}/components/{$thispage}/ctrl_content.php")) {
+              require_once "{$global_root_path}/components/{$thispage}/ctrl_content.php";
             }
           }
           ?>
