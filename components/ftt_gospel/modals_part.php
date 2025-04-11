@@ -231,9 +231,9 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
           <option value="range" <?php echo $selected_period; ?>>Период</option>
         </select>
         <span class="filter_range" style="padding: 5px; display: none;">С </span>
-        <input type="date" class="period_from form-control form-control-sm filter_range" style="display: none;" value="<?php echo $_COOKIE['period_from']; ?>">
+        <input type="date" class="period_from form-control form-control-sm filter_range" style="display: none;" value="<?php echo $cookiePeriodFrom; ?>">
         <span class="filter_range" style="padding: 5px; display: none;">ПО </span>
-        <input type="date" class="period_to form-control form-control-sm filter_range" style="display: none;" value="<?php echo $_COOKIE['period_to']; ?>">
+        <input type="date" class="period_to form-control form-control-sm filter_range" style="display: none;" value="<?php echo $cookiePeriodTo; ?>">
       </div>
       <div class="modal-footer" style="">
         <button id="apply_period" class="btn btn-sm btn-info" data-dismiss="modal" aria-hidden="true" style="">Применить</button>
@@ -456,7 +456,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
         <div class="container">
           <div class="row">
             <div class="col-12 mb-2">
-              <select id="team_goal_select" class="form-control form-control-sm" <?php echo $trainee_data['gospel_team']; ?>>
+              <select id="team_goal_select" class="form-control form-control-sm">
                 <option value="_all_">Все команды</option>
                 <?php
                 $my_team = '';

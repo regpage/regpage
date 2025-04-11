@@ -111,7 +111,11 @@
         <?php
           foreach (getExtraHelp($memberId, $serving_trainee, $_COOKIE['sorting']) as $key => $value):
           $short_name_trainee = short_name::no_middle($trainee_list[$value['feh_member_key']]);
-          $short_name_service_one = short_name::no_middle($serving_ones_list[$value['serving_one']]);
+          if (isset($serving_ones_list[$value['serving_one']])) {
+            $short_name_service_one = short_name::no_middle($serving_ones_list[$value['serving_one']]);
+          } else {
+            $short_name_service_one = '';
+          }
           $extra_help_id = $value['feh_id'];
           $sevice_one_id_archived = $value['feh_serving_one'];
           $sevice_one_id = $value['serving_one'];
@@ -158,12 +162,12 @@
           }
           $show_reason_short  = "display: none;";
 
-          if ($trainee_data['coordinator'] === '1' && $trainee_id === $memberId && $archive === "0") {
+          if (isset($trainee_data['coordinator']) && $trainee_data['coordinator'] === '1' && $trainee_id === $memberId && $archive === "0") {
             $show_string = '';
-          } elseif ($trainee_data['coordinator'] === '1' && $trainee_id === $memberId) {
+          } elseif (isset($trainee_data['coordinator']) && $trainee_data['coordinator'] === '1' && $trainee_id === $memberId) {
             $show_string = "style='display: none;'";
           }
-          if ($trainee_data['coordinator'] !== '1' || ($trainee_data['coordinator'] === '1' && $trainee_id === $memberId)) {
+          if ((isset($trainee_data['coordinator']) && $trainee_data['coordinator'] !== '1') || (isset($trainee_data['coordinator']) && $trainee_data['coordinator'] === '1' && $trainee_id === $memberId) || !isset($trainee_data['coordinator'])) {
           echo "<div class='row ftt_extra_help_string {$done_string}' {$show_string} data-service_one_id='{$sevice_one_id}' data-service_one_archived_id='$sevice_one_id_archived' data-trainee_id='{$trainee_id}' data-archive='{$archive}' data-reason='{$reason}' data-comment='{$comment}' data-author='{$author}' data-archived='{$date_closed}' data-id='{$extra_help_id}' data-date='{$date}' data-semester='{$semester}' data-toggle='modal' data-target='#modalAddEditExtraHelp'>
             <div class='col-2 date_create_text pl-1'>{$date_for_list}</div>
             <div class='col-3'><span class='trainee_name'>{$short_name_trainee}</span><span class='semester_text'> ({$semester})</span><br><span class='serving_one_name light_text_grey' style='{$show_name_service_one}'>{$short_name_service_one}</span><span class='reson_mbl light_text_grey' style='{$show_reason_short}'>{$reason_short}</span></div>

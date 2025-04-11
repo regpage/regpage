@@ -9,7 +9,9 @@
       <div class="modal-body">
         <select id="meet_serving_ones_list_calendar" class="form-control form-control-sm mr-2">
           <option value="_all_">Все служащие</option>
-          <?php foreach ($serving_ones_list_meet as $key => $value):
+          <?php
+          global $serving_ones_flt;
+          foreach ($serving_ones_list_meet as $key => $value):
             $selected = "";
             if ($serving_ones_flt === $key) {
               $selected = "selected";
@@ -165,7 +167,9 @@
         </select>
         <select id="ftr_trainee_meet_mbl" class="form-control form-control-sm mr-2 mb-2">
           <option value="_all_">Все обучающиеся</option>
-          <?php foreach ($trainee_list as $key => $value):
+          <?php
+          global $trainee_flt;
+          foreach ($trainee_list as $key => $value):
             $selected = "";
             if ($trainee_flt === $key) {
               $selected = "selected";
@@ -174,6 +178,7 @@
           endforeach; ?>
         </select>
         <select id="fellowship_active_mbl" class="form-control form-control-sm mr-2">
+          <?php global $active_flt; ?>
           <option value="1" <?php if ($active_flt === '1') echo 'selected'; ?>>Активные</option>
           <option value="0" <?php if ($active_flt === '0') echo 'selected'; ?>>Архивные</option>
         </select>

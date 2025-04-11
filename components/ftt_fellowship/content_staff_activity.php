@@ -38,7 +38,7 @@
     }
     ?>
     <div class="row activity_str border-bottom pt-1 pb-1 <?php echo $noAnyFellowship; ?>"><div class="col pl-0">
-      <?php echo $trainee_list[$key] . '&nbsp;(' . $trainee_list_list[$key]['semester'] . ')'; ?>
+      <?php if ($key !== '_none_') echo $trainee_list[$key] . '&nbsp;(' . $trainee_list_list[$key]['semester'] . ')'; ?>
     </div>
     <?php
     $mdlCol = '<div class="col col_mbl" style="display: none;">';
@@ -52,6 +52,9 @@
         $colorClass = 'fellowship_element';
       } else {
         $colorClass = 'fellowship_element_bbd';
+      }
+      if (empty($value_2['week'])) {
+        continue;
       }
       switch ($value_2['week']) {
         case '0':

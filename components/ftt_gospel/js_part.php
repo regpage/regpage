@@ -1,5 +1,5 @@
 <script>
-let ftt_access_trainee = "<?php echo strval($ftt_access['ftt_service']); ?>";
+let ftt_access_trainee = "<?php if ($ftt_access['group'] === 'trainee') echo strval($ftt_access['ftt_service']); ?>";
 ftt_access_trainee === 6 ? ftt_access_trainee = true : ftt_access_trainee = false;
 let coordinator = "<?php echo $serving_trainee; ?>";
 if (!ftt_access_trainee && coordinator) {

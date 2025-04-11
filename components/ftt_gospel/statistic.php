@@ -33,7 +33,12 @@ function gospelStatFun($team, $teamsList, $html=true)
 
     if (count($tempCheck) > 0) {
       for ($ii=0; $ii < count($tempCheck); $ii++) {
-        $gospelTeamReportData[$key_date][] = array('id'=>0,'date'=>'−−.−−','gospel_team'=>$team, 'gospel_group'=>$tempCheck[$ii],'place'=>0, 'group_members'=>0,'number'=>0,'ftt_gospel'=>0, 'flyers'=>0,'people'=>0,'prayers'=>0,'baptism'=>0,'meets_last'=>0,'meets_current'=>0,'meetings_last'=>0, 'meetings_current'=>0,'first_contacts'=>0,'further_contacts'=>0,'homes'=>0,'comment'=>0);
+        $tempCheckIi = 0;
+        if (isset($tempCheck[$ii])) {
+          $tempCheckIi = $tempCheck[$ii];
+        }
+
+        $gospelTeamReportData[$key_date][] = array('id'=>0,'date'=>'−−.−−','gospel_team'=>$team, 'gospel_group'=>$tempCheckIi,'place'=>0, 'group_members'=>0,'number'=>0,'ftt_gospel'=>0, 'flyers'=>0,'people'=>0,'prayers'=>0,'baptism'=>0,'meets_last'=>0,'meets_current'=>0,'meetings_last'=>0, 'meetings_current'=>0,'first_contacts'=>0,'further_contacts'=>0,'homes'=>0,'comment'=>0);
       }
     }
 
@@ -53,8 +58,12 @@ function gospelStatFun($team, $teamsList, $html=true)
 
     if (count($tempCheck) > 0) {
       for ($ii=0; $ii < count($tempCheck); $ii++) {
+        $tempCheckIi = 0;
+        if (isset($tempCheck[$ii])) {
+          $tempCheckIi = $tempCheck[$ii];
+        }
         $gospelTeamReportData[$key_date][] = array(
-          'id'=>0,'date'=>'−−.−−','gospel_team'=>$team, 'gospel_group'=>$tempCheck[$ii],'place'=>0, 'group_members'=>0,'number'=>0,'ftt_gospel'=>0,'flyers'=>0,'people'=>0,'prayers'=>0,
+          'id'=>0,'date'=>'−−.−−','gospel_team'=>$team, 'gospel_group'=>$tempCheckIi,'place'=>0, 'group_members'=>0,'number'=>0,'ftt_gospel'=>0,'flyers'=>0,'people'=>0,'prayers'=>0,
           'baptism'=>0,'meets_last'=>0,'meets_current'=>0,'meetings_last'=>0, 'meetings_current'=>0,'first_contacts'=>0,'further_contacts'=>0,'homes'=>0,'comment'=>0);
       }
     }
@@ -78,8 +87,12 @@ function gospelStatFun($team, $teamsList, $html=true)
     $tempCheck = addMissingGroups($groupsList_temp, $gospelTeamReportData[$key_date]);
     if (count($tempCheck) > 0) {
       for ($ii=0; $ii < count($tempCheck); $ii++) {
+        $tempCheckIi = 0;
+        if (isset($tempCheck[$ii])) {
+          $tempCheckIi = $tempCheck[$ii];
+        }
         $gospelTeamReportData[$key_date][] = array(
-          'id'=>0,'date'=>'−−.−−','gospel_team'=>$team, 'gospel_group'=>$tempCheck[$ii],'place'=>0, 'group_members'=>0,'number'=>0,'ftt_gospel'=>0,'flyers'=>0,'people'=>0,'prayers'=>0,
+          'id'=>0,'date'=>'−−.−−','gospel_team'=>$team, 'gospel_group'=>$tempCheckIi,'place'=>0, 'group_members'=>0,'number'=>0,'ftt_gospel'=>0,'flyers'=>0,'people'=>0,'prayers'=>0,
           'baptism'=>0,'meets_last'=>0,'meets_current'=>0,'meetings_last'=>0,'meetings_current'=>0,
           'first_contacts'=>0,'further_contacts'=>0,'homes'=>0,'comment'=>0);
       }
@@ -100,7 +113,11 @@ function gospelStatFun($team, $teamsList, $html=true)
 
         $value_1['key_date'] = $key;
         if (isset($value_1['gospel_group'])) { // && isset($diagramsReportData[$value_1['gospel_group']])
-          $diagramsReportData[$value['gospel_group']][] = $value_1;
+          $diagramsReportDataGospelGroup = '';
+          if (isset($value['gospel_group'])) {
+            $diagramsReportDataGospelGroup = $value['gospel_group'];
+          }
+          $diagramsReportData[$diagramsReportDataGospelGroup][] = $value_1;
         } elseif(isset($value_1['gospel_group'])) {
           $diagramsReportData[$value['gospel_group']] = [];
           $diagramsReportData[$value['gospel_group']][] = $value_1;
@@ -114,7 +131,7 @@ function gospelStatFun($team, $teamsList, $html=true)
     }
 
     $diagramsReportDataStat = [];
-    $prevKeyDate;
+    $prevKeyDate = '';
     foreach ($diagramsReportData as $key_4 => $value_4) {
       foreach ($value_4 as $key_5 => $value_5) {
         if ($value_5['gospel_group'] !== $prevKeyDate) {
@@ -156,7 +173,11 @@ function gospelStatGroupsHtml($membersBlanksStatistic, $teamsList, $gospelTeamRe
       $block = 0;
 
       if ($countForGTRDLoop == 0) {
-        echo "<div><h5>{$teamsList[$team]}</h5>";
+        $teamsListGospelTeamZero = '';
+        if (isset($value[0]['gospel_team'])) {
+          $teamsListGospelTeamZero = $teamsList[$value[0]['gospel_team']];
+        }
+        echo "<div>"; //<h5>{$teamsListGospelTeamZero}</h5>
         $count = count($gospelTeamReportData);
       }
       if (empty($value) && $countForGTRDLoop == 0) {
@@ -361,18 +382,18 @@ function totalGroupRender($data)
   $further_contacts=0;
   $homes=0;
   foreach ($data as $value) {
-    $ftt_gospel+=$value['ftt_gospel'];
-    $flyers+=$value['flyers'];
-    $people+=$value['people'];
-    $prayers+=$value['prayers'];
-    $baptism+=$value['baptism'];
-    $meets_last+=$value['meets_last'];
-    $meets_current+=$value['meets_current'];
-    $meetings_last+=$value['meetings_last'];
-    $meetings_current+=$value['meetings_current'];
-    $first_contacts+=$value['first_contacts'];
-    $further_contacts+=$value['further_contacts'];
-    $homes+=$value['homes'];
+    $ftt_gospel+=$value['ftt_gospel'] ?? 0;
+    $flyers+=$value['flyers'] ?? 0;
+    $people+=$value['people'] ?? 0;
+    $prayers+=$value['prayers'] ?? 0;
+    $baptism+=$value['baptism'] ?? 0;
+    $meets_last+=$value['meets_last'] ?? 0;
+    $meets_current+=$value['meets_current'] ?? 0;
+    $meetings_last+=$value['meetings_last'] ?? 0;
+    $meetings_current+=$value['meetings_current'] ?? 0;
+    $first_contacts+=$value['first_contacts'] ?? 0;
+    $further_contacts+=$value['further_contacts'] ?? 0;
+    $homes+=$value['homes'] ?? 0;
   }
   return "Л{$flyers}, Б{$people}, М{$prayers}";
 }
@@ -462,6 +483,7 @@ function gospelStatFunPersonal($team,$teamName)
     }
 
     // обучающиеся html
+    $gospelText = '';
     $counterPeriods = 0;
     foreach ($statisticPersonal as $key_2 => $value_2) {
       if ($counterPeriods > 0) {

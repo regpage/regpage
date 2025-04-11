@@ -95,7 +95,11 @@ foreach (getMissedClasses($skip_curent_sorting) as $key => $value) {
     $session_during = '';
   } else {
     $session_name_echo = explode(',', $value['session_name']);
-    $session_time_and_during = $session_name_echo[1];
+    if (isset($session_name_echo[1])) {
+      $session_time_and_during = $session_name_echo[1];
+    } else {
+      $session_time_and_during = '';
+    }
     $session_name_echo = $session_name_echo[0];
     $session_time_echo = explode('мин.', $session_time_and_during);
     $session_during = trim($session_time_echo[0]);
@@ -104,11 +108,20 @@ foreach (getMissedClasses($skip_curent_sorting) as $key => $value) {
   if (isset($value['session_name']) && mb_substr(trim($value['session_name']), -1) === ')' && mb_substr($value['session_name'], -7, -6) === '(') {
     $session_time_echo = mb_substr(trim($session_time_and_during), -6, -1);
   } else {
-    $session_time_echo = $value['session_time'];
+    if (isset($value['session_time'])) {
+      $session_time_echo = $value['session_time'];
+    } else {
+      $session_time_echo = '';
+    }
   }
   // time rendering
   $all_seconds=0;
-  list($hour, $minute) = explode(':', $session_time_echo);
+  if (!empty($session_time_echo)) {
+    list($hour, $minute) = explode(':', $session_time_echo);
+  } else {
+    $hour;
+    $minute;
+  }
   $second = 0;
   $all_seconds += intval($hour) * 3600;
   $all_seconds += (intval($minute) + intval($session_during)) * 60;

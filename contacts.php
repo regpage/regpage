@@ -1084,7 +1084,6 @@
           data_page.isDesktop = 0;
         }
 
-        //let idBlankGet = '<?php echo $idBlank; ?>';
     </script>
     <script src="/js/contacts.js?v91"></script>
     <script src="/js/contactsupload.js?v5"></script>

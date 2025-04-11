@@ -153,10 +153,10 @@ else if (isset ($_SESSION["logged-in"])){
         } else {
           $others_counter = $extra_help_count;
         }
-        if ($requests_stat_count_main == 0) {
+        if (isset($requests_stat_count_main) && $requests_stat_count_main == 0) {
           $requests_stat_count_main = '';
         } else {
-          if ($ftt_access['group'] === 'staff') {
+          if ($ftt_access['group'] === 'staff' && isset($requests_stat_count_main)) {
             $others_counter += $requests_stat_count_main;
           }
         }
@@ -206,20 +206,19 @@ else if (isset ($_SESSION["logged-in"])){
                 <span><a class="ftt_menu_a" href="/ftt_schedule">Расписание</a></span>
                 <span><a class="ftt_menu_a" href="/ftt_announcement">Объявления<?php echo "<sup style='color: red;'><b> {$announcement_unread_count}</b></sup>"; ?></a></span>
                 <span><a class="ftt_menu_a" href="/ftt_attendance">Посещаемость<?php echo "<sup style='color: red;'><b> {$permission_stat_count_main}</b></sup>"; ?></a></span>
+                <span><a class="ftt_menu_a" href="/ftt_prophecy">Пророчество</a></span>
                 <span><a class="ftt_menu_a" href="/ftt_fellowship">Общение<?php echo "<sup style='color: red;'><b> {$indexStaffFellowship}</b></sup>"; ?></a></span>
                 <span><a class="ftt_menu_a" href="/ftt_service">Служение</a></span>
-                <span><a class="ftt_menu_a" href="/ftt_gospel">Благовестие</a></span>
-
                 <strong class="ftt_menu_a link_custom_normal dropdown_custom font_normal" style="display:none;">Ещё<?php echo "<sup style='color: red;'><b> {$others_counter}</b></sup>"; ?></strong>
                 <strong class="dropdown_custom-content" style="display: none;">
-                  <a class="ftt_menu_a font_normal" href="/contacts">Контакты</a><br><br>
+                  <a class="ftt_menu_a font_normal" href="/ftt_gospel">Благовестие</a><br><br>
                   <a class="ftt_menu_a font_normal" href="/ftt_extrahelp">Доп. задания<?php echo "<sup style='color: red;'><b> {$extra_help_count}</b></sup>"; ?></a><br><br>
                   <a class="ftt_menu_a font_normal" href="/ftt_reading">Чтение</a>
                   <?php if ($ftt_access['group'] === 'staff') { ?>
                     <br><br><a class="ftt_menu_a font_normal" href="/ftt_application">Заявления<?php echo "<sup style='color: red;'><b> {$requests_stat_count_main}</b></sup>"; ?></a>
                   <?php }?>
                 </strong>
-                <span><a class="ftt_menu_a" href="/contacts">Контакты</a></span>
+                <span><a class="ftt_menu_a" href="/ftt_gospel">Благовестие</a></span>
                 <span><a class="ftt_menu_a" href="/ftt_extrahelp">Доп. задания<?php echo "<sup style='color: red;'><b> {$extra_help_count}</b></sup>"; ?></a></span>
                 <span><a class="ftt_menu_a" href="/ftt_reading">Чтение</a></span>
               <?php if ($ftt_access['group'] === 'staff') { ?>

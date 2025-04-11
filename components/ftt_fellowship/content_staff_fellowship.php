@@ -65,6 +65,15 @@
 
     $date = date_convert::yyyymmdd_to_ddmm($value['date']);
     $day_of_week = date_convert::week_days($value['date'], true);
+    $traineeForList = '';
+    if (isset($trainee_list[$value['trainee']])) {
+      $traineeForList = $trainee_list[$value['trainee']];
+    }
+    $servingoneForList = '';
+    if (isset($trainee_list[$value['trainee']])) {
+      $servingoneForList = $serving_ones_list[$trainee_list_list[$value['trainee']]['serving_one']];
+    }
+
     //$comment_short = CutString::cut($value['comment_serv']);
     $comment_short_trainee = CutString::cut($value['comment_train'], 30);
     echo "<div class='row str_record_staff {$bg_busy}'";
@@ -75,7 +84,7 @@
     echo "<div class='col-2' style='max-width: 120px;'>{$value['time']}–{$time_to}</div>";
     echo "<div class='col-1 text-right'>{$value['duration']}</div>";
     echo "<div class='col-3 text-secondary' style='display: none;'>коммент.</div>";
-    echo "<div class='col-2'><div>{$trainee_list[$value['trainee']]}</div><div class='grey_text'>{$serving_ones_list[$trainee_list_list[$value['trainee']]['serving_one']]}</div></div>";
+    echo "<div class='col-2'><div>{$traineeForList}</div><div class='grey_text'>{$servingoneForList}</div></div>";
     echo "<div class='col-2 {$hide}'>{$serving_ones_list[$value['serving_one']]}</div>";
     echo "<div class='col-4'>{$comment_short_trainee}</div>"; //<br><span class='grey_text'>{$comment_short}</span>
     echo "</div>";

@@ -9,7 +9,12 @@
 // ПОСЕЩАЕМОСТЬ
 // access
 // данные обучающегося
-$trainee_data = trainee_data::get_data($memberId);
+if ($ftt_access['group'] === 'trainee') {
+  $trainee_data = trainee_data::get_data($memberId);
+} else {
+  $trainee_data = [];
+}
+
 $serving_trainee = '';
 // служащие из обучающихся
 if (isset($ftt_access['ftt_service']) && $ftt_access['ftt_service'] === '06') {
@@ -69,6 +74,10 @@ if (isset($_COOKIE['tab_stat']) && $_COOKIE['tab_stat'] === 'active') {
   $tab_main = '';
   $tab_stat = 'active';
 }
+if (!isset($_COOKIE['sorting']) && $ftt_access['group'] === 'staff') {
+  $_COOKIE['sorting'] = '';
+}
+
 //$days = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
 
 // ПОСЕЩАЕМОСТЬ СТОП

@@ -11,11 +11,17 @@
   include_once 'components/ftt_gospel/statistic.php';
   // Classes components
   include_once 'components/ftt_blocks/RenderList.php';
-  include_once 'components/ftt_blocks/diagrams/diagram_column.php';  
+  include_once 'components/ftt_blocks/diagrams/diagram_column.php';
 // ПОСЕЩАЕМОСТЬ
 // access
+// ЭТО МОЖНО ВЫНЕСТИ В ОБЩИЙ СКРИПТ ДЛЯ ВСЕХ РАЗДЕЛОВ ПВОМ
 // данные обучающегося
-$trainee_data = trainee_data::get_data($memberId);
+if ($ftt_access['group'] === 'trainee') {
+  $trainee_data = trainee_data::get_data($memberId);
+} else {
+  $trainee_data = [];
+}
+
 $serving_trainee = '';
 // служащие из обучающихся
 if (isset($ftt_access['ftt_service']) && $ftt_access['ftt_service'] === '06') {
@@ -30,7 +36,7 @@ if (isset($trainee_data['coordinator']) && $trainee_data['coordinator'] === '1' 
 */
 $gospel_groups = getGospelGroup();
 
-//Это МОЖНО ВЫНЕСТИ В ОБЩИЙ СКРИПТ ДЛЯ ВСЕХ РАЗДЕЛОВ
+// ЭТО МОЖНО ВЫНЕСТИ В ОБЩИЙ СКРИПТ ДЛЯ ВСЕХ РАЗДЕЛОВ ПВОМ
 if ($ftt_access['group'] === 'staff' || $serving_trainee) {
   $serving_ones_list_full = ftt_lists::serving_ones_full();
   $trainee_list_full = ftt_lists::trainee_full();
@@ -58,6 +64,15 @@ if ($serving_trainee) {
 $teamsList = getGospelTeam();
 
 $gospelMembersList = get_all_gospel_members();
+
+$cookiePeriodFrom = '';
+$cookiePeriodTo = '';
+if (isset($_COOKIE['period_from'])) {
+  $cookiePeriodFrom = $_COOKIE['period_from'];
+}
+if (isset($_COOKIE['period_to'])) {
+  $cookiePeriodTo = $_COOKIE['period_to'];
+}
 
 // GOSPEL СТОП
 ?>

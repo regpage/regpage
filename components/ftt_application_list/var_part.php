@@ -56,7 +56,7 @@ if (isset($_COOKIE['sorting_g'])) {
 
 $activeList = 'active';
 $activeRequestFor = '';
-if ((isset($_COOKIE['tap_request_for']) && $_COOKIE['tap_request_for'] === 'active') || (isset($_GET['tab']) || $_GET['tab'] === 'request')) {
+if ((isset($_COOKIE['tap_request_for']) && $_COOKIE['tap_request_for'] === 'active') || (isset($_GET['tab']) || (isset($_GET['tab']) && $_GET['tab'] === 'request'))) {
   $activeList = '';
   $activeRequestFor = 'active';
 }
