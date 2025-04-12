@@ -52,6 +52,8 @@ class DBQuery
       while ($row = $res->fetch_assoc()) $result[]=$row[$field];
     }
 
+    /* добавить line вида $result=$row то есть просто массив, а не массив с массивами */
+
     return $result;
   }
   static function getKeyValue($table) {

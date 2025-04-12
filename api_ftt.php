@@ -52,6 +52,9 @@ switch ($section) {
   case 'fellowship':
     require_once 'ajax/ftt_fellowship_extra_ajax.php';
     break;
+  case 'prophecy':
+    require_once 'ajax/ftt/ftt_prophecy_ajax.php';
+    break;
   default:
     $error = 'No section exist.';
     break;

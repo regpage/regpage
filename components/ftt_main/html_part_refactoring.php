@@ -71,8 +71,11 @@ if ($ftt_access['group'] === 'staff' || $ftt_access['group'] === 'trainee') {
               include_once "components/ftt_settings/modals_part.php";
             }
           } elseif ($thispage === 'ftt_prophecy') {
-            if (file_exists("{$global_root_path}/components/{$thispage}/ctrl_content.php")) {
-              require_once "{$global_root_path}/components/{$thispage}/ctrl_content.php";
+            // modals может быть котроллером подключающим необходимые модальные окна
+            foreach (['ctrl_content'] as $value) {
+              if (file_exists("{$global_root_path}/components/{$thispage}/{$value}.php")) {
+                require_once "{$global_root_path}/components/{$thispage}/{$value}.php";
+              }
             }
           }
           ?>
