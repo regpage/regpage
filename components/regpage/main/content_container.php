@@ -13,7 +13,9 @@
   } elseif (THIS_PAGE === 'arrdep') {
     include_once 'components/regpage/home/arrdep/content.php';
   } elseif (THIS_PAGE === 'calls') {
-    include_once 'components/regpage/calls/content.php';    
+    include_once 'components/regpage/calls/content.php';
+  } elseif (THIS_PAGE === 'itero_2025_w') {
+    include_once 'components/regpage/itero_2025_w/ctrl_content.php';
   }
   ?>
 </div>
