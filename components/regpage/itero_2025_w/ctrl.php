@@ -10,6 +10,7 @@ class EventCtrl
   private $html;
   private $accessStart;
   private $accessStop;
+  private $access;
   private $key;
   private $name;
   private $info;
@@ -19,21 +20,34 @@ class EventCtrl
   {
     $data = $event->getEvent();
     $this->html = $data['html'];
-    $this->accessStart = $data['access_start'];
-    $this->accessStop = $data['access_stop'];
+    if (!$data['access_start']) {
+      $this->accessStart = '';
+    } else {
+      $this->accessStart = $data['access_start'];
+    }
+    if (!$data['access_stop']) {
+      $this->accessStop = '';
+    } else {
+      $this->accessStop = $data['access_stop'];
+    }
     $this->key = $data['key'];
     $this->name = $data['name'];
     $this->info = $data['info'];
+    if (!empty($this->accessStart) && strtotime($this->accessStart) <= strtotime(date('Y-m-d')) && ((!empty($this->accessStop) && strtotime(date('Y-m-d')) <= strtotime($this->accessStop)) || empty($this->accessStop))) {
+      $this->access = true;
+    } else {
+      $this->access = false;
+    }
   }
   function getHtml() : string
   {
     return $this->html;
   }
-  function getAccessStart() : string
+  function getAccessStart() : ?string
   {
     return $this->accessStart;
   }
-  function getAccessStop() : string
+  function getAccessStop() : ?string
   {
     return $this->accessStop;
   }
@@ -48,6 +62,11 @@ class EventCtrl
   function getInfo() : string
   {
     return $this->info;
+  }
+  function isAvailableNow() : bool
+  {
+    // доступы
+    return $this->access;
   }
 }
 
@@ -79,6 +98,7 @@ class EventRender
   }
 }
 
+$Members = new MembersEventDB('20250010');
 $iteroDB = new EventDB('20250010');
 $iteroCtrl = new EventCtrl($iteroDB);
 $iteroRender = new EventRender($iteroCtrl);

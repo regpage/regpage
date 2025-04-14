@@ -25,3 +25,28 @@ class EventDB extends DBQuery
     return $this->event[0];
   }
 }
+
+/**
+ *
+ * получаем данные
+ *
+ */
+
+class MembersEventDB extends DBQuery
+{
+  // получаем  мероприятие по ключу
+  private $membersKeys;
+
+  function __construct(string $key) {
+    $this->membersKeys = $this->getMembersEventDB($key);
+  }
+  private function getMembersEventDB($key) : array
+  {
+    return DBQuery::get('arr', 'reg', 'member_key', 'event_key', $key);
+  }
+
+  function getMembersKeys() : array
+  {
+    return $this->membersKeys;
+  }
+}
