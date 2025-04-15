@@ -43,13 +43,23 @@ class EventCtrl
   {
     return $this->html;
   }
-  function getAccessStart() : ?string
+  function getAccessStart(bool $rus = false) : ?string
   {
-    return $this->accessStart;
+    if (!empty($this->accessStart) && $rus) {
+      $date = date_create($this->accessStart);
+      return date_format($date, 'd.m.Y');
+    } else {
+      return $this->accessStart;
+    }
   }
-  function getAccessStop() : ?string
+  function getAccessStop(bool $rus = false) : ?string
   {
-    return $this->accessStop;
+    if (!empty($this->accessStop) && $rus) {
+      $date = date_create($this->accessStop);
+      return date_format($date, 'd.m.Y');
+    } else {
+      return $this->accessStop;
+    }
   }
   function getKey() : string
   {

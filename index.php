@@ -1,8 +1,40 @@
 <?php
-    include_once "header.php";
-    include_once "db/ftt/ftt_db.php";
-    include_once "db/classes/ftt_applications/ftt_candidates.php";
-    include_once 'db/classes/short_name.php';
+include_once "header.php";
+include_once "db/ftt/ftt_db.php";
+include_once "db/classes/ftt_applications/ftt_candidates.php";
+include_once 'db/classes/short_name.php';
+include_once 'db/regpage/itero_db.php';
+include_once 'components/regpage/itero_2025_w/ctrl.php';
+?>
+<script>
+let itero_online = "";
+let itero_online_desk = "";
+let itero_online_key = <?php echo $iteroCtrl->getKey(); ?>;
+</script>
+<?php
+//  || $memberId === '000001679'
+    if (in_array($memberId, $Members->getMembersKeys())) { // участник есть в списке itero
+      if ($iteroCtrl->isAvailableNow()) { // мероприятие доступно
+        ?>
+        <script>
+        itero_online_desk = '<div style="padding-top: 1px;"><button type="button" onclick="location.href=' + "'itero_2025_w'" + '" class="btn btn-primary btn-sm">Смотреть видео</button></div>';
+        itero_online = '<div style="padding-top: 10px;"><button type="button" onclick="location.href=' + "'itero_2025_w'" + '" class="btn btn-primary btn-sm">Смотреть видео</button></div>';
+        </script>
+        <?php
+
+      } elseif($iteroCtrl->getAccessStop() && $iteroCtrl->getAccessStart()) { // мероприятие не доступно
+        ?>
+        <script>
+        itero_online_desk = "<div style='padding-top: 0px;'>Видео будут доступны для просмотра с <?php echo $iteroCtrl->getAccessStart(true); ?> по <?php echo $iteroCtrl->getAccessStop(true); ?>.</div>";
+        itero_online = "<div style='padding-top: 10px;'>Видео будут доступны для просмотра с <?php echo $iteroCtrl->getAccessStart(true); ?> по <?php echo $iteroCtrl->getAccessStop(true); ?>.</div>";
+        </script>
+        <?php
+      }
+      // убрать сброс кэша для раздела
+      // положить текст и даты в переменную JS, преобразовать даты в классе в том случае если брат участвует и регистрация подтверждена иначе ничего
+      // положить кнопку в переменную JS
+    }
+
     $application_data = db_getApplications($memberId);
     $application_data_interview = db_getApplications($memberId, true);
     global $appRootPath;
@@ -1215,13 +1247,13 @@ $(document).ready(function(){
                             '<span class="span5 event-name">'+ event.name + '</span>'+
                             '<span style="display: none;" class="span3">'+ event.locality_name + '</span>'+
                             '<span class="span2 event-date" style="display: none;">'+ formatDDMM(event.start_date) + ' - ' + formatDDMM(event.end_date)+'</span>'+
-                            '<span class="span2 event-icons"  style="width: 190px";>'+ (regstateClass == "" ?  "" : '<span style="margin-top:5px; margin-left: 0px; margin-right: 19px; display: inline;" class="label label-'+regstateClass+'">'+ regstateText + '</span>') +((regstateText) ? ((regstateText === 'регистрация подтверждена' || regstateText === 'ожидание подтверждения') ? '<span style="padding-left: 0px;"><a style="padding-left: 0px; font-size: 12px; display: none;" class="handleRegistrationFast editEventMember" title="Редактировать данные"> Изменить</a></span><span><a class="rejectRegistrationFast" title="Отменить регистрацию" style=" margin-right: 12px; font-size: 12px; display: none;"> Отменить</a></span>':''):'<span style="margin-top:5px; margin-left: 0px; margin-right: 1px; padding-left:0px;"><a class="handleRegistrationFast addEventMember" style="display: none;">Отправить</a></span>')+ icons +'</span>'
+                            '<span class="span2 event-icons"  style="width: 190px";>'+ (regstateClass == "" ?  "" : '<span style="margin-top:5px; margin-left: 0px; margin-right: 19px; display: inline;" class="label label-'+regstateClass+'">'+ regstateText + '</span>') +((regstateText) ? ((regstateText === 'регистрация подтверждена' || regstateText === 'ожидание подтверждения') ? '<span style="padding-left: 0px;"><a style="padding-left: 0px; font-size: 12px; display: none;" class="handleRegistrationFast editEventMember" title="Редактировать данные"> Изменить</a></span><span><a class="rejectRegistrationFast" title="Отменить регистрацию" style=" margin-right: 12px; font-size: 12px; display: none;"> Отменить</a></span>':''):'<span style="margin-top:5px; margin-left: 0px; margin-right: 1px; padding-left:0px;"><a class="handleRegistrationFast addEventMember" style="display: none;">Отправить</a></span>')+ icons +'</span>' + (itero_online_key == event.id ? itero_online_desk : '')
                             +'</div>';
 
-                tabletEvent = '<div '+eventAttrs+'>'+
+                tabletEvent = '<div style="display: block;" '+eventAttrs+' style="display: block;">'+
                             '<div class="event-name"><strong>'+ event.name + '</strong><span class="event-name"></div>'+
                             '<div><span style="margin-top:5px; margin-right:5px;" class="label label-'+regstateClass+'">'+ regstateText + '</span>' + icons+ '</div>'+
-                        '</div>';
+                        (itero_online_key == event.id ? itero_online : '')+'</div>';
 
                         /* BEGIN #ПОДДЕРЖКА Дотация для 20 участников на Манилы */
                         /*

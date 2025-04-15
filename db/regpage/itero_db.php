@@ -42,7 +42,15 @@ class MembersEventDB extends DBQuery
   }
   private function getMembersEventDB($key) : array
   {
-    return DBQuery::get('arr', 'reg', 'member_key', 'event_key', $key);
+    //return DBQuery::get('arr', 'reg', 'member_key', 'event_key', $key); ['event_key', '=', $key, 'AND', 'regstate_key', '=', '04']
+    // ДОБАВИТЬ МЕТОД В КЛАСС DBQuery В КОТОРЫЙ МОЖНО ПЕРЕДАТЬ УСЛОВИЕ ПРОИЗВОЛЬНОЙ СТРОКОЙ,
+    // или передавать массивы с полями и значениями, следующий элемент в массиве должен передавать условие AND или OR
+    $key = db_real_escape_string($key);
+    $result = [];
+    $res=db_query ("SELECT `member_key` FROM `reg` WHERE `event_key` = '{$key}' AND `regstate_key` = '04'");
+    while ($row = $res->fetch_assoc()) $result[]=$row['member_key'];
+
+    return $result;
   }
 
   function getMembersKeys() : array
