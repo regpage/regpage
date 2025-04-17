@@ -22,11 +22,18 @@ let itero_online_key = <?php echo $iteroCtrl->getKey(); ?>;
         </script>
         <?php
 
-      } elseif($iteroCtrl->getAccessStop() && $iteroCtrl->getAccessStart()) { // мероприятие не доступно
+      } elseif(!empty($iteroCtrl->getAccessStop()) && !empty($iteroCtrl->getAccessStart()) && strtotime(date('Y-m-d')) <= strtotime($iteroCtrl->getAccessStop())) { // мероприятие не началось
         ?>
         <script>
         itero_online_desk = "<div style='padding-top: 0px;'>Видео будут доступны для просмотра с <?php echo $iteroCtrl->getAccessStart(true); ?> по <?php echo $iteroCtrl->getAccessStop(true); ?>.</div>";
         itero_online = "<div style='padding-top: 10px;'>Видео будут доступны для просмотра с <?php echo $iteroCtrl->getAccessStart(true); ?> по <?php echo $iteroCtrl->getAccessStop(true); ?>.</div>";
+        </script>
+        <?php
+      } elseif (!empty($iteroCtrl->getAccessStop()) && strtotime(date('Y-m-d')) > strtotime($iteroCtrl->getAccessStop())) { // мероприятие закончилось
+        ?>
+        <script>
+        itero_online_desk = "<div style='padding-top: 0px;'>Обучение завершено, доступ к видео закрыт.</div>";
+        itero_online = "<div style='padding-top: 10px;'>Обучение завершено, доступ к видео закрыт.</div>";
         </script>
         <?php
       }
@@ -1252,7 +1259,7 @@ $(document).ready(function(){
 
                 tabletEvent = '<div style="display: block;" '+eventAttrs+' style="display: block;">'+
                             '<div class="event-name"><strong>'+ event.name + '</strong><span class="event-name"></div>'+
-                            '<div><span style="margin-top:5px; margin-right:5px;" class="label label-'+regstateClass+'">'+ regstateText + '</span>' + icons+ '</div>'+
+                            '<div style="margin-top:2px;"><span style="margin-top:5px; margin-right:5px;" class="label label-'+regstateClass+'">'+ regstateText + '</span>' + icons+ '</div>'+
                         (itero_online_key == event.id ? itero_online : '')+'</div>';
 
                         /* BEGIN #ПОДДЕРЖКА Дотация для 20 участников на Манилы */

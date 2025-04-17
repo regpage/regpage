@@ -47,7 +47,7 @@ class EventCtrl
   {
     if (!empty($this->accessStart) && $rus) {
       $date = date_create($this->accessStart);
-      return date_format($date, 'd.m.Y');
+      return date_format($date, 'd.m');
     } else {
       return $this->accessStart;
     }
@@ -56,7 +56,7 @@ class EventCtrl
   {
     if (!empty($this->accessStop) && $rus) {
       $date = date_create($this->accessStop);
-      return date_format($date, 'd.m.Y');
+      return date_format($date, 'd.m');
     } else {
       return $this->accessStop;
     }

@@ -220,20 +220,27 @@ switch ($h) {
                 echo"><a class='nav-link' href='/calls'>Звонки</a></li>";
             }
 
-            if(!isset($isGuest) && $memberId && isset($ftt_access['group']) && $ftt_access['group'] !== 'trainee'){
-
+            if(!isset($isGuest) && $memberId && isset($ftt_access['group']) && $ftt_access['group'] !== 'trainee') {
+              if ($memberId !== '000008601' && $memberId !== '000001679' && $memberId !== '000005716') {
                 echo '<li  class="nav-item"';
                 if (strpos ($s,"/settings")!==FALSE) {echo " class='active'";}
                 echo"><a class='nav-link' href='/settings'>Настройки</a></li>";
+              }
             }
 
             if(isset($memberId) && ($memberId == '000008601' || $memberId == '000001679' || $memberId == '000005716')){
 
-                echo '<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Ещё</a><div class="dropdown-menu"><a href="/statistic" class="dropdown-item ';
+                echo '<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Ещё <i class="fa fa-caret-down" style="color: silver;"></i></a><div class="dropdown-menu" style="font-size: 14px; background-color: black;"><a href="/statistic" style="background-color: black; color: lightgray;" onmouseover="this.style.color=' . "'white';" . '" onmouseout="this.style.color=' . "'lightgray';" . '" class="dropdown-item ';
                 if (strpos ($s,'/statistic')!==FALSE) {echo ' active ';}
                 echo '">Статистика</a>';
 
-                echo '<a href="/reference" class="dropdown-item ';
+                if(!isset($isGuest) && $memberId && isset($ftt_access['group']) && $ftt_access['group'] !== 'trainee') {
+                    echo '<a href="/settings" style="background-color: black; color: lightgray;" onmouseover="this.style.color=' . "'white';" . '" onmouseout="this.style.color=' . "'lightgray';" . '" class="dropdown-item ';
+                    if (strpos ($s,"/settings")!==FALSE) {echo ' active ';}
+                    echo'">Настройки</a>';
+                }
+
+                echo '<a href="/reference" style="background-color: black; color: lightgray;" onmouseover="this.style.color=' . "'white';" . '" onmouseout="this.style.color=' . "'lightgray';" . '" class="dropdown-item ';
                 if (strpos ($s,'/reference')!==FALSE) {echo ' active ';}
                 echo'">Справка</a></a><div></li>';
             }

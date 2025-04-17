@@ -18,7 +18,7 @@ if (file_exists($linkBlockBtn)): ?>
   <hr class="mt-1 mb-1" style="margin-left: -1px; margin-right: -1px;">
 <?php endif; ?>
 <?php if (file_exists($linkBlockListData)): ?>
-  <div id="temp_list_body" class="container">
+  <div id="temp_list_body" class="container pl-0 pr-0">
   <?php require_once $linkBlockListData; ?>
   </div>
 <?php endif; ?>

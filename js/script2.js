@@ -72,7 +72,10 @@ function doCheckCash() {
 
 doCheckCash();
 
-var myVar = setInterval(cashTimer, 1500);
+var myVar;
+if (location.pathname !== "/itero_2025_w" && location.pathname !== "/itero_2025_w.php") {
+  myVar = setInterval(cashTimer, 1500);
+}
 function cashTimer() {
 	var lastSesion = getCookie('time_cash_check');
 	var d = new Date();

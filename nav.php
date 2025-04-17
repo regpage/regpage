@@ -220,9 +220,11 @@ switch ($h) {
             }*/
 
             if(!isset($isGuest) && $memberId && $ftt_access['group'] !== 'trainee'){
+              if($memberId !== '000001679' && $memberId !== '000005716'){
                 echo '<li';
                 if (strpos ($s,"/settings")!==FALSE) {echo " class='active'";}
                 echo"><a href='/settings'>Настройки</a></li>";
+              }
             }
 
             if(isset($memberId) && ($memberId == '000001679' || $memberId == '000005716')){
@@ -231,12 +233,17 @@ switch ($h) {
                           echo 'href="#"><span class="">Ещё</span>
                           <span class="caret"></span>
                       </a>';
-                      echo '<ul class="dropdown-menu"><li';
+                      echo '<ul class="dropdown-menu" style="background-color: black;"><li style="background-color: black;" ';
                       if (strpos ($s,'/statistic')!==FALSE) echo ' class="active"';
-                      echo '><a href="/statistic">Статистика</a></li>';
+                      echo '><a href="/statistic" style="color: lightgray;" onmouseover="this.style.color=' . "'white';" . '" onmouseout="this.style.color=' . "'lightgray';" . '">Статистика</a></li>';
+                      if(!isset($isGuest) && $memberId && $ftt_access['group'] !== 'trainee'){
+                        echo '<li';
+                        if (strpos ($s,"/settings")!==FALSE) echo " class='active'";
+                        echo'><a href="/settings" style="color: lightgray;" onmouseover="this.style.color=' . "'white';" . '" onmouseout="this.style.color=' . "'lightgray';" . '">Настройки</a></li>';
+                      }
                       echo  '<li';
                       if (strpos ($s,'/reference')!==FALSE) echo ' class="active"';
-                      echo '><a href="/reference">Справка</a></li>';
+                      echo '><a href="/reference" style="color: lightgray;" onmouseover="this.style.color=' . "'white';" . '" onmouseout="this.style.color=' . "'lightgray';" . '">Справка</a></li>';
                       echo'</ul></li>';
             }
 
