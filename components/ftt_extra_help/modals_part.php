@@ -43,6 +43,19 @@
           <input type="text" class="input-google" id="comment_field" placeholder="Текст комментария...">
         </div>
         <?php } ?>
+        <div class="form-group">
+          <div class="mt-2">
+            <label for="skip_modal_file">Приложить файл</label><br>
+            <input type="file" id="extrahelp_modal_file" class="form-control-sm pl-0" accept="image/*" multiple>
+          </div>
+          <div id="spinner_upload" class="mt-2" style="display: none;">
+            <div class="spinner-border spinner-border-sm text-info"></div><span> Загружаем... </span>
+          </div>
+
+          <div id="extrahelp_pic" class="row mt-2">
+
+          </div>
+        </div>
         <div class="form-group" style="margin-bottom: 0px;">
           <input type="checkbox" class="align-middle" id="archive_checkbox_field" <?php echo $serving_trainee_disabled; ?>>
           <label for="archive_checkbox_field" class="align-middle" style="color: #646363;"> выполнено</label>
@@ -104,6 +117,19 @@
   </div>
 </div>
 
+<!-- ПРОСМОТР КАРТИНОК -->
+<div id="extrahelp_modal_pic_preview" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pt-1 pb-1" data-dismiss="modal" aria-hidden="true">x</button>
+      </div>
+      <div class="modal-body">
+        <img id="extrahelp_modal_pic_preview_container" class="w-100" src="" alt="">
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ОПОЗДАНИЯ -->
 <div id="modalAddEditLate" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true" data-id="" data-trainee_id="" data-author="" data-date="" data-reason="" data-comment="" data-archive="" data-archive_date="" data-service_one_archived_id = "" data-serving_one="">

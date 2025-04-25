@@ -7,7 +7,7 @@
 if ($ftt_access['group'] === 'staff') {
   //include_once 'components/ftt_service/ctrl_content_part_staff.php';
 } elseif ($ftt_access['group'] === 'trainee') {
-  include_once 'components/ftt_service/ctrl_content_part.php';
+  //include_once 'components/ftt_service/ctrl_content.php';
 }
 // Списки
 // $serving_ones_list_full = ftt_lists::serving_ones_full();

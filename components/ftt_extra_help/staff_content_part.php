@@ -142,6 +142,7 @@
             $str_comment_hide = 'hide_element';
           }
           $author = $value['author'];
+          $file = $value['file'];
           $show_string = "style='display: none;'";
           $checked_string = '';
           $done_string = '';
@@ -168,7 +169,7 @@
             $show_string = "style='display: none;'";
           }
           if ((isset($trainee_data['coordinator']) && $trainee_data['coordinator'] !== '1') || (isset($trainee_data['coordinator']) && $trainee_data['coordinator'] === '1' && $trainee_id === $memberId) || !isset($trainee_data['coordinator'])) {
-          echo "<div class='row ftt_extra_help_string {$done_string}' {$show_string} data-service_one_id='{$sevice_one_id}' data-service_one_archived_id='$sevice_one_id_archived' data-trainee_id='{$trainee_id}' data-archive='{$archive}' data-reason='{$reason}' data-comment='{$comment}' data-author='{$author}' data-archived='{$date_closed}' data-id='{$extra_help_id}' data-date='{$date}' data-semester='{$semester}' data-toggle='modal' data-target='#modalAddEditExtraHelp'>
+          echo "<div class='row ftt_extra_help_string {$done_string}' {$show_string} data-service_one_id='{$sevice_one_id}' data-service_one_archived_id='$sevice_one_id_archived' data-trainee_id='{$trainee_id}' data-archive='{$archive}' data-reason='{$reason}' data-comment='{$comment}' data-author='{$author}' data-archived='{$date_closed}' data-id='{$extra_help_id}' data-date='{$date}' data-semester='{$semester}' data-file='{$file}' data-toggle='modal' data-target='#modalAddEditExtraHelp'>
             <div class='col-2 date_create_text pl-1'>{$date_for_list}</div>
             <div class='col-3'><span class='trainee_name'>{$short_name_trainee}</span><span class='semester_text'> ({$semester})</span><br><span class='serving_one_name light_text_grey' style='{$show_name_service_one}'>{$short_name_service_one}</span><span class='reson_mbl light_text_grey' style='{$show_reason_short}'>{$reason_short}</span></div>
             <div class='col-5 reason_text'>{$reason_short}</div>

@@ -26,7 +26,8 @@ function clear_blank() {
     $('#modalAddEditExtraHelp').attr('data-serving_one', '');
     $('#modalAddEditExtraHelp').attr('data-archive_date', '');
     $('#modalAddEditExtraHelp').attr('data-service_one_archived_id', '');
-
+    $('#modalAddEditExtraHelp').attr('data-file', '');
+    $("#extrahelp_pic").html("");
     $('#modalAddEditExtraHelp #date_of_archive').parent().hide();
 
     // border field color
@@ -696,6 +697,7 @@ $(".ftt_extra_help_string").click(function () {
   $("#modalAddEditExtraHelp").attr("data-comment", $(this).attr("data-comment"));
   $("#modalAddEditExtraHelp").attr("data-date", $(this).attr("data-date"));
   $("#modalAddEditExtraHelp").attr("data-archive", $(this).attr("data-archive"));
+  $("#modalAddEditExtraHelp").attr("data-file", $(this).attr("data-file"));
 
   // fields
   $("#modalAddEditExtraHelp #fio_field").val($(this).attr("data-trainee_id"));
@@ -735,7 +737,6 @@ $(".ftt_extra_help_string").click(function () {
     $('#archivator_of_extrahelp').text(text2);
   }
 
-
   $("#modalAddEditExtraHelp #comment_field").val($(this).attr("data-comment"));
   $("#modalAddEditExtraHelp #date_closed_field").val($(this).attr("data-archived"));
   $("#modalAddEditExtraHelp #date_field").val($(this).attr("data-date"));
@@ -750,7 +751,113 @@ $(".ftt_extra_help_string").click(function () {
   } else if (trainee_list[$(this).attr("data-author")]) {
     $("#modalAddEditExtraHelp #author_field").val($(this).attr("data-author"));
   }
+  // PICS
+  // pic
+  if ($(this).attr("data-file")) {
+    let result_arr = $(this).attr("data-file");
+    result_arr = result_arr.split(";")
+    for (var i = 0; i < result_arr.length; i++) {
+      $("#extrahelp_pic").append('<div class="col-10"><button type="button" data-toggle="modal" class="extrahelp_modal_pic_preview_open btn btn-primary btn-sm mr-2 mb-2" data-target="#extrahelp_modal_pic_preview">Посмотреть файл</button><a class="extrahelp_pic" href="' + result_arr[i] + '" target="_blank">скачать файл</a></div>'
+      + '</div><div class="col-2 text-right"><i class="fa fa-trash text-danger cursor-pointer pic_extrahelp_delete mr-3" aria-hidden="true" style="font-size: 1.5rem;"></i></div>');
+    }
+    $(".pic_extrahelp_delete").click(function () {
+      extrahelp_pic_delete($(this));
+    });
+    $(".extrahelp_modal_pic_preview_open").click(function () {
+      show_pic_preview($(this));
+    });
+  }
 });
+
+// set pics
+// pic
+$("#extrahelp_modal_file").change(function () {
+  let id = $("#modalAddEditExtraHelp").attr("data-id");
+  let extrahelp_data_blank = new FormData();
+
+  $("#save_extra_help").attr("disabled", true);
+
+  if ($("#extrahelp_modal_file")[0].files[0]) {
+    for (var i = 0; i < $("#extrahelp_modal_file")[0].files.length; i++) {
+      extrahelp_data_blank.set("blob"+i, $("#extrahelp_modal_file")[0].files[i]);
+    }
+    $("#spinner_upload").show();
+    fetch("ajax/ftt_extra_help_ajax.php?type=set_pic&id=" + id, {
+      method: 'POST',
+      body: extrahelp_data_blank
+    })
+    .then(response => response.json())
+    .then(commits => {
+      $("#save_extra_help").attr("disabled", false);
+      $("#spinner_upload").hide();
+      if (commits.result[1][0] === "Н") {
+        showError(commits.result[1]);
+      } else if (commits.result[1]) {
+        $("div[data-id='" + id + "']").attr("data-file", commits.result[0]);
+        $("#extrahelp_modal_file").parent().css("border", "none");
+        let result_arr = commits.result[1];
+        result_arr = result_arr.split(";");
+        let list_pics_lenght = 0;
+        $(".pic_extrahelp_delete").each(function () {
+          list_pics_lenght++;
+        });
+        for (let i = 0; i < result_arr.length; i++) {
+          list_pics_lenght++;
+          let res = $("#extrahelp_pic").append('<div class="col-10"><button type="button" data-toggle="modal" class="btn btn-primary btn-sm mr-2 mb-2 extrahelp_modal_pic_preview_open" data-target="#extrahelp_modal_pic_preview">Посмотреть файл</button><a class="extrahelp_pic" href="' + result_arr[i] + '" target="_blank">скачать файл</a></div>'
+          + '</div><div class="col-2 text-right"><i id="extrahelp_dlt_btn_'+list_pics_lenght+'" class="fa fa-trash text-danger cursor-pointer pic_extrahelp_delete mr-3" aria-hidden="true" style="font-size: 1.5rem;"></i></div>');
+
+          $("#extrahelp_dlt_btn_"+list_pics_lenght).click(function () {
+            extrahelp_pic_delete($(this));
+          });
+        }
+
+        $(".extrahelp_modal_pic_preview_open").click(function () {
+          show_pic_preview($(this));
+        });
+      }
+    });
+  }
+});
+
+// удалить картинку
+function extrahelp_pic_delete(elem) {
+  let patch = elem.parent().prev().find(".extrahelp_pic").attr("href");
+  if (!patch) {
+    element.prev().remove();
+    element.remove();
+    return;
+  }
+  let id = $("#modalAddEditExtraHelp").attr("data-id");
+  let element = elem.parent();
+  // УДАЛЕНИЕ КАРТИНКИ
+  fetch("ajax/ftt_extra_help_ajax.php?type=delete_pic&id=" + id + "&patch=" + patch)
+  .then(response => response.json())
+  .then(data => {
+    if (data) {
+      element.prev().remove();
+      element.remove();
+      let pathes = $("div[data-id='" + id + "']").attr("data-file");
+      let check = "";
+      pathes = pathes.split(";");
+      for (let i = 0; i < pathes.length; i++) {
+        if (pathes[i] === patch) {
+          check = i;
+          break;
+        }
+      }
+      pathes.splice(check, 1);
+      $("div[data-id='" + id + "']").attr("data-file", pathes.join(";"));
+    }
+  });
+}
+
+$(".extrahelp_modal_pic_preview_open").click(function () {
+  show_pic_preview($(this));
+});
+
+function show_pic_preview(elem) {
+  $("#extrahelp_modal_pic_preview_container").attr("src", elem.next().attr("href"));
+}
 
 // фильтры
 function filters_apply() {

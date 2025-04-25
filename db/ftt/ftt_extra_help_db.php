@@ -5,7 +5,7 @@ function getExtraHelp($adminId, $serving_trainee, $sorting=''){
   global $db;
   $adminId = $db->real_escape_string($adminId);
   $serving_trainee = $db->real_escape_string($serving_trainee);
-  $sorting = $db->real_escape_string($sorting);  
+  $sorting = $db->real_escape_string($sorting);
   if ($serving_trainee === 2) {
     $condition = "feh.author='{$adminId}'";
   } else {
@@ -25,7 +25,7 @@ function getExtraHelp($adminId, $serving_trainee, $sorting=''){
 
   $result = [];
   //ORDER BY feh.date
-  $res = db_query("SELECT feh.id AS feh_id, feh.date, feh.member_key AS feh_member_key, feh.reason, feh.archive, feh.author, feh.serving_one AS feh_serving_one, feh.comment, feh.archive_date, ft.semester, ft.serving_one, m.name
+  $res = db_query("SELECT feh.id AS feh_id, feh.date, feh.member_key AS feh_member_key, feh.reason, feh.archive, feh.author, feh.serving_one AS feh_serving_one, feh.comment, feh.archive_date, feh.file, ft.semester, ft.serving_one, m.name
     FROM ftt_extra_help AS feh
     INNER JOIN ftt_trainee ft ON ft.member_key = feh.member_key
     INNER JOIN member m ON m.key = feh.member_key
@@ -37,7 +37,7 @@ function getExtraHelp($adminId, $serving_trainee, $sorting=''){
 
 function getExtraHelpTrainee($adminId){
   $result = [];
-  $res = db_query("SELECT feh.id AS feh_id, feh.date, feh.member_key AS feh_member_key, feh.reason, feh.archive, feh.author, feh.serving_one AS feh_serving_one, feh.comment, feh.archive_date, ft.semester, ft.serving_one
+  $res = db_query("SELECT feh.id AS feh_id, feh.date, feh.member_key AS feh_member_key, feh.reason, feh.archive, feh.author, feh.serving_one AS feh_serving_one, feh.comment, feh.archive_date, feh.file, ft.semester, ft.serving_one
     FROM ftt_extra_help AS feh
     INNER JOIN ftt_trainee ft ON ft.member_key = feh.member_key
     WHERE feh.member_key = '$adminId'
