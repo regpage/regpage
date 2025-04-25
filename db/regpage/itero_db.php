@@ -15,12 +15,12 @@ class EventDB extends DBQuery
   function __construct (string $key) {
     $this->event = $this->getEventDB($key);
   }
-  private function getEventDB($key) : array
+  private function getEventDB($key) : ?array
   {
     return DBQuery::get('list', 'event', '*', 'key', $key);
   }
 
-  function getEvent() : array
+  function getEvent() : ?array
   {
     return $this->event[0];
   }
@@ -40,7 +40,7 @@ class MembersEventDB extends DBQuery
   function __construct(string $key) {
     $this->membersKeys = $this->getMembersEventDB($key);
   }
-  private function getMembersEventDB($key) : array
+  private function getMembersEventDB($key) : ?array
   {
     //return DBQuery::get('arr', 'reg', 'member_key', 'event_key', $key); ['event_key', '=', $key, 'AND', 'regstate_key', '=', '04']
     // ДОБАВИТЬ МЕТОД В КЛАСС DBQuery В КОТОРЫЙ МОЖНО ПЕРЕДАТЬ УСЛОВИЕ ПРОИЗВОЛЬНОЙ СТРОКОЙ,
@@ -53,7 +53,7 @@ class MembersEventDB extends DBQuery
     return $result;
   }
 
-  function getMembersKeys() : array
+  function getMembersKeys() : ?array
   {
     return $this->membersKeys;
   }

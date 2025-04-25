@@ -243,6 +243,9 @@ $(document).ready(function(){
             <span>После нажатия кнопки "Создать" вам будет отправлено письмо со ссылкой для подтверждения адреса электронной почты. Ссылка действительна в течение 10 минут. При переходе по ссылке вам будет предложено заполнить данные для создания аккаунта.</span>
         </div>
         <div style="margin-top: 10px">
+          <b style="color: red;">Если письма нет во входящих, проверьте папку "Спам"</b>
+        </div>
+        <div style="margin-top: 10px">
             <input style="margin-top: 0" type="checkbox" id="btn-terms-use" class="terms-use" valid="required">
             <label style="display: inline; font-size: 12px" for="btn-terms-use">я принимаю условия<a href="https://drive.google.com/open?id=1krSycWkozm2Y-UNwHwG1OuMU81LgzbB76EVVfszgMYU" target="_blank"> Пользовательского соглашения</a> и подтверждаю <a href="https://drive.google.com/open?id=1-6shNo_9D-nrssOVo9SyLTEnjh0aql2pU7USypcdCj0" target="_blank">согласие</a> на обработку моих персональных данных</label>
         </div>

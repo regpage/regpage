@@ -9,7 +9,7 @@ include_once 'components/regpage/itero_2025_w/ctrl.php';
 <script>
 let itero_online = "";
 let itero_online_desk = "";
-let itero_online_key = <?php echo $iteroCtrl->getKey(); ?>;
+let itero_online_key = '<?php echo $iteroCtrl->getKey(); ?>';
 </script>
 <?php
 //  || $memberId === '000001679'
@@ -25,8 +25,8 @@ let itero_online_key = <?php echo $iteroCtrl->getKey(); ?>;
       } elseif(!empty($iteroCtrl->getAccessStop()) && !empty($iteroCtrl->getAccessStart()) && strtotime(date('Y-m-d')) <= strtotime($iteroCtrl->getAccessStop())) { // мероприятие не началось
         ?>
         <script>
-        itero_online_desk = "<div style='padding-top: 0px;'>Видео будут доступны для просмотра с <?php echo $iteroCtrl->getAccessStart(true); ?> по <?php echo $iteroCtrl->getAccessStop(true); ?>.</div>";
-        itero_online = "<div style='padding-top: 10px;'>Видео будут доступны для просмотра с <?php echo $iteroCtrl->getAccessStart(true); ?> по <?php echo $iteroCtrl->getAccessStop(true); ?>.</div>";
+        itero_online_desk = "<div style='padding-top: 0px; color: red;'>Кнопка для просмотра видео будет <b>на этой странице</b> с <?php echo $iteroCtrl->getAccessStart(true); ?> по <?php echo $iteroCtrl->getAccessStop(true); ?>.</div>";
+        itero_online = "<div style='padding-top: 10px; color: red;'>Кнопка для просмотра видео будет <b>на этой странице</b> с <?php echo $iteroCtrl->getAccessStart(true); ?> по <?php echo $iteroCtrl->getAccessStop(true); ?>.</div>";
         </script>
         <?php
       } elseif (!empty($iteroCtrl->getAccessStop()) && strtotime(date('Y-m-d')) > strtotime($iteroCtrl->getAccessStop())) { // мероприятие закончилось

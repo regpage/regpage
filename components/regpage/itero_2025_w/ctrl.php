@@ -39,7 +39,7 @@ class EventCtrl
       $this->access = false;
     }
   }
-  function getHtml() : string
+  function getHtml() : ?string
   {
     return $this->html;
   }
@@ -61,19 +61,19 @@ class EventCtrl
       return $this->accessStop;
     }
   }
-  function getKey() : string
+  function getKey() : ?string
   {
     return $this->key;
   }
-  function getName() : string
+  function getName() : ?string
   {
     return $this->name;
   }
-  function getInfo() : string
+  function getInfo() : ?string
   {
     return $this->info;
   }
-  function isAvailableNow() : bool
+  function isAvailableNow() : ?bool
   {
     // доступы
     return $this->access;

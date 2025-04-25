@@ -73,7 +73,7 @@ function doCheckCash() {
 doCheckCash();
 
 var myVar;
-if (location.pathname !== "/itero_2025_w" && location.pathname !== "/itero_2025_w.php") {
+if (location.pathname !== "/itero_2025_w") { //&& location.pathname !== "/itero_2025_w.php"
   myVar = setInterval(cashTimer, 1500);
 }
 function cashTimer() {
