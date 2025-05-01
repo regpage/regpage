@@ -101,6 +101,13 @@ label.required-for-label:after
 .list_string:hover {
   background-color: #eee;
 }
+
+.list_str {
+  cursor: pointer;
+}
+.list_str:hover {
+  background-color: #eee;
+}
 /*STOP LISTS*/
 
 /*NAVBARS START*/

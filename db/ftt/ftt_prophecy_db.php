@@ -9,28 +9,54 @@ require_once 'db/classes/common/db_query.php';
  */
 class ProphecyDB extends DBQuery
 {
+  // получаем строку таблицы Пророчество по id
   static function getLine($id)
   {
     return DBQuery::get('list', 'ftt_prophecy', '*', 'id', $id);
   }
+  // получаем строки таблицы Пророчество по ключу пользователя
   static function getListByMember($memberKey)
   {
     return DBQuery::get('list', 'ftt_prophecy', '*', 'member_key', $memberKey);
   }
+  // удаляем строку таблицы Пророчество по id
   static function dltLine($id)
   {
     return DBQuery::dlt('ftt_prophecy', 'id', $id);
   }
+  // записываем новую / обновляем существующую строку
   static function setLine($data)
   {
-    $data->id = db_real_escape_string($data->id);
+    $keysTextQuery = '';
+    $valuesTextQuery = '';
+    foreach ($data as $key => $value) {
+      $data->$key = db_real_escape_string($value);
+      if ($key !== 'id' && !isset($data->id)) { // вставка новой строки
+        if (empty($keys)) {
+          $keysTextQuery = "`" . db_real_escape_string($key) . "`";
+          $valuesTextQuery = "'{$data->$key}'";
+        } else {
+          $keysTextQuery .= ",`" . db_real_escape_string($key) . "`";
+          $valuesTextQuery .= ",'{$data->$key}'";
+        }
+      } elseif (isset($data->id)) { //  обновление существующей строки
+        if ($key !== 'id') {
+          if (empty($valuesTextQuery)) {
+            $valuesTextQuery .=  "`" . db_real_escape_string($key) . "` = '{$data->$key}'";
+          } else {
+            $valuesTextQuery .=  ",`" . db_real_escape_string($key) . "` = '{$data->$key}'";
+          }
+        }
+      }
+    }
+    /*$data->id = db_real_escape_string($data->id);
     $data->member_key = db_real_escape_string($data->member_key);
     $data->date = db_real_escape_string($data->date);
-    $data->prophecy = db_real_escape_string($data->prophecy);
+    $data->prophecy = db_real_escape_string($data->prophecy);*/
     if (empty($data->id)) {
-      return db_query("INSERT INTO `ftt_prophecy` (`member_key`, `date`, `prophecy`) VALUES ('{$data->member_key}', '{$data->date}', '{$data->prophecy}')");
+      return db_query("INSERT INTO `ftt_prophecy` ({$keysTextQuery}) VALUES ({$valuesTextQuery})");
     } else {
-      return db_query("UPDATE `ftt_prophecy` SET `member_key` = '{$data->member_key}', `date` = '{$data->date}', `prophecy` = '{$data->prophecy}' WHERE  `id` = '{$data->id}'");
+      return db_query("UPDATE `ftt_prophecy` SET {$valuesTextQuery} WHERE  `id` = '{$data->id}'");
     }
   }
   /*

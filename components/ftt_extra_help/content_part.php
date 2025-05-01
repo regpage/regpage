@@ -19,8 +19,9 @@
       <div class="row"><span class="col-12 text_grey font-weight-bold text-muted mt-3 mb-3" id="filters_list"></span></div>
       <div id="list_header" class="row">
         <div class="col-2 pl-1" style="max-width: 105px !important;"><b class="text_grey">Дата</b></div>
-        <div class="col-8" style="min-width: 530px !important;"><b class="text_grey">Описание</b></div>
+        <div class="col-6" style=""><b class="text_grey">Описание</b></div>
         <div class="col-2" style="max-width: 100px !important;"><b class="text_grey">Выполнено</b></div>
+        <div class="col-2" style=""></div>
       </div>
       <div id="list_content">
         <?php
@@ -64,11 +65,16 @@
           if ($value['archive'] === '0') {
             $show_string = '';
           }
+          $statusFile = '';
+          if (!empty($file) && $value['archive'] !== '1') {
+            $statusFile = '<span class="badge badge-warning">на рассмотрении</span>';
+          }
           echo "<div class='row ftt_extra_help_string {$done_string}' {$show_string} data-service_one_id='{$sevice_one_id}' data-service_one_archived_id='$sevice_one_id_archived' data-trainee_id='{$trainee_id}' data-archive='{$archive}' data-reason='{$reason}' data-comment='{$comment}' data-author='{$author}' data-archived='{$date_closed}' data-id='{$extra_help_id}' data-date='{$date}' data-semester='{$semester}' data-file='{$file}' data-toggle='modal' data-target='#modalAddEditExtraHelp'>
             <div class='col-2 date_create_text pl-1'>{$date_for_list}</div>
             <div class='col-3' style='display: none;'><span class='reson_mbl' style='display: none;'>{$reason_short}</span></div>
-            <div class='col-8 reason_text'>{$reason_short}</div>
+            <div class='col-6 reason_text'>{$reason_short}</div>
             <div class='col-2 set_to_archive_container'><input type='checkbox' class='set_to_archive' {$checked_string} {$serving_trainee_disabled}></div>
+            <div class='col-2 text-right status_file'>{$statusFile}</div>
           </div>";
         endforeach; ?>
       </div>

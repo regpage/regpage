@@ -775,8 +775,6 @@ $("#extrahelp_modal_file").change(function () {
   let id = $("#modalAddEditExtraHelp").attr("data-id");
   let extrahelp_data_blank = new FormData();
 
-  $("#save_extra_help").attr("disabled", true);
-
   if ($("#extrahelp_modal_file")[0].files[0]) {
     for (var i = 0; i < $("#extrahelp_modal_file")[0].files.length; i++) {
       extrahelp_data_blank.set("blob"+i, $("#extrahelp_modal_file")[0].files[i]);
@@ -788,7 +786,6 @@ $("#extrahelp_modal_file").change(function () {
     })
     .then(response => response.json())
     .then(commits => {
-      $("#save_extra_help").attr("disabled", false);
       $("#spinner_upload").hide();
       if (commits.result[1][0] === "Н") {
         showError(commits.result[1]);

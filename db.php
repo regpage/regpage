@@ -235,7 +235,7 @@ $selectEventMember = "SELECT m.key as member_key, m.name, CASE WHEN m.male=1 THE
                       r.place, r.prepaid, e.organizer, e.need_parking, e.need_service, e.need_accom,
                       CASE WHEN r.currency IS NULL THEN e.currency ELSE r.currency END as currency,
                       CASE WHEN r.contrib=0 THEN e.contrib ELSE r.contrib END as contrib, r.avtomobile, r.avtomobile_number,
-                      r.service_key, m.english, e.need_tp, e.need_flight, m.tp_num, m.school_comment,
+                      r.service_key, m.english, e.need_tp, e.need_flight, e.need_visa, m.tp_num, m.school_comment,
                       m.tp_date, m.tp_auth, m.tp_name, r.flight_num_arr, e.need_address, e.list_name, e.list,
                       r.list_name as reg_list_name,
                       r.flight_num_dep, r.note, m.russian_lg, r.visa, m.baptized, m.attend_meeting,
@@ -1149,7 +1149,7 @@ function db_getEventsByAdmin($adminId){
 
         $res=db_query ("SELECT DISTINCT * FROM(
         SELECT e.key as id, e.name, e.start_date, e.end_date, e.regend_date, e.min_age, e.max_age,
-        e.info, e.need_passport, e.event_type, e.web, e.need_flight, e.list_name, e.need_status, e.online,
+        e.info, e.need_passport, e.event_type, e.web, e.need_flight, e.need_visa, e.list_name, e.need_status, e.online,
         IF((SELECT COUNT(*) FROM reg rg WHERE rg.event_key=e.key AND (rg.regstate_key = '01' OR rg.regstate_key = '02' OR rg.regstate_key = '04' OR rg.regstate_key is NULL )) >= e.participants_count AND e.participants_count > 0, 1, 0) as stop_registration,
         e.close_registration, e.need_transport, e.need_prepayment, e.private, e.need_tp, e.currency, e.contrib,
         (SELECT ea.member_key FROM event_access ea WHERE ea.member_key='$admin' AND ea.key=e.key) as admin_access
@@ -1162,7 +1162,7 @@ function db_getEventsByAdmin($adminId){
         WHERE a.member_key='$adminId' AND e.is_active=1 $request
         UNION
         SELECT e.key as id, e.name, e.start_date, e.end_date, e.regend_date, e.min_age, e.max_age,
-        e.info, e.need_passport, e.event_type, e.web, e.need_flight, e.list_name, e.need_status, e.online,
+        e.info, e.need_passport, e.event_type, e.web, e.need_flight, e.need_visa, e.list_name, e.need_status, e.online,
         IF((SELECT COUNT(*) FROM reg rg WHERE rg.event_key=e.key AND (rg.regstate_key = '01' OR rg.regstate_key = '02' OR rg.regstate_key = '04' OR rg.regstate_key is NULL )) >= e.participants_count AND e.participants_count > 0, 1, 0) as stop_registration,
         e.close_registration,
         e.need_transport, e.need_prepayment, e.private, e.need_tp, e.currency, e.contrib,
@@ -1176,7 +1176,7 @@ function db_getEventsByAdmin($adminId){
         WHERE e.is_active=1 $request
         UNION
         SELECT e.key as id, e.name, e.start_date, e.end_date, e.regend_date, e.min_age, e.max_age,
-        e.info, e.need_passport, e.event_type, e.web, e.need_flight, e.list_name, e.need_status, e.online,
+        e.info, e.need_passport, e.event_type, e.web, e.need_flight, e.need_visa, e.list_name, e.need_status, e.online,
         IF((SELECT COUNT(*) FROM reg rg WHERE rg.event_key=e.key AND (rg.regstate_key = '01' OR rg.regstate_key = '02' OR rg.regstate_key = '04' OR rg.regstate_key is NULL )) >= e.participants_count AND e.participants_count > 0, 1, 0) as stop_registration,
         e.close_registration,
         e.need_transport, e.need_prepayment, e.private, e.need_tp, e.currency, e.contrib,
@@ -1189,7 +1189,7 @@ function db_getEventsByAdmin($adminId){
     }
     else{
         $res = db_query("SELECT e.key as id, e.name, e.start_date, e.end_date, e.regend_date, e.min_age, e.max_age,
-        e.info, e.need_passport, e.event_type, e.web, e.need_flight, e.list_name,
+        e.info, e.need_passport, e.event_type, e.web, e.need_flight, e.need_visa, e.list_name,
         e.need_transport, e.need_prepayment, e.private, e.need_tp, e.need_status, e.currency,  e.online, e.contrib,
         IF((SELECT COUNT(*) FROM reg rg WHERE rg.event_key=e.key AND (rg.regstate_key = '01' OR rg.regstate_key = '02' OR rg.regstate_key = '04' OR rg.regstate_key is NULL )) >= e.participants_count AND e.participants_count > 0, 1, 0) as stop_registration,
         e.close_registration,

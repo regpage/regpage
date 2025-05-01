@@ -103,9 +103,10 @@
       <div class="row"><span class="col-12 text_grey font-weight-bold text-muted mt-3 mb-3" id="filters_list"></span></div>
       <div id="list_header" class="row">
         <div class="col-2 pl-1 cursor-pointer text_blue" style="max-width: 105px !important;"><b class="sort_date">Дата<i class="<?php echo $sort_date_ico; ?>"></i></b></div>
-        <div class="col-3 text_blue cursor-pointer" style="min-width: 150px !important;"><b class="sort_trainee">Обучающийся<i class="<?php echo $sort_trainee_ico; ?>"></i></b></div>
+        <div class="col-2 px-0 text_blue cursor-pointer" style="min-width: 150px !important;"><b class="sort_trainee">Обучающийся<i class="<?php echo $sort_trainee_ico; ?>"></i></b></div>
         <div class="col-5" style="min-width: 530px !important;"><b class="text_grey">Описание</b></div>
-        <div class="col-2" style="max-width: 100px !important;"><b class="text_grey">Выполнено</b></div>
+        <div class="col-1" style="max-width: 100px !important;"><b class="text_grey">Выполнено</b></div>
+        <div class="col-2" style=""></div>
       </div>
       <div id="list_content">
         <?php
@@ -168,12 +169,17 @@
           } elseif (isset($trainee_data['coordinator']) && $trainee_data['coordinator'] === '1' && $trainee_id === $memberId) {
             $show_string = "style='display: none;'";
           }
+          $statusFile = '';
+          if (!empty($file) && $value['archive'] !== '1') {
+            $statusFile = '<span class="badge badge-warning">на рассмотрении</span>';
+          }
           if ((isset($trainee_data['coordinator']) && $trainee_data['coordinator'] !== '1') || (isset($trainee_data['coordinator']) && $trainee_data['coordinator'] === '1' && $trainee_id === $memberId) || !isset($trainee_data['coordinator'])) {
           echo "<div class='row ftt_extra_help_string {$done_string}' {$show_string} data-service_one_id='{$sevice_one_id}' data-service_one_archived_id='$sevice_one_id_archived' data-trainee_id='{$trainee_id}' data-archive='{$archive}' data-reason='{$reason}' data-comment='{$comment}' data-author='{$author}' data-archived='{$date_closed}' data-id='{$extra_help_id}' data-date='{$date}' data-semester='{$semester}' data-file='{$file}' data-toggle='modal' data-target='#modalAddEditExtraHelp'>
             <div class='col-2 date_create_text pl-1'>{$date_for_list}</div>
-            <div class='col-3'><span class='trainee_name'>{$short_name_trainee}</span><span class='semester_text'> ({$semester})</span><br><span class='serving_one_name light_text_grey' style='{$show_name_service_one}'>{$short_name_service_one}</span><span class='reson_mbl light_text_grey' style='{$show_reason_short}'>{$reason_short}</span></div>
+            <div class='col-2 px-0'><span class='trainee_name'>{$short_name_trainee}</span><span class='semester_text'> ({$semester})</span><br><span class='serving_one_name light_text_grey' style='{$show_name_service_one}'>{$short_name_service_one}</span><span class='reson_mbl light_text_grey' style='{$show_reason_short}'>{$reason_short}</span></div>
             <div class='col-5 reason_text'>{$reason_short}</div>
-            <div class='col-2 set_to_archive_container'><input type='checkbox' class='set_to_archive align-middle' {$checked_string} {$serving_trainee_disabled}><span class='{$str_comment_hide} ml-3 align-middle' title='{$comment}'><i class='fa fa-sticky-note' aria-hidden='true'></i></span></div>
+            <div class='col-1 set_to_archive_container'><input type='checkbox' class='set_to_archive align-middle' {$checked_string} {$serving_trainee_disabled}><span class='{$str_comment_hide} ml-3 align-middle' title='{$comment}'><i class='fa fa-sticky-note' aria-hidden='true'></i></span></div>
+            <div class='col-2 status_file text-right'>{$statusFile}</div>
           </div>";
           }
         endforeach; ?>

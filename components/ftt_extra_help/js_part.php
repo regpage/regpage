@@ -44,5 +44,5 @@ let admin_id_gl = "<?php echo $memberId;?>";
 
 
 </script>
-<script src="/js/ftt/ftt_extra_help/script.js?v24"></script>
-<script src="/js/ftt/ftt_extra_help/designs.js?v4"></script>
+<script src="/js/ftt/ftt_extra_help/script.js?v27"></script>
+<script src="/js/ftt/ftt_extra_help/designs.js?v8"></script>

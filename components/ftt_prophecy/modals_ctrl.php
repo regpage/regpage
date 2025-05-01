@@ -13,4 +13,4 @@ if (file_exists($modalsExtra)) {
 */
 ?>
 
-<?php require_once 'components/ftt_main/templates/modal_lg.php'; ?>
+<?php require_once 'components/ftt_main/templates/modal.php'; ?>

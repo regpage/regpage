@@ -21,6 +21,7 @@ if ($(window).width()<=769) {
   }
   //$("#sort_button").show();
   // columns
+  $(".status_file").removeClass("col-2").removeClass("text-right").addClass("col-12").css("padding-left", "60px");
   $(".reason_text").attr('style', 'min-width: 0px !important;');
   $("#list_content .col-2").attr('style', 'min-width: 0px !important;');
   $("#current_extra_help .reason_text").removeClass("col-5").hide();

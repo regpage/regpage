@@ -162,8 +162,8 @@
                 <input class="span12 emDocumentDateTp datepicker" type="text" maxlength="10" valid="<?php e('required, ');?>date" placeholder="ДД.ММ.ГГГГ">
         </div>
         <div class="control-group row-fluid">
-            <label class="span12">Фамилия и имя латинскими буквами (как указано в загранпаспорте)<?php e('<sup>*</sup>'); ?></label>
-                <input class="span12 emDocumentNameTp" type="text" maxlength="150" <?php e('valid="required"');?>>
+            <label class="span12">Фамилия и имя в загранпаспорте<?php e('<sup>*</sup>'); ?></label>
+                <input class="span12 emDocumentNameTp" type="text" placeholder="Латинскими буквами, как в загранпаспорте" maxlength="150" <?php e('valid="required"');?>>
         </div>
     </div>
     <?php // endif; ?>
@@ -241,15 +241,26 @@
 <div class="controls flight-info" style="display: none">
     <div class="control-group row-fluid">
         <label class="span12">Информация о приезде (заполняется после покупки билета)</label>
-        <input class="span12 emFlightNumArr" placeholder="Авиакомпания и рейс(ы)" type="text" maxlength="40" >
+        <input class="span12 emFlightNumArr" placeholder="Авиакомпания и рейс(ы)" type="text" maxlength="100" >
     </div>
     <div class="control-group row-fluid">
         <label class="span12">Информация об отъезде (заполняется после покупки билета)</label>
-        <input class="span12 emFlightNumDep" placeholder="Авиакомпания и рейс(ы)" type="text" maxlength="40" >
+        <input class="span12 emFlightNumDep" placeholder="Авиакомпания и рейс(ы)" type="text" maxlength="100" >
     </div>
     <div class="control-group row-fluid">
-        <label class="span12">Название гостиницы<a href="#" rel="tooltip" data-placement="right" data-toggle="tooltip" tabindex="-1"></a></label>
+        <label class="span12">Примечание к поездке<a href="#" rel="tooltip" data-placement="right" data-toggle="tooltip" tabindex="-1"></a></label>
         <input class="span12 emFlightNote" type="text" maxlength="100">
+    </div>
+</div>
+<div class="controls add-info" style="display: none">
+    <div class="control-group row-fluid">
+        <label class="span12"></label>
+        <input class="span12 " placeholder="" type="text" maxlength="40" >
+
+    </div>
+    <div class="control-group row-fluid">
+        <label class="span12"></label>
+        <input class="span12 " placeholder="" type="text" maxlength="40" >
     </div>
 </div>
 <div class="controls grpTransport">
@@ -263,7 +274,7 @@
         </select>
     </div>
 </div>
-<div class="controls flight-info" style="display: none">
+<div class="controls need-visa" style="display: none">
     <div class="control-group row-fluid">
         <label class="span12">Виза</label>
         <select class="span12 emVisa" valid="required">

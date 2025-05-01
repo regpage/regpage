@@ -1222,10 +1222,17 @@ function fillEditMember (memberId, info, localities, newMemberBlank) {
 
     if (info["need_flight"]>0){
         $(".flight-info").show ();
-        $(".emVisa").val(info["visa"] && info["visa"] !== '0' ? info["visa"] : "_none_").change();
     }
     else{
         $(".flight-info").hide ();
+    }
+
+    if (info["need_visa"]>0){
+        $(".need-visa").show ();
+        $(".emVisa").val(info["visa"] && info["visa"] !== '0' ? info["visa"] : "_none_").change();
+    }
+    else{
+        $(".need-visa").hide ();
     }
 
     $(".emEnglishLevel").val (info["english"] !== null ? info["english"] : "_none_").change();

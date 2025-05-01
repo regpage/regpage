@@ -10,10 +10,11 @@
 // вормирования Гридов и прочих представлений данных для основного списка
 // вормирования Гридов и прочих представлений данных для вспомогательных списков
 
-// #ПОДДЕРЖКА Дотации для 20 участников на манил
+// #ПОДДЕРЖКА Дотации для 20 участников для Манилы
 // список братьев с дотацией
-/*
 let brothers_dotation_list = [];
+$("#brothers_dotation_text").parent().hide();
+/*
 fetch("/ajax/set.php?type=get_brothers_dotation_list")
 .then(response => response.json())
 .then(commits => {
@@ -46,6 +47,46 @@ if ($("#events-list").val() === "20222028") {
   $(".brothers_dotation_text").parent().hide();
 }
 */
+
+// ПОДДЕРЖКА МАЛАЗИЯ
+if ($("#events-list").val() === "20250013") {
+setTimeout(function () {
+  fetch("/ajax/set.php?type=get_brothers_have_tickets")
+  .then(response => response.json())
+  .then(commits => {
+    let brothers_have_tickets_list = commits.result;
+    $("#brothers_dotation_text").html(Object.keys(commits.result).length);
+    $("#brothers_dotation_text").parent().show();
+      $(".tab-pane.active tbody tr").each(function() {
+        let temp = $(this).attr("class");
+        if (temp) {
+          temp = temp.split("-");
+          if (brothers_have_tickets_list[temp[1]]) {            
+            $(this).find(".mname1").css("font-weight", "bold");
+          }
+        }
+      });
+    });
+  }, 1300);
+
+fetch("/ajax/set.php?type=get_brothers_dotation_list")
+.then(response => response.json())
+.then(commits => {
+  brothers_dotation_list = commits.result;
+  setTimeout(function () {
+    $(".tab-pane.active tbody tr").each(function() {
+      let temp = $(this).attr("class");
+      if (temp) {
+        temp = temp.split("-");
+        if (brothers_dotation_list[temp[1]]) {
+          $(this).find(".mname1").css("color", "green");
+        }
+      }
+    });
+  }, 1500);
+});
+}
+
 // сброс информации о служении
 $(".emService").click(function () {
   if (!$(this).val()) {

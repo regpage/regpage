@@ -99,7 +99,7 @@
         data-custom_list_item ="<?php echo $event->list_name; ?>"
         data-regend="<?php echo $event->regend_date; ?>" data-event_type="<?php echo $event->event_type; ?>" data-private="<?php echo $event->private; ?>" data-access="<?php echo $memberId == $event->admin_access ? 1: 0 ; ?>"
         data-show-locality-field="<?php echo $showLocalityField ? 1 : 0; ?>"
-        data-need_flight="<?php echo $event->need_flight; ?>" data-need_tp="<?php echo $event->need_tp; ?>" data-min_age="<?php echo $event->min_age; ?>"
+        data-need_flight="<?php echo $event->need_flight; ?>" data-need_visa="<?php echo $event->need_visa; ?>" data-need_tp="<?php echo $event->need_tp; ?>" data-min_age="<?php echo $event->min_age; ?>"
         data-max_age="<?php echo $event->max_age; ?>" data-need_status="<?php echo $event->need_status; ?>" data-online_event="<?php echo $event->online; ?>"
         data-currency="<?php echo $event->currency; ?>"  data-need_prepayment="<?php echo $event->need_prepayment; ?>"
         >
@@ -188,6 +188,10 @@
         </div>
         <span class="counterForResponseble" style="text-align: left; color: red; font-weight: bold; padding-top: 15px; display: inline-block;">
         </span>
+        <span style="text-align: left; font-weight: bold; padding-top: 15px; display: none;"><br>Купили билеты —
+          <span id="brothers_dotation_text"></span>
+        </span>
+
         <!-- фильтр буквы -->
         <div class="letter_filter">
         </div>
@@ -3129,7 +3133,7 @@ function checkStopEventRegistration(eventId){
 
     // END Romans Code
 </script>
-<script src="/js/reg.js?v90"></script>
+<script src="/js/reg.js?v96"></script>
 <script src="/js/regupload.js?v5"></script>
 <?php
     include_once "footer.php";

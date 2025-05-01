@@ -2,8 +2,26 @@
 include_once "ajax.php";
 
 /* BEGIN #ПОДДЕРЖКА 20 БРАТЬЕВ В ПОЕЗДКЕ В МАНИЛ */
+
+if (isset($_GET['type']) && $_GET['type'] === 'get_brothers_dotation_list') {
+    echo json_encode(["result"=> db_brothersDotationList()]);
+    exit;
+}
+if (isset($_GET['type']) && $_GET['type'] === 'get_brothers_have_tickets') {
+    echo json_encode(["result"=> db_brothersHaveTickets()]);
+    exit;
+}
+if (isset($_GET['type']) && $_GET['type'] === 'get_brothers_dotation') {
+  if (isset($_GET['member_key'])) {
+    echo json_encode(["result"=> db_brothersDotationCheck($_GET['member_key'])]);
+  } else {
+    echo json_encode(["result"=> db_brothersDotationCheck()]);
+  }
+
+  exit;
+}
+
 // список братьев с дотацией
-/*
 function db_brothersDotationList()
 {
   $list = [];
@@ -13,18 +31,7 @@ function db_brothersDotationList()
 
   return $list;
 }
-// проверка существующей записи
-function db_brothersDotationExist($memberKey)
-{
-  global $db;
-  $memberKey = $db->real_escape_string($memberKey);
-  $isExist='';
 
-  $res = db_query("SELECT `member_key` FROM `brothers_dotation` WHERE member_key = '$memberKey'");
-  while ($row = $res->fetch_assoc()) $isExist = $row['member_key'];
-
-  return $isExist;
-}
 // количество записей
 function db_brothersDotationCheck($memberKey=false)
 {
@@ -44,6 +51,33 @@ function db_brothersDotationCheck($memberKey=false)
 
   return $isFilled;
 }
+
+// братья с билетами
+function db_brothersHaveTickets()
+{
+  global $db;
+
+  $brothersHaveTickets = [];
+  $res = db_query("SELECT `member_key` FROM `reg` WHERE `flight_num_arr` != ''  AND `flight_num_dep` != ''");
+  while ($row = $res->fetch_assoc()) $brothersHaveTickets[$row['member_key']] = $row['member_key'];
+
+
+  return $brothersHaveTickets;
+}
+/*
+// проверка существующей записи
+function db_brothersDotationExist($memberKey)
+{
+  global $db;
+  $memberKey = $db->real_escape_string($memberKey);
+  $isExist='';
+
+  $res = db_query("SELECT `member_key` FROM `brothers_dotation` WHERE member_key = '$memberKey'");
+  while ($row = $res->fetch_assoc()) $isExist = $row['member_key'];
+
+  return $isExist;
+}
+
 // добавление / удаление дотации
 function db_brothersDotation($memberKey, $ticket, $eventId)
 {
@@ -70,23 +104,12 @@ function db_brothersDotation($memberKey, $ticket, $eventId)
   }
 }
 
-if (isset($_GET['type']) && $_GET['type'] === 'get_brothers_dotation') {
-  if (isset($_GET['member_key'])) {
-    echo json_encode(["result"=> db_brothersDotationCheck($_GET['member_key'])]);
-  } else {
-    echo json_encode(["result"=> db_brothersDotationCheck()]);
-  }
 
-  exit;
-}
 if (isset($_GET['type']) && $_GET['type'] === 'brothers_dotation') {
     echo json_encode(["result"=> db_brothersDotation($_GET['member_key'], $_GET['ticket'], $_GET['event_id'])]);
     exit;
 }
-if (isset($_GET['type']) && $_GET['type'] === 'get_brothers_dotation_list') {
-    echo json_encode(["result"=> db_brothersDotationList()]);
-    exit;
-}
+
 */
 /* END */
 
@@ -264,7 +287,7 @@ else if (isset ($_GET ['member']) && isset ($_GET ['event']))
     }
 }
 else if (isset ($_GET ['members']) && isset ($_GET ['event']) && !isset($_GET['checkServ']))
-{  
+{
     db_setEventMembers ($adminId, $_GET ['event'], preg_split("/,/", $_GET ['members'], -1, PREG_SPLIT_NO_EMPTY),
                         $_POST["arr_date"], $_POST["arr_time"], $_POST["dep_date"], $_POST["dep_time"],
                         $_POST["accom"], $_POST["transport"], isset($_POST["status"])? $_POST["status"] : NULL, $_POST["coord"], isset($_POST["service"])? $_POST["service"] : NULL,
