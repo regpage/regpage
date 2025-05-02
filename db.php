@@ -235,10 +235,10 @@ $selectEventMember = "SELECT m.key as member_key, m.name, CASE WHEN m.male=1 THE
                       r.place, r.prepaid, e.organizer, e.need_parking, e.need_service, e.need_accom,
                       CASE WHEN r.currency IS NULL THEN e.currency ELSE r.currency END as currency,
                       CASE WHEN r.contrib=0 THEN e.contrib ELSE r.contrib END as contrib, r.avtomobile, r.avtomobile_number,
-                      r.service_key, m.english, e.need_tp, e.need_flight, e.need_visa, m.tp_num, m.school_comment,
+                      r.service_key, m.english, e.need_tp, e.need_flight, e.need_visa, e.need_info, e.head_info, e.info_items, m.tp_num, m.school_comment,
                       m.tp_date, m.tp_auth, m.tp_name, r.flight_num_arr, e.need_address, e.list_name, e.list,
                       r.list_name as reg_list_name,
-                      r.flight_num_dep, r.note, m.russian_lg, r.visa, m.baptized, m.attend_meeting,
+                      r.flight_num_dep, r.note, m.russian_lg, r.visa, r.add_info, m.baptized, m.attend_meeting,
                       r.aid_paid, r.aid, r.fellowship, r.contr_amount, r.trans_amount, c.key as country_key,
                       m.school_start, m.school_end, m.college_start, m.college_end, m.college_key, m.college_comment,
                       DATEDIFF(CURRENT_DATE, STR_TO_DATE(m.birth_date, '%Y-%m-%d'))/365 as age, cl.locality_key as college_city
@@ -877,7 +877,7 @@ function db_getDashboardMembers ($adminId, $eventId, $sortField='name', $sortTyp
         IF((SELECT COUNT(*) FROM reg rg WHERE rg.event_key=e.key AND (rg.regstate_key = '01' OR rg.regstate_key = '02' OR rg.regstate_key = '04' OR rg.regstate_key is NULL )) >= e.participants_count AND e.participants_count > 0, 1, 0) as stop_registration,
         e.close_registration,
         reg.prepaid, reg.attended, reg.aid_paid, reg.paid, reg.service_key, reg.status_key, reg.coord, reg.contr_amount, reg.currency, reg.service_info,
-        reg.visa, reg.note, reg.flight_num_arr, reg.flight_num_dep, m.english, m.birth_date,
+        reg.visa, reg.add_info, reg.note, reg.flight_num_arr, reg.flight_num_dep, m.english, m.birth_date,
         m.tp_name, m.tp_num, m.tp_auth, m.tp_date, m.address, reg.avtomobile, reg.avtomobile_number,
         (SELECT rg.name FROM region rg WHERE rg.key=l.region_key) as region,
         (SELECT co.name FROM country co INNER JOIN region re ON co.key=re.country_key WHERE l.region_key=re.key) as country,
@@ -906,7 +906,7 @@ function db_getDashboardMembers ($adminId, $eventId, $sortField='name', $sortTyp
         IF((SELECT COUNT(*) FROM reg rg WHERE rg.event_key=e.key AND (rg.regstate_key = '01' OR rg.regstate_key = '02' OR rg.regstate_key = '04' OR rg.regstate_key is NULL )) >= e.participants_count AND e.participants_count > 0, 1, 0) as stop_registration,
         e.close_registration,
         reg.prepaid, reg.attended, reg.aid_paid, reg.paid, reg.service_key, reg.status_key, reg.coord, reg.contr_amount, reg.currency, reg.service_info,
-        reg.visa, reg.note, reg.flight_num_arr, reg.flight_num_dep, m.english, m.birth_date,
+        reg.visa, reg.add_info, reg.note, reg.flight_num_arr, reg.flight_num_dep, m.english, m.birth_date,
         m.tp_name, m.tp_num, m.tp_auth, m.tp_date, m.address, reg.avtomobile, reg.avtomobile_number,
         (SELECT rg.name FROM region rg WHERE rg.key=l.region_key) as region,
         (SELECT co.name FROM country co INNER JOIN region re ON co.key=re.country_key WHERE l.region_key=re.key) as country,
@@ -1021,7 +1021,7 @@ function db_getDashboardMembersService ($eventId, $attended, $regstate, $sortFie
         (reg.changed>0 or m.changed>0) as changed, reg.contr_amount, reg.currency, e.list_name, reg.list_name as reg_list_name,
         reg.coord, reg.send_result, reg.admin_key as reg_admin_key, reg.admin_comment, reg.comment,
         d.name as document_name, e.web, r.name as region, c.name as country,
-        reg.visa, reg.note, reg.flight_num_arr, reg.flight_num_dep, m.english,
+        reg.visa, reg.add_info, reg.note, reg.flight_num_arr, reg.flight_num_dep, m.english,
         IF((SELECT COUNT(*) FROM reg rg WHERE rg.event_key=e.key AND (rg.regstate_key = '01' OR rg.regstate_key = '02' OR rg.regstate_key = '04' OR rg.regstate_key is NULL )) >= e.participants_count AND e.participants_count > 0, 1, 0) as stop_registration,
         e.close_registration,
         m.tp_name, m.tp_num, m.tp_auth, m.tp_date, reg.mate_key, m.address, reg.avtomobile, reg.avtomobile_number,
@@ -1051,7 +1051,7 @@ function db_getDashboardMembersService ($eventId, $attended, $regstate, $sortFie
         (reg.changed>0 or m.changed>0) as changed, reg.contr_amount, reg.currency, e.list_name, reg.list_name as reg_list_name,
         reg.coord, reg.send_result, reg.admin_key as reg_admin_key, reg.admin_comment, reg.comment,
         d.name as document_name, e.web, '' as region, '' as country,
-        reg.visa, reg.note, reg.flight_num_arr, reg.flight_num_dep, m.english,
+        reg.visa, reg.add_info, reg.note, reg.flight_num_arr, reg.flight_num_dep, m.english,
         IF((SELECT COUNT(*) FROM reg rg WHERE rg.event_key=e.key AND (rg.regstate_key = '01' OR rg.regstate_key = '02' OR rg.regstate_key = '04' OR rg.regstate_key is NULL )) >= e.participants_count AND e.participants_count > 0, 1, 0) as stop_registration,
         e.close_registration,
         m.tp_name, m.tp_num, m.tp_auth, m.tp_date, reg.mate_key, m.address, reg.avtomobile, reg.avtomobile_number,
@@ -1149,7 +1149,7 @@ function db_getEventsByAdmin($adminId){
 
         $res=db_query ("SELECT DISTINCT * FROM(
         SELECT e.key as id, e.name, e.start_date, e.end_date, e.regend_date, e.min_age, e.max_age,
-        e.info, e.need_passport, e.event_type, e.web, e.need_flight, e.need_visa, e.list_name, e.need_status, e.online,
+        e.info, e.need_passport, e.event_type, e.web, e.need_flight, e.need_visa, e.need_info, e.head_info, e.info_items, e.list_name, e.need_status, e.online,
         IF((SELECT COUNT(*) FROM reg rg WHERE rg.event_key=e.key AND (rg.regstate_key = '01' OR rg.regstate_key = '02' OR rg.regstate_key = '04' OR rg.regstate_key is NULL )) >= e.participants_count AND e.participants_count > 0, 1, 0) as stop_registration,
         e.close_registration, e.need_transport, e.need_prepayment, e.private, e.need_tp, e.currency, e.contrib,
         (SELECT ea.member_key FROM event_access ea WHERE ea.member_key='$admin' AND ea.key=e.key) as admin_access
@@ -1162,7 +1162,7 @@ function db_getEventsByAdmin($adminId){
         WHERE a.member_key='$adminId' AND e.is_active=1 $request
         UNION
         SELECT e.key as id, e.name, e.start_date, e.end_date, e.regend_date, e.min_age, e.max_age,
-        e.info, e.need_passport, e.event_type, e.web, e.need_flight, e.need_visa, e.list_name, e.need_status, e.online,
+        e.info, e.need_passport, e.event_type, e.web, e.need_flight, e.need_visa, e.need_info, e.head_info, e.info_items, e.list_name, e.need_status, e.online,
         IF((SELECT COUNT(*) FROM reg rg WHERE rg.event_key=e.key AND (rg.regstate_key = '01' OR rg.regstate_key = '02' OR rg.regstate_key = '04' OR rg.regstate_key is NULL )) >= e.participants_count AND e.participants_count > 0, 1, 0) as stop_registration,
         e.close_registration,
         e.need_transport, e.need_prepayment, e.private, e.need_tp, e.currency, e.contrib,
@@ -1176,7 +1176,7 @@ function db_getEventsByAdmin($adminId){
         WHERE e.is_active=1 $request
         UNION
         SELECT e.key as id, e.name, e.start_date, e.end_date, e.regend_date, e.min_age, e.max_age,
-        e.info, e.need_passport, e.event_type, e.web, e.need_flight, e.need_visa, e.list_name, e.need_status, e.online,
+        e.info, e.need_passport, e.event_type, e.web, e.need_flight, e.need_visa, e.need_info, e.head_info, e.info_items, e.list_name, e.need_status, e.online,
         IF((SELECT COUNT(*) FROM reg rg WHERE rg.event_key=e.key AND (rg.regstate_key = '01' OR rg.regstate_key = '02' OR rg.regstate_key = '04' OR rg.regstate_key is NULL )) >= e.participants_count AND e.participants_count > 0, 1, 0) as stop_registration,
         e.close_registration,
         e.need_transport, e.need_prepayment, e.private, e.need_tp, e.currency, e.contrib,
@@ -1189,7 +1189,7 @@ function db_getEventsByAdmin($adminId){
     }
     else{
         $res = db_query("SELECT e.key as id, e.name, e.start_date, e.end_date, e.regend_date, e.min_age, e.max_age,
-        e.info, e.need_passport, e.event_type, e.web, e.need_flight, e.need_visa, e.list_name,
+        e.info, e.need_passport, e.event_type, e.web, e.need_flight, e.need_visa, e.need_info, e.head_info, e.info_items, e.list_name,
         e.need_transport, e.need_prepayment, e.private, e.need_tp, e.need_status, e.currency,  e.online, e.contrib,
         IF((SELECT COUNT(*) FROM reg rg WHERE rg.event_key=e.key AND (rg.regstate_key = '01' OR rg.regstate_key = '02' OR rg.regstate_key = '04' OR rg.regstate_key is NULL )) >= e.participants_count AND e.participants_count > 0, 1, 0) as stop_registration,
         e.close_registration,
@@ -1324,6 +1324,7 @@ function db_setEventMember ($adminId, $get, $post){
     $_russian_lg = $db->real_escape_string($post['russian_lg']);
     $_schoolComment = $_page !='/members' ? (DONT_CHANGE) : (isset($post['school_comment']) ? $db->real_escape_string($post['school_comment']) : '');
     $_visa = $_page =='/members' ? (DONT_CHANGE ): $db->real_escape_string($post['visa']);
+    $_addInfo = $_page =='/members' ? (DONT_CHANGE ): $db->real_escape_string($post['add_info']);
     $_baptized = $_page !='/members' ? (DONT_CHANGE) : (isset($post['baptized']) ? $post['baptized'] : null);
     $_termsUse = $_page === '/index' ? $post['termsUse'] : DONT_CHANGE;
     $isInvitation = isset($post['isInvitation']) && $post['isInvitation'] == true ? !!$post['isInvitation'] : false;
@@ -1423,7 +1424,7 @@ function db_setEventMember ($adminId, $get, $post){
             || $_service_key != $m["service_key"] || $_service_info != $m["service_info"] || $_coord != $m["coord"]
             || $_flight_num_arr != $m["flight_num_arr"] || $_flight_num_dep != $m["flight_num_dep"]
             || $_note != $m["note"] || $_aid != $m['aid'] || $_contr_amount != $m['contr_amount']
-            || $_trans_amount != $m['trans_amount'] || $_fellowship != $m['fellowship'] || $_visa != $m['visa']
+            || $_trans_amount != $m['trans_amount'] || $_fellowship != $m['fellowship'] || $_visa != $m['visa'] || $_addInfo != $m['add_info']
             || ($_eventId && $_avtomobile != $m['avtomobile'])
             || ($_eventId && $_avtomobile_number != $m['avtomobile_number'])
             || ($_eventId && $regListName != $m['reg_list_name']))
@@ -1510,7 +1511,7 @@ function db_setEventMember ($adminId, $get, $post){
                                               transport, mate_key, admin_key, status_key, $regCommentField, parking,
                                               prepaid, currency, service_key, service_info,
                                               flight_num_arr, flight_num_dep, note,
-                                              aid, contr_amount, trans_amount, list_name, fellowship, visa, avtomobile, avtomobile_number,
+                                              aid, contr_amount, trans_amount, list_name, fellowship, visa, add_info, avtomobile, avtomobile_number,
                                               changed, regstate_key, member_key, event_key, permalink, created, web, contrib)
                                               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,0,"
                                                 . ($doRegister && (!$private_event || $adminRole == 2) ? "'01'," : "NULL,")
@@ -1519,17 +1520,17 @@ function db_setEventMember ($adminId, $get, $post){
                                               transport=?, mate_key=?, admin_key=?, status_key=?,
                                               $regCommentField=?, parking=?, prepaid=?, currency=?, service_key=?, service_info=?,
                                               flight_num_arr = ?, flight_num_dep = ?, note = ?,
-                                              aid = ?, contr_amount = ?, trans_amount = ?, list_name=?, fellowship=?, visa=?, avtomobile =?, avtomobile_number=? "
+                                              aid = ?, contr_amount = ?, trans_amount = ?, list_name=?, fellowship=?, visa=?, add_info=?, avtomobile =?, avtomobile_number=? "
                                               .( $_aid < 1 ? ", aid_paid=NULL " : "" )
                                               . ($regstate=='01' || $regstate=='02' || $regstate=='04' ? ", changed=1" : "")
                                               . ((!$regstate || $regstate=='05') && $doRegister && (!$private_event || $adminRole == 2) ? ", regstate_key='01'" : "")
                                               . " where member_key='$_memberId' and event_key='$_eventId'");
 
         if (!$stmt) throw new Exception ($db->error);
-        $stmt->bind_param ("ssssssssssssssssssssssssss", $_arr_date, $_arr_time, $_dep_date, $_dep_time, $_accom,
+        $stmt->bind_param ("sssssssssssssssssssssssssss", $_arr_date, $_arr_time, $_dep_date, $_dep_time, $_accom,
             $_transport, $_mate_key, $_adminId, $_status_key, $_comment, $_parking,  $_prepaid, $_currency,
             $_service_key, $_service_info, $_flight_num_arr, $_flight_num_dep,
-            $_note, $_aid, $_contr_amount, $_trans_amount, $regListName, $_fellowship, $_visa, $_avtomobile, $_avtomobile_number);
+            $_note, $_aid, $_contr_amount, $_trans_amount, $regListName, $_fellowship, $_visa, $_addInfo, $_avtomobile, $_avtomobile_number);
 
         if (!$stmt->execute ()) throw new Exception ($db->error);
         $stmt->close ();
@@ -3501,6 +3502,7 @@ function db_checkIfEventMemberFieldsHasDifference($adminId, $_dataFields, $membe
             $_dataFields["trans_amount"] != $eventMember['trans_amount'] ||
             $_dataFields["fellowship"] != ($eventMember['fellowship'] == null ? '0' : $eventMember["fellowship"]) ||
             $_dataFields["visa"] != $eventMember['visa'];
+            $_dataFields["add_info"] != $eventMember['add_info'];
 
     $memChanged =
             ($_dataFields["name"] != $eventMember["name"]) ||

@@ -65,6 +65,9 @@
 
     // Обезвреживание содержимого переданного аргумента.
     function db_real_escape_string($data) {
-        global $db;
-        return $db->real_escape_string($data);
+      /*if ($data === null) {
+        $data = '';
+      }*/
+      global $db;
+      return $db->real_escape_string($data);
     }

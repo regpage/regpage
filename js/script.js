@@ -1070,7 +1070,8 @@ function getValuesRegformFields(form, isIndexPage, isInvitation){
         english_level: form.find(".emEnglishLevel").val() ? form.find(".emEnglishLevel").val() === "_none_" ? "" : form.find(".emEnglishLevel").val() : '_dont_change_',
         flight_num_arr: form.find(".emFlightNumArr").val(),
         flight_num_dep: form.find(".emFlightNumDep").val(),
-        visa : form.find('.emVisa').val() === '_none_' ? 0 : form.find('.emVisa').val(),
+        visa: form.find('.emVisa').val() === '_none_' ? 0 : form.find('.emVisa').val(),
+        add_info: form.find('.emAddInfo').val(),
         note: form.find(".emFlightNote").val(),
 
         status_key: form.find(".emStatus").val () == "_none_" ? "" : form.find(".emStatus").val(),
@@ -1230,6 +1231,13 @@ function fillEditMember (memberId, info, localities, newMemberBlank) {
     if (info["need_visa"]>0){
         $(".need-visa").show ();
         $(".emVisa").val(info["visa"] && info["visa"] !== '0' ? info["visa"] : "_none_").change();
+    }
+    else{
+        $(".need-visa").hide ();
+    }
+    if (info["need_info"]>0){
+        $(".add-info").show ();
+        $(".emAddInfo").val(info["add_info"] ? info["add_info"] : "_none_").change();
     }
     else{
         $(".need-visa").hide ();

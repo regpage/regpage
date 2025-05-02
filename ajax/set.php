@@ -17,10 +17,39 @@ if (isset($_GET['type']) && $_GET['type'] === 'get_brothers_dotation') {
   } else {
     echo json_encode(["result"=> db_brothersDotationCheck()]);
   }
-
   exit;
 }
+if (isset($_GET['type']) && $_GET['type'] === 'get_have_tickets_count') {
+    echo json_encode(["result"=> db_brothersHaveTicketsCount()]);
+    exit;
+}
+if (isset($_GET['type']) && $_GET['type'] === 'set_red_background') {
+    echo json_encode(["result"=> db_setRedBackground($_GET['members_keys'], $_GET['event_id'])]);
+    exit;
+}
 
+// красный фон
+function db_setRedBackground($memberKeys, $eventId)
+{
+  if (empty($memberKeys)) {
+    return false;
+  }
+  global $db;
+  $memberKeys = $db->real_escape_string($memberKeys);
+  $eventId = $db->real_escape_string($eventId);
+  $memberKeys = explode(',', $memberKeys);
+  $condition = '';
+  foreach ($memberKeys as $key => $value) {
+    if (empty($condition)) {
+      $condition .= " `member_key` = '{$value}' ";
+    } else {
+      $condition .= " OR `member_key` = '{$value}' ";
+    }
+  }
+  $res = db_query ("UPDATE reg SET `questionable` = 1 WHERE ({$condition}) AND event_key='{$eventId}'");
+
+  return $res;
+}
 // список братьев с дотацией
 function db_brothersDotationList()
 {
@@ -53,16 +82,30 @@ function db_brothersDotationCheck($memberKey=false)
 }
 
 // братья с билетами
+function db_brothersHaveTicketsCount()
+{
+  global $db;
+
+  $brothersHaveTickets = 0;
+  $res = db_query("SELECT COUNT(r.member_key) AS total
+    FROM reg r
+    JOIN member m ON m.key = r.member_key
+    WHERE r.flight_num_arr != ''  AND r.flight_num_dep != '' AND m.male = 1");
+  while ($row = $res->fetch_assoc()) $brothersHaveTickets = $row['total'];
+
+
+  return $brothersHaveTickets;
+}
+
 function db_brothersHaveTickets()
 {
   global $db;
 
-  $brothersHaveTickets = [];
+  $result = [];
   $res = db_query("SELECT `member_key` FROM `reg` WHERE `flight_num_arr` != ''  AND `flight_num_dep` != ''");
-  while ($row = $res->fetch_assoc()) $brothersHaveTickets[$row['member_key']] = $row['member_key'];
+  while ($row = $res->fetch_assoc()) $result[$row['member_key']] = $row['member_key'];
 
-
-  return $brothersHaveTickets;
+  return $result;
 }
 /*
 // проверка существующей записи

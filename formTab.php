@@ -254,13 +254,14 @@
 </div>
 <div class="controls add-info" style="display: none">
     <div class="control-group row-fluid">
-        <label class="span12"></label>
-        <input class="span12 " placeholder="" type="text" maxlength="40" >
-
-    </div>
-    <div class="control-group row-fluid">
-        <label class="span12"></label>
-        <input class="span12 " placeholder="" type="text" maxlength="40" >
+        <label class="span12">Тур после обучения</label>
+        <select class="span12 emAddInfo" valid="required">
+            <option value="_none_">&nbsp;</option>
+            <option value="Не участвую в туре">Не участвую в туре</option>
+            <option value="Западная Малайзия (полуостров Индокитай)">Западная Малайзия (полуостров Индокитай), 3 дня</option>
+            <option value="Восточная Малайзия (штат Саравак), 4 дня">Восточная Малайзия (штат Саравак), 4 дня</option>
+            <option value="Восточная Малайзия (штат Сабах), 4 дня">Восточная Малайзия (штат Сабах), 4 дня</option>
+        </select>
     </div>
 </div>
 <div class="controls grpTransport">
@@ -278,8 +279,8 @@
     <div class="control-group row-fluid">
         <label class="span12">Виза</label>
         <select class="span12 emVisa" valid="required">
-            <option value="_none_" selected>&nbsp;</option>
-            <option value="1">Не требуется</option>
+            <option value="_none_">&nbsp;</option> <!--  selected -->
+            <option value="1" selected>Не требуется</option>
             <option value="2">Уже имеется</option>
             <option value="3">Получу для этой поездки</option>
         </select>

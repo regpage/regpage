@@ -99,7 +99,7 @@
         data-custom_list_item ="<?php echo $event->list_name; ?>"
         data-regend="<?php echo $event->regend_date; ?>" data-event_type="<?php echo $event->event_type; ?>" data-private="<?php echo $event->private; ?>" data-access="<?php echo $memberId == $event->admin_access ? 1: 0 ; ?>"
         data-show-locality-field="<?php echo $showLocalityField ? 1 : 0; ?>"
-        data-need_flight="<?php echo $event->need_flight; ?>" data-need_visa="<?php echo $event->need_visa; ?>" data-need_tp="<?php echo $event->need_tp; ?>" data-min_age="<?php echo $event->min_age; ?>"
+        data-need_flight="<?php echo $event->need_flight; ?>" data-need_visa="<?php echo $event->need_visa; ?>" data-need_info="<?php echo $event->need_info; ?>" data-head_info="<?php echo $event->head_info; ?>" data-info_items="<?php echo $event->info_items; ?>" data-need_tp="<?php echo $event->need_tp; ?>" data-min_age="<?php echo $event->min_age; ?>"
         data-max_age="<?php echo $event->max_age; ?>" data-need_status="<?php echo $event->need_status; ?>" data-online_event="<?php echo $event->online; ?>"
         data-currency="<?php echo $event->currency; ?>"  data-need_prepayment="<?php echo $event->need_prepayment; ?>"
         >
@@ -1933,6 +1933,12 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
                 }
             });
         });
+        // дотации
+        if ($("#events-list").val() === "20250013") {
+          donate_brothers_bold(50);
+          donate_brothers_green(100);
+          donate_brothers_count();
+        }
       }, 200);
     }
 
@@ -2244,33 +2250,15 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
 
     $("#events-list").change(function(){
       // #ПОДДЕРЖКА Дотаци для 20 участников на манилы
-      /*
-      if ($("#events-list").val() === "20222028") {
-        fetch("/ajax/set.php?type=get_brothers_dotation")
-        .then(response => response.json())
-        .then(commits => {
-          $(".brothers_dotation_text").html(20 - Number(commits.result));
-        });
-        $(".brothers_dotation_text").parent().show();
-        setTimeout(function () {
-          $("#eventTab-20222028 tbody tr").each(function() {
-            let temp = $(this).attr("class");
-            if (temp) {
-              temp = temp.split(" ");
-              if (!temp[1]) {
-                temp = temp[0].split("-");
-                if (brothers_dotation_list[temp[1]]) {
-                  $(this).attr("style", "background-color: lightyellow;");
-                }
-              }
-            }
-          });
-        }, 2000);
-
+      // дотации
+      if ($("#events-list").val() === "20250013") {
+        donate_brothers_bold(50);
+        donate_brothers_green(100);
+        donate_brothers_count();
       } else {
         $(".brothers_dotation_text").parent().hide();
       }
-      */
+
         var eventId = $(this).val(), eventIdCurrent = $('.tab-pane.active').attr('id').replace(/^eventTab-/,'');
         if(eventId !== eventIdCurrent){
             $('.tab-pane.active').removeClass('active');
@@ -2442,8 +2430,17 @@ function checkStopEventRegistration(eventId){
             $.getJSON('/ajax/set.php?event='+eventId+request, { reg_new_members: members.join(',') })
             .done (function(data) {
                 //refreshEventMembers (eventId, data.members, data.localities);
-                $('#modalAddMembers').modal('hide');
-                loadDashboard();
+                if ($("#events-list").val() === "20250013") {
+                  fetch("/ajax/set.php?type=set_red_background&members_keys=" + members.join(',')  + "&event_id=" + eventId)
+                  .then(response => response.json())
+                  .then(commits => {
+                    $('#modalAddMembers').modal('hide');
+                    loadDashboard();
+                  });
+                } else {
+                  $('#modalAddMembers').modal('hide');
+                  loadDashboard();
+                }
             });
         }
     });
@@ -3133,7 +3130,7 @@ function checkStopEventRegistration(eventId){
 
     // END Romans Code
 </script>
-<script src="/js/reg.js?v96"></script>
+<script src="/js/reg.js?v98"></script>
 <script src="/js/regupload.js?v5"></script>
 <?php
     include_once "footer.php";

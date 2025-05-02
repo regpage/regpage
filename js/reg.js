@@ -49,42 +49,65 @@ if ($("#events-list").val() === "20222028") {
 */
 
 // ПОДДЕРЖКА МАЛАЗИЯ
-if ($("#events-list").val() === "20250013") {
-setTimeout(function () {
-  fetch("/ajax/set.php?type=get_brothers_have_tickets")
+// Отмечаем ФИО купивших билеты жирным шрифтом
+function donate_brothers_bold(time) {
+  if (!time) {
+    time = 1600;
+  }
+  setTimeout(function () {
+    fetch("/ajax/set.php?type=get_brothers_have_tickets")
+    .then(response => response.json())
+    .then(commits => {
+      let brothers_have_tickets_list = commits.result;
+        $(".tab-pane.active tbody tr").each(function() {
+          let temp = $(this).attr("class");
+          if (temp) {
+            temp = temp.split("-");
+            if (brothers_have_tickets_list[temp[1]]) {
+              $(this).find(".mname1").css("font-weight", "bold");
+            }
+          }
+        });
+      });
+  }, time);
+}
+// Отмечаем ФИО участников в дотации (таблица дотации)
+function donate_brothers_green(time) {
+  if (!time) {
+    time = 1900;
+  }
+
+  fetch("/ajax/set.php?type=get_brothers_dotation_list")
+    .then(response => response.json())
+    .then(commits => {
+      brothers_dotation_list = commits.result;
+      setTimeout(function () {
+        $(".tab-pane.active tbody tr").each(function() {
+          let temp = $(this).attr("class");
+          if (temp) {
+            temp = temp.split("-");
+            if (brothers_dotation_list[temp[1]]) {
+              $(this).find(".mname1").css("color", "green");
+            }
+          }
+        });
+      }, time);
+    });
+}
+// получаем кол-во получателей дотации
+function donate_brothers_count() {
+  fetch("/ajax/set.php?type=get_have_tickets_count")
   .then(response => response.json())
   .then(commits => {
-    let brothers_have_tickets_list = commits.result;
-    $("#brothers_dotation_text").html(Object.keys(commits.result).length);
+    $("#brothers_dotation_text").html(commits.result);
     $("#brothers_dotation_text").parent().show();
-      $(".tab-pane.active tbody tr").each(function() {
-        let temp = $(this).attr("class");
-        if (temp) {
-          temp = temp.split("-");
-          if (brothers_have_tickets_list[temp[1]]) {            
-            $(this).find(".mname1").css("font-weight", "bold");
-          }
-        }
-      });
-    });
-  }, 1300);
-
-fetch("/ajax/set.php?type=get_brothers_dotation_list")
-.then(response => response.json())
-.then(commits => {
-  brothers_dotation_list = commits.result;
-  setTimeout(function () {
-    $(".tab-pane.active tbody tr").each(function() {
-      let temp = $(this).attr("class");
-      if (temp) {
-        temp = temp.split("-");
-        if (brothers_dotation_list[temp[1]]) {
-          $(this).find(".mname1").css("color", "green");
-        }
-      }
-    });
-  }, 1500);
-});
+  });
+}
+// дотации
+if ($("#events-list").val() === "20250013") {
+  donate_brothers_bold();
+  donate_brothers_green();
+  donate_brothers_count();
 }
 
 // сброс информации о служении
