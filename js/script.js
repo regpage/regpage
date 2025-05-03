@@ -1228,19 +1228,19 @@ function fillEditMember (memberId, info, localities, newMemberBlank) {
         $(".flight-info").hide ();
     }
 
-    if (info["need_visa"]>0){
+    if (info["need_visa"]>0) {
         $(".need-visa").show ();
         $(".emVisa").val(info["visa"] && info["visa"] !== '0' ? info["visa"] : "_none_").change();
     }
-    else{
+    else {
         $(".need-visa").hide ();
     }
-    if (info["need_info"]>0){
+
+    if (info["need_info"]>0) {
         $(".add-info").show ();
         $(".emAddInfo").val(info["add_info"] ? info["add_info"] : "_none_").change();
-    }
-    else{
-        $(".need-visa").hide ();
+    } else {
+        $(".add-info").hide ();
     }
 
     $(".emEnglishLevel").val (info["english"] !== null ? info["english"] : "_none_").change();

@@ -1235,7 +1235,7 @@ $(document).ready(function(){
                 eventAttrs = ' class="event-row" '+border_top+' data-name="'+event.name+'" data-locality_name="'+event.locality_name+'" '+
                         'data-start_date="'+event.start_date+'" data-end_date="'+event.end_date+'" data-private="'+event.private+'" '+
                         'data-is_active="'+event.is_active+'" data-id="'+event.id+'" data-author="'+event.author+'" '+
-                        'data-archived="'+event.archived+'" data-regstate_key="'+event.regstate_key+'" data-max_age="'+event.max_age+'" data-min_age="'+event.min_age+'" data-event_type="'+event.event_type+'" data-online_event="'+event.online+'"';
+                        'data-archived="'+event.archived+'" data-regstate_key="'+event.regstate_key+'" data-max_age="'+event.max_age+'" data-min_age="'+event.min_age+'" data-event_type="'+event.event_type+'" data-online_event="'+event.online+'" data-need_info="'+event.need_info+'" data-need_visa="'+event.need_visa+'"';
 
                 var regstateText='', regstateClass = '';
                 if(event.member_key !== null){
@@ -1620,7 +1620,7 @@ console.log('stop is ', stopRegistration, 'close is ', closeRegistration, modalW
                                         $('.emMate').hide();
                                         $('.emMateLbl').hide();
                                     });
-                                } else{
+                                } else {
                                     $('#btnDoRegisterGuest').addClass('guest');
                                     showEmptyForm (eventId);
                                 }
@@ -1898,7 +1898,7 @@ console.log('stop is ', stopRegistration, 'close is ', closeRegistration, modalW
         $.getJSON('/ajax/event.php', { eventIdReject: window.currentEventId})
         .done (function(){
           // #ПОДДЕРЖКА
-          /*if (eventId === '20222028') {
+          /*if (eventId === '20250013') {
               // переделать на стороне сервера
               fetch("/ajax/set.php?type=brothers_dotation&member_key="+window.adminId+"&event_id="+eventId+"&ticket")
               .then(response => response.json())
@@ -1931,15 +1931,24 @@ console.log('stop is ', stopRegistration, 'close is ', closeRegistration, modalW
         let emFlightNumArr = $("#modalEditMember .emFlightNumArr").val();
         $.post("/ajax/guest.php?isnew="+isnew, fieldsValue)
         .done (function(data){
-          // #ПОДДЕРЖКА Дотации для 20 участников на манил
-          /*
-          if (eventId === '20222028') {
+          // #ПОДДЕРЖКА Дотации для 50 участников на манил
+
+          if (eventId === '20250013') {
+            if (isnew === 1) {
+              fetch("/ajax/set.php?type=set_questionable&member_id="+window.adminId+"&event_id="+eventId+"&value=1")
+              .then(response => response.json())
+              .then(commits => {
+              });
+            }
+/*
+  Внимание добавляем только братьев
             fetch("/ajax/set.php?type=brothers_dotation&member_key="+window.adminId+"&event_id="+eventId+"&ticket="+emFlightNumArr)
             .then(response => response.json())
             .then(commits => {
             });
+*/
           }
-          */
+
             form.addClass('hide').modal('hide');
             if($(self).hasClass('edit')){
                 $('#btnDoRegisterGuest').removeClass('edit').removeClass('guest');

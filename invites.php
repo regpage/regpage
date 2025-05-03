@@ -109,7 +109,7 @@ $(document).ready(function(){
             $(this).parents ('div.modal').modal('hide');
         <?php } else { ?>
         var locHost = location.host, host;
-        host = locHost.substr(4,3) !== 'dev'? 'https://test.new-constellation.ru/' : 'https://test.new-constellation.ru/';
+        host = locHost.substr(4,3) !== 'dev'? 'https://reg-page.ru/' : 'https://test.new-constellation.ru/';
         window.location = host ;
         <?php } ?>
     });

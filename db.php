@@ -1513,7 +1513,7 @@ function db_setEventMember ($adminId, $get, $post){
                                               flight_num_arr, flight_num_dep, note,
                                               aid, contr_amount, trans_amount, list_name, fellowship, visa, add_info, avtomobile, avtomobile_number,
                                               changed, regstate_key, member_key, event_key, permalink, created, web, contrib)
-                                              VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,0,"
+                                              VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,0,"
                                                 . ($doRegister && (!$private_event || $adminRole == 2) ? "'01'," : "NULL,")
                                                 . ( !$_memberId ? "'$newMemberId'" : "'$_memberId'") .", '$_eventId', UUID(), NOW(), $_web, $_contrib)")
                                : $db->prepare ("UPDATE reg SET arr_date=?, arr_time=?, dep_date=?, dep_time=?, accom=?,
@@ -1534,7 +1534,7 @@ function db_setEventMember ($adminId, $get, $post){
 
         if (!$stmt->execute ()) throw new Exception ($db->error);
         $stmt->close ();
-    }
+    }    
 
     if($_page == '/index'){
         db_sendMessagesToMembersAdmins($_eventId, $_name, $_locality_key);
@@ -2561,7 +2561,7 @@ function db_getMemberMain ($memberId, $eventId){
                 m.male, m.birth_date, m.locality_key, m.address,
                 m.category_key, m.document_key, m.document_num, m.document_date,
                 m.document_auth, m.new_locality, m.citizenship_key, m.cell_phone,
-                m.admin_key as mem_admin, e.name as event_name, e.key as event_key,
+                m.admin_key as mem_admin, e.name as event_name, e.key as event_key, e.need_visa, e.need_info,
                 e.need_passport, e.need_transport, e.need_prepayment, e.need_address, e.need_accom, m.email,
                 e.start_date, e.end_date, m.college_key, m.college_comment,
                 IF (rg.name='--',l.name,CONCAT (l.name,', ',rg.name)) as locality_name,
@@ -3038,7 +3038,7 @@ function db_getEventsForEventsPage($adminId, $sort_type, $sort_field){
     $res=db_query ("SELECT DISTINCT * FROM (
                     SELECT e.key as id, e.name as name, e.need_passport, e.need_transport, e.close_registration,
                     e.participants_count, e.online, e.event_type,
-                    e.need_prepayment, e.start_date, e.end_date, e.min_age, e.max_age, e.need_flight, e.need_tp, e.regend_date, e.info, e.private,
+                    e.need_prepayment, e.start_date, e.end_date, e.min_age, e.max_age, e.need_visa, e.need_info, e.need_flight, e.need_tp, e.regend_date, e.info, e.private,
                     e.locality_key, e.author, l.name as locality_name, e.is_active, e.archived, re.regstate_key, re.member_key
                     FROM event e
                     LEFT JOIN reg re ON re.event_key=e.key AND re.member_key='$adminId'
@@ -3054,7 +3054,7 @@ function db_getEventsForEventsPage($adminId, $sort_type, $sort_field){
 
                     SELECT e.key as id, e.name as name, e.need_passport, e.need_transport, e.close_registration,
                     e.participants_count, e.online, e.event_type,
-                    e.need_prepayment, e.start_date, e.end_date, e.min_age, e.max_age, e.need_flight, e.need_tp, e.regend_date, e.info, e.private,
+                    e.need_prepayment, e.start_date, e.end_date, e.min_age, e.max_age, e.need_visa, e.need_info, e.need_flight, e.need_tp, e.regend_date, e.info, e.private,
                     e.locality_key, e.author, l.name as locality_name, e.is_active, e.archived, re.regstate_key, re.member_key
                     FROM event e
                     LEFT JOIN reg re ON re.event_key=e.key AND re.member_key='$adminId'
@@ -3070,7 +3070,7 @@ function db_getEventsForEventsPage($adminId, $sort_type, $sort_field){
 
                     SELECT DISTINCT e.key as id, e.name as name, e.need_passport, e.need_transport, e.close_registration,
                     e.participants_count, e.online, e.event_type,
-                    e.need_prepayment, e.start_date, e.end_date, e.min_age, e.max_age, e.need_flight, e.need_tp, e.regend_date, e.info, e.private,
+                    e.need_prepayment, e.start_date, e.end_date, e.min_age, e.max_age, e.need_visa, e.need_info, e.need_flight, e.need_tp, e.regend_date, e.info, e.private,
                     e.locality_key, e.author, l.name as locality_name, e.is_active, e.archived, re.regstate_key, re.member_key
                     FROM event e
                     LEFT JOIN reg re ON re.event_key=e.key AND re.member_key='$adminId'
@@ -3086,7 +3086,7 @@ function db_getEventsForEventsPage($adminId, $sort_type, $sort_field){
 
                     SELECT e.key as id, e.name as name, e.need_passport, e.need_transport, e.close_registration,
                     e.participants_count, e.online, e.event_type,
-                    e.need_prepayment, e.start_date, e.end_date, e.min_age, e.max_age, e.need_flight, e.need_tp, e.regend_date, e.info, e.private,
+                    e.need_prepayment, e.start_date, e.end_date, e.min_age, e.max_age, e.need_visa, e.need_info, e.need_flight, e.need_tp, e.regend_date, e.info, e.private,
                     e.locality_key, e.author, l.name as locality_name, e.is_active, e.archived, re.regstate_key, re.member_key
                     FROM event e
                     LEFT JOIN reg re ON re.event_key=e.key AND re.member_key='$adminId'
@@ -3097,7 +3097,7 @@ function db_getEventsForEventsPage($adminId, $sort_type, $sort_field){
 
                     SELECT e.key as id, e.name as name, e.need_passport, e.need_transport, e.close_registration,
                     e.participants_count, e.online, e.event_type,
-                    e.need_prepayment, e.start_date, e.end_date, e.min_age, e.max_age, e.need_flight, e.need_tp, e.regend_date, e.info, e.private,
+                    e.need_prepayment, e.start_date, e.end_date, e.min_age, e.max_age, e.need_visa, e.need_info, e.need_flight, e.need_tp, e.regend_date, e.info, e.private,
                     e.locality_key, e.author, l.name as locality_name, e.is_active, e.archived, re.regstate_key, re.member_key
                     FROM event e
                     LEFT JOIN reg re ON re.event_key=e.key AND re.member_key='$adminId'

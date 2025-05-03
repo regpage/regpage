@@ -48,7 +48,7 @@ if (isset ($_GET ['restore']))
 if (isset ($_POST ['event'])){
     $adminId = db_getMemberIdBySessionId (session_id());
     $memberId = db_setEventMember ($adminId ? $adminId : '', $_GET, $_POST);
-    if ($_GET ['isnew'] == 1) {
+    if (isset($_GET['isnew']) && $_GET['isnew'] == 1) {
       $msgToOrganizer = db_sendMessageToOrganizer ($_POST['event'], $memberId, $_POST ['locality_key']);
     }
     $link = db_getPermalink ($memberId, $_POST ['event']);

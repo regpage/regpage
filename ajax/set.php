@@ -97,20 +97,27 @@ function db_brothersHaveTicketsCount()
   return $brothersHaveTickets;
 }
 
-function db_brothersHaveTickets()
-{
-  global $db;
-
+function db_brothersHaveTickets() {
   $result = [];
   $res = db_query("SELECT `member_key` FROM `reg` WHERE `flight_num_arr` != ''  AND `flight_num_dep` != ''");
   while ($row = $res->fetch_assoc()) $result[$row['member_key']] = $row['member_key'];
 
   return $result;
 }
-/*
+
+function db_brotherHaveTickets($memberKey) {
+  global $db;
+  $memberKey = $db->real_escape_string($memberKey);
+
+  $result = '';
+  $res = db_query("SELECT `member_key` FROM `reg` WHERE `member_key` = '{$memberKey}' AND `flight_num_arr` != '' AND `flight_num_dep` != ''");
+  while ($row = $res->fetch_assoc()) $result = $row['member_key'];
+
+  return $result;
+}
+
 // проверка существующей записи
-function db_brothersDotationExist($memberKey)
-{
+function db_brothersDotationExist($memberKey) {
   global $db;
   $memberKey = $db->real_escape_string($memberKey);
   $isExist='';
@@ -137,9 +144,10 @@ function db_brothersDotation($memberKey, $ticket, $eventId)
   } elseif (!empty($isExist) && !empty($ticket)) {
     return 'no changes';
   } else {
+    $haveTickets = db_brotherHaveTickets($memberKey);
     $isFilled = db_brothersDotationCheck();
-    if ($isFilled < 20 && !empty($ticket)) {
-      db_query("INSERT INTO brothers_dotation (`member_key`) VALUES ('$memberKey')");
+    if ($isFilled <= 50 && !empty($ticket) && !empty($haveTickets) && $haveTickets != 'exist') {
+      db_query("INSERT INTO `brothers_dotation` (`member_key`) VALUES ('$memberKey')");
       return db_brothersDotationCheck();
     } else {
       return 'no changes';
@@ -153,7 +161,7 @@ if (isset($_GET['type']) && $_GET['type'] === 'brothers_dotation') {
     exit;
 }
 
-*/
+
 /* END */
 
 /* Задаём значение в поле questionable таблицы reg*/
@@ -294,7 +302,7 @@ else if (isset ($_GET ['event']) && isset ($_POST ['send_to_members']) && isset 
         if (!$reg['regstate_key'] || $type!='invitation'){
             if (strstr ($text, '{СсылкаНаБланк}')){
                 $permalink = db_getPermalink($memberId, $eventId);
-                $body = str_replace('{СсылкаНаБланк}', '<a href="'.$appRootPath.'invited='.$permalink.'">'.$appRootPath.'invited='.$permalink.'</a>', $text);
+                $body = str_replace('{СсылкаНаБланк}', '<a href="'.$appRootPath.'invites?link='.$permalink.'">'.$appRootPath.'invites?link='.$permalink.'</a>', $text);
             }
             else{
                 $body = $text;
