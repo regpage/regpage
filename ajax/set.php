@@ -148,7 +148,7 @@ function db_brothersDotation($memberKey, $ticket, $eventId)
   } elseif (empty($isExist) && $ticket) {
     $haveTickets = db_brotherHaveTickets($memberKey);
     $isFilled = db_brothersDotationCheck();
-    if ($isFilled < 50 && !empty($haveTickets)) {
+    if ($isFilled < 80 && !empty($haveTickets)) {
       db_query("INSERT INTO `brothers_dotation` (`member_key`) VALUES ('$memberKey')");
       return db_brothersDotationCheck();
     } else {

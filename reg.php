@@ -2160,7 +2160,6 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
 
               });
             }
-
         });
     }
 
