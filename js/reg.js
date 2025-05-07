@@ -13,7 +13,7 @@
 // #ПОДДЕРЖКА Дотации для 20 участников для Манилы
 // список братьев с дотацией
 let brothers_dotation_list = [];
-$("#brothers_dotation_text").parent().hide();
+
 /*
 fetch("/ajax/set.php?type=get_brothers_dotation_list")
 .then(response => response.json())
@@ -49,6 +49,7 @@ if ($("#events-list").val() === "20222028") {
 */
 
 // ПОДДЕРЖКА МАЛАЗИЯ
+$(".tab-pane.active").find(".brothers_dotation_text").parent().hide();
 // Отмечаем ФИО купивших билеты жирным шрифтом
 function donate_brothers_bold(time) {
   if (!time) {
@@ -95,19 +96,24 @@ function donate_brothers_green(time) {
     });
 }
 // получаем кол-во получателей дотации
-function donate_brothers_count() {
+function donate_brothers_count(elem) {
+  if (!elem) {
+    elem = $(".tab-pane.active").find(".brothers_dotation_text");
+  }
+
   fetch("/ajax/set.php?type=get_have_tickets_count")
   .then(response => response.json())
   .then(commits => {
-    $("#brothers_dotation_text").html(commits.result);
-    $("#brothers_dotation_text").parent().show();
+    elem.html(commits.result);
+    elem.parent().show();
   });
 }
 // дотации
+
 if ($("#events-list").val() === "20250013") {
+  donate_brothers_count();
   donate_brothers_bold();
   donate_brothers_green();
-  donate_brothers_count();
 }
 
 // сброс информации о служении
@@ -238,6 +244,37 @@ $('#questionable strong').click(function() {
         if ((!a || !b) && !$('#btnDoRegisterMember').hasClass('disabled')) {
           $('#btnDoRegisterMember').addClass('disabled')
         }
+        // проверка полей прилёта
+        if (form.find(".emFlightNumArr").is(":visible") && !form.find(".emFlightNumArr").val()) {
+          $('#btnDoRegisterMember').addClass('disabled');
+          if (!form.find(".emFlightNumArr").val()) {
+            form.find(".emFlightNumArr").parent().addClass("error");
+          }
+        } else {
+          if (form.find(".emFlightNumArr").parent().hasClass("error")) {
+            form.find(".emFlightNumArr").parent().removeClass("error");
+          }
+        }
+        // проверка полей отлёта
+        if (form.find(".emFlightNumArr").is(":visible") && !form.find(".emFlightNumDep").val()) {
+          $('#btnDoRegisterMember').addClass('disabled');
+          if (!form.find(".emFlightNumDep").val()) {
+            form.find(".emFlightNumDep").parent().addClass("error");
+          }
+        } else {
+          if (form.find(".emFlightNumDep").parent().hasClass("error")) {
+            form.find(".emFlightNumDep").parent().removeClass("error");
+          }
+        }
+        // проверка add-info
+        if (form.find(".emAddInfo").is(":visible") && (!form.find(".emAddInfo").val() || form.find(".emAddInfo").val() === "_none_") ) {
+          $('#btnDoRegisterMember').addClass('disabled');
+          if (!form.find(".emAddInfo").val() || form.find(".emAddInfo").val() === "_none_") {
+            form.find(".emAddInfo").parent().addClass("error");
+          }
+        } else if (form.find(".emAddInfo").parent().hasClass("error")) {
+          form.find(".emAddInfo").parent().removeClass("error");
+        }
     }, 1000);
   }
     setTimeout(function () {
@@ -326,6 +363,20 @@ $('#modalEditMember').on('hide', function() {
     }
   }, 500);
 });
+
+$('.emFlightNumArr, .emFlightNumDep, .emAddInfo').change(function () {
+  setFieldError ($(this));
+  if (!$(this).val() || $(this).val() === "_none_") {
+    $(this).parent().addClass("error");
+  } else {
+    $(this).parent().removeClass("error");
+  }
+
+  if (!$('.emFlightNumArr').val() || !$('.emFlightNumDep').val() || (!$('.emAddInfo').val() || $('.emAddInfo').val() === "_none_")) {
+    $('#btnDoRegisterMember').addClass('disabled');
+  }
+});
+
 
   // start back button bahevior
 /*

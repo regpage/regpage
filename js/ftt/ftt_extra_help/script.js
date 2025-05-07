@@ -538,8 +538,9 @@ $('#modalAddEditExtraHelp .btn-secondary').click(function (e) {
   clear_blank();
 });
 
-// открыть бланк для добавления правки дап задания
+// открыть бланк для добавления доп задания
 $('#showModalAddEditExtraHelp').click(function () {
+  $("#modalAddEditExtraHelp #save_extra_help").show();
   if (trainee_access) {
     $("#modalAddEditExtraHelp #fio_field").attr('disabled', false);
     $("#modalAddEditExtraHelp #reason_field").attr('disabled', false);
@@ -673,12 +674,14 @@ $(".ftt_extra_help_string").click(function () {
     $("#archive_checkbox_field").attr('disabled', true);
     $("#modalAddEditExtraHelp #date_field").attr('disabled', true);
     $("#modalAddEditExtraHelp #save_extra_help").attr('disabled', true);
+    $("#modalAddEditExtraHelp #save_extra_help").hide();
   } else {
     $("#modalAddEditExtraHelp #fio_field").attr('disabled', false);
     $("#modalAddEditExtraHelp #reason_field").attr('disabled', false);
     $("#archive_checkbox_field").attr('disabled', false);
     $("#modalAddEditExtraHelp #date_field").attr('disabled', false);
     $("#modalAddEditExtraHelp #save_extra_help").attr('disabled', false);
+    $("#modalAddEditExtraHelp #save_extra_help").show();
   }
   if ($(this).attr("data-archive") === '1') {
     $('#modalUniTitle').text('Доп. задание (выполнено)');

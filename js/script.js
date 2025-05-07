@@ -1223,9 +1223,13 @@ function fillEditMember (memberId, info, localities, newMemberBlank) {
 
     if (info["need_flight"]>0){
         $(".flight-info").show ();
+        $("#tooltipArr").hide();
+        $("#tooltipDep").hide();
     }
     else{
         $(".flight-info").hide ();
+        $("#tooltipArr").show ();
+        $("#tooltipDep").show ();
     }
 
     if (info["need_visa"]>0) {
@@ -1240,7 +1244,7 @@ function fillEditMember (memberId, info, localities, newMemberBlank) {
         $(".add-info").show ();
         $(".emAddInfo").val(info["add_info"] ? info["add_info"] : "_none_").change();
     } else {
-        $(".add-info").hide ();
+        $(".add-info").hide();
     }
 
     $(".emEnglishLevel").val (info["english"] !== null ? info["english"] : "_none_").change();

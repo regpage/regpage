@@ -241,11 +241,11 @@
 <div class="controls flight-info" style="display: none">
     <div class="control-group row-fluid">
         <label class="span12">Информация о приезде (заполняется после покупки билета)</label>
-        <input class="span12 emFlightNumArr" placeholder="Авиакомпания и рейс(ы)" type="text" maxlength="100" valid="required">
+        <input class="span12 emFlightNumArr" placeholder="Авиакомпания и рейс(ы)" type="text" maxlength="100">
     </div>
     <div class="control-group row-fluid">
         <label class="span12">Информация об отъезде (заполняется после покупки билета)</label>
-        <input class="span12 emFlightNumDep" placeholder="Авиакомпания и рейс(ы)" type="text" maxlength="100" valid="required">
+        <input class="span12 emFlightNumDep" placeholder="Авиакомпания и рейс(ы)" type="text" maxlength="100">
     </div>
     <div class="control-group row-fluid">
         <label class="span12">Примечание к поездке<a href="#" rel="tooltip" data-placement="right" data-toggle="tooltip" tabindex="-1"></a></label>
@@ -255,7 +255,7 @@
 <div class="controls add-info" style="display: none">
     <div class="control-group row-fluid">
         <label class="span12">Тур после обучения</label>
-        <select class="span12 emAddInfo" valid="required">
+        <select class="span12 emAddInfo">
             <option value="_none_">&nbsp;</option>
             <option value="Не участвую в туре">Не участвую в туре</option>
             <option value="Западная Малайзия (полуостров Индокитай)">Западная Малайзия (полуостров Индокитай), 3 дня</option>

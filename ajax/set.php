@@ -20,14 +20,18 @@ if (isset($_GET['type']) && $_GET['type'] === 'get_brothers_dotation') {
   exit;
 }
 if (isset($_GET['type']) && $_GET['type'] === 'get_have_tickets_count') {
-    echo json_encode(["result"=> db_brothersHaveTicketsCount()]);
+    echo json_encode(["result"=> db_brothersDotationCheck()]);
+    // echo json_encode(["result"=> db_brothersHaveTicketsCount()]);
     exit;
 }
 if (isset($_GET['type']) && $_GET['type'] === 'set_red_background') {
     echo json_encode(["result"=> db_setRedBackground($_GET['members_keys'], $_GET['event_id'])]);
     exit;
 }
-
+if (isset($_GET['type']) && $_GET['type'] === 'brothers_dotation') {
+    echo json_encode(["result"=> db_brothersDotation($_GET['member_key'], $_GET['ticket'], $_GET['event_id'])]);
+    exit;
+}
 // красный фон
 function db_setRedBackground($memberKeys, $eventId)
 {
@@ -84,8 +88,6 @@ function db_brothersDotationCheck($memberKey=false)
 // братья с билетами
 function db_brothersHaveTicketsCount()
 {
-  global $db;
-
   $brothersHaveTickets = 0;
   $res = db_query("SELECT COUNT(r.member_key) AS total
     FROM reg r
@@ -138,15 +140,15 @@ function db_brothersDotation($memberKey, $ticket, $eventId)
   $isFilled = '';
   $isExist = db_brothersDotationExist($memberKey);
 
-  if (!empty($isExist) && empty($ticket)) {
-    db_query("DELETE FROM `brothers_dotation` WHERE `member_key`='$memberKey'");
+  if (!empty($isExist) && !$ticket) {
+    // db_query("DELETE FROM `brothers_dotation` WHERE `member_key`='$memberKey'");
     return db_brothersDotationCheck();
-  } elseif (!empty($isExist) && !empty($ticket)) {
+  } elseif (!empty($isExist) && $ticket) {
     return 'no changes';
-  } else {
+  } elseif (empty($isExist) && $ticket) {
     $haveTickets = db_brotherHaveTickets($memberKey);
     $isFilled = db_brothersDotationCheck();
-    if ($isFilled <= 50 && !empty($ticket) && !empty($haveTickets) && $haveTickets != 'exist') {
+    if ($isFilled < 50 && !empty($haveTickets)) {
       db_query("INSERT INTO `brothers_dotation` (`member_key`) VALUES ('$memberKey')");
       return db_brothersDotationCheck();
     } else {
@@ -154,13 +156,6 @@ function db_brothersDotation($memberKey, $ticket, $eventId)
     }
   }
 }
-
-
-if (isset($_GET['type']) && $_GET['type'] === 'brothers_dotation') {
-    echo json_encode(["result"=> db_brothersDotation($_GET['member_key'], $_GET['ticket'], $_GET['event_id'])]);
-    exit;
-}
-
 
 /* END */
 

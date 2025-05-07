@@ -110,9 +110,9 @@
             <a class="btn btn-primary disabled chk-dep chk-bulkedit role-edit" type="button"><i class="fa fa-list icon-white"></i> <span class="hide-name">Изменить</span></a>
             <a class="btn btn-danger disabled chk-dep chk-remove role-edit" type="button"><i class="fa fa-ban icon-white"></i> <span class="hide-name">Отменить</span></a>
             <a class="btn btn-success chk-invite role-edit" type="button"><i class="fa fa-user icon-white" title="Пригласить пользователя"></i> <span class="hide-name">Пригласить</span></a>
+            <!--<a class="btn role-admin brothers_p_v" type="button"><i class="fa fa-users icon-white" title="Братья призывного возраста или без указаной даты рождения"></i> <span class="hide-name">Братья до 50</span></a>
             <a class="btn role-admin brothers_p_v" type="button"><i class="fa fa-users icon-white" title="Братья призывного возраста или без указаной даты рождения"></i> <span class="hide-name">Братья до 50</span></a>
-            <a class="btn role-admin brothers_p_v" type="button"><i class="fa fa-users icon-white" title="Братья призывного возраста или без указаной даты рождения"></i> <span class="hide-name">Братья до 50</span></a>
-            <!--<span class="btn send-message-regteam" tabindex="-1" style="margin-right: 10px; font-family: Arial;" title="Отправить сообщение команде регистрации" data-toggle="modal" data-target="#modalEventSendMsg"><i class="fa fa-envelope"></i>  <b>Написать команде регистрации</b></span>-->
+            <span class="btn send-message-regteam" tabindex="-1" style="margin-right: 10px; font-family: Arial;" title="Отправить сообщение команде регистрации" data-toggle="modal" data-target="#modalEventSendMsg"><i class="fa fa-envelope"></i>  <b>Написать команде регистрации</b></span>-->
             <?php if($event->web == 1){ ?>
             <a class="btn btn-warning disabled chk-dep filter-icons bulkedit-prove" type="button"><i class="fa fa-asterisk" aria-hidden="true"></i> <span class="hide-name">Подтвердить</span></a>
             <a class="btn btn-danger disabled chk-dep filter-icons bulkedit-prove" type="button"><i class="fa fa-asterisk" aria-hidden="true"></i> <span class="hide-name">Отменить прибытие</span></a>
@@ -189,7 +189,7 @@
         <span class="counterForResponseble" style="text-align: left; color: red; font-weight: bold; padding-top: 15px; display: inline-block;">
         </span>
         <span style="text-align: left; font-weight: bold; padding-top: 15px; display: none;"><br>Купили билеты —
-          <span id="brothers_dotation_text"></span>
+          <span class="brothers_dotation_text"></span>
         </span>
 
         <!-- фильтр буквы -->
@@ -1278,11 +1278,11 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
               fetch("/ajax/set.php?type=get_brothers_dotation")
               .then(response => response.json())
               .then(commits => {
-                $(".brothers_dotation_text").html(20 - Number(commits.result));
+                $(".tab-pane.active").find(".brothers_dotation_text").html(20 - Number(commits.result));
               });
-              $(".brothers_dotation_text").parent().show();
+              $(".tab-pane.active").find(".brothers_dotation_text").parent().show();
             } else {
-              $(".brothers_dotation_text").parent().hide();
+              $(".tab-pane.active").find(".brothers_dotation_text").parent().hide();
             }
             */
         });
@@ -1385,11 +1385,6 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
         $.getJSON('/ajax/dashboard.php?event='+eventId+request)
         .done (function(data) {
             refreshEventMembers (eventId, data.members, data.localities);
-            if (eventId !== "20210010") {
-              $(".brothers_p_v").hide();
-            } else {
-              $(".brothers_p_v").show();
-            }
         });
     }
 
@@ -2144,7 +2139,7 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
         }
         // dotation
         let member_id_dotation = $("#modalEditMember").attr("data-member_id");
-        let emFlightNumArr = $("#modalEditMember .emFlightNumArr").val();
+        let emFlightNumArr = $("#modalEditMember .emFlightNumArr").val() && $("#modalEditMember .emFlightNumArr").val();
         var eventId = $("#events-list").val();
         var create = elem.hasClass('create') ? "&create="+eventId+"&event="+eventId :  "&event="+eventId ;
         var request = getRequestFromFilters(setFiltersForRequest(eventId));
@@ -2157,16 +2152,15 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
             elem.removeClass('create');
             $('.emName ').removeClass('create');
             loadDashboard();
-            // #ПОДДЕРЖКА Дотации для 20 участников на манил
-            /*
-            if (eventId === '20222028') {
+            // #ПОДДЕРЖКА Дотации для 50 участников на манил
+            if (eventId === '20250013' && doRegister) {
               fetch("/ajax/set.php?type=brothers_dotation&member_key="+member_id_dotation+"&event_id="+eventId+"&ticket="+emFlightNumArr)
               .then(response => response.json())
               .then(commits => {
 
               });
             }
-            */
+
         });
     }
 
@@ -2249,22 +2243,21 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
     });
 
     $("#events-list").change(function(){
-      // #ПОДДЕРЖКА Дотаци для 20 участников на манилы
-      // дотации
-      if ($("#events-list").val() === "20250013") {
-        donate_brothers_bold(50);
-        donate_brothers_green(100);
-        donate_brothers_count();
-      } else {
-        $(".brothers_dotation_text").parent().hide();
-      }
 
         var eventId = $(this).val(), eventIdCurrent = $('.tab-pane.active').attr('id').replace(/^eventTab-/,'');
         if(eventId !== eventIdCurrent){
             $('.tab-pane.active').removeClass('active');
             $('.tab-pane#eventTab-'+eventId).addClass('active');
         }
-
+        // #ПОДДЕРЖКА Дотаци для 50 участников
+        // дотации
+        if (eventId == "20250013") {
+          donate_brothers_bold(50);
+          donate_brothers_green(100);
+          donate_brothers_count($(".tab-pane.active").find(".brothers_dotation_text"));
+        } else {
+          $(".tab-pane.active").find(".brothers_dotation_text").parent().hide();
+        }
         setCookieNew("eventChoose", eventId);
 
         checkStopEventRegistration(eventId);
@@ -2877,7 +2870,7 @@ function checkStopEventRegistration(eventId){
                   fetch("/ajax/set.php?type=brothers_dotation&member_key="+ids[i]+"&event_id="+eventId+"&ticket")
                   .then(response => response.json())
                   .then(commits => {
-                    $(".brothers_dotation_text").html(20 - Number(commits.result));
+                    $(".tab-pane.active").find(".brothers_dotation_text").html(20 - Number(commits.result));
                   });
                 }
               }
@@ -3130,7 +3123,7 @@ function checkStopEventRegistration(eventId){
 
     // END Romans Code
 </script>
-<script src="/js/reg.js?v98"></script>
+<script src="/js/reg.js?v103"></script>
 <script src="/js/regupload.js?v5"></script>
 <?php
     include_once "footer.php";
