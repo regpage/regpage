@@ -321,7 +321,7 @@ else if (isset ($_SESSION["logged-in"])){
         <div class="tab-content" <?php echo $not_for_show;?>>
             <div class="event-list-block">
                 <?php
-                    if($memberId == '000005716'){
+                    if($memberId == '000005716' || $memberId == '000001679'){
                     echo '
                         <div class="btn-group">
                             <a class="btn btn-success btnAddEvent" title="Добавить мероприятие" href="#" style="margin-left: 10px;">
@@ -973,7 +973,7 @@ else if (isset ($_SESSION["logged-in"])){
                 </div>
             </div>
             <div class="control-group row-fluid">
-                <label class="span12" style="min-height:20px">Ответственные за регистрацию</label>
+                <label class="span12" style="min-height:20px">Ответственные за мероприятие</label>
                 <div class="control-group row-fluid">
                     <div class="reg-members-added"></div>
                     <input type="text" class="span12 search-reg-member" placeholder="Введите текст">
@@ -1226,7 +1226,7 @@ $(document).ready(function(){
 
                 icons =
                     ( in_array(event.id, hidenEvents) ? '<span style="display: inline;" class="fa fa-arrow-up btnEventHiding" title="Показать мероприятие"></span>' : '<span style="display: none; margin-right: 5px; margin-left: 5px;" class="fa fa-arrow-down btnEventHiding" title="Скрыть мероприятие"></span>') +
-                    ( (memberId == '000005716') ?
+                    ( (memberId == '000005716' || memberId == '000001679') ?
                        ( isEventActive ? '<span  style="display: inline; margin-right: 5px; margin-left: 5px;"class="fa fa-check-circle  btnEventActivity" title="Сделать неактивным"></span>' : '<span style="display: inline; margin-right: 5px; margin-left: 5px;" class="fa fa-times btnEventActivity" title="Сделать активным"></span>') +
                         '<span style="display: inline; margin-right: 5px; margin-left: 5px;" class="fa fa-pencil btnEditEvent" title="Редактировать мероприятие"></span>'+
                         '<span style="display: inline; margin-right: 5px;" class="fa fa-trash-o btnRemoveEvent" title="Удалить мероприятие" aria-hidden="true"></span>' : '');

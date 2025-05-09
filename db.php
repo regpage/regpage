@@ -618,6 +618,12 @@ function db_unregisterMembers ($adminId, $eventId, $memberIds)
                WHERE member_key IN ({$ids})
                AND event_key='$eventId' AND member_key LIKE '99%' AND (SELECT COUNT(*) FROM member WHERE `key`=reg.member_key)<2");
     */
+    if (db_getWeb($eventId)) {
+      db_query ("UPDATE `reg` SET `regstate_key`='05', `admin_key`='{$adminId}'
+                WHERE (`regstate_key`='02' OR `regstate_key`='03' OR `regstate_key`='04')
+                AND `member_key` IN ({$ids})
+                AND `event_key`='{$eventId}'");
+    }
 
      db_query ("UPDATE reg SET regstate_key='03', admin_key='$adminId'
                WHERE (regstate_key='02' OR regstate_key='03' OR regstate_key='04')
@@ -628,6 +634,15 @@ function db_unregisterMembers ($adminId, $eventId, $memberIds)
     db_query ("UPDATE reg SET regstate_key='03', admin_key='$adminId' $_reason
                WHERE member_key IN ({$ids}) AND event_key='$eventId'");
     */
+}
+
+// нужна виза для мероприятия?
+function db_getWeb($eventId) {
+  global $db;
+  $eventId = $db->real_escape_string($eventId);
+  $res=db_query ("SELECT `web` FROM `event` WHERE `key`= '{$eventId}'");
+  $row = $res->fetch_object();
+  return $row && $row->web;
 }
 
 function db_registerMembersSetDates ($adminId, $eventId, $memberIds, $dateArrived, $dateDepart){
@@ -691,7 +706,7 @@ function db_registerMembers ($adminId, $eventId, $memberIds)
                             )
 
                        OR (e.need_flight>0 AND (NULLIF (r.visa,'') IS NULL))
-
+                       OR (e.need_info>0 AND (NULLIF (r.add_info,'_none_') IS NULL OR NULLIF (r.add_info,'') IS NULL))
                        )
                        ");
                        // for e.need_flight>0 --->    OR NULLIF (m.english,'') IS NULL
@@ -1534,7 +1549,7 @@ function db_setEventMember ($adminId, $get, $post){
 
         if (!$stmt->execute ()) throw new Exception ($db->error);
         $stmt->close ();
-    }    
+    }
 
     if($_page == '/index'){
         db_sendMessagesToMembersAdmins($_eventId, $_name, $_locality_key);
@@ -2136,22 +2151,41 @@ function db_setMembersRegstateEvent($adminId, $event, $memberId, $state){
 
 function checkMemberEventReadyToRegistrate($memberId, $event){
     $member = db_getEventMember($memberId, $event);
-
     $isReady = true;
     if (!$member['name'] || !$member['birth_date'] || !$member['gender'] ||
         !$member['citizenship_key'] || (!$member['locality_key'] && !$member['new_locality']) ||
         !$member['address'] || !$member['category_key'] ||
+        !$member['dep_date'] || !$member['arr_date'] ||
+        ($member['aid'] > 0 && $member['contr_amount'] === 0 && $member['trans_amount'] === 0) ||
+        (db_getNeedAccom ($event) && (empty($member['need_accom']) || $member['need_accom'] == '_none_')) ||
         (db_getNeedPassport ($event) && (!$member['document_key'] || !$member['document_num'] || !$member['document_date'] || !$member['document_auth'])) ||
-
-        !$member['dep_date'] || !$member['arr_date'] || !$member['accom'] ||
         (db_getNeedPassportTp ($event) && (!$member['tp_num'] || !$member['tp_date'] || !$member['tp_auth'] || !$member['tp_name'] )) ||
-        (db_getNeedFlight ($event) && ($member['visa'] == '0' || $member['english'] == null)) ||
+        (db_getNeedFlight ($event) && $member['english'] == null) ||
         (db_getNeedTransport($event) && !$member['transport']) ||
-        ($member['aid'] > 0 && $member['contr_amount'] === 0 && $member['trans_amount'] === 0)) {
+        (db_getNeedVisa ($event) && $member['visa'] == '0')) {
         $isReady = false;
     }
 
     return $isReady;
+}
+
+// небходимо размещение на мероприятии?
+function db_getNeedAccom($eventId)
+{
+  global $db;
+  $eventId = $db->real_escape_string($eventId);
+  $res=db_query ("SELECT `need_accom` FROM `event` WHERE `key`= '{$eventId}'");
+  $row = $res->fetch_object();
+  return $row && $row->need_accom;
+}
+// нужна виза для мероприятия?
+function db_getNeedVisa($eventId)
+{
+  global $db;
+  $eventId = $db->real_escape_string($eventId);
+  $res=db_query ("SELECT `need_visa` FROM `event` WHERE `key`= '{$eventId}'");
+  $row = $res->fetch_object();
+  return $row && $row->need_visa;
 }
 
 function db_setMembersStateEvent($adminId, $event, $memberId, $state){
@@ -2204,11 +2238,12 @@ function db_confirmRegistrationBulkMembersEvent($admin, $event, $members){
             $row = $res->fetch_assoc();
 
             if(checkMemberEventReadyToRegistrate($memberId, $event)){
-                $row['regstate_key'] != '01' || $row['regstate_key'] != '02' || $row['regstate_key'] != NULL ?
-                    $membersWithWrongRegstate [] = $row['name'] :
-                    db_query("UPDATE reg SET regstate_key='04' WHERE event_key='$event' AND (regstate_key IS NULL OR regstate_key='01' OR regstate_key='02' ) AND member_key ='$memberId'");
-            }
-            else{
+              if ($row['regstate_key'] != '01' && $row['regstate_key'] != '02' && $row['regstate_key'] != NULL) {
+                $membersWithWrongRegstate [] = $row['name'];
+                } else {
+                db_query("UPDATE `reg` SET `regstate_key`='04' WHERE `event_key`='{$event}' AND (`regstate_key` IS NULL OR regstate_key='01' OR regstate_key='02' ) AND `member_key` ='{$memberId}'");
+                }
+            } else{
                 $membersWithNotFilledRequiredField[] = $row['name'];
             }
         }

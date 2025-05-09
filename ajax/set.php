@@ -32,6 +32,11 @@ if (isset($_GET['type']) && $_GET['type'] === 'brothers_dotation') {
     echo json_encode(["result"=> db_brothersDotation($_GET['member_key'], $_GET['ticket'], $_GET['event_id'])]);
     exit;
 }
+if (isset($_GET['type']) && $_GET['type'] === 'brothers_dotation_group') {
+    echo json_encode(["result"=> db_brothersDotationGroup($_GET['members_keys'], $_GET['event_id'])]);
+    exit;
+}
+
 // красный фон
 function db_setRedBackground($memberKeys, $eventId)
 {
@@ -130,6 +135,18 @@ function db_brothersDotationExist($memberKey) {
   return $isExist;
 }
 
+// проверка существующей записи
+function db_isBrother($memberKey) {
+  global $db;
+  $memberKey = $db->real_escape_string($memberKey);
+  $isBrother='';
+
+  $res = db_query("SELECT `male` FROM `member` WHERE `key` = '{$memberKey}'");
+  while ($row = $res->fetch_assoc()) $isBrother = $row['male'];
+
+  return $isBrother;
+}
+
 // добавление / удаление дотации
 function db_brothersDotation($memberKey, $ticket, $eventId)
 {
@@ -156,7 +173,30 @@ function db_brothersDotation($memberKey, $ticket, $eventId)
     }
   }
 }
-
+// пакетное добавление в таблицу дотаций
+function db_brothersDotationGroup($membersKeys, $eventId)
+{
+  global $db;
+  $membersKeys = $db->real_escape_string($membersKeys);
+  $eventId = $db->real_escape_string($eventId);
+  $membersKeys = explode(',', $membersKeys);
+  foreach ($membersKeys as $value) {
+    $isExist = db_brothersDotationExist($value);
+    $isBrother = db_isBrother($value);
+    if (empty($isExist) && $isBrother == 1) {
+      $haveTickets = db_brotherHaveTickets($value);
+      if (!empty($haveTickets)) {
+        $isFilled = db_brothersDotationCheck();
+        if ($isFilled < 80) {
+          db_query("INSERT INTO `brothers_dotation` (`member_key`) VALUES ('{$value}')");
+          return true;
+        } else {
+          return false;
+        }
+      }
+    }
+  }
+}
 /* END */
 
 /* Задаём значение в поле questionable таблицы reg*/
