@@ -30,7 +30,7 @@
         <a class="btn btn-danger disabled chk-dep chk-remove role-edit" type="button"><i class="fa fa-ban icon-white" title="Отменить"></i> <span class="hide-name">Отменить</span></a>
         <?php if($event->web == 1){ ?>
         <a class="btn btn-warning disabled chk-dep filter-icons bulkedit-prove" type="button"><i class="fa fa-asterisk" aria-hidden="true" title="Подтвердить"></i> <span class="hide-name">Подтвердить</span></a>
-        <a class="btn btn-danger disabled chk-dep filter-icons bulkedit-prove" type="button"><i class="fa fa-asterisk" aria-hidden="true" title="Отметить прибытие"></i> <span class="hide-name">Отметить прибытие</span></a>
+        <!--<a class="btn btn-danger disabled chk-dep filter-icons bulkedit-prove" type="button"><i class="fa fa-asterisk" aria-hidden="true" title="Отметить прибытие"></i> <span class="hide-name">Отметить прибытие</span></a>-->
         <?php } ?>
         <div class="btn-group">
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
@@ -115,7 +115,7 @@
             <span class="btn send-message-regteam" tabindex="-1" style="margin-right: 10px; font-family: Arial;" title="Отправить сообщение команде регистрации" data-toggle="modal" data-target="#modalEventSendMsg"><i class="fa fa-envelope"></i>  <b>Написать команде регистрации</b></span>-->
             <?php if($event->web == 1){ ?>
             <a class="btn btn-warning disabled chk-dep filter-icons bulkedit-prove" type="button"><i class="fa fa-asterisk" aria-hidden="true"></i> <span class="hide-name">Подтвердить</span></a>
-            <a class="btn btn-danger disabled chk-dep filter-icons bulkedit-prove" type="button"><i class="fa fa-asterisk" aria-hidden="true"></i> <span class="hide-name">Отменить прибытие</span></a>
+            <!--<a class="btn btn-danger disabled chk-dep filter-icons bulkedit-prove" type="button"><i class="fa fa-asterisk" aria-hidden="true"></i> <span class="hide-name">Отменить прибытие</span></a>-->
             <?php } ?>
         </div>
         <div class="btn-toolbar">
@@ -585,7 +585,7 @@
                 </div>
                 <div>
                     <input type="checkbox" data-download="hotel" id="download-hotel">
-                    <label for="download-hotel">Гостиница</label>
+                    <label for="download-hotel">Примечание к поездке</label>
                 </div>
                 <div>
                     <input type="checkbox" data-download="admin-comment" id="download-admin-comment">
@@ -614,6 +614,22 @@
                 <div>
                     <input type="checkbox" data-download="study-group-language" id="download-study-group-language">
                     <label for="download-study-group-language">Группы изучения на русском</label>
+                </div>
+                <div>
+                    <input type="checkbox" data-download="add_info" id="download-add_info">
+                    <label for="download-add_info">Тур после обучения</label>
+                </div>
+                <div>
+                    <input type="checkbox" data-download="parking" id="download-parking">
+                    <label for="download-parking">Парковка</label>
+                </div>
+                <div>
+                    <input type="checkbox" data-download="avtomobile" id="download-avtomobile">
+                    <label for="download-avtomobile">Марка авто</label>
+                </div>
+                <div>
+                    <input type="checkbox" data-download="avtomobile_number" id="download-avtomobile_number">
+                    <label for="download-avtomobile_number">Номер авто</label>
                 </div>
             </div>
         </div>
@@ -1798,6 +1814,15 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
               checkForInternationalEvent('#download-flight-dep');
               checkForInternationalEvent('#download-dep-time');
               checkForInternationalEvent('#download-airport-departure');
+              checkForInternationalEvent('#download-outline-language');
+              checkForInternationalEvent('#download-study-group-language');
+              checkForInternationalEvent('#download-member-comment');
+              checkForInternationalEvent('#download-admin-comment');
+              checkForInternationalEvent('#download-hotel');
+              checkForInternationalEvent('#download-add_info');
+              checkForInternationalEvent('#download-parking');
+              checkForInternationalEvent('#download-avtomobile');
+              checkForInternationalEvent('#download-avtomobile_number');
             } else {
               $("#modalDownloadItems").find(".search-checkbox input[type='checkbox']").each(function(){
                   if ($(this).prop('checked')===true && $(this).attr('id') != 'member_name'){
@@ -2153,7 +2178,7 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
             $('.emName ').removeClass('create');
             loadDashboard();
             // #ПОДДЕРЖКА Дотации для 50 участников на манил
-            if (eventId === '20250013' && doRegister) {
+            if (eventId === '20250013' && doRegister && $("#modalEditMember .emGender").val() === "male") {
               fetch("/ajax/set.php?type=brothers_dotation&member_key="+member_id_dotation+"&event_id="+eventId+"&ticket="+emFlightNumArr)
               .then(response => response.json())
               .then(commits => {
@@ -2542,6 +2567,15 @@ function checkStopEventRegistration(eventId){
           });
         }, 100);
       } else {
+        // #ПОДДЕРЖКА Дотации для 50 участников на манил
+        // перенести код ниже и учитывать забракованные бланки
+        if (eventId === '20250013') {
+          fetch("/ajax/set.php?type=brothers_dotation_group&members_keys="+ids.join(',')+"&event_id="+eventId)
+          .then(response => response.json())
+          .then(commits => {
+
+          });
+        }
         // GENERAL QUERY
         $.getJSON('/ajax/set.php?event='+eventId+request, {register_members: ids.join(',') })
         .done (function(data) {
@@ -2784,14 +2818,14 @@ function checkStopEventRegistration(eventId){
 
     function handleBulkModalFull(that){
         if ($(that).hasClass('disabled')) return;
-
-        var ids = handleCheckedMembers().checked,
+//.checked
+        var ids = handleCheckedMembers(),
             event = $("#events-list").val(),
             request = getRequestFromFilters(setFiltersForRequest(event));
 
         $.getJSON("/ajax/set.php?confirm_registration"+request,{
             event: event,
-            membersIds : ids.join(',')
+            membersIds : ids.notArrivedIds.join(',')
         })
         .done (function(data) {
             loadDashboard();
@@ -3122,7 +3156,7 @@ function checkStopEventRegistration(eventId){
 
     // END Romans Code
 </script>
-<script src="/js/reg.js?v103"></script>
+<script src="/js/reg.js?v106"></script>
 <script src="/js/regupload.js?v5"></script>
 <?php
     include_once "footer.php";

@@ -760,7 +760,7 @@ else if (isset ($_POST ['members']) && isset ($_POST ['memberslength']) && isset
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue($ind.'1', 'Поездка (транспорт)');
                     break;
                 case 'hotel':
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue($ind.'1', 'Гостиница');
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue($ind.'1', 'Примечание к поездке');
                     break;
                 case 'admin-comment':
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue($ind.'1', 'Комментарий администратора');
@@ -780,6 +780,19 @@ else if (isset ($_POST ['members']) && isset ($_POST ['memberslength']) && isset
                 case 'service_info':
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue($ind.'1', "Инфо о служении");
                     break;
+                case 'add_info':
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue($ind.'1', "Тур после обучения");
+                    break;
+                case 'parking':
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue($ind.'1', "Парковка");
+                    break;
+                case 'avtomobile':
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue($ind.'1', "Марка автомобиля");
+                    break;
+                case 'avtomobile_number':
+                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue($ind.'1', "Номер автомобиля");
+                    break;
+
             }
             $ind ++;
         }
@@ -986,6 +999,18 @@ else if (isset ($_POST ['members']) && isset ($_POST ['memberslength']) && isset
                                 break;
                             case 'category_name':
                                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue($ind.''.$i, $membersAll[$m]['category_name']);
+                                break;
+                            case 'add_info':
+                                $objPHPExcel->setActiveSheetIndex(0)->setCellValue($ind.''.$i, $membersAll[$m]['add_info']);
+                                break;
+                            case 'parking':
+                                $objPHPExcel->setActiveSheetIndex(0)->setCellValue($ind.''.$i, $membersAll[$m]['parking'] == 1 ? 'требуется': '');
+                                break;
+                            case 'avtomobile':
+                                $objPHPExcel->setActiveSheetIndex(0)->setCellValue($ind.''.$i, $membersAll[$m]['avtomobile']);
+                                break;
+                            case 'avtomobile_number':
+                                $objPHPExcel->setActiveSheetIndex(0)->setCellValue($ind.''.$i, $membersAll[$m]['avtomobile_number']);
                                 break;
                         }
                         $ind ++;

@@ -29,17 +29,21 @@ class ProphecyDB extends DBQuery
   {
     $keysTextQuery = '';
     $valuesTextQuery = '';
+    $new = empty($data->id);
     foreach ($data as $key => $value) {
       $data->$key = db_real_escape_string($value);
-      if ($key !== 'id' && !isset($data->id)) { // вставка новой строки
-        if (empty($keys)) {
+      if ($new) { // вставка новой строки
+        if ($key === 'id') {
+          continue;
+        }
+        if (empty($keysTextQuery)) {
           $keysTextQuery = "`" . db_real_escape_string($key) . "`";
           $valuesTextQuery = "'{$data->$key}'";
         } else {
           $keysTextQuery .= ",`" . db_real_escape_string($key) . "`";
           $valuesTextQuery .= ",'{$data->$key}'";
         }
-      } elseif (isset($data->id)) { //  обновление существующей строки
+      } else { //  обновление существующей строки
         if ($key !== 'id') {
           if (empty($valuesTextQuery)) {
             $valuesTextQuery .=  "`" . db_real_escape_string($key) . "` = '{$data->$key}'";
@@ -49,6 +53,7 @@ class ProphecyDB extends DBQuery
         }
       }
     }
+
     /*$data->id = db_real_escape_string($data->id);
     $data->member_key = db_real_escape_string($data->member_key);
     $data->date = db_real_escape_string($data->date);

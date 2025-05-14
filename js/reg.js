@@ -275,7 +275,7 @@ $('#questionable strong').click(function() {
         } else if (form.find(".emAddInfo").parent().hasClass("error")) {
           form.find(".emAddInfo").parent().removeClass("error");
         }
-    }, 1000);
+    }, 2000);
   }
     setTimeout(function () {
       showBlankEvents();
@@ -364,12 +364,14 @@ $('#modalEditMember').on('hide', function() {
   }, 500);
 });
 
+// ?? баг не проверяет поля отлёта как будто при отмеченном туре
 $('.emFlightNumArr, .emFlightNumDep, .emAddInfo').change(function () {
-  setFieldError ($(this));
-  if (!$(this).val() || $(this).val() === "_none_") {
-    $(this).parent().addClass("error");
+  let elem = $(this);
+  setFieldError (elem);
+  if (!elem.val() || elem.val() === "_none_") {
+    elem.parent().addClass("error");
   } else {
-    $(this).parent().removeClass("error");
+    elem.parent().removeClass("error");
   }
 
   if (!$('.emFlightNumArr').val() || !$('.emFlightNumDep').val() || (!$('.emAddInfo').val() || $('.emAddInfo').val() === "_none_")) {
@@ -479,21 +481,27 @@ function xlxCheckboxesInternationalDisabled() {
     xlxCheckboxesInternational('#download-visa');
     xlxCheckboxesInternational('#download-accom');
     xlxCheckboxesInternational('#download-transport');
-    xlxCheckboxesInternational('#download-hotel');
-    xlxCheckboxesInternational('#download-admin-comment');
-    xlxCheckboxesInternational('#download-member-comment');
     xlxCheckboxesInternational('#download-paid');
+    xlxCheckboxesInternational('#download-parking');
+    xlxCheckboxesInternational('#download-avtomobile');
+    xlxCheckboxesInternational('#download-avtomobile_number');
 //show
+    xlxCheckboxesInternational('#download-hotel', true);
     xlxCheckboxesInternational('#download-airport-arrival', true);
     xlxCheckboxesInternational('#download-airport-departure', true);
     xlxCheckboxesInternational('#download-outline-language', true);
     xlxCheckboxesInternational('#download-study-group-language', true);
+    xlxCheckboxesInternational('#download-admin-comment', true);
+    xlxCheckboxesInternational('#download-member-comment', true);
   } else {
 //hide
     xlxCheckboxesInternational('#download-airport-arrival');
     xlxCheckboxesInternational('#download-airport-departure');
     xlxCheckboxesInternational('#download-outline-language');
     xlxCheckboxesInternational('#download-study-group-language');
+    xlxCheckboxesInternational('#download-add_info');
+    xlxCheckboxesInternational('#download-tp');
+    xlxCheckboxesInternational('#download-visa');
 //show
     xlxCheckboxesInternational('#download-member-age', true);
     xlxCheckboxesInternational('#download-region', true);
@@ -504,13 +512,15 @@ function xlxCheckboxesInternationalDisabled() {
     xlxCheckboxesInternational('#download-reg-state', true);
     xlxCheckboxesInternational('#download-document', true);
     xlxCheckboxesInternational('#download-english', true);
-    xlxCheckboxesInternational('#download-visa', true);
     xlxCheckboxesInternational('#download-accom', true);
     xlxCheckboxesInternational('#download-transport', true);
     xlxCheckboxesInternational('#download-hotel', true);
     xlxCheckboxesInternational('#download-admin-comment', true);
     xlxCheckboxesInternational('#download-member-comment', true);
     xlxCheckboxesInternational('#download-paid', true);
+    xlxCheckboxesInternational('#download-parking', true);
+    xlxCheckboxesInternational('#download-avtomobile', true);
+    xlxCheckboxesInternational('#download-avtomobile_number', true);
   }
 }
 // END prepare XLX for international meetings
@@ -757,6 +767,14 @@ function refreshEventMembersTbl (eventId, members, localities){
           checkForInternationalEvent('#download-flight-dep');
           checkForInternationalEvent('#download-dep-time');
           checkForInternationalEvent('#download-airport-departure');
+          checkForInternationalEvent('#download-member-comment');
+          checkForInternationalEvent('#download-admin-comment');
+          checkForInternationalEvent('#download-note');
+          checkForInternationalEvent('#download-add_info');
+          checkForInternationalEvent('#download-hotel');
+          checkForInternationalEvent('#download-parking');
+          checkForInternationalEvent('#download-avtomobile');
+          checkForInternationalEvent('#download-avtomobile_number');
         } else {
           $("#modalDownloadItems").find(".search-checkbox input[type='checkbox']").each(function(){
               if ($(this).prop('checked')===true && $(this).attr('id') != 'member_name'){

@@ -2,7 +2,7 @@
 <?php if ($ftt_access['group'] === 'staff') { ?>
   <div class="row mb-2">
     <div class="col">
-      <select id="mdl_edit_trainee_list_md" class="form-control form-control-sm" name="member_key">
+      <select id="mdl_edit_trainee_list_md" class="form-control form-control-sm f_use f_required" name="member_key">
         <option value="_none_"></option>
         <?php foreach ($trainee_list as $key => $value):
           echo "<option value='{$key}'>{$value}</option>";
@@ -14,54 +14,54 @@
 <div class="row mb-2">
   <div class="col">
     <label>Дата</label>
-    <input id="mdl_edit_date_md" type="date" class="form-control form-control-sm" name="date">
+    <input id="mdl_edit_date_md" type="date" class="form-control form-control-sm f_use f_required" name="date">
   </div>
   <div class="col">
     <label>Номер недели</label>
-    <input type="number" class="form-control form-control-sm" name="week_number" min="0" max="99">
+    <input type="number" class="form-control form-control-sm f_use" name="week_number" min="0" max="99">
   </div>
 </div>
 <div class="row mb-2">
   <div class="col">
     <label>Тема</label>
-    <input type="text" class="form-control form-control-sm" name="topic">
+    <input type="text" class="form-control form-control-sm f_use" name="topic">
   </div>
 </div>
 <div class="row mb-2">
   <div class="col">
     <label>Ключевое положение</label>
-    <input type="text" class="form-control form-control-sm" name="key_point">
+    <input type="text" class="form-control form-control-sm f_use" name="key_point">
   </div>
 </div>
 <div class="row mb-2">
   <div class="col">
     <label>Основание в Писании</label>
-    <input type="text" class="form-control form-control-sm" name="scriptural_basis">
+    <input type="text" class="form-control form-control-sm f_use" name="scriptural_basis">
   </div>
 </div>
 <div class="row mb-2">
   <div class="col">
     <label>Дополнительные ссылки</label>
-    <input type="text" class="form-control form-control-sm" placeholder="Например, название книги служения и номер главы (сообщения)" name="further_ref">
+    <input type="text" class="form-control form-control-sm f_use" placeholder="Например, название книги служения и номер главы (сообщения)" name="further_ref">
     <span class="grey_text"></span>
   </div>
 </div>
 <div class="row mb-2">
   <div class="col">
     <label>Вступительное предложение</label>
-    <input type="text" class="form-control form-control-sm" name="introduction">
+    <input type="text" class="form-control form-control-sm f_use" name="introduction">
   </div>
 </div>
 <div class="row mb-2">
   <div class="col">
     <label>Я практиковал(а) пророчество с</label>
-    <input type="text" class="form-control form-control-sm" placeholder="Укажите имена святых, которые слушали ваше пророчество." name="listeners">
+    <input type="text" class="form-control form-control-sm f_use" placeholder="Укажите имена святых, которые слушали ваше пророчество." name="listeners">
   </div>
 </div>
 <div class="row mb-3">
   <div class="col">
     <label>Текст пророчества</label>
-    <textarea id="mdl_edit_prophecy_md" class="form-control form-control-sm" rows="8" placeholder="Можно приложить фото рукописного листа." name="prophecy"></textarea>
+    <textarea id="mdl_edit_prophecy_md" class="form-control form-control-sm f_use" rows="8" placeholder="Можно приложить фото рукописного листа." name="prophecy"></textarea>
   </div>
 </div>
 <div class="row mb-3">
@@ -71,6 +71,6 @@
 </div>
 <div class="row mb-2">
   <div class="col">
-    <input type="checkbox" id="mdl_prophecy_done" class="form-check-input ml-0" name="done"><label for="mdl_prophecy_done" class="form-check-label ml-4"> я пророчествовал(а) на собрании</label>
+    <input type="checkbox" id="mdl_prophecy_done" class="form-check-input ml-0 f_use" name="done"><label for="mdl_prophecy_done" class="form-check-label ml-4"> я пророчествовал(а) на собрании</label>
   </div>
 </div>

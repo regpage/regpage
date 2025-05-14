@@ -20,8 +20,8 @@ if (isset($_GET['type']) && $_GET['type'] === 'get_brothers_dotation') {
   exit;
 }
 if (isset($_GET['type']) && $_GET['type'] === 'get_have_tickets_count') {
-    echo json_encode(["result"=> db_brothersDotationCheck()]);
-    // echo json_encode(["result"=> db_brothersHaveTicketsCount()]);
+    // echo json_encode(["result"=> db_brothersDotationCheck()]);
+    echo json_encode(["result"=> db_brothersHaveTicketsCount()]);
     exit;
 }
 if (isset($_GET['type']) && $_GET['type'] === 'set_red_background') {
@@ -91,33 +91,38 @@ function db_brothersDotationCheck($memberKey=false)
 }
 
 // братья с билетами
-function db_brothersHaveTicketsCount()
+function db_brothersHaveTicketsCount($eventKey = '20250013')
 {
+  global $db;
+  $eventKey = $db->real_escape_string($eventKey);
   $brothersHaveTickets = 0;
   $res = db_query("SELECT COUNT(r.member_key) AS total
     FROM reg r
     JOIN member m ON m.key = r.member_key
-    WHERE r.flight_num_arr != ''  AND r.flight_num_dep != '' AND m.male = 1");
+    WHERE r.flight_num_arr != ''  AND r.flight_num_dep != '' AND m.male = 1 AND r.event_key = '{$eventKey}'");
   while ($row = $res->fetch_assoc()) $brothersHaveTickets = $row['total'];
 
 
   return $brothersHaveTickets;
 }
 
-function db_brothersHaveTickets() {
+function db_brothersHaveTickets($eventKey = '20250013') {
+  global $db;
+  $eventKey = $db->real_escape_string($eventKey);
   $result = [];
-  $res = db_query("SELECT `member_key` FROM `reg` WHERE `flight_num_arr` != ''  AND `flight_num_dep` != ''");
+  $res = db_query("SELECT `member_key` FROM `reg` WHERE `flight_num_arr` != ''  AND `flight_num_dep` != '' AND `event_key` = '{$eventKey}'");
   while ($row = $res->fetch_assoc()) $result[$row['member_key']] = $row['member_key'];
 
   return $result;
 }
 
-function db_brotherHaveTickets($memberKey) {
+function db_brotherHaveTickets($memberKey, $eventKey = '20250013') {
   global $db;
   $memberKey = $db->real_escape_string($memberKey);
+  $eventKey = $db->real_escape_string($eventKey);
 
   $result = '';
-  $res = db_query("SELECT `member_key` FROM `reg` WHERE `member_key` = '{$memberKey}' AND `flight_num_arr` != '' AND `flight_num_dep` != ''");
+  $res = db_query("SELECT `member_key` FROM `reg` WHERE `member_key` = '{$memberKey}' AND `flight_num_arr` != '' AND `flight_num_dep` != '' AND `event_key` = '{$eventKey}'");
   while ($row = $res->fetch_assoc()) $result = $row['member_key'];
 
   return $result;
