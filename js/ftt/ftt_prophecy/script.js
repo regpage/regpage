@@ -19,8 +19,7 @@ function is_validation_fields_correct() {
 // получаем данные полей с атрибутом name
 function get_data_fields_from_blank(elem) {
   let obj = {};
-  obj["id"] = $(elem).attr("data-id");
-  $(id + " input, " + id + " textarea, " + id + " select").each(function() {
+  $(elem + " input, " + elem + " textarea, " + elem + " select").each(function() {
     if ($(this).attr("name")) {
       if ($(this).attr("type") === "checkbox") {
         obj[$(this).attr("name")] = $(this).prop("checked");
@@ -35,11 +34,19 @@ function get_data_fields_from_blank(elem) {
   });
   return obj;
 }
+// получаем данные атрибутов с данными из бланка
+function get_data_attr_blank(elem, obj) {
+  obj["id"] = $(elem).attr("data-id");
+  if (!$(elem + " select[name='member_key']").length) {
+    obj["member_key"] = window.adminId;
+  }
+  return obj;
+}
 
 // получаем данные бланка
 function get_data_from_blank(elem) {
   let form_data = new FormData();
-  let data = get_data_fields_from_blank(elem);
+  let data = get_data_attr_blank(elem, get_data_fields_from_blank(elem));
   form_data.set("data", JSON.stringify(data));
   return form_data;
 }
@@ -85,6 +92,8 @@ function get_data_for_blank(id, elem) {
 
 // заполняем бланк
 function fill_blank(data, elem) {
+  $(elem).attr("data-id", data["id"]);  
+  render_files_bar(data["id"], data["file"]);
   for (const variable in data) {
     if (data.hasOwnProperty(variable)) {
       $(elem + " input[name='" + variable + "'], " + elem + " select[name='" + variable + "'], " + elem + " textarea[name='" + variable + "']").each(function() {

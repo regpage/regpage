@@ -104,7 +104,10 @@ label.required-for-label:after
 
 .list_str {
   cursor: pointer;
+  padding-bottom: 5px;
+  padding-top: 5px;  
 }
+
 .list_str:hover {
   background-color: #eee;
 }

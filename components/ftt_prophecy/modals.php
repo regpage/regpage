@@ -66,7 +66,20 @@
 </div>
 <div class="row mb-3">
   <div class="col">
-    <input type="file" class="pl-0">
+    <!-- <div class="form-group"></div> -->
+    <div class="">
+      <label for="skip_modal_file">Приложить файл</label><br>
+      <input type="file" id="modal_field_file" class="form-control-sm pl-0" accept="image/*" multiple>
+    </div>
+    <div id="spinner_upload" class="mt-2" style="display: none;">
+      <div class="spinner-border spinner-border-sm text-info"></div><span> Загружаем... </span>
+    </div>
+    <div id="modal_pic_preview_container" class="row mt-2">
+
+    </div>
+    <div id="modal_container_pics" class="row mt-2">
+
+    </div>
   </div>
 </div>
 <div class="row mb-2">

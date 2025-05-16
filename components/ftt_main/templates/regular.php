@@ -11,13 +11,13 @@ if (file_exists($linkBlockBtn)): ?>
   </div>
 <?php endif; ?>
 <?php if (file_exists($linkBlockListHeadings)): ?>
-  <div id="temp_list_headings" class="row font-weight-bold pl-1">
+  <div id="temp_list_headings" class="row font-weight-bold pl-1 mr-0">
     <?php require_once $linkBlockListHeadings; ?>
   </div>
-  <hr class="mt-1 mb-1" style="margin-left: -1px; margin-right: -1px;">
+  <hr class="mt-1 mb-0" style="margin-left: -1px; margin-right: -1px;">
 <?php endif; ?>
 <?php if (file_exists($linkBlockListData)): ?>
-  <div id="temp_list_body" class="container">
+  <div id="temp_list_body" class="container px-0">
   <?php require_once $linkBlockListData; ?>
   </div>
 <?php endif; ?>

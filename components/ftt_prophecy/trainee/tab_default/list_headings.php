@@ -1,6 +1,9 @@
-<div class="col-1">
+<div class="col-md-1">
   Дата
 </div>
-<div class="col">
-  Текст
+<div class="col-md-1 text-right">
+  Неделя
+</div>
+<div class="col-md-10">
+  Тема
 </div>
