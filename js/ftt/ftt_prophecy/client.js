@@ -2,7 +2,7 @@
 $(document).ready(function(){
   // pic
   $("#modal_field_file").change(function () {
-    modal_file_upload($("#modal_edit_add_md").attr("data-id"), $(this));
+    modal_file_upload($("#modal_edit_add_md"), $(this));
   });
   // сохранение бланка
   $("#mdl_edit_btn_save_md").click(function () {

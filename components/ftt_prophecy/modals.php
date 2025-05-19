@@ -24,38 +24,38 @@
 <div class="row mb-2">
   <div class="col">
     <label>Тема</label>
-    <input type="text" class="form-control form-control-sm f_use" name="topic">
+    <textarea class="form-control form-control-sm f_use" name="topic" rows="2"></textarea>
   </div>
 </div>
 <div class="row mb-2">
   <div class="col">
     <label>Ключевое положение</label>
-    <input type="text" class="form-control form-control-sm f_use" name="key_point">
+    <textarea class="form-control form-control-sm f_use" name="key_point" rows="2"></textarea>
   </div>
 </div>
 <div class="row mb-2">
   <div class="col">
     <label>Основание в Писании</label>
-    <input type="text" class="form-control form-control-sm f_use" name="scriptural_basis">
+    <textarea class="form-control form-control-sm f_use" name="scriptural_basis" rows="2"></textarea>
   </div>
 </div>
 <div class="row mb-2">
   <div class="col">
     <label>Дополнительные ссылки</label>
-    <input type="text" class="form-control form-control-sm f_use" placeholder="Например, название книги служения и номер главы (сообщения)" name="further_ref">
+    <textarea class="form-control form-control-sm f_use" placeholder="Например, название книги служения и номер главы (сообщения)" name="further_ref" rows="2"></textarea>
     <span class="grey_text"></span>
   </div>
 </div>
 <div class="row mb-2">
   <div class="col">
     <label>Вступительное предложение</label>
-    <input type="text" class="form-control form-control-sm f_use" name="introduction">
+    <textarea class="form-control form-control-sm f_use" name="introduction" rows="2"></textarea>
   </div>
 </div>
 <div class="row mb-2">
   <div class="col">
     <label>Я практиковал(а) пророчество с</label>
-    <input type="text" class="form-control form-control-sm f_use" placeholder="Укажите имена святых, которые слушали ваше пророчество." name="listeners">
+    <textarea class="form-control form-control-sm f_use" placeholder="Укажите имена святых, которые слушали ваше пророчество." name="listeners" rows="2"></textarea>    
   </div>
 </div>
 <div class="row mb-3">

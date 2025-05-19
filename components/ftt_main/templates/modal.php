@@ -9,11 +9,11 @@ if (file_exists($modalSection)): ?>
         <button type="button" class="close" data-dismiss="modal">x</button>
       </div>
       <div class="modal-body">
-        <div class="container-fluid">
+        <div class="container-fluid px-0 px-md-3">
           <?php require_once $modalSection; ?>
         </div>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer px-md-4">
         <div class="text-right w-100">
           <button id="mdl_edit_btn_dlt_md" type="button" class="btn btn-secondary btn-sm mb-2 float-left" type="button"><i class="fa fa-trash"></i></button>
           <?php echo $modalButtons; ?>

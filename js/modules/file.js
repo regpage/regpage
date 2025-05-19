@@ -36,7 +36,7 @@ function modal_file_upload(id, file_field_id) {
       extrahelp_data_blank.set("blob"+i, file_field_id[0].files[i]);
     }
     $("#spinner_upload").show();
-    fetch("api_ftt.php?section=prophecy&type=set_pic&id=" + id, {
+    fetch("api_ftt.php?section=prophecy&type=set_pic&id=" + id.attr("data-id"), {
       method: 'POST',
       body: extrahelp_data_blank
     })
@@ -46,15 +46,10 @@ function modal_file_upload(id, file_field_id) {
       if (commits.result[1][0] === "Н") {
         showError(commits.result[1]);
       } else if (commits.result[1]) {
-
-
-        // СДЕЛАТЬ УНИВЕРСАЛЬНЫМ ПЕРЕПИСАТЬ
-        if (!id) {
-          $("#modal_edit_add_md").attr("data-id", commits.result[2])
+        // если бланк не был сохранён
+        if (!id.attr("data-id")) {
+          id.attr("data-id", commits.result[2]);
         }
-
-
-
         file_field_id.parent().css("border", "none");
         let result_arr = commits.result[1];
         result_arr = result_arr.split(";");
@@ -68,7 +63,7 @@ function modal_file_upload(id, file_field_id) {
           + '</div><div class="col-2 text-right"><i id="modal_pic_btn_dlt_'+list_pics_lenght+'" class="fa fa-trash text-danger cursor-pointer modal_pic_btn_delete mr-3" aria-hidden="true" style="font-size: 1.5rem;"></i></div>');
 
           $("#modal_pic_btn_dlt_"+list_pics_lenght).click(function () {
-            pic_delete($(this), id);
+            pic_delete($(this), id.attr("data-id"));
           });
         }
         // предосмотр катринки
