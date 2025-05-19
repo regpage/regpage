@@ -70,4 +70,15 @@ class ProphecyDB extends DBQuery
     return DBQuery::get('list', 'ftt_prophecy', '*', 'member_key', $memberKey);
   }
   */
+  // создание бланка при загрузке файла если бланк не существует
+  static function setLineGetId()
+  {
+    global $db;
+    $res = db_query("INSERT INTO `ftt_prophecy` (`file`) VALUES ('')");
+    if ($res) {
+      return $db->insert_id;
+    } else {
+      return "ERROR: NO ID";
+    }
+  }
 }

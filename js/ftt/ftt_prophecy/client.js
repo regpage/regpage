@@ -11,9 +11,8 @@ $(document).ready(function(){
       save_blank(data, "#modal_edit_add_md");
     }
   });
-
   // открываем бланк
-  $("#temp_list_body .list_str, #addProphecy").click(function () {    
+  $("#temp_list_body .list_str, #addProphecy").click(function () {
     reset_modal_file_block();
     module_blank_clear($("#modal_edit_add_md"));
     if ($(this).attr("id") !== "addProphecy") {
@@ -21,11 +20,11 @@ $(document).ready(function(){
     }
     $("#modal_edit_add_md").modal("show");
   });
-
-  // файл
-
-  /*$(".ftt_extra_help_string").click(function () {
-
-  });*/
+  // удалить бланк
+  $("#mdl_edit_btn_dlt_md").click(function () {
+    if (confirm("Удалить бланк?")) {
+      dlt_prophecy_blank($("#modal_edit_add_md").attr("data-id"));
+    }
+  });
 // DOCUMENT READY END
 });

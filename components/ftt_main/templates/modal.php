@@ -15,7 +15,7 @@ if (file_exists($modalSection)): ?>
       </div>
       <div class="modal-footer">
         <div class="text-right w-100">
-          <button id="mdl_edit_btn_dlt_md" type="button" class="btn btn-danger btn-sm mb-2 float-left" type="button"><i class="fa fa-trash"></i></button>
+          <button id="mdl_edit_btn_dlt_md" type="button" class="btn btn-secondary btn-sm mb-2 float-left" type="button"><i class="fa fa-trash"></i></button>
           <?php echo $modalButtons; ?>
           <button id="mdl_edit_btn_save_md" type="button" class="btn btn-success btn-sm ml-1 mb-2" type="button">Сохранить</button>
           <button type="button" class="btn btn-secondary btn-sm ml-1 mb-2" type="button" data-dismiss="modal">Закрыть</button>

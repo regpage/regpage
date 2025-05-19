@@ -46,6 +46,15 @@ function modal_file_upload(id, file_field_id) {
       if (commits.result[1][0] === "Н") {
         showError(commits.result[1]);
       } else if (commits.result[1]) {
+
+
+        // СДЕЛАТЬ УНИВЕРСАЛЬНЫМ ПЕРЕПИСАТЬ
+        if (!id) {
+          $("#modal_edit_add_md").attr("data-id", commits.result[2])
+        }
+
+
+
         file_field_id.parent().css("border", "none");
         let result_arr = commits.result[1];
         result_arr = result_arr.split(";");
@@ -87,7 +96,7 @@ function pic_delete(elem, id) {
   .then(data => {
     if (data) {
       element.prev().remove();
-      element.remove();      
+      element.remove();
     }
   });
 }

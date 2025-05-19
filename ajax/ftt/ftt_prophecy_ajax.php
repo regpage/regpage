@@ -27,6 +27,10 @@ if (isset($_GET['type']) && $_GET['type'] === 'dlt_line') {
 }
 
 if (isset($_GET['type']) && $_GET['type'] === 'set_pic') {
+  // создаём новый бланк
+  if (empty($_GET['id'])) {
+    $_GET['id'] = ProphecyDB::setLineGetId();
+  }
 
   if (isset($_FILES['blob0'])) {
     $all_files = '';
@@ -119,12 +123,12 @@ if (isset($_GET['type']) && $_GET['type'] === 'set_pic') {
 
   $result_file = FilesUp::setPics($_GET['id'], $file, 'ftt_prophecy', 'file', false);
 
-  echo json_encode(["result"=>[$result_file, $file]]);
+  echo json_encode(["result"=>[$result_file, $file, $_GET['id']]]);
   exit();
 }
 
 if (isset($_GET['type']) && $_GET['type'] === 'delete_pic') {
-  // готовим данные
+    // готовим данные
   $db_data_get = new DbData('get', 'ftt_prophecy');
   $db_data_get->set('field', 'file');
   $db_data_get->set('condition_field', 'id');

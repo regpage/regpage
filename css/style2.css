@@ -105,7 +105,7 @@ label.required-for-label:after
 .list_str {
   cursor: pointer;
   padding-bottom: 5px;
-  padding-top: 5px;  
+  padding-top: 5px;
 }
 
 .list_str:hover {
@@ -296,7 +296,7 @@ li.modal-reference {
     padding-left: 25px;
     font-size: 1.2em;
   }
-  #main_container_reg button, #main_container_reg input, #main_container_reg select, .modal-body select, .modal-body input, .modal-body textarea, .modal-body .nav-link, .modal-body .link_custom_gray, .modal-body label, .modal-footer button, #mdl_cal_history_content, #mdl_mbl_sort b {
+  #main_container_reg button, #main_container_reg input, #main_container_reg select, .modal-body select, .modal-body input, .modal-body textarea, .modal-body .nav-link, .modal-body .link_custom_gray, .modal-body label, .modal-footer button, #mdl_cal_history_content, #mdl_mbl_sort b, #temp_list_body {
     font-size: 1.2em !important;
   }
   .call_str>div {

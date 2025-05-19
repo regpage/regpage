@@ -64,7 +64,7 @@
     <textarea id="mdl_edit_prophecy_md" class="form-control form-control-sm f_use" rows="8" placeholder="Можно приложить фото рукописного листа." name="prophecy"></textarea>
   </div>
 </div>
-<div class="row mb-3">
+<div class="row">
   <div class="col">
     <!-- <div class="form-group"></div> -->
     <div class="">

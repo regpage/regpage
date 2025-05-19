@@ -90,15 +90,37 @@ function get_data_for_blank(id, elem) {
   });
 }
 
+// удаление бланка
+function dlt_prophecy_blank(id) {
+  fetch("api_ftt.php?section=prophecy&type=dlt_line&id=" + id, {
+  })
+  .then(response => response.json()) // text
+  .then(commits => {
+    if (commits.result) {
+      location.reload();
+    } else {
+      showError("Сбой при удалении.");
+      setTimeout(function () {
+        location.reload();
+      }, 3000);
+    }
+  });
+}
+
 // заполняем бланк
 function fill_blank(data, elem) {
-  $(elem).attr("data-id", data["id"]);  
+  $(elem).attr("data-id", data["id"]);
   render_files_bar(data["id"], data["file"]);
   for (const variable in data) {
     if (data.hasOwnProperty(variable)) {
       $(elem + " input[name='" + variable + "'], " + elem + " select[name='" + variable + "'], " + elem + " textarea[name='" + variable + "']").each(function() {
         if ($(this).attr("type") === "checkbox") {
-          $(this).prop("checked", data[variable]);
+          if (data[variable] == 0) {
+            $(this).prop("checked", false);
+          } else {
+            $(this).prop("checked", true);
+          }
+
         } else {
           $(this).val(data[variable]);
         }

@@ -11,7 +11,7 @@ if (file_exists($linkBlockBtn)): ?>
   </div>
 <?php endif; ?>
 <?php if (file_exists($linkBlockListHeadings)): ?>
-  <div id="temp_list_headings" class="row font-weight-bold pl-1 mr-0">
+  <div id="temp_list_headings" class="row font-weight-bold pl-1 mr-0 d-none d-md-flex">
     <?php require_once $linkBlockListHeadings; ?>
   </div>
   <hr class="mt-1 mb-0" style="margin-left: -1px; margin-right: -1px;">
