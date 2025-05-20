@@ -15,6 +15,11 @@ if (isset($_GET['type']) && $_GET['type'] === 'set_line') {
   echo json_encode(["result"=>ProphecyDB::setLine(json_decode($_POST['data']))]);
   exit();
 }
+// set line
+if (isset($_GET['type']) && $_GET['type'] === 'set_checked') {
+  echo json_encode(["result"=>ProphecyDB::setChecked(json_decode($_POST['data']))]);
+  exit();
+}
 // get line
 if (isset($_GET['type']) && $_GET['type'] === 'get_line') {
   echo json_encode(["result"=>ProphecyDB::getLine($_GET['id'])]);
@@ -29,7 +34,7 @@ if (isset($_GET['type']) && $_GET['type'] === 'dlt_line') {
 if (isset($_GET['type']) && $_GET['type'] === 'set_pic') {
   // создаём новый бланк
   if (empty($_GET['id'])) {
-    $_GET['id'] = ProphecyDB::setLineGetId();
+    $_GET['id'] = ProphecyDB::setLineGetId(json_decode($_POST['data']));
   }
 
   if (isset($_FILES['blob0'])) {

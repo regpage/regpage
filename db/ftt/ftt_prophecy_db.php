@@ -19,10 +19,33 @@ class ProphecyDB extends DBQuery
   {
     return DBQuery::get('list', 'ftt_prophecy', '*', 'member_key', $memberKey);
   }
+  // получаем строки таблицы Пророчество для списка служащих
+  static function getListForServingones($memberKey, $weekNumber)
+  {
+    $weekNumber = db_real_escape_string($weekNumber);
+    $memberKey = db_real_escape_string($memberKey);
+    $result = [];
+
+    $res = db_query("SELECT fp.*, m.name
+      FROM ftt_prophecy fp
+      LEFT JOIN member m ON m.key = fp.member_key
+      WHERE 1"); // `member_key` = '{$memberKey}' AND `` = '{$weekNumber}'
+    while ($row = $res->fetch_assoc()) $result[] = $row;
+
+    return $result;
+  }
   // удаляем строку таблицы Пророчество по id
   static function dltLine($id)
   {
     return DBQuery::dlt('ftt_prophecy', 'id', $id);
+  }
+  // удаляем строку таблицы Пророчество по id
+  static function setChecked($data)
+  {
+    foreach ($data as $key => $value) {
+      $data->$key = db_real_escape_string($value);
+    }
+    return DBQuery::set('ftt_prophecy', 'checked', $data->checked, 'id', $data->id);
   }
   // записываем новую / обновляем существующую строку
   static function setLine($data)
@@ -71,10 +94,13 @@ class ProphecyDB extends DBQuery
   }
   */
   // создание бланка при загрузке файла если бланк не существует
-  static function setLineGetId()
+  static function setLineGetId($data)
   {
     global $db;
-    $res = db_query("INSERT INTO `ftt_prophecy` (`file`) VALUES ('')");
+    foreach ($data as $key => $value) {
+      $data->$key = db_real_escape_string($value);
+    }
+    $res = db_query("INSERT INTO `ftt_prophecy` (`date`, `member_key`) VALUES ('{$data->date}', '{$data->member_key}')");
     if ($res) {
       return $db->insert_id;
     } else {

@@ -55,7 +55,7 @@
 <div class="row mb-2">
   <div class="col">
     <label>Я практиковал(а) пророчество с</label>
-    <textarea class="form-control form-control-sm f_use" placeholder="Укажите имена святых, которые слушали ваше пророчество." name="listeners" rows="2"></textarea>    
+    <textarea class="form-control form-control-sm f_use" placeholder="Укажите имена святых, которые слушали ваше пророчество." name="listeners" rows="2"></textarea>
   </div>
 </div>
 <div class="row mb-3">
@@ -87,3 +87,10 @@
     <input type="checkbox" id="mdl_prophecy_done" class="form-check-input ml-0 f_use" name="done"><label for="mdl_prophecy_done" class="form-check-label ml-4"> я пророчествовал(а) на собрании</label>
   </div>
 </div>
+<?php if ($ftt_access['group'] === 'staff') { ?>
+<div class="row mb-2">
+  <div class="col">
+    <input type="checkbox" id="mdl_prophecy_checked" class="form-check-input ml-0 f_use" name="checked"><label for="mdl_prophecy_checked" class="form-check-label ml-4"> Проверено служащим</label>
+  </div>
+</div>
+<?php } ?>

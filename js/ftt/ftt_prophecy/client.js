@@ -1,8 +1,38 @@
 // DOCUMENT READY BEGIN
 $(document).ready(function(){
   // pic
+  $("#modal_field_file").click(function (e) {
+    if (!$("#modal_edit_add_md").attr("data-id")) {
+      if (!$("#mdl_edit_date_md").val()) {
+        e.preventDefault();
+        showError("Сначала заполните дату");
+        $("#mdl_edit_date_md").css("border-color", "red")
+      } else {
+        $("#mdl_edit_date_md").css("border-color", "#ced4da")
+      }
+      if ($("#mdl_edit_trainee_list_md").length && ($("#mdl_edit_trainee_list_md").val() === "_none_" || !$("#mdl_edit_trainee_list_md").val())) {
+        e.preventDefault();
+        showError("Сначала выберите обучающегося");
+        $("#mdl_edit_trainee_list_md").css("border-color", "red")
+      } else {
+        $("#mdl_edit_trainee_list_md").css("border-color", "#ced4da")
+      }
+    }
+  });
+
   $("#modal_field_file").change(function () {
-    modal_file_upload($("#modal_edit_add_md"), $(this));
+    let obj_data = {id: ""};
+    if (!$("#modal_edit_add_md").attr("data-id")) {
+      obj_data["date"] = $("#mdl_edit_date_md").val();
+      if ($("#mdl_edit_trainee_list_md").length) {
+        obj_data["member_key"] = $("#mdl_edit_trainee_list_md").val();
+      } else {
+        obj_data["member_key"] = window.adminId;
+      }
+    } else {
+      obj_data["id"] = $("#modal_edit_add_md").attr("data-id");
+    }
+    modal_file_upload($("#modal_edit_add_md"), $(this), obj_data);
   });
   // сохранение бланка
   $("#mdl_edit_btn_save_md").click(function () {
@@ -26,5 +56,16 @@ $(document).ready(function(){
       dlt_prophecy_blank($("#modal_edit_add_md").attr("data-id"));
     }
   });
+  // Отметить бланк из списка
+  $("#temp_list_body .checked_in_list").click(function (e) {
+    //e.preventDefault();
+    e.stopPropagation();
+    let checked = 1;
+    if (!$(this).prop("checked")) {
+      checked = 0;
+    }
+    blank_fast_checked($(this).parent().parent().attr("data-id"), checked);
+  });
+
 // DOCUMENT READY END
 });

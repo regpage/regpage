@@ -128,3 +128,16 @@ function fill_blank(data, elem) {
     }
   }
 }
+
+function blank_fast_checked(id, checked) {
+  let form_data = new FormData();
+  form_data.set("data", JSON.stringify({id: id, checked: checked}));
+  fetch("api_ftt.php?section=prophecy&type=set_checked", {
+    method: 'POST',
+    body: form_data
+  })
+  .then(response => response.json()) // text
+  .then(commits => {
+    showHint("Сохранено");
+  });
+}

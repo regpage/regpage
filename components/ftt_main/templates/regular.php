@@ -3,7 +3,11 @@
 $linkBlockBtn = "components/" . THIS_PAGE . "/{$ftt_access['group']}/{$tabOfSection}/btn_group.php";
 $linkBlockListHeadings = "components/" . THIS_PAGE . "/{$ftt_access['group']}/{$tabOfSection}/list_headings.php";
 $linkBlockListData = "components/" . THIS_PAGE . "/{$ftt_access['group']}/{$tabOfSection}/content.php";
+$linkCtrlBlockListData = "components/" . THIS_PAGE . "/{$ftt_access['group']}/{$tabOfSection}/ctrl.php";
 // блоки
+if (file_exists($linkCtrlBlockListData)) {
+  require_once $linkCtrlBlockListData;
+}
 if (file_exists($linkBlockBtn)): ?>
   <br>
   <div id="temp_btn_group" class="btn-group mb-2">

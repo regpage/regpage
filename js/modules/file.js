@@ -28,17 +28,17 @@ function render_files_bar(id, path) {
 }
 
 // set pics
-function modal_file_upload(id, file_field_id) {
-  let extrahelp_data_blank = new FormData();
-
+function modal_file_upload(id, file_field_id, extra_data) {
+  $("#spinner_upload").show();
+  let data_blank = new FormData();
   if (file_field_id[0].files[0]) {
     for (var i = 0; i < file_field_id[0].files.length; i++) {
-      extrahelp_data_blank.set("blob"+i, file_field_id[0].files[i]);
+      data_blank.set("blob"+i, file_field_id[0].files[i]);
     }
-    $("#spinner_upload").show();
-    fetch("api_ftt.php?section=prophecy&type=set_pic&id=" + id.attr("data-id"), {
+    data_blank.set("data", JSON.stringify(extra_data));
+    fetch("api_ftt.php?section=prophecy&type=set_pic&id=" + extra_data["id"], {
       method: 'POST',
-      body: extrahelp_data_blank
+      body: data_blank
     })
     .then(response => response.json())
     .then(commits => {
