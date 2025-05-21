@@ -2154,7 +2154,7 @@ function checkMemberEventReadyToRegistrate($memberId, $event){
     $isReady = true;
     if (!$member['name'] || !$member['birth_date'] || !$member['gender'] ||
         !$member['citizenship_key'] || (!$member['locality_key'] && !$member['new_locality']) ||
-        !$member['address'] || !$member['category_key'] ||
+        !$member['category_key'] ||
         !$member['dep_date'] || !$member['arr_date'] ||
         ($member['aid'] > 0 && $member['contr_amount'] === 0 && $member['trans_amount'] === 0) ||
         (db_getNeedAccom ($event) && (empty($member['need_accom']) || $member['need_accom'] == '_none_')) ||
@@ -2162,6 +2162,7 @@ function checkMemberEventReadyToRegistrate($memberId, $event){
         (db_getNeedPassportTp ($event) && (!$member['tp_num'] || !$member['tp_date'] || !$member['tp_auth'] || !$member['tp_name'] )) ||
         (db_getNeedFlight ($event) && $member['english'] == null) ||
         (db_getNeedTransport($event) && !$member['transport']) ||
+        (db_getNeedAddress($event) && empty($member['address'])) ||
         (db_getNeedVisa ($event) && $member['visa'] == '0')) {
         $isReady = false;
     }
@@ -2177,6 +2178,15 @@ function db_getNeedAccom($eventId)
   $res=db_query ("SELECT `need_accom` FROM `event` WHERE `key`= '{$eventId}'");
   $row = $res->fetch_object();
   return $row && $row->need_accom;
+}
+// небходим почтовый адрес участника?
+function db_getNeedAddress($eventId)
+{
+  global $db;
+  $eventId = $db->real_escape_string($eventId);
+  $res=db_query ("SELECT `need_address` FROM `event` WHERE `key`= '{$eventId}'");
+  $row = $res->fetch_object();
+  return $row && $row->need_address;
 }
 // нужна виза для мероприятия?
 function db_getNeedVisa($eventId)

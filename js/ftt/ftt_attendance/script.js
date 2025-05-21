@@ -175,7 +175,7 @@ $(document).ready(function(){
      return;
    }
    // проверяем отметку чтения Библии
-   if ((!$("#bible_book_ot").val() && !$("#bible_book_ot").attr("disabled")) || (!$("#bible_book_nt").val()  && !$("#bible_book_nt").attr("disabled"))) {
+   if (($("#bible_book_ot").is(":visible") && !$("#bible_book_ot").val() && !$("#bible_book_ot").attr("disabled")) || ($("#bible_book_nt").is(":visible") && !$("#bible_book_nt").val()  && !$("#bible_book_nt").attr("disabled"))) {
      showError("Заполните поля чтения Библии.");
      if ($("#bible_book_ot").val() === "_none_") {
        $("#bible_book_ot").css("border-color", "red");
