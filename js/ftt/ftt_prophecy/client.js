@@ -66,6 +66,12 @@ $(document).ready(function(){
     }
     blank_fast_checked($(this).parent().parent().attr("data-id"), checked);
   });
-
+  // фильтр
+  $("#flt_list_trainees, #flt_list_weeks").change(function () {
+    setCookie("prophecy_staff-" + $(this).attr("id"), $(this).val());
+    setTimeout(function () {
+      location.reload();
+    }, 30);
+  });
 // DOCUMENT READY END
 });

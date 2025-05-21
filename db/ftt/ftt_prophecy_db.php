@@ -22,14 +22,24 @@ class ProphecyDB extends DBQuery
   // получаем строки таблицы Пророчество для списка служащих
   static function getListForServingones($memberKey, $weekNumber)
   {
-    $weekNumber = db_real_escape_string($weekNumber);
     $memberKey = db_real_escape_string($memberKey);
+    $weekNumber = db_real_escape_string($weekNumber);
     $result = [];
-
+    $condition = 1;
+    if (!empty($memberKey) && $memberKey !== '_all_') {
+      $condition = "fp.member_key = '{$memberKey}'";
+    }
+    if (!empty($weekNumber) && $weekNumber !== '_all_') {
+      if ($condition === 1) {
+        $condition = " fp.week_number = '{$weekNumber}' ";
+      } else {
+        $condition .= " AND fp.week_number = '{$weekNumber}' ";
+      }
+    }
     $res = db_query("SELECT fp.*, m.name
       FROM ftt_prophecy fp
       LEFT JOIN member m ON m.key = fp.member_key
-      WHERE 1"); // `member_key` = '{$memberKey}' AND `` = '{$weekNumber}'
+      WHERE $condition");
     while ($row = $res->fetch_assoc()) $result[] = $row;
 
     return $result;

@@ -1,10 +1,10 @@
-<?php foreach (ProphecyDB::getListForServingones($fltTraineeName, $week_number) as $key => $value): ?>
+<?php foreach (ProphecyDB::getListForServingones($cookieFltListTrainee, $cookieFltListWeeks) as $key => $value): ?>
   <div class="row list_str pl-1 mr-0" data-id="<?php echo $value['id'] ?>">
     <div class="col-md-1 col-2">
       <?php echo date_convert::yyyymmddhhmmss_to_ddmm($value['date']); ?>
     </div>
-    <div class="col-md-1 col-3 text-right">
-      <?php echo $value['week_number']; ?> <span class="d-md-none d-inline"> нед.</span>
+    <div class="col-md-1 col-2 text-right">
+      <?php echo $value['week_number']; ?> <span class="d-md-none d-inline"> н.</span>
     </div>
     <div class="col-md-8 col-7">
       <?php echo short_name::no_middle($value['name']) ?>

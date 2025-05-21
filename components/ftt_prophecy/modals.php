@@ -90,7 +90,7 @@
 <?php if ($ftt_access['group'] === 'staff') { ?>
 <div class="row mb-2">
   <div class="col">
-    <input type="checkbox" id="mdl_prophecy_checked" class="form-check-input ml-0 f_use" name="checked"><label for="mdl_prophecy_checked" class="form-check-label ml-4"> Проверено служащим</label>
+    <input type="checkbox" id="mdl_prophecy_checked" class="form-check-input ml-0 f_use" name="checked"><label for="mdl_prophecy_checked" class="form-check-label ml-4"> проверено служащим</label>
   </div>
 </div>
 <?php } ?>
