@@ -1,6 +1,6 @@
 <?php
 $modalTitle = 'Пророчество';
-$modalButtons = '';
+$modalButtons = '<button type="button" id="mdl_edit_btn_send_md" type="button" class="btn btn-primary btn-sm ml-1">Отправить</button>';
 
 $modalSection = "components/" . THIS_PAGE . "/modals.php";
 /*

@@ -41,6 +41,13 @@ $(document).ready(function(){
       save_blank(data, "#modal_edit_add_md");
     }
   });
+  // отправление бланка
+  $("#mdl_edit_btn_send_md").click(function () {
+    if (is_validation_fields_correct()) {
+      let data = get_data_from_blank("#modal_edit_add_md", true);
+      save_blank(data, "#modal_edit_add_md");
+    }
+  });
   // открываем бланк
   $("#temp_list_body .list_str, #addProphecy").click(function () {
     reset_modal_file_block();
@@ -56,18 +63,12 @@ $(document).ready(function(){
       dlt_prophecy_blank($("#modal_edit_add_md").attr("data-id"));
     }
   });
-  // Отметить бланк из списка
-  $("#temp_list_body .checked_in_list").click(function (e) {
-    //e.preventDefault();
-    e.stopPropagation();
-    let checked = 1;
-    if (!$(this).prop("checked")) {
-      checked = 0;
-    }
-    blank_fast_checked($(this).parent().parent().attr("data-id"), checked);
-  });
+
   // фильтр
-  $("#flt_list_trainees, #flt_list_weeks").change(function () {
+  $("#flt_list_trainees, #flt_list_weeks, #flt_list_servingone, #flt_list_currents").change(function () {
+    if ($(this).attr("id") === "flt_list_servingone") {
+      setCookie("prophecy_staff-flt_list_trainees", "_all_");
+    }
     setCookie("prophecy_staff-" + $(this).attr("id"), $(this).val());
     setTimeout(function () {
       location.reload();

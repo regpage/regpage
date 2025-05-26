@@ -15,11 +15,6 @@ if (isset($_GET['type']) && $_GET['type'] === 'set_line') {
   echo json_encode(["result"=>ProphecyDB::setLine(json_decode($_POST['data']))]);
   exit();
 }
-// set line
-if (isset($_GET['type']) && $_GET['type'] === 'set_checked') {
-  echo json_encode(["result"=>ProphecyDB::setChecked(json_decode($_POST['data']))]);
-  exit();
-}
 // get line
 if (isset($_GET['type']) && $_GET['type'] === 'get_line') {
   echo json_encode(["result"=>ProphecyDB::getLine($_GET['id'])]);

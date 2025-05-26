@@ -2,6 +2,7 @@
 <?php if ($ftt_access['group'] === 'staff') { ?>
   <div class="row mb-2">
     <div class="col">
+      <label>Обучающийся</label>
       <select id="mdl_edit_trainee_list_md" class="form-control form-control-sm f_use f_required" name="member_key">
         <option value="_none_"></option>
         <?php foreach ($trainee_list as $key => $value):
@@ -23,7 +24,7 @@
 </div>
 <div class="row mb-2">
   <div class="col">
-    <label>Тема</label>
+    <label>Название сообщения</label>
     <textarea class="form-control form-control-sm f_use" name="topic" rows="2"></textarea>
   </div>
 </div>

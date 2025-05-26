@@ -17,6 +17,8 @@ require_once "components/ftt_prophecy/ctrl.php";
 require_once "components/ftt_main/html_part_refactoring.php";
 // HTML модальные окна основной страницы
 require_once "components/ftt_prophecy/modals_ctrl.php";
+// JS общие скрипты
+include_once "components/ftt_main/js_main.php";
 // JS
 require_once "components/ftt_prophecy/js.php";
 //

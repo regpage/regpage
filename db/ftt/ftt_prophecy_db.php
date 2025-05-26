@@ -20,14 +20,27 @@ class ProphecyDB extends DBQuery
     return DBQuery::get('list', 'ftt_prophecy', '*', 'member_key', $memberKey);
   }
   // получаем строки таблицы Пророчество для списка служащих
-  static function getListForServingones($memberKey, $weekNumber)
+  static function getListForServingones($traineeKey, $weekNumber, $listTraneesByStaff, $currents)
   {
-    $memberKey = db_real_escape_string($memberKey);
+    $traineeKey = db_real_escape_string($traineeKey);
     $weekNumber = db_real_escape_string($weekNumber);
+    $currents = db_real_escape_string($currents);
     $result = [];
     $condition = 1;
-    if (!empty($memberKey) && $memberKey !== '_all_') {
-      $condition = "fp.member_key = '{$memberKey}'";
+
+    if (!empty($traineeKey) && $traineeKey !== '_all_') { // если задан фильтр обучающийся
+      $condition = "fp.member_key = '{$traineeKey}'";
+    } elseif (count($listTraneesByStaff) > 0) { // если задан фильтр служащий
+       foreach ($listTraneesByStaff as $key => $value) {
+         if ($condition === 1) {
+           $condition = " (fp.member_key = '{$key}' ";
+         } else {
+           $condition .= " OR fp.member_key = '{$key}' ";
+         }
+       }
+       $condition .= ') ';
+    } elseif (count($listTraneesByStaff) === 0 && $servingoneKey !== '_all_') { // если задан фильтр служащий для служащего без подчинённых обучающихся
+      $condition = " fp.member_key = '' ";
     }
     if (!empty($weekNumber) && $weekNumber !== '_all_') {
       if ($condition === 1) {
@@ -36,9 +49,17 @@ class ProphecyDB extends DBQuery
         $condition .= " AND fp.week_number = '{$weekNumber}' ";
       }
     }
-    $res = db_query("SELECT fp.*, m.name
+    if ($currents == 0) {
+      if ($condition === 1) {
+        $condition = ' fp.checked = 0 ';
+      } else {
+        $condition .= ' AND fp.checked = 0 ';
+      }
+    }
+    $res = db_query("SELECT fp.*, m.name, ft.semester, ft.serving_one
       FROM ftt_prophecy fp
       LEFT JOIN member m ON m.key = fp.member_key
+      LEFT JOIN ftt_trainee ft ON ft.member_key = fp.member_key
       WHERE $condition");
     while ($row = $res->fetch_assoc()) $result[] = $row;
 
@@ -48,14 +69,6 @@ class ProphecyDB extends DBQuery
   static function dltLine($id)
   {
     return DBQuery::dlt('ftt_prophecy', 'id', $id);
-  }
-  // удаляем строку таблицы Пророчество по id
-  static function setChecked($data)
-  {
-    foreach ($data as $key => $value) {
-      $data->$key = db_real_escape_string($value);
-    }
-    return DBQuery::set('ftt_prophecy', 'checked', $data->checked, 'id', $data->id);
   }
   // записываем новую / обновляем существующую строку
   static function setLine($data)

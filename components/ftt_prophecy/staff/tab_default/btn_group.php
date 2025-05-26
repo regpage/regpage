@@ -2,8 +2,14 @@
   <i class="d-inline d-sm-none fa fa-plus"></i> <span class="d-none d-md-inline">Добавить</span>
 </button>
 <select id="flt_list_trainees" class="form-control form-control-sm mr-2">
-  <?php FTT_Select_fields::rendering($trainee_list, $cookieFltListTrainee, 'Все обучающиеся'); ?>
+  <?php FTT_Select_fields::rendering($listTraneesByStaffForFlt, $cookieFltListTrainee, 'Все обучающиеся'); ?>
 </select>
 <select id="flt_list_weeks" class="form-control form-control-sm mr-2">
-  <?php FTT_Select_fields::rendering($weeks, $cookieFltListWeeks, 'Все недели'); ?>  
+  <?php FTT_Select_fields::rendering($weeks, $cookieFltListWeeks, 'Все недели'); ?>
+</select>
+<select id="flt_list_servingone" class="form-control form-control-sm mr-2">
+  <?php FTT_Select_fields::rendering($serving_ones_list, $cookieFltListServingone, 'Все служащие'); ?>
+</select>
+<select id="flt_list_currents" class="form-control form-control-sm mr-2">
+  <?php FTT_Select_fields::rendering(['Текущие', 'Все'], $cookieFltListCurrents); ?>
 </select>

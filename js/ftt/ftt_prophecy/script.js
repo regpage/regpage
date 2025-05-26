@@ -44,9 +44,20 @@ function get_data_attr_blank(elem, obj) {
 }
 
 // получаем данные бланка
-function get_data_from_blank(elem) {
+function get_data_from_blank(elem, send) {
   let form_data = new FormData();
   let data = get_data_attr_blank(elem, get_data_fields_from_blank(elem));
+  if (send) {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    data["send_date"] = formattedDateTime;
+  }
   form_data.set("data", JSON.stringify(data));
   return form_data;
 }
@@ -83,7 +94,7 @@ function get_data_for_blank(id, elem) {
   .then(response => response.json()) // text
   .then(commits => {
     if (commits.result[0]["id"]) {
-      fill_blank(commits.result[0], elem)
+      fill_blank(commits.result[0], elem);
     } else {
       showError("Сбой при открытии.");
     }
@@ -111,6 +122,8 @@ function dlt_prophecy_blank(id) {
 function fill_blank(data, elem) {
   $(elem).attr("data-id", data["id"]);
   render_files_bar(data["id"], data["file"]);
+
+  rule_fo_blank(elem, trainee_access, Number(data["done"]) + Number(data["checked"])); // send_date
   for (const variable in data) {
     if (data.hasOwnProperty(variable)) {
       $(elem + " input[name='" + variable + "'], " + elem + " select[name='" + variable + "'], " + elem + " textarea[name='" + variable + "']").each(function() {
@@ -129,15 +142,25 @@ function fill_blank(data, elem) {
   }
 }
 
-function blank_fast_checked(id, checked) {
-  let form_data = new FormData();
-  form_data.set("data", JSON.stringify({id: id, checked: checked}));
-  fetch("api_ftt.php?section=prophecy&type=set_checked", {
-    method: 'POST',
-    body: form_data
-  })
-  .then(response => response.json()) // text
-  .then(commits => {
-    showHint("Сохранено");
-  });
+// правило отобращения элементов в бланке
+// variant rule_fo_blank(btns, fields)
+// block for files
+function rule_fo_blank(element, is_trainee, status) {
+  // disabled / enabled fields
+  // disabled / enabled buttons
+  if (is_trainee && (status == 1 || status == 2)) {
+    $(element).find("input").attr("disabled", true);
+    $(element).find("select").attr("disabled", true);
+    $(element).find("textarea").attr("disabled", true);
+    $(element).find(".btn-success").attr("disabled", true);
+    $(element).find(".btn-primary").attr("disabled", true);
+    $(element).find(".fa-trash").parent().hide();
+  } else {
+    $(element).find("input").attr("disabled", false);
+    $(element).find("select").attr("disabled", false);
+    $(element).find("textarea").attr("disabled", false);
+    $(element).find(".btn-success").attr("disabled", false);
+    $(element).find(".btn-primary").attr("disabled", false);
+    $(element).find(".fa-trash").parent().show();
+  }
 }
