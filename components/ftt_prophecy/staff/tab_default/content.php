@@ -9,7 +9,7 @@
     <div class="col-md-1 col-2">
       <?php echo date_convert::yyyymmddhhmmss_to_ddmm($value['date']); ?>
     </div>
-    <div class="col-md-2 col-10">
+    <div class="col-md-2 col-10 pr-0">
       <?php echo short_name::no_middle($value['name']) . ' (' . $value['semester'] . ')'; ?> <span class="float-right"><?php echo $value['done'] ? '✅' : ''; ?></span>
       <?php if ($cookieFltListServingone === '_all_'): ?>
         <br> <span class="grey_text"><?php echo $serving_ones_list[$value['serving_one']]; ?></span>

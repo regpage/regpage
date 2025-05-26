@@ -122,8 +122,29 @@ function dlt_prophecy_blank(id) {
 function fill_blank(data, elem) {
   $(elem).attr("data-id", data["id"]);
   render_files_bar(data["id"], data["file"]);
+  // правила отображения полей и кнопок при открытии бланка
+  let blank_sent = 1;
+  let date_checked = data["check_date"];
+  // label
+  if (data["send_date"] === '0000-00-00 00:00:00' || !data["send_date"]) {
+    blank_sent = 0;
+    $('<span class="ml-4 badge badge-secondary" style="align-self: center;">не отправлен</span>').insertAfter(elem + ' h5');
+  } else if (data["checked"] === "1") {
+    date_checked = data["check_date"];
+    $('<span class="ml-4 badge badge-success" style="align-self: center;">проверено</span>').insertAfter(elem + ' h5');
+  } else {
+    $('<span class="ml-4 badge badge-warning" style="align-self: center;">на рассмотрении</span>').insertAfter(elem + ' h5');
+  }
+  rule_fo_blank(elem, trainee_access, blank_sent + Number(data["checked"]));
 
-  rule_fo_blank(elem, trainee_access, Number(data["done"]) + Number(data["checked"])); // send_date
+  let date_send = data["send_date"];
+  if (data["send_date"] !== '0000-00-00 00:00:00' && data["send_date"]) {
+    date_send = data["send_date"];
+    $("#mdl_edit_btn_send_md").attr("disabled", "disabled");
+  }
+
+  // заполняем инфо блок
+  $("#modal_info_blank").html("Отправлено: " + date_send + "<br>Проверено: " + date_checked);
   for (const variable in data) {
     if (data.hasOwnProperty(variable)) {
       $(elem + " input[name='" + variable + "'], " + elem + " select[name='" + variable + "'], " + elem + " textarea[name='" + variable + "']").each(function() {
@@ -148,19 +169,22 @@ function fill_blank(data, elem) {
 function rule_fo_blank(element, is_trainee, status) {
   // disabled / enabled fields
   // disabled / enabled buttons
+  if (status == 0) {
+    $(element).find(".fa-trash").parent().show();
+  } else {
+    $(element).find(".fa-trash").parent().hide();
+  }
   if (is_trainee && (status == 1 || status == 2)) {
     $(element).find("input").attr("disabled", true);
     $(element).find("select").attr("disabled", true);
     $(element).find("textarea").attr("disabled", true);
     $(element).find(".btn-success").attr("disabled", true);
-    $(element).find(".btn-primary").attr("disabled", true);
-    $(element).find(".fa-trash").parent().hide();
+    $("#mdl_edit_btn_send_md").attr("disabled", true);
   } else {
     $(element).find("input").attr("disabled", false);
     $(element).find("select").attr("disabled", false);
     $(element).find("textarea").attr("disabled", false);
     $(element).find(".btn-success").attr("disabled", false);
-    $(element).find(".btn-primary").attr("disabled", false);
-    $(element).find(".fa-trash").parent().show();
+    $("#mdl_edit_btn_send_md").attr("disabled", false);
   }
 }

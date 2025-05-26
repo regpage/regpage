@@ -19,7 +19,7 @@ $(document).ready(function(){
       }
     }
   });
-
+  // добавление файла
   $("#modal_field_file").change(function () {
     let obj_data = {id: ""};
     if (!$("#modal_edit_add_md").attr("data-id")) {
@@ -50,10 +50,16 @@ $(document).ready(function(){
   });
   // открываем бланк
   $("#temp_list_body .list_str, #addProphecy").click(function () {
+    $("#modal_edit_add_md .modal-header .badge").remove();
+    $("#modal_info_blank").hide();
+    $("#modal_info_blank").html("");
     reset_modal_file_block();
     module_blank_clear($("#modal_edit_add_md"));
     if ($(this).attr("id") !== "addProphecy") {
       get_data_for_blank($(this).attr("data-id"), "#modal_edit_add_md");
+    } else {
+      // правила отображения полей и кнопок при открытии бланка
+      rule_fo_blank("#modal_edit_add_md", 0, 0);
     }
     $("#modal_edit_add_md").modal("show");
   });
@@ -73,6 +79,14 @@ $(document).ready(function(){
     setTimeout(function () {
       location.reload();
     }, 30);
+  });
+
+  $("#modal_info_blank_visibility").click(function () {
+    if ($("#modal_info_blank").is(":visible")) {
+      $("#modal_info_blank").fadeOut();
+    } else {
+      $("#modal_info_blank").fadeIn();
+    }
   });
 // DOCUMENT READY END
 });

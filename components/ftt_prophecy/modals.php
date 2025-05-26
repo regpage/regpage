@@ -93,5 +93,9 @@
   <div class="col">
     <input type="checkbox" id="mdl_prophecy_checked" class="form-check-input ml-0 f_use" name="checked"><label for="mdl_prophecy_checked" class="form-check-label ml-4"> проверено служащим</label>
   </div>
+  <div class="col text-right">
+    <span id="modal_info_blank_visibility" class="cursor-pointer" style="border-bottom: 1px dashed lightgrey; font-size: 12px;">Инфо</span>
+    <div id="modal_info_blank" class="" style="display:none; font-size: 12px;"></div>
+  </div>
 </div>
 <?php } ?>
