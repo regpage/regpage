@@ -6,16 +6,16 @@ $(document).ready(function(){
       if (!$("#mdl_edit_date_md").val()) {
         e.preventDefault();
         showError("Сначала заполните дату");
-        $("#mdl_edit_date_md").css("border-color", "red")
+        $("#mdl_edit_date_md").css("border-color", "red");
       } else {
-        $("#mdl_edit_date_md").css("border-color", "#ced4da")
+        $("#mdl_edit_date_md").css("border-color", "#ced4da");
       }
       if ($("#mdl_edit_trainee_list_md").length && ($("#mdl_edit_trainee_list_md").val() === "_none_" || !$("#mdl_edit_trainee_list_md").val())) {
         e.preventDefault();
         showError("Сначала выберите обучающегося");
-        $("#mdl_edit_trainee_list_md").css("border-color", "red")
+        $("#mdl_edit_trainee_list_md").css("border-color", "red");
       } else {
-        $("#mdl_edit_trainee_list_md").css("border-color", "#ced4da")
+        $("#mdl_edit_trainee_list_md").css("border-color", "#ced4da");
       }
     }
   });
@@ -70,7 +70,7 @@ $(document).ready(function(){
     }
   });
 
-  // фильтр
+  // фильтры
   $("#flt_list_trainees, #flt_list_weeks, #flt_list_servingone, #flt_list_currents").change(function () {
     if ($(this).attr("id") === "flt_list_servingone") {
       setCookie("prophecy_staff-flt_list_trainees", "_all_");
@@ -80,7 +80,25 @@ $(document).ready(function(){
       location.reload();
     }, 30);
   });
+  // мобильные фильтры
 
+  $("#modal_ftr_apply").click(function () {
+    let modal = "modal_";
+    $("#modal_mobile_fiters select").each(function() {
+      let id = $(this).attr("id");
+      if (id.includes(modal)) {
+        id = id.substring(modal.length);
+        setCookie("prophecy_staff-" + id, $(this).val());
+      }
+    });
+    if ($("#" + modal + "flt_list_servingone").val() !== $("#flt_list_servingone").val()) {
+      setCookie("prophecy_staff-flt_list_trainees", "_all_");
+    }
+    setTimeout(function () {
+      location.reload();
+    }, 100);
+  });
+  // инфо блок показать скрыть
   $("#modal_info_blank_visibility").click(function () {
     if ($("#modal_info_blank").is(":visible")) {
       $("#modal_info_blank").fadeOut();
