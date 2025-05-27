@@ -26,7 +26,7 @@ if (!empty($_COOKIE['prophecy_staff-flt_list_servingone'])) {
   $listTraneesByStaff = ftt_lists::get_trainees_by_staff($cookieFltListServingone);
   $listTraneesByStaffForFlt = $listTraneesByStaff;
 }
-
+// фильтр текущие
 if (!empty($_COOKIE['prophecy_staff-flt_list_currents'])) {
   $cookieFltListCurrents = $_COOKIE['prophecy_staff-flt_list_currents'];
 }

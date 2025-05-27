@@ -70,7 +70,7 @@ $(document).ready(function(){
     }
   });
 
-  // фильтры
+  // фильтры служащих
   $("#flt_list_trainees, #flt_list_weeks, #flt_list_servingone, #flt_list_currents").change(function () {
     if ($(this).attr("id") === "flt_list_servingone") {
       setCookie("prophecy_staff-flt_list_trainees", "_all_");
@@ -80,8 +80,8 @@ $(document).ready(function(){
       location.reload();
     }, 30);
   });
-  // мобильные фильтры
 
+  // мобильные фильтры служащих
   $("#modal_ftr_apply").click(function () {
     let modal = "modal_";
     $("#modal_mobile_fiters select").each(function() {
@@ -98,6 +98,14 @@ $(document).ready(function(){
       location.reload();
     }, 100);
   });
+  // фильтры обучающиеся
+  $("#trainee_flt_list_currents").change(function () {
+    setCookie("prophecy-" + $(this).attr("id"), $(this).val());
+    setTimeout(function () {
+      location.reload();
+    }, 30);
+  });
+
   // инфо блок показать скрыть
   $("#modal_info_blank_visibility").click(function () {
     if ($("#modal_info_blank").is(":visible")) {

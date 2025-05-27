@@ -15,9 +15,19 @@ class ProphecyDB extends DBQuery
     return DBQuery::get('list', 'ftt_prophecy', '*', 'id', $id);
   }
   // получаем строки таблицы Пророчество по ключу пользователя
-  static function getListByMember($memberKey)
+  static function getListByMember($traineeKey, $all)
   {
-    return DBQuery::get('list', 'ftt_prophecy', '*', 'member_key', $memberKey);
+    $traineeKey = db_real_escape_string($traineeKey);
+    $all = db_real_escape_string($all);
+    $condition = '';
+    if ($all === '0') {
+      $condition = " AND (`date` >= DATE_SUB(CURDATE(), INTERVAL 30 DAY) OR `checked` != 1)";
+    }
+    $result = [];
+    $res = db_query("SELECT * FROM `ftt_prophecy` WHERE `member_key` = '{$traineeKey}' {$condition}");
+    while ($row = $res->fetch_assoc()) $result[] = $row;
+    return $result;
+    //return DBQuery::get('list', 'ftt_prophecy', '*', 'member_key', $memberKey;
   }
   // получаем строки таблицы Пророчество для списка служащих
   static function getListForServingones($traineeKey, $weekNumber, $listTraneesByStaff, $currents)
