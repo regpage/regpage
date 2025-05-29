@@ -59,7 +59,7 @@ $(document).ready(function(){
       get_data_for_blank($(this).attr("data-id"), "#modal_edit_add_md");
     } else {
       // правила отображения полей и кнопок при открытии бланка
-      rule_fo_blank("#modal_edit_add_md", 0, 0);
+      rule_fo_blank("#modal_edit_add_md", trainee_access, 0);
     }
     $("#modal_edit_add_md").modal("show");
   });
@@ -71,7 +71,7 @@ $(document).ready(function(){
   });
 
   // фильтры служащих
-  $("#flt_list_trainees, #flt_list_weeks, #flt_list_servingone, #flt_list_currents").change(function () {
+  $("#flt_list_trainees, #flt_list_servingone, #flt_list_currents").change(function () {
     if ($(this).attr("id") === "flt_list_servingone") {
       setCookie("prophecy_staff-flt_list_trainees", "_all_");
     }
@@ -105,7 +105,6 @@ $(document).ready(function(){
       location.reload();
     }, 30);
   });
-
   // инфо блок показать скрыть
   $("#modal_info_blank_visibility").click(function () {
     if ($("#modal_info_blank").is(":visible")) {
@@ -114,5 +113,17 @@ $(document).ready(function(){
       $("#modal_info_blank").fadeIn();
     }
   });
+  // инфо блок показать скрыть
+  $(".sort_col").click(function () {
+    let type = "desc";
+    if ($(this).find("i").hasClass("fa-sort-desc")) {
+      type = "asc";
+    }
+    setCookie("prophecy-staff_sort", $(this).attr("data-sort") + "-" + type);
+    setTimeout(function () {
+      location.reload();
+    }, 30);
+  });
+
 // DOCUMENT READY END
 });

@@ -30,11 +30,12 @@ class ProphecyDB extends DBQuery
     //return DBQuery::get('list', 'ftt_prophecy', '*', 'member_key', $memberKey;
   }
   // получаем строки таблицы Пророчество для списка служащих
-  static function getListForServingones($traineeKey, $weekNumber, $listTraneesByStaff, $currents)
+  static function getListForServingones($traineeKey, $listTraneesByStaff, $currents, $sortField, $sortType)
   {
     $traineeKey = db_real_escape_string($traineeKey);
-    $weekNumber = db_real_escape_string($weekNumber);
     $currents = db_real_escape_string($currents);
+    $sortField = db_real_escape_string($sortField);
+    $sortType = db_real_escape_string($sortType);
     $result = [];
     $condition = 1;
 
@@ -52,13 +53,7 @@ class ProphecyDB extends DBQuery
     } elseif (count($listTraneesByStaff) === 0 && $servingoneKey !== '_all_') { // если задан фильтр служащий для служащего без подчинённых обучающихся
       $condition = " fp.member_key = '' ";
     }
-    if (!empty($weekNumber) && $weekNumber !== '_all_') {
-      if ($condition === 1) {
-        $condition = " fp.week_number = '{$weekNumber}' ";
-      } else {
-        $condition .= " AND fp.week_number = '{$weekNumber}' ";
-      }
-    }
+
     if ($currents == 0) {
       if ($condition === 1) {
         $condition = ' fp.checked = 0 ';
@@ -70,7 +65,7 @@ class ProphecyDB extends DBQuery
       FROM ftt_prophecy fp
       LEFT JOIN member m ON m.key = fp.member_key
       LEFT JOIN ftt_trainee ft ON ft.member_key = fp.member_key
-      WHERE $condition");
+      WHERE {$condition} ORDER BY {$sortField} {$sortType}");
     while ($row = $res->fetch_assoc()) $result[] = $row;
 
     return $result;

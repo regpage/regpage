@@ -1,4 +1,4 @@
-<?php foreach (ProphecyDB::getListForServingones($cookieFltListTrainee, $cookieFltListWeeks, $listTraneesByStaffForFlt, $cookieFltListCurrents) as $key => $value): ?>
+<?php foreach (ProphecyDB::getListForServingones($cookieFltListTrainee, $listTraneesByStaffForFlt, $cookieFltListCurrents, $sortField, $sortType) as $key => $value): ?>
   <?php // заменить на исправленный cutString
   if (mb_strlen($value['topic']) > 82) {
     $shortTopic = mb_substr($value['topic'], 0, 82).'...';

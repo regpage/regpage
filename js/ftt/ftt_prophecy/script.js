@@ -139,8 +139,7 @@ function fill_blank(data, elem) {
 
   let date_send = data["send_date"];
   if (data["send_date"] !== '0000-00-00 00:00:00' && data["send_date"]) {
-    date_send = data["send_date"];
-    $("#mdl_edit_btn_send_md").attr("disabled", "disabled");
+    date_send = data["send_date"];    
   }
 
   // заполняем инфо блок
@@ -171,20 +170,25 @@ function rule_fo_blank(element, is_trainee, status) {
   // disabled / enabled buttons
   if (status == 0) {
     $(element).find(".fa-trash").parent().show();
+    if (is_trainee) {
+      $("#mdl_edit_btn_send_md").show();
+    } else {
+      $("#mdl_edit_btn_send_md").hide();
+    }
   } else {
     $(element).find(".fa-trash").parent().hide();
+    $("#mdl_edit_btn_send_md").hide();
   }
-  if (is_trainee && (status == 1 || status == 2)) {
+
+  if (is_trainee && status == 2) {
     $(element).find("input").attr("disabled", true);
     $(element).find("select").attr("disabled", true);
     $(element).find("textarea").attr("disabled", true);
     $(element).find(".btn-success").attr("disabled", true);
-    $("#mdl_edit_btn_send_md").attr("disabled", true);
   } else {
     $(element).find("input").attr("disabled", false);
     $(element).find("select").attr("disabled", false);
     $(element).find("textarea").attr("disabled", false);
     $(element).find(".btn-success").attr("disabled", false);
-    $("#mdl_edit_btn_send_md").attr("disabled", false);
   }
 }

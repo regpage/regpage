@@ -5,9 +5,6 @@
 <select id="flt_list_trainees" class="form-control form-control-sm mr-2 d-none d-md-block">
   <?php FTT_Select_fields::rendering($listTraneesByStaffForFlt, $cookieFltListTrainee, 'Все обучающиеся'); ?>
 </select>
-<select id="flt_list_weeks" class="form-control form-control-sm mr-2 d-none d-md-block">
-  <?php FTT_Select_fields::rendering($weeks, $cookieFltListWeeks, 'Все недели'); ?>
-</select>
 <select id="flt_list_servingone" class="form-control form-control-sm mr-2 d-none d-md-block">
   <?php FTT_Select_fields::rendering($serving_ones_list, $cookieFltListServingone, 'Все служащие'); ?>
 </select>

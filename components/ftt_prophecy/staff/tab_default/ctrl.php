@@ -1,19 +1,30 @@
 <?php
 // фильтры по умолчанию
 $cookieFltListTrainee = '_all_';
-$cookieFltListWeeks = '_all_';
 $cookieFltListServingone = $memberId;
 $cookieFltListCurrents = 0;
 $listTraneesByStaff = [];
 $listTraneesByStaffForFlt = $trainee_list;
+$sortName = '';
+$sortDate = "fa-sort-desc";
+$sortField = 'date';
+$sortType = 'desc';
+if (!empty($_COOKIE['prophecy-staff_sort'])) {
+  $temp = explode('-', $_COOKIE['prophecy-staff_sort']);
+  if ($temp[0] === 'date') {
+    $sortDate = "fa-sort-{$temp[1]}";
+    $sortType = $temp[1];
+  } elseif ($temp[0] === 'name') {
+    $sortDate = '';
+    $sortName = "fa-sort-{$temp[1]}";
+    $sortField = 'name';
+    $sortType = $temp[1];
+  }
+}
 // фильтры сохранённые в куки
 // фильтр обучающиеся
 if (!empty($_COOKIE['prophecy_staff-flt_list_trainees'])) {
   $cookieFltListTrainee = $_COOKIE['prophecy_staff-flt_list_trainees'];
-}
-// фильтр недели
-if (!empty($_COOKIE['prophecy_staff-flt_list_weeks'])) {
-  $cookieFltListWeeks = $_COOKIE['prophecy_staff-flt_list_weeks'];
 }
 // фильтр служащие
 if (!empty($_COOKIE['prophecy_staff-flt_list_servingone'])) {
@@ -29,10 +40,4 @@ if (!empty($_COOKIE['prophecy_staff-flt_list_servingone'])) {
 // фильтр текущие
 if (!empty($_COOKIE['prophecy_staff-flt_list_currents'])) {
   $cookieFltListCurrents = $_COOKIE['prophecy_staff-flt_list_currents'];
-}
-
-// список недель
-$weeks = [];
-for ($i = 1; $i <= 24 ; $i++) {
-  $weeks[$i] = "Неделя {$i}";
 }

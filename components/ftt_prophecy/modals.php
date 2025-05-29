@@ -2,7 +2,7 @@
 <?php if ($ftt_access['group'] === 'staff') { ?>
   <div class="row mb-2">
     <div class="col">
-      <label>Обучающийся</label>
+      <label>Обучающийся<sup class="text-danger">*<sup></label>
       <select id="mdl_edit_trainee_list_md" class="form-control form-control-sm f_use f_required" name="member_key">
         <option value="_none_"></option>
         <?php foreach ($trainee_list as $key => $value):
@@ -14,7 +14,7 @@
 <?php } ?>
 <div class="row mb-2">
   <div class="col">
-    <label>Дата</label>
+    <label>Дата<sup class="text-danger">*<sup></label>
     <input id="mdl_edit_date_md" type="date" class="form-control form-control-sm f_use f_required" name="date">
   </div>
   <div class="col">

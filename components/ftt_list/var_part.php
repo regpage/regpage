@@ -29,11 +29,11 @@ if (isset($trainee_data['coordinator']) && $trainee_data['coordinator'] === '1' 
 
 
 $serving_ones_list = ftt_lists::serving_ones();
-// $serving_ones_list_full = ftt_lists::serving_ones_full();
+$serving_ones_list_full = ftt_lists::serving_ones_full();
 $serving_ones_list_list = ftt_lists::serving_ones_list();
 
 $trainee_list = ftt_lists::trainee();
-// $trainee_list_full = ftt_lists::trainee_full();
+$trainee_list_full = ftt_lists::trainee_full();
 $trainee_list_list = ftt_lists::trainee_list();
 
 $categories_list = MemberProperties::get_categories();
