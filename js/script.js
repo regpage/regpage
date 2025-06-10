@@ -217,6 +217,11 @@ function getEventFieldZoneArea (field){
 }
 
 $(document).ready(function(){
+// cookie_agreement
+  $("#cookie_agreement_accept").click(function() {
+    setCookie('cookie-agreement', '1', 999);
+    $(this).parent().parent().remove();
+  });
   // Menu Mobile
   if ($(window).width()<=769) {
     $('.navbar').find('.nav').find('a').attr('style', 'font-size: 17px !important; font-weight: normal; margin-bottom: 10px;');
