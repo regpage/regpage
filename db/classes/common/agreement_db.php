@@ -6,14 +6,14 @@
  * getAgreement($sessionId, string $memberId) — Получить все активные строки согласий с полями agree и type для заданного пользователя
  * dltAgreement($sessionId, string $memberId) — удаляет запись согласия по ключу пользователя, при отсутствии ключа по сессии
  */
-class AgreementDB extends DBQuery
+class AgreementDB //extends DBQuery
 {
   private $agreement = 0;
   private $cookie = 0;
 
   function __construct($sessionId, string $memberId='')
   {
-    foreach (getAgreements($sessionId, $memberId) as $value) {
+    foreach ($this->getAgreements($sessionId, $memberId) as $value) {
       if ($value['type'] === 'cookie') {
         $this->cookie = $value['agree'];
       } else {
@@ -21,7 +21,7 @@ class AgreementDB extends DBQuery
       }
     }
   }
-  function getAgreement($sessionId, string $memberId='') : array
+  function getAgreements($sessionId, string $memberId='') : array
   {
     $condition = $this->conditionBy($sessionId, $memberId);
     $result = [];
@@ -30,23 +30,24 @@ class AgreementDB extends DBQuery
     return $result;
   }
 
-  function setAgreement($isNew, $sessionId, string $userAgent, $ip, $agree, string $memberId='', $type='cookie', string $comment='', $trash=0)
+  static function setAgreement($isNew, $sessionId, string $userAgent, $ip, $agree, string $memberId='', string $fio='', $type='personal data', string $comment='', $trash=0)
   {
     $sessionId = db_real_escape_string($sessionId);
     $userAgent = db_real_escape_string($userAgent);
     $ip = db_real_escape_string($ip);
     $agree = db_real_escape_string($agree);
     $memberId = db_real_escape_string($memberId);
+    $fio = db_real_escape_string($fio);
     $comment = db_real_escape_string($comment);
     $type = db_real_escape_string($type);
     $trash = db_real_escape_string($trash);
 
     if ($isNew) {
-      return db_query("INSERT INTO `argeement`(`member_key`, `session_id`, `ip`, `type`, `agree`, `date_agreement`, `user_agent`, `comment`, `trash`) VALUES
-        ('{$memberId}', '{$sessionId}', '{$userAgent}', '{$ip}', '{$type}', '{$agree}', NOW(), '{$comment}', '{$trash}')");
+      return db_query("INSERT INTO `agreement`(`member_key`, `fio`, `session_id`, `ip`, `type`, `agree`, `date_agreement`, `user_agent`, `comment`, `trash`) VALUES
+        ('{$memberId}', '{$fio}', '{$sessionId}', '{$ip}', '{$type}', '{$agree}', NOW(), '{$userAgent}', '{$comment}', '{$trash}')");
     } else {
       $condition = $this->conditionBy($sessionId, $memberId);
-      return db_query("UPDATE `agreement` SET `session_id` = '{$sessionId}', `user_agent` = '{$ip}', `agree` = '{$agree}', `date_agreement` = NOW(), `member_key` = '{$memberId}', `type` = '{$type}', `comment` = '{$comment}' WHERE {$condition} AND `trash` = '{$trash}'");
+      return db_query("UPDATE `agreement` SET `fio` = '{$fio}', `session_id` = '{$sessionId}', `user_agent` = '{$ip}', `agree` = '{$agree}', `date_agreement` = NOW(), `member_key` = '{$memberId}', `type` = '{$type}', `comment` = '{$comment}' WHERE {$condition} AND `trash` = '{$trash}'");
     }
   }
   function dltAgreement($sessionId, string $memberId='')

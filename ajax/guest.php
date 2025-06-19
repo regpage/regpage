@@ -49,6 +49,13 @@ if (isset ($_POST ['event'])){
     $adminId = db_getMemberIdBySessionId (session_id());
     $memberId = db_setEventMember ($adminId ? $adminId : '', $_GET, $_POST);
     if (isset($_GET['isnew']) && $_GET['isnew'] == 1) {
+      if (!empty($adminId)) {
+        require_once '../db/classes/common/agreement_db.php';
+        $PDAgreement = new AgreementDB(session_id(), $adminId);
+        if ($PDAgreement->getAgreementPersonalData() == 0) {
+          $PDAgreement::setAgreement(true, session_id(), $_SERVER['HTTP_USER_AGENT'], $_SERVER['REMOTE_ADDR'], 1, $adminId, db_getMemberNameMate($adminId));
+        }
+      }
       $msgToOrganizer = db_sendMessageToOrganizer ($_POST['event'], $memberId, $_POST ['locality_key']);
     }
     $link = db_getPermalink ($memberId, $_POST ['event']);
