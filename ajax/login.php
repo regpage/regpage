@@ -16,6 +16,7 @@ else if(isset($_GET["logout_total"])){
     exit();
 }
 else if (isset($_GET["signup"])) {
+  require_once '../db/classes/common/agreement_db.php';
     $res = db_signUpMember(session_id(), $_GET['signupLogin'], $_GET['password'], $_GET['name'],  $_GET['birthDate'], $_GET['gender'], $_GET['citizenship'], $_GET['locality'], $_GET['newLocality']);
 
     if($res){

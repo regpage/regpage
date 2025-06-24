@@ -1,6 +1,11 @@
 <?php
 // ЕЖЕДНЕВНАЯ ПРОВЕРКА НАЛИЧИЕ ПОЛЬЗОВАТЕЛЕЙ БЕЗ СОГЛАСИЙ
+// право доступа
+require_once 'cronkey.php';
 include_once 'config.php';
+
+// ПАКЕТНЫЙ КРОН
+// получение пользователей без согласий
 function getAdminsKyesWithoutAgreement(): array
 {
   $result = [];
@@ -14,26 +19,71 @@ function getAdminsKyesWithoutAgreement(): array
   return $result;
 }
 
-function addAgreementMass(array $adminsData): string
+function iteratorArr(array $adminsData, string $func): array
 {
-  $result = '';
+  $result = [];
   foreach ($adminsData as $key => $value) {
-    $timeCreate = ' NOW() ';
-    if ($value['time_create']) {
-      $timeCreate = "'{$value['time_create']}'";
-    }
-    $result .= db_query("INSERT INTO `agreement` (`member_key`, `fio`, `session_id`, `type`, `agree`, `date_agreement`, `comment`) VALUES ('{$value['m_key']}', '{$value['name']}', '{$value['session']}', 'personal data', 1, {$timeCreate}, 'Создано автоматически на основании предыдущих данных.')");
+    $result[] = $func($key, $value);
   }
+  return $result;
+}
+
+// добавление недостающих согласий из сессий или таблицы админов при наличии сессии и отсутствии 9900
+function addAgreementByNameOrSession($key, array $value): bool
+{
+  $key = db_real_escape_string($key);
+  $memberKey = db_real_escape_string($value['m_key']);
+  $name = db_real_escape_string($value['name']);
+  $session = db_real_escape_string($value['session']);
+  $timeCreate = db_real_escape_string($value['time_create']);
+
+  if (!$timeCreate) {
+    $timeCreate = ' NOW() ';
+  } else {
+    $timeCreate = "'{$timeCreate}'";
+  }
+
+  return db_query("INSERT INTO `agreement` (`member_key`, `fio`, `session_id`, `type`, `agree`, `date_agreement`, `comment`) VALUES ('{$memberKey}', '{$name}', '{$session}', 'personal data', 1, {$timeCreate}, 'Создано автоматически на основании данных администратора и существующей сессии.')");
+
+}
+// добавление согласий для бывших 9900
+function addAgreementForNineNine($key, $value): bool
+{
+  $key = db_real_escape_string($key);
+  $session = db_real_escape_string($value);
+
+  return db_query("UPDATE `agreement` SET `member_key` = '{$value}' WHERE `id` = '{$key}'");
+}
+// получить согласия для 9900
+function getAgreementsForNineNine(): array
+{
+  $result = [];
+  $res = db_query("SELECT ag.id, ad.member_key AS ad_key
+    FROM agreement ag
+    LEFT JOIN member m ON ag.fio=m.name
+    LEFT JOIN (SELECT * FROM admin ad_temp WHERE ad_temp.created > DATE_ADD(CURRENT_TIMESTAMP(), INTERVAL - 7 DAY)) ad ON ad.member_key=m.key
+    WHERE ag.member_key LIKE '9900%' AND ad.member_key IS NOT NULL");
+  while ($row = $res->fetch_assoc()) $result[$row['id']] = $row['ad_key'];
 
   return $result;
 }
-$arr = [];
 
-$arr = getAdminsKyesWithoutAgreement();
-echo "Всего " . count($arr) . " записей<br>";
-if (isset($arr['000005716']) || isset($arr['000010810'])) {
-  echo 'Дубликаты присутствуют в наборе';
+// отслеживать 9900 по именам с аккаунтами создаными не более 7 дней назад
+$arrNineNine = getAgreementsForNineNine();
+if (count($arrNineNine) > 0) {
+  echo "Всего согласий 9900**** с новыми ключами " . count($arrNineNine) . " записей<br>";
+  $idsUpdate = iteratorArr($arrNineNine, 'addAgreementForNineNine');
+  echo "Обновлено " . count($idsUpdate) . " записей согласий <br>";
 } else {
-  $answer = addAgreementMass($arr);
-  echo "{$answer}<br>Дубликаты в наборе осутствуют";
+  echo 'Не обновлены. ';
+}
+
+// добавление недостающих согласий из сессий или таблицы админов
+$arrMissingAgreements = getAdminsKyesWithoutAgreement();
+if (count($arrMissingAgreements) > 0) {
+  echo "Всего " . count($arrMissingAgreements) . " записей админов без согласий<br>";
+  $idsAdded = iteratorArr($arrMissingAgreements, 'addAgreementByNameOrSession');
+  echo "Добавлено " . count($idsAdded) . " записей согласий <br>";
+} else {
+  echo 'Не добалены. ';
 }

@@ -2471,6 +2471,7 @@ function db_signUpMember($session_id, $login, $password, $name, $birthDate, $gen
 
     if(!db_isAdminExist ($_login)){
         $newMemberId = db_getNewMemberKey();
+        AgreementDB::setAgreement(true, session_id(), $_SERVER['HTTP_USER_AGENT'], $_SERVER['REMOTE_ADDR'], 1, $newMemberId, $_name, 'personal data', 'Создание аккаунта');
 
         $stmt = $db->prepare("INSERT INTO member (`key`, email, name, birth_date, locality_key, male, citizenship_key, new_locality, changed, category_key) VALUES ('$newMemberId', '$_login', '$_name', '$_birthDate', ?, '$_gender', '$_citizenship', ?, 1, 'BL')");
         $newLocalityData = $locality == '_none_' ? $_newLocality : null;
