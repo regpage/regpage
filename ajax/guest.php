@@ -52,8 +52,10 @@ if (isset ($_POST ['event'])){
       if (!empty($adminId)) {
         require_once '../db/classes/common/agreement_db.php';
         $PDAgreement = new AgreementDB(session_id(), $adminId);
-        if ($PDAgreement->getAgreementPersonalData() == 0) {
-          $PDAgreement::setAgreement(true, session_id(), $_SERVER['HTTP_USER_AGENT'], $_SERVER['REMOTE_ADDR'], 1, $adminId, db_getMemberNameMate($adminId));
+        if ($PDAgreement->getAgreementPersonalData() > 1) {
+          $PDAgreement->setAgreement(true, session_id(), $_SERVER['HTTP_USER_AGENT'], $_SERVER['REMOTE_ADDR'], 1, $adminId, db_getMemberNameMate($adminId), 'personal data', 'Добавлено при регистрации на мероприятие');
+        } elseif ($PDAgreement->getAgreementPersonalData() == 0) { // если установлен отказ
+          $PDAgreement->setAgreement(false, session_id(), $_SERVER['HTTP_USER_AGENT'], $_SERVER['REMOTE_ADDR'], 1, $adminId, db_getMemberNameMate($adminId), 'personal data', 'Обновлено при регистрации на мероприятие');
         }
       }
       $msgToOrganizer = db_sendMessageToOrganizer ($_POST['event'], $memberId, $_POST ['locality_key']);

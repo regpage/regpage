@@ -31,6 +31,17 @@ else if(isset($_GET['remove_account'])){
 }
 else if (isset($_GET["login"]) && isset($_GET["password"])) {
     $memberId = db_loginAdmin (session_id(), $_GET["login"], $_GET["password"]);
+    // проверка согласия
+    if ($memberId) {
+      require_once '../db/classes/common/agreement_db.php';
+      $AgreementCheck = new AgreementDB(session_id(), $memberId);
+      if ($AgreementCheck->getAgreementPersonalData() > 1) {
+        $AgreementCheck->setAgreement(true, session_id(), $_SERVER['HTTP_USER_AGENT'], $_SERVER['REMOTE_ADDR'], 1, $memberId, db_getMemberNameMate($memberId), 'personal data', 'Добавлены данные при входе');
+      } elseif ($AgreementCheck->getAgreementPersonalData() == 1 && (empty($AgreementCheck->getSessionId()) || empty($AgreementCheck->getUserAgent()))) {
+        $AgreementCheck->setAgreement(false, session_id(), $_SERVER['HTTP_USER_AGENT'], $_SERVER['REMOTE_ADDR'], 1, $memberId, db_getMemberNameMate($memberId), 'personal data', 'Добавлены данные сессии при входе');
+      }
+    }
+
     print $memberId ? "success" : "error" ;
 }
 else if (isset($_GET["signupLogin"])) {

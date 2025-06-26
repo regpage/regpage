@@ -3,13 +3,15 @@
  * __construct($sessionId, $memberId) — конструктор записывает данные поля согласия в соответствующие свойства свойства 1(Да)/0(Нет или отсутствует)
  * getAgreementPersonalData() — Получить данные поля согласия для персональных данных заданного пользователя
  * getAgreementСookie() — Получить данные поля согласия для куки заданного пользователя
- * getAgreement($sessionId, string $memberId) — Получить все активные строки согласий с полями agree и type для заданного пользователя
+ * getAgreementPersonalData($sessionId, string $memberId) — Получить все активные строки согласий с полями agree и type для заданного пользователя
  * dltAgreement($sessionId, string $memberId) — удаляет запись согласия по ключу пользователя, при отсутствии ключа по сессии
  */
 class AgreementDB //extends DBQuery
 {
-  private $agreement = 0;
+  private $agreement = 2;
   private $cookie = 0;
+  private $session_id = '';
+  private $user_agent = '';
 
   function __construct($sessionId, string $memberId='')
   {
@@ -18,6 +20,8 @@ class AgreementDB //extends DBQuery
         $this->cookie = $value['agree'];
       } else {
         $this->agreement = $value['agree'];
+        $this->user_agent = $value['user_agent'];
+        $this->session_id = $value['session_id'];
       }
     }
   }
@@ -30,7 +34,7 @@ class AgreementDB //extends DBQuery
     return $result;
   }
 
-  static function setAgreement($isNew, $sessionId, string $userAgent, $ip, $agree, string $memberId='', string $fio='', $type='personal data', string $comment='', $trash=0)
+  function setAgreement($isNew, $sessionId, string $userAgent, $ip, $agree, string $memberId='', string $fio='', $type='personal data', string $comment='', $trash=0)
   {
     $sessionId = db_real_escape_string($sessionId);
     $userAgent = db_real_escape_string($userAgent);
@@ -47,7 +51,7 @@ class AgreementDB //extends DBQuery
         ('{$memberId}', '{$fio}', '{$sessionId}', '{$ip}', '{$type}', '{$agree}', NOW(), '{$userAgent}', '{$comment}', '{$trash}')");
     } else {
       $condition = $this->conditionBy($sessionId, $memberId);
-      return db_query("UPDATE `agreement` SET `fio` = '{$fio}', `session_id` = '{$sessionId}', `user_agent` = '{$ip}', `agree` = '{$agree}', `date_agreement` = NOW(), `member_key` = '{$memberId}', `type` = '{$type}', `comment` = '{$comment}' WHERE {$condition} AND `trash` = '{$trash}'");
+      return db_query("UPDATE `agreement` SET `fio` = '{$fio}', `session_id` = '{$sessionId}', `ip` = '{$ip}', `user_agent` = '{$userAgent}', `agree` = '{$agree}', `member_key` = '{$memberId}', `type` = '{$type}', `comment` = '{$comment}', `trash` = '{$trash}' WHERE {$condition} AND `trash` = 0");
     }
   }
   function dltAgreement($sessionId, string $memberId='')
@@ -75,5 +79,13 @@ class AgreementDB //extends DBQuery
   function getAgreementСookie()
   {
     return $this->cookie;
+  }
+  function getSessionId()
+  {
+    return $this->session_id;
+  }
+  function getUserAgent()
+  {
+    return $this->user_agent;
   }
 }
