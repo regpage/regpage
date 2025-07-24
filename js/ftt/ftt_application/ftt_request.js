@@ -1014,12 +1014,20 @@ $(document).ready(function(){
     });
   });
   // edit button
-  $("#toEditMyRequest").click(function () {
+  $("#toEditMyRequest").click(function() {
     if ($("#point_name").attr("disabled")) {
       $("input").attr("disabled", false);
       $("textarea").attr("disabled", false);
       $("select").attr("disabled", false);
       $(".serviceone_block button").attr("disabled", false);
+      // значки удаление прикреплённых файлов pic-delete
+      $("input[type='file']").each(function() {
+        $(this).parent().find("a").each(function() {
+          if ($(this).attr("href")) {
+            $(this).next().show();
+          }
+        });
+      });
       /*if ($("#main_container").attr("data-status") === "2" && $("#service_recommendation_name").val() !== window.adminId) {
 
       }*/
@@ -1031,6 +1039,14 @@ $(document).ready(function(){
       $("select").attr("disabled", true);
       $(".serviceone_block button").attr("disabled", true);
       $("#point_new_locality_text").hide();
+      // значки удаление прикреплённых файлов pic-delete
+      $("input[type='file']").each(function() {
+        $(this).parent().find("a").each(function() {
+          if ($(this).attr("href")) {
+            $(this).next().hide();
+          }
+        });
+      });
     }
 
   });

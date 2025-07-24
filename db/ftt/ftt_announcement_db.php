@@ -67,8 +67,8 @@ function saveAnnouncement($data)
 
   if (empty($id)) { // new
     db_query("LOCK TABLES ftt_announcement WRITE");
-    $res = db_query("INSERT INTO `ftt_announcement` (`id`, `date`, `time`, `publication`, `header`, `content`, `member_key`, `comment`, `to_14`, `to_56`, `to_coordinators`, `to_servingones`, `by_list`, `list`, `time_zone`, `archive_date`)
-    VALUES ('$id', '$publication_date', '$publication_time', '$publication', '$header', '$content', '$author', '$comment', '$to_14', '$to_56', '$to_coordinators', '$to_servingones', '$by_list', '$recipients', '$time_zone', '$archivation_date')");
+    $res = db_query("INSERT INTO `ftt_announcement` (`date`, `time`, `publication`, `header`, `content`, `member_key`, `comment`, `to_14`, `to_56`, `to_coordinators`, `to_servingones`, `by_list`, `list`, `time_zone`, `archive_date`)
+    VALUES ('$publication_date', '$publication_time', '$publication', '$header', '$content', '$author', '$comment', '$to_14', '$to_56', '$to_coordinators', '$to_servingones', '$by_list', '$recipients', '$time_zone', '$archivation_date')");
     if ($publication === '1') {
       $last_id = $db->insert_id;
       db_query("UNLOCK TABLES;");
