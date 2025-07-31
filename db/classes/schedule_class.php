@@ -72,7 +72,7 @@ class schedule_class {
 
     // Проверяем что расписание не выходит за период обучения
     if ($date_today < $ftt_attendance_start && $date_today > $ftt_attendance_end) {
-      exit();
+      exit;
     }
 
     $correction = self::correction();

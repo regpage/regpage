@@ -260,6 +260,7 @@ $(document).ready(function(){
       //$("#point_how_many_semesters").parent().parent().hide();
       $("#point_how_many_explanation").parent().parent().hide();
     }
+
     if ($("#radio_point_health_question40_0").prop("checked")) {
       $("#point_health_question41").parent().parent().show();
     } else if ($("#radio_point_health_question40_1").prop("checked")) {
@@ -267,6 +268,7 @@ $(document).ready(function(){
     } else {
       $("#point_health_question41").parent().parent().hide();
     }
+
     if ($("#radio_point_food_question7_0").prop("checked")) {
       $("#radio_point_health_question50_1").parent().parent().parent().parent().parent().show();
     } else if ($("#radio_point_food_question7_1").prop("checked")) {
@@ -274,6 +276,23 @@ $(document).ready(function(){
     } else {
       $("#radio_point_health_question50_1").parent().parent().parent().parent().parent().hide();
     }
+
+    if ($("#radio_point_has_zagran_0").prop("checked")) {
+      $("#point_zagranpassport_scan").parent().parent().show();
+      $("#point_zagranpassport_scan").attr("required", true);
+    } else {
+      $("#point_zagranpassport_scan").parent().parent().hide();
+      $("#point_zagranpassport_scan").attr("required", false);
+    }
+
+    if ($("#radio_point_has_zagran_another_0").prop("checked")) {
+      $("#point_zagran_another").parent().parent().show();
+      $("#point_zagran_another").attr("required", true);
+    } else {
+      $("#point_zagran_another").parent().parent().hide();
+      $("#point_zagran_another").attr("required", false);
+    }
+
     /*
     $("#radio_point_ftt_place_1, #radio_point_ftt_place_0").change(function () {
       if ($(this).attr("id") === "radio_point_ftt_place_1" && $(this).prop("checked")) {

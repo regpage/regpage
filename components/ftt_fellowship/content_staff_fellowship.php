@@ -1,9 +1,10 @@
 <!-- Подраздел общение -->
 <?php require_once 'components/ftt_fellowship/ctrl_content_staff.php'; ?>
 <div id="meet_list_header" class="btn-group mb-2" style="padding-top: 21px;">
-  <?php if ($memberId === '000001679'): ?>
+  <!--
+  ДУБЛИРОВАТЬ РАЗДЕЛ ДЛЯ БРАТЬЯ КБК ОТОБРАЖАЯ КНОПКУ ДОБАВИТЬ И СПИСОК БРАТЬЯ КБК
     <button type="button" id="meet_add_staff" class="btn btn-success btn-sm rounded mr-2" data-toggle="modal" data-target="#mdl_edit_fellowship_staff">Добавить</button>
-  <?php endif; ?>
+  -->
   <select id="meet_serving_ones_list" class="form-control form-control-sm mr-2">
     <option value="_all_">Все служащие</option>
     <?php foreach ($serving_ones_list_meet as $key => $value):

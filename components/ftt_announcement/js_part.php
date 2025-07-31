@@ -1,4 +1,4 @@
-<script src="extensions/nicedit/nicEdit.js"></script>
+<script src="extensions/nicedit/nicEdit.js?v33"></script>
 <script>
 // text editor nicEditor
 if ($(window).width()<=769) {
