@@ -436,13 +436,24 @@ $(document).ready(function(){
 
   // filters desktop
   $("#meet_serving_ones_list, #meet_trainee_select, #fellowship_active").change(function (e) {
-    if (e.target.id === "meet_serving_ones_list") {
-      setCookie('meet_flt_staff', $(this).val(), 356);
-    } else if (e.target.id === "meet_trainee_select") {
-      setCookie('meet_flt_trainee', $(this).val(), 356);
-    } else if (e.target.id === "fellowship_active") {
-      setCookie('meet_flt_active', $(this).val(), 356);
+    if ($("#fellowship_tab_link_bbd").hasClass("active")) {
+      if (e.target.id === "meet_serving_ones_list") {
+        setCookie('meet_flt_kbk', $(this).val(), 356);
+      } else if (e.target.id === "meet_trainee_select") {
+        setCookie('meet_flt_trainee_kbk', $(this).val(), 356);
+      } else if (e.target.id === "fellowship_active") {
+        setCookie('meet_flt_active_kbk', $(this).val(), 356);
+      }
+    } else {
+      if (e.target.id === "meet_serving_ones_list") {
+        setCookie('meet_flt_staff', $(this).val(), 356);
+      } else if (e.target.id === "meet_trainee_select") {
+        setCookie('meet_flt_trainee', $(this).val(), 356);
+      } else if (e.target.id === "fellowship_active") {
+        setCookie('meet_flt_active', $(this).val(), 356);
+      }
     }
+
     setTimeout(function () {
       location.reload();
     }, 30);

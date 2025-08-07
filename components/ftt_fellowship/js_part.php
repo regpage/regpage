@@ -29,7 +29,7 @@ for (let i = 0; i < trainee_list_tmp.length; i = i + 5) {
   trainee_list_full[trainee_list_tmp[i]] = {'name': trainee_list_tmp[i+1], 'male': trainee_list_tmp[i+2], 'semester': trainee_list_tmp[i+3], 'time_zone': trainee_list_tmp[i+4]};
 }
 </script>
-<script src="/js/ftt/ftt_fellowship/script.js?v18"></script>
+<script src="/js/ftt/ftt_fellowship/script.js?v19"></script>
 <script src="/js/ftt/ftt_fellowship/design.js?v23"></script>
 <script src="/js/modules/week.js?v1"></script>
 <script src="/js/modules/time.js?v1"></script>

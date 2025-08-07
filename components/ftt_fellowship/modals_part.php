@@ -72,13 +72,17 @@
             <div class="col">
               <select id="mdl_meet_serving_ones_list" class="form-control form-control-sm">
                 <option value="_none_"></option>
-                <?php foreach ($serving_ones_list_meet as $key => $value):
-                  echo "<option value='{$key}'>{$value}</option>";
-                endforeach; ?>
-                <option disabled>----КБК----</option>";
-                <?php foreach ($kbk_list as $key => $value):
-                  echo "<option value='{$key}'>{$value}</option>";
-                endforeach; ?>
+                <?php
+                if ($fellowship_bbd_tab_active !== 'active') {
+                 foreach ($serving_ones_list_meet as $key => $value):
+                   echo "<option value='{$key}'>{$value}</option>";
+                  endforeach;
+                } else {
+                  foreach ($kbk_list as $key => $value):
+                    echo "<option value='{$key}'>{$value}</option>";
+                  endforeach;
+                }
+                ?>
               </select>
             </div>
           </div>

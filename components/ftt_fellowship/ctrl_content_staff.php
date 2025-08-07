@@ -45,20 +45,40 @@ if (isset($_COOKIE['meet_sorting'])) {
 }
 
 // Фильтры
-if (isset($_COOKIE['meet_flt_staff']) && !empty($_COOKIE['meet_flt_staff'])) {
-  $serving_ones_flt = $_COOKIE['meet_flt_staff'];
-} else {
-  $serving_ones_flt = $memberId;
-}
+// вкладка служащие
+if ($fellowship_bbd_tab_active !== 'active') {
+  if (!empty($_COOKIE['meet_flt_staff'])) {
+    $serving_ones_flt = $_COOKIE['meet_flt_staff'];
+  } else {
+    $serving_ones_flt = $memberId;
+  }
 
-if (isset($_COOKIE['meet_flt_trainee']) && !empty($_COOKIE['meet_flt_trainee'])) {
-  $trainee_flt = $_COOKIE['meet_flt_trainee'];
-} else {
-  $trainee_flt = '_all_';
-}
+  if (!empty($_COOKIE['meet_flt_trainee'])) {
+    $trainee_flt = $_COOKIE['meet_flt_trainee'];
+  } else {
+    $trainee_flt = '_all_';
+  }
 
-if (isset($_COOKIE['meet_flt_active'])) {
-  $active_flt = $_COOKIE['meet_flt_active'];
-} else {
-  $active_flt = 1;
+  if (isset($_COOKIE['meet_flt_active'])) {
+    $active_flt = $_COOKIE['meet_flt_active'];
+  } else {
+    $active_flt = 1;
+  }
+} else { // вкладка братья кбк
+  if (!empty($_COOKIE['meet_flt_kbk'])) {
+    $serving_ones_flt = $_COOKIE['meet_flt_kbk'];
+  } else {
+    $serving_ones_flt = '_allkbk_';
+  }
+  if (!empty($_COOKIE['meet_flt_trainee_kbk'])) {
+    $trainee_flt = $_COOKIE['meet_flt_trainee_kbk'];
+  } else {
+    $trainee_flt = '_all_';
+  }
+
+  if (isset($_COOKIE['meet_flt_active_kbk'])) {
+    $active_flt = $_COOKIE['meet_flt_active_kbk'];
+  } else {
+    $active_flt = 1;
+  }
 }

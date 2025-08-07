@@ -95,23 +95,38 @@ function get_communication_records_staff($serving_one, $trainee, $active, $sort=
   $active = $db->real_escape_string($active);
   $sort = $db->real_escape_string($sort);
 
-  $condition = '';
-
   // Условия
   if ($active === '1') {
-    $condition = " ff.date >= CURDATE() ";
+    $condition = " ff.date >= CURDATE() AND ";
   } else {
-    $condition = " ff.date < CURDATE() ";
+    $condition = " ff.date < CURDATE() AND ";
   }
 
-  if ($serving_one !== '_all_' && !empty($serving_one)) {
-    $condition .= " AND ff.serving_one = '{$serving_one}'";
+  $servingList = [];
+  if ($serving_one === '_all_' || empty($serving_one)) {
+    $servingList = ftt_lists::get_fellowship_list();
+  } elseif ($serving_one === '_allkbk_') {
+    $servingList = ftt_lists::kbk_brothers();
+  } else {
+    $condition .= " ff.serving_one = '{$serving_one}'";
+  }
+  if (count($servingList) > 0) {
+    $tempList = '';
+    foreach ($servingList as $key => $value) {
+      if (empty($tempList)) {
+        $tempList .= "'$key'";
+      } else {
+        $tempList .= ",'$key'";
+      }
+    }
+    $condition  .= ' (ff.serving_one IN (' . $tempList . ')) ';
   }
 
   if ($trainee !== '_all_' && !empty($trainee)) {
     $condition .= " AND ff.trainee = '{$trainee}'";
   }
-
+  // echo $condition;
+// return $condition;
   // Сортировка
   $order_by = 'ff.date, ff.time, m.name';
   if (!empty($sort) && $sort !== 'meet_sort_date-asc') {

@@ -7,7 +7,7 @@
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link <?php echo $fellowship_bbd_tab_active; ?>" data-toggle="tab" href="#fellowship_tab_bbd">
+    <a id="fellowship_tab_link_bbd" class="nav-link <?php echo $fellowship_bbd_tab_active; ?>" data-toggle="tab" href="#fellowship_tab_bbd">
       Братья КБК
     </a>
   </li>
@@ -27,7 +27,8 @@
   <!-- ПОДРАЗДЕЛ БРАТЬЯ КБК-->
   <?php if ($fellowship_bbd_tab_active === 'active'): ?>
     <div id="fellowship_tab_bbd" class="tab-pane <?php echo $fellowship_bbd_tab_active; ?>">
-      <?php include_once 'components/ftt_fellowship/content_staff_bbd.php';  ?>
+      <?php include_once 'components/ftt_fellowship/content_staff_fellowship.php';
+      // include_once 'components/ftt_fellowship/content_staff_bbd.php';  ?>
     </div>
   <?php endif; ?>
   <!-- ПОДРАЗДЕЛ АКТИВНОСТЬ-->
