@@ -77,6 +77,13 @@ if ($ftt_access['group'] === 'staff' || $ftt_access['group'] === 'trainee') {
                 require_once "{$global_root_path}/components/{$thispage}/{$value}.php";
               }
             }
+          } elseif ($thispage === 'ftt_infoboard') {
+            // modals может быть котроллером подключающим необходимые модальные окна
+            foreach (['ctrl_content'] as $value) {
+              if (file_exists("{$global_root_path}/components/{$thispage}/{$value}.php")) {
+                require_once "{$global_root_path}/components/{$thispage}/{$value}.php";
+              }
+            }
           }
           ?>
 </div>

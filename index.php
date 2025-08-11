@@ -382,7 +382,7 @@ else if (isset ($_SESSION["logged-in"])){
 
         } elseif($isOpen && substr($memberId, 0, 2) === '99') {
           echo '<div class="tab-content" style="margin-top:10px;">';
-          echo '<span>Запрос заявления на ПВОМ будет доступен после подтверждения аккаунта.</span>';
+          echo '<span>Запрос заявления на ПВОМ будет доступен после подтверждения аккаунта служащими обучения. Если аккаунт не подтверждён в течение суток, напишите по адресу fttmoscow@gmail.com.</span>';
           echo '</div>';
         }
         if ((count($application_data) > 0 || count($application_data_interview) > 0) && substr($memberId, 0, 2) !== '99' || $isApplicant): //$ftt_access['group'] !== 'trainee' false ?>
