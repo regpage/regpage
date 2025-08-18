@@ -1,4 +1,5 @@
 <script src="extensions/nicedit/nicEdit.js?v33"></script>
+<?php if ($tab_three_active !== 'active'): ?>
 <script>
 // text editor nicEditor
 if ($(window).width()<=769) {
@@ -20,9 +21,20 @@ recipients_group["coordinators"] = [];
       echo "recipients_group['{$key}']['{$key_2}'] = '{$value_2}'; ";
     }
   }
-
  ?>
-
 </script>
 <script src="js/ftt/ftt_announcement/script.js?v33"></script>
 <script src="js/ftt/ftt_announcement/design.js?v5"></script>
+<?php endif; ?>
+<?php if ($tab_three_active === 'active'): ?>
+<script>
+  // text editor nicEditor
+  if ($(window).width()<=769) {
+    $("#mdl_niceditor_field").css("width", "335px");
+  }
+  bkLib.onDomLoaded(function() {
+    new nicEditor().panelInstance("mdl_niceditor_field");
+  });
+</script>
+<script src="js/ftt/ftt_announcement/infoboard.js?v1"></script>
+<?php endif; ?>

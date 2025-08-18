@@ -583,9 +583,14 @@ setTimeout(function () {
     }
   });
 
-  $(".nav-tabs .nav-link").click(function () {
+  $("#announcement_nav_tabs .nav-link").click(function () {
     if ($(this).attr("href") === "#announcement_tab_1") {
       setCookie("tab_active", "outbox");
+    } else if ($(this).attr("href") === "#announcement_tab_3") {
+      setCookie("tab_active", "infoboard");
+      setTimeout(function () {
+        location.reload();
+      }, 30);
     } else {
       setCookie("tab_active", "inbox");
     }

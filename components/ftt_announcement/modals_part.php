@@ -272,3 +272,53 @@
     </div>
   </div>
 </div>
+<!-- Электронная доска -->
+<div id="modal_edit_add_md" class="modal fade" data-backdrop="static" tabindex="-1" role="dialog" data-id="" aria-hidden="true" data-id="">
+  <div class="modal-dialog">
+    <!-- Модальное окно раздела управления содержимым на информационном экране -->
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="mb-0">Электронная доска</h5>
+        <span class="badge badge-success mt-1 ml-3"></span>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="container pl-0 pr-0">
+          <div class="row mb-3">
+            <div class="col">
+              <select id="mdl_infoboard_type" disabled class="form-control form-control-sm">
+                <option value="schedule">Расписание</option>
+                <option value="hwmr">ССУО</option>
+                <option value="ls">Жизнеизучение</option>
+                <option value="announcements">Объявления</option>
+                <option value="verse">Цитата</option>
+              </select>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col">
+                <textarea id="mdl_niceditor_field" name="niceditor_field" style="width: 466px; height: 300px;">
+
+                </textarea>
+            </div>
+          </div>
+          <div class="row mb-2">
+            <div class="col">
+              <input type="text" id="mdl_staff_comment" name="" class="form-control form-control-sm" placeholder="Комментарий служащих">
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <div class="" style="text-align: right;">
+          <!--  <button id="" class="btn btn-sm btn-secondary float-left" data-dismiss="modal" aria-hidden="true" ><i class="fa fa-trash" aria-hidden="true"></i></button> -->
+          <button type="button" id="save_infoboard" class="btn btn-warning btn-sm">Сохранить</button>
+          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Закрыть</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

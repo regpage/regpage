@@ -2,7 +2,11 @@
   <!-- OUTBOX -->
   <div class="container pl-0">
     <br>
-    <ul class="nav nav-tabs" role="tablist">
+    <?php if ($tab_three_active === 'active'): ?>
+        <?php require 'components/ftt_announcement/staff_content_part_three.php';  ?>
+    <?php endif; ?>
+    <?php if ($tab_three_active !== 'active'): ?>
+    <ul id="announcement_nav_tabs" class="nav nav-tabs" role="tablist">
       <li class="nav-item">
         <a class="nav-link <?php echo $tab_two_active; ?>" data-toggle="tab" href="#announcement_tab_2">
           Входящие <?php echo "<sup style='color: red;'> <b> {$announcement_unread_count}</b></sup>"; ?>
@@ -10,6 +14,9 @@
       </li>
       <li class="nav-item">
         <a class="nav-link <?php echo $tab_one_active; ?>" data-toggle="tab" href="#announcement_tab_1">Исходящие </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link <?php echo $tab_three_active; ?>" data-toggle="tab" href="#announcement_tab_3">Эл. доска </a>
       </li>
     </ul>
     <!-- Tab panes -->
@@ -137,4 +144,5 @@
   <?php include_once 'components/ftt_announcement/staff_content_part_two.php';  ?>
   </div>
   </div>
+  <?php endif; ?>
 </div>

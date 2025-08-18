@@ -55,6 +55,9 @@ switch ($section) {
   case 'prophecy':
     require_once 'ajax/ftt/ftt_prophecy_ajax.php';
     break;
+  case 'infoboard':  
+    require_once 'ajax/ftt/ftt_infoboard_ajax.php';
+    break;
   default:
     $error = 'No section exist.';
     break;

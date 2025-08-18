@@ -125,13 +125,46 @@ function isLocalitiesExist()
     $content = "Сообщение с сайта reg-page.ru.<br>Ошибка целостности данных.<br>" . date('m.d.Y H:i') . "Для следующих участников отсутствует соответствующая местность в таблице locality<br>{$result}";
     $topic = 'Ошибка целостности данных на reg-page.ru';
     Emailing::send('zhichkinroman@gmail.com', $topic, $content);
-    echo "\r\nНАРУШЕНИЕ целостности данных\r\nДля следующих участников отсутствует соответствующая местность в таблице locality\r\n{$result}\r\n";
+    echo " \r\nНАРУШЕНИЕ целостности данных\r\nДля следующих участников отсутствует соответствующая местность в таблице locality\r\n{$result}\r\n";
   } else {
-    echo "\r\nПроверка целостности данных — ОК";
+    echo " \r\nПроверка целостности данных — ОК";
   }
 }
 
 isLocalitiesExist();
+
+// добавляем расписание в управление электронной доской функция
+require_once 'db/classes/ftt_param.php';
+require_once 'db/classes/schedule_class.php';
+function addTodayScheduleToInfoboard()
+{
+  $dayN = 'day' . date('N');
+  $dateToday = date('Y-m-d');
+  // расписание 1-4 семестра сегодня
+  $result = schedule_class::get(1, '02', date('Y-m-d'), $dayN);
+  // Обработка полученных данных и формирование расписания
+  $scheduleHTML = '';
+
+  foreach ($result as $key => $value) {
+      if ($value[$dayN]) {
+        // продолжительность, время окончания мероприятия
+        $finishTime = '';
+        if ($value['duration'] && $value['duration'] !== '0') {
+          $finishTime = '-' . (new DateTime($dateToday . ' ' . $value[$dayN] . ':00'))->modify("+{$value['duration']} minutes")->format('H:i');
+        }
+         $scheduleHTML .= '<div>' . $value[$dayN] . $finishTime . ' — ' . $value['session_name'] . "</div>";
+      }
+  }
+
+  $res = db_query("UPDATE `ftt_infoboard` SET `text` = '{$scheduleHTML}' WHERE `type`='schedule'");
+  if ($res) {
+    echo " /r/n Добавлено текущее расписание в Управление электронной доской";
+  } else {
+    echo " /r/n НЕ Добавлено текущее расписание в Управление электронной доской";
+  }
+}
+// добавляем расписание в управление электронной доской Вызов
+addTodayScheduleToInfoboard();
 
 //------------------------------------------//
 // *** О Т К Л Ю Ч Е Н О ! *** //
