@@ -43,7 +43,7 @@ class Fellowship
     global $db;
     $serving_one_id = $db->real_escape_string($serving_one_id);
     $result=[];
-    $res = db_query("SELECT ff.time, m.name
+    $res = db_query("SELECT ff.time, m.name, ff.comment_train
       FROM ftt_fellowship ff
       LEFT JOIN member m ON m.key = ff.trainee
       WHERE ff.serving_one = '$serving_one_id' AND ff.date = CURDATE() AND ff.cancel != 1

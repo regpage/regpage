@@ -52,7 +52,7 @@ class Emailing
   // получаем header
   static function get_header()
   {
-    return 'From: noreply@reg-page.ru' . "\r\n" .
+    return 'From: reg-page.ru <noreply@reg-page.ru>' . "\r\n" .
     'Content-Type: text/html; charset=utf-8' . "\r\n" .
     'Reply-To: noreply@reg-page.ru' . "\r\n" .
     'X-Mailer: PHP/' . phpversion();

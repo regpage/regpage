@@ -300,18 +300,42 @@ $(document).ready(function(){
     if (trainee_access) {
       meet_comment_change($("#mdl_meet_comment_trainee").val(), 1);
     } else {
-      if ($("#mdl_edit_fellowship_staff").attr("data-id")) {
-        // править запись
-        save_meet_staff_blank();
+      if (!$("#mdl_meet_date").val() || !$("#mdl_meet_time").val() || (!$("#mdl_meet_duration").val() || $("#mdl_meet_duration").val() == 0) || (!$("#mdl_meet_serving_ones_list").val() || $("#mdl_meet_serving_ones_list").val() === "_none_")) {
+        showError("Заполните обязательные поля");
+        if (!$("#mdl_meet_date").val()) {
+          $("#mdl_meet_date").css("border-color", "red");
+        } else {
+          $("#mdl_meet_date").css("border-color", "lightgrey");
+        }
+        if (!$("#mdl_meet_time").val()) {
+          $("#mdl_meet_time").css("border-color", "red");
+        } else {
+          $("#mdl_meet_time").css("border-color", "lightgrey");
+        }
+        if (!$("#mdl_meet_duration").val() || $("#mdl_meet_duration").val() == 0) {
+          $("#mdl_meet_duration").css("border-color", "red");
+        } else {
+          $("#mdl_meet_duration").css("border-color", "lightgrey");
+        }
+        if (!$("#mdl_meet_serving_ones_list").val() || $("#mdl_meet_serving_ones_list").val() === "_none_") {
+          $("#mdl_meet_serving_ones_list").css("border-color", "red");
+        } else {
+          $("#mdl_meet_serving_ones_list").css("border-color", "lightgrey");
+        }
       } else {
-        // добавить запись
-        save_meet_staff_blank(1);
+        if ($("#mdl_edit_fellowship_staff").attr("data-id")) {
+          // править запись
+          save_meet_staff_blank();
+        } else {
+          // добавить запись
+          save_meet_staff_blank(1);
+        }
+        $("#mdl_edit_fellowship_staff").modal("hide");
+        setTimeout(function () {
+          location.reload();
+        }, 300);
       }
     }
-    $("#mdl_edit_fellowship_staff").modal("hide");
-    setTimeout(function () {
-      location.reload();
-    }, 300);
   });
 
   $("#meet_cancel").click(function () {
@@ -831,7 +855,9 @@ $(document).ready(function(){
     fetch("ajax/ftt_fellowship_ajax.php?type=set_communication_comment_trainee&comment=" + comm + "&id=" + id)
     .then(response => response.text())
     .then(commits => {
-
+      setTimeout(function () {
+        location.reload();
+      }, 30);
     });
   }
   /*** FELLOWSHIP TAB STOP ***/

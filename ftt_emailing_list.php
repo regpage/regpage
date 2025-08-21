@@ -239,3 +239,62 @@ function getServiceOnesWithTrainees ()
 }
 
 getServiceOnesWithTrainees ();
+
+function emailToBBDBrothers() {
+    foreach (ftt_lists::kbk_brothers() as $key => $value) {
+      // общения на сегодня
+      $fellowship_today = Fellowship::now_serving_one($key);
+      $fellowship_text = '';
+      $fellowship_text_name = '';
+      if (count($fellowship_today) > 0) {
+        $fellowship_text = '<b>Общение сегодня:</b><br>';
+        foreach ($fellowship_today as $key_5 => $value_5) {
+          if (!empty($value_5['name'])) {
+            $name_f = short_name::no_middle($value_5['name']);
+            $fellowship_text_name .= $name_f . " — {$value_5['time']}<br>";
+            if (!empty($value_5['comment_train'])) {
+              $fellowship_text_name .= "Комментарий: {$value_5['comment_train']}<br>";
+            }
+          }
+        }
+        if (count($fellowship_today) > 0) {
+          $fellowship_text .= "<span> {$fellowship_text_name} </span><br>";
+        }
+      }
+
+      $fellowship_cancel_today = Fellowship::canceled_serving_one($key);
+      $fellowship_cancel_text_name = '';
+      if (count($fellowship_cancel_today) > 0) {
+        if (empty($fellowship_text)) {
+          $fellowship_text = '<b>Отменено общение сегодня:</b><br>';
+        } else {
+          $fellowship_text .= '<br><b>Отменено общение сегодня:</b>';
+        }
+        foreach ($fellowship_cancel_today as $key_6 => $value_6) {
+          $name_c = short_name::no_middle($value_6['name']);
+          $fellowship_cancel_text_name .= $name_c . " — {$value_6['time']}<br>";
+        }
+        if (count($fellowship_cancel_today) > 0) {
+          $fellowship_text .= "<span> {$fellowship_cancel_text_name} </span><br>";
+        }
+      }
+
+      /*if (!empty($fellowship_text)) {
+         $fellowship_text .= "<a href='https://reg-page.ru/ftt_fellowship.php'>Перейти в раздел «Общение»</a><br>";
+      }*/
+      // emailing
+      if (!empty($fellowship_text)) {
+        if (!empty($key)) {
+          Emailing::send_by_key($key, 'Общение с обучающимися  ' . date('d.m.Y'), $fellowship_text);
+          echo "КБК  {$value}, есть записи на сегодня, отправлено уведомление по емайл. \r\n";
+          //Emailing::send_by_key('000005716', $topic, $body);
+        } else {
+          echo "Не получен емайл брата из КБК. \r\n";
+        }
+      } else {
+        echo "КБК {$value}, Записи на сегодня отсутствуют. \r\n";
+      }
+    }
+}
+
+emailToBBDBrothers();
