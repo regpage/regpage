@@ -24,4 +24,11 @@ class fttParam
 
     return $res;
   }
+  static function getAll() {
+    $result = [];
+    $res = db_query("SELECT * FROM `ftt_param` WHERE 1 ORDER BY `name`");
+    while ($row = $res->fetch_assoc()) $result[]=$row;
+
+    return $result;
+  }
 }

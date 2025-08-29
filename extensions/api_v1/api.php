@@ -10,12 +10,16 @@ function db_getNewContactIdApi ()
 }
 // Create or update a contact
 function db_newContactByApi($data){
-
+  // проверка
+  if (empty($data['email']) && empty($data['phone']) && empty($data['name'])) {
+    return 'error_001';    
+  }
   global $db;
   $newId = db_getNewContactIdApi();
   $name = $db->real_escape_string($data['name']);
   $email = $db->real_escape_string($data['email']);
   $phone = $db->real_escape_string($data['phone']);
+
   $project = '24 урока';
   $status='';
   $responsible = '000010642';

@@ -1,7 +1,7 @@
 <?php
 // данные семестра ПВОМ
 // список таблиц
-$tables = array('ftt_trainee', 'ftt_session', 'ftt_session_correction', 'ftt_announcement', 'ftt_announcement_recipients', 'ftt_attendance', 	'ftt_attendance_sheet', 'ftt_permission', 'ftt_permission_sheet', 'ftt_skip', 'ftt_fellowship', 'ftt_fellowship_tmpl', 'ftt_service', 'ftt_gospel', 'ftt_gospel_members', 'ftt_gospel_goals', 'ftt_extra_help', 'ftt_late', 'ftt_bible');
+$tables = array('ftt_trainee', 'ftt_session', 'ftt_session_correction', 'ftt_announcement', 'ftt_announcement_recipients', 'ftt_attendance', 	'ftt_attendance_sheet', 'ftt_permission', 'ftt_permission_sheet', 'ftt_skip', 'ftt_fellowship', 'ftt_fellowship_tmpl', 'ftt_service', 'ftt_gospel', 'ftt_gospel_members', 'ftt_gospel_goals', 'ftt_extra_help', 'ftt_late', 'ftt_bible', 'ftt_prophecy');
 
 // проверка наличия строк в таблицах
 function checkDataSemester() {

@@ -7,9 +7,9 @@ class CutString {
   static function cut ($comment, $length=70 )  {
 
     $comment_short;
-    if (strlen($comment) > 30) {
+    if (mb_strlen($comment) > 30) {
       $comment_short = iconv_substr($comment, 0, $length, 'UTF-8');
-      if (strlen($comment) >= $length) {
+      if (mb_strlen($comment) >= $length) {
         $comment_short .= '...';
       }
     } else {
@@ -18,5 +18,3 @@ class CutString {
     return $comment_short;
   }
 }
-
- ?>

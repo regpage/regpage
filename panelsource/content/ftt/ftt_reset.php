@@ -74,6 +74,16 @@
       <button id="showModalUniversalConfirmApplication" type="button" class="btn btn-danger btn-sm" name="button" data-toggle="modal" data-target="#modalUniversalConfirm">Удалить заявления</button>
     </div>
   </div>
+  <hr class="mb-2 mt-2">
+  <div class="row">
+    <div class="col-1">
+      <p>4.</p>
+    </div>
+    <div class="col-10">
+      <h4>Файлы изображений для разделя Объявления</h4>
+      <p>Файлы изображений в папке "ajax/img/annoncement" нужно удалить в ручную.</p>
+    </div>
+  </div>
   <!-- auth -->
   <?php include_once 'panelsource/content/ftt/auth.php'; ?>
 </div>
