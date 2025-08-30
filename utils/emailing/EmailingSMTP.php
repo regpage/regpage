@@ -29,12 +29,7 @@ class EmailingSMTP
         //Server settings
         $mail->SMTPDebug = SMTP::DEBUG_LOWLEVEL; // SMTP::DEBUG_SERVER                      //Enable verbose debug output
         $mail->isSMTP();                                            //Send using SMTP
-        $mail->Host       = 'smtp.reg-page.ru'; //                      //Set the SMTP server to send through
-        $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-        $mail->Username   = 'noreply@reg-page.ru';  //                      //SMTP username
-        $mail->Password   = 'xAENVhLVxh';  //                                //SMTP password
-        $mail->SMTPSecure =  PHPMailer::ENCRYPTION_STARTTLS; // 'ssl'    PHPMailer::ENCRYPTION_SMTPS             //Enable implicit TLS encryption
-        $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+        
 
 
         $mail->CharSet = PHPMailer::CHARSET_UTF8; // Устанавливаем кодировку для библиотеки
