@@ -2164,7 +2164,10 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
         }
         // dotation
         let member_id_dotation = $("#modalEditMember").attr("data-member_id");
-        let emFlightNumArr = $("#modalEditMember .emFlightNumArr").val() && $("#modalEditMember .emFlightNumArr").val();
+        // временно для итеро
+        let emFlightNumArr = $("#modalEditMember .emFlightNumArr").val() ? true : false;
+        // новые правила для дотаций
+        let is_male = $("#modalEditMember .emGender").val();
         var eventId = $("#events-list").val();
         var create = elem.hasClass('create') ? "&create="+eventId+"&event="+eventId :  "&event="+eventId ;
         var request = getRequestFromFilters(setFiltersForRequest(eventId));
@@ -2180,6 +2183,15 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
             // #ПОДДЕРЖКА Дотации для 50 участников на манил
             if (eventId === '20250013' && doRegister && $("#modalEditMember .emGender").val() === "male") {
               fetch("/ajax/set.php?type=brothers_dotation&member_key="+member_id_dotation+"&event_id="+eventId+"&ticket="+emFlightNumArr)
+              .then(response => response.json())
+              .then(commits => {
+
+              });
+            }
+            // ПОДДЕРЖКА Дотации НОВАЯ ВЕРСИЯ
+            // Добавть данные в ДАТА активной вкладки о субсидиях, если субсидии > 0 то исполняем скрипт
+            if (eventId === '20250018' && doRegister && emFlightNumArr) { // && is_male
+              fetch("/ajax/set.php?type=set_subsidies&member_key="+member_id_dotation+"&event_id="+eventId+"&ticket="+emFlightNumArr + "&brother" + is_male)
               .then(response => response.json())
               .then(commits => {
 

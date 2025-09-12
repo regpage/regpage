@@ -1,6 +1,14 @@
 <?php
 include_once "ajax.php";
 
+
+if (isset($_GET['type']) && $_GET['type'] === 'set_subsidies') {
+  include_once '../db/regpage/classes/reg/subsidies.php';
+  $subsidies = new Subsidies($_GET['event_id']);
+  echo json_encode(["result"=> $subsidies->addMember($_GET['member_key'], $_GET['ticket'])]);
+  exit;
+}
+
 /* BEGIN #ПОДДЕРЖКА 20 БРАТЬЕВ В ПОЕЗДКЕ В МАНИЛ */
 
 if (isset($_GET['type']) && $_GET['type'] === 'get_brothers_dotation_list') {

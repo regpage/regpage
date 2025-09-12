@@ -1898,13 +1898,13 @@ console.log('stop is ', stopRegistration, 'close is ', closeRegistration, modalW
         $.getJSON('/ajax/event.php', { eventIdReject: window.currentEventId})
         .done (function(){
           // #ПОДДЕРЖКА
-          /*if (eventId === '20250013') {
+          if (eventId === '20250018') {
               // переделать на стороне сервера
-              fetch("/ajax/set.php?type=brothers_dotation&member_key="+window.adminId+"&event_id="+eventId+"&ticket")
+              fetch("/ajax/set.php?type=set_subsidies&member_key="+window.adminId+"&event_id="+eventId+"&ticket")
               .then(response => response.json())
               .then(commits => {
               });
-          }*/
+          }
           setTimeout(function () {
             window.location = '/index';
           }, 100);
@@ -1933,20 +1933,20 @@ console.log('stop is ', stopRegistration, 'close is ', closeRegistration, modalW
         .done (function(data){
           // #ПОДДЕРЖКА Дотации для 50 участников на манил
 
-          if (eventId === '20250013') {
-            if (isnew === 1) {
+          if (eventId === '20250018') {
+            /*if (isnew === 1) {
               fetch("/ajax/set.php?type=set_questionable&member_id="+window.adminId+"&event_id="+eventId+"&value=1")
               .then(response => response.json())
               .then(commits => {
               });
-            }
+            }*/
 /*
-  Внимание добавляем только братьев
-            fetch("/ajax/set.php?type=brothers_dotation&member_key="+window.adminId+"&event_id="+eventId+"&ticket="+emFlightNumArr)
+  Внимание добавляем только братьев */
+            fetch("/ajax/set.php?type=set_subsidies&member_key="+window.adminId+"&event_id="+eventId+"&ticket="+emFlightNumArr)
             .then(response => response.json())
             .then(commits => {
             });
-*/
+
           }
 
             form.addClass('hide').modal('hide');
