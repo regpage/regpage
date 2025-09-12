@@ -1202,6 +1202,8 @@ function open_blank(el_this) {
           // Нет старта и сегодняшней строки
           $(".reading_bible_title").html("Чтение Библии" + " — выберите начало");
           //setTimeout(function () {
+            $("#bible_book_ot").hide();
+            $("#bible_book_nt").hide();
             $("#bible_book_ot").attr("disabled", true).css("background-color", "#f8f9fa");
             $("#bible_book_nt").attr("disabled", true).css("background-color", "#f8f9fa");
           //}, 250);

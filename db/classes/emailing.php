@@ -1,4 +1,5 @@
 <?php
+include_once 'utils/emailing/EmailingSMTP.php';
 /**
  * Отправить письмо
  * Получаем данные об участние
@@ -28,6 +29,26 @@ class Emailing
     $mail = mail($to, $subject, $message, $headers);
 
     return $mail;
+  }
+  // send email SMTP
+  static function sendSMTP($email, $topic, $text)
+  {
+    global $db;
+    if (empty($email) || empty($topic) || empty($text)) {
+      return false;
+    }
+    $email = $db->real_escape_string($email);
+    $topic = $db->real_escape_string($topic);
+    $result = EmailingSMTP::sendSMTP($email, $topic, $text);
+
+    return $result;
+  }
+  // send email by key SMTP
+  static function sendByKeySMTP($member_key, $topic, $text)
+  {
+    global $db;
+    $member_key = $db->real_escape_string($member_key);
+    return self::sendSMTP(self::get_email($member_key), $topic, $text);
   }
   // send email by key
   static function send_by_key($member_key, $topic, $text)
@@ -81,4 +102,3 @@ class Emailing
     return $email;
   }
 }
- ?>

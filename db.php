@@ -2608,7 +2608,7 @@ function db_getMemberMain ($memberId, $eventId){
                 m.male, m.birth_date, m.locality_key, m.address,
                 m.category_key, m.document_key, m.document_num, m.document_date,
                 m.document_auth, m.new_locality, m.citizenship_key, m.cell_phone,
-                m.admin_key as mem_admin, e.name as event_name, e.key as event_key, e.need_visa, e.need_info,
+                m.admin_key as mem_admin, e.name as event_name, e.key as event_key, e.need_visa, e.need_info, e.head_info, e.info_items,
                 e.need_passport, e.need_transport, e.need_prepayment, e.need_address, e.need_accom, m.email,
                 e.start_date, e.end_date, m.college_key, m.college_comment,
                 IF (rg.name='--',l.name,CONCAT (l.name,', ',rg.name)) as locality_name,

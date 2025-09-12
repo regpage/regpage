@@ -254,13 +254,9 @@
 </div>
 <div class="controls add-info" style="display: none">
     <div class="control-group row-fluid">
-        <label class="span12">Тур после обучения</label>
+        <label class="span12"></label>
         <select class="span12 emAddInfo">
-            <option value="_none_">&nbsp;</option>
-            <option value="Не участвую в туре">Не участвую в туре</option>
-            <option value="Западная Малайзия (полуостров Индокитай)">Западная Малайзия (полуостров Индокитай), 3 дня</option>
-            <option value="Восточная Малайзия (штат Саравак), 4 дня">Восточная Малайзия (штат Саравак), 4 дня</option>
-            <option value="Восточная Малайзия (штат Сабах), 4 дня">Восточная Малайзия (штат Сабах), 4 дня</option>
+            
         </select>
     </div>
 </div>

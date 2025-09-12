@@ -1247,8 +1247,31 @@ function fillEditMember (memberId, info, localities, newMemberBlank) {
 
     if (info["need_info"]>0) {
         $(".add-info").show ();
+        $(".add-info label").text(info["head_info"]);
+        let info_items_options = '<option value="_none_">&nbsp;</option>';
+        if (info["info_items"]) {
+          for (const variable of info["info_items"].split(";")) {
+            info_items_options += '<option value="' + variable + '">' + variable;
+          }
+        }
+
+        $(".emAddInfo").html(info_items_options);
         $(".emAddInfo").val(info["add_info"] ? info["add_info"] : "_none_").change();
+
+        if (!$(".emAddInfo").val() || $(".emAddInfo").val() === "_none_") {
+          setFieldError ($(".emAddInfo"), true);
+        } else {
+          setFieldError ($(".emAddInfo"), false);
+        }
+        $(".emAddInfo").change(function () {
+          if ($(".emAddInfo").val() && $(".emAddInfo").val() !== "_none_") {
+            setFieldError ($(".emAddInfo"), false);
+          } else {
+            setFieldError ($(".emAddInfo"), true);
+          }
+        });
     } else {
+      $(".emAddInfo").attr("required", false);
         $(".add-info").hide();
     }
 

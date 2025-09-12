@@ -7,7 +7,7 @@ function db_getFttFellowshipTmpl(){
   $res=db_query ("SELECT fft.*, m.name
     FROM ftt_fellowship_tmpl AS fft
     LEFT JOIN member AS m ON m.key = fft.serving_one
-    ORDER BY m.name, fft.time");
+    ORDER BY m.name, fft.day, fft.time");
 
 		while ($row = $res->fetch_assoc()) $fellowshipTmpl[]=$row;
 		return $fellowshipTmpl;
@@ -35,7 +35,7 @@ function db_updFttFellowshipTmpl($memberKey, $day, $time, $duration, $cond_membe
   $cond_day = db_real_escape_string($cond_day);
   $cond_time = db_real_escape_string($cond_time);
   $cond_duration = db_real_escape_string($cond_duration);
-  
+
   $res=db_query ("UPDATE `ftt_fellowship_tmpl`
     SET `serving_one`='{$memberKey}', `day`='{$day}', `time`='{$time}', `duration`='{$duration}'
     WHERE `serving_one` = '{$cond_memberKey}' AND `time` = '{$cond_time}' AND `day` = '{$cond_day}' AND `duration` = '{$cond_duration}' LIMIT 1");

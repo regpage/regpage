@@ -139,7 +139,7 @@ function fill_blank(data, elem) {
 
   let date_send = data["send_date"];
   if (data["send_date"] !== '0000-00-00 00:00:00' && data["send_date"]) {
-    date_send = data["send_date"];    
+    date_send = data["send_date"];
   }
 
   // заполняем инфо блок
@@ -176,11 +176,13 @@ function rule_fo_blank(element, is_trainee, status) {
       $("#mdl_edit_btn_send_md").hide();
     }
   } else {
-    $(element).find(".fa-trash").parent().hide();
+    if (is_trainee) {
+      $(element).find(".fa-trash").parent().hide();
+    }
     $("#mdl_edit_btn_send_md").hide();
   }
 
-  if (is_trainee && status == 2) {
+  if (is_trainee && (status == 2  || status == 1)) {
     $(element).find("input").attr("disabled", true);
     $(element).find("select").attr("disabled", true);
     $(element).find("textarea").attr("disabled", true);
