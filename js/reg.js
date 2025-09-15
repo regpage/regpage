@@ -48,6 +48,44 @@ if ($("#events-list").val() === "20222028") {
 }
 */
 
+// ПОДДЕРЖКА УНИВЕРСАЛЬНАЯ ВЕРСИЯ
+// Отмечаем ФИО купивших билеты жирным шрифтом
+function subsidies_name_bold(event_id, time) {
+  if (!time) {
+    time = 1600;
+  }
+  setTimeout(function () {
+    fetch("/ajax/set.php?type=get_members_subsidies&subtype=list&event_id="+event_id)
+    .then(response => response.json())
+    .then(commits => {
+      let brothers_have_tickets_list = commits.result;
+        $(".tab-pane.active tbody tr").each(function() {
+          let temp = $(this).attr("class");
+          if (temp) {
+            temp = temp.split("-");
+            if (brothers_have_tickets_list[temp[1]]) {
+              $(this).find(".mname1").css("font-weight", "bold");
+            }
+          }
+        });
+      });
+  }, time);
+}
+
+// получаем кол-во получателей дотации
+function subsidies_members_count(event_id, elem) {
+  if (!elem) {
+    elem = $(".tab-pane.active").find(".brothers_dotation_text");
+  }
+
+  fetch("/ajax/set.php?type=get_members_subsidies&subtype=count&event_id=" + event_id)
+  .then(response => response.json())
+  .then(commits => {
+    elem.html(commits.result);
+    elem.parent().show();
+  });
+}
+
 // ПОДДЕРЖКА МАЛАЗИЯ
 $(".tab-pane.active").find(".brothers_dotation_text").parent().hide();
 // Отмечаем ФИО купивших билеты жирным шрифтом

@@ -9,6 +9,18 @@ if (isset($_GET['type']) && $_GET['type'] === 'set_subsidies') {
   exit;
 }
 
+if (isset($_GET['type']) && $_GET['type'] === 'get_members_subsidies') {
+  include_once '../db/regpage/classes/reg/subsidies.php';
+  $subsidies = new Subsidies($_GET['event_id']);
+  if (isset($_GET['subtype']) && $_GET['subtype'] === 'list') {
+    echo json_encode(["result"=> $subsidies->getMembersList()]);
+  } elseif (isset($_GET['subtype']) && $_GET['subtype'] === 'count') {
+    echo json_encode(["result"=> $subsidies->getCount()]);
+  }
+  exit;
+}
+
+
 /* BEGIN #ПОДДЕРЖКА 20 БРАТЬЕВ В ПОЕЗДКЕ В МАНИЛ */
 
 if (isset($_GET['type']) && $_GET['type'] === 'get_brothers_dotation_list') {

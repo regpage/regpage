@@ -1958,6 +1958,9 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
           donate_brothers_bold(50);
           donate_brothers_green(100);
           donate_brothers_count();
+        } else if ($("#events-list").val() === "20250018") {
+          subsidies_name_bold("20250018", 50);
+          subsidies_members_count("20250018");
         }
       }, 200);
     }
@@ -2291,6 +2294,10 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
           donate_brothers_bold(50);
           donate_brothers_green(100);
           donate_brothers_count($(".tab-pane.active").find(".brothers_dotation_text"));
+        } else if (eventId == "20250018") {
+          subsidies_name_bold("20250018", 50);
+          subsidies_members_count("20250018");
+          $(".tab-pane.active").find(".brothers_dotation_text").parent().show();
         } else {
           $(".tab-pane.active").find(".brothers_dotation_text").parent().hide();
         }
@@ -3168,7 +3175,7 @@ function checkStopEventRegistration(eventId){
 
     // END Romans Code
 </script>
-<script src="/js/reg.js?v106"></script>
+<script src="/js/reg.js?v108"></script>
 <script src="/js/regupload.js?v5"></script>
 <?php
     include_once "footer.php";
