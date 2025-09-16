@@ -1,71 +1,10 @@
 <?php
-// ITERO
-//require_once "db/classes/common/db_query.php";
 /**
- *
- * получаем данные
+ * ПОДДЕРЖКА В ПОЕЗДКАХ (ДОТАЦИИ)
+ * в таблице event поле subsidies со значение по умолчанию 0 что значит что нет поддержки? другое положительное число означает на сколько человек  имееется поддержка
  *
  */
-/*
-class EventDBTEMP extends DBQuery
-{
-  // получаем  мероприятие по ключу
-  private $event;
 
-  function __construct (string $key) {
-    $this->event = $this->getEventDB($key);
-  }
-  private function getEventDB($key) : ?array
-  {
-    return DBQuery::get('list', 'event', '*', 'key', $key);
-  }
-
-  function getEvent() : ?array
-  {
-    //if (isset($this->event[0])) {
-      return $this->event[0];
-    // } else {
-     return [];
-    //}
-  }
-}
-*/
-/**
- *
- * получаем данные
- *
- */
-/*
-class MembersEventDBTEMP extends DBQuery
-{
-  // получаем  мероприятие по ключу
-  private $membersKeys;
-
-  function __construct(string $key) {
-    $this->membersKeys = $this->getMembersEventDB($key);
-  }
-  private function getMembersEventDB($key) : ?array
-  {
-    //return DBQuery::get('arr', 'reg', 'member_key', 'event_key', $key); ['event_key', '=', $key, 'AND', 'regstate_key', '=', '04']
-    // ДОБАВИТЬ МЕТОД В КЛАСС DBQuery В КОТОРЫЙ МОЖНО ПЕРЕДАТЬ УСЛОВИЕ ПРОИЗВОЛЬНОЙ СТРОКОЙ,
-    // или передавать массивы с полями и значениями, следующий элемент в массиве должен передавать условие AND или OR
-    $key = db_real_escape_string($key);
-    $result = [];
-    $res=db_query ("SELECT `member_key` FROM `reg` WHERE `event_key` = '{$key}' AND `regstate_key` = '04'");
-    while ($row = $res->fetch_assoc()) $result[]=$row['member_key'];
-
-    return $result;
-  }
-
-  function getMembersKeys() : ?array
-  {
-    return $this->membersKeys;
-  }
-}
-*/
-/**
- *
- */
 class Subsidies
 {
   private $limit;
@@ -93,11 +32,14 @@ class Subsidies
   }
 
   // список братьев с дотацией
-  function membersList()
+  function membersList($getAll=false)
   {
     $list = [];
-
-    $res = db_query("SELECT `member_key` FROM `subsidies` WHERE `event_key` = '{$this->eventId}'");
+    $condition = '';
+    if (!$getAll) {
+      $condition = ' AND `disregard` = 1 ';
+    }
+    $res = db_query("SELECT `member_key` FROM `subsidies` WHERE `event_key` = '{$this->eventId}' {$condition} ");
     while ($row = $res->fetch_assoc()) $list[$row['member_key']] = $row['member_key'];
 
     return $list;
@@ -135,20 +77,115 @@ class Subsidies
     }
   }
 
-  // добавление / удаление дотации
-  function bulkAddMembers() { //$memberKey, $ticket,
+  // массовое добавление дотации для пользователей по списку / все в таблице event для мероприятия с учётом лимита
+  function bulkAddMembers($membersKeys = '') { //$memberKey, $ticket,
+    // не должен обрабатываться общий скрипт случайна тк кто то может быть удалён с таблицы дотаций сознательно
     // УЧИТЫВАТЬ СТАТУС РЕФАКТОРИТЬ
-    $res = db_query("SELECT `member_key`, `flight_num_arr` FROM `reg` WHERE `event_key` = '{$this->eventId}'");
-    while ($row = $res->fetch_assoc()) {
+    $list = [];
+
+    if (empty($membersKeys)) {
+      return 'error_001';
+    } elseif ($membersKeys !== 'all') {
+      $list = $this->getAllMembers($membersKeys);
+    } else {
+      $list = $this->getAllMembers();
+    }
+
+    foreach ($list as $value) {
       if ($this->isLimitReached()) {
         break;
       }
-      $this->addMember($row['member_key'], !empty($row['flight_num_arr']));
+      $this->addMember($value['member_key'], !empty($value['flight_num_arr']));
     }
+
     // обновляем данные
-    $this->membersList = $this->membersList($this->eventId);
+    $this->membersList = $this->membersList();
     $this->currentCount = count($this->membersList);
   }
+
+  // получить всех участников мероприятия
+  function getAllMembers($membersKeys = '') {
+    $membersKeys = $this->sanitizeAndPrepareStrWithComma($membersKeys);
+    $condition = '';
+    $list = [];
+
+    if (!empty($membersKeys)) {
+      $condition = "AND `member_key` IN ({$membersKeys})";
+    }
+
+    $res = db_query("SELECT `member_key`, `flight_num_arr` FROM `reg` WHERE `event_key` = '{$this->eventId}' {$condition}");
+    while ($row = $res->fetch_assoc()) $list[$row['member_key']] = $row;
+
+    return  $list;
+  }
+
+  // добавление / удаление дотации
+  function dltMember($memberKey, $membersKeys='') {
+    if (empty($memberKey)) {
+      return 'error_001';
+    }
+    global $db;
+    $memberKey = $db->real_escape_string($memberKey);
+    $membersKeys = $this->sanitizeAndPrepareStrWithComma($membersKeys);
+
+    $condition='';
+
+    if ($memberKey === 'bulk' && !empty($membersKeys)) {
+      $condition = "AND `member_key` IN ({$membersKeys})";
+    } else {
+      $condition = " AND `member_key`='{$memberKey}' ";
+      if (empty($this->memberExist($memberKey))) {
+        return 'no changes';
+      }
+    }
+
+    $res = db_query("DELETE FROM `subsidies` WHERE `event_key` = '{$this->eventId}' {$condition}");
+    if ($res && $memberKey !== 'bulk') {
+      return $this->currentCount--;
+    }
+  }
+
+  // без аргументов удаляет из субсидий тех кого нет в таблице рег (неперехваченная отмена регистрации)
+  function bulkDltMembers($membersKeys='') {
+    $result = [];
+
+    if (empty($membersKeys)) {
+      foreach ($this->checkMembers() as $value) {
+        $result[] = $this->dltMember($value);
+      }
+    } else {
+      $result[] = $this->dltMember('bulk', $membersKeys);
+    }
+
+    // обновляем данные
+    $this->membersList = $this->membersList();
+    $this->currentCount = count($this->membersList);
+
+    return $result;
+  }
+
+  function sanitizeAndPrepareStrWithComma($membersKeys) {
+    if (empty($membersKeys)) {
+      return $membersKeys;
+    }
+    global $db;
+    $membersKeysArr = explode(',', $membersKeys);
+    $membersKeys = '';
+    foreach ($membersKeysArr as $value) {
+      $comma = ',';
+      if (empty($membersKeys)) {
+        $comma = '';
+      }
+      $membersKeys .= $comma . "'" . $db->real_escape_string($value) . "'";
+    }
+    return $membersKeys;
+  }
+
+  // проверка наличия субсидий для отменённых регистраций
+  function checkMembers() {
+    return array_diff_key($this->membersList(true), $this->getAllMembers());
+  }
+
 
   // проверяем достигнут ли лимит
   function isLimitReached() {
@@ -161,8 +198,17 @@ class Subsidies
   function getCount() {
     return $this->currentCount;
   }
+  // записи льготников для мероприятия (1)
   function getMembersList() {
     return $this->membersList;
+  }
+  // все записи льготников для мероприятия включая игнорируемых (0)
+  function getAllMembersList() {
+    return $this->membersList(true);
+  }
+  // все записи для мероприятия
+  function getAllMembersListEvent() {
+    return $this->getAllMembers();
   }
   function getEventId() {
     return $this->eventId;
@@ -195,138 +241,4 @@ class Subsidies
 
     return $regstateKey;
   }
-
-/*
-  // количество записей
-  function db_brothersDotationCheck($memberKey=false)
-  {
-    global $db;
-    $memberKey = $db->real_escape_string($memberKey);
-    $isExist = '';
-    if ($memberKey) {
-      $isExist = db_brothersDotationExist($memberKey);
-    }
-    $isFilled = 0;
-    if (empty($isExist)) {
-      $res = db_query("SELECT count(`member_key`) AS total FROM `brothers_dotation`");
-      while ($row = $res->fetch_assoc()) $isFilled = $row['total'];
-    } else {
-      $isFilled = 'exist';
-    }
-
-    return $isFilled;
-  }
-
-  // братья с билетами
-  function db_brothersHaveTicketsCount($eventKey = '20250013')
-  {
-    global $db;
-    $eventKey = $db->real_escape_string($eventKey);
-    $brothersHaveTickets = 0;
-    $res = db_query("SELECT COUNT(r.member_key) AS total
-      FROM reg r
-      JOIN member m ON m.key = r.member_key
-      WHERE r.flight_num_arr != ''  AND r.flight_num_dep != '' AND m.male = 1 AND r.event_key = '{$eventKey}'");
-    while ($row = $res->fetch_assoc()) $brothersHaveTickets = $row['total'];
-
-
-    return $brothersHaveTickets;
-  }
-
-  function db_brothersHaveTickets($eventKey = '20250013') {
-    global $db;
-    $eventKey = $db->real_escape_string($eventKey);
-    $result = [];
-    $res = db_query("SELECT `member_key` FROM `reg` WHERE `flight_num_arr` != ''  AND `flight_num_dep` != '' AND `event_key` = '{$eventKey}'");
-    while ($row = $res->fetch_assoc()) $result[$row['member_key']] = $row['member_key'];
-
-    return $result;
-  }
-
-  function db_brotherHaveTickets($memberKey, $eventKey = '20250013') {
-    global $db;
-    $memberKey = $db->real_escape_string($memberKey);
-    $eventKey = $db->real_escape_string($eventKey);
-
-    $result = '';
-    $res = db_query("SELECT `member_key` FROM `reg` WHERE `member_key` = '{$memberKey}' AND `flight_num_arr` != '' AND `flight_num_dep` != '' AND `event_key` = '{$eventKey}'");
-    while ($row = $res->fetch_assoc()) $result = $row['member_key'];
-
-    return $result;
-  }
-
-
-
-  // пакетное добавление в таблицу дотаций
-  function db_brothersDotationGroup($membersKeys, $eventId)
-  {
-    global $db;
-    $membersKeys = $db->real_escape_string($membersKeys);
-    $eventId = $db->real_escape_string($eventId);
-    $membersKeys = explode(',', $membersKeys);
-    foreach ($membersKeys as $value) {
-      $isExist = db_brothersDotationExist($value);
-      $isBrother = db_isBrother($value);
-      if (empty($isExist) && $isBrother == 1) {
-        $haveTickets = db_brotherHaveTickets($value);
-        if (!empty($haveTickets)) {
-          $isFilled = db_brothersDotationCheck();
-          if ($isFilled < 80) {
-            db_query("INSERT INTO `brothers_dotation` (`member_key`) VALUES ('{$value}')");
-            return true;
-          } else {
-            return false;
-          }
-        }
-      }
-    }
-  }
-  */
 }
-
-
-/* BEGIN ПОДДЕРЖКА В ПОЕЗДКАХ */
-
-
-// в таблице event должно быть поле со значение по умолчанию 0 что значит что нет поддержки другое положительное число означает наличие поддержки на указанное число человек
-
-
-// Куплены билеты
-/*
-if (isset($_GET['type']) && $_GET['type'] === 'get_members_subsidies') {
-    echo json_encode(["result"=> db_get_members_subsidies($_GET['event_key'])]);
-    exit;
-}
-
-// Проверки наличия в таблице
-if (isset($_GET['type']) && $_GET['type'] === 'get_members_subsidies_check') {
-  if (isset($_GET['member_key'])) {
-    echo json_encode(["result"=> db_memberSubsidiesCheck($_GET['member_key'])]);
-  } else {
-    echo json_encode(["result"=> db_brothersSubsidiesCheck()]);
-  }
-  exit;
-}
-
-if (isset($_GET['type']) && $_GET['type'] === 'brothers_subsidies') {
-    echo json_encode(["result"=> db_brothersSubsidies($_GET['member_key'], $_GET['ticket'], $_GET['event_id'])]);
-    exit;
-}
-
-if (isset($_GET['type']) && $_GET['type'] === 'brothers_subsidies_group') {
-    echo json_encode(["result"=> db_brothersSubsidiesGroup($_GET['members_keys'], $_GET['event_id'])]);
-    exit;
-}
-
-if (isset($_GET['type']) && $_GET['type'] === 'get_have_tickets_count') {
-    // echo json_encode(["result"=> db_brothersSubsidiesCheck()]);
-    echo json_encode(["result"=> db_ticketsCount($_GET['event_key'])]);
-    exit;
-}
-
-if (isset($_GET['type']) && $_GET['type'] === 'get_have_tickets') {
-    echo json_encode(["result"=> db_haveTickets()]);
-    exit;
-}
-*/
-/* END */

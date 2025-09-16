@@ -2379,7 +2379,7 @@ function checkStopEventRegistration(eventId){
           }
         }
         if (text && $(".registration-closed").length === 0) {
-          $('<span style="margin-top: 15px; display: inline-block;" class="close-event-registration">'+text+'</span>').insertBefore(".counterForResponseble");
+          $('<span style="margin-top: 15px; margin-right: 15px; display: inline-block;" class="close-event-registration">'+text+'</span>').insertBefore(".counterForResponseble");
         } else if (text && $(".registration-closed").length > 0) {
 
         } else {
@@ -2595,13 +2595,23 @@ function checkStopEventRegistration(eventId){
 
           });
         }
+
         // GENERAL QUERY
         $.getJSON('/ajax/set.php?event='+eventId+request, {register_members: ids.join(',') })
         .done (function(data) {
           loadDashboard();
             //refreshEventMembers (eventId, data.members, data.localities);
-            if (data.invalid && data.invalid.length>0)
+            if (data.invalid && data.invalid.length>0) {
                 alert("Следующие участники не были зарегистрированы:\n\n"+data.invalid.toString().replace(/,/g,'\n')+"\n\nПроверьте правильность заполнения всех полей и возрастные ограничения мероприятия!", false);
+            }
+            // ПОДДЕРЖКА Дотации НОВАЯ ВЕРСИЯ
+            if (eventId === '20250018') { // && is_male
+              fetch("/ajax/set.php?type=set_subsidies&subtype=group&members_keys=" + ids.join(',') + "&event_id="+eventId)
+              .then(response => response.json())
+              .then(commits => {
+
+              });
+            }
         });
       }
     }
@@ -2914,6 +2924,14 @@ function checkStopEventRegistration(eventId){
             var eventId = $("#events-list").val();
             $.getJSON('/ajax/set.php', { event: eventId, remove_members: ids.join(',') })
             .done (function(data) {
+              // ПОДДЕРЖКА Дотации НОВАЯ ВЕРСИЯ
+              if (eventId === '20250018') { // && is_male
+                fetch("/ajax/set.php?type=set_subsidies&subtype=remove&members_keys=" + ids.join(',') + "&event_id="+eventId)
+                .then(response => response.json())
+                .then(commits => {
+
+                });
+              }
               // #ПОДДЕРЖКА Дотации для 20 участников на манил
               /*
               if (eventId === '20222028') {

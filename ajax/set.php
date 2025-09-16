@@ -5,7 +5,14 @@ include_once "ajax.php";
 if (isset($_GET['type']) && $_GET['type'] === 'set_subsidies') {
   include_once '../db/regpage/classes/reg/subsidies.php';
   $subsidies = new Subsidies($_GET['event_id']);
-  echo json_encode(["result"=> $subsidies->addMember($_GET['member_key'], $_GET['ticket'])]);
+  if (isset($_GET['subtype']) && $_GET['subtype'] === 'group') {
+    echo json_encode(["result"=> $subsidies->bulkAddMembers($_GET['members_keys'])]);
+  } elseif (isset($_GET['subtype']) && $_GET['subtype'] === 'remove') {
+    echo json_encode(["result"=> $subsidies->bulkDltMembers($_GET['members_keys'])]);
+  } else {
+    echo json_encode(["result"=> $subsidies->addMember($_GET['member_key'], $_GET['ticket'])]);
+  }
+
   exit;
 }
 
@@ -17,6 +24,7 @@ if (isset($_GET['type']) && $_GET['type'] === 'get_members_subsidies') {
   } elseif (isset($_GET['subtype']) && $_GET['subtype'] === 'count') {
     echo json_encode(["result"=> $subsidies->getCount()]);
   }
+
   exit;
 }
 
