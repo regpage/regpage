@@ -86,7 +86,17 @@ function sentRequestToPVOM($adminId, $guest)
     $res = db_query("INSERT INTO `ftt_request` (`member_key`, `notice`, `guest`) VALUES ('$adminId', 2, '$guest')");
     if ($res) {
       $topic = 'Новый запрос заявлениия на ПВОМ';
-      $emailText = 'Поступил запрос на заявление на ПВОМ от ' . Member::get_name($adminId) . ' ' . date('d.m.Y G:i') . '<br><br><a href="https://reg-page.ru/ftt_application?tab=request">https://reg-page.ru/ftt_application?tab=request</a>';
+      $memberData = Member::get_full($adminId);
+      $birthDate = date("d.m.Y", strtotime($memberData['birth_date']));
+      $locality = Member::get_fullMemberLocalityInfo($adminId);
+      $localityText = $locality['locality'];
+      if (!empty($locality['region'])) {
+        $localityText .= ", {$locality['region']}";
+      }
+
+      $memberDataText = "{$memberData['name']}, дата рождения {$birthDate}, телефон {$memberData['cell_phone']}, емайл {$memberData['email']}, {$localityText}.";
+      // , номер телефона, email, город и область.
+      $emailText = 'Поступил запрос на заявление на ПВОМ от ' . $memberDataText . ' ' . '<br>Запрос отправлен: ' . date('d.m.Y G:i') . '<br><br><a href="https://reg-page.ru/ftt_application?tab=request">https://reg-page.ru/ftt_application?tab=request</a>';
       //Emailing::send('A.rudanok@gmail.com', $topic, $emailText);
       Emailing::send('kristalenkoserg@gmail.com', $topic, $emailText);
       Emailing::send('info@zhichkinroman.ru', $topic, $emailText);

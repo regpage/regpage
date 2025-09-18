@@ -59,5 +59,21 @@ class Member
       while ($row = $res->fetch_assoc()) $result=$row;
 
       return $result;
+  }  
+
+  static function get_fullMemberLocalityInfo($member_key)
+  {
+    $member_key = db_real_escape_string($member_key);
+    $result=['locality'=>'','region'=>'','country'=>''];
+
+    $res=db_query ("SELECT l.name AS locality_name, r.name AS region_name, c.name AS country_name
+      FROM member m
+      INNER JOIN locality l ON l.key = m.locality_key
+      INNER JOIN region r ON r.key = l.region_key
+      INNER JOIN country c ON c.key = r.country_key
+      WHERE m.key='{$member_key}'");
+      while ($row = $res->fetch_assoc()) $result=['locality'=>$row['locality_name'],'region'=>$row['region_name'],'country'=>$row['country_name']];
+
+    return $result;
   }
 }
