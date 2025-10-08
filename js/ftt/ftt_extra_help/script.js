@@ -324,7 +324,9 @@ function get_data_fields() {
         create_word = "Создано ";
         servise_one_author = "автоматически";
       }
-
+      if ($(this).attr("data-date") && $(this).attr("data-date") != "undefined") {
+        servise_one_author += ' ' + dateStrFromyyyymmddToddmm($(this).attr("data-date"));
+      }
      let text = create_word + male_word + ' ' + servise_one_author;
      $('#author_of_extrahelp').text(text);
      male_word = ' ';
@@ -726,6 +728,9 @@ $(".ftt_extra_help_string").click(function () {
   } else {
     create_word = "Создано";
     servise_one_author = "Автоматически";
+  }
+  if ($(this).attr("data-date") && $(this).attr("data-date") != "undefined") {
+    servise_one_author += ' ' + dateStrFromyyyymmddToddmm($(this).attr("data-date"));
   }
   let text = create_word + male_word + ' ' + servise_one_author;
   $('#author_of_extrahelp').text(text);
