@@ -3,7 +3,6 @@
 require_once 'cronkey.php';
 
 // Ежедневная рассылка статистики для служащих.
-
 header('Content-Type: text/html; charset=utf-8');
 session_start ();
 
@@ -139,7 +138,14 @@ function getServiceOnesWithTrainees ()
     $fellowship_today = Fellowship::now_serving_one($value);
     $fellowship_text = '';
     $fellowship_text_name = '';
-    if (count($fellowship_today) > 0) {
+    /*$hasFelowshipToday = false;
+    foreach ($fellowship_today as $value_5) {
+      if (!empty($value_5['name'])) {
+        $hasFelowshipToday = true;
+        break;
+      }
+    }*/
+    if (count($fellowship_today) > 0) { //  && $hasFelowshipToday
       if (empty($announcements) && empty($absence) && empty($attendance) && empty($extraHelp) && empty($missingClass)) {
         $fellowship_text = '<b>Общение сегодня: </b>';
       } else {
@@ -159,7 +165,13 @@ function getServiceOnesWithTrainees ()
       if (count($fellowship_today) > 0) {
         $fellowship_text .= "<span> {$fellowship_text_name} </span><br>";
       }
-    }
+    } /* else {
+      if (empty($announcements) && empty($absence) && empty($attendance) && empty($extraHelp) && empty($missingClass)) {
+        $fellowship_text = '<b>Сегодня у вас нет общения.</b>';
+      } else {
+        $fellowship_text = '<br><b>Сегодня у вас нет общения.</b>';
+      }
+    } */
 
     $fellowship_cancel_today = Fellowship::canceled_serving_one($value);
     $fellowship_cancel_text_name = '';
@@ -223,7 +235,7 @@ function getServiceOnesWithTrainees ()
       $body = $announcements . $absence . $attendance . $extraHelp . $missingClass . $fellowship_text . $prophecy_text;
       if (!empty($value)) {
         Emailing::send_by_key($value, $topic, $body);
-        //Emailing::send_by_key('000005716', $topic, $body);
+        // Emailing::send_by_key('000005716', $topic, 'Тестирование '.$body);
       } else {
         echo "Не получен емайл служащего, возможно не указан служащий для какого то обучающегося \r\n";
       }
@@ -246,7 +258,14 @@ function emailToBBDBrothers() {
       $fellowship_today = Fellowship::now_serving_one($key);
       $fellowship_text = '';
       $fellowship_text_name = '';
-      if (count($fellowship_today) > 0) {
+      $hasFelowshipToday = false;
+      foreach ($fellowship_today as $value_5) {
+        if (!empty($value_5['name'])) {
+          $hasFelowshipToday = true;
+          break;
+        }
+      }
+      if (count($fellowship_today) > 0 && $hasFelowshipToday) {
         $fellowship_text = '<b>Общение сегодня:</b><br>';
         foreach ($fellowship_today as $key_5 => $value_5) {
           if (!empty($value_5['name'])) {
@@ -260,7 +279,9 @@ function emailToBBDBrothers() {
         if (count($fellowship_today) > 0) {
           $fellowship_text .= "<span> {$fellowship_text_name} </span><br>";
         }
-      }
+      } /* else {
+        $fellowship_text = '<b>Сегодня у вас нет общения.</b><br>';
+      } */
 
       $fellowship_cancel_today = Fellowship::canceled_serving_one($key);
       $fellowship_cancel_text_name = '';
@@ -287,7 +308,7 @@ function emailToBBDBrothers() {
         if (!empty($key)) {
           Emailing::send_by_key($key, 'Общение с обучающимися  ' . date('d.m.Y'), $fellowship_text);
           echo "КБК  {$value}, есть записи на сегодня, отправлено уведомление по емайл. \r\n";
-          //Emailing::send_by_key('000005716', $topic, $body);
+          // Emailing::send_by_key('000005716', $topic, 'Тестирование '.$body);
         } else {
           echo "Не получен емайл брата из КБК. \r\n";
         }

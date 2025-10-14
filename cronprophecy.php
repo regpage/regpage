@@ -20,7 +20,7 @@ function prophecyCheck()
 
   $traineeKeysToCreateExtrahelp = [];
   // получаем тех кто не на паузе и не отправил бланк на текущее число
-  $res = db_query("SELECT ft.member_key FROM ftt_trainee ft WHERE NOT EXISTS (SELECT fp.member_key FROM ftt_prophecy fp WHERE ft.member_key = fp.member_key AND DATE_FORMAT(fp.send_date, '%Y-%m-%d') = (CURDATE() - INTERVAL 1 DAY)) AND (ft.pause_start IS NULL OR ft.pause_start > CURDATE() OR ft.pause_stop < CURDATE())");
+  $res = db_query("SELECT ft.member_key FROM ftt_trainee ft WHERE NOT EXISTS (SELECT fp.member_key FROM ftt_prophecy fp WHERE ft.member_key = fp.member_key AND (DATE_FORMAT(fp.send_date, '%Y-%m-%d') = (CURDATE() - INTERVAL 1 DAY) OR DATE_FORMAT(fp.send_date, '%Y-%m-%d') = CURDATE())) AND (ft.pause_start IS NULL OR ft.pause_start > (CURDATE() - INTERVAL 1 DAY) OR ft.pause_stop < (CURDATE() - INTERVAL 1 DAY))");
   while ($row = $res->fetch_assoc()) $traineeKeysToCreateExtrahelp[]=$row['member_key'];
 
   // нет ключе обучающихся для создания доп помощи
