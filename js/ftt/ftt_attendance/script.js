@@ -1259,14 +1259,14 @@ function open_blank(el_this) {
         // reading_str['today_ot'] должен быть 1 если запись существует и она === 0
         if (reading_str['chapter_ot'] && reading_str['today_ot']) {
           $("#bible_book_ot").val(reading_str["book_ot"] + " " + reading_str['chapter_ot']);
-        } /*else if(reading_str['chapter_ot'] && reading_str['chapter_ot'] !== "0" && !reading_str['today_ot']) {
-          $("#bible_book_ot").val(0);
-        }*/
+        } else if (reading_str['no_read_ot'] == "1" ) { // && !reading_str['today_ot']
+          $("#bible_book_ot").val("0");
+        }
         if (reading_str['chapter_nt'] && reading_str['today_nt']) {
           $("#bible_book_nt").val(reading_str["book_nt"] + " " + reading_str['chapter_nt']);
-        } /*else if(reading_str['chapter_nt'] && reading_str['chapter_nt'] !== "0" && !reading_str['today_nt']) {
-          // $("#bible_book_nt").val(0);
-        }*/
+        } else if (reading_str['no_read_nt'] == "1") { // && !reading_str['today_nt']
+          $("#bible_book_nt").val("0");
+        }
 
         if (reading_str['start_today'] == 1) {
           $("#bible_book_ot").attr("disabled", true).css("background-color", "#f8f9fa");

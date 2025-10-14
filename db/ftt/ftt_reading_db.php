@@ -138,6 +138,12 @@ function get_reading_data($member_key, $date)
     } elseif (isset($result['chapter_nt']) && $result['chapter_nt'] > 0) {
       $result += ['today_nt' => 1];
     }
+    if (!empty($result['book_ot']) && isset($result['chapter_ot']) && $result['chapter_ot'] == 0) {
+      $result += ['no_read_ot' => 1];
+    }
+    if (!empty($result['book_nt']) && isset($result['chapter_nt']) && $result['chapter_nt'] == 0) {
+      $result += ['no_read_nt' => 1];
+    }
   }
 
   // ВЗ получаем последнюю строку с заполненными даннными при условии что дата строки больше даты старта
