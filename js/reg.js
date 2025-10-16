@@ -524,6 +524,7 @@ function xlxCheckboxesInternationalDisabled() {
     xlxCheckboxesInternational('#download-avtomobile');
     xlxCheckboxesInternational('#download-avtomobile_number');
 //show
+    xlxCheckboxesInternational('#download-add_info', true);
     xlxCheckboxesInternational('#download-hotel', true);
     xlxCheckboxesInternational('#download-airport-arrival', true);
     xlxCheckboxesInternational('#download-airport-departure', true);
@@ -537,10 +538,10 @@ function xlxCheckboxesInternationalDisabled() {
     xlxCheckboxesInternational('#download-airport-departure');
     xlxCheckboxesInternational('#download-outline-language');
     xlxCheckboxesInternational('#download-study-group-language');
-    xlxCheckboxesInternational('#download-add_info');
     xlxCheckboxesInternational('#download-tp');
     xlxCheckboxesInternational('#download-visa');
 //show
+    xlxCheckboxesInternational('#download-add_info', true);
     xlxCheckboxesInternational('#download-member-age', true);
     xlxCheckboxesInternational('#download-region', true);
     xlxCheckboxesInternational('#download-service', true);

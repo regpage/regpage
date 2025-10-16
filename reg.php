@@ -1814,8 +1814,6 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
               checkForInternationalEvent('#download-flight-dep');
               checkForInternationalEvent('#download-dep-time');
               checkForInternationalEvent('#download-airport-departure');
-              checkForInternationalEvent('#download-outline-language');
-              checkForInternationalEvent('#download-study-group-language');
               checkForInternationalEvent('#download-member-comment');
               checkForInternationalEvent('#download-admin-comment');
               checkForInternationalEvent('#download-hotel');
@@ -3193,7 +3191,7 @@ function checkStopEventRegistration(eventId){
 
     // END Romans Code
 </script>
-<script src="/js/reg.js?v108"></script>
+<script src="/js/reg.js?v109"></script>
 <script src="/js/regupload.js?v5"></script>
 <?php
     include_once "footer.php";
