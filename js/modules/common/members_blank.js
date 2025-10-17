@@ -1,5 +1,5 @@
 // объект бланк
-gl_blank_hundler {
+let gl_blank_hundler = {
   
 }
 

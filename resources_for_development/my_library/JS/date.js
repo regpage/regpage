@@ -105,7 +105,7 @@
   //date_now_gl = date_now_gl ();
 
 function compare_date(d1, d2) {
-	let d1, d2, current, dm;
+	let current, dm;
 	if (!d2) {
 		current = new Date();
 		d1 = new Date(d1);

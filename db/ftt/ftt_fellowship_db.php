@@ -341,7 +341,7 @@ function set_meet_staff_blank($data)
           emailingAddSetDltBlank('Новая запись на общение:', 'Новая запись:',  $serving_one, $trainee, $date, $time, $duration, $comment_train);
         } elseif (empty($trainee)) {
           // отмена
-          emailingAddSetDltBlank('Отменена запись на общение:', 'Отменена запись:',  $serving_one, $trainee, $date, $time, $duration, $comment_train);
+          emailingAddSetDltBlank('Отменена запись на общение:', 'Отменена запись:',  $serving_one, $traineePrev, $date, $time, $duration, $comment_train);
         } else {
           // Изменение
           $prevCommentText = '';
