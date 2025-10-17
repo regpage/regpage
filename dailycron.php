@@ -3,9 +3,10 @@
 require_once 'cronkey.php';
 
 // Выполняется по заданию (cron)
-// Автоматическое проверка учёта практик (practices)
-// Автоматическое удаление старых практик
+// Автоматическое проверка учёта практик (practices) ОТКЛЮЧЕНО
+// Автоматическое удаление старых практик ОТКЛЮЧЕНО
 // Проверка и удаление временных и просроченных сессий
+// Добавление записей на общение из шаблонов
 // строку ниже заменить на config.php
 include_once 'db.php';
 include_once 'logWriter.php';
@@ -87,8 +88,24 @@ function cron_set_fellowship_str() {
       $dayOfWeek = '';
       break;
   }
+  // Получить список служащих у которых перерыв на данный момент Учитывать NULL в дате или запрашивать инфо о паузе при переборе.
+  $servingonesOnPause = [];
+  $pause = db_query ("SELECT `member_key` FROM `ftt_serving_one` WHERE (`pause_start` IS NOT NULL AND `pause_stop` IS NOT NULL AND `pause_start` <= CURDATE() AND `pause_stop` >= CURDATE()) OR (`pause_start` IS NOT NULL AND `pause_stop` IS NULL AND `pause_start` <= CURDATE())");
+  while ($row = $pause->fetch_assoc()) $servingonesOnPause[] = $row['member_key'];
 
-  $res = db_query ("SELECT * FROM `ftt_fellowship_tmpl` WHERE `day` = '$dayOfWeek'");
+  $servingonesOnPauseCondition = '';
+  if (count($servingonesOnPause) > 0) {
+    $servingonesOnPauseCondition = 'AND `serving_one` NOT IN (';
+    foreach ($servingonesOnPause as $key => $value) {
+      if ($key > 0) {
+        $servingonesOnPauseCondition .= ",'{$value}'";
+      } else {
+        $servingonesOnPauseCondition .= "'{$value}'";
+      }
+    }
+    $servingonesOnPauseCondition .= ')';
+  }
+  $res = db_query ("SELECT * FROM `ftt_fellowship_tmpl` WHERE `day` = '$dayOfWeek' {$servingonesOnPauseCondition}");
   while ($row = $res->fetch_assoc()) $result[] = $row;
 
   if (count($result) > 0) {
