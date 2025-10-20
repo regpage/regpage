@@ -58,7 +58,7 @@
     <link href="css/ftt/ftt_announcement.css?v3" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/attend.php') { ?>
     <link href="css/regpage/attend.css?v2" rel="stylesheet">
-<?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_fellowship.php') { ?>
+<?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_fellowship.php' || $_SERVER['PHP_SELF'] === '/ftt_fellowship_bbd.php') { ?>
     <link href="css/ftt/ftt_fellowship.css?v6" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/calls.php') { ?>
       <link href="css/regpage/calls.css?v22" rel="stylesheet">
