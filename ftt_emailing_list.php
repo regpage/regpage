@@ -300,12 +300,10 @@ function emailToBBDBrothers() {
         }
       }
 
-      /*if (!empty($fellowship_text)) {
-         $fellowship_text .= "<a href='https://reg-page.ru/ftt_fellowship.php'>Перейти в раздел «Общение»</a><br>";
-      }*/
       // emailing
       if (!empty($fellowship_text)) {
         if (!empty($key)) {
+          $fellowship_text .= "<a href='https://reg-page.ru/ftt_fellowship_bbd.php?bbd_key=forbbdbrothers&member_key={$key}>Перейти в раздел «Общение»</a><br>";
           Emailing::send_by_key($key, 'Общение с обучающимися  ' . date('d.m.Y'), $fellowship_text);
           echo "КБК  {$value}, есть записи на сегодня, отправлено уведомление по емайл. \r\n";
           // Emailing::send_by_key('000005716', $topic, 'Тестирование '.$body);

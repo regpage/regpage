@@ -13,25 +13,8 @@ include_once '../db/classes/time_convert.php';
 
 // Подключаем ведение лога
 include_once "../extensions/write_to_log/write_to_log.php";
-
-$adminId = db_getMemberIdBySessionId (session_id());
-if (!$adminId) {
-    header("HTTP/1.0 401 Unauthorized");
-    exit;
-}
+// добавить проверку ключей на соответствее списку bbd
 // COMMUNICATION
-// get list
-if (isset($_GET['type']) && $_GET['type'] === 'get_communication_list') {
-  echo json_encode(["result"=>get_communication_list($_GET['serving_ones'], $_GET['sort'])]);
-  exit();
-}
-
-// get records by date
-if (isset($_GET['type']) && $_GET['type'] === 'get_meet_by_date') {
-  echo json_encode(["result"=>get_meet_by_date($_GET['date'], $_GET['serving_ones'])]);
-  exit();
-}
-
 // set record
 if (isset($_GET['type']) && $_GET['type'] === 'set_communication_record') {
   echo json_encode(["result"=>set_communication_record($_GET['trainee'], $_GET['id'], $_GET['checked'], $_GET['date'], $_GET['time_from'], $_GET['time_to'], $_GET['comment'])]);
@@ -53,11 +36,32 @@ if (isset($_GET['type']) && $_GET['type'] === 'set_meet_staff_blank') {
   echo json_encode(["result"=>set_meet_staff_blank($_POST['data'])]);
   exit();
 }
+
+$adminId = db_getMemberIdBySessionId (session_id());
+// Опасно нужно вернуть вверх, но с проверной, что если запрос из раздела для кбк и ключ есть в списке то можно выполнить некоторые запросы
+if (!$adminId) {  // && array_key_exists($serving_one, ftt_lists::kbk_brothers())
+    header("HTTP/1.0 401 Unauthorized");
+    exit;
+}
+
+// get list
+if (isset($_GET['type']) && $_GET['type'] === 'get_communication_list') {
+  echo json_encode(["result"=>get_communication_list($_GET['serving_ones'], $_GET['sort'])]);
+  exit();
+}
+
+// get records by date
+if (isset($_GET['type']) && $_GET['type'] === 'get_meet_by_date') {
+  echo json_encode(["result"=>get_meet_by_date($_GET['date'], $_GET['serving_ones'])]);
+  exit();
+}
+
 // add record
 if (isset($_GET['type']) && $_GET['type'] === 'add_meet_staff_blank') {
   echo json_encode(["result"=>add_meet_staff_blank($_POST['data'])]);
   exit();
 }
+
 /*
 if (isset($_GET['type']) && $_GET['type'] === 'set_communication_record_check') {
   // готовим данные

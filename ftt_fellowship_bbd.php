@@ -1,5 +1,5 @@
 <?php
-
+define("IS_FTT_PAGE", true);  
 // GLOBAL CNTRL
 // db
 include_once 'config.php';
@@ -45,11 +45,9 @@ $trainee_list_list = ftt_lists::trainee_list();
 $serving_ones_list_full = ftt_lists::serving_ones_full();
 $trainee_list_full = ftt_lists::trainee_full();
 
-if ($ftt_access['group'] === 'trainee' && isset($trainee_list_list[$memberId]) && $trainee_list_list[$memberId]['male'] === '1') {
-  $serving_ones_list_meet = ftt_lists::serving_ones_fellowship_brothers();
-} else {
-  $serving_ones_list_meet = ftt_lists::get_fellowship_list();
-}
+
+$serving_ones_list_meet = ftt_lists::get_fellowship_list();
+
 $serving_ones_list = array_merge($serving_ones_list_meet, $kbk_list);
 // Активный подраздел
 $fellowship_tab_active = '';
@@ -64,12 +62,66 @@ $meet_sort_trainee_ico = 'hide_element';
 $meet_sort_time_ico = 'hide_element';
 $meet_curent_sorting = 'meet_sort_date-asc';
 
+// Сортировка
+
+if (isset($_COOKIE['meet_sorting'])) {
+  $meet_curent_sorting = $_COOKIE['meet_sorting'];
+  $fa_sort_arr = explode('-', $meet_curent_sorting);
+  if (isset($fa_sort_arr[1]) && $fa_sort_arr[1] === 'asc') {
+    $fa_sort = 'fa fa-sort-asc';
+  } elseif (isset($fa_sort_arr[1]) && $fa_sort_arr[1] === 'desc') {
+    $fa_sort = 'fa fa-sort-desc';
+  }
+  if ($fa_sort_arr[0] === 'meet_sort_date') {
+    $meet_sort_date_ico = $fa_sort;
+    $meet_sort_s_one_ico = 'hide_element';
+    $meet_sort_trainee_ico = 'hide_element';
+    $meet_sort_time_ico = 'hide_element';
+  } elseif ($fa_sort_arr[0] === 'meet_sort_servingone') {
+    $meet_sort_date_ico = 'hide_element';
+    $meet_sort_s_one_ico = $fa_sort;
+    $meet_sort_trainee_ico = 'hide_element';
+    $meet_sort_time_ico = 'hide_element';
+  } elseif ($fa_sort_arr[0] === 'meet_sort_trainee') {
+    $meet_sort_date_ico = 'hide_element';
+    $meet_sort_s_one_ico = 'hide_element';
+    $meet_sort_trainee_ico = $fa_sort;
+    $meet_sort_time_ico = 'hide_element';
+  } elseif ($fa_sort_arr[0] === 'meet_sort_time') {
+    $meet_sort_date_ico = 'hide_element';
+    $meet_sort_s_one_ico = 'hide_element';
+    $meet_sort_trainee_ico = 'hide_element';
+    $meet_sort_time_ico = $fa_sort;
+  } else {
+    $meet_sort_date_ico = 'fa fa-sort-asc';
+    $meet_sort_s_one_ico = 'hide_element';
+    $meet_sort_trainee_ico = 'hide_element';
+    $meet_sort_time_ico = 'hide_element';
+    $meet_curent_sorting = 'meet_sort_date-asc';
+  }
+} else {
+  $meet_sort_date_ico = 'fa fa-sort-asc';
+  $meet_sort_s_one_ico = 'hide_element';
+  $meet_sort_trainee_ico = 'hide_element';
+  $meet_sort_time_ico = 'hide_element';
+  $meet_curent_sorting = 'meet_sort_date-asc';
+}
 
 // Фильтры
 // вкладка служащие
-  $serving_ones_flt = $memberId;
-  $active_flt = 1;
-  $trainee_flt = '_all_';
+$serving_ones_flt = $memberId;
+
+if (!empty($_COOKIE['meet_flt_trainee'])) {
+  $trainee_fltBBD = $_COOKIE['meet_flt_trainee'];
+} else {
+  $trainee_fltBBD = '_all_';
+}
+
+if (isset($_COOKIE['meet_flt_active'])) {
+  $active_fltBBD = $_COOKIE['meet_flt_active'];
+} else {
+  $active_fltBBD = 1;
+}
 
 include_once 'header2.php';
 ?>
@@ -167,15 +219,15 @@ for (let i = 0; i < trainee_list_tmp.length; i = i + 5) {
       <option value="_all_">Все обучающиеся</option>
       <?php foreach ($trainee_list as $key => $value):
         $selected = "";
-        if ($trainee_flt === $key) {
+        if ($trainee_fltBBD === $key) {
           $selected = "selected";
         }
         echo "<option value='{$key}' {$selected}>{$value}</option>";
       endforeach; ?>
     </select>
     <select id="fellowship_active" class="form-control form-control-sm">
-      <option value="1" <?php if ($active_flt === '1') echo 'selected'; ?>>Текущие</option>
-      <option value="0" <?php if ($active_flt === '0') echo 'selected'; ?>>Архивные</option>
+      <option value="1" <?php if ($active_fltBBD === '1') echo 'selected'; ?>>Текущие</option>
+      <option value="0" <?php if ($active_fltBBD === '0') echo 'selected'; ?>>Архивные</option>
     </select>
     <button type="button" id="meet_flt_modal_open" class="btn btn-primary btn-sm rounded mr-2" data-toggle="modal" data-target="#modal_meet_filters" style="display: none;">Фильтры</button>
   </div>
@@ -190,11 +242,9 @@ for (let i = 0; i < trainee_list_tmp.length; i = i + 5) {
     </div>
     <hr style="margin-left: -15px; margin-right: -15px; margin-top: 0px; margin-bottom: 0px; border-color: lightgray;">
   <?php
-    foreach (get_communication_records_staff($serving_ones_flt, $trainee_flt, $active_flt, $meet_curent_sorting) as $key => $value) {
+    foreach (get_communication_records_staff($memberId, $trainee_fltBBD, $active_fltBBD, $meet_curent_sorting) as $key => $value) {
       $hide = '';
-      if ($serving_ones_flt === $memberId) {
-        //$hide = 'd-none';
-      }
+
       $bg_busy = '';
       if (!empty($value['trainee']) && $value['trainee'] !== '_none_') {
         $bg_busy = 'green_string';
@@ -245,10 +295,9 @@ for (let i = 0; i < trainee_list_tmp.length; i = i + 5) {
       </div>
       <div class="modal-body">
         <div class="container">
-          <?php if ($ftt_access['group'] === 'staff'): ?>
           <div class="row mb-2">
             <div class="col">
-              <select id="mdl_meet_trainee_list" class="form-control form-control-sm">
+              <select id="mdl_meet_trainee_list" class="form-control form-control-sm" disabled>
                 <option value="_none_"></option>
                 <?php foreach ($trainee_list as $key => $value):
                   echo "<option value='{$key}'>{$value}</option>";
@@ -256,34 +305,25 @@ for (let i = 0; i < trainee_list_tmp.length; i = i + 5) {
               </select>
             </div>
           </div>
-          <?php endif; ?>
           <div class="row mb-2">
             <div class="col">
-              <select id="mdl_meet_serving_ones_list" class="form-control form-control-sm">
+              <select id="mdl_meet_serving_ones_list" class="form-control form-control-sm" disabled>
                 <option value="_none_"></option>
                 <?php
-                if ($fellowship_bbd_tab_active !== 'active') {
-                 foreach ($serving_ones_list_meet as $key => $value):
-                   echo "<option value='{$key}'>{$value}</option>";
-                  endforeach;
-                } else {
-                  foreach ($kbk_list as $key => $value):
-                    echo "<option value='{$key}'>{$value}</option>";
-                  endforeach;
-                }
+                  echo "<option value='{$memberId}'>{$kbk_list[$memberId]}</option>";
                 ?>
               </select>
             </div>
           </div>
           <div class="row mb-2">
             <div class="col-6">
-              <input type="date" id="mdl_meet_date" class="form-control form-control-sm">
+              <input type="date" id="mdl_meet_date" class="form-control form-control-sm" disabled>
             </div>
             <div class="col-4">
-              <input type="time" id="mdl_meet_time" class="form-control form-control-sm" style="max-width: 100% !important;">
+              <input type="time" id="mdl_meet_time" class="form-control form-control-sm" style="max-width: 100% !important;" disabled>
             </div>
             <div class="col-2">
-              <input type="text" id="mdl_meet_duration" class="form-control form-control-sm" style="max-width: 100% !important;">
+              <input type="text" id="mdl_meet_duration" class="form-control form-control-sm" style="max-width: 100% !important;" disabled>
             </div>
           </div>
           <div class="row mb-2">
@@ -338,7 +378,6 @@ for (let i = 0; i < trainee_list_tmp.length; i = i + 5) {
         <select id="ftr_trainee_meet_mbl" class="form-control form-control-sm mr-2 mb-2">
           <option value="_all_">Все обучающиеся</option>
           <?php
-          global $trainee_flt;
           foreach ($trainee_list as $key => $value):
             $selected = "";
             if ($trainee_flt === $key) {
@@ -348,7 +387,6 @@ for (let i = 0; i < trainee_list_tmp.length; i = i + 5) {
           endforeach; ?>
         </select>
         <select id="fellowship_active_mbl" class="form-control form-control-sm mr-2">
-          <?php global $active_flt; ?>
           <option value="1" <?php if ($active_flt === '1') echo 'selected'; ?>>Активные</option>
           <option value="0" <?php if ($active_flt === '0') echo 'selected'; ?>>Архивные</option>
         </select>

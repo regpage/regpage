@@ -14,13 +14,20 @@ error_reporting(E_ALL);*/
 /* API */
 // BFA подписка --> контакты.
 if (isset($_GET['method']) && $_GET['method'] === 'contacts.add_member' && $_GET['api_key'] === 'f3db58b7cb4baa82ea5321d08b6f0ff9') {
-  require_once 'api_v1.php';
+  require_once 'api_v1.php';  
   exit;
 }
 
 /* настройки */
 ini_set('session.cookie_lifetime', 60 * 60 * 24 * 365);  // 365 дней жизни куки
 session_start();
+
+// инфо раздел общения для братьев КБК
+if (isset($_GET['bbd_key']) && $_GET['bbd_key'] === 'forbbdbrothers' && !empty($_GET['member_key'])) {
+  include_once "ftt_fellowship_bbd.php";
+  exit;
+}
+
 
 // logs
 include_once 'extensions/write_to_log/write_to_log.php';
