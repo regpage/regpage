@@ -287,9 +287,9 @@ function emailToBBDBrothers() {
       $fellowship_cancel_text_name = '';
       if (count($fellowship_cancel_today) > 0) {
         if (empty($fellowship_text)) {
-          $fellowship_text = '<b>Отменено общение сегодня:</b><br>';
+          $fellowship_text = "<b>Отменено общение сегодня:</b><br>";
         } else {
-          $fellowship_text .= '<br><b>Отменено общение сегодня:</b>';
+          $fellowship_text .= "<br><b>Отменено общение сегодня:</b>";
         }
         foreach ($fellowship_cancel_today as $key_6 => $value_6) {
           $name_c = short_name::no_middle($value_6['name']);
@@ -303,9 +303,9 @@ function emailToBBDBrothers() {
       // emailing
       if (!empty($fellowship_text)) {
         if (!empty($key)) {
-          $fellowship_text .= "<a href='https://reg-page.ru/ftt_fellowship_bbd.php?bbd_key=forbbdbrothers&member_key={$key}>Перейти в раздел «Общение»</a><br>";
+          $fellowship_text .= "<br>Перейти в раздел «Общение» <a href='https://reg-page.ru/ftt_fellowship_bbd.php?bbd_key=forbbdbrothers&member_key={$key}'>Посмотреть общее расписание</a>";
           Emailing::send_by_key($key, 'Общение с обучающимися  ' . date('d.m.Y'), $fellowship_text);
-          echo "КБК  {$value}, есть записи на сегодня, отправлено уведомление по емайл. \r\n";
+          echo "КБК  {$value}, есть записи на сегодня, отправлено уведомление по емайл.<br>";
           // Emailing::send_by_key('000005716', $topic, 'Тестирование '.$body);
         } else {
           echo "Не получен емайл брата из КБК. \r\n";
