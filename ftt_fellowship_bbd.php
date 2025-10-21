@@ -393,7 +393,5 @@ if ($(window).width()<=769) {
   $("#mdl_meet_date, #mdl_meet_time").parent().addClass("pr-1");
   $("#mdl_meet_time, #mdl_meet_duration").parent().addClass("pl-1");
   $("#mdl_edit_fellowship_staff .container").addClass("pl-1").addClass("pr-1");
-
-
 }
 </script>
