@@ -1,5 +1,5 @@
 <?php
-define("IS_FTT_PAGE", true);  
+define("IS_FTT_PAGE", true);
 // GLOBAL CNTRL
 // db
 include_once 'config.php';
@@ -208,13 +208,7 @@ for (let i = 0; i < trainee_list_tmp.length; i = i + 5) {
 
 <div id="main_container" class="container-xl" style="margin-top: 10px; padding-left: 20px; padding-bottom: 25px; background-color: white; max-width: 1170px;">
   <!-- Подраздел общение -->
-  <?php require_once 'components/ftt_fellowship/ctrl_content_staff.php'; ?>
   <div id="meet_list_header" class="btn-group mb-2" style="padding-top: 21px;">
-    <select id="meet_serving_ones_list" class="form-control form-control-sm mr-2">
-      <?php
-        echo "<option value='{$memberId}' {$selected}>{$kbk_list[$memberId]}</option>";
-      ?>
-    </select>
     <select id="meet_trainee_select" class="form-control form-control-sm mr-2">
       <option value="_all_">Все обучающиеся</option>
       <?php foreach ($trainee_list as $key => $value):
@@ -232,13 +226,12 @@ for (let i = 0; i < trainee_list_tmp.length; i = i + 5) {
     <button type="button" id="meet_flt_modal_open" class="btn btn-primary btn-sm rounded mr-2" data-toggle="modal" data-target="#modal_meet_filters" style="display: none;">Фильтры</button>
   </div>
   <div id="meet_list_content_staff" class="container">
-    <div class="row row_meet mb-1">
+    <div id="columns_header" class="row row_meet mb-1">
       <div class="col-1 text_blue pl-1"><b id="meet_sort_date" class="cursor-pointer">Дата<i class="<?php echo $meet_sort_date_ico; ?>"></i></b></div>
       <div class="col-2 text_blue" style="max-width: 120px;"><b id="meet_sort_time" class="cursor-pointer">Время<i class="<?php echo $meet_sort_time_ico; ?>"></i></b></div>
       <div class="col-1 text-right"><b>Продолж</b></div>
       <div class="col-2 text_blue"><b id="meet_sort_trainee" class="cursor-pointer">Обучающийся<i class="<?php echo $meet_sort_trainee_ico; ?>"></i></b></div>
-      <div class="col-2 text_blue"><b id="meet_sort_servingone" class="cursor-pointer">Служащий<i class="<?php echo $meet_sort_s_one_ico; ?>"></i></b></div>
-      <div class="col-4"><b>Комментарий</b></div>
+      <div class="col-6"><b>Комментарий</b></div>
     </div>
     <hr style="margin-left: -15px; margin-right: -15px; margin-top: 0px; margin-bottom: 0px; border-color: lightgray;">
   <?php
@@ -271,18 +264,15 @@ for (let i = 0; i < trainee_list_tmp.length; i = i + 5) {
       echo "data-id='{$value['id']}' data-serving_one='{$value['serving_one']}' data-trainee='{$value['trainee']}' ";
       echo "data-date='{$value['date']}' data-time='{$value['time']}' data-duration='{$value['duration']}' ";
       echo "data-comment='{$value['comment_train']}' data-cancel='{$value['cancel']}'>";
-      echo "<div class='col-1 pl-1'>{$date} {$day_of_week}</div>";
-      echo "<div class='col-2' style='max-width: 120px;'>{$value['time']}–{$time_to}</div>";
-      echo "<div class='col-1 text-right'>{$value['duration']}</div>";
-      echo "<div class='col-3 text-secondary' style='display: none;'>коммент.</div>";
-      echo "<div class='col-2'><div>{$traineeForList}</div><div class='grey_text'>{$servingoneForList}</div></div>";
-      echo "<div class='col-2 {$hide}'>{$serving_ones_list[$value['serving_one']]}</div>";
-      echo "<div class='col-4'>{$comment_short_trainee}</div>"; //<br><span class='grey_text'>{$comment_short}</span>
+      echo "<div class='col-3 col-md-1 pl-1'>{$date} {$day_of_week}</div>";
+      echo "<div class='col-6 col-md-2 line_period' style='max-width: 120px;'>{$value['time']}–{$time_to}</div>";
+      echo "<div class='col-1 text-right line_duration'>{$value['duration']}</div>";
+      echo "<div class='col-6 col-md-2 line_trainee'><div>{$traineeForList}</div><div class='grey_text'>{$servingoneForList}</div></div>";
+      echo "<div class='col-6 col-md-6'>{$comment_short_trainee}</div>"; //<br><span class='grey_text'>{$comment_short}</span>
       echo "</div>";
     }
   ?>
   </div>
-
 </div>
 
 <!-- MADAL ОБЩЕНИЕ ЗАПИСЬ -->
@@ -331,11 +321,6 @@ for (let i = 0; i < trainee_list_tmp.length; i = i + 5) {
               <textarea id="mdl_meet_comment_trainee" class="form-control form-control-sm" rows="4" placeholder="Комментарий" style="width: 100%;"></textarea>
             </div>
           </div>
-          <!--<div class="row mb-2">
-            <div class="col">
-              <textarea id="mdl_meet_comment_serving_one" class="form-control form-control-sm" rows="4" placeholder="Комментарий служащего" style="width: 100%;"></textarea>
-            </div>
-          </div>-->
         </div>
       </div>
       <div class="modal-footer">
@@ -397,3 +382,18 @@ for (let i = 0; i < trainee_list_tmp.length; i = i + 5) {
     </div>
   </div>
 </div>
+<script>
+if ($(window).width()<=769) {
+  $("#columns_header").hide();
+  $(".line_trainee").addClass("pl-1");
+  $(".line_duration").addClass("pl-1");
+  $(".line_period").addClass("pl-1").addClass("pr-1");
+  $("#main_container").css("font-size", '16px');
+  $("#main_container select").css("font-size", '16px');
+  $("#mdl_meet_date, #mdl_meet_time").parent().addClass("pr-1");
+  $("#mdl_meet_time, #mdl_meet_duration").parent().addClass("pl-1");
+  $("#mdl_edit_fellowship_staff .container").addClass("pl-1").addClass("pr-1");
+
+
+}
+</script>

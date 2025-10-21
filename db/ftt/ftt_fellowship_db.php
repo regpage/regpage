@@ -239,11 +239,11 @@ function set_communication_record($trainee, $id, $checked=0, $date='', $time_fro
       $trainee_name = short_name::no_middle(Member::get_name($trainee));
       // проверка для братьев из КБК
       if (array_key_exists($serving_one, ftt_lists::kbk_brothers())) {
-        $linkToSection = "<a href='https://{$_SERVER['SERVER_NAME']}/ftt_fellowship_bbd.php?bbd_key=forbbdbrothers&member_key={$serving_one}>Перейти в раздел «Общение»</a><br>";
+        $linkToSection = "https://{$_SERVER['SERVER_NAME']}/ftt_fellowship_bbd.php?bbd_key=forbbdbrothers&member_key={$serving_one}";
       } else {
         $linkToSection = "https://{$_SERVER['SERVER_NAME']}/ftt_fellowship.php";
       }
-      $email_text = 'Обучающийся: ' . $trainee_name . '.<br>Новая запись: ' . date_convert::yyyymmdd_to_ddmm($date). ', ' . date_convert::week_days($date, true) . ' — ' . $time_from . '-' . $time_to . '.<br>' . $comment . "<br><br>Ссылка на раздел: " . $linkToSection . '<br><br>Запись создана ' . date("d.m.y, H:i") . '.';
+      $email_text = 'Обучающийся: ' . $trainee_name . '.<br>Новая запись: ' . date_convert::yyyymmdd_to_ddmm($date). ', ' . date_convert::week_days($date, true) . ' — ' . $time_from . '-' . $time_to . '.<br>' . $comment . "<br><br>Ссылка на раздел: " . $linkToSection . "<br><br>Запись создана " . date("d.m.y, H:i") . '.';
 // '000005716'
       emailing::send_by_key($serving_one, 'Новая запись на общение: '.$trainee_name, $email_text);
     }
@@ -260,11 +260,11 @@ function set_communication_record($trainee, $id, $checked=0, $date='', $time_fro
       $trainee_name = short_name::no_middle(Member::get_name($trainee));
       // проверка для братьев из КБК
       if (array_key_exists($serving_one, ftt_lists::kbk_brothers())) {
-        $linkToSection = "<a href='https://{$_SERVER['SERVER_NAME']}/ftt_fellowship_bbd.php?bbd_key=forbbdbrothers&member_key={$serving_one}>Перейти в раздел «Общение»</a><br>";
+        $linkToSection = "https://{$_SERVER['SERVER_NAME']}/ftt_fellowship_bbd.php?bbd_key=forbbdbrothers&member_key={$serving_one}";
       } else {
         $linkToSection = "https://{$_SERVER['SERVER_NAME']}/ftt_fellowship.php";
       }
-      $email_text = 'Обучающийся: ' . $trainee_name . '.<br>Отменена запись: ' . date_convert::yyyymmdd_to_ddmm($date) . ', ' . date_convert::week_days($date, true) . ' — ' . $time_from . '-' . $time_to . '.<br>' . $comment . "<br><br>Ссылка на раздел: " . $linkToSection . '<br><br>Запись отменена ' . date("d.m, H:i") . '.';
+      $email_text = 'Обучающийся: ' . $trainee_name . '.<br>Отменена запись: ' . date_convert::yyyymmdd_to_ddmm($date) . ', ' . date_convert::week_days($date, true) . ' — ' . $time_from . '-' . $time_to . '.<br>' . $comment . "<br><br>Ссылка на раздел: " . $linkToSection . "<br><br>Запись отменена " . date("d.m, H:i") . '.';
       emailing::send_by_key($serving_one, 'Отмена записи на общение: '.$trainee_name, $email_text);
     }
   }
@@ -293,11 +293,11 @@ function send_email_to_staff($id)
     $trainee_name = short_name::no_middle(Member::get_name($result['trainee']));
     // проверка для братьев из КБК
     if (array_key_exists($serving_one, ftt_lists::kbk_brothers())) {
-      $linkToSection = "<a href='https://{$_SERVER['SERVER_NAME']}/ftt_fellowship_bbd.php?bbd_key=forbbdbrothers&member_key={$serving_one}>Перейти в раздел «Общение»</a><br>";
+      $linkToSection = "https://{$_SERVER['SERVER_NAME']}/ftt_fellowship_bbd.php?bbd_key=forbbdbrothers&member_key={$serving_one}";
     } else {
       $linkToSection = "https://{$_SERVER['SERVER_NAME']}/ftt_fellowship.php";
     }
-    $email_text = 'Обучающийся: ' . $trainee_name . '.<br>Запись: ' . date_convert::yyyymmdd_to_ddmm($result['date']) . ', ' . date_convert::week_days($result['date'], true) . ' — ' . $result['time'] . '-' . $time_to . '.' . $comment . "<br><br>Ссылка на раздел: " . $linkToSection . '<br><br>Запись обновлена ' . date("d.m, H:i") . '.';
+    $email_text = 'Обучающийся: ' . $trainee_name . '.<br>Запись: ' . date_convert::yyyymmdd_to_ddmm($result['date']) . ', ' . date_convert::week_days($result['date'], true) . ' — ' . $result['time'] . '-' . $time_to . '.' . $comment . "<br><br>Ссылка на раздел: " . $linkToSection . "<br><br>Запись обновлена " . date("d.m, H:i") . '.';
 
     $res = emailing::send_by_key($serving_one, 'Обновлён комментарий записи: '.$trainee_name, $email_text);
   }
@@ -431,12 +431,12 @@ function cancel_communication_record($id, $comment='')
       $trainee_name = short_name::no_middle(Member::get_name($trainee));
       // проверка для братьев из КБК
       if (array_key_exists($serving_one, ftt_lists::kbk_brothers())) {
-        $linkToSection = "<a href='https://{$_SERVER['SERVER_NAME']}/ftt_fellowship_bbd.php?bbd_key=forbbdbrothers&member_key={$serving_one}>Перейти в раздел «Общение»</a><br>";
+        $linkToSection = "https://{$_SERVER['SERVER_NAME']}/ftt_fellowship_bbd.php?bbd_key=forbbdbrothers&member_key={$serving_one}";
       } else {
         $linkToSection = "https://{$_SERVER['SERVER_NAME']}/ftt_fellowship.php";
       }
 
-      $email_text = 'Обучающийся: ' . $trainee_name . '.<br>Отменена запись: ' . date_convert::yyyymmdd_to_ddmm($date) . ', ' . date_convert::week_days($date, true) . ' — ' . $time_from . '-' . $time_to . '.<br>' . $comment . "<br><br>Ссылка на раздел: " . $linkToSection . '<br><br>Запись отменена ' . date("d.m, H:i") . '.';
+      $email_text = 'Обучающийся: ' . $trainee_name . '.<br>Отменена запись: ' . date_convert::yyyymmdd_to_ddmm($date) . ', ' . date_convert::week_days($date, true) . ' — ' . $time_from . '-' . $time_to . '.<br>' . $comment . "<br><br>Ссылка на раздел: " . $linkToSection . "<br><br>Запись отменена " . date("d.m, H:i") . '.';
 //'000005716'
       emailing::send_by_key($serving_one, 'Отмена записи на общение: '.$trainee_name, $email_text);
     }
@@ -472,11 +472,11 @@ function emailingAddSetDltBlank($topic, $text, $serving_one, $trainee, $date, $t
   $trainee_name = short_name::no_middle(Member::get_name($trainee));
   // проверка для братьев из КБК
   if (array_key_exists($serving_one, ftt_lists::kbk_brothers())) {
-    $linkToSection = "<a href='https://{$_SERVER['SERVER_NAME']}/ftt_fellowship_bbd.php?bbd_key=forbbdbrothers&member_key={$serving_one}>Перейти в раздел «Общение»</a><br>";
+    $linkToSection = "https://{$_SERVER['SERVER_NAME']}/ftt_fellowship_bbd.php?bbd_key=forbbdbrothers&member_key={$serving_one}";
   } else {
     $linkToSection = "https://{$_SERVER['SERVER_NAME']}/ftt_fellowship.php";
   }
-  $email_text = 'Обучающийся: ' . $trainee_name . '.<br>'. $text . ' ' . date_convert::yyyymmdd_to_ddmm($date) . ', ' . date_convert::week_days($date, true) . ' — ' . $time . '-' . $time_to . '.' . $comment . '<br>' . $linkToSection;
+  $email_text = 'Обучающийся: ' . $trainee_name . ".<br>". $text . ' ' . date_convert::yyyymmdd_to_ddmm($date) . ', ' . date_convert::week_days($date, true) . ' — ' . $time . '-' . $time_to . '.' . $comment . "<br>" . $linkToSection;
 
   emailing::send_by_key($serving_one, $topic . ' ' .$trainee_name, $email_text);
 }
