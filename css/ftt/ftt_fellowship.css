@@ -30,4 +30,25 @@
 .bg_lightpink {
     background-color: #e9d0cf;
 }
+
+@media (min-width: 769px) {
+    /* Стили для экранов от 769px */
+    #meet_trainee_select {
+        min-width: 155px;
+    }
+}
+
+@media (min-width: 769px) {
+    /* Стили для экранов больше 769px */
+    #meet_trainee_select {
+        min-width: 155px;
+    }
+}
+
+@media (max-width: 769px) {
+    /* Стили для экранов меньше 769px */
+    #meet_trainee_select {
+        min-width: 180px;
+    }
+}
 /*meet*/
