@@ -1,6 +1,6 @@
 <?php
 // право доступа
-require_once 'cronkey.php';
+ require_once 'cronkey.php';
 
 // Ежедневная рассылка статистики для служащих.
 header('Content-Type: text/html; charset=utf-8');
@@ -211,12 +211,12 @@ function getServiceOnesWithTrainees ()
       $prophecy_data = Prophecy::by_serving_one($traine_list, $lTMeeting_date);
       $lTMeeting_date_format = date_convert::yyyymmdd_to_ddmm($lTMeeting_date);
       foreach ($prophecy_data as $keyProph => $valueProph) {
-        $prophecy_text .= "{$valueProph['name']} — ";
+        $prophecy_text .= short_name::no_middle($valueProph['name']) . " — ";
         if ($valueProph['status'] === "0" || $valueProph['status'] === "2") {
           $prophecy_text .= $lTMeeting_date_format . " лист не отправлен <br>";
-        } elseif ($valueProph['prophecy'] === "0") {
-          $prophecy_text .= $lTMeeting_date_format . " пророчествовал(а)<br>";
         } elseif ($valueProph['prophecy'] === "1") {
+          $prophecy_text .= $lTMeeting_date_format . " пророчествовал(а)<br>";
+        } elseif ($valueProph['prophecy'] === "0") {
           $prophecy_text .= $lTMeeting_date_format . " не пророчествовал(а)<br>";
         } else {
           $prophecy_text .= $lTMeeting_date_format . " данные отсутствуют тк установлен перерыв или собрание трапезы не было указано в расписании<br>";
