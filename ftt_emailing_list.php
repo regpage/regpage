@@ -34,6 +34,7 @@ include_once 'db/classes/ftt_attendance/prophecy.php';
 
 function getServiceOnesWithTrainees ()
 {
+  $listForprophecy = listForprophecy();
   //global $db;
   //$member_key = $db->real_escape_string($member_key);
   $result = [];
@@ -208,18 +209,33 @@ function getServiceOnesWithTrainees ()
       }
       // вычитаем
       $lTMeeting_date = date_plus::sub_d(date('Y-m-d'), date('w'));
+      // получаем список перерыва
+
+      // получаем список листов отсутствия
+
+
       $prophecy_data = Prophecy::by_serving_one($traine_list, $lTMeeting_date);
       $lTMeeting_date_format = date_convert::yyyymmdd_to_ddmm($lTMeeting_date);
       foreach ($prophecy_data as $keyProph => $valueProph) {
         $prophecy_text .= short_name::no_middle($valueProph['name']) . " — ";
         if ($valueProph['status'] === "0" || $valueProph['status'] === "2") {
-          $prophecy_text .= $lTMeeting_date_format . " лист не отправлен <br>";
+          $prophecy_text .= "на {$lTMeeting_date_format} бланк не отправлен <br>";
         } elseif ($valueProph['prophecy'] === "1") {
           $prophecy_text .= $lTMeeting_date_format . " пророчествовал(а)<br>";
         } elseif ($valueProph['prophecy'] === "0") {
+          // когда у обучающихся включён перерыв, в письме в разделе "Пророчествование" нужно писать "[дата] был перерыв".
+          // $listForprophecy
           $prophecy_text .= $lTMeeting_date_format . " не пророчествовал(а)<br>";
         } else {
-          $prophecy_text .= $lTMeeting_date_format . " данные отсутствуют тк установлен перерыв или собрание трапезы не было указано в расписании<br>";
+          // $listForprophecy
+          if (array_key_exists($valueProph['member_key'], $listForprophecy['pause'])) {
+            $reasonText = " был перерыв<br>";
+          } elseif (array_key_exists($valueProph['member_key'], $listForprophecy['permissions'])) {
+            $reasonText = " было разрешение на отсутствие<br>";
+          } else {
+             $reasonText = " данные отсутствуют или собрание трапезы не было указано в расписании<br>";
+          }
+          $prophecy_text .= "{$lTMeeting_date_format} {$reasonText}";
         }
       }
       $prophecy_text .= "<a href='https://reg-page.ru/ftt_attendance.php'>Перейти в раздел «Листы посещаемости»</a><br>";
@@ -317,3 +333,62 @@ function emailToBBDBrothers() {
 }
 
 emailToBBDBrothers();
+
+function listForprophecy()
+{
+  // получаем тех кто не на паузе и не отправил бланк на текущее число
+  // получаем спец. список с указанием причины отсутствия.
+
+  /*
+    0. Получаем сдавших
+    1. Исключаем сдавших
+    2. исключаем на перерыве
+    3. исключаем согласно листам отсутствия
+  */
+  // 1. Исключаем сдавших
+  //  список исключений
+  $result = ['permissions'=>[],'pause'=>[]];
+  $traineeKeysWhoIsOK = [];
+  $traineeKeysWhoIsOKText = '';
+  $res5 = db_query("SELECT DISTINCT `member_key` FROM `ftt_prophecy` WHERE DATE_FORMAT(`send_date`, '%Y-%m-%d') = CURDATE()");
+    while ($row = $res5->fetch_assoc()) $traineeKeysWhoIsOK[]= "'{$row['member_key']}'";
+
+  if (count($traineeKeysWhoIsOK) > 0) {
+    $traineeKeysWhoIsOKText = ' NOT IN (' . implode(',', $traineeKeysWhoIsOK) . ') AND ';
+  }
+
+  // 2 исключаем на перерыве
+  $traineeKeysOnPause=[];
+  $res4 = db_query("SELECT `member_key` FROM `ftt_trainee`
+    WHERE {$traineeKeysWhoIsOKText} `pause_start` IS NOT NULL AND `pause_start` <= CURDATE() AND (`pause_stop` IS NULL OR `pause_stop` >= CURDATE())");
+    while ($row = $res4->fetch_assoc()) {
+      // добавляем ключи обучающихся, кандидатов на доп. занание
+      $traineeKeysOnPause[$row['member_key']]='';
+      // дополняем список исключений
+      $traineeKeysWhoIsOK[]="'{$row['member_key']}'";
+    }
+
+  if (count($traineeKeysOnPause) > 0) {
+    $result['pause'] = $traineeKeysOnPause;
+    $traineeKeysWhoIsOKText = ' NOT IN (' . implode(',', $traineeKeysWhoIsOK) . ') AND ';
+  }
+
+  // 3. исключаем согласно листам отсутствия
+  $traineeKeysPermissions = [];
+  $res3 = db_query("SELECT DISTINCT `member_key` FROM `ftt_permission_sheet` WHERE NOT IN ({$traineeKeysWhoIsOKText}) AND DATE_FORMAT(absence_date, '%Y-%m-%d') = CURDATE() AND `status` = 2");
+    while ($row = $res3->fetch_assoc()) {
+      $traineeKeysPermissions[$row['member_key']]='';
+      $traineeKeysWhoIsOK[]="'{$row['member_key']}'";
+    }
+
+  if (count($traineeKeysPermissions) > 0) {
+    $result['permissions'] = $traineeKeysPermissions;
+    $traineeKeysWhoIsOKText = ' NOT IN (' . implode(',', $traineeKeysWhoIsOK) . ') AND ';
+  }
+
+  $res6 = db_query("SELECT `member_key` FROM `ftt_trainee` WHERE NOT IN {$traineeKeysWhoIsOKText}");
+    while ($row = $res5->fetch_assoc()) $traineeKeysToCreateExtrahelp[]= $row['member_key'];
+
+    return $result;
+
+}
