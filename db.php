@@ -2692,7 +2692,7 @@ function db_getEvent ($eventId){
     $eventId = $db->real_escape_string($eventId);
     $res=db_query ("SELECT e.key as event_id, e.name as event_name, e.*, e.close_registration, e.participants_count,
                     GROUP_CONCAT(DISTINCT CONCAT_WS(',', m.key, m.name, m.email, l.name) ORDER BY m.key ASC SEPARATOR ';') as admins,
-                    GROUP_CONCAT(DISTINCT CONCAT_WS(':', z.locality_key, z.region_key, z.country_key, lo.name, r.name, c.name) SEPARATOR ',') as zones
+                    GROUP_CONCAT(DISTINCT CONCAT_WS(':', z.locality_key, z.region_key, z.country_key, lo.name, r.name, c.name) SEPARATOR ';') as zones
                     FROM event e
                     LEFT JOIN event_access a ON a.key = e.key
                     LEFT JOIN member m ON m.key=a.member_key

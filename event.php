@@ -528,14 +528,16 @@ $(document).ready(function(){
             form.attr('data-team_key', event.team_key);
 
             if(event.zones !== ''){
-                var zones = event.zones.split(','), arrZones = [];
+                var zones = event.zones.split(';'), arrZones = [];
                 for(var i in zones){
+                  if (zones[i].includes(":")) {
                     var zone = zones[i].split(':');
                     arrZones.push(
                         {id : zone[0],
                         name : zone[1],
                         field : getEventFieldZoneArea(zone[0])
                     });
+                  }
                 }
             }
         }

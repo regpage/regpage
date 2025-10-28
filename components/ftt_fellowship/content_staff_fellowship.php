@@ -1,9 +1,9 @@
 <!-- Подраздел общение -->
 <?php require_once 'components/ftt_fellowship/ctrl_content_staff.php'; ?>
 <div id="meet_list_header" class="btn-group mb-2" style="padding-top: 21px;">
-  <?php if ($fellowship_bbd_tab_active === 'active'): ?>
+  <?php // if ($fellowship_bbd_tab_active === 'active'): ?>
       <button type="button" id="meet_add_staff" class="btn btn-success btn-sm rounded mr-2" data-toggle="modal" data-target="#mdl_edit_fellowship_staff">Добавить</button>
-  <?php endif; ?>
+  <?php // endif; ?>
   <select id="meet_serving_ones_list" class="form-control form-control-sm mr-2">
     <?php
     if ($fellowship_bbd_tab_active !== 'active') {
