@@ -16,10 +16,10 @@ if (isset($_GET['type'])) {
     echo db_dltFttFellowshipTmpl($_GET['member_key'], $_GET['day'], $_GET['time'], $_GET['duration']);
     exit;
   } elseif ($_GET['type'] === 'set') {
-    echo db_updFttFellowshipTmpl($_GET['member_key'], $_GET['day'], $_GET['time'], $_GET['duration'], $_GET['cond_member_key'], $_GET['cond_day'], $_GET['cond_time'], $_GET['cond_duration']);
+    echo db_updFttFellowshipTmpl($_GET['member_key'], $_GET['day'], $_GET['time'], $_GET['duration'], $_GET['cond_member_key'], $_GET['cond_day'], $_GET['cond_time'], $_GET['cond_duration'], $_GET['comment']);
     exit;
   } elseif ($_GET['type'] === 'add') {
-    echo db_addFttFellowshipTmpl($_GET['member_key'], $_GET['day'], $_GET['time'], $_GET['duration']);
+    echo db_addFttFellowshipTmpl($_GET['member_key'], $_GET['day'], $_GET['time'], $_GET['duration'], $_GET['comment']);
     exit;
   }
 }

@@ -14,19 +14,20 @@ function db_getFttFellowshipTmpl(){
 }
 
 // добавляем шаблоны для раздела общение
-function db_addFttFellowshipTmpl($memberKey, $day, $time, $duration){
+function db_addFttFellowshipTmpl($memberKey, $day, $time, $duration, $comment){
   $memberKey = db_real_escape_string($memberKey);
   $day = db_real_escape_string($day);
   $time = db_real_escape_string($time);
   $duration = db_real_escape_string($duration);
+  $comment = db_real_escape_string($comment);
 
-  $res=db_query ("INSERT INTO `ftt_fellowship_tmpl` (`serving_one`, `day`, `time`, `duration`) VALUES ('{$memberKey}', '{$day}', '{$time}', '{$duration}')");
+  $res=db_query ("INSERT INTO `ftt_fellowship_tmpl` (`serving_one`, `day`, `time`, `duration`, `comment`) VALUES ('{$memberKey}', '{$day}', '{$time}', '{$duration}', '{$comment}')");
 
 	return $res;
 }
 
 // обновляем шаблон для раздела общение
-function db_updFttFellowshipTmpl($memberKey, $day, $time, $duration, $cond_memberKey, $cond_day, $cond_time, $cond_duration){
+function db_updFttFellowshipTmpl($memberKey, $day, $time, $duration, $cond_memberKey, $cond_day, $cond_time, $cond_duration, $comment){
   $memberKey = db_real_escape_string($memberKey);
   $day = db_real_escape_string($day);
   $time = db_real_escape_string($time);
@@ -35,9 +36,10 @@ function db_updFttFellowshipTmpl($memberKey, $day, $time, $duration, $cond_membe
   $cond_day = db_real_escape_string($cond_day);
   $cond_time = db_real_escape_string($cond_time);
   $cond_duration = db_real_escape_string($cond_duration);
+  $comment = db_real_escape_string($comment);
 
   $res=db_query ("UPDATE `ftt_fellowship_tmpl`
-    SET `serving_one`='{$memberKey}', `day`='{$day}', `time`='{$time}', `duration`='{$duration}'
+    SET `serving_one`='{$memberKey}', `day`='{$day}', `time`='{$time}', `duration`='{$duration}', `comment`='{$comment}'
     WHERE `serving_one` = '{$cond_memberKey}' AND `time` = '{$cond_time}' AND `day` = '{$cond_day}' AND `duration` = '{$cond_duration}' LIMIT 1");
 
 	return $res;

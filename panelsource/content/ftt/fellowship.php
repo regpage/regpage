@@ -30,7 +30,7 @@ include_once 'panelsource/content/ftt/fellowship_cntrl.php';
     <div id="fellowship_tmpl_list">
     <?php
     foreach ($fttFellowshipTmpl as $key => $value) {
-      echo "<div data-member_key='{$value['serving_one']}'><span class='fellowship_tmpl_name'>{$value['name']}</span> <span class='fellowship_tmpl_day'> {$value['day']}</span> <span class='fellowship_tmpl_time'> {$value['time']}</span> <span class='fellowship_tmpl_duration'>{$value['duration']}</span> <span class='set_fellowship_tmpl cursor-pointer text-primary' data-toggle='modal' data-target='#add_fellowship_tmpl_modal'> изменить</span> <span class='dlt_fellowship_tmpl cursor-pointer text-danger'> удалить</span></div>";
+      echo "<div data-member_key='{$value['serving_one']}'><span class='fellowship_tmpl_name'>{$value['name']}</span> <span class='fellowship_tmpl_day'> {$value['day']}</span> <span class='fellowship_tmpl_time'> {$value['time']}</span> <span class='fellowship_tmpl_duration'>{$value['duration']}</span> <span class='set_fellowship_tmpl cursor-pointer text-primary' data-toggle='modal' data-target='#add_fellowship_tmpl_modal'> изменить</span> <span class='dlt_fellowship_tmpl cursor-pointer text-danger'> удалить</span><span class='fellowship_tmpl_comment pl-2'>{$value['comment']}</span></div>";
     }
     ?>
     </div>
@@ -80,6 +80,11 @@ include_once 'panelsource/content/ftt/fellowship_cntrl.php';
           </div>
           <div class="col-2">
             <input type="number" id="fellowship_tmpl_duration_modal" class="form-control form-control-sm" value="">
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-12">
+            <input type="text" id="fellowship_tmpl_comment_modal" class="form-control form-control-sm" value="">
           </div>
         </div>
       </div>

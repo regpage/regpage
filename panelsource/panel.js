@@ -284,14 +284,14 @@ $(document).ready(function(){
     fetch("panelsource/content/ftt/fellowship_cntrl.php?type=" + type + "&member_key=" + data_str.key + "&day=" + data_str.day
       + "&time=" + data_str.time + "&duration=" + data_str.duration
       + "&cond_member_key=" + data_str.old_key + "&cond_day=" + data_str.old_day
-      + "&cond_time=" + data_str.old_time + "&cond_duration=" + data_str.old_duration)
+      + "&cond_time=" + data_str.old_time + "&cond_duration=" + data_str.old_duration + "&comment=" + data_str.comment)
     .then(response => response.text())
     .then(result => {
       if (result) {
         showHint("Успешно.");
         setCookie("panel_tab_active", "ftt");
         setTimeout(function () {
-          location.reload();
+          //location.reload();
         }, 300);
       } else {
         showError("Неудача.");
@@ -326,18 +326,21 @@ $(document).ready(function(){
           this.day = $("#fellowship_tmpl_days_modal").val() || "";
           this.time = $("#fellowship_tmpl_time_modal").val() || "";
           this.duration = $("#fellowship_tmpl_duration_modal").val() || "";
+          this.comment = $("#fellowship_tmpl_comment_modal").val().trim() || "";
         } else if (elem) {
           this.key = elem.attr("data-member_key").trim() || "_none_";
           this.name = elem.find(".fellowship_tmpl_name").text().trim() || "";
           this.day = elem.find(".fellowship_tmpl_day").text().trim() || "_none_";
           this.time = elem.find(".fellowship_tmpl_time").text().trim() || "";
           this.duration = elem.find(".fellowship_tmpl_duration").text().trim() || "";
+          this.comment = elem.find(".fellowship_tmpl_comment").text().trim() || "";
         } else {
           this.name = "";
           this.key = "_none_";
           this.day = "_none_";
           this.time = "";
           this.duration = "";
+          this.comment = "";
         }
         return this;
       },
@@ -345,7 +348,8 @@ $(document).ready(function(){
       key: "",
       day: "",
       time: "",
-      duration: ""
+      duration: "",
+      comment: ""
   }
 
   // заполнение бланка добавление/изменения общения данными переданной строки
@@ -355,11 +359,13 @@ $(document).ready(function(){
     $("#add_fellowship_tmpl_modal").attr("data-day", data.day);
     $("#add_fellowship_tmpl_modal").attr("data-time", data.time);
     $("#add_fellowship_tmpl_modal").attr("data-duration", data.duration);
+    $("#add_fellowship_tmpl_modal").attr("data-comment", data.comment);
     // заполняем поля данными
     $("#fellowship_tmpl_serving_one_list_modal").val(data.key);
     $("#fellowship_tmpl_days_modal").val(data.day);
     $("#fellowship_tmpl_time_modal").val(data.time);
     $("#fellowship_tmpl_duration_modal").val(data.duration);
+    $("#fellowship_tmpl_comment_modal").val(data.comment)
   }
 
 // ready page stop here
