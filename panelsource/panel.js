@@ -246,7 +246,7 @@ $(document).ready(function(){
         if (result) {
           parent.remove();
           showHint("Успешно.");
-          //location.reload();
+          location.reload();
         } else {
           showError("Неудача.");
         }

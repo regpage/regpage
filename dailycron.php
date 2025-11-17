@@ -47,7 +47,7 @@ db_checkDeleteOldAdminSessions();
 // STOP ADMINS SESSIONS
 
 //-------------------------------------//
-// ОБЩЕНИЕ СОЗДАНИЕ ЗАПИСЕЙ ИЗ РАСПИСАНИЯ
+// ОБЩЕНИЕ. СОЗДАНИЕ ЗАПИСЕЙ ИЗ РАСПИСАНИЯ.
 function cron_set_fellowship_str() {
   // Проверяем что расписание не выходит за период обучения
   // ИНТЕРВАЛ ДАТ ДОЛЖЕН БЫТЬ = ДАТА СТАРТА РАСПИСАНИЯ - 7 ДНЕЙ И ДАТА завершения РАСПИСАНИЯ - 14 ДНЕЙ
@@ -110,7 +110,7 @@ function cron_set_fellowship_str() {
 
   if (count($result) > 0) {
     foreach ($result as $key => $value) {
-      $res = db_query ("INSERT INTO `ftt_fellowship` (`serving_one`, `date`, `time`, `duration`) VALUES ('{$value['serving_one']}', (CURDATE() + INTERVAL 14 DAY) , '{$value['time']}', '{$value['duration']}')");
+      $res = db_query ("INSERT INTO `ftt_fellowship` (`serving_one`, `date`, `time`, `duration`, `comment_train`) VALUES ('{$value['serving_one']}', (CURDATE() + INTERVAL 14 DAY) , '{$value['time']}', '{$value['duration']}', '{$value['comment']}')");
     }
     return true;
   } else {

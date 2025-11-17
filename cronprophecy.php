@@ -19,57 +19,7 @@ function prophecyCheck()
   }
 
   $traineeKeysToCreateExtrahelp = [];
-  // получаем тех кто не на паузе и не отправил бланк на текущее число
-  // получаем спец. список с указанием причины отсутствия.
-  // последовательность
-  /*
-    1. Исключаем сдавших
-    2. исключаем на перерыве
-    3. исключаем согласно листам отсутствия
-  */
-  // 1. Исключаем сдавших
-  //  список исключений
-  /*
-  $traineeKeysWhoIsOK = [];
-  $traineeKeysWhoIsOKText = '';
-  $res5 = db_query(("SELECT DISTINCT `member_key` FROM `ftt_prophecy` WHERE DATE_FORMAT(`send_date`, '%Y-%m-%d') = CURDATE()");
-    while ($row = $res5->fetch_assoc()) $traineeKeysWhoIsOK[]= "'{$row['member_key']}'";
-
-  if (count($traineeKeysWhoIsOK) > 0) {
-    $traineeKeysWhoIsOKText = ' NOT IN (' . implode(',', $traineeKeysWhoIsOK) . ') AND ';
-  }
-  // 2 исключаем на перерыве
-  $traineeKeysOnPause=[];
-  $res4 = db_query("SELECT `member_key` FROM `ftt_trainee`
-    WHERE {$traineeKeysWhoIsOKText} `pause_start` IS NOT NULL AND `pause_start` <= CURDATE() AND (`pause_stop` IS NULL OR `pause_stop` >= CURDATE())");
-    while ($row = $res4->fetch_assoc()) {
-      // добавляем ключи обучающихся, кандидатов на доп. занание
-      $traineeKeysOnPause[$row['member_key']]='';
-      // дополняем список исключений
-      $traineeKeysWhoIsOK[]="'{$row['member_key']}'";
-    }
-
-  if (count($traineeKeysOnPause) > 0) {
-    $traineeKeysWhoIsOKText = ' NOT IN (' . implode(',', $traineeKeysWhoIsOK) . ') AND ';
-  }
-
-  // 3. исключаем согласно листам отсутствия
-  $traineeKeysPermissions = [];
-  $res3 = db_query(("SELECT DISTINCT `member_key`, `status` FROM `ftt_permission_sheet` WHERE NOT IN ({$traineeKeysWhoIsOKText}) AND DATE_FORMAT(absence_date, '%Y-%m-%d') = CURDATE() AND `status` = 2");
-    while ($row = $res3->fetch_assoc()) {
-      $traineeKeysPermissions[$row['member_key']]=$row['status'];
-      $traineeKeysWhoIsOK[]="'{$row['member_key']}'";
-    }
-
-  if (count($traineeKeysPermissions) > 0) {
-    $traineeKeysWhoIsOKText = ' NOT IN (' . implode(',', $traineeKeysWhoIsOK) . ') AND ';
-  }
-
-  $res6 = db_query(("SELECT `member_key` FROM `ftt_trainee` WHERE NOT IN {$traineeKeysWhoIsOKText}");
-    while ($row = $res5->fetch_assoc()) $traineeKeysToCreateExtrahelp[]= $row['member_key'];
-*/
-//$traineeKeysToCreateExtrahelp
-  // проверка в воскресенье
+  // проверка в воскресенье те кто не дал пророчествование исключая тех кто на перерыве и  с листами отсутствия
   $res = db_query("SELECT ft.member_key as ft_member_key FROM ftt_trainee ft
     WHERE NOT EXISTS (SELECT fp.member_key FROM ftt_prophecy fp WHERE fp.member_key = ft.member_key AND DATE_FORMAT(fp.send_date, '%Y-%m-%d') = CURDATE())
     AND (ft.pause_start IS NULL OR (ft.pause_start IS NOT NULL AND ft.pause_start > CURDATE()) OR (ft.pause_stop IS NOT NULL AND ft.pause_stop < CURDATE()))
