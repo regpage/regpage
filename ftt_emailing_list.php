@@ -211,29 +211,38 @@ function getServiceOnesWithTrainees ()
       // вычитаем
       $lTMeeting_date = date_plus::sub_d(date('Y-m-d'), date('w'));
       // получаем список перерыва
-
       // получаем список листов отсутствия
-
-
       $prophecy_data = Prophecy::by_serving_one($traine_list, $lTMeeting_date);
       $lTMeeting_date_format = date_convert::yyyymmdd_to_ddmm($lTMeeting_date);
       foreach ($prophecy_data as $keyProph => $valueProph) {
-        $prophecy_text .= short_name::no_middle($valueProph['name']) . " — ";
-        if ($valueProph['status'] === "0" || $valueProph['status'] === "2") {
-          $prophecy_text .= "на {$lTMeeting_date_format} бланк посещаемости не отправлен <br>";
-        } elseif ($valueProph['prophecy'] === "1") {
-          $prophecy_text .= $lTMeeting_date_format . " пророчествовал(а)<br>";
-        } elseif ($valueProph['prophecy'] === "0") {
-          $prophecy_text .= $lTMeeting_date_format . " не пророчествовал(а)<br>";
+        if ($valueProph['done'] === '2') {
+          $prophecy_text .= short_name::no_middle(Member::get_name($keyProph)) . " — ";
         } else {
-          if (array_key_exists($valueProph['member_key'], $listForprophecy['pause'])) {
+          $prophecy_text .= short_name::no_middle($valueProph['name']) . " — ";
+        }
+        if ($valueProph['done'] === '2') {
+          if (array_key_exists($keyProph, $listForprophecy['pause'])) {
             $reasonText = " был перерыв<br>";
-          } elseif (array_key_exists($valueProph['member_key'], $listForprophecy['permissions'])) {
+          } elseif (array_key_exists($keyProph, $listForprophecy['permissions'])) {
             $reasonText = " было разрешение на отсутствие<br>";
           } else {
-             $reasonText = " данные отсутствуют или собрание трапезы не было указано в расписании<br>";
+            $reasonText = " информация о пророчествовании нет (отсутствует бланк)<br>";
           }
           $prophecy_text .= "{$lTMeeting_date_format} {$reasonText}";
+        } elseif ($valueProph['done'] === "0") {
+          $prophecy_text .= $lTMeeting_date_format . " не пророчествовал(а)";
+          if ($valueProph['send'] === '0') {
+            $prophecy_text .= " (бланк не отправлен)";
+          }
+          $prophecy_text .= "<br>";
+        } elseif ($valueProph['done'] === "1"){
+          $prophecy_text .= $lTMeeting_date_format . " пророчествовал(а) ";
+          if ($valueProph['send'] === '0') {
+            $prophecy_text .= " (бланк не отправлен)";
+          }
+          $prophecy_text .= "<br>";
+        } else {
+          $reasonText = " Ошибка<br>";
         }
       }
       $prophecy_text .= "<a href='https://reg-page.ru/ftt_attendance.php'>Перейти в раздел «Листы посещаемости»</a><br>";
@@ -247,7 +256,7 @@ function getServiceOnesWithTrainees ()
       $body = $announcements . $absence . $attendance . $extraHelp . $missingClass . $fellowship_text . $prophecy_text;
       if (!empty($value)) {
         Emailing::send_by_key($value, $topic, $body);
-        // Emailing::send_by_key('000005716', $topic, 'Тестирование '.$body);
+        //Emailing::send_by_key('000005716', $topic, 'Тестирование '.$body);
       } else {
         echo "Не получен емайл служащего, возможно не указан служащий для какого то обучающегося \r\n";
       }
