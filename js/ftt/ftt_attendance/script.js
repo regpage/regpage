@@ -190,6 +190,7 @@ $(document).ready(function(){
      return;
    }
    // проверяем отметку пророчествования в воскресенье
+   /*
    if ($("#sunday_prophecy").is(":visible") && !$("#sunday_prophecy").val() && $("#modal-block_1 label").text() !== "В этот день учёт посещаемости не ведётся.") {
      $("#sunday_prophecy").css("border-color", "red");
      showError("Заполните поле «Пророчествование»‎.");
@@ -197,6 +198,7 @@ $(document).ready(function(){
    } else {
      $("#sunday_prophecy").css("border-color", "lightgray");
    }
+   */
 //
    // валидация значений полей
    let counter_valid = 0, extra_valid = 0;
@@ -301,7 +303,7 @@ $(document).ready(function(){
 function open_blank(el_this) {
   let disabled = "", status;
   $("#modal-block_staff").hide();
-  $("#note_prophecy").hide();
+  //$("#note_prophecy").hide();
   $("#modal-block_1").show();
   $("#modal-block_2").show();
   status_sheet = el_this.attr("data-status");
@@ -569,7 +571,7 @@ function open_blank(el_this) {
      $("#modal-block_1").html(srings.join(" "));
     } else {
      $("#modal-block_1").html("<p><label style='color: red;'>В этот день учёт посещаемости не ведётся.</label></p>");
-     $("#sunday_prophecy").parent().parent().parent().hide();
+     // $("#sunday_prophecy").parent().parent().parent().hide();
     }
     // DESIGN
     if ($(window).width()<=769) {
@@ -1123,18 +1125,19 @@ function open_blank(el_this) {
       lord_table_meeting_today = true;
     }
 
-    if (tmp_day_of_week[tmp_day_of_week.length-1] === 'с' && lord_table_meeting_today) {
-      $("#sunday_prophecy").parent().parent().parent().show();
-      last_prophecy(el_this.attr("data-member_key"), el_this.attr("data-date"));
+    if (tmp_day_of_week[tmp_day_of_week.length-2] === 'п') { //  && lord_table_meeting_today
+      last_prophecy(el_this.attr("data-member_key"), el_this.attr("data-date"), 5);
+    } else if (tmp_day_of_week[tmp_day_of_week.length-1] === 'б') {
+      last_prophecy(el_this.attr("data-member_key"), el_this.attr("data-date"), 6);
     } else {
-      $("#sunday_prophecy").parent().parent().parent().hide();
+      $("#note_prophecy").parent().parent().parent().hide();
     }
   });
 
     $("#morning_revival").val(el_this.attr("data-morning_revival")); // изучение в группах
     $("#personal_prayer").val(el_this.attr("data-personal_prayer"));
     $("#common_prayer").val(el_this.attr("data-common_prayer"));
-    $("#sunday_prophecy").val(el_this.attr("data-prophecy"));
+    //$("#sunday_prophecy").val(el_this.attr("data-prophecy"));
     $("#gospel_practice").val(el_this.attr("data-gospel"));
     $("#group_study").val(el_this.attr("data-group_study"));
     $("#bible_field").prop("checked", Number(el_this.attr("data-bible_reading")));
@@ -1290,7 +1293,7 @@ function open_blank(el_this) {
         $("#personal_prayer").css("min-width", $("#bible_book_ot").css("width"));
         $("#common_prayer").css("min-width", $("#bible_book_ot").css("width"));
         $("#ministry_reading").css("min-width", $("#bible_book_ot").css("width"));
-        $("#sunday_prophecy").css("min-width", $("#bible_book_ot").css("width"));
+        //$("#sunday_prophecy").css("min-width", $("#bible_book_ot").css("width"));
       }, 200);
     }
 
@@ -2351,22 +2354,22 @@ function open_blank(el_this) {
 
   // === ПРОВЕРКА ПРОРОЧЕСТВОВАНИЯ НА ПРОШЛОМ СОБРАНИИ
   // получаем бланк прошлого воскресенья
-  function last_prophecy(member_key, date_blank) {
-    date_blank = subtract_dates(date_blank, 7);
+  function last_prophecy(member_key, date_blank, days) {
+    date_blank = subtract_dates(date_blank, days);
     fetch("ajax/ftt_attendance_ajax.php?type=get_prev_week_blank&member_key=" + member_key + "&date_blank=" + date_blank)
     .then(response => response.json())
     .then(commits => {
       if (commits === "0") {
-        $("#note_prophecy").html("Вы не пророчествовали<br>на прошлой неделе.");
-        $("#note_prophecy").show();
-      } else if (commits === "1" || commits === '' || commits === null) {
-        $("#note_prophecy").hide();
-      } else if (commits === "2") {
-        $("#note_prophecy").html(dateStrFromyyyymmddToddmm(date_blank) + " лист не<br>отправлен!");
-        $("#note_prophecy").show();
+        $("#note_prophecy").html("Вы не пророчествовали на прошлой неделе.");
+        $("#note_prophecy").parent().parent().parent().show();
+      } else if (commits === "1") {
+        $("#note_prophecy").parent().parent().parent().hide();
+      } else if (commits === "") {
+        $("#note_prophecy").html("Информации о пророчествовании в воскресенье нет (отсутствует бланк)."); // dateStrFromyyyymmddToddmm(date_blank) +
+        $("#note_prophecy").parent().parent().parent().show();
       } else {
         $("#note_prophecy").text("Ошибка.");
-        $("#note_prophecy").show();
+        $("#note_prophecy").parent().parent().parent().show();
       }
     });
   }

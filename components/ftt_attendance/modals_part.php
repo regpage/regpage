@@ -90,17 +90,17 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
               </div>
             </div>
           <?php } ?>
+          <!-- Пророчествование на собрании в прошлое воскресенье -->
           <div class="row">
-            <div class="col-12">
-              <h6 class="hide_element">Пророчествование на собрании</h6>
-              <div class="input-group mb-2">
-                <span class="align-self-center name_session">Пророчествование на собрании</span>
+            <div class="col-12">              
+              <div class="input-group mb-3">
+            <!--    <span class="align-self-center name_session">Пророчествование на собрании</span>
                 <select type="number" id="sunday_prophecy" class="form-control short_number_field" data-field="prophecy" value="" style="margin-left: 0px !important; font-size: 14px; max-width: 95px !important;">
                   <option value=""></option>
                   <option value="1">Да</option>
                   <option value="0">Нет</option>
-                </select>
-                <span id="note_prophecy" class="ml-2 pl-2 align-self-center text-danger" style="line-height: 1.3;">Вы не пророчествовали<br>на прошлой неделе</span>
+                </select> -->
+                <span id="note_prophecy" class="align-self-center text-danger" style="line-height: 1.3;">Вы не пророчествовали<br>на прошлой неделе</span>
               </div>
             </div>
           </div>

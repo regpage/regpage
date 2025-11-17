@@ -41,6 +41,13 @@ function clear_blank() {
 
   // LATE
   if ($("#current_late").is(":visible")) {
+    $("#modalAddEditLate #fio_field_late").attr('disabled', false);
+    $("#modalAddEditLate #session_name_field").attr('disabled', false);
+    $("#done_checkbox_field").attr('disabled', false);
+    $("#modalAddEditLate #date_field_late").attr('disabled', false);
+    $("#modalAddEditLate #save_late").attr('disabled', false);
+    $("#minutes_field").attr('disabled', false);
+    
     $('#modalAddEditLate').find('input').val('');
     $('#modalAddEditLate').find('select').val('_none_');
     $('#modalAddEditLate').find('#session_name_field').val('');
@@ -1411,19 +1418,33 @@ $(".ftt_late_string").click(function () {
     $("#done_checkbox_field").attr('disabled', true);
     $("#modalAddEditLate #date_field_late").attr('disabled', true);
     $("#modalAddEditLate #save_late").attr('disabled', true);
+    $("#minutes_field").attr('disabled', true);
   } else {
     $("#modalAddEditLate #fio_field_late").attr('disabled', false);
     $("#modalAddEditLate #session_name_field").attr('disabled', false);
     $("#done_checkbox_field").attr('disabled', false);
     $("#modalAddEditLate #date_field_late").attr('disabled', false);
     $("#modalAddEditLate #save_late").attr('disabled', false);
+    $("#minutes_field").attr('disabled', false);
   }
   if ($(this).attr("data-archive") === '1') {
     $('#modalUniTitle_late').text('Опоздание (учтено)');
     $("#done_checkbox_field").prop('checked', true);
+    $("#modalAddEditLate #fio_field_late").attr('disabled', true);
+    $("#modalAddEditLate #session_name_field").attr('disabled', true);
+    $("#done_checkbox_field").attr('disabled', true);
+    $("#modalAddEditLate #date_field_late").attr('disabled', true);
+    $("#modalAddEditLate #save_late").attr('disabled', true);
+    $("#minutes_field").attr('disabled', true);
   } else {
     $('#modalUniTitle_late').text('Опоздание (текущее)');
     $("#done_checkbox_field").prop('checked', false);
+    $("#modalAddEditLate #fio_field_late").attr('disabled', false);
+    $("#modalAddEditLate #session_name_field").attr('disabled', false);
+    $("#done_checkbox_field").attr('disabled', false);
+    $("#modalAddEditLate #date_field_late").attr('disabled', false);
+    $("#modalAddEditLate #save_late").attr('disabled', false);
+    $("#minutes_field").attr('disabled', false);
   }
 
   // attr

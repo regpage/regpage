@@ -48,27 +48,6 @@ function render_bible_chapters(book, chapter, selector) {
 }
 /*** BIBLE READING STOP ***/
 
-// === ПРОВЕРКА ПРОРОЧЕСТВОВАНИЯ НА ПРОШЛОМ СОБРАНИИ
-// получаем бланк прошлого воскресенья
-function last_prophecy(member_key, date_blank) {
-  date_blank = subtract_dates(date_blank, 7);
-  fetch("ajax/ftt_attendance_ajax.php?type=get_prev_week_blank&member_key=" + member_key + "&date_blank=" + date_blank)
-  .then(response => response.json())
-  .then(commits => {
-    if (commits === "0") {
-      $("#note_prophecy").html("Вы не пророчествовали<br>на прошлой неделе.");
-      $("#note_prophecy").show();
-    } else if (commits === "1" || commits === '' || commits === null) {
-      $("#note_prophecy").hide();
-    } else if (commits === "2") {
-      $("#note_prophecy").html(dateStrFromyyyymmddToddmm(date_blank) + " лист не<br>отправлен!");
-      $("#note_prophecy").show();
-    } else {
-      $("#note_prophecy").text("Ошибка.");
-      $("#note_prophecy").show();
-    }
-  });
-}
 // ПОДРАЗДЕЛ ЛИСТЫ ОТСУТСТВИЯ
 // FUNCTION
 // PERMISSIONS

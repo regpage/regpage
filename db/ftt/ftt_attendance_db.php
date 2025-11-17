@@ -408,33 +408,16 @@ function db_overnight($member_key, $date)
 }
 
 // получаем бланк недельной давности
-function getPrevWeekBlank($member_key, $date_blank) {
+function getPrevWeekBlank($memberKey, $date) {
   global $db;
-  $member_key = $db->real_escape_string($member_key);
-  $date_blank = $db->real_escape_string($date_blank);
-  $prophecy = '';
-  $id = '';
-  $has_sessions = '';
-  $status = '';
+  $memberKey = $db->real_escape_string($memberKey);
+  $date = $db->real_escape_string($date);
+  $done = '';
 
-  $res = db_query ("SELECT `id`, `prophecy`, `status` FROM `ftt_attendance_sheet` WHERE `member_key`='{$member_key}' AND `date` = '{$date_blank}'");
-  while ($row = $res->fetch_assoc()) {
-    $prophecy = $row['prophecy'];
-    $id = $row['id'];
-    $status = $row['status'];
-  }
+  $res = db_query ("SELECT DISTINCT `done` FROM `ftt_prophecy` WHERE DATE(send_date) = '{$date}' AND `member_key` = {$memberKey}");
+  while ($row = $res->fetch_assoc()) $done = $row['done'];
 
-  $res2 = db_query ("SELECT DISTINCT `id` FROM `ftt_attendance` WHERE `sheet_id`='{$id}'");
-  while ($row2 = $res2->fetch_assoc()) $has_sessions = $row2['id'];
-
-  if (empty($has_sessions)) {
-    return $has_sessions;
-  } elseif ($status == 2) {
-    return 2;
-  } else {
-    return $prophecy;
-  }
-
+  return $done;
 }
 
 // PERMISSIONS
