@@ -256,6 +256,8 @@ function getServiceOnesWithTrainees ()
       $body = $announcements . $absence . $attendance . $extraHelp . $missingClass . $fellowship_text . $prophecy_text;
       if (!empty($value)) {
         Emailing::send_by_key($value, $topic, $body);
+        // отладка
+        // echo "{$topic}<br>$body";
         //Emailing::send_by_key('000005716', $topic, 'Тестирование '.$body);
       } else {
         echo "Не получен емайл служащего, возможно не указан служащий для какого то обучающегося \r\n";
@@ -327,6 +329,7 @@ function emailToBBDBrothers() {
           $fellowship_text .= "<br>Перейти в раздел «Общение» <a href='https://reg-page.ru/ftt_fellowship_bbd.php?bbd_key=forbbdbrothers&member_key={$key}'>Посмотреть общее расписание</a>";
           Emailing::send_by_key($key, 'Общение с обучающимися  ' . date('d.m.Y'), $fellowship_text);
           echo "КБК  {$value}, есть записи на сегодня, отправлено уведомление по емайл.<br>";
+          // отладка
           // Emailing::send_by_key('000005716', $topic, 'Тестирование '.$body);
         } else {
           echo "Не получен емайл брата из КБК. \r\n";

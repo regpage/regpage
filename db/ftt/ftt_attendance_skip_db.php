@@ -101,6 +101,17 @@ function setSkipBlank($data)
     $res = db_query("INSERT INTO `ftt_skip` (`custom_session`, `topic`, `status`, `comment`, `id_attendance_sheet`, `id_attendance`, `changed`) VALUES ('{$custom_session}', '{$topic}', '{$status}', '{$comment}', '{$sheet_id}', '{$id_attendance}', 1)");
   }
 
+  // уведомление служащего
+  if (!empty($id) && $status === "1") {
+    $attendanceSheet = '';
+    $res = db_query("SELECT `member_key`, `date` FROM `ftt_attendance_sheet` WHERE `id` IN (SELECT `id_attendance_sheet` FROM `ftt_skip` WHERE `id` = '{$id}')");
+    while ($row = $res->fetch_assoc()) $attendanceSheet = ['member_key' => $row['member_key'], 'date' => $row['date']];
+
+    $nameTrainee = short_name::no_middle(Member::get_name($attendanceSheet['member_key']));
+    $emailText = "{$nameTrainee} изучил(а) пропущенное занятие от " . date_convert::yyyymmdd_to_ddmmyyyy($attendanceSheet['date']) . "<br><br>https://reg-page.ru/ftt_attendance.php?mc";
+    emailing::send_by_key(trainee_data::get_serving_one($attendanceSheet['member_key']), "Изучено пропущенное занятие ({$nameTrainee})", $emailText);
+  }
+
   return $res;
 }
 
