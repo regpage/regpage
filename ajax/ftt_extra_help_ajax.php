@@ -2,6 +2,11 @@
 // Ajax
 include_once 'ajax.php';
 // подключаем запросы
+include_once '../db/classes/emailing.php';
+include_once '../db/classes/member.php';
+include_once '../db/classes/short_name.php';
+include_once '../db/classes/date_convert.php';
+include_once '../db/classes/trainee_data.php';
 include_once '../db/ftt/ftt_extra_help_db.php';
 include_once '../db/classes/statistics.php';
 include_once '../db/classes/ftt_lists.php';
@@ -161,9 +166,19 @@ if (isset($_GET['type']) && $_GET['type'] === 'set_pic') {
   } else {
     $file = '';
   }
-
+  // запись в бд
   $result_file = FilesUp::setPics($_GET['id'], $file, 'ftt_extra_help');
 
+  // Уведомление служащего
+  $extraHelp = [];
+  $res = db_query("SELECT `member_key`, `date` FROM `ftt_extra_help` WHERE `id` = '{$_GET['id']}'");
+  while ($row = $res->fetch_assoc()) $extraHelp = ['member_key' => $row['member_key'], 'date' => $row['date']];
+
+  $nameTrainee = short_name::no_middle(Member::get_name($extraHelp['member_key']));
+  $emailText = "{$nameTrainee} выполнил(а) дополнительное задание от " . date_convert::yyyymmdd_to_ddmmyyyy($extraHelp['date']) . "<br><br>https://reg-page.ru/ftt_extrahelp.php?my=1";
+  emailing::send_by_key(trainee_data::get_serving_one($extraHelp['member_key']), "Выполнено доп. задание ({$nameTrainee})", $emailText);
+
+  // ответ
   echo json_encode(["result"=>[$result_file, $file]]);
   exit();
 }
