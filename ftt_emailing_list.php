@@ -1,6 +1,6 @@
 <?php
 // право доступа
- require_once 'cronkey.php';
+require_once 'cronkey.php';
 
 // Ежедневная рассылка статистики для служащих.
 header('Content-Type: text/html; charset=utf-8');
@@ -122,7 +122,8 @@ function getServiceOnesWithTrainees ()
     // пропущенные занятия
     $missingClass = '';
     $missingClassData = statistics::missed_class_count_name($traine_list);
-    if (count($extraHelpData) > 0) {
+
+    if (count($missingClassData) > 0) {
       if (empty($announcements) && empty($absence) && empty($attendance) && empty($extraHelp)) {
         $missingClass = '<b>Пропущенные занятия:</b><br>';
       } else {
@@ -257,7 +258,7 @@ function getServiceOnesWithTrainees ()
       if (!empty($value)) {
         Emailing::send_by_key($value, $topic, $body);
         // отладка
-        // echo "{$topic}<br>$body";
+        // echo "{$topic}<br>$body<br><hr>";
         //Emailing::send_by_key('000005716', $topic, 'Тестирование '.$body);
       } else {
         echo "Не получен емайл служащего, возможно не указан служащий для какого то обучающегося \r\n";
