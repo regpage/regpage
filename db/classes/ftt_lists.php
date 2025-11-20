@@ -155,6 +155,18 @@ class ftt_lists {
 
       return $result;
   }
+  // список тех кто на перерыве
+  static function trainee_on_pause()  {
+    $result = [];
+    $res = db_query("SELECT ft.*, m.name
+      FROM ftt_trainee ft
+      INNER JOIN member m ON m.key = ft.member_key
+      WHERE `pause_start` IS NOT NULL AND `pause_start` <= CURDATE() AND (`pause_stop` IS NULL OR `pause_stop` >= CURDATE())
+      ORDER BY m.name");
+      while ($row = $res->fetch_assoc()) $result[$row['member_key']]=$row;
+
+      return $result;
+  }
 
   // получаем обучающихся по админу
   static function get_trainees_by_staff($serving_one_id) {

@@ -150,9 +150,11 @@ function isLocalitiesExist()
 
 isLocalitiesExist();
 
+/***  П В О М  ***/
 // добавляем расписание в управление электронной доской функция
 require_once 'db/classes/ftt_param.php';
 require_once 'db/classes/schedule_class.php';
+
 function addTodayScheduleToInfoboard()
 {
   $dayN = 'day' . date('N');
@@ -183,10 +185,52 @@ function addTodayScheduleToInfoboard()
 // добавляем расписание в управление электронной доской Вызов
 addTodayScheduleToInfoboard();
 
+// Добавляем пропущенные занятия для тех кто на перерыве
+include_once 'db/classes/ftt_lists.php';
+
+function addMissedClasses()
+{
+  $day_today = 'day' . date('N');
+  $trainee_on_pause = ftt_lists::trainee_on_pause();
+  $semesterRangeOne = [];
+  $semesterRangeTwo = [];
+  foreach ($trainee_on_pause as $keyTrainee => $valueTrainee) {
+    $idSheet = 0;
+    // ПОЛУЧТЬ ID ЛИСТА ПОСЕЩАЕМОСТИ ОБУЧАЮЩЕГОСЯ НА ДАННОЕ ЧИСЛО (ГЛАВНОЕ ЧТО БЫ ЛИСТЫ БЫЛИ СОЗДАНЫК ЭТОМУ ВРЕМЕНИ)
+    $pause = db_query ("SELECT `id` FROM `ftt_attendance_sheet` WHERE `date` = CURDATE() AND `member_key` = '{$keyTrainee}'");
+    while ($row = $pause->fetch_assoc()) $idSheet = $row['id'];
+
+    $semesterRange = $valueTrainee['semester'] > 4 ? 2 : 1;
+
+    if ($semesterRange === 1) {
+      if (empty($semesterRangeOne)) {
+        $semesterRangeOne = schedule_class::get($semesterRange, $valueTrainee['time_zone']);
+      }
+      foreach ($semesterRangeOne as $keyClass => $valueClass) {
+        if ($valueClass['class'] == 1 && !empty($valueClass[$day_today])) {
+          $res = db_query("INSERT INTO `ftt_skip` (`custom_session`, `topic`, `status`, `comment`, `id_attendance_sheet`, `id_attendance`, `changed`) VALUES ('{$valueClass['session_name']}', '{$topic}', 0, 'Был перерыв.', '{$idSheet}', 0, 1)");
+        }
+      }
+    } else {
+      if (empty($semesterRangeTwo)) {
+        $semesterRangeTwo = schedule_class::get($semesterRange, $valueTrainee['time_zone']);
+      }
+      foreach ($semesterRangeTwo as $keyClass => $valueClass) {
+        if ($valueClass['class'] == 1 && !empty($valueClass[$day_today])) {
+          $res = db_query("INSERT INTO `ftt_skip` (`custom_session`, `topic`, `status`, `comment`, `id_attendance_sheet`, `id_attendance`, `changed`) VALUES ('{$valueClass['session_name']}', '{$topic}', 0, 'Был перерыв.', '{$idSheet}', 0, 1)");
+        }
+      }
+    }
+  }
+}
+
+addMissedClasses();
+
+/*** С Т О П   П В О М ***/
 //------------------------------------------//
 // *** О Т К Л Ю Ч Е Н О ! *** //
 // PRACTICES
-function db_stopDailyPractices(){
+/*function db_stopDailyPractices(){
   logFileWriter(false, 'ПРАКТИКИ. Автоматическая проверка учёта практик.', 'WARNING');
   $practicesMemberKeys=[];
 // get keys of members
@@ -227,7 +271,7 @@ function db_deleteOldDailyPractices() {
 }
 
 // db_deleteOldDailyPractices();
-
+*/
 function db_checkDeleteOldAdminActivity() {
   $counter = 0;
   $res = db_query ("SELECT `admin_key` FROM `activity_log`  WHERE `time_create` < DATE_ADD(CURRENT_TIMESTAMP(), INTERVAL -3 MONTH)");

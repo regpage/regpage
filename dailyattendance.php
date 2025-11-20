@@ -213,4 +213,3 @@ function db_newDailyAttendance () {
 }
 
 db_newDailyAttendance ();
-?>
