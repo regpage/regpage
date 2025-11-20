@@ -254,7 +254,7 @@
             $pause_to = '';
             $pause_stop = '';
             if ((strtotime(date($current_date_z)) >= strtotime(date($date_start_str)) && !$date_stop_str) || (strtotime(date($current_date_z)) >= strtotime(date($date_start_str)) && strtotime(date($current_date_z)) <= strtotime(date($date_stop_str)))) {
-              $pause_from = 'Перерыв с ';
+              $pause_from = 'с';
               $pause_start = date_convert::yyyymmdd_to_ddmm($date_start_str);
               $pause_stop = date_convert::yyyymmdd_to_ddmm($date_stop_str);
               $pause_to = 'по';
@@ -273,8 +273,8 @@
             if ($comment_ico_str) {
               if (!$pause_from) {
                 if (mb_strlen($comment_str) > 30) {
-                  $comment_temp = mb_substr($comment_str, 0, 30).'...';
-                  $comment_str = "<span class='desk_show' title='{$comment_str} с {$date_start_ico} по {$date_stop_ico}'>с {$date_start_ico} по {$date_stop_ico} {$comment_temp}</span>";
+                  $comment_temp = mb_substr($comment_str, 0, 30).'.';
+                  $comment_str = "<span class='desk_show' title='{$comment_str} с {$date_start_ico} по {$date_stop_ico}'>{$comment_temp} с {$date_start_ico} по {$date_stop_ico}</span>";
                 } else {
                   $comment_str = "<span class='desk_show'>{$comment_str} с {$date_start_ico} по {$date_stop_ico}</span>";
                 }
@@ -293,7 +293,7 @@
               $f_pause_to = '';
               $f_pause_stop = '';
               if ((strtotime(date($current_date_z)) >= strtotime(date($date_strt_str)) && !$date_stp_str) || (strtotime(date($current_date_z)) >= strtotime(date($date_strt_str)) && strtotime(date($current_date_z)) <= strtotime(date($date_stp_str)))) {
-                $f_pause_from = 'Перерыв с ';
+                $f_pause_from = 'с';
                 $f_pause_start = date_convert::yyyymmdd_to_ddmm($date_strt_str);
                 $f_pause_stop = date_convert::yyyymmdd_to_ddmm($date_stp_str);
                 $f_pause_to = 'по';
@@ -312,8 +312,8 @@
               if ($comm_ico_str) {
                 if (!$f_pause_from) {
                   if (mb_strlen($comm_str) > 30) {
-                    $comment_temp = mb_substr($comm_str, 0, 30).'...';
-                    $comm_str = "<span class='desk_show' title='{$comm_str} с {$date_strt_ico} по {$date_stp_ico}'>с {$date_strt_ico} по {$date_stp_ico} {$comment_temp}</span>";
+                    $comment_temp = mb_substr($comm_str, 0, 30).'.';
+                    $comm_str = "<span class='desk_show' title='{$comm_str} с {$date_strt_ico} по {$date_stp_ico}'>{$comment_temp} с {$date_strt_ico} по {$date_stp_ico}</span>";
                   } else {
                     $comm_str = "<span class='desk_show'>{$comm_str} с {$date_strt_ico} по {$date_stp_ico}</span>";
                   }
@@ -325,7 +325,7 @@
 
               $first_str = false;
               // рендерим комментарий для первой строки, если в текужщий момент пауза не активна.
-              echo "<span class='period_col'><span class='desk_show'>{$f_pause_from} {$f_pause_start} {$f_pause_to} {$f_pause_stop} {$comm_str}</span></span>{$comm_ico_str}";
+              echo "<span class='period_col'><span class='desk_show'>{$comm_str} {$f_pause_from} {$f_pause_start} {$f_pause_to} {$f_pause_stop}</span></span>{$comm_ico_str}";
             }
             echo "</div></div>";
             $start = true;
@@ -350,7 +350,7 @@
           if ($counter % $counter_days[$member_key] === 0 || $counter_days[$member_key] === 1) {
             $counter = 0;
             if (!$first_str) {
-              echo "<span class='period_col'><span class='desk_show'>{$pause_from} {$pause_start} {$pause_to} {$pause_stop} {$comment_str}</span></span>{$comment_ico_str}";
+              echo "<span class='period_col'><span class='desk_show'>{$comment_str} {$pause_from} {$pause_start} {$pause_to} {$pause_stop}</span></span>{$comment_ico_str}";
             }
           }
           $prev_member_key = $value['member_key'];
