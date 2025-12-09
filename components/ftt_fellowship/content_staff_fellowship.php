@@ -55,10 +55,7 @@
   <hr style="margin-left: -15px; margin-right: -15px; margin-top: 0px; margin-bottom: 0px; border-color: lightgray;">
 <?php
   foreach (get_communication_records_staff($serving_ones_flt, $trainee_flt, $active_flt, $meet_curent_sorting) as $key => $value) {
-    $hide = '';
-    if ($serving_ones_flt === $memberId) {
-      //$hide = 'd-none';
-    }
+
     $bg_busy = '';
     if (!empty($value['trainee']) && $value['trainee'] !== '_none_') {
       $bg_busy = 'green_string';
@@ -78,8 +75,11 @@
     if (isset($trainee_list[$value['trainee']])) {
       $servingoneForList = $serving_ones_list[$trainee_list_list[$value['trainee']]['serving_one']];
     }
+    $comment_short_mbl = '';
+    if (mb_strlen($value['comment_train']) > 15) {
+      $comment_short_mbl = mb_substr($value['comment_train'], 0, 15) . '...';
+    }
 
-    //$comment_short = CutString::cut($value['comment_serv']);
     $comment_short_trainee = CutString::cut($value['comment_train'], 30);
     echo "<div class='row str_record_staff {$bg_busy}'";
     echo "data-id='{$value['id']}' data-serving_one='{$value['serving_one']}' data-trainee='{$value['trainee']}' ";
@@ -87,11 +87,11 @@
     echo "data-comment='{$value['comment_train']}' data-cancel='{$value['cancel']}'>";
     echo "<div class='col-1 pl-1'>{$date} {$day_of_week}</div>";
     echo "<div class='col-2' style='max-width: 120px;'>{$value['time']}–{$time_to}</div>";
-    echo "<div class='col-1 text-right'>{$value['duration']}</div>";
-    echo "<div class='col-3 text-secondary' style='display: none;'>коммент.</div>";
-    echo "<div class='col-2'><div>{$traineeForList}</div><div class='grey_text'>{$servingoneForList}</div></div>";
-    echo "<div class='col-2 {$hide}'>{$serving_ones_list[$value['serving_one']]}</div>";
-    echo "<div class='col-4'>{$comment_short_trainee}</div>"; //<br><span class='grey_text'>{$comment_short}</span>
+    echo "<div class='col-1 d-none d-md-block text-right'>{$value['duration']}</div>";
+    echo "<div class='col-5 d-md-none text-secondary'>{$comment_short_mbl}</div>";
+    echo "<div class='col-12 col-md-2'><div>{$traineeForList}</div><div class='grey_text'>{$servingoneForList}</div></div>";
+    echo "<div class='col-12 col-md-2'>{$serving_ones_list[$value['serving_one']]}</div>";
+    echo "<div class='col-4 d-none d-md-block'>{$comment_short_trainee}</div>"; //<br><span class='grey_text'>{$comment_short}</span>
     echo "</div>";
   }
 ?>

@@ -30,7 +30,7 @@ for (let i = 0; i < trainee_list_tmp.length; i = i + 5) {
 }
 </script>
 <script src="/js/ftt/ftt_fellowship/script.js?v21"></script>
-<script src="/js/ftt/ftt_fellowship/design.js?v23"></script>
+<script src="/js/ftt/ftt_fellowship/design.js?v24"></script>
 <script src="/js/modules/week.js?v1"></script>
 <script src="/js/modules/time.js?v1"></script>
 <script src="/js/modules/date.js?v1"></script>

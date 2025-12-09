@@ -356,7 +356,7 @@
           $prev_member_key = $value['member_key'];
         endforeach;
         if (count($data_for_list) > 0) {
-            echo "</div></div>";
+          echo "</div></div>";
         }
         ?>
         </div>

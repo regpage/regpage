@@ -21,7 +21,7 @@ function prophecyCheck()
   $traineeKeysToCreateExtrahelp = [];
   // проверка в воскресенье те кто не дал пророчествование исключая тех кто на перерыве и  с листами отсутствия
   $res = db_query("SELECT ft.member_key as ft_member_key FROM ftt_trainee ft
-    WHERE NOT EXISTS (SELECT fp.member_key FROM ftt_prophecy fp WHERE fp.member_key = ft.member_key AND DATE_FORMAT(fp.send_date, '%Y-%m-%d') = CURDATE())
+    WHERE ft.time_zone != '06' AND NOT EXISTS (SELECT fp.member_key FROM ftt_prophecy fp WHERE fp.member_key = ft.member_key AND DATE_FORMAT(fp.send_date, '%Y-%m-%d') = CURDATE())
     AND (ft.pause_start IS NULL OR (ft.pause_start IS NOT NULL AND ft.pause_start > CURDATE()) OR (ft.pause_stop IS NOT NULL AND ft.pause_stop < CURDATE()))
     AND NOT EXISTS (SELECT fps.member_key FROM ftt_permission_sheet fps WHERE fps.member_key = ft.member_key AND DATE_FORMAT(fps.absence_date, '%Y-%m-%d') = CURDATE() AND fps.status = 2)");
     while ($row = $res->fetch_assoc()) $traineeKeysToCreateExtrahelp[]=$row['ft_member_key'];

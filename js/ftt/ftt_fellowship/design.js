@@ -8,7 +8,7 @@ if ($(window).width()<=769) {
   $("button").css("font-size", "16px");
   $("input").css("font-size", "16px");
   $("select").css("font-size", "16px");
-  $("textarea").css("font-size", "16px");  
+  $("textarea").css("font-size", "16px");
   // header block
   $("#meet_serving_ones_list").hide();
   $("#meet_trainee_select").hide();
@@ -20,7 +20,7 @@ if ($(window).width()<=769) {
   $("#mdl_meet_duration").parent().addClass("pl-0");
   // STAFF
   $(".fellowship_today").css("padding-left", "0px");
-  $(".str_record_staff div:nth-child(1)").addClass("pl-0").addClass("pr-1").css("min-width", "75px");
+  $(".str_record_staff div:nth-child(1)").removeClass("pl-1").addClass("pl-0").addClass("pr-1").css("min-width", "75px");
   $(".str_record_staff div:nth-child(2)").addClass("pl-0").addClass("pr-0").css("min-width", "105px");
   //$(".str_record_staff div:nth-child(3)").addClass("pl-0").addClass("pr-0").css("min-width", "80px");
   $(".str_record_staff div:nth-child(3)").each(function () {
@@ -32,9 +32,8 @@ if ($(window).width()<=769) {
       $(this).addClass("pl-0").addClass("pr-0").show();
     }
   });
-  $(".str_record_staff div:nth-child(5)").removeClass("col-2").addClass("col-12").css("padding-left", "75px");
-  $(".str_record_staff div:nth-child(6)").removeClass("col-2").addClass("col-12").css("padding-left", "75px");
-  $(".str_record_staff div:nth-child(7)").hide();
+  $(".str_record_staff div:nth-child(5)").addClass("pl-0");
+  $(".str_record_staff div:nth-child(6)").addClass("pl-0");
   // TRAINEE
   $(".str_record div:nth-child(1)").addClass("pl-0").addClass("pr-1").css("min-width", "75px");
   $(".str_record div:nth-child(2)").addClass("pr-0").addClass("pl-0").css("min-width", "105px");
