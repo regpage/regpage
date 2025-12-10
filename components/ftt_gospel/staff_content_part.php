@@ -33,7 +33,7 @@
             if (isset($serving_ones_list_full[$memberId])) {
               $selected = '';
               if ((!isset($_COOKIE['filter_team']) && $serving_ones_list_full[$memberId][2] === $key)
-              || (isset($_COOKIE['filter_team']) && $_COOKIE['filter_team'] === $key)) {
+              || (isset($_COOKIE['filter_team']) && $_COOKIE['filter_team'] == $key)) {
                 $selected = 'selected';
               }
             }
@@ -75,7 +75,7 @@
           <option value="_all_" <?php echo $selected_all; ?>>За семестр</option>
           <option value="range" <?php echo $selected_range; ?>>За период</option>
         </select>
-        <span class="filter_range" style="padding: 5px; padding-right: 10px; display: none;">Период</span>        
+        <span class="filter_range" style="padding: 5px; padding-right: 10px; display: none;">Период</span>
         <input id="period_from" type="date" class="form-control form-control-sm filter_range" style="display: none;" value="<?php echo $cookiePeriodFrom; ?>">
         <span class="filter_range" style="padding: 5px; padding-right:10px; padding-left:10px; display: none;"> — </span>
         <input id="period_to" type="date" class="form-control form-control-sm filter_range" style="display: none;" value="<?php echo $cookiePeriodTo; ?>">

@@ -432,7 +432,9 @@ $('#showModalAddEdit').click(function () {
   $("#modalAddEdit input").attr('disabled', false);
   $("#modalAddEdit select").attr('disabled', false);
   $("#modalAddEdit textarea").attr('disabled', false);
-
+  if (trainee_access) {
+      $('#fio_field').attr("disabled", true);
+  }
   $('#modalUniTitle').text('Статистика благовестия (новая)');
   $('#date_field').val(date_now_gl);
   $('#modalAddEdit').attr('data-date', date_now_gl);
@@ -596,6 +598,9 @@ $(".list_string").click(function () {
     $("#modalAddEdit input").attr('disabled', false);
     $("#modalAddEdit select").attr('disabled', false);
     $("#modalAddEdit textarea").attr('disabled', false);
+  }
+  if (trainee_access) {
+      $('#fio_field').attr("disabled", true);
   }
   $('#modalUniTitle').text('Статистика благовестия');
   $('#gospelGroupNumber').text($(this).attr('data-gospel_group'));

@@ -7,7 +7,7 @@ if (!ftt_access_trainee && coordinator) {
 }
 let trainee_access = false;
 trainee_access = "<?php if ($ftt_access['group'] === 'trainee') { echo "1"; } ?>";
-
+let participation_type = "<?php if (isset($trainee_data['participation_type'])) echo $trainee_data['participation_type']; ?>";
 
 // serving ones list
 let serving_ones_list_tmp = "<?php foreach ($serving_ones_list as $id => $name) echo $id.'_'.$name.'_'; ?>";
@@ -42,7 +42,7 @@ for (let i = 0; i < trainee_list_tmp.length; i = i + 5) {
 // admin key
 let admin_id_gl = "<?php echo $memberId;?>";
 
-
 </script>
-<script src="/js/ftt/ftt_extra_help/script.js?v31"></script>
+<script src="/js/ftt/ftt_extra_help/functions.js?v1"></script>
+<script src="/js/ftt/ftt_extra_help/script.js?v33"></script>
 <script src="/js/ftt/ftt_extra_help/designs.js?v8"></script>

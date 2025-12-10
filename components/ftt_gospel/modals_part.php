@@ -27,7 +27,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
           <div class="col-7">
             <div class="form-group">
               <!--<label for="fio_field" class="label-google">Команда *</label>-->
-              <select id="fio_field" class="input-google">
+              <select id="fio_field" class="input-google" <?php if ($ftt_access['group'] === 'trainee') echo 'disabled adfadfa'; ?>>
                 <option value="_none_">Команда</option>
                 <?php
                   foreach (getGospelTeam() as $key => $value):

@@ -35,7 +35,7 @@
           </div>
         </div>
         <div class="form-group">
-          <textarea class="input-google" id="reason_field" rows="5" cols="20" placeholder="Укажите причину. *"></textarea>
+          <textarea class="input-google" id="reason_field" rows="2" cols="20" placeholder="Укажите причину. *"></textarea>
         </div>
         <?php if ($ftt_access['group'] === 'staff' || ($ftt_access['group'] === 'trainee' && $serving_trainee)) { ?>
         <div class="form-group">
@@ -43,7 +43,7 @@
           <input type="text" class="input-google" id="comment_field" placeholder="Текст комментария...">
         </div>
         <?php } ?>
-        <div class="form-group">
+        <div class="form-group" style="display: none;">
           <div class="mt-2">
             <label for="skip_modal_file">Приложить файл</label><br>
             <input type="file" id="extrahelp_modal_file" class="form-control-sm pl-0" accept="image/*" multiple>

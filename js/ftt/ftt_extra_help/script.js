@@ -47,7 +47,7 @@ function clear_blank() {
     $("#modalAddEditLate #date_field_late").attr('disabled', false);
     $("#modalAddEditLate #save_late").attr('disabled', false);
     $("#minutes_field").attr('disabled', false);
-    
+
     $('#modalAddEditLate').find('input').val('');
     $('#modalAddEditLate').find('select').val('_none_');
     $('#modalAddEditLate').find('#session_name_field').val('');
@@ -563,6 +563,11 @@ $('#showModalAddEditExtraHelp').click(function () {
     $("#modalAddEditExtraHelp #date_field").attr('disabled', false);
     $("#modalAddEditExtraHelp #save_extra_help").attr('disabled', false);
   }
+  if (trainee_access && participation_type === "1") {
+    $("#extrahelp_modal_file").parent().parent().show();
+  } else if (trainee_access && participation_type === "0") {
+    $("#extrahelp_modal_file").parent().parent().hide();
+  }
   $('#modalUniTitle').text('Доп. задание (новое)');
   $('#date_field').val(date_now_gl);
   $('#author_field').val(admin_id_gl);
@@ -699,6 +704,15 @@ $(".ftt_extra_help_string").click(function () {
     $('#modalUniTitle').text('Доп. задание (текущее)');
     $("#archive_checkbox_field").prop('checked', false);
   }
+  // поле с файлом для тех кто учится дистанционно
+  if (trainee_access && participation_type === "1") {
+    $("#extrahelp_modal_file").parent().parent().show();
+  } else if (trainee_access && participation_type === "0") {
+    $("#extrahelp_modal_file").parent().parent().hide();
+  } else {
+    participation_type_trainee($(this).attr("data-trainee_id"), $("#extrahelp_modal_file").parent().parent());    
+  }
+
   // attr
   $("#modalAddEditExtraHelp").attr("data-archive_date", $(this).attr("data-archived"));
   $("#modalAddEditExtraHelp").attr("data-id", $(this).attr("data-id"));

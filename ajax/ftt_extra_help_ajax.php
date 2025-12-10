@@ -75,6 +75,17 @@ if (isset($_GET['type']) && $_GET['type'] === 'get_print_report') {
   exit();
 }
 
+// получаем отчёт для печати
+if (isset($_GET['type']) && $_GET['type'] === 'get_participation_type') {
+  // готовим данные
+  $db_data_get = new DbData('get', 'ftt_trainee');
+  $db_data_get->set('field', 'participation_type');
+  $db_data_get->set('condition_field', 'member_key');
+  $db_data_get->set('condition_value', $_GET['member_key']);
+  // выполняем
+  echo json_encode(["result"=>DbOperation::operation($db_data_get->get())]);
+  exit();
+}
 
 if (isset($_GET['type']) && $_GET['type'] === 'set_pic') {
 
