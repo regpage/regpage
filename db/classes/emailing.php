@@ -40,11 +40,11 @@ class Emailing
     $message = $text; // for Windows $text = str_replace("\n.", "\n..", $text);
     // письмо reg-page
     if (self::checkDomain() || $member_key === '000005716') {
-      $mail = EmailingSMTP::sendSMTP($to, $subject, $message, $headers);
+      return EmailingSMTP::sendSMTP($to, $subject, $message, $headers);
+    } else {
+      return false;
     }
     //$mail = mail($to, $subject, $message, $headers);
-
-    return $mail;
   }
 
   // send email by key
@@ -60,10 +60,11 @@ class Emailing
     $subject = $topic;
     $message = $text; //.date("H:i:s").' '.date("d.m.Y") // for Windows $text = str_replace("\n.", "\n..", $text);
     if (self::checkDomain() || $member_key === '000005716') {
-      $mail = EmailingSMTP::sendSMTP($to, $subject, $message, $headers);
+      return EmailingSMTP::sendSMTP($to, $subject, $message, $headers);
+    } else {
+      return false;
     }
     // $mail = mail($to, $subject, $message, $headers);
-    return $mail;
   }
 
   // получаем header
@@ -124,18 +125,20 @@ class EmailingSMTP
 
   static function sendSMTP($email, $topic, $body)
   {
+    global $mailCnfg;
+
     $mail = new PHPMailer(true);
 
     try {
         //Server settings
         // $mail->SMTPDebug = SMTP::DEBUG_LOWLEVEL; // SMTP::DEBUG_SERVER                      //Enable verbose debug output
         $mail->isSMTP();                                            //Send using SMTP
-        $mail->Host       = ''; //                      //Set the SMTP server to send through
+        $mail->Host       = $mailCnfg['host']; //                      //Set the SMTP server to send through
         $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-        $mail->Username   = '';  //                      //SMTP username
-        $mail->Password   = '';  //                                //SMTP password
+        $mail->Username   = $mailCnfg['username'];  //                      //SMTP username
+        $mail->Password   = $mailCnfg['password'];  //                                //SMTP password
         $mail->SMTPSecure =  PHPMailer::ENCRYPTION_STARTTLS; // 'ssl'    PHPMailer::ENCRYPTION_SMTPS             //Enable implicit TLS encryption
-        $mail->Port       = ;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+        $mail->Port       = $mailCnfg['port'];                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
 
         $mail->CharSet = PHPMailer::CHARSET_UTF8; // Устанавливаем кодировку для библиотеки
