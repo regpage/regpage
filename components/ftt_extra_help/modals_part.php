@@ -109,6 +109,10 @@
         <?php if (!$serving_trainee && $ftt_access['group'] !== 'trainee'): ?>
             <button id="delete_extra_help" class="btn btn-sm btn-secondary float-left"><i class="fa fa-trash" aria-hidden="true"></i></button>
         <?php endif; ?>
+        <!-- Для тех кто удалённо -->
+        <?php if (isset($trainee_data['participation_type']) && $trainee_data['participation_type'] == 1): ?>
+          <button id="send_extra_help" class="btn btn-sm btn-warning" data-dismiss="modal" aria-hidden="true" style="">Отправить</button>
+        <?php endif; ?>
           <button id="save_extra_help" class="btn btn-sm btn-success" data-dismiss="modal" aria-hidden="true" style="">Сохранить</button>
           <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Закрыть</button>
         </div>

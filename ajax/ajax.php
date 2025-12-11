@@ -1,5 +1,5 @@
 <?php
-
+$ajaxPath = '../';
 include_once "../db.php";
 
 header("Content-Type: application/json; charset=utf-8");

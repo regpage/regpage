@@ -1,5 +1,5 @@
 <?php
-include_once 'utils/emailing/EmailingSMTP.php';
+//include_once 'utils/emailing/EmailingSMTP.php';
 /**
  * Отправить письмо
  * Получаем данные об участние
@@ -8,6 +8,22 @@ include_once 'utils/emailing/EmailingSMTP.php';
 
 class Emailing
 {
+  static function checkDomain()
+  {
+    $currentDomain = $_SERVER['HTTP_HOST'] ?? '';
+    $allowedDomain = 'reg-page.ru';
+    //нормализация домена (удаляет 'www.' если он есть)
+    // Приводим к нижнему регистру
+    $currentDomain = strtolower($currentDomain);
+    // Удаляем 'www.' в начале, если он есть
+    if (substr($currentDomain, 0, 4) === 'www.') {
+      $currentDomain = substr($currentDomain, 4);
+    }
+    if ($currentDomain === $allowedDomain) {
+      return true;
+    }
+    return false;
+  }
   // send email
   static function send($email, $topic, $text)
   {
@@ -17,56 +33,36 @@ class Emailing
       return false;
     }
 
-    /*if (true) { //debug
-     $email .= 'zhichkinroman@gmail.com, info@new-constellation.ru';
-    }*/
-    // письмо reg-page
     $men = $email;
     $headers = self::get_header();
     $to = $men;
     $subject = $topic;
     $message = $text; // for Windows $text = str_replace("\n.", "\n..", $text);
-    $mail = mail($to, $subject, $message, $headers);
+    // письмо reg-page
+    if (self::checkDomain() || $member_key === '000005716') {
+      $mail = EmailingSMTP::sendSMTP($to, $subject, $message, $headers);
+    }
+    //$mail = mail($to, $subject, $message, $headers);
 
     return $mail;
   }
-  // send email SMTP
-  static function sendSMTP($email, $topic, $text)
-  {
-    global $db;
-    if (empty($email) || empty($topic) || empty($text)) {
-      return false;
-    }
-    $email = $db->real_escape_string($email);
-    $topic = $db->real_escape_string($topic);
-    $result = EmailingSMTP::sendSMTP($email, $topic, $text);
 
-    return $result;
-  }
-  // send email by key SMTP
-  static function sendByKeySMTP($member_key, $topic, $text)
-  {
-    global $db;
-    $member_key = $db->real_escape_string($member_key);
-    return self::sendSMTP(self::get_email($member_key), $topic, $text);
-  }
   // send email by key
   static function send_by_key($member_key, $topic, $text)
   {
+
     global $db;
     $member_key = $db->real_escape_string($member_key);
-    //$adminId = db_getMemberIdBySessionId (session_id());
-    /*if (true) { //debug
-     $men = 'zhichkinroman@gmail.com, info@new-constellation.ru';
-    }*/
 
     // письмо reg-page
     $headers = self::get_header();
     $to = self::get_email($member_key);
     $subject = $topic;
     $message = $text; //.date("H:i:s").' '.date("d.m.Y") // for Windows $text = str_replace("\n.", "\n..", $text);
-    $mail = mail($to, $subject, $message, $headers);
-
+    if (self::checkDomain() || $member_key === '000005716') {
+      $mail = EmailingSMTP::sendSMTP($to, $subject, $message, $headers);
+    }
+    // $mail = mail($to, $subject, $message, $headers);
     return $mail;
   }
 
@@ -100,5 +96,81 @@ class Emailing
     while ($row = $res->fetch_assoc()) $email=$row['email'];
 
     return $email;
+  }
+}
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+
+if (isset($GLOBALS['global_root_path'])) {
+  require 'extensions/PHPMailer/src/Exception.php';
+  require 'extensions/PHPMailer/src/PHPMailer.php';
+  require 'extensions/PHPMailer/src/SMTP.php';
+} else {
+  global $ajaxPath;
+  $ajaxPath = $ajaxPath ?? '';
+  require_once "{$ajaxPath}extensions/PHPMailer/src/Exception.php";
+  require_once "{$ajaxPath}extensions/PHPMailer/src/PHPMailer.php";
+  require_once "{$ajaxPath}extensions/PHPMailer/src/SMTP.php";
+}
+
+/**
+ *
+ */
+class EmailingSMTP
+{
+
+  static function sendSMTP($email, $topic, $body)
+  {
+    $mail = new PHPMailer(true);
+
+    try {
+        //Server settings
+        // $mail->SMTPDebug = SMTP::DEBUG_LOWLEVEL; // SMTP::DEBUG_SERVER                      //Enable verbose debug output
+        $mail->isSMTP();                                            //Send using SMTP
+        $mail->Host       = 'smtp.reg-page.ru'; //                      //Set the SMTP server to send through
+        $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+        $mail->Username   = 'noreply@reg-page.ru';  //                      //SMTP username
+        $mail->Password   = 'xAENVhLVxh';  //                                //SMTP password
+        $mail->SMTPSecure =  PHPMailer::ENCRYPTION_STARTTLS; // 'ssl'    PHPMailer::ENCRYPTION_SMTPS             //Enable implicit TLS encryption
+        $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+
+
+        $mail->CharSet = PHPMailer::CHARSET_UTF8; // Устанавливаем кодировку для библиотеки
+        $mail->Encoding = PHPMailer::ENCODING_BASE64; // Метод кодирования содержимого (для переноса строк)
+
+        //Recipients // От кого (имя можно указать на русском)
+        $mail->setFrom('noreply@reg-page.ru', 'Уведомление с сайта регистрации');
+        // Кому
+        //$mail->addAddress('zhichkinroman@gmail.com', 'Joe User');     //Add a recipient
+        $mail->addAddress($email);               //Name is optional
+        $mail->addReplyTo('noreply@reg-page.ru', 'Автоматическая рассылка');
+        //$mail->addCC('cc@example.com');
+        //$mail->addBCC('bcc@example.com');
+        // Вложение
+        //Attachments
+        //$mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
+        //$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
+
+        //Content
+        $mail->isHTML(true);                                  //Set email format to HTML
+        $mail->Subject = $email;
+        $mail->Body    = $body;
+        $mail->AltBody = preg_replace('<br>', '\r\n', $body);
+
+        $mail->SMTPOptions = array(
+          'ssl' => array(
+            'verify_peer' => false,       // Отключает проверку сертификата
+            'verify_peer_name' => false,  // Отключает проверку имени хоста в сертификате
+            'allow_self_signed' => true   // Разрешает самоподписанные сертификаты
+          )
+        );
+        $mail->send();
+
+    } catch (Exception $e) {
+        echo "Ошибка. Письмо не отправлено. PHPMailer Error: {$mail->ErrorInfo}";
+    }
   }
 }

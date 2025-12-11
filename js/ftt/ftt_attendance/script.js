@@ -3289,14 +3289,15 @@ function open_blank(el_this) {
         $("#pic_skip_delete").hide();
         $("#skip_modal_topic").attr("disabled", true);
         $("#skip_modal_comment").attr("disabled", true);
-        //$("#skip_modal_file").attr("disabled", true);
+        $("#skip_modal_file").attr("disabled", true);
+        $(".fa-trash").hide();
       }
     } else if (elem.attr("data-status") === '2') {
         $("#save_skip_blank").hide();
         $("#pic_skip_delete").hide();
         $("#skip_modal_topic").attr("disabled", true);
         $("#skip_modal_comment").attr("disabled", true);
-        //$("#skip_modal_file").attr("disabled", true);
+        $("#skip_modal_file").attr("disabled", true);
         $("#skip_modal_done").attr("disabled", true);
         $("#skip_modal_done").prop("checked", true);
     } else if (elem.attr("data-status") === '3') {

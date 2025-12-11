@@ -384,7 +384,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
                   <td id="homes_all" style="text-align: right"></td>
                 </tr>
                 <tr>
-                  <td style="text-align: left" colspan="8"><b>Проект «Библия, открытая для всех»</b></td>
+                  <td style="text-align: left" colspan="8"><b>Звонки и переписка</b></td>
                 </tr>
                 <tr>
                   <td id="question_first_contacts" style="text-align: left">Сколько было первых контактов по телефону или в переписке?</td>
