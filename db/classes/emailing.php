@@ -1,4 +1,26 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+
+global $CRON_ROOT_PATH;
+if (!empty($CRON_ROOT_PATH)) {
+  require_once "{$CRON_ROOT_PATH}/extensions/PHPMailer/src/Exception.php";
+  require_once "{$CRON_ROOT_PATH}/extensions/PHPMailer/src/PHPMailer.php";
+  require_once "{$CRON_ROOT_PATH}/extensions/PHPMailer/src/SMTP.php";
+} elseif (isset($GLOBALS['global_root_path'])) {
+  require_once 'extensions/PHPMailer/src/Exception.php';
+  require_once 'extensions/PHPMailer/src/PHPMailer.php';
+  require_once 'extensions/PHPMailer/src/SMTP.php';
+} else {
+  global $ajaxPath;
+  $ajaxPath = $ajaxPath ?? '';
+  require_once "{$ajaxPath}extensions/PHPMailer/src/Exception.php";
+  require_once "{$ajaxPath}extensions/PHPMailer/src/PHPMailer.php";
+  require_once "{$ajaxPath}extensions/PHPMailer/src/SMTP.php";
+}
+
 //include_once 'utils/emailing/EmailingSMTP.php';
 /**
  * Отправить письмо
@@ -28,6 +50,7 @@ class Emailing
   static function send($email, $topic, $text)
   {
     global $db;
+    global $CRON_ROOT_PATH;
     $email = $db->real_escape_string($email);
     if (empty($email)) {
       return false;
@@ -39,7 +62,7 @@ class Emailing
     $subject = $topic;
     $message = $text; // for Windows $text = str_replace("\n.", "\n..", $text);
     // письмо reg-page
-    if (self::checkDomain() || $member_key === '000005716') {
+    if (self::checkDomain() || $member_key === '000005716' || !empty($CRON_ROOT_PATH)) {
       return EmailingSMTP::sendSMTP($to, $subject, $message, $headers);
     } else {
       return false;
@@ -52,6 +75,7 @@ class Emailing
   {
 
     global $db;
+    global $CRON_ROOT_PATH;
     $member_key = $db->real_escape_string($member_key);
 
     // письмо reg-page
@@ -59,7 +83,7 @@ class Emailing
     $to = self::get_email($member_key);
     $subject = $topic;
     $message = $text; //.date("H:i:s").' '.date("d.m.Y") // for Windows $text = str_replace("\n.", "\n..", $text);
-    if (self::checkDomain() || $member_key === '000005716') {
+    if (self::checkDomain() || $member_key === '000005716' || !empty($CRON_ROOT_PATH)) {
       return EmailingSMTP::sendSMTP($to, $subject, $message, $headers);
     } else {
       return false;
@@ -98,23 +122,6 @@ class Emailing
 
     return $email;
   }
-}
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
-
-
-if (isset($GLOBALS['global_root_path'])) {
-  require 'extensions/PHPMailer/src/Exception.php';
-  require 'extensions/PHPMailer/src/PHPMailer.php';
-  require 'extensions/PHPMailer/src/SMTP.php';
-} else {
-  global $ajaxPath;
-  $ajaxPath = $ajaxPath ?? '';
-  require_once "{$ajaxPath}extensions/PHPMailer/src/Exception.php";
-  require_once "{$ajaxPath}extensions/PHPMailer/src/PHPMailer.php";
-  require_once "{$ajaxPath}extensions/PHPMailer/src/SMTP.php";
 }
 
 /**
@@ -159,7 +166,7 @@ class EmailingSMTP
 
         //Content
         $mail->isHTML(true);                                  //Set email format to HTML
-        $mail->Subject = $email;
+        $mail->Subject = $topic;
         $mail->Body    = $body;
         $mail->AltBody = preg_replace('<br>', '\r\n', $body);
 
