@@ -53,7 +53,7 @@ function clear_blank() {
 }
 
   // получить данные полей формы
-  function get_data_fields() {
+  function get_data_fields(send) {
     let data = new FormData();
 
     if ($("#modalAddEdit").attr("data-id")) {
@@ -64,6 +64,10 @@ function clear_blank() {
     data.set('fio_field', $('#fio_field').val());
     data.set('date_field', $('#date_field').val());
     data.set('gospel_group_field', $('#gospel_group_field').val());
+    if (send) {
+      data.set('status', 1);
+    }
+
     let group_members_list = "";
     // members
     $("#group_members_block input:checked").each(function () {
@@ -288,8 +292,8 @@ function clear_blank() {
 
 // ===== В ПРОЦЕССЕ
 // save data
-function save_data_blank() {
-  let data = get_data_fields();
+function save_data_blank(send) {
+  let data = get_data_fields(send);
   if ($("#modalAddEdit").attr("data-id")) {
     // update
     fetch('ajax/ftt_gospel_ajax.php?type=update_data_blank', {
@@ -426,6 +430,8 @@ $('#showModalAddEdit').click(function () {
     showError("Не назначена группа благовестия");
     return;
   }
+  $("#delete_blank_gospel, #save_extra_help, #send_gospel_blank").show();
+  $("#show_gospel_modal_list, #gospel_group_dropdown").attr('disabled', false);
   $("#modalAddEdit").modal("show");
   $("#add_comment").show();
   $("#comment_block").hide();
@@ -533,11 +539,11 @@ $(".set_to_archive").click(function (e) {
   });
 });
 */
-// save
-$('#save_extra_help').click(function (e) {
+// проверка полей бланка
+function check_fields_gospel_blank() {
   if (trainee_access && $("#modalAddEdit").attr("data-author") !== admin_id_gl) {
     showError('Нельзя сохранить.');
-    return;
+    return true;
   }
   // валидация значений полей
   if ($('#fio_field').val() === '_none_' || !$('#modalAddEdit #fio_field').val()) {
@@ -546,25 +552,34 @@ $('#save_extra_help').click(function (e) {
     if ($('#date_field').val() === '') {
       $('#date_field').css('border-color', 'red');
     }
-    return;
+    return true;
   } else {
     $('#fio_field').css('border-color', 'lightgray');
   }
 
   if ($('#date_field').val() === '') {
     $('#date_field').css('border-color', 'red');
-    return;
+    return true;
   } else {
     $('#date_field').css('border-color', 'lightgray');
   }
 
   if (!$('#gospel_group_field').val() || $('#gospel_group_field').val() === '0') {
     showError('Не указана группа благовестия.');
-    return;
+    return true;
   }
 
   if (!$('#modalAddEdit .personal_block').attr("data-member_key")) {
     showError('Добавьте участников в бланк.');
+    return true;
+  }
+  return false;
+}
+
+// save & send
+$('#save_extra_help, #send_gospel_blank').click(function (e) {
+  // проверяем бланк
+  if (check_fields_gospel_blank()) {
     return;
   }
 
@@ -585,19 +600,34 @@ $('#save_extra_help').click(function (e) {
   if (error === 1) {
     return;
   }
-  save_data_blank();
+  if ($(this).attr("id") === "send_gospel_blank") {
+    save_data_blank(true);
+  } else {
+    save_data_blank();
+  }
+
 });
 
 // клик по строке, загружаем форму
 $(".list_string").click(function () {
   if ($(this).attr("data-author") !== admin_id_gl) {
-    $("#modalAddEdit input").attr('disabled', false);
-    $("#modalAddEdit select").attr('disabled', false);
-    $("#modalAddEdit textarea").attr('disabled', false);
-  } else {
-    $("#modalAddEdit input").attr('disabled', false);
-    $("#modalAddEdit select").attr('disabled', false);
-    $("#modalAddEdit textarea").attr('disabled', false);
+    // $("#modalAddEdit input").attr('disabled', false);
+    // $("#modalAddEdit select").attr('disabled', false);
+    // $("#modalAddEdit textarea").attr('disabled', false);
+  }
+  if ($(this).attr('data-status') === "1" && trainee_access) {
+    $("#modalAddEdit input").attr('disabled', true);
+    $("#modalAddEdit select").attr('disabled', true);
+    $("#modalAddEdit textarea").attr('disabled', true);
+    $("#delete_blank_gospel, #save_extra_help, #send_gospel_blank").hide();
+    $("#show_gospel_modal_list, #gospel_group_dropdown").attr('disabled', true);
+  } else if ($(this).attr('data-status') === "1" && !trainee_access) {
+    $("#send_gospel_blank").hide();
+    $("#delete_blank_gospel, #save_extra_help").show();
+    $("#show_gospel_modal_list, #gospel_group_dropdown").attr('disabled', false);
+  } else  {
+    $("#delete_blank_gospel, #save_extra_help, #send_gospel_blank").show();
+    $("#show_gospel_modal_list, #gospel_group_dropdown").attr('disabled', false);
   }
   if (trainee_access) {
       $('#fio_field').attr("disabled", true);
@@ -635,6 +665,9 @@ $(".list_string").click(function () {
       if (group_members_list_render[i].trim()) {
         add_remove_gospel_personal_block('', group_members_list_render[i].trim());
       }
+    }
+    if ($(this).attr('data-status') === "1") {
+      $(".personal_block .fa-trash").hide();
     }
   }
   $('#group_members_block').html(group_members_list_html);
@@ -679,6 +712,7 @@ $(".list_string").click(function () {
   $("#modalAddEdit").attr("data-homes", $(this).attr("data-homes"));
   $("#modalAddEdit").attr("data-place_name", $(this).attr("data-place_name"));
   $("#modalAddEdit").attr("data-fgt_place", $(this).attr("data-fgt_place"));
+  $("#modalAddEdit").attr("data-status", $(this).attr("data-status"));
   $("#modalAddEdit").attr("data-comment", $(this).attr("data-comment"));
 
   // fields more

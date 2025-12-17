@@ -1,163 +1,25 @@
 <!-- Настройки ПВОМ -->
-<div class="container">
-  <!--  -->
-  <div class="row pt-3">
-    <div class="col-12">
-      <h5>Настройки семестра</h5>
-      <span class="grey_text">Данные из таблицы ftt_param</span>
-    </div>
-  </div>
-  <!-- Таблицы с данными ПВОМ -->
-  <div class="row pt-3">
-    <div class="col-12">
-      <p>
-        <?php
-        $paramsNames = ['schedule_end' => 'Дата завершения показа расписания', 'schedule_start' => 'Дата начала показа рассписания', 'attendance_end' => 'Дата завершения учёта посещаемости', 'attendance_start' => 'Дата начала учёта посещаемости'];
-        foreach (fttParam::getAll() as $value) {
-          $fullName = '';
-          if (isset($paramsNames[$value['name']])) {
-            $fullName = $paramsNames[$value['name']];
-          }
-          if (mb_strlen(strip_tags($value['value'])) > 30) {
-            $shortValue = CutString::cut(strip_tags($value['value']), 30);
-            $collapse = "<a class='btn btn-sm btn-primary btn-primary py-0' data-toggle='collapse' href='#collapse{$value['name']}' role='button' aria-expanded='false' aria-controls='collapse{$value['name']}'><b>+</b></a><div class='collapse mt-2' id='collapse{$value['name']}'><div class='card card-body'>{$value['value']}</div></div>";
-          } else {
-            $shortValue = trim($value['value']);
-            $collapse = '';
-          }
-          echo "<span><i>{$fullName} <span class='grey_text'>({$value['name']})</span>: </i> <span> {$shortValue}</span> {$collapse}</span><hr style='border-top: 1px dashed #6c757d;'>";
-        }
-        ?>
-      </p>
-    </div>
-  </div>
-  <hr class="mb-2 mt-2">
-  <!-- Таблицы с данными ПВОМ -->
-  <div class="row pt-3">
-    <div class="col-12">
-      <h5>Таблицы с данными семестра ПВОМ</h5>
-    </div>
-  </div>
-  <div class="row pt-3">
-    <div class="col-12">
-      <p>
-        <?php
-        foreach (checkDataSemester() as $key => $value) {
-          if ($value->num_rows === 1) {
-            echo "<span><i>{$key} </i> <span class='text-success'> (есть данные)</span>; </span><br>";
-          } else {
-            echo "<span><i>{$key} </i> <span class='text-danger'> (пусто)</span>; </span><br>";
-          }
-        }
-        ?>
-      </p>
-    </div>
-  </div>
-  <hr class="mb-2 mt-2">
-  <!-- Другие таблицы с данными ПВОМ -->
-  <div class="row">
-    <div class="col-12">
-      <h5>Таблицы с данными ПВОМ не зависящие от семестра</h5>
-      <p>
-        <?php
-        foreach (checkOtherDataSemester() as $key => $value) {
-          if ($value->num_rows === 1) {
-            echo "<span><i>{$key} </i> <span class='text-success'> (есть данные)</span>; </span><br>";
-          } else {
-            echo "<span><i>{$key} </i> <span class='text-danger'> (пусто)</span>; </span><br>";
-          }
-        }
-        ?>
-        </p>
-    </div>
-  </div>
-  <hr class="mb-2 mt-2">
-  <!-- Таблицы заявления -->
-  <div class="row">
-    <div class="col-12">
-      <h5>Данные заявлений на ПВОМ</h5>
-      <p>
-        <?php
-        foreach (checkApplicationData() as $key => $value) {
-          if ($value->num_rows === 1) {
-            echo "<span><i>{$key} </i> <span class='text-success'> (есть данные)</span>; </span><br>";
-          } else {
-            echo "<span><i>{$key} </i> <span class='text-danger'> (пусто)</span>; </span><br>";
-          }
-        }
-        ?>
-        </p>
-    </div>
-    <!-- <div class="col-2">
-      <button id="showModalUniversalConfirmApplication" type="button" class="btn btn-danger btn-sm" name="button" data-toggle="modal" data-target="#modalUniversalConfirm">Удалить заявления</button>
-    </div>-->
-  </div>
-  <hr class="mb-2 mt-2">
-<!--  -->
-  <div class="row pt-3">
-    <div class="col-10">
-      <h5>Удалить ВСЕ данные семестра ПВОМ (записи в таблицах и прикреплённые файлы), КРОМЕ чтения Библии?</h5>
-      <p>Включая список обучающихся и данные разделов: расписание, объявления, посещаемость, листы отсутствия, пропущенные занятия, общение, служение, благовестие, доп.помощь, опоздания.</p>
-    </div>
-    <div class="col-2">
-      <button id="showModalUniversalConfirm" type="button" class="btn btn-danger btn-sm" name="button" data-toggle="modal" data-target="#modalUniversalConfirm">Удалить всё</button>
-    </div>
-  </div>
-<hr class="mb-2 mt-2">
-<!--  -->
-  <div class="row pt-3">
-    <div class="col-10">
-      <h5>Частично удалить данные семестра ПВОМ, кроме чтения Библии и долгов т.е. доп. занятий, пропущенных занятий, расписания и посещаемости?</h5>
-      <p>Включая данные разделов: объявления, листы отсутствия, общение, служение, благовестие, опоздания.<br>
-      В разделах: доп.помощь, пропущенные занятия <b>останутся только долги</b>. </p>
-    </div>
-    <div class="col-2">
-      <button id="showModalUniversalConfirmThree" type="button" class="btn btn-danger btn-sm" name="button" data-toggle="modal" data-target="#modalUniversalConfirm">Удалить, но оставить долги</button>
-    </div>
-  </div>
-  <hr class="mb-2 mt-2">
-  <!--  -->
-  <div class="row pt-3">
-    <div class="col-10">
-      <h5>Удалить пропущенные занятия, кроме долгов?</h5>
-    </div>
-    <div class="col-2">
-      <button id="" type="button" class="btn btn-danger btn-sm partial_removal" name="button" data-toggle="modal" data-target="#modalUniversalConfirm" data-type="partial_reset_skip">Удалить, но оставить долги</button>
-    </div>
-  </div>
-  <hr class="mb-2 mt-2">
-
-  <!--  -->
-  <div class="row pt-3">
-    <div class="col-10">
-      <h5>Удалить доп. помощь, кроме долгов?</h5>
-    </div>
-    <div class="col-2">
-      <button id="" type="button" class="btn btn-danger btn-sm partial_removal" name="button" data-toggle="modal" data-target="#modalUniversalConfirm" data-type="partial_reset_extra_help">Удалить, но оставить долги</button>
-    </div>
-  </div>
-  <hr class="mb-2 mt-2">
-
-  <!--  -->
-  <div class="row pt-3">
-    <div class="col-10">
-      <h5>Удалить долги участников закончивших обучение. Включая данные и прикрепленные файлы таблиц посещаемость, доп. помощь, проп. занятия? Списк обучающихся должен быть актуальным.</h5>
-    </div>
-    <div class="col-2">
-      <button id="" type="button" class="btn btn-danger btn-sm partial_removal" name="button" data-toggle="modal" data-target="#modalUniversalConfirm" data-type="reset_graduate">Удалить долги закончивших обучение</button>
-    </div>
-  </div>
-  <hr class="mb-2 mt-2">
-
-  <!--  -->
-  <div class="row pt-3">
-    <div class="col-10">
-      <h5>Удалить историю чтения Библии закончивших обучение? Списк обучающихся должен быть актуальным. Если список обучающихся пуст, тогда будут удалена вся история чтения Библии.</h5>
-    </div>
-    <div class="col-2">
-      <button id="" type="button" class="btn btn-danger btn-sm partial_removal" name="button" data-toggle="modal" data-target="#modalUniversalConfirm" data-type="partial_reset_bible">Удалить историю</button>
-    </div>
-  </div>
-  <hr class="mb-2 mt-2">
-
-</div>
+<br>
+<!-- ВКЛАДКИ -->
+<ul class="nav nav-tabs" role="tablist">
+  <?php foreach (['semester'=>'Настройки семестра','tables'=>'Таблицы с данными семестра ПВОМ','extra'=>'Ещё'] as $key => $value): ?>
+    <li class="nav-item">
+      <a class="nav-link
+        <?php if ((empty($_COOKIE['ftt_settings_tab']) && $key === 'semester') || (!empty($_COOKIE['ftt_settings_tab']) && $key === $_COOKIE['ftt_settings_tab'])): ?>
+        active
+        <?php endif; ?>" data-toggle="tab" href="#<?php echo $key; ?>">
+        <?php echo $value; ?>
+      </a>
+    </li>
+  <?php endforeach; ?>
+</ul>
+<!-- Подключаем файл -->
+<?php
+if (!empty($_COOKIE['ftt_settings_tab']) && ($_COOKIE['ftt_settings_tab'] === 'tables' || $_COOKIE['ftt_settings_tab'] === 'extra')) {
+  // Подключаем файл Таблицы, Ещё
+  require "components/ftt_settings/content_{$_COOKIE['ftt_settings_tab']}.php";
+} else {
+  // Вкладка настройки семестра по умолчанию
+  require "components/ftt_settings/content_semester.php";
+}
+?>

@@ -67,7 +67,7 @@ function getGospel($condition, $memberId, $sorting, $from = "", $to = "", $team 
   $result = [];
   $res = db_query("SELECT fg.id, fg.date, fg.gospel_team, fg.gospel_group, fg.place, fg.group_members, fg.flyers,
      fg.people, fg.prayers, fg.baptism, fg.meets_last, fg.meets_current, fg.meetings_last, fg.meetings_current,
-     fg.homes, fg.author, fg.comment, fg.changed,
+     fg.homes, fg.author, fg.status, fg.comment, fg.changed,
      fg.meets_last + fg.meets_current AS meets, fg.meetings_last + fg.meetings_current AS meetings,
      fgt.name AS place_name, fgt.place AS fgt_place,
      m.name AS m_name, m.male
@@ -256,11 +256,15 @@ function updateDataBlank($data){
   //$fgt_place = $db->real_escape_string($data['fgt_place']);
   $author = $db->real_escape_string($data['author']);
   $comment = $db->real_escape_string($data['comment_field']);
+  $statusString = '';
+  if (isset($data['status'])) {
+    $statusString = " `status` = 1, ";
+  }
 //`place`='$place',
   $res = db_query("UPDATE `ftt_gospel` SET `date`='$date',`gospel_team`='$gospel_team',`gospel_group`='$gospel_group',`group_members`='$group_members',
     `flyers`='$flyers',`people`='$people',`prayers`='$prayers',`baptism`='$baptism',`meets_last`='$meets_last',
     `meets_current`='$meets_current', `meetings_last`='$meetings_last',`meetings_current`='$meetings_current',
-    `homes`='$homes',`author`='$author',`comment`='$comment',`changed`= 1
+    `homes`='$homes',`author`='$author',`comment`='$comment', {$statusString} `changed`= 1
     WHERE `id`='$id'");
 
   // personal block

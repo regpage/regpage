@@ -283,6 +283,7 @@
           $str_fgt_place = $value['fgt_place'];
           $str_m_name = short_name::no_middle($value['m_name']);
           $str_male = $value['male'];
+          $str_status = $value['status'];
           $str_comment = $value['comment'];
           if ($str_comment) {
             $str_comment_hide = "";
@@ -312,7 +313,7 @@
           $dayOfTheWeek = date_convert::week_days($str_date, true);
           echo "<div class='row list_string {$done_string}' {$show_string} data-id='{$str_id}' data-date='{$str_date}' data-author='{$str_author}' data-gospel_team='{$str_gospel_team}' data-gospel_group='{$str_gospel_group}' data-place='{$str_place}' data-group_members='{$str_group_members}' data-number='{$str_number}' data-flyers='{$str_flyers}' data-people='{$str_people}' data-prayers='{$str_prayers}' data-baptism='{$str_baptism}'
           data-meets_last='{$str_meets_last}' data-meets_current='{$str_meets_current}' data-meetings_last='{$str_meetings_last}' data-meetings_current='{$str_meetings_current}'
-          data-homes='{$str_homes}' data-place_name='{$str_place_name}' data-fgt_place='{$str_fgt_place}' data-comment='{$str_comment}'
+          data-homes='{$str_homes}' data-place_name='{$str_place_name}' data-fgt_place='{$str_fgt_place}' data-status='{$str_status}' data-comment='{$str_comment}'
           data-toggle='modal' data-target='#modalAddEdit'>
             <div class='col-1 pl-1 col_n_1'><span class='col_n_1_2'>{$str_date_short} {$dayOfTheWeek}</span></div>
             <div class='col-1 col_n_2' style='min-width: 120px !important;'><span class='col_n_2_2'>{$str_place_name}</span><span class='col_n_2_3'></span><br><span class='col_n_2_3' style='font-size: 12px; color: #AAA;'></span></div>

@@ -5,6 +5,7 @@ include_once "ajax.php";
 //include_once "../db/classes/db_operations.php";
 
 include_once '../db/ftt/ftt_settings_db.php';
+include_once '../db/classes/ftt_param.php';
 // Подключаем ведение лога
 include_once "../extensions/write_to_log/write_to_log.php";
 
@@ -15,7 +16,22 @@ if (!$adminId) {
     exit;
 }
 
-// Добавить одно мероприятие в ручную.
+// переписать параметор ПВОМ
+if (isset($_GET['type']) && $_GET['type'] === 'set_param') {
+  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  // Получаем raw data
+  $json_input = file_get_contents('php://input');
+  $postDate = json_decode($json_input, true);
+  // проверяем есть ли ошибки
+  if (json_last_error() !== JSON_ERROR_NONE) {
+    echo "JSON_ERROR";
+    exit;
+  }
+}
+  echo fttParam::set($postDate['name'], $postDate['value']);
+  exit();
+}
+//
 if (isset($_GET['type']) && $_GET['type'] === 'reset_semester') {
   if (empty($_GET['all'])) {
     resetExtraHelp($adminId);

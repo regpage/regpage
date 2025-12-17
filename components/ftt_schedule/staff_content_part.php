@@ -273,7 +273,7 @@ array_multisort($sort_field_7, SORT_ASC, $schedule_day7);
       }
       $schedule_empty = 1;
     } elseif ($schedule_empty !== 2 && $schedule_filled === 1) {
-      echo "<p style='margin-left: 20px; margin-top: 15px;'>Обучение завершилось {$ftt_schedule_end} </p>";
+      echo "<p style='margin-left: 20px; margin-top: 15px;'>Последний день семестра {$ftt_schedule_end} </p>";
       $schedule_empty = 2;
     }
 

@@ -6,6 +6,7 @@ require_once 'cronkey.php';
 header('Content-Type: text/html; charset=utf-8');
 session_start ();
 
+$CRON_ROOT_PATH = __DIR__;
 // config
 require_once 'config.php';
 require_once 'db/classes/ftt_info.php';

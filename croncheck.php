@@ -2,6 +2,8 @@
 // право доступа
 require_once 'cronkey.php';
 
+$CRON_ROOT_PATH = __DIR__;
+
 include_once 'config.php';
 include_once 'db/classes/date_convert.php';
 require_once 'db/classes/emailing.php';

@@ -1,4 +1,51 @@
 $(document).ready(function(){
+  // Переключение вкладок
+  $("#main_container .nav-tabs .nav-link").click(function () {
+    let href = $(this).attr("href");
+    setCookie("ftt_settings_tab", href.slice(1));
+    setTimeout(function () {
+      location.reload();
+    }, 30);
+  });
+  // Просмотр параметра в модальном окне
+  $(".edit_param_btn").click(function () {
+    $("#modalUniversalEditTitle").text($(this).attr("data-title"));
+    $("#param_name_header").text($(this).attr("data-param"));
+    $("#modalUniversalEdit textarea").val($(this).attr("data-param_value"));
+    $("#modalUniversalEdit").attr("data-name", $(this).attr("data-param"));
+    $("#modalUniversalEdit").modal("show");
+  });
+
+  // сохранение изменений параметров
+  $("#modalUniversalEditOK").click(function () {
+    let data = {
+      name: $("#modalUniversalEdit").attr("data-name"),
+      value: $("#modalUniversalEdit textarea").val()
+    };
+
+    fetch('ajax/ftt_settings_ajax.php?type=set_param', {
+      method: 'POST',
+      headers: {
+      'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.text())
+    .then(result => {
+      $("#modalUniversalEdit").modal("hide");
+      if (result == 1) {
+        showHint("Операция успешно завершена.");
+        setTimeout(function () {
+          location.reload();
+        }, 1500);
+      } else {
+        showError("Что то пошло не так.");
+        setTimeout(function () {
+          location.reload();
+        }, 1500);
+      }
+    });
+  });
 
   // очистить чтение библии.
   // Заявления ПВОМ
