@@ -15,7 +15,7 @@
               <select id="ftr_trainee_reading" class="form-control">
                 <option value="">Обучающиеся</option>
                 <?php foreach ($trainee_list as $key => $value):
-                  $selected = '';                  
+                  $selected = '';
                   echo "<option value='{$key}' {$selected}>{$value}</option>";
                 endforeach; ?>
               </select>
@@ -152,6 +152,31 @@
     </div>
   </div>
 </div>
+
+<!-- Статистика чтения Библии на конец семестра -->
+<div id="mdl_bible_statistic_semester" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content" style="width: 600px;">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title">Статистика чтения Библии</h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div id="bible_statistic_list_semester_data" class="container" style="max-height: 500px; overflow: auto;">
+
+        </div>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button id="print_read_statistic" type="button" class="btn btn-sm btn-primary" data-dismiss="modal">Печать</button>
+        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <!-- Отметка книг служащими -->
 <div id="mdl_bible_check_book" class="modal fade">

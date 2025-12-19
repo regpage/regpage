@@ -25,6 +25,9 @@ if (isset($_COOKIE['flt_serving_one_read'])) {
         endforeach; ?>
       </select>
     </div>
+    <div class="col-2 pl-0 pr-2">
+      <button id="show_mdl_bible_statistic_semester" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#mdl_bible_statistic_semester">Статистика</button>
+    </div>
   </div>
 </div>
 <hr class="m-0">

@@ -321,5 +321,13 @@ $("#send_request_for_pvom").click(function () {
 });
 
 $(".fellowship_link").click(function () {
-  window.location = 'ftt_fellowship';  
+  window.location = 'ftt_fellowship';
 });
+
+$("#modalEditMember .close-form, #btnCancelChanges").click(function () {
+  setTimeout(function () {
+    location.reload();
+  }, 100);
+});
+
+// Перезагрузкка страницы при закрытии бланка на крестик и кнопку отмена

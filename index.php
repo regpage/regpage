@@ -1398,7 +1398,7 @@ $(document).ready(function(){
                     }
 
                     $.post('/ajax/event.php?get_event', {eventId: eventId})
-                    .done(function(data){                      
+                    .done(function(data){
                         fillEventForm(data.event);
                     });
                 });
@@ -2079,7 +2079,7 @@ console.log('stop is ', stopRegistration, 'close is ', closeRegistration, modalW
 var adminRole = '<?php echo db_getAdminRole($memberId); ?>';
 
 </script>
-<script src="/js/mainpage.js?v36"></script>
+<script src="/js/mainpage.js?v37"></script>
 
 <?php
 }
