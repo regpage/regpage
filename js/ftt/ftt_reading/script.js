@@ -315,8 +315,8 @@ function calendar(records) {
   }
 }
 
-function get_data_reading_statistic_semester(elem) {
-  fetch("ajax/ftt_reading_ajax.php?type=get_reading_statistic_semester")
+function get_data_reading_statistic_semester(elem, filter) {
+  fetch("ajax/ftt_reading_ajax.php?type=get_reading_statistic_semester&filter=" + filter)
   .then(response => response.json())
   .then(commits => {
     render_reading_statistic_semester(commits.result, elem);
@@ -341,12 +341,22 @@ function render_reading_statistic_semester(data, elem) {
       if (data[string]["reading"]["notes_nt"] == 1) {
         notes_nt_text = "с примечаниями";
       }
+      // start
+      let start_ot = "";
+      let start_nt = "";
+      if (!data[string]["start"]['book_ot']) {
+        start_ot = "(сейчас не читает)";
+      }
+      if (!data[string]["start"]['book_nt']) {
+        start_nt = "(сейчас не читает)";
+      }
+
       render_html += "<tr><td>"
       render_html += data[string]["trainee"][0] + " (" +  data[string]["trainee"][4] + ")<br><br>";
-      render_html += "Ветхий Завет " + notes_ot_text + "<br>";
+      render_html += "Ветхий Завет " + notes_ot_text + " " + start_ot + "<br>";
       render_html += render_list_bible_books(data[string]["books"], 0, 39, data[string]["reading"]["books"]);
       render_html += "<br><br>";
-      render_html += "Новый Завет " + notes_nt_text + "<br>";
+      render_html += "Новый Завет " + notes_nt_text + " " + start_nt + "<br>";
       render_html += render_list_bible_books(data[string]["books"], 39, 66, data[string]["reading"]["books"]);
       render_html += "<br><hr>";
       render_html += "</td></tr>"

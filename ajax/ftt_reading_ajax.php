@@ -89,8 +89,8 @@ if (isset($_GET['type']) && $_GET['type'] === 'get_read_books') {
 if (isset($_GET['type']) && $_GET['type'] === 'get_reading_statistic_semester') {
   $bibleBooks = new Bible();
   $results = [];
-  foreach (ftt_lists::trainee_full() as $key => $value) {
-    $results[$key] = ['trainee'=>$value, 'reading'=>BookRead::get_all($key) , 'books' => $bibleBooks->get()];
+  foreach (ftt_lists::trainee_full_by_staff($_GET['filter']) as $key => $value) {
+    $results[$key] = ['trainee'=>$value, 'reading'=>BookRead::get_all($key) , 'books' => $bibleBooks->get(), 'start' => get_start_position($key)];
   }
   echo json_encode(["result"=>$results]);
   exit();

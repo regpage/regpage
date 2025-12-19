@@ -944,7 +944,7 @@ $("#date_read").change(function () {
 });
 
   $("#show_mdl_bible_statistic_semester").click(function() {
-    get_data_reading_statistic_semester($("#bible_statistic_list_semester_data"));
+    get_data_reading_statistic_semester($("#bible_statistic_list_semester_data"), $("#read_sevice_one_select").val());
   })
 
   $("#print_read_statistic").click(function () {

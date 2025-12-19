@@ -138,6 +138,27 @@ class ftt_lists {
 
       return $result;
   }
+  static function trainee_full_by_staff($serving_one_id='_all_')  {
+
+    global $db;
+    $serving_one_id = $db->real_escape_string($serving_one_id);
+    $result = [];
+    $condition = '';
+
+    if ($serving_one_id === "_all_") {
+      $condition = "1";
+    } else {
+      $condition = "ft.serving_one='$serving_one_id'";
+    }
+
+    $res = db_query("SELECT ft.member_key, ft.gospel_group, ft.gospel_team, ft.semester, m.key, m.name, m.male, ft.time_zone
+      FROM ftt_trainee ft
+      INNER JOIN member m ON m.key = ft.member_key
+      WHERE {$condition} ORDER BY m.name");
+      while ($row = $res->fetch_assoc()) $result[$row['key']]=[short_name::no_middle($row['name']), $row['male'], $row['gospel_group'], $row['gospel_team'], $row['semester'], $row['time_zone']];
+
+      return $result;
+  }
   static function trainee_list()  {
     $result = [];
     //  left & right join LOCALITY NAME ect
