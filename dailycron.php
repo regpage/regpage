@@ -140,9 +140,9 @@ function isLocalitiesExist()
   while ($row = $res->fetch_assoc()) $result .= $row['key'] . ' ' . $row['name'] . ' ' . $row['locality_key'] . '<br>';
 
   if (!empty($result)) {
-    $content = "Сообщение с сайта reg-page.ru.<br>Ошибка целостности данных.<br>" . date('m.d.Y H:i') . "Для следующих участников отсутствует соответствующая местность в таблице locality<br>{$result}";
+    $content = "Сообщение с сайта reg-page.ru.<br>Ошибка целостности данных.<br>" . date('m.d.Y H:i') . "<br>Для следующих участников отсутствует соответствующая местность в таблице locality<br>{$result}";
     $topic = 'Ошибка целостности данных на reg-page.ru';
-    Emailing::send('zhichkinroman@gmail.com', $topic, $content);
+    Emailing::send('a.rudanok@gmail.com,zhichkinroman@gmail.com', $topic, $content);
     echo " \r\nНАРУШЕНИЕ целостности данных\r\nДля следующих участников отсутствует соответствующая местность в таблице locality\r\n{$result}\r\n";
   } else {
     echo " \r\nПроверка целостности данных — ОК";
@@ -150,6 +150,57 @@ function isLocalitiesExist()
 }
 
 isLocalitiesExist();
+
+
+function isRegionAndCountryExist()
+{
+  $resultLostLocality = "";
+  $resultLostRegion = "";
+  $resultСountryWithOutRegion = "";
+  //$resultregionWithOutLocality = "";
+  // Поиск ошибок
+  // выбрать страны и проверить их регионы. У каждой страны должен быть хотя бы один регион ('--')
+  // дополнительно
+  // выбрать регионы для которых отсутствуют местности
+
+  // потерянные местности. Для каждой местности должен существовать соответствующий ей регион.
+  $lostLocality = db_query("SELECT `key`, `name`, `region_key` FROM `locality` WHERE `region_key` NOT IN (SELECT `key` FROM `region`) ORDER BY `name`");
+  while ($row = $lostLocality->fetch_assoc()) $resultLostLocality .= "{$row['key']} {$row['name']} указан регион {$row['region_key']}<br>";
+  if (!empty($resultLostLocality)) {
+    $resultLostLocality = "Отсутствует регион для следующих местностией:<br>{$resultLostLocality}<br>";
+  }
+  // потерянные регионы. Для каждого региона должна существовать соответствующая ему строна.
+  $lostRegion = db_query("SELECT `key`, `name`, `country_key` FROM `region` WHERE `country_key` NOT IN (SELECT `key` FROM `country`) ORDER BY `name`");
+  while ($row = $lostRegion->fetch_assoc()) $resultLostRegion .= "{$row['key']} {$row['name']} указан регион {$row['country_key']}<br>";
+  if (!empty($resultLostRegion)) {
+    $resultLostRegion = "Отсутствует страна для следующих регионов:<br>{$resultLostRegion}<br>";
+  }
+  // страны у каждой страны должен быть хотя бы 1 регион ('--')
+  $countryWithOutRegion = db_query("SELECT `key`, `name` FROM `country` WHERE `key` NOT IN (SELECT `country_key` FROM `region`) ORDER BY `name`");
+  while ($row = $countryWithOutRegion->fetch_assoc()) $resultСountryWithOutRegion .= "{$row['key']} {$row['name']}<br>";
+  if (!empty($resultСountryWithOutRegion)) {
+    $resultСountryWithOutRegion = "У следующих стран нет ни одного региона ('--'):<br>{$resultСountryWithOutRegion}<br>";
+  }
+  // регионы без местностей (не ошибка)
+  /*$regionWithOutLocality = db_query("SELECT r.*, c.name AS country_name FROM region AS r INNER JOIN country c ON c.key = r.country_key WHERE r.key NOT IN (SELECT `region_key` FROM `locality`) ORDER BY r.name");
+  while ($row = $regionWithOutLocality->fetch_assoc()) $resultregionWithOutLocality .= "{$row['key']} {$row['name']} указана страна {$row['country_name']}<br>";
+  if (!empty($resultregionWithOutLocality)) {
+    $resultregionWithOutLocality = "У следующих регионов нет ни одной местности (это не ошибка, а уведомление):<br>{$resultregionWithOutLocality}<br>";
+  }*/
+
+  if (!empty($resultLostLocality) || !empty($resultLostRegion) || !empty($resultСountryWithOutRegion)) { // || !empty($resultregionWithOutLocality)
+    $content = "Сообщение с сайта reg-page.ru.<br>Ошибка целостности данных.<br>" . date('m.d.Y H:i') . "<br><br>";
+    $content .= "{$resultLostLocality}{$resultLostRegion}{$resultСountryWithOutRegion}{$resultregionWithOutLocality}";
+    Emailing::send('a.rudanok@gmail.com,zhichkinroman@gmail.com', 'Ошибка целостности данных на reg-page.ru', $content); // zhichkinroman@gmail.com
+    echo "\r\nНАРУШЕНИЕ целостности данных\r\n\r\n{$content}";
+  } else {
+    echo "\r\nПроверка целостности данных — ОК";
+  }
+}
+
+// isLocalitiesExist();
+isRegionAndCountryExist();
+
 
 /***  П В О М  ***/
 // добавляем расписание в управление электронной доской функция

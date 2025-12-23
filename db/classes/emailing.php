@@ -139,6 +139,16 @@ class EmailingSMTP
     try {
         //Server settings
         // $mail->SMTPDebug = SMTP::DEBUG_LOWLEVEL; // SMTP::DEBUG_SERVER                      //Enable verbose debug output
+        // Настройка кодировки
+        $mail->CharSet = PHPMailer::CHARSET_UTF8; // Устанавливаем кодировку для библиотеки
+        $mail->Encoding = PHPMailer::ENCODING_BASE64; // Метод кодирования содержимого (для переноса строк)
+
+        // Языковые заголовки
+        $mail->setLanguage('ru');
+        /*$mail->addCustomHeader('Content-Language: ru-RU'); // Явное указание языка в заголовках
+        $mail->addCustomHeader('Accept-Language: ru-RU, ru;q=0.9'); // Дополнительный заголовок для лучшей поддержки*/
+
+        // Настройка SMTP
         $mail->isSMTP();                                            //Send using SMTP
         $mail->Host       = $mailCnfg['host']; //                      //Set the SMTP server to send through
         $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
@@ -147,15 +157,18 @@ class EmailingSMTP
         $mail->SMTPSecure =  PHPMailer::ENCRYPTION_STARTTLS; // 'ssl'    PHPMailer::ENCRYPTION_SMTPS             //Enable implicit TLS encryption
         $mail->Port       = $mailCnfg['port'];                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
-
-        $mail->CharSet = PHPMailer::CHARSET_UTF8; // Устанавливаем кодировку для библиотеки
-        $mail->Encoding = PHPMailer::ENCODING_BASE64; // Метод кодирования содержимого (для переноса строк)
-
+        // Отправитель и получатель
         //Recipients // От кого (имя можно указать на русском)
         $mail->setFrom('noreply@reg-page.ru', 'Уведомление с сайта регистрации');
         // Кому
         //$mail->addAddress('zhichkinroman@gmail.com', 'Joe User');     //Add a recipient
-        $mail->addAddress($email);               //Name is optional
+        $emails = array_filter(array_map('trim', explode(',', $email)));
+        foreach ($emails as $emailElem) {
+          if (filter_var($emailElem, FILTER_VALIDATE_EMAIL)) {
+            $mail->addAddress($emailElem);               //Name is optional
+          }
+        }
+
         $mail->addReplyTo('noreply@reg-page.ru', 'Автоматическая рассылка');
         //$mail->addCC('cc@example.com');
         //$mail->addBCC('bcc@example.com');
@@ -164,10 +177,11 @@ class EmailingSMTP
         //$mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
         //$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
 
-        //Content
+        // Тема и тело письма
+        $bodyHTML = '<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><title>' . $topic . '</title></head><body>' . $body . '</body></html>';
         $mail->isHTML(true);                                  //Set email format to HTML
         $mail->Subject = $topic;
-        $mail->Body    = $body;
+        $mail->Body    = $bodyHTML;
         $mail->AltBody = preg_replace('<br>', '\r\n', $body);
 
         $mail->SMTPOptions = array(

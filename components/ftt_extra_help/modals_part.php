@@ -43,9 +43,9 @@
           <input type="text" class="input-google" id="comment_field" placeholder="Текст комментария...">
         </div>
         <?php } ?>
-        <div class="form-group" style="display: none;">
+        <div class="form-group">
           <div class="mt-2">
-            <label for="skip_modal_file">Приложить файл</label><br>
+            <label>Приложить файл</label><br>
             <input type="file" id="extrahelp_modal_file" class="form-control-sm pl-0" accept="image/*" multiple>
           </div>
           <div id="spinner_upload" class="mt-2" style="display: none;">
@@ -108,7 +108,7 @@
         <div class="w-100 text-right" >
         <?php if (!$serving_trainee && $ftt_access['group'] !== 'trainee'): ?>
             <button id="delete_extra_help" class="btn btn-sm btn-secondary float-left"><i class="fa fa-trash" aria-hidden="true"></i></button>
-        <?php endif; ?>        
+        <?php endif; ?>
           <button id="save_extra_help" class="btn btn-sm btn-success" data-dismiss="modal" aria-hidden="true" style="">Сохранить</button>
           <button class="btn btn-sm btn-secondary" data-dismiss="modal" aria-hidden="true" style="">Закрыть</button>
         </div>

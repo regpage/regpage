@@ -12,7 +12,7 @@ function db_checkweeklyAttendance () {
   $res = db_query("SELECT fas.id, fas.member_key, fas.date, fas.status, fas.date_send, fas.changed, ft.serving_one
     FROM  ftt_attendance_sheet AS fas
     INNER JOIN ftt_trainee ft ON ft.member_key = fas.member_key
-    WHERE (fas.date = DATE_FORMAT((NOW() - INTERVAL 7 DAY), '%Y-%m-%d')) AND fas.status=0");
+    WHERE (fas.date = DATE_FORMAT((NOW() - INTERVAL 4 DAY), '%Y-%m-%d')) AND fas.status=0");
   while ($row = $res->fetch_assoc()) $result[]=$row;
 
   foreach ($result as $key => $value){
