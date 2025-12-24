@@ -1,6 +1,6 @@
 <?php
 include_once "ajax.php";
-
+include_once '../db/classes/emailing.php';
 
 if (isset($_GET['type']) && $_GET['type'] === 'set_subsidies') {
   include_once '../db/regpage/classes/reg/subsidies.php';
@@ -273,10 +273,15 @@ if (isset ($_POST ['message']) && isset ($_POST ['event']) && isset ($_POST ['na
         $from_email = stripslashes ($_POST ['email']);
         $arrEmails = explode(',', $email);
         foreach ($arrEmails as $value) {
-            $res = EMAILS::sendEmail ($value, "Сообщение с сайта reg-page.ru: ".($from_name), $message, $from_email);
-            if($res != null){
-                $error = $res;
-            }
+          // старая версия
+          // $res = EMAILS::sendEmail ($value, "Сообщение с сайта reg-page.ru: ".($from_name), $message, $from_email);
+          // новая версия
+          $res = emailing::send($value, "Сообщение с сайта reg-page.ru: {$from_name}", "{$message }<br>{$from_email}");
+          // тестовая версия
+          //$res = emailing::send('thegraceofchrist@gmail.com', "Сообщение с сайта reg-page.ru: {$from_name}", "{$message }<br>{$from_email}");
+          if($res != 1){
+              $error = $res;
+          }
         }
     }
     else
@@ -297,7 +302,7 @@ if (isset ($_POST ['message']) && isset($_POST ['event']) && isset ($_POST ['nam
     if (!isset ($_POST ['guest']))
     {
         $locality = db_getMemberLocality(db_getMemberIdBySessionId (session_id()));
-        if ($locality) $locality = "<br><br>nНаселённый пункт отправителя: $locality";
+        if ($locality) $locality = "<br><br>Населённый пункт отправителя: $locality";
     }
     else{
         $locality ="";
@@ -311,7 +316,12 @@ if (isset ($_POST ['message']) && isset($_POST ['event']) && isset ($_POST ['nam
         // $headers = "From: $from_name<$from_email>\r\nReply-To: $from_name<$from_email>\r\n";
         $arrEmails = explode(',', $email);
         foreach ($arrEmails as $value) {
-            EMAILS::sendEmail (stripslashes ($value), "Сообщение с сайта reg-page.ru - ".($from_name), (stripslashes ($_POST ['message'])).$locality."\n".$infoEvent."\n"."Страница: ".($_POST["admins"]), $from_email);
+            // старая версия
+            // EMAILS::sendEmail (stripslashes ($value), "Сообщение с сайта reg-page.ru - ".($from_name), (stripslashes ($_POST ['message'])).$locality."\n".$infoEvent."\n"."Страница: ".($_POST["admins"]), $from_email);
+            // новая версия
+            $res = emailing::send(stripslashes ($value), "Сообщение с сайта reg-page.ru - {$from_name}", stripslashes($_POST ['message']).$locality."\n".$infoEvent."\n"."Страница: {$_POST["admins"]}");
+            // тестовая версия
+            //$res = emailing::send('zhicha@rambler.ru', "Сообщение с сайта reg-page.ru - {$from_name}", stripslashes($_POST ['message']).$locality."\n".$infoEvent."\n"."Страница: {$_POST["admins"]}");
         }
         exit;
     }
