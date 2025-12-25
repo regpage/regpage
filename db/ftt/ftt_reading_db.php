@@ -469,10 +469,11 @@ function dlt_history_reading_bible($member_key, $ot, $nt)
 }
 
 /**** СЛУЖАЩИЕ ****/
-function getDataReadingForStaff($member_key)
+function getDataReadingForStaff($member_key, $semester)
 {
   global $db;
   $member_key = $db->real_escape_string($member_key);
+  $semester = $db->real_escape_string($semester);
   $result = [];
   $curent_date = [];
   $condition = "";
@@ -484,6 +485,13 @@ function getDataReadingForStaff($member_key)
     $condition = " ft.serving_one = '{$member_key}' AND ";
     $condition_old_str = " AND ft.serving_one = '{$member_key}' ";
     $condition_trainee = " tr.serving_one = '{$member_key}' ";
+  }
+
+  if ($semester != '_all_') {
+    $semesterArr = explode('_', $semester);
+    $condition .= " (ft.semester = {$semesterArr[0]} OR ft.semester = {$semesterArr[1]}) AND ";
+    $condition_old_str .= " AND (ft.semester = {$semesterArr[0]} OR ft.semester = {$semesterArr[1]}) ";
+    $condition_trainee .= " AND (tr.semester = {$semesterArr[0]} OR tr.semester = {$semesterArr[1]}) ";
   }
 
   $res = db_query("SELECT tr.member_key, m.name

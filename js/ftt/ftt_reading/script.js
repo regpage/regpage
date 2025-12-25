@@ -315,8 +315,8 @@ function calendar(records) {
   }
 }
 
-function get_data_reading_statistic_semester(elem, filter) {
-  fetch("ajax/ftt_reading_ajax.php?type=get_reading_statistic_semester&filter=" + filter)
+function get_data_reading_statistic_semester(elem, filter, semesters) {
+  fetch("ajax/ftt_reading_ajax.php?type=get_reading_statistic_semester&filter=" + filter + "&semesters=" + semesters)
   .then(response => response.json())
   .then(commits => {
     render_reading_statistic_semester(commits.result, elem);
@@ -353,10 +353,10 @@ function render_reading_statistic_semester(data, elem) {
 
       render_html += "<tr><td>"
       render_html += data[string]["trainee"][0] + " (" +  data[string]["trainee"][4] + ")<br><br>";
-      render_html += "Ветхий Завет " + notes_ot_text + " " + start_ot + "<br>";
+      render_html += "Ветхий Завет " + notes_ot_text + " — " + data[string]["ot_in_Percent"] + " " + start_ot + "<br>";
       render_html += render_list_bible_books(data[string]["books"], 0, 39, data[string]["reading"]["books"]);
       render_html += "<br><br>";
-      render_html += "Новый Завет " + notes_nt_text + " " + start_nt + "<br>";
+      render_html += "Новый Завет " + notes_nt_text + " — " + data[string]["nt_in_Percent"] + " " + start_nt + "<br>";
       render_html += render_list_bible_books(data[string]["books"], 39, 66, data[string]["reading"]["books"]);
       render_html += "<br><hr>";
       render_html += "</td></tr>"
@@ -390,7 +390,7 @@ function print_report_reading(selector) {
   function popup(data){
     let mywindow = window.open('', 'Статистика', 'height=600,width=800');
     mywindow.document.write('<html><head><title>Чтение. Для отправки на принтер нажмите Ctrl+P.</title>');
-    mywindow.document.write('</head><body><style>td {vertical-align: top; text-align: left;} tr {height: 270mm;}</style>');
+    mywindow.document.write('</head><body><style>td {vertical-align: top; text-align: left;} </style>'); // tr {height: 270mm;}
     mywindow.document.write(data);
     mywindow.document.write('</body></html>');
     //mywindow.print();

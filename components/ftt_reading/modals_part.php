@@ -156,7 +156,7 @@
 <!-- Статистика чтения Библии на конец семестра -->
 <div id="mdl_bible_statistic_semester" class="modal fade">
   <div class="modal-dialog">
-    <div class="modal-content" style="width: 600px;">
+    <div class="modal-content">
       <!-- Modal Header -->
       <div class="modal-header">
         <h5 class="modal-title">Статистика чтения Библии</h5>

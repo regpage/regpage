@@ -63,7 +63,7 @@
 <?php } elseif ($_SERVER['PHP_SELF'] === '/calls.php') { ?>
       <link href="css/regpage/calls.css?v22" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_reading.php') { ?>
-    <link href="css/ftt/ftt_reading.css?v2" rel="stylesheet">
+    <link href="css/ftt/ftt_reading.css?v3" rel="stylesheet">
 <?php } ?>
     <link rel="stylesheet" href="css/bootstrap-4.4.1/css/bootstrap.min.css">
     <script src="extensions/jquery_3.6.0/jquery-3.6.0.min.js"></script>

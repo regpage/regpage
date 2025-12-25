@@ -13,8 +13,7 @@ if ($(window).width()<=769) {
   $("#mdl_lest_reading_bible").css("font-size", "16px");
   // very small dysplay
   $(".read_name").css("min-width", "300px");
-  $(".read_day").removeClass("mr-2").addClass("mr-1").addClass("mb-1");
-  $("#read_sevice_one_select").parent().removeClass("col-2").addClass("col-6")
+  $(".read_day").removeClass("mr-2").addClass("mr-1").addClass("mb-1");  
 
   if ($(window).width()<=390) {
 

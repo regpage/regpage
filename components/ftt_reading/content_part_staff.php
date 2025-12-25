@@ -4,25 +4,28 @@
 ЕСЛИ ТЕКУЩИЙ БЛАНК НЕ ЗАПОЛНЕН СОВСЕМ ПРОВЕРЯТЬ БЫЛ ЛИ СТАРТ И ОТ ЭТОГО ЗАПОЛНЯТЬ
 -->
 <?php
-if (isset($_COOKIE['flt_serving_one_read'])) {
+if (!empty($_COOKIE['flt_serving_one_read'])) {
   $flt_sevice_one_read = $_COOKIE['flt_serving_one_read'];
 } else {
   $flt_sevice_one_read = $memberId;
+}
+if (!empty($_COOKIE['flt_semester_read'])) {
+  $fltSemesterRead = $_COOKIE['flt_semester_read'];
+} else {
+  $fltSemesterRead = '_all_';
 }
 ?>
 <div class="container">
   <br>
   <div id="" class="row mb-2">
-    <div class="col-2 pl-0 pr-2">
-      <select id="read_sevice_one_select" class="form-control form-control-sm">
-        <option value="_all_">Все служащие</option>
-        <?php foreach ($serving_ones_list as $key => $value):
-          $selected = '';
-          if ($key === $flt_sevice_one_read) {
-            $selected = 'selected';
-          }
-          echo "<option value='{$key}' {$selected}>{$value}</option>";
-        endforeach; ?>
+    <div class="col-4 col-md-2 pl-0 pr-2">
+      <select id="read_sevice_one_select" class="form-control form-control-sm" data-cookie="flt_serving_one_read">
+        <?php FTT_Select_fields::rendering($serving_ones_list, $flt_sevice_one_read, 'Все служащие') ?>
+      </select>
+    </div>
+    <div class="col-4 col-md-2 pl-0 pr-2">
+      <select id="read_semester_select" class="form-control form-control-sm" data-cookie="flt_semester_read">
+        <?php FTT_Select_fields::rendering(['1_2'=>'Семестры 1-2','3_4'=>'Семестры 3-4','5_6'=>'Семестры 5-6'], $fltSemesterRead, 'Все семестры') ?>
       </select>
     </div>
     <div class="col-2 pl-0 pr-2">
@@ -34,7 +37,7 @@ if (isset($_COOKIE['flt_serving_one_read'])) {
 <div id="list_readin_bible" class="container">
     <div class="row">
     <?php
-    $reading_data = getDataReadingForStaff($flt_sevice_one_read);
+    $reading_data = getDataReadingForStaff($flt_sevice_one_read, $fltSemesterRead);
     foreach ($reading_data as $key => $value) {
       if (!isset($trainee_list[$key])) {
         continue;

@@ -299,8 +299,8 @@ $(document).ready(function(){
   });
 
   // фильтр
-  $("#read_sevice_one_select").change(function () {
-    setCookie("flt_serving_one_read", $(this).val());
+  $("#read_sevice_one_select, #read_semester_select").change(function () {
+    setCookie($(this).attr("data-cookie"), $(this).val());
     setTimeout(function () {
       location.reload();
     }, 30);
@@ -944,7 +944,7 @@ $("#date_read").change(function () {
 });
 
   $("#show_mdl_bible_statistic_semester").click(function() {
-    get_data_reading_statistic_semester($("#bible_statistic_list_semester_data"), $("#read_sevice_one_select").val());
+    get_data_reading_statistic_semester($("#bible_statistic_list_semester_data"), $("#read_sevice_one_select").val(), $("#read_semester_select").val());
   })
 
   $("#print_read_statistic").click(function () {

@@ -6,6 +6,7 @@
 class Bible
 {
   public $books;
+  public $booksPercent;
 
   function __construct()
   {
@@ -15,6 +16,11 @@ class Bible
   function get()
   {
     return $this->books;
+  }
+
+  function getWithPercent()
+  {
+    return $this->booksPercent;
   }
 
   function getNoSpace()
@@ -31,9 +37,13 @@ class Bible
       $condition = " WHERE `book`='{$book}' " ;
     }
     $result = [];
-    $res = db_query("SELECT `book`, `chapter` FROM `bible` {$condition}");
-    while ($row = $res->fetch_assoc()) $result[] = [$row['book'], $row['chapter']];
-
+    $resultAllFields = [];
+    $res = db_query("SELECT * FROM `bible` {$condition}");
+    while ($row = $res->fetch_assoc()) {
+      $result[] = [$row['book'], $row['chapter']];
+      $resultAllFields[] = [$row['book'], $row['chapter'], $row['part']];
+    }
+    $this->booksPercent = $resultAllFields;
     return $result;
   }
 

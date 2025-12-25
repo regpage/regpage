@@ -29,4 +29,24 @@ class BookRead
 
     return $result;
   }
+
+  static function get_percent($books, $memberKey, $testament)
+  {
+    $read = [];
+    $percent = 0;
+    $res = db_query("SELECT DISTINCT `book_{$testament}` FROM `ftt_bible` WHERE `member_key` = '{$memberKey}' AND `date` = '0000-00-00' AND `book_{$testament}` != ''");
+    while ($row = $res->fetch_assoc()) {
+      $read[] = $row["book_{$testament}"];
+    }
+
+    foreach ($read as $value) {
+      $result = array_filter($books, function($item) use ($value) {
+        return isset($item[0]) && $item[0] === $value;
+      });
+      foreach ($result as $element) {
+        $percent += $element[2];
+      }
+    }
+    return round($percent, 0) . '%';
+  }
 }
