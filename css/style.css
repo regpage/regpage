@@ -929,8 +929,7 @@ input.error, .control-group.error select, textarea.error {
     cursor:pointer;
 }
 .list-events > div, .hidden-events-list > div{
-    display: inline-flex;
-    border-bottom: 1px solid #DDD;
+    display: inline-flex;    
     width: 100%;
     padding-top: 10px;
     padding-bottom: 10px;

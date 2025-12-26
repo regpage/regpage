@@ -1251,16 +1251,20 @@ $(document).ready(function(){
                 }
 
                 desctopEvent = '<div '+eventAttrs+'>'+
-                            '<span class="span5 event-name">'+ event.name + '</span>'+
+                            '<span class="span5 event-name"><b>'+ event.name + '</b></span>'+
                             '<span style="display: none;" class="span3">'+ event.locality_name + '</span>'+
                             '<span class="span2 event-date" style="display: none;">'+ formatDDMM(event.start_date) + ' - ' + formatDDMM(event.end_date)+'</span>'+
-                            '<span class="span2 event-icons"  style="width: 190px";>'+ (regstateClass == "" ?  "" : '<span style="margin-top:5px; margin-left: 0px; margin-right: 19px; display: inline;" class="label label-'+regstateClass+'">'+ regstateText + '</span>') +((regstateText) ? ((regstateText === 'регистрация подтверждена' || regstateText === 'ожидание подтверждения') ? '<span style="padding-left: 0px;"><a style="padding-left: 0px; font-size: 12px; display: none;" class="handleRegistrationFast editEventMember" title="Редактировать данные"> Изменить</a></span><span><a class="rejectRegistrationFast" title="Отменить регистрацию" style=" margin-right: 12px; font-size: 12px; display: none;"> Отменить</a></span>':''):'<span style="margin-top:5px; margin-left: 0px; margin-right: 1px; padding-left:0px;"><a class="handleRegistrationFast addEventMember" style="display: none;">Отправить</a></span>')+ icons +'</span>' + (itero_online_key == event.id ? itero_online_desk : '')
+                            '<span class="span2 event-icons"  style="width: 190px";>'+ (regstateClass == "" ?  "" : '<span style="margin-top:5px; margin-left: 0px; margin-right: 19px; display: inline;" class="label label-'+regstateClass+'">'+ regstateText + '</span>') +((regstateText) ? ((regstateText === 'регистрация подтверждена' || regstateText === 'ожидание подтверждения') ? '<span style="padding-left: 0px;"><a style="padding-left: 0px; font-size: 12px; display: none;" class="handleRegistrationFast editEventMember" title="Редактировать данные"> Изменить</a></span>':''):'<span style="margin-top:5px; margin-left: 0px; margin-right: 1px; padding-left:0px;"></span>')+ icons +'</span>' + (itero_online_key == event.id ? itero_online_desk : '')
+                            +'</div><div style="padding-top:5px; padding-bottom: 30px; padding-left: 10px; border-bottom: 1px solid #DDD;" onmouseover="this.style.backgroundColor='+ "'" + '#fff' + "'" + '"><a class="btn btn-secondary event-row_btn" type="button" title="Отправить данные команде регистрации" style="margin-right: 10px;"> Посмотреть</a>'
+                            +((regstateText === 'регистрация подтверждена' || regstateText === 'ожидание подтверждения') ? '<a class="btn btn-danger rejectRegistrationFast" type="button" title="Отправить данные команде регистрации">Отменить регистрацию</a>' : '<a class="btn btn-success handleRegistrationFast addEventMember" type="button" title="Отправить данные команде регистрации"><i class="fa fa-check icon-white" style="margin:0;"></i> Отправить заявку</a>')
                             +'</div>';
 
                 tabletEvent = '<div style="display: block;" '+eventAttrs+' style="display: block;">'+
                             '<div class="event-name"><strong>'+ event.name + '</strong><span class="event-name"></div>'+
-                            '<div style="margin-top:2px;"><span style="margin-top:5px; margin-right:5px;" class="label label-'+regstateClass+'">'+ regstateText + '</span>' + icons+ '</div>'+
-                        (itero_online_key == event.id ? itero_online : '')+'</div>';
+                            '<div style="margin-top:2px;"><span style="margin-top:5px; margin-right:5px;" class="label label-'+regstateClass+'">'+ regstateText + '</span>' + icons + '</div>'+
+                            (itero_online_key == event.id ? itero_online : '') + '</div><div style="padding-top:5px; padding-bottom: 30px; border-bottom: 1px solid #DDD;" onmouseover="this.style.backgroundColor='+ "'" + '#fff' + "'" + '"><a class="btn btn-secondary event-row_btn" type="button" title="Отправить данные команде регистрации" style="margin-right: 10px;"> Посмотреть</a>'
+                            + ((regstateText === 'регистрация подтверждена' || regstateText === 'ожидание подтверждения') ? '<a class="btn btn-danger rejectRegistrationFast" type="button" title="Отправить данные команде регистрации">Отменить регистрацию</a>' : '<a class="btn btn-success handleRegistrationFast addEventMember" type="button" title="Отправить данные команде регистрации"><i class="fa fa-check icon-white" style="margin:0;"></i> Отправить заявку</a>')
+                            +'</div>';
 
                         /* BEGIN #ПОДДЕРЖКА Дотация для 20 участников на Манилы */
                         /*
@@ -1411,7 +1415,7 @@ $(document).ready(function(){
 
                 $(".rejectRegistrationFast").click (function (e){
                   e.stopPropagation();
-                  var modal = $(this).parents('div');
+                  var modal = $(this).parent().prev();
                   var eventId = modal.attr ('data-id');
                   var eventName = modal.attr ('data-name');
                   window.currentEventId = eventId;
@@ -1424,7 +1428,7 @@ $(document).ready(function(){
                 $('.handleRegistrationFast').click(function(e){
                   e.stopPropagation();
                   $('.theActiveEvent').removeClass('theActiveEvent');
-                  var thisParent = $(this).parent().parent().parent();
+                  var thisParent = $(this).parent().prev();
                   $(thisParent).addClass('theActiveEvent');
                   var eventId = $(thisParent).attr('data-id');
 
@@ -1553,13 +1557,20 @@ console.log('stop is ', stopRegistration, 'close is ', closeRegistration, modalW
                   }*/
                 });
 
-                $('.list-events .event-row').click(function(e){
+                $('.list-events .event-row, .list-events .event-row_btn').click(function(e){
                     e.stopPropagation();
                     $('.theActiveEvent').removeClass('theActiveEvent');
-                    $(this).addClass('theActiveEvent');
-                    var eventId = $(this).attr('data-id');
-                    arriveDepartMyself($(this).attr('data-start_date'),'.emArrDate');
-                    arriveDepartMyself($(this).attr('data-end_date'),'.emDepDate');
+                    let event_row;
+                    if ($(this).hasClass("event-row_btn")) {
+                      event_row = $(this).parent().prev();
+                    } else {
+                      event_row = $(this);
+                    }
+
+                    event_row.addClass('theActiveEvent');
+                    var eventId = event_row.attr('data-id');
+                    arriveDepartMyself(event_row.attr('data-start_date'),'.emArrDate');
+                    arriveDepartMyself(event_row.attr('data-end_date'),'.emDepDate');
 
                     $.post('/ajax/event.php?get_member_event', {eventId: eventId})
                     .done(function(data){
