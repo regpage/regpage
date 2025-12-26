@@ -100,7 +100,7 @@ if (isset($_GET['type']) && $_GET['type'] === 'get_reading_statistic_semester') 
 
     // }
     if (empty($semesters) || (!empty($semesters[0]) && !empty($semesters[1]) && ($value[4] == $semesters[0] || $value[4] == $semesters[1]))) {
-      $results[$key] = ['trainee'=>$value, 'reading'=>BookRead::get_all($key), 'books' => $bibleBooks->get(), 'start' => get_start_position($key), 'ot_in_Percent' => BookRead::get_percent($bibleBooks->getWithPercent(), $key, 'ot'), 'nt_in_Percent' => BookRead::get_percent($bibleBooks->getWithPercent(), $key, 'nt')];
+      $results[$key] = ['trainee'=>$value, 'reading'=>BookRead::get_according_last_start($key), 'books' => $bibleBooks->get(), 'start' => get_start_position($key), 'ot_in_Percent' => BookRead::get_percent($bibleBooks->getWithPercent(), $key, 'ot'), 'nt_in_Percent' => BookRead::get_percent($bibleBooks->getWithPercent(), $key, 'nt')];
     }
   }
   echo json_encode(["result"=>$results]);
