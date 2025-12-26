@@ -482,7 +482,7 @@
       mywindow.document.write(html["end"]);
       // рендерим страницу конец
       //console.log(mywindow);
-      if (!is_preview) {
+      if (!is_preview) {        
         mywindow.print();
         mywindow.close();
       }
