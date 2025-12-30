@@ -1226,7 +1226,7 @@ $(document).ready(function(){
 
                 icons =
                     ( in_array(event.id, hidenEvents) ? '<span style="display: inline;" class="fa fa-arrow-up btnEventHiding" title="Показать мероприятие"></span>' : '<span style="display: none; margin-right: 5px; margin-left: 5px;" class="fa fa-arrow-down btnEventHiding" title="Скрыть мероприятие"></span>') +
-                    ( (memberId == '000005716' || memberId == '000001679') ?
+                    ( ((memberId == '000005716' || memberId == '000001679') && event.id[0] == "9") ?
                        ( isEventActive ? '<span  style="display: inline; margin-right: 5px; margin-left: 5px;"class="fa fa-check-circle  btnEventActivity" title="Сделать неактивным"></span>' : '<span style="display: inline; margin-right: 5px; margin-left: 5px;" class="fa fa-times btnEventActivity" title="Сделать активным"></span>') +
                         '<span style="display: inline; margin-right: 5px; margin-left: 5px;" class="fa fa-pencil btnEditEvent" title="Редактировать мероприятие"></span>'+
                         '<span style="display: inline; margin-right: 5px;" class="fa fa-trash-o btnRemoveEvent" title="Удалить мероприятие" aria-hidden="true"></span>' : '');
@@ -1251,20 +1251,24 @@ $(document).ready(function(){
                 }
 
                 desctopEvent = '<div '+eventAttrs+'>'+
-                            '<span class="span5 event-name"><b>'+ event.name + '</b></span>'+
+                            '<span class="event-name"><b>'+ event.name + '</b></span>'+
                             '<span style="display: none;" class="span3">'+ event.locality_name + '</span>'+
                             '<span class="span2 event-date" style="display: none;">'+ formatDDMM(event.start_date) + ' - ' + formatDDMM(event.end_date)+'</span>'+
-                            '<span class="span2 event-icons"  style="width: 190px";>'+ (regstateClass == "" ?  "" : '<span style="margin-top:5px; margin-left: 0px; margin-right: 19px; display: inline;" class="label label-'+regstateClass+'">'+ regstateText + '</span>') +((regstateText) ? ((regstateText === 'регистрация подтверждена' || regstateText === 'ожидание подтверждения') ? '<span style="padding-left: 0px;"><a style="padding-left: 0px; font-size: 12px; display: none;" class="handleRegistrationFast editEventMember" title="Редактировать данные"> Изменить</a></span>':''):'<span style="margin-top:5px; margin-left: 0px; margin-right: 1px; padding-left:0px;"></span>')+ icons +'</span>' + (itero_online_key == event.id ? itero_online_desk : '')
-                            +'</div><div style="padding-top:5px; padding-bottom: 30px; padding-left: 10px; border-bottom: 1px solid #DDD;" onmouseover="this.style.backgroundColor='+ "'" + '#fff' + "'" + '"><a class="btn btn-secondary event-row_btn" type="button" title="Отправить данные команде регистрации" style="margin-right: 10px;"> Посмотреть</a>'
-                            +((regstateText === 'регистрация подтверждена' || regstateText === 'ожидание подтверждения') ? '<a class="btn btn-danger rejectRegistrationFast" type="button" title="Отправить данные команде регистрации">Отменить регистрацию</a>' : '<a class="btn btn-success handleRegistrationFast addEventMember" type="button" title="Отправить данные команде регистрации"><i class="fa fa-check icon-white" style="margin:0;"></i> Отправить заявку</a>')
+                            '<span class="span2">'+ (regstateClass == "" ?  "" : '<span style="margin-top:5px; margin-left: 0px; margin-right: 19px; display: inline;" class="label label-'+regstateClass+'">'+ regstateText + '</span>') + '</span>' + (itero_online_key == event.id ? itero_online_desk : '')
+                            +'</div><div style="padding-top:5px; padding-bottom: 30px; padding-left: 10px; border-bottom: 1px solid #DDD;" onmouseover="this.style.backgroundColor='+ "'" + '#fff' + "'" + '"><a class="btn btn-secondary event-row_btn" type="button" title="Отправить данные команде регистрации" style="margin-right: 10px;">Информация</a>'
+                            +((regstateText === 'регистрация подтверждена' || regstateText === 'ожидание подтверждения') ? '<a style="margin-right: 10px;" class="btn btn-success handleRegistrationFast editEventMember" type="button" title="Редактировать данные">Изменить</a><a class="btn btn-danger rejectRegistrationFast" type="button" title="Отправить данные команде регистрации">Отменить</a>' : '<a class="btn btn-success handleRegistrationFast addEventMember" type="button" title="Отправить данные команде регистрации"><i class="fa fa-check icon-white" style="margin:0;"></i> Отправить заявку</a>')
+                            + '<span class="span2 event-icons" style="align-self: center;">'+ icons +'</span></span>'
                             +'</div>';
-
+                            // ''+ (regstateClass == "" ?  "" : '<span style="margin-top:5px; margin-left: 0px; margin-right: 19px; display: inline;" class="label label-'+regstateClass+'">'+ regstateText + '</span>') +((regstateText) ? '':
+// ((regstateText === 'регистрация подтверждена' || regstateText === 'ожидание подтверждения') ? '<span style="padding-left: 0px;"></span>':'')
                 tabletEvent = '<div style="display: block;" '+eventAttrs+' style="display: block;">'+
                             '<div class="event-name"><strong>'+ event.name + '</strong><span class="event-name"></div>'+
-                            '<div style="margin-top:2px;"><span style="margin-top:5px; margin-right:5px;" class="label label-'+regstateClass+'">'+ regstateText + '</span>' + icons + '</div>'+
-                            (itero_online_key == event.id ? itero_online : '') + '</div><div style="padding-top:5px; padding-bottom: 30px; border-bottom: 1px solid #DDD;" onmouseover="this.style.backgroundColor='+ "'" + '#fff' + "'" + '"><a class="btn btn-secondary event-row_btn" type="button" title="Отправить данные команде регистрации" style="margin-right: 10px;"> Посмотреть</a>'
-                            + ((regstateText === 'регистрация подтверждена' || regstateText === 'ожидание подтверждения') ? '<a class="btn btn-danger rejectRegistrationFast" type="button" title="Отправить данные команде регистрации">Отменить регистрацию</a>' : '<a class="btn btn-success handleRegistrationFast addEventMember" type="button" title="Отправить данные команде регистрации"><i class="fa fa-check icon-white" style="margin:0;"></i> Отправить заявку</a>')
-                            +'</div>';
+                            '<div style="margin-top:2px;"><span style="margin-top:5px; margin-right:5px;" class="label label-'+regstateClass+'">'+ regstateText + '</span></div>'+
+                            (itero_online_key == event.id ? itero_online : '') + '</div><div style="padding-top:5px; padding-bottom: 0px;"><a class="btn btn-secondary event-row_btn" type="button" title="Отправить данные команде регистрации" style="margin-right: 10px;">Информация</a>'
+                            + ((regstateText === 'регистрация подтверждена' || regstateText === 'ожидание подтверждения') ? '<a style="margin-right: 10px;" class="btn btn-success handleRegistrationFast editEventMember" type="button" title="Редактировать данные">Изменить</a><a class="btn btn-danger rejectRegistrationFast" type="button" title="Отправить данные команде регистрации">Отменить</a>' : '<a class="btn btn-success handleRegistrationFast addEventMember" type="button" title="Отправить данные команде регистрации"><i class="fa fa-check icon-white" style="margin:0;"></i> Отправить заявку</a>')
+                            + '</div>'
+                            + '<div class="event-icons" style="border-bottom: 1px solid #DDD;">'+ icons +'</div>';
+
 
                         /* BEGIN #ПОДДЕРЖКА Дотация для 20 участников на Манилы */
                         /*
@@ -1362,7 +1366,7 @@ $(document).ready(function(){
                 $('.btnEventActivity').click(function(e){
                     e.stopPropagation();
                     var isEventActive = $(this).hasClass('fa-check-circle'),
-                        eventId = $(this).parents('.event-row').attr('data-id'),
+                        eventId = $(this).parent().parent().prev().attr('data-id'),
                         request = getRequestFromFilters(setFiltersForRequest());
 
                     $.post('/ajax/event.php?set_activity'+request, {eventId: eventId, isActive : !isEventActive})
@@ -1374,7 +1378,7 @@ $(document).ready(function(){
                 // Confirmation to remove an event
                 $('.btnRemoveEvent').click(function(e){
                     e.stopPropagation();
-                    var event = $(this).parents('.event-row'),
+                    var event = $(this).parent().parent().prev(),
                         eventId = event.attr('data-id'),
                         eventName = event.find('.event-name').text(),
                         author = event.attr('data-author'),
@@ -1393,7 +1397,7 @@ $(document).ready(function(){
                 // Get event info to edit
                 $('.btnEditEvent').click(function(e){
                     e.stopPropagation();
-                    var event = $(this).parents('.event-row'),
+                    var event = $(this).parent().parent().prev(),
                         eventId = event.attr('data-id'),
                         author = event.attr('data-author');
 
@@ -1462,7 +1466,7 @@ $(document).ready(function(){
                           modal.find('.modal-header h4').html(he(event.event_name) + ( !member && (event.close_registration === "1" || event.stop_registration === "1") ? ' <label class="label label-danger">Регистрация закрыта</label>' : '' )).attr('data-stop_registration', event.stop_registration).attr('data-close_registration', event.close_registration);
                           modal.find('.modal-body').html(userInfo+eventInfo);
                           modal.attr('data-event-id', eventId);
-                          modal.modal('show');
+                          //modal.modal('show');
 
                           $(".official-info-link").html(event.organizer !== '' ? '<a style="font-size:x-small; color:grey" href="#" class="organizor-info">Официальная информация</a>' : '');
 
@@ -1492,9 +1496,10 @@ $(document).ready(function(){
                               $("#sendMsgText").val("");
                               $('#modalEventSendMsg').modal('show');
                           });
+                          clickFastRegAutomatic();
                       }
-                      setTimeout(function () {
-                        if ($('#modalShowEventInfo').is(':visible')) {
+                      //setTimeout(function () {
+                      //  if ($('#modalShowEventInfo').is(':visible')) {
                           function clickFastRegAutomatic() {
                             var memberId = '<?php echo $memberId; ?>', isThisAdmin = '<?php echo $isUserWithRights; ?>' ,modalWindow = $('#modalShowEventInfo'),
                                 eventId = modalWindow.attr ('data-event-id'), stopRegistration = modalWindow.find('.modal-header h4').attr('data-stop_registration'), closeRegistration = modalWindow.find('.modal-header h4').attr('data-close_registration');
@@ -1513,7 +1518,7 @@ $(document).ready(function(){
                                     $('#btnDoRegisterGuest').removeClass('guest');
                                     isEditMode ? $('#btnDoRegisterGuest').addClass('edit') : $('#btnDoRegisterGuest').removeClass('edit');
                                     $('#modalEditMember').modal('show');
-                                    isEditMode ? $('#modalShowEventInfo').modal('hide') : '';
+                                    isEditMode ? $('#modalShowEventInfo').modal('hide') : $('#modalShowEventInfo').modal('hide');
                                     $('.emMate').hide();
                                     $('.emMateLbl').hide();
                                   });
@@ -1522,9 +1527,9 @@ $(document).ready(function(){
                                   showEmptyForm (eventId);
                                 }
                               }
-                              clickFastRegAutomatic();
-                            }
-                    }, 600);
+                              //clickFastRegAutomatic();
+                            //}
+                    //}, 600);
                   });
                   /*
                   var memberId = '<?php echo $memberId; ?>', isThisAdmin = '<?php echo $isUserWithRights; ?>';
@@ -1557,7 +1562,7 @@ console.log('stop is ', stopRegistration, 'close is ', closeRegistration, modalW
                   }*/
                 });
 
-                $('.list-events .event-row, .list-events .event-row_btn').click(function(e){
+                $('.list-events .event-row_btn').click(function(e){ // .list-events .event-row,
                     e.stopPropagation();
                     $('.theActiveEvent').removeClass('theActiveEvent');
                     let event_row;
@@ -1660,13 +1665,11 @@ console.log('stop is ', stopRegistration, 'close is ', closeRegistration, modalW
                         }
                     });
                 });
-            }
-            else{
+            } else {
                 $("#eventTabs .event-list-block").hide();
                 $("#eventTabs .empty-meeting-list-info").show();
             }
-        }
-        else{
+        } else {
             $('.list-events').html('<tr><h3 style="text-align:center;">На данный момент нет доступных мероприятий</h3></tr>');
         }
     }
@@ -1970,10 +1973,10 @@ console.log('stop is ', stopRegistration, 'close is ', closeRegistration, modalW
                   if ($('#modalShowEventInfo').is(':visible')) {
                       $('#modalShowEventInfo').modal('hide');
                   }
-                  loadEvents();
-                }, 1300);
-            }
-            else{
+                  location.reload()
+                  // loadEvents();
+                }, 1000);
+            } else {
                 <?php if(!isset($memberId)){?>
                     showSuccessMessage (<?php echo $isLink ? "data.messages.save_message, null" : "data.messages.reg_message, data.permalink"; ?>);
                 <?php }else{ ?>

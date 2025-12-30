@@ -929,12 +929,12 @@ input.error, .control-group.error select, textarea.error {
     cursor:pointer;
 }
 .list-events > div, .hidden-events-list > div{
-    display: inline-flex;    
+    display: inline-flex;
     width: 100%;
     padding-top: 10px;
     padding-bottom: 10px;
 }
-.list-events > div:hover, .hidden-events-list > div:hover{
+.hidden-events-list > div:hover{ /* .list-events > div:hover, */
     cursor: pointer;
     background-color: #eee;
 }
