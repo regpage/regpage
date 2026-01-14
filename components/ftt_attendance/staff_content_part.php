@@ -234,8 +234,8 @@
             $comm_str = $value['pause_comment'];
             $comm_ico_str = $value['pause_comment'];
           }
-
-          if ($value['member_key'] !== $prev_member_key && !$start) {
+          // блок подготовки комментария для списка
+          if ($value['member_key'] !== $prev_member_key && !$start || count($counter_days) === 1) {
             // REGULAR
             $date_start_str = $value['pause_start'];
             $date_stop_str = $value['pause_stop'];
@@ -325,9 +325,14 @@
 
               $first_str = false;
               // рендерим комментарий для первой строки, если в текужщий момент пауза не активна.
-              echo "<span class='period_col'><span class='desk_show'>{$comm_str} {$f_pause_from} {$f_pause_start} {$f_pause_to} {$f_pause_stop}</span></span>{$comm_ico_str}";
+              if (count($counter_days) > 1) {
+                echo "<span class='period_col'><span class='desk_show'>{$comm_str} {$f_pause_from} {$f_pause_start} {$f_pause_to} {$f_pause_stop}</span></span>{$comm_ico_str}";
+              }
+
             }
-            echo "</div></div>";
+            if (count($counter_days) > 1) {
+              echo "</div></div>";
+            }            
             $start = true;
           }
 
