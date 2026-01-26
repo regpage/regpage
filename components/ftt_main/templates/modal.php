@@ -1,7 +1,10 @@
 <?php
 // Шаблон большого окна добавления и правки
+if (empty($idMlodal)) {
+  $idMlodal = "modal_edit_add";
+}
 if (file_exists($modalSection)): ?>
-<div id="modal_edit_add_md" class="modal fade" data-backdrop="static" tabindex="-1" role="dialog" data-id="" aria-hidden="true">
+<div id="<?php echo $idMlodal; ?>" class="modal fade" data-backdrop="static" tabindex="-1" role="dialog" data-id="" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">

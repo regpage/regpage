@@ -95,7 +95,8 @@ function renderReferences(references){
                         '</div>'+
                         '<div class="span2 reference-page" data-page="'+r.page+'">'+r.page_name+'</div>'+
                         '<div class="span2 reference-block" data-block="'+r.block_num+'">'+r.block_name+'</div>'+
-                        '<div class="span2"><input type="checkbox" class="reference-published set-field" ' + ( r.published === '1' ? "checked" : "" ) + ' data-field="published" /></div>'+
+                        '<div class="span1">'+r.priority+'</div>'+
+                        '<div class="span1"><input type="checkbox" class="reference-published set-field" ' + ( r.published === '1' ? "checked" : "" ) + ' data-field="published" /></div>'+
                         '<div class="span1"><span class="fa fa-trash fa-lg btn-delete-reference" title="Удалить"></span></div>'+
                     '</div>');
 
@@ -103,6 +104,7 @@ function renderReferences(references){
                         '<div><span>Название: </span><a class="reference-name" data-name="'+ r.name +'" href="'+r.link_article+'" target="_blank">'+( r.name.length > 60 ? r.name.substring(0, 60)+'...' :  r.name)+'</a></div>'+
                         '<div class="reference-page" data-page="'+r.page+'"><span>Страница: </span>'+r.page_name+'</div>'+
                         '<div class="reference-block" data-block="'+r.block_num+'"><span>Блок: </span>'+r.block_name+'</div>'+
+                        '<div class=""><span>Приоритет: </span>'+r.priority+'</div>'+
                         '<div class=""><span>Опубликовано: </span><input type="checkbox" class="reference-published set-field" ' + ( r.published === '1' ? "checked" : "" ) + ' data-field="published" /></div>'+
                         '<div class=""><span class="fa fa-trash fa-lg btn-delete-reference" title="Удалить"></span></div>'+
                     '</div>');

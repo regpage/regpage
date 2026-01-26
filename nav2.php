@@ -106,28 +106,57 @@ switch ($h) {
       break;
 }
 ?>
-    <nav class="navbar navbarmain navbar-expand-md bg-dark navbar-dark fixed-top" style="background-color: #1b1b1b !important; height: 43px;">
+<style media="screen">
+        .burger-btn {
+            width: 40px;
+            height: 30px;
+            position: relative;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .burger-btn span {
+            display: block;
+            position: absolute;
+            height: 4px;
+            width: 100%;
+            background: #333;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        .burger-btn span:nth-child(1) {
+            top: 0;
+        }
+
+        .burger-btn span:nth-child(2) {
+            top: 13px;
+        }
+
+        .burger-btn span:nth-child(3) {
+            top: 26px;
+        }
+</style>
+    <nav class="navbar navbarmain navbar-expand-md bg-dark navbar-dark fixed-top" style="background-color: #1b1b1b !important; height: 43px; padding-top:4px; padding-right: 15px;">
       <span class="show-name-list" style="color: white;"><b><?php echo $res; ?></b></span>
       <div class="row">
-        <ul id="helpButtonMbl" class="nav" style="margin-left: auto; margin-right: 10px; display: none;">
+        <ul id="helpButtonMbl" class="nav d-md-none" style="margin-left: auto; margin-right: 5px;">
           <i class="fa fa-bell bell-alarm-mbl cursor-pointer" style="<?php echo db_checkNotice($memberId); ?>" title="У вас есть новые карточки"></i>
           <!--<i class="fa fa-envelope envelope-support-mbl cursor-pointer send-message-support-phone" title="Обратится в службу поддержки"></i>-->
           <li class="nav-item dropdown" style="margin-top: 3px;">
             <a class="btn help_link" type="button" data-toggle="dropdown" style="background-color: white; font-size: 14px; padding: 3px 10px!important;"><i class="fa fa-question fa-lg"></i><span class="hide-name"></span></a>
               <ul class="dropdown-menu pull-right" style="padding: 5px; left: -320%; min-width: 190px">
                 <?php
-
-                  $sortField = isset ($_COOKIE['sort_field_reference']) ? $_COOKIE ['sort_field_reference'] : 'name';
-                  $sortType = isset ($_COOKIE['sort_type_reference']) ? $_COOKIE ['sort_type_reference'] : 'asc';
-                  $references = db_getReferences($sortField, $sortType);
-
                   $page = explode('.', substr($_SERVER['PHP_SELF'], 1))[0];
+                  $references = db_getReferencesForNav($page);
                   $countReference = 0;
 
                   foreach ($references as $key => $reference) {
-                      if($page == $reference['page'] && $reference['published'] == '1'){
+                      if($reference['published'] == '1'){
                           $countReference ++;
-                          echo '<li class="modal-reference"><a href="'.$reference['link_article'].'" target="_blank">'.$reference['name'].'</a></li>';
+                          echo '<li class="modal-reference"><a href="'.$reference['link_article'].'" target="_blank">'.$reference['name'].' </a></li>';
                       }
                   }
 
@@ -138,8 +167,11 @@ switch ($h) {
               </ul>
           </li>
         </ul>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation" style="font-size: 1em;">
-          <span class="navbar-toggler-icon"></span>
+        <button class="navbar-toggler burger-outline mx-2" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+          <div class="line"></div>
+          <div class="line"></div>
+          <div class="line"></div>
+          <!-- <span class="navbar-toggler-icon"></span> -->
         </button>
       </div>
       <div class="navbar-collapse collapse justify-content-center" id="navbarNav">
@@ -293,21 +325,17 @@ switch ($h) {
             }
             ?>
             <!--<i class="fa fa-envelope envelope-support cursor-pointer" title="Обратится в службу поддержки"></i>-->
-            <ul id="helpButton" class="nav" style="margin-left: auto; margin-right: 10px; margin-left: 10px;">
+            <ul id="helpButton" class="nav d-none d-md-block" style="margin-left: auto; margin-right: 10px; margin-left: 10px;">
               <li class="nav-item dropdown" style="margin-top: 3px;">
                 <a class="btn dropdown-toggle help_link" type="button" data-toggle="dropdown" style="background-color: white; font-size: 14px; padding: 3px 10px!important;"><i class="fa fa-question fa-lg"></i><span class="hide-name"> Справка</span></a>
                   <ul class="dropdown-menu pull-right" style="padding: 5px;">
                     <?php
-
-                      $sortField = isset ($_COOKIE['sort_field_reference']) ? $_COOKIE ['sort_field_reference'] : 'name';
-                      $sortType = isset ($_COOKIE['sort_type_reference']) ? $_COOKIE ['sort_type_reference'] : 'asc';
-                      $references = db_getReferences($sortField, $sortType);
-
                       $page = explode('.', substr($_SERVER['PHP_SELF'], 1))[0];
+                      $references = db_getReferencesForNav($page);
                       $countReference = 0;
 
                       foreach ($references as $key => $reference) {
-                          if($page == $reference['page'] && $reference['published'] == '1'){
+                          if($reference['published'] == '1'){
                               $countReference ++;
                               echo '<li class="modal-reference"><a href="'.$reference['link_article'].'" target="_blank">'.$reference['name'].'</a></li>';
                           }

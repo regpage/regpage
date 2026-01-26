@@ -75,10 +75,13 @@ switch ($h) {
         <span class="show-name-list" style="margin-top:10px;"><?php echo $res; ?></span>
         <i class="fa fa-bell bell-alarm-mbl cursor-pointer" style="color: gold; font-size: 18px; margin-top: 12px; margin-left: 150px; <?php echo db_checkNotice($memberId); ?>" aria-hidden="true" title="У вас есть новые карточки"></i>
         <!--<i class="fa fa-envelope cursor-pointer" title="Обратится в службу поддержки" aria-hidden="true" style="color: white; font-size: 18px; margin-top: 13px;"></i>-->
-        <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <button type="button" class="btn btn-navbar burger-outline" data-toggle="collapse" data-target=".nav-collapse">
+          <div class="line"></div>
+          <div class="line"></div>
+          <div class="line"></div>
+          <!--<span class="icon-bar"></span>
           <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>-->
         </button>
         <div class="btn-group" style="float: right; margin-right: 10px;">
           <a class="btn dropdown-toggle" id="button_help_nav" ontouchstart="ontouchstart_function(event)" type="button" data-toggle="dropdown" style="margin-top: 1px; height: 19px;">
@@ -87,26 +90,22 @@ switch ($h) {
           </a>
             <ul class="dropdown-menu pull-right">
               <?php
+              $page = explode('.', substr($_SERVER['PHP_SELF'], 1))[0];
+              $references = db_getReferencesForNav($page);//
+              $countReference = 0;
 
-                $sortField = isset ($_COOKIE['sort_field_reference']) ? $_COOKIE ['sort_field_reference'] : 'name';
-                $sortType = isset ($_COOKIE['sort_type_reference']) ? $_COOKIE ['sort_type_reference'] : 'asc';
-                $references = db_getReferences($sortField, $sortType);
-
-                $page = explode('.', substr($_SERVER['PHP_SELF'], 1))[0];
-                $countReference = 0;
-
-                foreach ($references as $key => $reference) {
+              foreach ($references as $key => $reference) {
                     if($page == $reference['page'] && $reference['published'] == '1'){
                         $countReference ++;
                         echo '<li class="modal-reference"><a href="'.$reference['link_article'].'" target="_blank">'.$reference['name'].'</a></li>';
                     }
-                }
+              }
 
-                if($countReference == 0){
-                    echo "<li class='modal-reference'>Справочной информации по этому разделу пока нет</li>";
-                }
-                ?>
-            </ul>
+              if($countReference == 0){
+                  echo "<li class='modal-reference'>Справочной информации по этому разделу пока нет</li>";
+              }
+              ?>
+          </ul>
         </div>
         <?php
          //if ($h === "/signup.php" || $h === "/login.php" || $h === "/index.php") { ?>
@@ -420,8 +419,8 @@ referenceSysAnew();
     if ($(window).width()>=769) {
       $('.bell-alarm-mbl').hide();
     } else {
-      $('#button_help_nav').css("padding", "4px 0px");
-      $('#button_help_nav i').css("padding", "4px 13px");
+      $('#button_help_nav').css("padding", "2px 0px 6px 0px");      
+      $('#button_help_nav i').css("padding", "4px 10px");
       $('.bell-alarm').hide();
     }
     // STOP notifications

@@ -1570,10 +1570,10 @@ input.error, .control-group.error select, textarea.error {
     .show-name-list{
         display: inline;
         color: white;
-        margin-left: 35px;
+        margin-left: 32px;
         font-weight: 700;
         position: absolute;
-        margin-top: 7px;
+        margin-top: 10px;
     }
     .style-checkbox{
         width: 5% !important;
@@ -2031,4 +2031,36 @@ input.error, .control-group.error select, textarea.error {
 .active_letter {
   font-weight: bold;
   text-decoration: underline;
+}
+/* кнопка мобильного меню */
+.burger-outline {
+  all: unset;
+  background: none !important;
+  /*border: 2px solid #333;*/
+  border: none !important;
+  border-radius: 8px;
+  box-shadow: none !important;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.burger-outline .line {
+  width: 20px;
+  height: 2px;
+  background-color: gray;
+  transition: 0.3s;
+}
+.burger-outline .line:nth-child(0) {
+  margin-bottom: 4px;
+}
+
+.burger-outline .line:nth-child(1) {
+  margin-bottom: 4px;
+}
+.burger-outline .line:nth-child(2) {
+  margin-bottom: 4px;
 }

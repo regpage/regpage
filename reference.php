@@ -34,7 +34,11 @@
                     <a id="sort-block_name" href="#" title="сортировать">Блок на главной</a>&nbsp;
                     <i class="<?php echo $sort_field == 'block_name' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none'; ?>"></i>
                 </div>
-                <div class="span2">Опубликовано</div>
+                <div class="span1">
+                    <a id="sort-priority" href="#" title="сортировать">Приоритет</a>&nbsp;
+                    <i class="<?php echo $sort_field == 'priority' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none'; ?>"></i>
+                </div>
+                <div class="span1">Опубликовано</div>
                 <div class="span1">&nbsp;</div>
             </div>
             <div class="references-list">
@@ -115,5 +119,5 @@
         <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Отмена</button>
     </div>
 </div>
-<script src="/js/regpage/reference/script.js?v1"></script>
+<script src="/js/regpage/reference/script.js?v2"></script>
 <script src="/js/regpage/reference/design.js?v1"></script>

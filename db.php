@@ -3721,8 +3721,23 @@ function db_getReferences($sortField, $sortType){
     return null;
 }
 
+function db_getReferencesForNav($page){
+  $page = db_real_escape_string($page);
+  $references = [];
+
+    $res = db_query("SELECT r.name, r.link_article,
+            r.block_num, r.published, r.id, r.page, r.priority
+            FROM reference_system r
+            WHERE r.page = '{$page}'
+            ORDER BY r.priority DESC");
+
+    while($row = $res->fetch_assoc()) $references[] = $row;
+
+    return $references;
+}
+
 function db_getPages(){
-    $res = db_query("SELECT * FROM page");
+    $res = db_query("SELECT * FROM page ORDER BY name");
 
     $pages = array();
     while($row = $res->fetch_assoc()){

@@ -9,19 +9,19 @@
   <div id="tab_content_extra_help" class="tab-content">
     <div id="gospel_tab" class="container tab-pane active"><br>
       <div id="bar_extra_help" class="btn-group">
-        <button id="showModalAddEdit" type="button" class="btn btn-success btn-sm">Добавить</button>
-        <button id="filters_button" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalFilrets" style="display: none;">Фильтры</button>
-        <button id="modalRecommended_open" type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modalRecommended">Цели</button>
+        <button id="showModalAddEdit" type="button" class="btn btn-success btn-sm"><i class="fa fa-plus d-md-none"></i><span class="d-none d-md-inline-block">Добавить</span></button>
+        <button id="modalRecommended_open" type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modalRecommended"><i class="fa fa-crosshairs d-md-none"></i><span class="d-none d-md-inline-block">Цели</span></button>
         <?php if ($ftt_access['group'] === 'staff' || $serving_trainee) { ?>
           <!--<button id="sort_button" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalSort" style="display: none;">Порядок</button>-->
           <div class="btn-group" role="group">
-            <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Печать</button>
+            <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-print d-md-none"></i><span class="d-none d-md-inline-block">Печать</span></button>
             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
               <button id="print_modal_dates_open" type="button" class="dropdown-item" data-toggle="modal" data-target="#gospel_modal_statistic_dates" >Отчёты по датам</button>
               <button id="print_modal_open" type="button" class="dropdown-item" data-toggle="modal" data-target="#modalPrint">Статистика за период</button>
             </div>
           </div>
-          <button id="statistics_link" type="button" class="btn btn-primary btn-sm">Статистики</button>
+          <button id="statistics_link" type="button" class="btn btn-primary btn-sm"><i class="fa fa-bar-chart d-md-none"></i><span class="d-none d-md-inline-block">Статистики</span></button>
+          <button id="filters_button" type="button" class="btn btn-primary btn-sm d-md-none" data-toggle="modal" data-target="#modalFilrets">Фильтры</button>
         <!--<select id="sort_select" class="form-control form-control-sm" style="display: none;">
           <option value="">По дате</option>
           <option value="">По команде</option>

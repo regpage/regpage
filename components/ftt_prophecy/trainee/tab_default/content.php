@@ -10,6 +10,7 @@
       <?php echo CutString::cut($value['topic'], 50); ?>
     </div>
     <div class="col-md-2 col-12">
+      <?php echo $value['done'] ? '<span class="">✅</span>' : ''; ?>
       <?php if ($value['checked'] == 0 && $value['send_date'] === '0000-00-00 00:00:00'): ?>
         <span class="float-right badge badge-secondary">не отправлен</span>
       <?php endif; ?>

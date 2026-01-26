@@ -20,8 +20,7 @@ if ($(window).width()<=769) {
   // Скрыть фильтры
   $("#team_select").hide();
   $("#author_select_desk").hide();
-  $("#periods").hide();
-  $("#filters_button").show();
+  $("#periods").hide();  
   $("#sort_button").show();
   // строки
   $(".col_n_10").hide();
