@@ -50,7 +50,7 @@ class BibleCounter
       $startPosition = array('book_ot' => '0', 'read_footnotes_nt' => 0,'book_nt' => '','read_footnotes_ot' => 0);
     }
 
-    $daysToEnd = ftt_info::days_to_end();
+    $daysToEnd = ftt_info::days_to_end_of_year();
     // если период чтения закончился
     if ($daysToEnd == 0) {
       $daysToEnd = 1;

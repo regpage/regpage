@@ -151,6 +151,10 @@ $(document).ready(function(){
     $("#signUpFormBtn").click (function (e){
         e.stopPropagation();
         e.preventDefault();
+        if (!isValidFIO($(".emName").val())) {
+          showError("Нужно указать фамилию и имя");
+          return;
+        }
 
         var login = '<?php echo $login; ?>',
             password = '<?php echo $password; ?>',
@@ -162,7 +166,7 @@ $(document).ready(function(){
             newLocality = $(".emLocalityNew").val().trim();
 
         if($(this).attr('disabled') === 'disabled'){
-            $("#textError").show ();
+            $("#textError").show();
             return;
         }
         else{
@@ -198,6 +202,22 @@ $(document).ready(function(){
         .fail(function() { $(".ajaxError").show (); });
         return false;
     });
+    function isValidFIO(valueName) {
+
+        valueName = valueName.trim();
+
+        // минимум 2 слова
+        if (valueName.split(/\s+/).length < 2) {
+            return false;
+        }
+
+        // допустимые символы:
+        // буквы, пробел, дефис, апостроф, одинарная кавычка
+        let regex = /^[A-Za-zА-Яа-яЁё\s\-']+$/;
+
+        return regex.test(valueName);
+    }
+
 });
 </script>
 <?php
@@ -411,7 +431,6 @@ $("#btnDoSendEventMsgAdmins").click (function (){
      .done (function() {messageBox ('Ваше сообщение было отправлено', $('#messageAdmins'));});
 });
 */
-
 </script>
 
 <?php

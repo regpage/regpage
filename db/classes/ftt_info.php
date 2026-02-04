@@ -71,6 +71,16 @@ class ftt_info {
     return $different / (24*60*60);
   }
 
+  // Дней до конца обучения / дней после окончания (отрицательное число)
+  static function days_to_end_of_year() {
+    if ((date('m') == 6 && date('d') > 16) || date('m') > 6){
+      $yyyy = date('Y') + 1;
+    } else {
+      $yyyy = date('Y');
+    }
+    $different = strtotime($yyyy . '-06-16') - self::now_mls();
+    return $different / (24*60*60);
+  }
 }
 
 ?>

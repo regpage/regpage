@@ -98,6 +98,9 @@ switch ($h) {
     case '/ftt_fellowship.php':
         $res = 'ПВОМ';
         break;
+    case '/ftt_prophecy.php':
+        $res = 'ПВОМ';
+        break;
     case '/itero_2025_w.php':
         $res = 'ITERO';
         break;
