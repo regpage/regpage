@@ -1,0 +1,30 @@
+<?php
+require_once "config.php";
+require_once "db/regpage/classes/reg/subsidies.php";
+
+$hi = new Subsidies('20250018');
+$hi->bulkAddMembers('all');
+echo "Всего зарегистрировано на мероприятие с ключом:";
+echo "<br>";
+echo $hi->getEventId();
+echo "<br>";
+echo count($hi->getAllMembersListEvent());
+echo "<br>";
+echo "В таблице дотаций на данный момент:";
+echo "<br>";
+echo count($hi->getAllMembersList());
+echo "<br>";
+echo "Из них активны:";
+echo "<br>";
+echo $hi->getCount();
+echo "<br>";
+echo "Лимит дотаций на мероприятии:";
+echo "<br>";
+echo $hi->getLimit();
+echo "<br>";
+echo "Удалено:";
+echo "<br>";
+print_r($hi->bulkDltMembers());
+echo "<br>";
+echo "Для отображения изменений нужно перезагрузить страницу.";
+echo "<br>";

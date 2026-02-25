@@ -47,12 +47,12 @@
     <span class="grey_text"></span>
   </div>
 </div>
-<div class="row mb-2">
+<!-- <div class="row mb-2">
   <div class="col">
     <label>Вступительное предложение</label>
     <textarea class="form-control form-control-sm f_use" name="introduction" rows="2"></textarea>
   </div>
-</div>
+</div> -->
 <div class="row mb-2">
   <div class="col">
     <label>Я практиковал(а) пророчество с</label>
