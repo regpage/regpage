@@ -102,7 +102,7 @@ function getFttAttendanceSheetAndStrings($list_access, $condition, $admin_id = '
 
   $header = [];
   $strings = [];
-  $res = db_query("SELECT fas.*, m.name, tra.serving_one, tra.pause_start, tra.pause_stop, tra.pause_comment, tra.participation_type
+  $res = db_query("SELECT fas.*, m.name, tra.serving_one, tra.pause_start, tra.pause_stop, tra.pause_comment, tra.participation_type, tra.semester
     FROM ftt_attendance_sheet AS fas
     INNER JOIN member m ON m.key = fas.member_key
     INNER JOIN ftt_trainee tra ON tra.member_key = fas.member_key

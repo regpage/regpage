@@ -49,6 +49,15 @@ exit;
       return $res;
     }
 
+    function db_queryKeyValue ($query, $keyField, $valueField) {
+      // , hundler можно передавать имя функции, метода обработчика $valueField например 'short_name::no_middle'
+      // или использовать встренную MySQL функцию для этого
+      $res = db_query($query);
+
+      while ($row = $res->fetch_assoc()) $result[$row[$keyField]]=$row[$valueField];
+      return $result;
+    }
+
     function db_multiQuery ($query) {
         global $db;
         $res=$db->multi_query ($query);

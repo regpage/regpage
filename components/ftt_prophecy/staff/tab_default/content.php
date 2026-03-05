@@ -1,4 +1,12 @@
-<?php foreach (ProphecyDB::getListForServingones($cookieFltListTrainee, $listTraneesByStaffForFlt, $cookieFltListCurrents, $sortField, $sortType) as $key => $value): ?>
+<?php
+/*require '../private/src/ui/base/html_components.php';
+require '../private/src/ui/components/render_button.php';
+$buttonRenderer = new ButtonRendererOurStyle('secondary', 'Закрыть', 'ml-4', true, '', ['name'=> 'btn']);
+$buttonCloseRenderer = new ButtonCloseRenderer('Закрыть', 'ml-2');
+echo $buttonRenderer->render();
+echo $buttonCloseRenderer ->render();*/
+
+foreach (ProphecyDB::getListForServingones($cookieFltListTrainee, $listTraneesByStaffForFlt, $cookieFltListCurrents, $sortField, $sortType) as $key => $value): ?>
   <?php // заменить на исправленный cutString
   if (mb_strlen($value['topic']) > 82) {
     $shortTopic = mb_substr($value['topic'], 0, 82).'...';
