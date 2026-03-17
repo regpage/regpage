@@ -292,7 +292,7 @@
         <div class="container border ml-0 mr-0 mt-3 mb-3 p-2" style="max-width: 400px;">
           <div class="row">
             <div class="col-5" style="max-width: 170px;">
-              <select id="bible_book_ot" class="col mr-3 form-control"
+              <select id="bible_book_ot" class="col mr-3 px-1 form-control"
                 data-book="" data-chapter="" data-field="book_ot" data-notes=""
                 style="min-width: 95px; min-height: 35px; margin-left: 0px !important;" <?php echo $disabled_ot; ?>>
                 <option value="_none_">ВЗ
@@ -317,7 +317,7 @@
               </select>
             </div>
             <div class="col-5" style="max-width: 170px;">
-              <select id="bible_book_nt" class="col mr-3 form-control"
+              <select id="bible_book_nt" class="col mr-3 px-1 form-control"
               data-book="" data-chapter="" data-field="book_nt" data-notes=""
               style="min-width: 95px; min-height: 35px; margin-left: 0px !important;" <?php echo $disabled_nt; ?>>
                 <option value="_none_">НЗ

@@ -63,7 +63,7 @@ require_once 'components/ftt_reading/content_part_cntrl.php';
     <div class="container border mt-3 mb-3 p-2" style="max-width: 400px;">  <!--d-none-->
       <div class="row">
         <div class="col-5" style="max-width: 170px;">
-          <select id="bible_book_ot" class="col mr-3 form-control"
+          <select id="bible_book_ot" class="col mr-3 px-1 form-control"
             data-book="<?php echo $book_current['book_ot']; ?>" data-chapter="<?php echo $book_current['chapter_ot']; ?>" data-field="book_ot" data-notes="<?php echo $book_current['read_footnotes_ot']; ?>"
             style="min-width: 95px; min-height: 35px; margin-left: 0px !important;" <?php echo $disabled_ot; ?>>
             <option value="_none_">ВЗ
@@ -96,7 +96,7 @@ require_once 'components/ftt_reading/content_part_cntrl.php';
           </select>
         </div>
         <div class="col-5" style="max-width: 170px;">
-          <select id="bible_book_nt" class="col mr-3 form-control"
+          <select id="bible_book_nt" class="col mr-3 px-1 form-control"
           data-book="<?php echo $book_current['book_nt']; ?>" data-chapter="<?php echo $book_current['chapter_nt']; ?>" data-field="book_nt" data-notes="<?php echo $book_current['read_footnotes_nt']; ?>"
           style="min-width: 95px; min-height: 35px; margin-left: 0px !important;" <?php echo $disabled_nt; ?>>
             <option value="_none_">НЗ

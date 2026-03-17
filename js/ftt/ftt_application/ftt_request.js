@@ -1028,7 +1028,11 @@ $(document).ready(function(){
     .then(data => {
       showSaveIcon();
       if (data) {
-        window.location = 'index';
+        if (data_page.role === "3") {
+          window.location = 'ftt_application';  
+        } else {
+          window.location = 'index';
+        }
       }
     });
   });

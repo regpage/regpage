@@ -60,6 +60,7 @@ function contactsStringsLoad(x, idStr, sort) {
 
   var newString, prevAdm, dateorder, datesending, idStrMbl = '', idStrDsk = '',respChange = false;
   data_page.responsible_previous = [];
+
   for (var i = 0; i < x.length; i++) {
 
     idStrMbl = '';
@@ -77,8 +78,7 @@ function contactsStringsLoad(x, idStr, sort) {
     } else {
       !data_page.full_admin_list[x[i].responsible_previous] ? prevAdm = data_page.full_admin_list[x[i].responsible_previous] : prevAdm = data_page.full_admin_list[x[i].responsible_previous][0];
     }
-// ADD new responsibles in the list
-
+// ADD new responsibles in the list    
     if (!data_page.members_responsibles[x[i].responsible_previous] && x[i].responsible_previous) {
       if (!data_page.full_admin_list[x[i].responsible]) {
         console.log('Error. Responsible is undefined');
