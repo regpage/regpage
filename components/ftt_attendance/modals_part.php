@@ -92,7 +92,7 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
           <?php } ?>
           <!-- Пророчествование на собрании в прошлое воскресенье -->
           <div class="row">
-            <div class="col-12">              
+            <div class="col-12">
               <div class="input-group mb-3">
             <!--    <span class="align-self-center name_session">Пророчествование на собрании</span>
                 <select type="number" id="sunday_prophecy" class="form-control short_number_field" data-field="prophecy" value="" style="margin-left: 0px !important; font-size: 14px; max-width: 95px !important;">
@@ -121,7 +121,7 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
                 <!--<span>Название книг Библии</span>
                 <br>-->
                 <div style="min-width: 111px;">
-                  <select id="bible_book_ot" class="mr-3 form-control" data-field="book_ot" style="min-width: 95px; max-width: 95px; min-height: 35px; margin-left: 0px !important;">
+                  <select id="bible_book_ot" class="mr-3 px-1 form-control" data-field="book_ot" style="min-width: 95px; max-width: 95px; min-height: 35px; margin-left: 0px !important;">
                     <option value="_none_">
                     <option value="0">Нет
                       <?php
@@ -137,7 +137,7 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
                   </select>
                 </div>
                 <div style="min-width: 111px;">
-                  <select id="bible_book_nt" class="mr-3 form-control" data-field="book_nt" style="min-width: 95px; max-width: 95px; min-height: 35px; margin-left: 0px !important;">
+                  <select id="bible_book_nt" class="mr-3 px-1 form-control" data-field="book_nt" style="min-width: 95px; max-width: 95px; min-height: 35px; margin-left: 0px !important;">
                     <option value="_none_">
                     <option value="0">Нет
                     <?php

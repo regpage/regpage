@@ -8,7 +8,7 @@
 
     $hasMemberRightToSeePage = count(db_getAdminLocalities($memberId))>0 || db_hasAdminFullAccess($memberId);
     if(!$hasMemberRightToSeePage){
-        die();
+      die();
     }
     $categories = db_getCategories();
     $countries1 = db_getCountries(true);
@@ -52,6 +52,15 @@
     if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
 
     $events = db_getEventsByAdmin($memberId);
+    // убмираем мероприятие от админов из Москвы
+    $targetId = '20260006';
+    if (!db_isAdminRespForReg($memberId, $targetId) && !empty($events) && mb_strpos(db_getMemberLocality($memberId), 'Москва') !== false) {
+      $arrayTemp = array_filter($events, function ($item) use ($targetId) {
+        return $item->id !== $targetId;
+      });
+      $events = $arrayTemp;
+    }
+
     $checkEventsArr = false;
     foreach($events as $index => $event){
       if ($event->id == $selectedEventId)
@@ -1691,7 +1700,7 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
                 + '</tr>'
             );
 
-            phoneRows.push ('<tr class="regmem-'+m.id+'" '+ dataItems +' >'+
+            phoneRows.push ('<tr class="regmem-'+m.id+'" '+ dataItems + pink + ' >'+
                 '<td class="arrival" data-date="' + he( m.arr_date) + '" data-time="' + he(m.arr_time) + '"><input type="checkbox"></td>'+
                 '<td class="departure" data-date="' + he(m.dep_date) + '" data-time="' + he(m.dep_time) + '"><span class="mname '+(m.male==1?'male':'female')+'"><span class="mname1">' + he(m.name) + '</span>' +
 (in_array(1, window.user_settings) ? '<br/>'+ '<span class="user_setting_span mnameCategory">'+m.category_name+'</span>' : '') +

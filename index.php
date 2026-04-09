@@ -7,12 +7,14 @@ include_once 'db/regpage/itero_db.php';
 include_once 'components/regpage/itero_2025_w/ctrl.php';
 ?>
 <script>
+let member_locality_name = '<?php echo db_getMemberLocality($memberId); ?>';
 let itero_online = "";
 let itero_online_desk = "";
 let itero_online_key = '<?php echo $iteroCtrl->getKey(); ?>';
 </script>
 <?php
 //  || $memberId === '000001679'
+
     if (in_array($memberId, $Members->getMembersKeys())) { // участник есть в списке itero
       if ($iteroCtrl->isAvailableNow()) { // мероприятие доступно
         ?>
@@ -1212,12 +1214,15 @@ $(document).ready(function(){
                 hideHidenEvents = localStorage.getItem('hide-hiden-events') === 'true', icons = '', eventAttrs = '', desctopEvent = '', tabletEvent = '';
 
             for(var i in events){
+
               let border_top = "";
               if (i === "0") {
                 border_top = 'style="border-top: 1px solid #DDD"';
               }
-                var event = events[i], archiveAccess = -1,
-                    isEventActive = parseInt(event.is_active);
+                var event = events[i], archiveAccess = -1, isEventActive = parseInt(event.is_active);
+                    if (event.id === '20260006' && member_locality_name.includes("Москва")) {
+                      continue;
+                    }
                     var evArr = '<?php echo $adminEvents; ?>';
                     if (evArr) {
                         evArr = evArr.split(',');

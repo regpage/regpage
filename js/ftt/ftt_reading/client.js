@@ -617,7 +617,7 @@ $(document).ready(function(){
         disabled_bookfields_start_mdl("o", true);
         disabled_bookfields_start_mdl("n", true);
         // Заполнение поля глав данными по текущей книге ВЗ и НЗ ИЛИ для старта
-        fill_chapters_options_start_mdl(data_book_ot, "o");
+        fill_chapters_options_start_mdl(data_book_ot, "o");        
         fill_chapters_options_start_mdl(data_book_nt, "n");
 
         // поведение формы ВЗ
