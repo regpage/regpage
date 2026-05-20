@@ -162,7 +162,9 @@ function getServiceOnesWithTrainees ()
           if (empty($fellowship_text_name)) {
             $fellowship_text_name .= $name_f;
           } else {
-            $fellowship_text_name .= ', ' . $name_f;
+            if (!empty($name_f)) {
+              $fellowship_text_name .= ', ' . $name_f;
+            }
           }
         }
       }

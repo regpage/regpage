@@ -216,3 +216,10 @@ sup {
 .field_height_400px {
     height: 400px;
 }
+
+input:disabled, select:disabled, textarea:disabled {
+  opacity: 1 !important;
+  -webkit-opacity: 1 !important;
+  color: black !important;
+  -webkit-text-fill-color: #000 !important;
+}

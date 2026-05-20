@@ -49,6 +49,13 @@ exit;
       return $res;
     }
 
+    function db_multiQuery ($query) {
+        global $db;
+        $res=$db->multi_query ($query);
+        if (!$res) throw new Exception ($db->error);
+        return $res;
+    }
+
     function db_queryKeyValue ($query, $keyField, $valueField) {
       // , hundler можно передавать имя функции, метода обработчика $valueField например 'short_name::no_middle'
       // или использовать встренную MySQL функцию для этого
@@ -58,12 +65,21 @@ exit;
       return $result;
     }
 
-    function db_multiQuery ($query) {
-        global $db;
-        $res=$db->multi_query ($query);
-        if (!$res) throw new Exception ($db->error);
-        return $res;
-    }
+function prepareQuery($sql, $params = [], $types = "") {
+	global $db;
+	$stmt = $db->prepare($sql);
+
+	if (!empty($params)) {
+  	$stmt->bind_param($types, ...$params);
+	}
+
+	$stmt->execute();
+  $result = $stmt->get_result();
+  $stmt->close();
+
+  return $result->fetch_all(MYSQLI_ASSOC);
+}
+
 
     // Обезвреживание содержимого переданного аргумента.
     function db_real_escape_string($data) {

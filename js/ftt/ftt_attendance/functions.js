@@ -44,6 +44,11 @@ function render_bible_chapters(book, chapter, selector) {
       }
     }
   }
+  if (book === "Мал.") {
+    options += "<option class='option_stop' value='"+book+"'>Завершить";
+  } else if (book === "Отк." || chapter > 12) {
+    options += "<option class='option_stop' value='"+book+"'>Завершить";
+  }
   $(selector).html(options);
 }
 /*** BIBLE READING STOP ***/

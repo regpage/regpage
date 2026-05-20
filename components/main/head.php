@@ -33,7 +33,7 @@ if ($_SERVER['PHP_SELF'] === '/contacts.php') { ?>
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_application.php') { ?>
 <!--    <link href="css/ftt/ftt_application.css?v3" rel="stylesheet"> -->
 <?php } elseif ($_SERVER['PHP_SELF'] === '/application.php') { ?>
-    <link href="css/ftt/ftt_request.css?v2" rel="stylesheet">
+    <link href="css/ftt/ftt_request.css?v3" rel="stylesheet">
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_schedule.php') { ?>
 <!--    <link href="css/ftt/ftt_schedule.css?v3" rel="stylesheet"> -->
 <?php } elseif ($_SERVER['PHP_SELF'] === '/ftt_extrahelp.php') { ?>

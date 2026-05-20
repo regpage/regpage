@@ -1,7 +1,7 @@
 <?php
+    require_once '../private/vendor/autoload.php';  
     // Посещаемость
     require_once "preheader.php";
-
     // БД
     include_once "db/ftt/ftt_attendance_db.php";
 

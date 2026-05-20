@@ -47,7 +47,7 @@ class Emailing
     return false;
   }
   // send email
-  static function send($email, $topic, $text)
+  static function send($email, $topic, $text, $replyTo = 'noreply@reg-page.ru', $fromName = 'Уведомление с сайта регистрации')
   {
     global $db;
     global $CRON_ROOT_PATH;
@@ -57,13 +57,13 @@ class Emailing
     }
 
     $men = $email;
-    $headers = self::get_header();
+    //$headers = self::get_header($replyTo, $fromName);
     $to = $men;
     $subject = $topic;
     $message = $text; // for Windows $text = str_replace("\n.", "\n..", $text);
     // письмо reg-page
     if (self::checkDomain() || $member_key === '000005716' || !empty($CRON_ROOT_PATH)) {
-      return EmailingSMTP::sendSMTP($to, $subject, $message, $headers);
+      return EmailingSMTP::sendSMTP($to, $subject, $message, $replyTo, $fromName);
     } else {
       return false;
     }
@@ -71,7 +71,7 @@ class Emailing
   }
 
   // send email by key
-  static function send_by_key($member_key, $topic, $text)
+  static function send_by_key($member_key, $topic, $text, $replyTo = 'noreply@reg-page.ru', $fromName = 'Уведомление с сайта регистрации')
   {
 
     global $db;
@@ -79,12 +79,12 @@ class Emailing
     $member_key = $db->real_escape_string($member_key);
 
     // письмо reg-page
-    $headers = self::get_header();
+    //$headers = self::get_header($replyTo, $fromName);
     $to = self::get_email($member_key);
     $subject = $topic;
     $message = $text; //.date("H:i:s").' '.date("d.m.Y") // for Windows $text = str_replace("\n.", "\n..", $text);
     if (self::checkDomain() || $member_key === '000005716' || !empty($CRON_ROOT_PATH)) {
-      return EmailingSMTP::sendSMTP($to, $subject, $message, $headers);
+      return EmailingSMTP::sendSMTP($to, $subject, $message, $replyTo, $fromName);
     } else {
       return false;
     }
@@ -92,11 +92,11 @@ class Emailing
   }
 
   // получаем header
-  static function get_header()
+  static function get_header($replyTo = 'noreply@reg-page.ru', $fromName = 'reg-page.ru')
   {
-    return 'From: reg-page.ru <noreply@reg-page.ru>' . "\r\n" .
+    return "From: {$fromName} <noreply@reg-page.ru>\r\n" .
     'Content-Type: text/html; charset=utf-8' . "\r\n" .
-    'Reply-To: noreply@reg-page.ru' . "\r\n" .
+    "Reply-To: {$replyTo}\r\n" .
     'X-Mailer: PHP/' . phpversion();
   }
   // получаем имя пользователя
@@ -130,7 +130,7 @@ class Emailing
 class EmailingSMTP
 {
 
-  static function sendSMTP($email, $topic, $body)
+  static function sendSMTP($email, $topic, $body, $replyTo = 'noreply@reg-page.ru', $fromName = 'Уведомление с сайта регистрации')
   {
     global $mailCnfg;
 
@@ -159,7 +159,7 @@ class EmailingSMTP
 
         // Отправитель и получатель
         //Recipients // От кого (имя можно указать на русском)
-        $mail->setFrom('noreply@reg-page.ru', 'Уведомление с сайта регистрации');
+        $mail->setFrom('noreply@reg-page.ru', $fromName);
         // Кому
         //$mail->addAddress('zhichkinroman@gmail.com', 'Joe User');     //Add a recipient
         $emails = array_filter(array_map('trim', explode(',', $email)));
@@ -169,7 +169,7 @@ class EmailingSMTP
           }
         }
 
-        $mail->addReplyTo('noreply@reg-page.ru', 'Автоматическая рассылка');
+        $mail->addReplyTo($replyTo, $fromName);
         //$mail->addCC('cc@example.com');
         //$mail->addBCC('bcc@example.com');
         // Вложение
