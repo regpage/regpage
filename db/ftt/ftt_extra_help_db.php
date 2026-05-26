@@ -194,6 +194,9 @@ function setAddLate($data){
   if ($res) {
     $result = $db->insert_id;
     db_query("UNLOCK TABLES;");
+    // check 3 lates
+    latesToExtraHelp($member_key);
+    // get data the added late
     $res3 = db_query("SELECT feh.id AS feh_id, feh.date, feh.member_key, feh.session_name, feh.done, feh.author,
     feh.delay,  feh.changed,
     ft.semester, ft.serving_one as ft_serving_one
@@ -205,6 +208,30 @@ function setAddLate($data){
   } else {
     db_query("UNLOCK TABLES;");
     return $res;
+  }
+}
+
+// check 3 lates AND create extrahelp
+function latesToExtraHelp($member_key)
+{
+  $threeLatesCheckList = [];
+  $threeLatesCheck = db_query("SELECT * FROM `ftt_late` WHERE member_key ='{$member_key}' AND `done` = 0 ORDER BY `id`");
+  while ($row = $threeLatesCheck->fetch_assoc()) $threeLatesCheckList[] = $row;
+
+  if (count($threeLatesCheckList) > 2) {
+    $text = '';
+    $ids = [];
+    for ($i = 0; $i <= 2; $i++) {
+      $text .= date_convert::yyyymmdd_to_ddmm($threeLatesCheckList[$i]['date']) . " {$threeLatesCheckList[$i]['session_name']} — опоздание на {$threeLatesCheckList[$i]['delay']} мин.\r\n";
+      $ids[] = $threeLatesCheckList[$i]['id'];
+    }
+
+    $newExtraHelp = setAddExtraHelp(['date' => date('Y-m-d'), 'member_key' => $member_key, 'reason' => $text, 'author' => '', 'serving_one' => '', 'comment' => '', 'archive_date' => '0000-00-00', 'archive' => 0]);
+    if (count($newExtraHelp) > 0) {
+      foreach ($ids as $id) {
+        setLateDone($id, 1);
+      }
+    }
   }
 }
 
@@ -225,6 +252,9 @@ function updateAddLate($data){
 
   $result;
   if ($res) {
+    // check 3 lates
+    latesToExtraHelp($member_key);
+    // get data the updated late
     $res2 = db_query("SELECT feh.id AS feh_id, feh.date, feh.member_key, feh.session_name, feh.done, feh.author,
     feh.delay, feh.changed,
     ft.semester, ft.serving_one as ft_serving_one
@@ -248,5 +278,3 @@ function deleteLateString($id){
 
   return $res;
 }
-
-?>

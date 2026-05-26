@@ -1555,6 +1555,9 @@ function dinamic_add_string_late(data, update) {
     if ($("#tasks_select_late").val() !== "_all_") {
       hide_this = 'display: none;';
     }
+    setTimeout(function () {
+      location.reload();
+    }, 100);    
   }
   if (update) {
     let element_upd = $('.ftt_late_string[data-id='+data.feh_id+']');
