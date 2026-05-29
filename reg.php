@@ -390,7 +390,8 @@
                 </div>
             </div>
             <div style="clear: both; margin-bottom: 10px">
-                <a onclick="var t = $('#sendLetterText'); t.textrange('replace', '{СсылкаНаБланк}');t.textrange('setcursor', t.textrange('get', 'end'));">Вставить ссылку на бланк регистрации</a>
+              <a onclick="var t = $('#sendLetterText'); t.textrange('replace', '{СсылкаНаБланк}');t.textrange('setcursor', t.textrange('get', 'end'));">Ссылка на бланк</a>  | 
+              <a onclick="let t = $('#sendLetterText'); t.textrange('replace', '{СсылкаНаСтраницу}');t.textrange('setcursor', t.textrange('get', 'end'));">Ссылка на страницу</a>
             </div>
             <textarea class="span5 text-field" rows="10" id="sendLetterText"></textarea>
         </form>
@@ -2376,9 +2377,24 @@ function checkStopEventRegistration(eventId){
         if (parseInt(data.res.participants_count) > 0) {
             if ((data.res.close_registration === '1' || parseInt(data.res.count_members) >= parseInt(data.res.participants_count))){
                 text = "<span class='registration-closed'><a style='color:red; font-weight: bold; padding-right: 8px;' data-toggle='modal'>Регистрация закрыта.</a></span>";
-            }
-            else{
+            } else {
+              /* ОГРАНИЧЕНИЕ С РАЗМЕЩЕНИЕМ НА МКС */
+              if (eventId === '20260006') {
+                fetch('/ajax/event.php?check_stop_reg_hospitality&event_id=' + eventId)
+                .then(response => response.json())
+                .then(commits => {
+                  text = "<span class='label label-info labelExtraInfo' data-max-participants='"+ (parseInt(commits.res.participants_count))+"'><span style='color:white; cursor: pointer; padding-right: 8px;' data-toggle='modal' >Осталось мест с размещением — "+ (450 - parseInt(commits.res.count_members))+"</span></span>";
+                  $('<span style="margin-top: 15px; margin-right: 15px; display: inline-block;" class="close-event-registration">'+text+'</span>').insertBefore(".counterForResponseble");
+                  $('.labelExtraInfo').click(function () {
+                    let a = $(this).attr('data-max-participants');
+                    let b = 'Максимальное количество участников для этого мероприятия — ' + a + ' чел.\r\n Максимальное количество участников с размещением - 450 чел.';
+                    $('#modalHintWindow').modal('show');
+                    $('#modalHintWindow .modal-body').text(b);
+                  })
+                });
+              } else {
                 text = "<span class='label label-info' id='labelExtraInfo' data-max-participants='"+ (parseInt(data.res.participants_count))+"'><span style='color:white; cursor: pointer; padding-right: 8px;' data-toggle='modal' >Осталось мест — "+ (parseInt(data.res.participants_count) - parseInt(data.res.count_members))+"</span></span>";
+              }
             }
         } else if (parseInt(data.res.participants_count) === 0) {
           if(data.res.close_registration === '1'){

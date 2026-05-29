@@ -59,6 +59,10 @@ elseif (isset ($_GET ['check_stop_reg'])){
     echo json_encode(["res" => db_checkEventStopRegistration ($_POST['eventId'])]);
     exit;
 }
+elseif (isset ($_GET ['check_stop_reg_hospitality'])){
+    echo json_encode(["res" => db_checkEventStopRegistrationHospitality($_GET['event_id'])]);
+    exit;
+}
 elseif(isset ($_GET['remove_event'])){
     if(!checkIfEventHasParticipants($_POST['eventId'])){
         db_removeEvent($_POST['eventId'], $adminId);

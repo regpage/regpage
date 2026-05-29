@@ -378,11 +378,11 @@ else if (isset ($_GET ['event']) && isset ($_POST ['send_to_members']) && isset 
     {
         $reg = db_getEventMember($memberId, $eventId);
         if (!$reg['regstate_key'] || $type!='invitation'){
-            if (strstr ($text, '{СсылкаНаБланк}')){
+            if (strstr($text, '{СсылкаНаБланк}') || strstr($text, '{СсылкаНаСтраницу}')){
                 $permalink = db_getPermalink($memberId, $eventId);
-                $body = str_replace('{СсылкаНаБланк}', '<a href="'.$appRootPath.'invites?link='.$permalink.'">'.$appRootPath.'invites?link='.$permalink.'</a>', $text);
-            }
-            else{
+                $body = str_replace('{СсылкаНаСтраницу}', '<a href="'.$appRootPath.'arrdep?link='.$permalink.'">'.$appRootPath.'arrdep?link='.$permalink.'</a>', $text);
+                $body = str_replace('{СсылкаНаБланк}', '<a href="'.$appRootPath.'invites?link='.$permalink.'">'.$appRootPath.'invites?link='.$permalink.'</a>', $body);
+            } else {
                 $body = $text;
             }
 

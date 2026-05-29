@@ -265,4 +265,18 @@ function getEventArchiveMembersStatistic($adminId, $eventType, $startDate, $endD
     while ($row = $res->fetch_object()) $list[]=$row;
     return $list;
 }
-?>
+
+function db_checkEventStopRegistrationHospitality($eventId){
+    global $db;
+    $_eventId = $db->real_escape_string($eventId);
+
+    $res=db_query ("SELECT
+      (SELECT COUNT(*) FROM reg rg WHERE rg.event_key=e.key AND rg.accom=1 AND (rg.regstate_key = '01' OR rg.regstate_key = '02' OR rg.regstate_key = '04' OR rg.regstate_key is NULL)) as count_members,
+      e.participants_count, e.close_registration
+      FROM event e
+      WHERE e.key='{$_eventId}'");
+
+    $row= $res->fetch_assoc();
+
+    return $row;
+}
