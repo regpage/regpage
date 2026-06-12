@@ -19,6 +19,12 @@
   </div>
 
   <?php foreach (db_getRequestForApplication('', true) as $key => $value): ?>
+    <?php
+    $comma = '';
+    if (!empty($value['cell_phone']) && !empty($value['email'])) {
+      $comma = ', ';
+    }
+    ?>
       <div class="row str_of_list border-top pt-2" data-member_key="<?php echo $value['member_key']; ?>" data-id="<?php echo $value['id']; ?>" data-guest="<?php echo $value['guest']; ?>">
         <div class="col-2">
           <?php echo $value['request_date']; ?>
@@ -27,7 +33,9 @@
           <?php if ($value['guest']) {
             echo "ГОСТЬ ";
           } ?>
-          <?php echo $value['name']; ?>
+          <?php echo $value['name']; ?> (возраст: <?php echo $value['age']; ?>)
+          <br>
+          <span class="example"><?php echo $value['cell_phone']; ?><?php echo $comma; ?><?php echo $value['email']; ?></span>
         </div>
         <div class="col-2">
           <?php echo $value['locality_name']; ?>

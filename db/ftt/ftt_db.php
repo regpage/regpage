@@ -127,7 +127,14 @@ function db_getRequestForApplication ($adminId, $trash=''){
     $condition = " fr.stage = 0 AND fr.notice <> 2 ";
   }
   $res=db_query ("SELECT fr.*,
-    m.name, m.male, m.locality_key, m.cell_phone, m.email, m.category_key, l.name AS locality_name
+    m.name, m.male, m.locality_key, m.cell_phone, m.email, m.category_key, l.name AS locality_name,
+    CASE
+      WHEN m.birth_date IS NULL THEN '-'
+      WHEN m.birth_date = '0000-00-00' THEN '-'
+      WHEN m.birth_date > CURDATE() THEN '-'
+      WHEN DATE_FORMAT(FROM_DAYS(DATEDIFF(CURDATE(), m.birth_date)), '%Y') + 0 > 110 THEN '-'
+      ELSE DATE_FORMAT(FROM_DAYS(DATEDIFF(CURDATE(), m.birth_date)), '%Y') + 0
+      END AS age
   FROM ftt_request AS fr
   INNER JOIN member m ON m.key = fr.member_key
   INNER JOIN locality l ON l.key = m.locality_key

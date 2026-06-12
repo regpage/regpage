@@ -10,7 +10,7 @@ if ($(window).width()<=769) {
   $(".members-lists-combo").css("width", "97%");
   $(".close-event-registration").css("display", "block");
   $(".dropdown_custom").parent().show();
-  $(".ftt_menu_a[href='/ftt_gospel']").parent().hide();  
+  $(".ftt_menu_a[href='/ftt_gospel']").parent().hide();
   $(".ftt_menu_a[href='/ftt_extrahelp']").parent().hide();
   $(".ftt_menu_a[href='/ftt_reading']").parent().hide();
   $(".ftt_menu_a[href='/ftt_application']").parent().hide();
@@ -27,6 +27,8 @@ if ($(window).width()<=769) {
   if (window.location.pathname === '/reg.php' || window.location.pathname === '/reg' || window.location.pathname === '/index.php' || window.location.pathname === '/index') {
     $("#modalEditMember .emService_info").prev().text("Инфо о служении");
   }
+
+  $("#btnRegEndedAction").css("margin-top", "10px");
 
 } else {
   // прибить футер
