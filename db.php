@@ -312,7 +312,6 @@ function db_getAdminLocalitiesWithFilters($adminId){
                     LEFT JOIN country c ON c.key = a.country_key
                     LEFT JOIN region r ON r.key = a.region_key or c.key=r.country_key
                     INNER JOIN locality l ON l.region_key = r.key OR l.key=a.locality_key
-                    LEFT JOIN member m ON m.locality_key = l.key
                     WHERE a.member_key='$adminId' and l.key is not null
                     UNION
                     SELECT f.value as id, f.name as name
@@ -326,7 +325,7 @@ function db_getAdminLocalitiesWithFilters($adminId){
 
 }
 
-function db_getAdminLocalities ($adminId)
+/*function db_getAdminLocalitiesOLD ($adminId)
 {
     global $db;
     $adminId = $db->real_escape_string($adminId);
@@ -355,7 +354,56 @@ function db_getAdminLocalities ($adminId)
     $localities = array ();
     while ($row = $res->fetch_assoc()) $localities[$row['id']]=$row['name'];
     return $localities;
+}*/
+
+function db_getAdminLocalities ($adminId)
+{
+    global $db;
+    $adminId = $db->real_escape_string($adminId);
+
+    $res=db_query ("SELECT DISTINCT * FROM (
+                                    SELECT l.key as id, l.name as name
+                                    FROM access a
+                                    LEFT JOIN region r ON r.country_key = a.country_key
+                                    INNER JOIN locality l ON l.region_key = r.key
+                                    WHERE a.member_key = {$adminId} and l.key is not null
+
+                                    UNION
+
+                                    SELECT l.key as id, l.name as name
+                                    FROM access a
+                                    -- убрана строка подключения региона, но может подключаться NULL
+                                    INNER JOIN locality l ON l.region_key = a.region_key
+                                    WHERE a.member_key = {$adminId} and l.key is not null
+
+                                    UNION
+
+                                    SELECT l.key as id, l.name as name
+                                    FROM access a
+                                    INNER JOIN locality l ON l.key=a.locality_key
+                                    WHERE a.member_key = {$adminId} AND l.key is not null
+
+                                    UNION
+
+                                    SELECT l.key as id, l.name as name
+                                    FROM member m
+                                    LEFT JOIN locality l ON l.key=m.locality_key
+                                    WHERE m.admin_key = {$adminId}
+
+                                    UNION
+
+                                    SELECT l.key as id, l.name as name
+                                    FROM reg
+                                    INNER JOIN member m ON m.key=reg.member_key
+                                    LEFT JOIN locality l ON l.key=m.locality_key
+                                    WHERE reg.admin_key = {$adminId}
+                                    ) q ORDER BY q.name");
+
+    $localities = array ();
+    while ($row = $res->fetch_assoc()) $localities[$row['id']]=$row['name'];
+    return $localities;
 }
+
 
 function db_getAdminLocalitiesNotRegTbl ($adminId)
 {

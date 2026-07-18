@@ -54,6 +54,98 @@ class Members
       $sortType = $db->real_escape_string($sortType);
       $sortAdd = $sortField!=' name ' ? ' , name' : ' ';
       $active = 'active DESC, ';
+      $sort = "{$active} {$sortField} {$sortType} {$sortAdd}";
+      //(SELECT at.attend_pm FROM attendance at WHERE at.member_key=m.key) as attend_pm_n
+      //(SELECT at.attend_pm FROM attendance at WHERE at.member_key=m.key) as attend_pm_n
+      $res=db_query ("SELECT DISTINCT * FROM (SELECT m.key as id, m.name as name, IF (COALESCE(l.name,'')='', m.new_locality, l.name) as locality,
+                      (SELECT name FROM member m2 WHERE m2.key=m.admin_key) as admin_name, m.active, m.locality_key,
+                      DATEDIFF(CURRENT_DATE, STR_TO_DATE(m.birth_date, '%Y-%m-%d'))/365 as age, m.birth_date,
+                      m.category_key, m.attend_meeting,
+                      ca.name as category_name,
+                      (SELECT rg.name FROM region rg WHERE rg.key=l.region_key) as region,
+                      (SELECT co.name FROM country co INNER JOIN region re ON co.key=re.country_key WHERE l.region_key=re.key) as country, at.attend_pm, at.attend_gm,at.attend_am, at.attend_vt,
+                      at.comment AS at_comment, at.editors, at.fee
+                      FROM access as a
+
+                      LEFT JOIN region r ON r.country_key = a.country_key
+                      INNER JOIN locality l ON l.region_key = r.key
+
+
+                      INNER JOIN member m ON m.locality_key = l.key
+                      LEFT JOIN category ca ON ca.key = m.category_key
+                      LEFT JOIN attendance at ON at.member_key = m.key
+                      WHERE a.member_key='{$adminId}'
+
+
+
+                    UNION
+
+                    SELECT m.key as id, m.name as name, IF (COALESCE(l.name,'')='', m.new_locality, l.name) as locality,
+                                    (SELECT name FROM member m2 WHERE m2.key=m.admin_key) as admin_name, m.active, m.locality_key,
+                                    DATEDIFF(CURRENT_DATE, STR_TO_DATE(m.birth_date, '%Y-%m-%d'))/365 as age, m.birth_date,
+                                    m.category_key, m.attend_meeting,
+                                    ca.name as category_name,
+                                    (SELECT rg.name FROM region rg WHERE rg.key=l.region_key) as region,
+                                    (SELECT co.name FROM country co INNER JOIN region re ON co.key=re.country_key WHERE l.region_key=re.key) as country, at.attend_pm, at.attend_gm,at.attend_am, at.attend_vt,
+                                    at.comment AS at_comment, at.editors, at.fee
+                                    FROM access as a
+
+                                    LEFT JOIN region r ON r.key = a.region_key
+                                    INNER JOIN locality l ON l.region_key = r.key
+
+                                    INNER JOIN member m ON m.locality_key = l.key
+                                    LEFT JOIN category ca ON ca.key = m.category_key
+                                    LEFT JOIN attendance at ON at.member_key = m.key
+                                    WHERE a.member_key='{$adminId}'
+
+                    UNION
+
+                    SELECT m.key as id, m.name as name, IF (COALESCE(l.name,'')='', m.new_locality, l.name) as locality,
+                                    (SELECT name FROM member m2 WHERE m2.key=m.admin_key) as admin_name, m.active, m.locality_key,
+                                    DATEDIFF(CURRENT_DATE, STR_TO_DATE(m.birth_date, '%Y-%m-%d'))/365 as age, m.birth_date,
+                                    m.category_key, m.attend_meeting,
+                                    ca.name as category_name,
+                                    (SELECT rg.name FROM region rg WHERE rg.key=l.region_key) as region,
+                                    (SELECT co.name FROM country co INNER JOIN region re ON co.key=re.country_key WHERE l.region_key=re.key) as country, at.attend_pm, at.attend_gm,at.attend_am, at.attend_vt,
+                                    at.comment AS at_comment, at.editors, at.fee
+                                    FROM access as a
+
+                                    INNER JOIN locality l ON l.key=a.locality_key
+
+                                    INNER JOIN member m ON m.locality_key = l.key
+                                    LEFT JOIN category ca ON ca.key = m.category_key
+                                    LEFT JOIN attendance at ON at.member_key = m.key
+                                    WHERE a.member_key='{$adminId}'
+
+                    UNION
+
+                    SELECT m.key as id, m.name as name, IF (COALESCE(m.locality_key,'')='', m.new_locality, m.name) as locality,
+                    (SELECT name FROM member m2 WHERE m2.key=m.admin_key) as admin_name, m.active, m.locality_key,
+                    DATEDIFF(CURRENT_DATE, STR_TO_DATE(m.birth_date, '%Y-%m-%d'))/365 as age, m.birth_date,
+                    m.category_key, m.attend_meeting,
+                    ca.name as category_name, at.attend_pm, at.attend_gm, at.attend_am, at.attend_vt,
+                    at.comment AS at_comment, at.editors, at.fee,
+                    '' as region,
+                    '' as country
+                    FROM member m
+                    LEFT JOIN category ca ON ca.key = m.category_key
+                    LEFT JOIN attendance at ON at.member_key = m.key
+                    WHERE m.admin_key='{$adminId}' and m.locality_key is NULL
+                    ) q ORDER BY {$sort}");
+
+      $members = array ();
+      while ($row = $res->fetch_object()) $members[]=$row;
+      return $members;
+  }
+  // участники для раздела "Список посещаемости"
+  /*function OLDgetListAttend ($adminId, $sortField, $sortType)
+  {
+      global $db;
+      $adminId = $db->real_escape_string($adminId);
+      $sortField = $db->real_escape_string($sortField);
+      $sortType = $db->real_escape_string($sortType);
+      $sortAdd = $sortField!=' name ' ? ' , name' : ' ';
+      $active = 'active DESC, ';
       //(SELECT at.attend_pm FROM attendance at WHERE at.member_key=m.key) as attend_pm_n
       //(SELECT at.attend_pm FROM attendance at WHERE at.member_key=m.key) as attend_pm_n
       $res=db_query ("SELECT DISTINCT * FROM (SELECT m.key as id, m.name as name, IF (COALESCE(l.name,'')='', m.new_locality, l.name) as locality,
@@ -72,7 +164,9 @@ class Members
                       LEFT JOIN category ca ON ca.key = m.category_key
                       LEFT JOIN attendance at ON at.member_key = m.key
                       WHERE a.member_key='$adminId'
+
                       UNION
+
                       SELECT m.key as id, m.name as name, IF (COALESCE(m.locality_key,'')='', m.new_locality, m.name) as locality,
                       (SELECT name FROM member m2 WHERE m2.key=m.admin_key) as admin_name, m.active, m.locality_key,
                       DATEDIFF(CURRENT_DATE, STR_TO_DATE(m.birth_date, '%Y-%m-%d'))/365 as age, m.birth_date,
@@ -90,7 +184,7 @@ class Members
       $members = array ();
       while ($row = $res->fetch_object()) $members[]=$row;
       return $members;
-  }
+  }*/
   /*
   static function member_full($value='')
   {

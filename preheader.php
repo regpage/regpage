@@ -14,7 +14,7 @@ error_reporting(E_ALL);*/
 /* API */
 // BFA подписка --> контакты.
 if (isset($_GET['method']) && $_GET['method'] === 'contacts.add_member' && $_GET['api_key'] === 'f3db58b7cb4baa82ea5321d08b6f0ff9') {
-  require_once 'api_v1.php';  
+  require_once 'api_v1.php';
   exit;
 }
 

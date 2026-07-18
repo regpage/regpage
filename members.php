@@ -10,7 +10,7 @@ if(!$hasMemberRightToSeePage){
 
 $sort_field = isset ($_SESSION['sort_field-members']) ? $_SESSION['sort_field-members'] : 'name';
 $sort_type = isset ($_SESSION['sort_type-members']) ? $_SESSION['sort_type-members'] : 'asc';
-$localities = db_getAdminLocalities ($memberId);
+$localities = db_getAdminLocalities($memberId);
 $categories = db_getCategories();
 $countries1 = db_getCountries(true);
 $countries2 = db_getCountries(false);
@@ -22,8 +22,8 @@ $selMemberCategory = isset ($_COOKIE['selMemberCategory']) ? $_COOKIE['selMember
 $selAttendMeeting = isset ($_COOKIE['selAttendMeeting']) ? $_COOKIE['selAttendMeeting'] : '_all_';
 $allLocalities = db_getLocalities();
 $adminLocality = db_getAdminLocality($memberId);
-
 $user_settings = db_getUserSettings($memberId);
+
 $userSettings = implode (',', $user_settings);
 
 include_once 'modals.php';
@@ -87,7 +87,7 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
             </div>
             <?php if (!$singleCity) { ?>
             <div class="btn-group">
-                <select id="selMemberLocality" class="span2" >
+                <select id="selMemberLocality" class="span2">
                 </select>
             </div>
             <?php } ?>
@@ -364,9 +364,10 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
     setAdminRole_0('.add-member','#btnDoSaveMember');
 
     function get_localities(){
-        $.get('/ajax/members.php?get_localities')
+      // проверить вариант загружать в бэкэнде (возможно что то добавляется динамически)
+        $.get('internal_api.php?category=localities&type=dropdown_localities_of_zones_and_custom_filters') // '/ajax/members.php?get_localities'
         .done (function(data) {
-            renderLocalities(data.localities);
+          renderLocalities(data.localities);
         });
     }
 
@@ -374,11 +375,20 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
         var localities_list = [],
             selectedLocality = "<?php echo $selMemberLocality; ?>";
 
-        localities_list.push("<option value='_all_' " + (selectedLocality =='_all_' ? 'selected' : '') +" >Все местности</option>");
+        if (!globalSingleCity && getCookie('start_member_page_optimized') !== "1") {
+          if (selectedLocality) {
+            setCookie('selMemberLocality', '');
+            selectedLocality = '';
+          }
+          localities_list.push("<option selected>Местность</option>");
+          localities_list.push("<option value='_all_'>Все местности</option>");
+        } else {
+          localities_list.push("<option value='_all_' " + (selectedLocality =='_all_' ? 'selected' : '') +" >Все местности</option>");
+        }
 
         for (var l in localities){
             var locality = localities[l];
-            localities_list.push("<option value='"+locality['id']+"' " + (selectedLocality == l ? 'selected' : '') +" >"+he(locality['name'])+"</option>");
+            localities_list.push("<option value='"+locality['id']+"' " + (selectedLocality == locality['id'] ? 'selected' : '') +" >"+he(locality['name'])+"</option>");
         }
 
         $("#selMemberLocality").html(localities_list.join(''));
@@ -626,9 +636,25 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
     }
 
     function loadDashboard (){
-        $.getJSON('/ajax/members.php', { sortedFields : sortedFields()})
-            .done (function(data) {
-                refreshMembers (data.members); });
+      let flt_locality_for_members = "_all_";
+      if (!globalSingleCity) {
+        if (getCookie('start_member_page_optimized') !== "1") {
+          setCookie("selMemberLocality", "");
+          $("#members h3, #membersPhone h3").text("");
+          $("#members h3, #membersPhone h3").after('<h4>Выберите местность или "Все местности"</h4>');
+          return;
+        } else {
+          flt_locality_for_members = getCookie("selMemberLocality");
+          setTimeout(function () {
+            setCookie('start_member_page_optimized', '0');
+          }, 300);
+        }
+      }
+
+        $.getJSON('internal_api.php', {category: 'members', type: 'full', locality: flt_locality_for_members, sortedFields : sortedFields()})
+         .done (function(data) {
+            refreshMembers (data.members);
+        });
     }
 
     function refreshMembers (members){
@@ -654,43 +680,44 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
               // m.region += ', ';
               // m.region += m.country;
             }
-
-            tableRows.push('<tr data-id="'+m.id+'" data-name="'+m.name+'" data-age="'+m.age+'" data-attendance="'+(m.attend_meeting ? m.attend_meeting : "") +'" pm="'
-              + (m.attend_pm ? m.attend_pm : "") +'" gm="' + (m.attend_gm ? m.attend_gm : "") + '" am="' + (m.attend_am ? m.attend_am : "") +'" vt="'
-            + (m.attend_vt ? m.attend_vt : "") +'" data-locality="'+m.locality_key+'" data-category="'
-              +m.category_key+'" class="'+(m.active==0?'inactive-member':'member-row')+'">'+
+            if ($(window).width() > 768) {
+              tableRows.push('<tr data-id="'+m.id+'" data-name="'+m.name+'" data-age="'+m.age+'" data-attendance="'+(m.attend_meeting ? m.attend_meeting : "") +'" pm="'
+                + (m.attend_pm ? m.attend_pm : "") +'" gm="' + (m.attend_gm ? m.attend_gm : "") + '" am="' + (m.attend_am ? m.attend_am : "") +'" vt="'
+                + (m.attend_vt ? m.attend_vt : "") +'" data-locality="'+m.locality_key+'" data-category="'
+                + m.category_key+'" class="'+(m.active==0?'inactive-member':'member-row')+'">'+
                 '<td>' + he(m.name) +
-(in_array(5, window.user_settings) ? '<br/>'+ '<span class="user_setting_span">'+m.category_name+'</span>' : '') +
+                (in_array(5, window.user_settings) ? '<br/>'+ '<span class="user_setting_span">'+m.category_name+'</span>' : '') +
                 '</td>' +
                 <?php if (!$singleCity) { ?>
-                    '<td style="width:160px">' + he(m.locality ? (m.locality.length>20 ? m.locality.substring(0,18)+'...' : m.locality) : '') +
-                    (in_array(6, window.user_settings) ? '<br/>'+ '<span class="user_setting_span">'+(m.region || m.country)+'</span>' : '') +
-                    '</td>' +
+                  '<td style="width:160px">' + he(m.locality ? (m.locality.length>20 ? m.locality.substring(0,18)+'...' : m.locality) : '') +
+                  (in_array(6, window.user_settings) ? '<br/>'+ '<span class="user_setting_span">'+(m.region || m.country)+'</span>' : '') +
+                  '</td>' +
                 <?php } ?>
                 '<td>' + he(m.cell_phone) + '</td>' +
                 '<td>' + he(m.email) + '</td>' +
                 '<td style="width:50px">' + age + '</td>' +
                 //'<td><input type="checkbox" class="check-meeting-attend" '+ (m.attend_meeting == 1 ? "checked" : "") +' /></td>' +
                 '<td>' + htmlChanged + htmlEditor + '</td>' +
-  <?php if (db_getAdminRole($memberId) != 0) { ?> '<td><i class="'+(m.active==0?'icon-circle-arrow-up':'')+' icon-black" title="'+(m.active==0?'Добавить в список':'Удалить из списка')+'"/></td>' <?php } ?> +
+                <?php if (db_getAdminRole($memberId) != 0) { ?> '<td><i class="'+(m.active==0?'icon-circle-arrow-up':'')+' icon-black" title="'+(m.active==0?'Добавить в список':'Удалить из списка')+'"/></td>' <?php } ?> +
                 '</tr>'
-            );
-
-            phoneRows.push('<tr data-id="'+m.id+'" data-name="'+m.name+'" data-age="'+m.age+'" data-attendance="'+(m.attend_meeting ? m.attend_meeting : "") +'" pm="'
-              + (m.attend_pm ? m.attend_pm : "") +'" gm="' + (m.attend_gm ? m.attend_gm : "") + '" am="' + (m.attend_am ? m.attend_am : "") +'" vt="'
-            + (m.attend_vt ? m.attend_vt : "") +'" data-locality="'+m.locality_key+'" data-category="'
-              +m.category_key+'" class="'+(m.active==0?'inactive-member':'member-row')+'">'+
-                '<td><span style="color: #006">' + he(m.name) + ' '
-                + (in_array(5, window.user_settings) ? '<br/>'+ '<span class="user_setting_span">'+m.category_name+'</span>' : '') +'</span>'+
-                '<i style="float: right; cursor:pointer;" class="'+(m.active==0?'icon-circle-arrow-up':'')+' icon-black" title="'+(m.active==0 ? 'Добавить в список':'Удалить из списка')+'"/>'+
-                <?php if (!$singleCity) echo "'<div>' + he(m.locality ? (m.locality.length>20 ? m.locality.substring(0,18)+'...' : m.locality) : '') + ', ' + age + '</div>' + "; ?> (in_array(6, window.user_settings) ? '<span class="user_setting_span">'+(m.region || m.country)+'</span>' : '') +
-                '<div><span >'+ /*(m.cell_phone?'тел.: ':'') + */ he(m.cell_phone.trim()) + '</span>'+ (m.cell_phone && m.email ? '' :'' )+'<span>'+ /*(m.email?'email: ':'') + he(m.email) + */ '</span></div>' +
-                //<div>Посещает собрания: <input type="checkbox" class="check-meeting-attend" '+ (m.attend_meeting == 1 ? "checked" : "") +' />
-                '<span> '+ htmlChanged + htmlEditor + '</span></div>'+
-                /*'<div>'+ htmlChanged + htmlEditor + '</div>'+*/
-                '</td>' +
-                '</tr>'
-            );
+              );
+            } else {
+              phoneRows.push('<tr data-id="'+m.id+'" data-name="'+m.name+'" data-age="'+m.age+'" data-attendance="'+(m.attend_meeting ? m.attend_meeting : "") +'" pm="'
+                + (m.attend_pm ? m.attend_pm : "") +'" gm="' + (m.attend_gm ? m.attend_gm : "") + '" am="' + (m.attend_am ? m.attend_am : "") +'" vt="'
+                + (m.attend_vt ? m.attend_vt : "") +'" data-locality="'+m.locality_key+'" data-category="'
+                + m.category_key+'" class="'+(m.active==0?'inactive-member':'member-row')+'">'+
+                  '<td><span style="color: #006">' + he(m.name) + ' '
+                  + (in_array(5, window.user_settings) ? '<br/>'+ '<span class="user_setting_span">'+m.category_name+'</span>' : '') +'</span>'+
+                  '<i style="float: right; cursor:pointer;" class="'+(m.active==0?'icon-circle-arrow-up':'')+' icon-black" title="'+(m.active==0 ? 'Добавить в список':'Удалить из списка')+'"/>'+
+                  <?php if (!$singleCity) echo "'<div>' + he(m.locality ? (m.locality.length>20 ? m.locality.substring(0,18)+'...' : m.locality) : '') + ', ' + age + '</div>' + "; ?> (in_array(6, window.user_settings) ? '<span class="user_setting_span">'+(m.region || m.country)+'</span>' : '') +
+                  '<div><span >'+ /*(m.cell_phone?'тел.: ':'') + */ he(m.cell_phone.trim()) + '</span>'+ (m.cell_phone && m.email ? '' :'' )+'<span>'+ /*(m.email?'email: ':'') + he(m.email) + */ '</span></div>' +
+                  //<div>Посещает собрания: <input type="checkbox" class="check-meeting-attend" '+ (m.attend_meeting == 1 ? "checked" : "") +' />
+                  '<span> '+ htmlChanged + htmlEditor + '</span></div>'+
+                  /*'<div>'+ htmlChanged + htmlEditor + '</div>'+*/
+                  '</td>' +
+                  '</tr>'
+                );
+            }
         }
 
         $(".desctopVisible tbody").html (tableRows.join(''));
@@ -827,7 +854,7 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
           }
         }
         setTimeout(function () {
-          hideEmptyCity();
+          // hideEmptyCity();
         }, 1000);
         // STOP hide empty city
     }
@@ -1215,18 +1242,26 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
     });
 
     $("#selMemberLocality").change (function (){
+        setCookie('start_member_page_optimized', '1')
         setCookie('selMemberLocality', $(this).val());
-        filterMembers();
+        setTimeout(function () {
+          location.reload();
+        }, 30);
+        // filterMembers();
     });
 
     $("#selMemberAttendMeeting").change(function(){
 			setCookie('selAttendMeeting', $(this).val());
-			filterMembers();
+      if ($("#members tbody tr:first").hasClass("member-row")) {
+        filterMembers();
+      }
 		});
 
     $("#selMemberCategory").change (function (){
         setCookie('selMemberCategory', $(this).val());
-        filterMembers();
+        if ($("#members tbody tr:first").hasClass("member-row")) {
+          filterMembers();
+        }
     });
 
     function filterMembers(){
