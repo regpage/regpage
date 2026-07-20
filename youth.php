@@ -74,9 +74,15 @@ include_once "modals.php";
 				<?php if (!$singleCity) { ?>
 				<div class="btn-group">
 					<select id="selMemberLocality" class="span2">
-						<option value='_all_' <?php echo $selMemberLocality =='_all_' ? 'selected' : '' ?> >Все местности</option>
+					<?php
+					$startYouthPageOptimized = true;
+					if (!isset($_COOKIE['start_youth_page_optimized']) || (isset($_COOKIE['start_youth_page_optimized']) && $_COOKIE['start_youth_page_optimized'] !== "1")) {
+						$startYouthPageOptimized = false;
+						echo '<option selected>Местность</option>';
+					} ?>
+						<option value='_all_' <?php echo $selMemberLocality == '_all_' && $startYouthPageOptimized ? 'selected' : '' ?> >Все местности</option>
 						<?php foreach (db_getAdminLocalitiesNotRegTbl($memberId) as $id => $name) {
-								echo "<option value='$id' ". ($id==$selMemberLocality ? 'selected' : '') ." >".htmlspecialchars ($name)."</option>";
+								echo "<option value='$id' ". ($id == $selMemberLocality && $startYouthPageOptimized ? 'selected' : '') ." >".htmlspecialchars ($name)."</option>";
 						} ?>
 					</select>
 				</div>
@@ -148,8 +154,7 @@ include_once "modals.php";
 						<th><a id="sort-locality" href="#" title="сортировать">Город</a>&nbsp;
 							<i class="<?php echo $sort_field=='locality' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none'; ?>"></i>
 						</th>
-						<th><a id="sort-cellphone" href="#" title="сортировать">Телефон</a>&nbsp;
-							<i class="<?php echo $sort_field=='college_locality' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none'; ?> "></i>
+						<th style="width: 150px;"><span>Телефон</span>
 						</th>
 						<th><a id="sort-college" href="#" title="сортировать">Учебное заведение</a>&nbsp;
 							<i class="<?php echo $sort_field=='college' ? ($sort_type=='desc' ? 'icon-chevron-up' : 'icon-chevron-down') : 'icon-none'; ?> "></i>
@@ -217,7 +222,13 @@ include_once "modals.php";
 		//Roman's code ver 5.0.1
 		window.user_settings = "<?php echo $userSettings; ?>".split(',');
 
-		loadYouthList();
+		if (getCookie('start_youth_page_optimized') === "1") {
+			setCookie('start_youth_page_optimized', "");
+			loadYouthList();
+		} else {
+			$('#members tbody').html('<h4 style="padding-left:15px;">Выберите местность или "Все местности"</h4>');
+		}
+
 		setAdminRole_0('.add-member','#btnDoSaveMember');
 		$(".clear-college").click(function(e){
 			e.stopPropagation();
@@ -236,7 +247,11 @@ include_once "modals.php";
 
 		$("#selMemberLocality").change (function (){
 			setCookie('selMemberLocality', $(this).val());
-			filterMembers();
+			setCookie('start_youth_page_optimized', 1);
+			setTimeout(function () {
+				location.reload();
+			}, 30);
+			// filterMembers();
 		});
 
 		$("#selMemberCategory").change (function (){
@@ -338,15 +353,19 @@ include_once "modals.php";
 		});
 
 		$("a[id|='sort']").click (function (){
-	        var id = $(this).attr("id"), icon = $(this).siblings("i");
+			if ($("#members tbody tr:first").hasClass("member-row")) {
+	        	var id = $(this).attr("id"), icon = $(this).siblings("i");
 
-	        $(($(document).width()>768 ? ".desctopVisible" : ".show-phone") + " a[id|='sort'][id!='"+id+"'] ~ i").attr("class","icon-none");
-	        icon.attr ("class", icon.hasClass("icon-chevron-down") ? "icon-chevron-up" : "icon-chevron-down");
+	        	$(($(document).width()>768 ? ".desctopVisible" : ".show-phone") + " a[id|='sort'][id!='"+id+"'] ~ i").attr("class","icon-none");
+	        	icon.attr ("class", icon.hasClass("icon-chevron-down") ? "icon-chevron-up" : "icon-chevron-down");
 
-			setCookie('sort_field_youth', id.replace(/^sort-/,''));
-			setCookie('sort_type_youth', icon.hasClass("icon-chevron-down") ? "asc" : "desc");
+						setCookie('sort_field_youth', id.replace(/^sort-/,''));
+						setCookie('sort_type_youth', icon.hasClass("icon-chevron-down") ? "asc" : "desc");
 
-	        loadYouthList();
+						setCookie('start_youth_page_optimized', "1");
+
+						loadYouthList();
+					}
 	    });
 	});
 
