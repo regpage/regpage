@@ -635,10 +635,10 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
         //$('.list_data').html(items.join(''));
     }
 
-    function loadDashboard (){
+    function loadDashboard (sort){
       let flt_locality_for_members = "_all_";
       if (!globalSingleCity) {
-        if (getCookie('start_member_page_optimized') !== "1") {
+        if (getCookie('start_member_page_optimized') !== "1" && !sort) {
           setCookie("selMemberLocality", "");
           $("#members h3, #membersPhone h3").text("");
           $("#members h3, #membersPhone h3").after('<h4>Выберите местность или "Все местности"</h4>');
@@ -651,10 +651,10 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
         }
       }
 
-        $.getJSON('internal_api.php', {category: 'members', type: 'full', locality: flt_locality_for_members, sortedFields : sortedFields()})
-         .done (function(data) {
-            refreshMembers (data.members);
-        });
+      $.getJSON('internal_api.php', {category: 'members', type: 'full', locality: flt_locality_for_members, sortedFields : sortedFields()})
+       .done (function(data) {
+          refreshMembers (data.members);
+      });
     }
 
     function refreshMembers (members){
@@ -1233,12 +1233,15 @@ if ($textBlock) echo "<div class='alert hide-phone'>$textBlock</div>";
     });
 
     $("a[id|='sort']").click (function (){
+      if ($("#members tbody tr:first").hasClass("member-row")) {
         var id = $(this).attr("id");
         var icon = $(this).siblings("i");
 
         $(($(document).width()>768 ? ".desctopVisible" : "#modalSorting") + " a[id|='sort'][id!='"+id+"'] ~ i").attr("class","icon-none");
         icon.attr ("class", icon.hasClass("icon-chevron-down") ? "icon-chevron-up" : "icon-chevron-down");
-        loadDashboard ();
+
+        loadDashboard(true);
+      }
     });
 
     $("#selMemberLocality").change (function (){
