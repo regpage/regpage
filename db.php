@@ -409,7 +409,7 @@ function db_getAdminLocalitiesNotRegTbl ($adminId)
 {
     global $db;
     $adminId = $db->real_escape_string($adminId);
-    
+
     $res=db_query ("SELECT DISTINCT * FROM (
                                     SELECT l.key as id, l.name as name
                                     FROM access a
@@ -1763,7 +1763,7 @@ function db_getLocalListByRegion()
     return $localities;
 }
 
-function db_getMemberListAdmins ($sortField, $sortType)
+function OLDdb_getMemberListAdmins ($sortField, $sortType)
 {
     global $db;
     $sortField = str_replace(' ', '', $sortField);
@@ -1781,6 +1781,50 @@ function db_getMemberListAdmins ($sortField, $sortType)
         LEFT JOIN locality l ON l.region_key=r.key OR l.key=a.locality_key
 
         GROUP BY m.key ORDER BY $sortField $sortType");
+
+    $members = array ();
+    while ($row = $res->fetch_object()) $members[]=$row;
+    return $members;
+}
+
+function db_getMemberListAdmins ($sortField, $sortType)
+{
+    global $db;
+    $sortField = str_replace(' ', '', $sortField);
+    $sortType = str_replace(' ', '', $sortType);
+
+    $res=db_query ("SELECT m.key as id, m.name as name, m.email as email, m.cell_phone as cell_phone,
+        lo.name as locality_name, ad.comment as note,
+        GROUP_CONCAT(DISTINCT az.country_key) as countries,
+        GROUP_CONCAT(DISTINCT az.region_key) as regions,
+        GROUP_CONCAT(DISTINCT az.locality_key) as localities
+        FROM access as a
+        INNER JOIN admin ad ON ad.member_key=a.member_key
+        INNER JOIN member m ON a.member_key = m.key
+        INNER JOIN locality lo ON lo.key=m.locality_key
+
+        LEFT JOIN (
+          SELECT a.member_key, c.key AS country_key, r.key AS region_key, l.key AS locality_key
+          FROM access a
+          JOIN country c ON c.key = a.country_key
+          JOIN region r ON r.country_key = c.key
+          JOIN locality l ON l.region_key = r.key
+
+          UNION ALL
+
+          SELECT a.member_key, NULL, r.key, l.key
+          FROM access a
+          JOIN region r ON r.key = a.region_key
+          JOIN locality l ON l.region_key = r.key
+
+          UNION ALL
+
+          SELECT a.member_key, NULL, NULL, l.key
+          FROM access a
+          JOIN locality l ON l.key = a.locality_key
+        ) az ON az.member_key = m.key
+
+        GROUP BY m.key ORDER BY {$sortField} {$sortType}");
 
     $members = array ();
     while ($row = $res->fetch_object()) $members[]=$row;
