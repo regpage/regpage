@@ -1,5 +1,11 @@
 <!-- СПИНЕР ЗАГРУЗОЧНЫЙ-->
-<div id="spinner_attend" class="modal"  role="dialog" data-backdrop="static"  style="display:block; background: #000; opacity: .5;">
+<div id="spinner_attend" class="modal"  role="dialog" data-backdrop="static"  style="display:
+  <?php if (!empty($_COOKIE['flt_members_localities'])) {
+    echo 'block;';
+  } else {
+    echo 'none;';
+  } ?>
+   background: #000; opacity: .5;">
   <div class="modal-dialog modal-sm modal-dialog-centered" style="background-color: #000;">
     <div class="modal-content" style="border: none;">
       <div class="modal-body" style="background-color: #000; text-align: center;">
@@ -29,8 +35,8 @@
       <span class="hide-name">Добавить</span> <!--<i class="fa fa-plus icon-white"></i>-->
     </button>
     <!-- <button type="button" class="btn btn-warning btn-sm btnDownloadMembers mr-2 rounded" disabled>
-      <span class="hide-name">Скачать</span> --> <!-- <i class="fa fa-download"></i>  -->
-    </button>
+      <span class="hide-name">Скачать</span> --> <!-- <i class="fa fa-download"></i>
+    </button> -->
     <button type="button" class="btn btn-info btn-sm btnShowStatistic mr-2 rounded">
       <span class="hide-name">Статистика</span> <!-- <i class="fa fa-bar-chart"></i> -->
     </button>
@@ -42,12 +48,15 @@
   </div>
   <?php if (!$singleCity): ?>
   <!--<button id="btn_show_custom_filters" type="button" class="btn btn-primary btn-sm rounded mr-2" disabled>
-    <span class="hide-name">Фильтры</span>--> <!-- <i class="fa fa-filter icon-white"></i> -->
-  </button>
+    <span class="hide-name">Фильтры</span>--> <!-- <i class="fa fa-filter icon-white"></i>
+  </button>-->
   <?php endif; ?>
 
   <?php if (!$singleCity): ?>
   <select id="flt_members_localities" class="form-control form-control-sm mr-2" style="width: 15%">
+    <?php if (empty($_COOKIE['flt_members_localities'])) {
+      echo '<option value="_none_">Местность';
+    } ?>
     <?php FTT_Select_fields::rendering($adminLocalitiesList, $flt_members_localities, 'Все местности'); ?>
   </select>
   <?php endif; ?>

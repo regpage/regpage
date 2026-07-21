@@ -70,7 +70,7 @@
   }
 
   function renderFilters(filters){
-      get_localities();
+      //get_localities();
 
       var filters_list = [];
 
@@ -151,7 +151,7 @@
       });
   }
 
-  function get_localities(){
+  /*function get_localities(){
       $.get('/ajax/members.php?get_localities')
       .done (function(data) {
           renderLocalities(data.localities);
@@ -174,7 +174,7 @@
         $("#flt_members_localities").val(getCookie("flt_members_localities"));
       }
   }
-
+*/
   // --- PRINT LIST functions --- //
   // Таблица посещаемости
   function print_badges(modal, blank) {
@@ -482,7 +482,7 @@
       mywindow.document.write(html["end"]);
       // рендерим страницу конец
       //console.log(mywindow);
-      if (!is_preview) {        
+      if (!is_preview) {
         mywindow.print();
         mywindow.close();
       }

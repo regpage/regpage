@@ -46,7 +46,7 @@ class Members
   }
 
   // участники для раздела "Список посещаемости"
-  function getListAttend ($adminId, $sortField, $sortType)
+  static function getListAttend ($adminId, $sortField, $sortType)
   {
       global $db;
       $adminId = $db->real_escape_string($adminId);
@@ -132,6 +132,49 @@ class Members
                     LEFT JOIN attendance at ON at.member_key = m.key
                     WHERE m.admin_key='{$adminId}' and m.locality_key is NULL
                     ) q ORDER BY {$sort}");
+
+      $members = array ();
+      while ($row = $res->fetch_object()) $members[]=$row;
+      return $members;
+  }
+
+  static function getListAttendByLocality ($localityKeys, $sortField, $sortType)
+  {
+      global $db;
+      $localityKeys = $db->real_escape_string($localityKeys);
+      $sortField = $db->real_escape_string($sortField);
+      $sortType = $db->real_escape_string($sortType);
+      $sortAdd = $sortField!=' name ' ? ' , name' : ' ';
+      $active = 'active DESC, ';
+      $sort = "{$active} {$sortField} {$sortType} {$sortAdd}";
+      $condition = '';
+      if (strpos($localityKeys, ',') !== false) {
+        $localityKeys = explode(',', $localityKeys);
+        $quoted = array_map(function($item) {
+            return "'" . addslashes((string)$item) . "'";
+        }, $localityKeys);
+
+        $condition = ' m.locality_key IN (' . implode(', ', $quoted) . ') ';
+      } else {
+        $condition = " m.locality_key = '{$localityKeys}'";
+      }
+
+      //(SELECT at.attend_pm FROM attendance at WHERE at.member_key=m.key) as attend_pm_n
+      //(SELECT at.attend_pm FROM attendance at WHERE at.member_key=m.key) as attend_pm_n
+      $res=db_query ("SELECT DISTINCT * FROM (SELECT m.key as id, m.name as name, IF (COALESCE(l.name,'')='', m.new_locality, l.name) as locality,
+                                    (SELECT name FROM member m2 WHERE m2.key=m.admin_key) as admin_name, m.active, m.locality_key,
+                                    DATEDIFF(CURRENT_DATE, STR_TO_DATE(m.birth_date, '%Y-%m-%d'))/365 as age, m.birth_date,
+                                    m.category_key, m.attend_meeting,
+                                    ca.name as category_name,
+                                    (SELECT rg.name FROM region rg WHERE rg.key=l.region_key) as region,
+                                    (SELECT co.name FROM country co INNER JOIN region re ON co.key=re.country_key WHERE l.region_key=re.key) as country, at.attend_pm, at.attend_gm,at.attend_am, at.attend_vt,
+                                    at.comment AS at_comment, at.editors, at.fee
+                                    FROM member AS m
+                                    INNER JOIN locality l ON l.key=m.locality_key
+                                    LEFT JOIN category ca ON ca.key = m.category_key
+                                    LEFT JOIN attendance at ON at.member_key = m.key
+                                    WHERE {$condition}
+                                  ) q ORDER BY {$sort}");
 
       $members = array ();
       while ($row = $res->fetch_object()) $members[]=$row;

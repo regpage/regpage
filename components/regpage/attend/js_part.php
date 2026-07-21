@@ -3,6 +3,6 @@
 let global_admin_localities = <?php echo $adminLocalitiesList; ?>;
 </script>
 <script src="js/modules/name.js?v1"></script>
-<script src="js/regpage/attend/script.js?v69"></script>
-<script src="js/regpage/attend/client.js?v7"></script>
+<script src="js/regpage/attend/script.js?v71"></script>
+<script src="js/regpage/attend/client.js?v9"></script>
 <script src="js/regpage/attend/design.js?v3"></script>

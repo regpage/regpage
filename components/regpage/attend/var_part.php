@@ -40,8 +40,15 @@ if (isset($_COOKIE['sorting-attend']) && !empty($_COOKIE['sorting-attend'])) {
   $sort_fio_ico = 'fa fa-sort-desc';
 }
 $categories_list = MemberProperties::get_categories();
-$membersList = Members::getListAttend($memberId, $sort_setting[0], $sort_setting[1]);
-$adminLocalitiesList = localities::getAdminLocalities($memberId);
+if (!empty($_COOKIE['flt_members_localities']) && $_COOKIE['flt_members_localities'] === '_all_') {
+  $membersList = Members::getListAttend($memberId, $sort_setting[0], $sort_setting[1]);
+} elseif (!empty($_COOKIE['flt_members_localities'])) {
+  $membersList = Members::getListAttendByLocality($_COOKIE['flt_members_localities'], $sort_setting[0], $sort_setting[1]);
+} else {
+  $membersList = [];
+}
+
+$adminLocalitiesList = localities::getAdminLocalitiesWithRegMemberFilters($memberId);
 $singleCity = localities::isSingleCityAdmin($memberId);
 
 $userSettings = Settings::getUserSettings($memberId);

@@ -1,13 +1,17 @@
 /* ==== Attend START ==== */
 $(document).ready(function(){
   /* ==== DOCUMENT READY START ==== */
+  if (!getCookie("flt_members_localities") || getCookie("flt_members_localities") === "") {
+    $("#attend_list").html('<div style="font-size:17.5px; font-weight: bold;">Выберите местность или "Все местности"</h5>');
+  }
+  setCookie("flt_members_localities", "");
   // применяем фильтры
   filtersOfString();
 
   // RENDERING
-  setTimeout(function () {
+  /*setTimeout(function () {
     get_localities();
-  }, 100);
+  }, 100);*/
 
   // сброс комментариев и взносов для списка (с учётом фильтров)
   $("#btn_reset_fee_comment").click(function () {
@@ -250,6 +254,7 @@ $(document).ready(function(){
       $(this).find("i").addClass("fa").addClass("fa-sort-desc");
       setCookie('sorting-attend', $(this).attr("data-sort") + "-asc", 356);
     }
+    setCookie("flt_members_localities", $("#flt_members_localities").val());
     setTimeout(function () {
       location.reload();
     }, 30);
@@ -267,10 +272,16 @@ $(document).ready(function(){
     }
   });
   $("#flt_members_attend, #flt_members_category, #flt_members_localities, #field_search_text").change(function () {
-    filtersOfString();
-     if ($(this).attr("id") !== "field_search_text") {
-        setCookie($(this).attr("id"), $(this).val(), 356);
-     }
+    if ($(this).attr("id") !== "field_search_text") {
+       setCookie($(this).attr("id"), $(this).val(), 356);
+    }
+    if ($(this).attr("id") === "flt_members_localities") {
+      setTimeout(function () {
+        location.reload();
+      }, 30);
+    } else {
+      filtersOfString();
+    }
   });
 
   // Кастомные фильтры ДОРАБОТАТЬ
