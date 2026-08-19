@@ -2,21 +2,67 @@
 require_once 'db/classes/ftt_info.php';
 include_once 'db/classes/statistic/biblecounter.php';
 
-$read_bible_books = get_read_book($memberId);
-$bible_books = $bible_obj->get();
-$book_current = get_reading_data($memberId, date('Y-m-d'));
+//define('ROOT_PATH', dirname(__DIR__, 3));
+require  '../private/vendor/autoload.php'; //ROOT_PATH .
+use App\Infrastructure\Database\DbQuery;
+$dbConnect = new DbQuery($db);
+use App\Repositories\Ftt\Reading\FttReadingReadRepository;
+use App\Repositories\Ftt\Reading\FttReadingWriteRepository;
+use App\Repositories\Ftt\Reading\BibleReadRepository;
+use App\Services\Ftt\Reading\FttReadingStartStopService;
+use App\Services\Ftt\Reading\FttReadingLastService;
+use App\Services\Ftt\Reading\FttReadingProgressService;
+use App\Services\Ftt\Reading\FttReadingFinishService;
+use App\Services\Ftt\Reading\BibleService;
+
+$readRepository = new FttReadingReadRepository($dbConnect);
+$writeRepository = new FttReadingWriteRepository($dbConnect);
+$bibleRepository = new BibleReadRepository($dbConnect);
+
+$startService = new FttReadingStartStopService($readRepository, $memberId);
+
+$read_bible_books = (new FttReadingFinishService($readRepository, $memberId))->getReadBooksForList();
+$bible_books = (new BibleService($bibleRepository))->get(); // $bible_obj->get()
+$book_current = (new FttReadingProgressService($readRepository, $writeRepository, $memberId))->getReadingPair(date('Y-m-d')); // get_reading_data($memberId, date('Y-m-d'))
+$last_reading = (new FttReadingLastService($readRepository, $memberId))->getLastReadingPair(
+  $startService->getLastPositionLessDateOt(date('Y-m-d')),
+  $startService->getLastPositionLessDateNt(date('Y-m-d')),
+  date('Y-m-d'));
+$startReading = $startService->doesStartedLessDatePair(date('Y-m-d'));
+
 $bible_reading_calculate = BibleCounter::calculateTheDifference($memberId, $trainee_data['semester']);
+
+$tempEmptyBookCurrent = ['book' => '', 'chapter' => '', 'footnotes' => '', 'id'=>''];
+if (empty($book_current['ot'])) {
+  $book_current['ot'] = $tempEmptyBookCurrent;
+  if (isset($last_reading['ot']['book']) && $startReading['ot'] == 1) {
+    $book_current['ot']['boot'] = $last_reading['ot']['book'];
+    $book_current['ot']['chapter'] = $last_reading['ot']['chapter'];
+    $book_current['ot']['footnotes'] = $last_reading['ot']['footnotes'];
+  }
+}
+if (empty($book_current['nt'])) {
+  $book_current['nt'] = $tempEmptyBookCurrent;
+  if (isset($last_reading['nt']['book']) && $startReading['nt'] == 1) {
+    $book_current['nt']['book'] = $last_reading['nt']['book'];
+    $book_current['nt']['chapter'] = $last_reading['nt']['chapter'];
+    $book_current['nt']['footnotes'] = $last_reading['nt']['footnotes'];
+  }
+}
+
 $disabled_ot = '';
 $disabled_nt = '';
 $disabled = '';
-if (empty($book_current['book_ot'])) {
+if ($startReading['ot'] != 1) {
   $disabled_ot = 'disabled';
 }
-if (empty($book_current['book_nt'])) {
+if ($startReading['nt'] != 1) {
   $disabled_nt = 'disabled';
 }
+/*
 if ($book_current['start_today'] == 1) {
   $disabled = 'disabled';
   $disabled_ot = 'disabled';
   $disabled_nt = 'disabled';
 }
+*/

@@ -366,7 +366,7 @@ function db_getAdminLocalities ($adminId)
                                     FROM access a
                                     LEFT JOIN region r ON r.country_key = a.country_key
                                     INNER JOIN locality l ON l.region_key = r.key
-                                    WHERE a.member_key = {$adminId} and l.key is not null
+                                    WHERE a.member_key = '{$adminId}' and l.key is not null
 
                                     UNION
 
@@ -374,21 +374,21 @@ function db_getAdminLocalities ($adminId)
                                     FROM access a
                                     -- убрана строка подключения региона, но может подключаться NULL
                                     INNER JOIN locality l ON l.region_key = a.region_key
-                                    WHERE a.member_key = {$adminId} and l.key is not null
+                                    WHERE a.member_key = '{$adminId}' and l.key is not null
 
                                     UNION
 
                                     SELECT l.key as id, l.name as name
                                     FROM access a
                                     INNER JOIN locality l ON l.key=a.locality_key
-                                    WHERE a.member_key = {$adminId} AND l.key is not null
+                                    WHERE a.member_key = '{$adminId}' AND l.key is not null
 
                                     UNION
 
                                     SELECT l.key as id, l.name as name
                                     FROM member m
                                     LEFT JOIN locality l ON l.key=m.locality_key
-                                    WHERE m.admin_key = {$adminId}
+                                    WHERE m.admin_key = '{$adminId}'
 
                                     UNION
 
@@ -396,7 +396,7 @@ function db_getAdminLocalities ($adminId)
                                     FROM reg
                                     INNER JOIN member m ON m.key=reg.member_key
                                     LEFT JOIN locality l ON l.key=m.locality_key
-                                    WHERE reg.admin_key = {$adminId}
+                                    WHERE reg.admin_key = '{$adminId}'
                                     ) q ORDER BY q.name");
 
     $localities = array ();
@@ -415,28 +415,28 @@ function db_getAdminLocalitiesNotRegTbl ($adminId)
                                     FROM access a
                                     LEFT JOIN region r ON r.country_key = a.country_key
                                     INNER JOIN locality l ON l.region_key = r.key
-                                    WHERE a.member_key = {$adminId} and l.key is not null
+                                    WHERE a.member_key = '{$adminId}' and l.key is not null
 
                                     UNION
 
                                     SELECT l.key as id, l.name as name
                                     FROM access a
                                     INNER JOIN locality l ON l.region_key = a.region_key
-                                    WHERE a.member_key = {$adminId} and l.key is not null
+                                    WHERE a.member_key = '{$adminId}' and l.key is not null
 
                                     UNION
 
                                     SELECT l.key as id, l.name as name
                                     FROM access a
                                     INNER JOIN locality l ON l.key=a.locality_key
-                                    WHERE a.member_key = {$adminId} AND l.key is not null
+                                    WHERE a.member_key = '{$adminId}' AND l.key is not null
 
                                     UNION
 
                                     SELECT l.key as id, l.name as name
                                     FROM member m
                                     LEFT JOIN locality l ON l.key=m.locality_key
-                                    WHERE m.admin_key = {$adminId}
+                                    WHERE m.admin_key = '{$adminId}'
                                     ) q ORDER BY q.name");
 
     /*$res=db_query ("SELECT DISTINCT * FROM (
@@ -4078,7 +4078,7 @@ function db_getAnyActiveContactStr ($activeAdmin)
 {
     global $db;
     $activeAdmin = $db->real_escape_string($activeAdmin);
-    $key;
+    $key='';
     $res=db_query ("SELECT `id` FROM contacts WHERE `responsible` = '$activeAdmin' LIMIT 1");
     while ($row = $res->fetch_assoc()) $key=$row['id'];
 

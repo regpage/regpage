@@ -19,6 +19,9 @@ class EventCtrl
   function __construct(EventDB $event)
   {
     $data = $event->getEvent();
+    if (empty($data)) {
+      return;
+    }
     $this->html = $data['html'];
     if (!$data['access_start']) {
       $this->accessStart = '';

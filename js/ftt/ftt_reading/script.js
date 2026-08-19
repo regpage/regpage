@@ -37,7 +37,8 @@ function set_read_books(elem) {
     + "&books=" + books
     + "&notes=" + notes
     + "&set=" + set;
-    fetch("ajax/ftt_reading_ajax.php?type=set_read_book_by_book&" + query)
+    // ajax/ftt_reading_ajax.php?
+    fetch("internal_api.php?category=ftt_reading&type=set_read_book_automatic&" + query)
     .then(response => response.text())
     .then(commits => {
       //console.log(commits.result);

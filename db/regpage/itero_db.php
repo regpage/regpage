@@ -22,11 +22,11 @@ class EventDB extends DBQuery
 
   function getEvent() : ?array
   {
-    //if (isset($this->event[0])) {
+    if (isset($this->event[0])) {
       return $this->event[0];
-    /*} else {
+    } else {
       return [];
-    }*/
+    }
   }
 }
 

@@ -64,7 +64,7 @@ require_once 'components/ftt_reading/content_part_cntrl.php';
       <div class="row">
         <div class="col-5" style="max-width: 170px;">
           <select id="bible_book_ot" class="col mr-3 px-1 form-control"
-            data-book="<?php echo $book_current['book_ot']; ?>" data-chapter="<?php echo $book_current['chapter_ot']; ?>" data-field="book_ot" data-notes="<?php echo $book_current['read_footnotes_ot']; ?>"
+            data-book="<?php echo $book_current['ot']['book']; ?>" data-id="<?php echo $book_current['ot']['id']; ?>" data-chapter="<?php echo $book_current['ot']['chapter']; ?>" data-field="book_ot" data-notes="<?php echo $book_current['ot']['footnotes']; ?>"
             style="min-width: 95px; min-height: 35px; margin-left: 0px !important;" <?php echo $disabled_ot; ?>>
             <option value="_none_">ВЗ
               <option value="0">Нет
@@ -73,13 +73,13 @@ require_once 'components/ftt_reading/content_part_cntrl.php';
                 foreach ($bible_books as $key => $value) {
                   if ($key < 39) {
                     for ($i=1; $i <= $value[1]; $i++) {
-                      if (($book_current['book_ot'] ===  $value[0] && $book_current['chapter_ot'] == $i) || $counter || empty($book_current['book_ot'])) {
+                      if (($book_current['ot']['book'] ===  $value[0] && $book_current['ot']['chapter'] == $i) || $counter || empty($book_current['ot']['book'])) {
                         $selected = '';
-                        if ($book_current['book_ot'] ===  $value[0] && $book_current['chapter_ot'] == $i && $book_current['today_ot'] == 1) {
+                        if ($book_current['ot']['book'] ===  $value[0] && $book_current['ot']['chapter'] == $i && !empty($book_current['ot']['id'])) {
                           $selected = 'selected';
                         }
                         echo "<option value='{$value[0]} {$i}' data-book='{$value[0]}' data-chapter='{$i}' {$selected}>{$value[0]} {$i}";
-                        if (!empty($book_current['book_ot'])) {
+                        if (!empty($book_current['ot']['book'])) {
                           $counter++;
                           if ($counter === 10) {
                             break;
@@ -97,7 +97,7 @@ require_once 'components/ftt_reading/content_part_cntrl.php';
         </div>
         <div class="col-5" style="max-width: 170px;">
           <select id="bible_book_nt" class="col mr-3 px-1 form-control"
-          data-book="<?php echo $book_current['book_nt']; ?>" data-chapter="<?php echo $book_current['chapter_nt']; ?>" data-field="book_nt" data-notes="<?php echo $book_current['read_footnotes_nt']; ?>"
+          data-book="<?php echo $book_current['nt']['book']; ?>" data-id="<?php echo $book_current['nt']['id']; ?>" data-chapter="<?php echo $book_current['nt']['chapter']; ?>" data-field="book_nt" data-notes="<?php echo $book_current['nt']['footnotes']; ?>"
           style="min-width: 95px; min-height: 35px; margin-left: 0px !important;" <?php echo $disabled_nt; ?>>
             <option value="_none_">НЗ
               <option value="0">Нет
@@ -106,13 +106,13 @@ require_once 'components/ftt_reading/content_part_cntrl.php';
                 foreach ($bible_books as $key => $value) {
                   if ($key > 38) {
                     for ($i=1; $i <= $value[1]; $i++) {
-                      if (($book_current['book_nt'] ===  $value[0]  && $book_current['chapter_nt'] == $i) || $counter || empty($book_current['book_nt'])) {
+                      if (($book_current['nt']['book'] ===  $value[0]  && $book_current['nt']['chapter'] == $i) || $counter || empty($book_current['nt']['book'])) {
                         $selected = '';
-                        if ($book_current['book_nt'] ===  $value[0] && $book_current['chapter_nt'] == $i && $book_current['today_nt'] == 1) {
+                        if ($book_current['nt']['book'] ===  $value[0] && $book_current['nt']['chapter'] == $i && !empty($book_current['nt']['id'])) {
                           $selected = 'selected';
                         }
                         echo "<option value='{$value[0]} {$i}' data-book='{$value[0]}' data-chapter='{$i}' {$selected}>{$value[0]} {$i}";
-                        if (!empty($book_current['book_nt'])) {
+                        if (!empty($book_current['nt']['book'])) {
                           $counter++;
                           if ($counter === 10) {
                             break;
@@ -180,10 +180,10 @@ require_once 'components/ftt_reading/content_part_cntrl.php';
                   $green = 'bg_green';
                 }
               }
-              if ($bible_books[$key][0] === $book_current['book_nt']) {
+              if ($bible_books[$key][0] === $book_current['nt']) {
                 $border = 'border border-dark';
               }
-              if ($bible_books[$key][0] === $book_current['book_ot']) {
+              if ($bible_books[$key][0] === $book_current['ot']) {
                 $border = 'border border-dark';
               }
               if ($key === 39) {
