@@ -20,9 +20,14 @@ class get_admin_data {
     $res = db_query("SELECT m.key, m.name AS admin_name, m.locality_key, m.email, l.name AS locality_name, m.category_key, m.male
       FROM member AS m
       INNER JOIN locality l ON l.key = m.locality_key
-      WHERE m.key = '$admin_id'");
+      WHERE m.key = '{$admin_id}'");
       while ($row = $res->fetch_assoc()) $result[]=$row;
-      return $result[0];
+      if (isset($result[0])) {
+        return $result[0];
+      } else {
+        return [];
+      }
+
   }
 
   static public function ftt($admin_id) {

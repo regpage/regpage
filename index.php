@@ -72,8 +72,8 @@ let itero_online_key = '<?php echo $iteroCtrl->getKey(); ?>';
     $isAdminArchiveEvents = db_isAdminArciveEvents($memberId);
     $countries1 = db_getCountries(true);
     $countries2 = db_getCountries(false);
-    $admin_category = $admin_data['category_key'];
-    $admin_male = $admin_data['male'];
+    $admin_category = $admin_data['category_key'] ?? null;
+    $admin_male = $admin_data['male'] ?? null;
 
     include_once "nav.php";
     include_once 'modals.php';

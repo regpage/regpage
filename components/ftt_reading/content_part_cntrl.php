@@ -36,7 +36,7 @@ $tempEmptyBookCurrent = ['book' => '', 'chapter' => '', 'footnotes' => '', 'id'=
 if (empty($book_current['ot'])) {
   $book_current['ot'] = $tempEmptyBookCurrent;
   if (isset($last_reading['ot']['book']) && $startReading['ot'] == 1) {
-    $book_current['ot']['boot'] = $last_reading['ot']['book'];
+    $book_current['ot']['book'] = $last_reading['ot']['book'];
     $book_current['ot']['chapter'] = $last_reading['ot']['chapter'];
     $book_current['ot']['footnotes'] = $last_reading['ot']['footnotes'];
   }

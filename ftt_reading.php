@@ -13,7 +13,7 @@
 
     // Переменные раздела
     include_once "components/ftt_reading/var_part.php";
-
+    
     // Подключение раздела, HTML код страницы
     include_once "components/ftt_main/html_part_refactoring.php";
 

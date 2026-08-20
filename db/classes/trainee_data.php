@@ -21,9 +21,9 @@ class trainee_data {
     while ($row = $res->fetch_assoc()) $result = $row;
 
     // устанавливаем semester_range
-    if ($result['semester'] > 0 && $result['semester'] < 5) {
+    if (isset($result['semester']) && $result['semester'] > 0 && $result['semester'] < 5) {
       $result['semester_range'] = '1';
-    } elseif ($result['semester'] > 4 ) {
+    } elseif (isset($result['semester']) && $result['semester'] > 4 ) {
       $result['semester_range'] = '2';
     }
       return $result;
