@@ -14,15 +14,22 @@ use App\Services\Ftt\Reading\FttReadingLastService;
 use App\Services\Ftt\Reading\FttReadingProgressService;
 use App\Services\Ftt\Reading\FttReadingFinishService;
 use App\Services\Ftt\Reading\BibleService;
+use App\Services\Ftt\Reading\BibleCounterService;
+use App\Services\Ftt\Param\FttParamService;
+use App\Repositories\Ftt\Param\FttParamReadRepository;
+use App\Services\Ftt\FttInfo\FttInfo;
 
 $readRepository = new FttReadingReadRepository($dbConnect);
 $writeRepository = new FttReadingWriteRepository($dbConnect);
 $bibleRepository = new BibleReadRepository($dbConnect);
+$paramRepository = new FttParamReadRepository($dbConnect);
 
+$paramService = new FttParamService($paramRepository);
+$fttInfo = new FttInfo($paramService);
 $startService = new FttReadingStartStopService($readRepository, $memberId);
-
 $read_bible_books = (new FttReadingFinishService($readRepository, $memberId))->getReadBooksForList();
-$bible_books = (new BibleService($bibleRepository))->get(); // $bible_obj->get()
+$bible_obj = new BibleService($bibleRepository);
+$bible_books = $bible_obj->get();
 $book_current = (new FttReadingProgressService($readRepository, $writeRepository, $memberId))->getReadingPair(date('Y-m-d')); // get_reading_data($memberId, date('Y-m-d'))
 $last_reading = (new FttReadingLastService($readRepository, $memberId))->getLastReadingPair(
   $startService->getLastPositionLessDateOt(date('Y-m-d')),
@@ -30,7 +37,7 @@ $last_reading = (new FttReadingLastService($readRepository, $memberId))->getLast
   date('Y-m-d'));
 $startReading = $startService->doesStartedLessDatePair(date('Y-m-d'));
 
-$bible_reading_calculate = BibleCounter::calculateTheDifference($memberId, $trainee_data['semester']);
+$bible_reading_calculate = (new BibleCounterService($bibleRepository, $memberId))->calculateTheDifference($trainee_data['semester'], $fttInfo->daysLeftInAcademicYear(), $bible_obj);
 
 $tempEmptyBookCurrent = ['book' => '', 'chapter' => '', 'footnotes' => '', 'id'=>''];
 if (empty($book_current['ot'])) {
