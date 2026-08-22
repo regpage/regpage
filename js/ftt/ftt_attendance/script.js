@@ -1125,7 +1125,7 @@ function open_blank(el_this) {
       lord_table_meeting_today = true;
     }
 
-    if (tmp_day_of_week[tmp_day_of_week.length-2] === 'п') { //  && lord_table_meeting_today
+    if (tmp_day_of_week[tmp_day_of_week.length-2] === 'п' && tmp_day_of_week[tmp_day_of_week.length-1] === 'т') {
       last_prophecy(el_this.attr("data-member_key"), el_this.attr("data-date"), 5);
     } else if (tmp_day_of_week[tmp_day_of_week.length-1] === 'б') {
       last_prophecy(el_this.attr("data-member_key"), el_this.attr("data-date"), 6);
@@ -2004,8 +2004,30 @@ function open_blank(el_this) {
         }
       });
     }
+    if ($(this).find('option:selected').attr('class') === 'option_stop') {
+      setTimeout(function () {
+        book_complete(part, book[0], $("#modalAddEdit").attr("data-member_key"));
+      }, 10);
+    }
   });
 
+
+  function book_complete(part, book, member_key) {
+    chapter_complete = 22;
+    if (part === 'ot') {
+      chapter_complete = 4;
+    }
+    let query = "&member_key=" + member_key
+    + "&part=" + part
+    + "&book=" + book
+    + "&chapter=" + chapter_complete
+    + "&checked=true";
+    fetch("ajax/ftt_reading_ajax.php?type=set_read_book" + query)
+    .then(response => response.json())
+    .then(commits => {
+
+    });
+  }
   function calculate_bible_read() {
     let semester_tmp = trainee_list_full[$("#modalAddEdit").attr("data-member_key")]["semester"];
     fetch("ajax/ftt_reading_ajax.php?type=get_bible_deff&trainee_id=" + $("#modalAddEdit").attr("data-member_key")
@@ -2347,6 +2369,11 @@ function open_blank(el_this) {
           }
         }
       }
+    }
+    if (book === "Мал.") {
+      options += "<option class='option_stop' value='"+book+"'>Завершить";
+    } else if (book === "Отк." && chapter > 12) {
+      options += "<option class='option_stop' value='"+book+"'>Завершить";
     }
     $(selector).html(options);
   }

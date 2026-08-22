@@ -132,29 +132,25 @@ $(document).ready(function(){
     // подставляем имя обучающегося в форму
     $("#ftr_trainee_reading_check_mbl").val($(this).parent().parent().find(".btn").attr("data-member_key"));
     // получаем прочитанные книги выбранного обучающегося
-    fetch("ajax/ftt_reading_ajax.php?type=get_read_book&member_key=" + $("#ftr_trainee_reading_check_mbl").val())
+    fetch("internal_api.php?category=ftt_reading&type=get_read_books&member_key=" + $("#ftr_trainee_reading_check_mbl").val()) // ajax/ftt_reading_ajax.php?type=get_read_book
     .then(response => response.json())
     .then(commits => {
       // заполняем форму полученными данными
       let read_data = commits.result, disabled;
-      for (let i = 0; i < read_data.length; i++) {
-        if (read_data[i][2] === 1) {
-          $("#mdl_bible_books_check input[data-book='"+read_data[i][0]+"']").prop("disabled", true);
-        } else {
-          $("#mdl_bible_books_check input[data-book='"+read_data[i][0]+"']").prop("disabled", false);
-        }
-        $("#mdl_bible_books_check input[data-book='"+read_data[i][0]+"']").prop("checked", true);
+      for (let i = 0; i < read_data.books.length; i++) {
+        $("#mdl_bible_books_check input[data-book='"+read_data.books[i]+"']").prop("disabled", false);
+        $("#mdl_bible_books_check input[data-book='"+read_data.books[i]+"']").prop("checked", true);
       }
     });
     // Получаем последнюю стартовую позицию
     setTimeout(function () {
-      fetch("ajax/ftt_reading_ajax.php?type=get_start_position&member_key=" + $("#ftr_trainee_reading_check_mbl").val() + "&both=1")
+      fetch("internal_api.php?category=ftt_reading&type=get_start_last&member_key=" + $("#ftr_trainee_reading_check_mbl").val() + "&both=1") // ajax/ftt_reading_ajax.php?
       .then(response => response.json())
       .then(commits => {
         // запролняем заголовок для ВЗ
-        if (commits.result.book_ot) {
+        if (commits.result.ot.book) {
           // Если старт для ВЗ задан делаем пометку в заголовке "с/без прим."
-          if (commits.result.read_footnotes_ot === "1") {
+          if (commits.result.ot.footnotes === "1") {
             $("#mdl_bible_books_check .col-6:first-child h5").html("ВЗ (с прим.)")
           } else {
             $("#mdl_bible_books_check .col-6:first-child h5").html("ВЗ (без прим.)")
@@ -163,9 +159,9 @@ $(document).ready(function(){
           $("#mdl_bible_books_check .col-6:first-child h5").html("ВЗ");
         }
         // запролняем заголовок для НЗ
-        if (commits.result.book_nt) {
+        if (commits.result.nt.book) {
           // Если старт для НЗ задан делаем пометку в заголовке "с/без прим."
-          if (commits.result.read_footnotes_nt === "1") {
+          if (commits.result.nt.footnotes === "1") {
             $("#mdl_bible_books_check .col-6:nth-child(2) h5").html("НЗ (с прим.)");
           } else {
             $("#mdl_bible_books_check .col-6:nth-child(2) h5").html("НЗ (без прим.)");
@@ -247,14 +243,14 @@ $(document).ready(function(){
     let member_key = $(this).attr("data-member_key");
     $("#mdl_history_read_name").text(trainee_list[member_key]);
     // получаем прочитанные книги выбранного обучающегося
-    fetch("ajax/ftt_reading_ajax.php?type=get_read_book&member_key=" + member_key)
+    fetch("internal_api.php?category=ftt_reading&type=get_read_books&member_key=" + member_key) //ajax/ftt_reading_ajax.php?type=get_read_book
     .then(response => response.json())
     .then(commits => {
-      let read_books = commits.result;
+      let read_books = commits.result.books;
       // сприсок прочитанных книг
       let bible_books_html = "<i id='mdl_footnotes_ot_title'></i><br>", found;
       for (let i = 0; i < bible_arr.length; i++) {
-        found = read_books.find(e => e[0] === bible_arr[i][0]);
+        found = read_books.find(e => e === bible_arr[i][0]);
         if (found === undefined) {
           backgroung = "";
         } else {
@@ -274,7 +270,7 @@ $(document).ready(function(){
     });
     setTimeout(function () {
       // получаем историю чтения
-      fetch("ajax/ftt_reading_ajax.php?type=get_history_reading_bible&member_key=" + member_key)
+      fetch("internal_api.php?category=ftt_reading&type=get_history_reading_bible&member_key=" + member_key) // ajax/ftt_reading_ajax.php?type=get_history_reading_bible&
       .then(response => response.json())
       .then(commits => {
         calendar(commits.result);
@@ -283,20 +279,20 @@ $(document).ready(function(){
 
     setTimeout(function () {
       // получаем историю чтения
-      fetch("ajax/ftt_reading_ajax.php?type=get_start_position&member_key=" + member_key)
+      fetch("internal_api.php?category=ftt_reading&type=get_start_last&member_key=" + member_key) //ajax/ftt_reading_ajax.php?type=get_start_position
       .then(response => response.json())
       .then(commits => {
         let title_text_footnotes_yes = "С примечаниями";
         let title_text_footnotes_no = "Без примечаний";
-        if (commits.result.book_ot) {
-          if (commits.result.read_footnotes_ot === "1") {
+        if (commits.result.ot.book) {
+          if (commits.result.ot.footnotes === "1") {
             $("#mdl_footnotes_ot_title").text(title_text_footnotes_yes);
           } else {
             $("#mdl_footnotes_ot_title").text(title_text_footnotes_no);
           }
         }
-        if (commits.result.book_nt) {
-          if (commits.result.read_footnotes_nt === "1") {
+        if (commits.result.nt.book) {
+          if (commits.result.nt.footnotes === "1") {
             $("#mdl_footnotes_nt_title").text(title_text_footnotes_yes);
           } else {
             $("#mdl_footnotes_nt_title").text(title_text_footnotes_no);
@@ -322,17 +318,17 @@ $(document).ready(function(){
     });
     let footnotes_ot="", footnotes_nt="";
     // получаем прочитанные книги выбранного обучающегося
-    fetch("ajax/ftt_reading_ajax.php?type=get_read_book&member_key=" + $(this).val())
+    fetch("internal_api.php?category=ftt_reading&type=get_read_books&member_key=" + $(this).val()) //ajax/ftt_reading_ajax.php?type=get_read_book&
     .then(response => response.json())
     .then(commits => {
-      let read_data = commits.result, disabled;
+      let read_data = commits.result.books, disabled;
       for (let i = 0; i < read_data.length; i++) {
-        if (read_data[i][2] === 1) {
-          $("#mdl_bible_books_check input[data-book='"+read_data[i][0]+"']").prop("disabled", true);
-        } else {
-          $("#mdl_bible_books_check input[data-book='"+read_data[i][0]+"']").prop("disabled", false);
-        }
-        $("#mdl_bible_books_check input[data-book='"+read_data[i][0]+"']").prop("checked", true);
+        //if (read_data[i][2] === 1) {
+          //$("#mdl_bible_books_check input[data-book='"+read_data[i][0]+"']").prop("disabled", true);
+        //} else {
+          $("#mdl_bible_books_check input[data-book='"+read_data[i]+"']").prop("disabled", false);
+        //}
+        $("#mdl_bible_books_check input[data-book='"+read_data[i]+"']").prop("checked", true);
       }
     });
   });
@@ -349,7 +345,7 @@ $(document).ready(function(){
     + "&book=" + $(this).attr("data-book")
     + "&chapter=" + $(this).attr("data-chapter")
     + "&checked=" + $(this).prop("checked");
-    fetch("ajax/ftt_reading_ajax.php?type=set_read_book" + query)
+    fetch("internal_api.php?category=ftt_reading&type=set_read_book" + query)//ajax/ftt_reading_ajax.php
     .then(response => response.json())
     .then(commits => {
     });
