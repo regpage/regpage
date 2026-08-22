@@ -3,7 +3,7 @@ require_once 'db/classes/ftt_info.php';
 include_once 'db/classes/statistic/biblecounter.php';
 
 //define('ROOT_PATH', dirname(__DIR__, 3));
-require  '../private/vendor/autoload.php'; //ROOT_PATH .
+require_once  '../private/vendor/autoload.php'; //ROOT_PATH .
 use App\Infrastructure\Database\DbQuery;
 $dbConnect = new DbQuery($db);
 use App\Repositories\Ftt\Reading\FttReadingReadRepository;
@@ -27,10 +27,13 @@ $paramRepository = new FttParamReadRepository($dbConnect);
 $paramService = new FttParamService($paramRepository);
 $fttInfo = new FttInfo($paramService);
 $startService = new FttReadingStartStopService($readRepository, $memberId);
+$readingProgressService = new FttReadingProgressService($readRepository, $writeRepository, $memberId);
+
 $read_bible_books = (new FttReadingFinishService($readRepository, $memberId))->getReadBooksForList();
 $bible_obj = new BibleService($bibleRepository);
 $bible_books = $bible_obj->get();
-$book_current = (new FttReadingProgressService($readRepository, $writeRepository, $memberId))->getReadingPair(date('Y-m-d')); // get_reading_data($memberId, date('Y-m-d'))
+
+$book_current = $readingProgressService->getReadingPair(date('Y-m-d')); // get_reading_data($memberId, date('Y-m-d'))
 $last_reading = (new FttReadingLastService($readRepository, $memberId))->getLastReadingPair(
   $startService->getLastPositionLessDateOt(date('Y-m-d')),
   $startService->getLastPositionLessDateNt(date('Y-m-d')),

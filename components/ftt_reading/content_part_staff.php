@@ -4,6 +4,13 @@
 ЕСЛИ ТЕКУЩИЙ БЛАНК НЕ ЗАПОЛНЕН СОВСЕМ ПРОВЕРЯТЬ БЫЛ ЛИ СТАРТ И ОТ ЭТОГО ЗАПОЛНЯТЬ
 -->
 <?php
+require_once  '../private/vendor/autoload.php'; //ROOT_PATH .
+use App\Infrastructure\Database\DbQuery;
+$dbConnect = new DbQuery($db);
+use App\Repositories\Ftt\Reading\FttReadingReadRepository;
+use App\Repositories\Ftt\Reading\FttReadingWriteRepository;
+use App\Services\Ftt\Reading\FttReadingProgressService;
+
 if (!empty($_COOKIE['flt_serving_one_read'])) {
   $flt_sevice_one_read = $_COOKIE['flt_serving_one_read'];
 } else {
@@ -37,7 +44,8 @@ if (!empty($_COOKIE['flt_semester_read'])) {
 <div id="list_readin_bible" class="container">
     <div class="row">
     <?php
-    $reading_data = getDataReadingForStaff($flt_sevice_one_read, $fltSemesterRead);
+    $readingProgressService = new FttReadingProgressService(new FttReadingReadRepository($dbConnect), new FttReadingWriteRepository($dbConnect), $memberId);
+    $reading_data = $readingProgressService->getDataReadingForStaff($flt_sevice_one_read, $fltSemesterRead);
     foreach ($reading_data as $key => $value) {
       if (!isset($trainee_list[$key])) {
         continue;

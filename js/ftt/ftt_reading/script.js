@@ -236,13 +236,10 @@ function calendar(records) {
 
         if (found !== undefined) {
           if (found["date"] === date_record) {
-            if (found["chapter_nt"] > 0 || found["chapter_ot"] > 0) {
+            if (found["chapter"] > 0) {
               record_available = "record_available";
-              if (found["book_nt"] && found["chapter_nt"] > 0) {
-                books_read = found["book_nt"] + " " + found["chapter_nt"] + "; ";
-              }
-              if (found["book_ot"] && found["chapter_ot"] > 0) {
-                books_read += found["book_ot"] + " " + found["chapter_ot"] + "; ";
+              if (found["book"] && found["chapter"] > 0) {
+                books_read = found["book"] + " " + found["chapter"] + "; ";
               }
             } else {
               record_available = "record_not_available";
@@ -261,18 +258,13 @@ function calendar(records) {
 
         if (found !== undefined) {
           if (found["date"] === date_record) {
-            if (found["chapter_nt"] > 0 || found["chapter_ot"] > 0) {
+            if (found["chapter"] > 0) {
               record_available = "record_available";
-              if (found["book_nt"] && found["chapter_nt"] > 0) {
-                books_read = found["book_nt"] + " " + found["chapter_nt"] + "; ";
-              } else if(found["book_nt"]) {
-                books_read = found["book_nt"] + " нет;";
-              }
-              if (found["book_ot"] && found["chapter_ot"] > 0) {
-                books_read += found["book_ot"] + " " + found["chapter_ot"] + "; ";
-              } else if(found["book_ot"]) {
-                books_read += found["book_ot"] + " нет;";
-              }
+              if (found["book"] && found["chapter"] > 0) {
+                books_read = found["book"] + " " + found["chapter"] + "; ";
+              } else if(found["book"]) {
+                books_read = found["book"] + " нет;";
+              }              
             } else {
               record_available = "record_not_available";
               books_read = "Нет";
