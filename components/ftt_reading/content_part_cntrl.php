@@ -8,7 +8,9 @@ use App\Infrastructure\Database\DbQuery;
 $dbConnect = new DbQuery($db);
 use App\Repositories\Ftt\Reading\FttReadingReadRepository;
 use App\Repositories\Ftt\Reading\FttReadingWriteRepository;
+use App\Repositories\Ftt\Param\FttParamReadRepository;
 use App\Repositories\Ftt\Reading\BibleReadRepository;
+
 use App\Services\Ftt\Reading\FttReadingStartStopService;
 use App\Services\Ftt\Reading\FttReadingLastService;
 use App\Services\Ftt\Reading\FttReadingProgressService;
@@ -16,7 +18,6 @@ use App\Services\Ftt\Reading\FttReadingFinishService;
 use App\Services\Ftt\Reading\BibleService;
 use App\Services\Ftt\Reading\BibleCounterService;
 use App\Services\Ftt\Param\FttParamService;
-use App\Repositories\Ftt\Param\FttParamReadRepository;
 use App\Services\Ftt\FttInfo\FttInfo;
 
 $readRepository = new FttReadingReadRepository($dbConnect);

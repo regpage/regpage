@@ -264,7 +264,7 @@ function calendar(records) {
                 books_read = found["book"] + " " + found["chapter"] + "; ";
               } else if(found["book"]) {
                 books_read = found["book"] + " нет;";
-              }              
+              }
             } else {
               record_available = "record_not_available";
               books_read = "Нет";
@@ -314,7 +314,7 @@ function calendar(records) {
 }
 
 function get_data_reading_statistic_semester(elem, filter, semesters) {
-  fetch("ajax/ftt_reading_ajax.php?type=get_reading_statistic_semester&filter=" + filter + "&semesters=" + semesters)
+  fetch("internal_api.php?category=ftt_reading&type=get_reading_statistic_semester&filter=" + filter + "&semesters=" + semesters) // ajax/ftt_reading_ajax.php?
   .then(response => response.json())
   .then(commits => {
     render_reading_statistic_semester(commits.result, elem);

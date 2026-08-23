@@ -9,7 +9,13 @@ use App\Infrastructure\Database\DbQuery;
 $dbConnect = new DbQuery($db);
 use App\Repositories\Ftt\Reading\FttReadingReadRepository;
 use App\Repositories\Ftt\Reading\FttReadingWriteRepository;
+use App\Repositories\Ftt\Roster\FttRosterRepository;
+
 use App\Services\Ftt\Reading\FttReadingProgressService;
+use App\Services\Ftt\Roster\FttRosterService;
+
+$rosterRepository = new FttRosterRepository($dbConnect);
+$rosterService = new FttRosterService($rosterRepository);
 
 if (!empty($_COOKIE['flt_serving_one_read'])) {
   $flt_sevice_one_read = $_COOKIE['flt_serving_one_read'];
@@ -45,7 +51,7 @@ if (!empty($_COOKIE['flt_semester_read'])) {
     <div class="row">
     <?php
     $readingProgressService = new FttReadingProgressService(new FttReadingReadRepository($dbConnect), new FttReadingWriteRepository($dbConnect), $memberId);
-    $reading_data = $readingProgressService->getDataReadingForStaff($flt_sevice_one_read, $fltSemesterRead);
+    $reading_data = $readingProgressService->getDataReadingForStaff($flt_sevice_one_read, $fltSemesterRead, $rosterService->trainee());
     foreach ($reading_data as $key => $value) {
       if (!isset($trainee_list[$key])) {
         continue;
@@ -64,25 +70,25 @@ if (!empty($_COOKIE['flt_semester_read'])) {
 
 
         $title = '';
-        if (!empty($value_2['book_ot'])) {
-          $title = $value_2['book_ot'];
-          if ($value_2['chapter_ot'] > 0) {
-            $title .= ' ' . $value_2['chapter_ot'];
+        if (!empty($value_2['testament']) && $value_2['testament'] === 'ot') {
+          $title = $value_2['book'];
+          if ($value_2['chapter'] > 0) {
+            $title .= ' ' . $value_2['chapter'];
           } else {
             $title .= ' нет';
           }
           $title .= '; ';
         }
 
-        if (!empty($value_2['book_nt'])) {
-          $title .= $value_2['book_nt'];
-          if ($value_2['chapter_nt'] > 0) {
-            $title .= ' ' . $value_2['chapter_nt'];
+        if (!empty($value_2['nt']) && $value_2['testament'] === 'nt') {
+          $title .= $value_2['book'];
+          if ($value_2['chapter'] > 0) {
+            $title .= ' ' . $value_2['chapter'];
           }
           $title .= ';';
-        }
+        }  
 
-        if ((isset($value_2['chapter_ot']) && $value_2['chapter_ot'] > 0) || (isset($value_2['chapter_nt']) && $value_2['chapter_nt'] > 0)) {
+        if ((isset($value_2['chapter']) && $value_2['chapter'] > 0) || (isset($value_2['chapter']) && $value_2['chapter'] > 0)) {
           $bg_success = 'green_string';
         }
         echo "<div class='col-1 read_day mr-2 {$bg_success}' title='{$title}' data-toggle='tooltip'>{$date_record}</div>";
