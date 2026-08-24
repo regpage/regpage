@@ -78,7 +78,13 @@ $(document).ready(function(){
      + "&book_field=" + field + "&book=" + book + "&chapter=" + chapter
      + "&notes_ot=" + $(".reading_bible_title").attr("data-notes_ot")
      + "&notes_nt=" + $(".reading_bible_title").attr("data-notes_nt");
-     fetch('ajax/ftt_reading_ajax.php?type=set_reading_bible' + data)
+     if (field = "book_ot") {
+       data += "&id=" + $("#bible_book_ot").attr("data-id");
+     } else {
+       data += "&id=" + $("#bible_book_nt").attr("data-id");
+     }
+
+     fetch('internal_api.php?category=ftt_reading&type=set_reading' + data) //ajax/ftt_reading_ajax.php?type=set_reading_bible
      .then(response => response.json())
      .then(commits => {
        //console.log(commits.result);
@@ -1195,86 +1201,106 @@ function open_blank(el_this) {
     // bible
     // *** BIBLE HERE *** //
     setTimeout(function () {
-      fetch("ajax/ftt_reading_ajax.php?type=get_reading_data&member_key="
+      fetch("internal_api.php?category=ftt_reading&type=get_reading_data&member_key=" // ajax/ftt_reading_ajax.php?
       + el_this.attr("data-member_key") + "&date=" + el_this.attr("data-date"))
       .then(response => response.json())
       .then(commits => {
         let reading_str = commits.result;
         let notes_ot = "", notes_nt = "", comma = "";
-       if (reading_str === 0) {
+       if (reading_str['ot'] === null && reading_str['nt'] === null) {
           // Нет старта и сегодняшней строки
           $(".reading_bible_title").html("Чтение Библии" + " — выберите начало");
           //setTimeout(function () {
-            $("#bible_book_ot").hide();
-            $("#bible_book_nt").hide();
+            //$("#bible_book_ot").hide();
+            //$("#bible_book_nt").hide();
             $("#bible_book_ot").attr("disabled", true).css("background-color", "#f8f9fa");
             $("#bible_book_nt").attr("disabled", true).css("background-color", "#f8f9fa");
           //}, 250);
           return;
         } else {
-          if (reading_str["book_nt"] && reading_str["book_nt"] !== undefined && reading_str["book_ot"] && reading_str["book_ot"] !== undefined) {
-            comma = ", ";
+          let textOt = '';
+          let textNt = '';
+          if (reading_str['ot']) {
+            if (reading_str['ot']["footnotes"] === "1") {
+              notes_ot += " с прим.";
+            }
+            $(".reading_bible_title").attr("data-book_ot", reading_str["ot"]["book"]);
+            $(".reading_bible_title").attr("data-notes_ot", reading_str["ot"]["footnotes"]);
+            $("#bible_book_ot").attr("data-id", '');
+            textOt = reading_str["ot"]["book"] + notes_ot;
           }
 
-          if (reading_str["read_footnotes_ot"] === "1") {
-            notes_ot += " с прим.";
+          if (reading_str['nt']) {
+            if (reading_str["nt"]["footnotes"] === "1") {
+              notes_nt += " с прим.";
+            }
+            $(".reading_bible_title").attr("data-book_nt", reading_str["nt"]["book"]);
+            $(".reading_bible_title").attr("data-notes_nt", reading_str["nt"]["footnotes"]);
+            $("#bible_book_nt").attr("data-id", '');
+            textNt = reading_str["nt"]["book"] + notes_nt;
           }
-          if (reading_str["read_footnotes_nt"] === "1") {
-            notes_nt += " с прим.";
+          if (reading_str['nt'] && reading_str['ot']) {
+            if (reading_str['nt']["book"] && reading_str['nt']["book"] !== undefined && reading_str['ot']["book"] && reading_str['ot']["book"] !== undefined) {
+              comma = ", ";
+            }
           }
-          $(".reading_bible_title").text("Чтение Библии " + "(" + reading_str["book_ot"] + notes_ot + comma + reading_str["book_nt"] + notes_nt + ")");
-          $(".reading_bible_title").attr("data-notes_ot", reading_str["read_footnotes_ot"]);
-          $(".reading_bible_title").attr("data-notes_nt", reading_str["read_footnotes_nt"]);
-          $(".reading_bible_title").attr("data-book_ot", reading_str["book_ot"]);
-          $(".reading_bible_title").attr("data-book_nt", reading_str["book_nt"]);
+          $(".reading_bible_title").text("Чтение Библии " + "(" + textOt + comma + textNt + ")");
         }
 
-        if (reading_str['book_ot'] && $("#modalAddEdit").attr("data-status") === "0") {
-          $("#bible_book_ot").attr("disabled", false).css("background-color", "white");
-          $("#bible_book_ot").show();
-        } else {
-          if (!reading_str['book_ot']) {
-            $("#bible_book_ot").hide();
+        if (reading_str["ot"]) {
+          if (reading_str["ot"]['book'] && $("#modalAddEdit").attr("data-status") === "0") {
+            $("#bible_book_ot").attr("disabled", false).css("background-color", "white");
+            $("#bible_book_ot").show();
           }
+          // OT
+          render_bible_chapters(reading_str["ot"]["book"], reading_str["ot"]['chapter'], "#bible_book_ot");
+          if (reading_str["ot"]['chapter'] && reading_str["ot"]["date"] == el_this.attr("data-date")) { //  && reading_str['today_ot']
+            $("#bible_book_ot").val(reading_str["ot"]["book"] + " " + reading_str["ot"]['chapter']);
+            $("#bible_book_ot").attr("data-id", reading_str["ot"]["id"]);
+          } else if (reading_str['no_read_ot'] == "1" ) { // && !reading_str['today_ot']
+            $("#bible_book_ot").val("0");
+          }
+        } else {
           $("#bible_book_ot").attr("disabled", true).css("background-color", "#f8f9fa");
         }
-        if (reading_str['book_nt'] && $("#modalAddEdit").attr("data-status") === "0") {
-          $("#bible_book_nt").attr("disabled", false).css("background-color", "white");
-          $("#bible_book_nt").show();
-        } else {
-          if (!reading_str['book_nt']) {
-            $("#bible_book_nt").hide();
+
+        if (reading_str["nt"]) {
+          if (reading_str["nt"]['book'] && $("#modalAddEdit").attr("data-status") === "0") {
+            $("#bible_book_nt").attr("disabled", false).css("background-color", "white");
+            $("#bible_book_nt").show();
           }
+          // NT
+          render_bible_chapters(reading_str["nt"]["book"], reading_str["nt"]['chapter'], "#bible_book_nt");
+          if (reading_str["nt"]['chapter'] && reading_str["nt"]["date"] == el_this.attr("data-date")) { //reading_str['today_nt']
+            $("#bible_book_nt").val(reading_str["nt"]["book"] + " " + reading_str["nt"]['chapter']);
+            $("#bible_book_nt").attr("data-id", reading_str["nt"]["id"]);
+          } else if (reading_str['no_read_nt'] == "1") { // && !reading_str['today_nt']
+            $("#bible_book_nt").val("0");
+          }
+        } else {
           $("#bible_book_nt").attr("disabled", true).css("background-color", "#f8f9fa");
         }
+
         if ($("#modalAddEdit").attr("data-status") !== "0") {
           $("#show_me_start").attr("disabled", true).css("background-color", "#f8f9fa");
         } else {
           $("#show_me_start").attr("disabled", false).css("background-color", "white");
         }
-        // OT
-        render_bible_chapters(reading_str["book_ot"], reading_str['chapter_ot'], "#bible_book_ot");
-
-        // NT
-        render_bible_chapters(reading_str["book_nt"], reading_str['chapter_nt'], "#bible_book_nt");
+        if ($("#bible_book_ot").attr("data-complete") === "1") {
+          $("#bible_book_ot").attr("disabled", true).css("background-color", "#f8f9fa");
+        }
+        if ($("#bible_book_nt").attr("data-complete") === "1") {
+          $("#bible_book_nt").attr("disabled", true).css("background-color", "#f8f9fa");
+        }
 
         // устанавливаем значения
         // reading_str['today_ot'] должен быть 1 если запись существует и она === 0
-        if (reading_str['chapter_ot'] && reading_str['today_ot']) {
-          $("#bible_book_ot").val(reading_str["book_ot"] + " " + reading_str['chapter_ot']);
-        } else if (reading_str['no_read_ot'] == "1" ) { // && !reading_str['today_ot']
-          $("#bible_book_ot").val("0");
-        }
-        if (reading_str['chapter_nt'] && reading_str['today_nt']) {
-          $("#bible_book_nt").val(reading_str["book_nt"] + " " + reading_str['chapter_nt']);
-        } else if (reading_str['no_read_nt'] == "1") { // && !reading_str['today_nt']
-          $("#bible_book_nt").val("0");
-        }
 
-        if (reading_str['start_today'] == 1) {
+
+        /*if (reading_str['start_today'] == 1) {
           $("#bible_book_ot").attr("disabled", true).css("background-color", "#f8f9fa");
           $("#bible_book_nt").attr("disabled", true).css("background-color", "#f8f9fa");
-        }
+        }*/
 
       });
     }, 100);
@@ -1993,7 +2019,7 @@ function open_blank(el_this) {
       + "&books=" + books
       + "&notes=" + notes
       + "&set=" + set;
-      fetch("ajax/ftt_reading_ajax.php?type=set_read_book_by_book&" + query)
+      fetch("internal_api.php?category=ftt_reading&type=set_read_book_automatic&" + query) // ajax/ftt_reading_ajax.php?type=set_read_book_by_book
       .then(response => response.text())
       .then(commits => {
         //console.log(commits.resilt);
@@ -2030,10 +2056,13 @@ function open_blank(el_this) {
   }
   function calculate_bible_read() {
     let semester_tmp = trainee_list_full[$("#modalAddEdit").attr("data-member_key")]["semester"];
-    fetch("ajax/ftt_reading_ajax.php?type=get_bible_deff&trainee_id=" + $("#modalAddEdit").attr("data-member_key")
+    fetch("internal_api.php?category=ftt_reading&type=get_bible_deff&trainee_id=" + $("#modalAddEdit").attr("data-member_key") // ajax/ftt_reading_ajax.php?
     + "&semester=" + semester_tmp)
     .then(response => response.json())
     .then(commits => {
+      $("#bible_book_nt").attr("data-complete", commits.result.nt_complete);
+      $("#bible_book_ot").attr("data-complete", commits.result.ot_complete);
+
       let html = "";
       if ((commits.result.ot_current && (semester_tmp  === "1" || semester_tmp  === "2")) || (semester_tmp  === "5" || semester_tmp  === "6")) {
         html = "Чтобы успеть до конца текущего года обучения, нужно прочитывать не менее " + commits.result.ot_deff

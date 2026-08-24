@@ -4,6 +4,12 @@
 ЕСЛИ ТЕКУЩИЙ БЛАНК НЕ ЗАПОЛНЕН СОВСЕМ ПРОВЕРЯТЬ БЫЛ ЛИ СТАРТ И ОТ ЭТОГО ЗАПОЛНЯТЬ
 -->
 <?php
+require_once  '../private/vendor/autoload.php'; //ROOT_PATH .
+use App\Infrastructure\Database\DbQuery;
+$dbConnect = new DbQuery($db);
+use App\Repositories\Ftt\Reading\FttReadingReadRepository;
+use App\Services\Ftt\Reading\FttReadingStartStopService;
+
 require_once 'components/ftt_reading/content_part_cntrl.php';
 ?>
 <div class="container">
@@ -150,18 +156,18 @@ require_once 'components/ftt_reading/content_part_cntrl.php';
       <div class="row mb-3">
         <div class="col-12">
           <?php
-          $start_data = get_start_position($memberId);
+          $start_data = (new FttReadingStartStopService(new FttReadingReadRepository($dbConnect), $memberId))->getLastPositionPair();
           $notes_ot = '';
           $notes_nt = '';
-          if (isset($start_data['book_ot']) && !empty($start_data['book_ot'])) {
-            if ($start_data['read_footnotes_ot'] == 1) {
+          if (!empty($start_data['testament']) && $start_data['testament'] === 'ot') {
+            if ($start_data['footnotes'] == 1) {
               $notes_ot = '(с прим.)';
             } else {
               $notes_ot = '(без прим.)';
             }
           }
-          if ($start_data['book_nt']) {
-            if ($start_data['read_footnotes_nt'] == 1) {
+          if (!empty($start_data['testament']) && $start_data['testament'] === 'nt') {
+            if ($start_data['footnotes'] == 1) {
               $notes_nt = '(с прим.)';
             } else {
               $notes_nt = '(без прим.)';

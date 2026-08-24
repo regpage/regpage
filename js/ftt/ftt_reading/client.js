@@ -436,7 +436,7 @@ $(document).ready(function(){
       if (typeof found_temp !== 'undefined' && found_temp[1] === ot_temp[1]) {
         setTimeout(function () {
           let query_temp = "&member_key=" + member_key + "&book=" + ot_temp[0] + "&chapter=" + ot_temp[1];
-          fetch("ajax/ftt_reading_ajax.php?type=set_read_book&part=ot&checked=true" + query_temp)
+          fetch("internal_api.php?category=ftt_reading&type=set_read_book_automatic&part=ot&checked=true" + query_temp) // ajax/ftt_reading_ajax.php?type=set_read_book
           .then(response => response.text())
           .then(commits => {
 
@@ -454,9 +454,8 @@ $(document).ready(function(){
       let found_temp = bible_arr.find(e => e[0] === nt_temp[0]);
       if (typeof found_temp !== 'undefined' && found_temp[1] === nt_temp[1]) {
         setTimeout(function () {
-          let query_temp = "&member_key=" + member_key + "&book=" + nt_temp[0] + "&chapter=" + nt_temp[1];
-          // internal_api.php?category=ftt_reading&type=set_read_book_automatic
-          fetch("ajax/ftt_reading_ajax.php?type=set_read_book&part=nt&checked=true" + query_temp)
+          let query_temp = "&member_key=" + member_key + "&book=" + nt_temp[0] + "&chapter=" + nt_temp[1];          
+          fetch("internal_api.php?category=ftt_reading&type=set_read_book_automatic&part=nt&checked=true" + query_temp) // ajax/ftt_reading_ajax.php?type=set_read_book
           .then(response => response.text())
           .then(commits => {
 
@@ -543,7 +542,7 @@ $(document).ready(function(){
 
     if (counter < 1) {
       let text = "Вы прочитали все книги. Для выбора начала чтения с примечаниями обратитесь к служащим.";
-      showHint(text);
+      showHint(text, 10000);
     }
   });
   // смена книг в модальном окне
