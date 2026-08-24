@@ -17,7 +17,7 @@ for (let i = 0; i < bible_arr_temp.length; i = i + 2) {
 </script>
 <script src="/extensions/chart_js/chart.umd.min.js"></script>
 <script src="/js/modules/date.js"></script>
-<script src="/js/ftt/ftt_reading/script.js?v8"></script>
-<script src="/js/ftt/ftt_reading/client.js?v7"></script>
+<script src="/js/ftt/ftt_reading/script.js?v9"></script>
+<script src="/js/ftt/ftt_reading/client.js?v8"></script>
 <script src="/js/ftt/ftt_reading/design.js?v10"></script>
 <script src="/js/modules/ftt/bible_read.js?v4"></script>

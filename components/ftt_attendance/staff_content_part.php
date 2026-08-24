@@ -1,5 +1,6 @@
 <?php
-require '../private/src/ui/components/lists/attendance_days.php';
+namespace App\Ui\Components\Lists;
+
 ?>
 <style>
 #list_content {

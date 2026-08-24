@@ -4,7 +4,7 @@ $(document).ready(function(){
   $(".bible_statistic_btn").click(function () {
     $('#spinner').modal("show");
     // статистика с датами
-    fetch("ajax/ftt_reading_ajax.php?type=get_bible_deff&trainee_id=" + $(this).attr("data-member_key"))
+    fetch("internal_api.php?category=ftt_reading&type=get_bible_deff&trainee_id=" + $(this).attr("data-member_key")) // ajax/ftt_reading_ajax.php?type=get_bible_deff
     .then(response => response.json())
     .then(commits => {
       let html = "";
@@ -414,7 +414,7 @@ $(document).ready(function(){
       }
       if (confirm("Вы начинаете заново? Удалить предыдущую историю чтения по " + footnotes_ot_change + and + footnotes_nt_change + "?")) {
         sim = 1; // новый завет или ветхий?
-        fetch("ajax/ftt_reading_ajax.php?type=dlt_history_reading_bible&member_key=" + member_key + "&ot=" + footnotes_ot_change + "&nt=" + footnotes_nt_change)
+        fetch("internal_api.php?category=ftt_reading&type=dlt_history_reading_bible&member_key=" + member_key + "&ot=" + footnotes_ot_change + "&nt=" + footnotes_nt_change) // ajax/ftt_reading_ajax.php?
         .then(response => response.json())
         .then(commits => {
 
@@ -454,7 +454,7 @@ $(document).ready(function(){
       let found_temp = bible_arr.find(e => e[0] === nt_temp[0]);
       if (typeof found_temp !== 'undefined' && found_temp[1] === nt_temp[1]) {
         setTimeout(function () {
-          let query_temp = "&member_key=" + member_key + "&book=" + nt_temp[0] + "&chapter=" + nt_temp[1];          
+          let query_temp = "&member_key=" + member_key + "&book=" + nt_temp[0] + "&chapter=" + nt_temp[1];
           fetch("internal_api.php?category=ftt_reading&type=set_read_book_automatic&part=nt&checked=true" + query_temp) // ajax/ftt_reading_ajax.php?type=set_read_book
           .then(response => response.text())
           .then(commits => {
