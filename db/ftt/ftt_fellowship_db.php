@@ -97,9 +97,9 @@ function get_communication_records_staff($serving_one, $trainee, $active, $sort=
 
   // Условия
   if ($active === '1') {
-    $condition = " ff.date >= CURDATE() AND ";
+    $condition = " ff.date >= CURDATE() ";
   } else {
-    $condition = " ff.date < CURDATE() AND ";
+    $condition = " ff.date < CURDATE() ";
   }
 
   $servingList = [];
@@ -107,8 +107,11 @@ function get_communication_records_staff($serving_one, $trainee, $active, $sort=
     $servingList = ftt_lists::get_fellowship_list();
   } elseif ($serving_one === '_allkbk_') {
     $servingList = ftt_lists::kbk_brothers();
+    if (count($servingList) === 0) {
+      $servingList = [0];
+    }
   } else {
-    $condition .= " ff.serving_one = '{$serving_one}'";
+    $condition .= " AND ff.serving_one = '{$serving_one}'";
   }
   if (count($servingList) > 0) {
     $tempList = '';
@@ -119,7 +122,7 @@ function get_communication_records_staff($serving_one, $trainee, $active, $sort=
         $tempList .= ",'$key'";
       }
     }
-    $condition  .= ' (ff.serving_one IN (' . $tempList . ')) ';
+    $condition  .= ' AND (ff.serving_one IN (' . $tempList . ')) ';
   }
 
   if ($trainee !== '_all_' && !empty($trainee)) {
@@ -153,6 +156,7 @@ function get_communication_records_staff($serving_one, $trainee, $active, $sort=
   }
 
   $result = [];
+
   $res = db_query("SELECT ff.*, m.name
     FROM ftt_fellowship AS ff
     LEFT JOIN member m ON m.key = {$join}

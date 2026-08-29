@@ -1,5 +1,10 @@
 <?php
-namespace App\Ui\Components\Lists;
+require_once  '../private/vendor/autoload.php';
+use App\Ui\Components\Lists\PrepareAttendanceListArray;
+use App\Ui\Components\Lists\RenderColAttandanceName;
+use App\Ui\Components\Lists\RenderColAttandanceDays;
+use App\Ui\Components\Lists\RenderColAttandanceComment;
+
 
 ?>
 <style>

@@ -257,7 +257,7 @@ switch ($h) {
 
                 if($name){
                     $nameArr = explode(' ', $name);
-                    $_name  = $nameArr[0].' '.( $nameArr[1] ? strtoupper(mb_substr($nameArr[1], 0, 1, 'utf-8')).'. ' : '' ).' '.($nameArr[2] ? strtoupper(mb_substr($nameArr[2], 0, 1, 'utf-8')).'. ' : '');
+                    $_name  = $nameArr[0].' '.( $nameArr[1] ? strtoupper(mb_substr($nameArr[1], 0, 1, 'utf-8')).'. ' : '' ).' '.(isset($nameArr[2]) ? strtoupper(mb_substr($nameArr[2], 0, 1, 'utf-8')).'. ' : '');
                 }
                 else{
                     $_name = $email;
@@ -419,7 +419,7 @@ referenceSysAnew();
     if ($(window).width()>=769) {
       $('.bell-alarm-mbl').hide();
     } else {
-      $('#button_help_nav').css("padding", "2px 0px 6px 0px");      
+      $('#button_help_nav').css("padding", "2px 0px 6px 0px");
       $('#button_help_nav i').css("padding", "4px 10px");
       $('.bell-alarm').hide();
     }

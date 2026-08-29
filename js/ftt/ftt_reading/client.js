@@ -150,7 +150,7 @@ $(document).ready(function(){
         // запролняем заголовок для ВЗ
         if (commits.result.ot.book) {
           // Если старт для ВЗ задан делаем пометку в заголовке "с/без прим."
-          if (commits.result.ot.footnotes === "1") {
+          if (commits.result.ot.footnotes == "1") {
             $("#mdl_bible_books_check .col-6:first-child h5").html("ВЗ (с прим.)")
           } else {
             $("#mdl_bible_books_check .col-6:first-child h5").html("ВЗ (без прим.)")
@@ -161,7 +161,7 @@ $(document).ready(function(){
         // запролняем заголовок для НЗ
         if (commits.result.nt.book) {
           // Если старт для НЗ задан делаем пометку в заголовке "с/без прим."
-          if (commits.result.nt.footnotes === "1") {
+          if (commits.result.nt.footnotes == "1") {
             $("#mdl_bible_books_check .col-6:nth-child(2) h5").html("НЗ (с прим.)");
           } else {
             $("#mdl_bible_books_check .col-6:nth-child(2) h5").html("НЗ (без прим.)");
@@ -285,14 +285,14 @@ $(document).ready(function(){
         let title_text_footnotes_yes = "С примечаниями";
         let title_text_footnotes_no = "Без примечаний";
         if (commits.result.ot.book) {
-          if (commits.result.ot.footnotes === "1") {
+          if (commits.result.ot.footnotes == "1") {
             $("#mdl_footnotes_ot_title").text(title_text_footnotes_yes);
           } else {
             $("#mdl_footnotes_ot_title").text(title_text_footnotes_no);
           }
         }
         if (commits.result.nt.book) {
-          if (commits.result.nt.footnotes === "1") {
+          if (commits.result.nt.footnotes == "1") {
             $("#mdl_footnotes_nt_title").text(title_text_footnotes_yes);
           } else {
             $("#mdl_footnotes_nt_title").text(title_text_footnotes_no);

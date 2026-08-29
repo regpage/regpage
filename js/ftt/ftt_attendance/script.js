@@ -78,7 +78,7 @@ $(document).ready(function(){
      + "&book_field=" + field + "&book=" + book + "&chapter=" + chapter
      + "&notes_ot=" + $(".reading_bible_title").attr("data-notes_ot")
      + "&notes_nt=" + $(".reading_bible_title").attr("data-notes_nt");
-     if (field = "book_ot") {
+     if (field === "book_ot") {
        data += "&id=" + $("#bible_book_ot").attr("data-id");
      } else {
        data += "&id=" + $("#bible_book_nt").attr("data-id");
@@ -183,12 +183,12 @@ $(document).ready(function(){
    // проверяем отметку чтения Библии
    if (($("#bible_book_ot").is(":visible") && !$("#bible_book_ot").val() && !$("#bible_book_ot").attr("disabled")) || ($("#bible_book_nt").is(":visible") && !$("#bible_book_nt").val()  && !$("#bible_book_nt").attr("disabled"))) {
      showError("Заполните поля чтения Библии.");
-     if ($("#bible_book_ot").val() === "_none_") {
+     if ($(".reading_bible_title").attr("data-book_ot") && ($("#bible_book_ot").val() === "_none_" || !$("#bible_book_ot").val())) {
        $("#bible_book_ot").css("border-color", "red");
      } else {
        $("#bible_book_ot").css("border-color", "lightgray");
      }
-     if ($("#bible_book_nt").val() === "_none_") {
+     if ($(".reading_bible_title").attr("data-book_nt") && ($("#bible_book_nt").val() === "_none_" || !$("#bible_book_nt").val())) {
        $("#bible_book_nt").css("border-color", "red");
      } else {
        $("#bible_book_nt").css("border-color", "lightgray");
@@ -1200,6 +1200,22 @@ function open_blank(el_this) {
     // книга и глава библии
     // bible
     // *** BIBLE HERE *** //
+    function reset_reading_block() {
+      $("#show_me_start").attr("disabled", false);
+      $("#bible_book_ot").attr("data-id", '');
+      $("#bible_book_nt").attr("data-id", '');
+      $("#bible_book_ot").attr("disabled", false);
+      $("#bible_book_nt").attr("disabled", false);
+      $("#bible_book_ot").html("<option value='_none_'>ВЗ");
+      $("#bible_book_nt").html("<option value='_none_'>НЗ");
+      $("#bible_book_ot").val('_none_');
+      $("#bible_book_nt").val('_none_');
+      $(".reading_bible_title").attr("data-book_ot", '');
+      $(".reading_bible_title").attr("data-notes_ot", '');
+      $(".reading_bible_title").attr("data-book_nt", '');
+      $(".reading_bible_title").attr("data-notes_nt", '');
+    }
+    reset_reading_block();
     setTimeout(function () {
       fetch("internal_api.php?category=ftt_reading&type=get_reading_data&member_key=" // ajax/ftt_reading_ajax.php?
       + el_this.attr("data-member_key") + "&date=" + el_this.attr("data-date"))
@@ -1207,10 +1223,7 @@ function open_blank(el_this) {
       .then(commits => {
         let reading_str = commits.result;
         let notes_ot = "", notes_nt = "", comma = "";
-        $("#bible_book_ot").attr("data-id", '');
-        $("#bible_book_nt").attr("data-id", '');
-        $("#bible_book_ot").val('_none_');
-        $("#bible_book_nt").val('_none_');
+
        if (reading_str['ot'] === null && reading_str['nt'] === null) {
           // Нет старта и сегодняшней строки
           $(".reading_bible_title").html("Чтение Библии" + " — выберите начало");
@@ -1230,7 +1243,7 @@ function open_blank(el_this) {
             }
             $(".reading_bible_title").attr("data-book_ot", reading_str["ot"]["book"]);
             $(".reading_bible_title").attr("data-notes_ot", reading_str["ot"]["footnotes"]);
-            $("#bible_book_ot").attr("data-id", '');
+            // $("#bible_book_ot").attr("data-id", reading_str["ot"]["id"]);
             textOt = reading_str["ot"]["book"] + notes_ot;
           }
 
@@ -1240,11 +1253,11 @@ function open_blank(el_this) {
             }
             $(".reading_bible_title").attr("data-book_nt", reading_str["nt"]["book"]);
             $(".reading_bible_title").attr("data-notes_nt", reading_str["nt"]["footnotes"]);
-            $("#bible_book_nt").attr("data-id", '');
+            // $("#bible_book_nt").attr("data-id", reading_str["nt"]["id"]);
             textNt = reading_str["nt"]["book"] + notes_nt;
           }
           if (reading_str['nt'] && reading_str['ot']) {
-            if (reading_str['nt']["book"] && reading_str['nt']["book"] !== undefined && reading_str['ot']["book"] && reading_str['ot']["book"] !== undefined) {
+            if (reading_str['nt']["book"] && reading_str['nt']["book"] !== undefined  && reading_str['ot']["book"] && reading_str['ot']["book"] !== undefined) {
               comma = ", ";
             }
           }
@@ -1257,10 +1270,17 @@ function open_blank(el_this) {
             $("#bible_book_ot").show();
           }
           // OT
-          render_bible_chapters(reading_str["ot"]["book"], reading_str["ot"]['chapter'], "#bible_book_ot");
-
-          if (reading_str["ot"]['chapter'] && (reading_str["ot"]["date"] == el_this.attr("data-date")) && reading_str["ot"]['start'] != '1') { //  && reading_str['today_ot']
-            $("#bible_book_ot").val(reading_str["ot"]["book"] + " " + reading_str["ot"]['chapter']);
+          if (reading_str["ot"]['chapter'] == 0 && reading_str["ot"]["extra"] !== undefined && reading_str["nt"]["extra"] !== null) {
+            render_bible_chapters(reading_str["ot"]["extra"]["book"], reading_str["ot"]["extra"]['chapter'], "#bible_book_ot");
+          } else {
+            render_bible_chapters(reading_str["ot"]["book"], reading_str["ot"]['chapter'], "#bible_book_ot");
+          }
+          if (reading_str["ot"]["date"] == el_this.attr("data-date") && reading_str["ot"]['start'] != '1') { //  && reading_str['today_ot']
+            if (reading_str["ot"]['chapter'] === 0) {
+              $("#bible_book_ot").val(0);
+            } else {
+              $("#bible_book_ot").val(reading_str["ot"]["book"] + " " + reading_str["ot"]['chapter']);
+            }
             $("#bible_book_ot").attr("data-id", reading_str["ot"]["id"]);
           } else if (reading_str['no_read_ot'] == "1" ) { // && !reading_str['today_ot']
             $("#bible_book_ot").val("0");
@@ -1274,9 +1294,17 @@ function open_blank(el_this) {
             $("#bible_book_nt").attr("disabled", false).css("background-color", "white");
           }
           // NT
-          render_bible_chapters(reading_str["nt"]["book"], reading_str["nt"]['chapter'], "#bible_book_nt");
-          if (reading_str["nt"]['chapter'] && reading_str["nt"]["date"] == el_this.attr("data-date") && reading_str["nt"]['start'] != '1') { //reading_str['today_nt']
-            $("#bible_book_nt").val(reading_str["nt"]["book"] + " " + reading_str["nt"]['chapter']);
+          if (reading_str["nt"]['chapter'] == 0  && reading_str["nt"]["extra"] !== undefined && reading_str["nt"]["extra"] !== null) {
+            render_bible_chapters(reading_str["nt"]["extra"]["book"], reading_str["nt"]["extra"]['chapter'], "#bible_book_nt");
+          } else {
+            render_bible_chapters(reading_str["nt"]["book"], reading_str["nt"]['chapter'], "#bible_book_nt");
+          }
+          if (reading_str["nt"]["date"] == el_this.attr("data-date") && reading_str["nt"]['start'] != '1') { //reading_str['today_nt']
+            if (reading_str["nt"]['chapter'] == 0) {
+              $("#bible_book_nt").val(0);
+            } else {
+              $("#bible_book_nt").val(reading_str["nt"]["book"] + " " + reading_str["nt"]['chapter']);
+            }
             $("#bible_book_nt").attr("data-id", reading_str["nt"]["id"]);
           } else if (reading_str['no_read_nt'] == "1") { // && !reading_str['today_nt']
             $("#bible_book_nt").val("0");
@@ -2077,11 +2105,13 @@ function open_blank(el_this) {
         + "  глав Ветхого Завета в день. ";
       }
       if ((commits.result.nt_current && (semester_tmp  === "1" || semester_tmp  === "2")) || (semester_tmp  === "3" || semester_tmp  === "4")) {
-        if (html) {
-          html += "<br>И не менее " + commits.result.nt_deff + "  глав Нового Завета в день.";
-        } else {
-          html = "Чтобы успеть до конца текущего года обучения, нужно прочитывать не менее " + commits.result.nt_deff
-          + " глав Нового Завета в день.";
+        if (commits.result.nt_deff > 0) {
+          if (html) {
+            html += "И не менее " + commits.result.nt_deff + "  глав Нового Завета в день.";
+          } else {
+            html = "Чтобы успеть до конца текущего года обучения, нужно прочитывать не менее " + commits.result.nt_deff
+            + " глав Нового Завета в день.";
+          }
         }
       }
       $("#calculate_bible_read_text").html("<i>" + html + "</i>");
@@ -2343,16 +2373,16 @@ function open_blank(el_this) {
         if (chosen_book === 3) {
           render_bible_chapters($("#mdl_book_ot_start").val(), $("#mdl_chapter_ot_start").val(), "#bible_book_ot");
           render_bible_chapters($("#mdl_book_nt_start").val(), $("#mdl_chapter_nt_start").val(), "#bible_book_nt");
-          $("#bible_book_ot").show();
-          $("#bible_book_nt").show();
+          $("#bible_book_ot").attr("disabled", false).css("background-color", "white");
+          $("#bible_book_nt").attr("disabled", false).css("background-color", "white");
         } else if (chosen_book === 1) {
           render_bible_chapters($("#mdl_book_ot_start").val(), $("#mdl_chapter_ot_start").val(), "#bible_book_ot");
-          $("#bible_book_ot").show();
-          $("#bible_book_nt").hide();
+          $("#bible_book_ot").attr("disabled", false).css("background-color", "white");
+          $("#bible_book_nt").attr("disabled", true).css("background-color", "#f8f9fa");
         } else if (chosen_book === 2) {
           render_bible_chapters($("#mdl_book_nt_start").val(), $("#mdl_chapter_nt_start").val(), "#bible_book_nt");
-          $("#bible_book_ot").hide();
-          $("#bible_book_nt").show();
+          $("#bible_book_ot").attr("disabled", true).css("background-color", "#f8f9fa");
+          $("#bible_book_nt").attr("disabled", false).css("background-color", "white");
         }
         showHint("Запись сохранена.");
       } else {
