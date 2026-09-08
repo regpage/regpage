@@ -205,7 +205,7 @@ $(document).ready(function(){
         }
         $("#bible_book_ot").attr("disabled", false);
       } else {
-        $("#bible_book_ot").val("");
+        $("#bible_book_ot").val("_none_");
         $("#bible_book_ot").attr("disabled", true);
       }
       if (data["start"]["nt"]) {
@@ -221,7 +221,7 @@ $(document).ready(function(){
         }
         $("#bible_book_nt").attr("disabled", false);
       } else {
-        $("#bible_book_nt").val("");
+        $("#bible_book_nt").val("_none_");
         $("#bible_book_nt").attr("disabled", true);
       }
       /*
@@ -402,14 +402,15 @@ $(document).ready(function(){
     let footnotes_ot_change = "";
     let footnotes_nt_change = "";
     let and = "";
-    if (($("#bible_book_ot").attr("data-notes") != footnotes_ot) && $("#bible_book_ot").attr("data-book")) {
+
+    if ((($("#bible_book_ot").attr("data-notes") != footnotes_ot) && $("#bible_book_ot").attr("data-book")) || ($("#mdl_ot_start").prop("checked") && $("#mdl_ot_start").attr("data-complete") == "1")) {
       footnotes_ot_change = " Ветхому Завету";
     }
-    if (($("#bible_book_nt").attr("data-notes") != footnotes_nt) && $("#bible_book_nt").attr("data-book")) {
+    if ((($("#bible_book_nt").attr("data-notes") != footnotes_nt) && $("#bible_book_nt").attr("data-book")) || ($("#mdl_nt_start").prop("checked") && $("#mdl_nt_start").attr("data-complete") == "1")) {
       footnotes_nt_change =  " Новому Завету";
     }
-    if (($("#mdl_ot_start").prop("checked") && footnotes_ot_change) || ($("#mdl_nt_start").prop("checked") && footnotes_nt_change)) {
-      if (footnotes_ot_change && footnotes_nt_change) {
+    if (($("#mdl_ot_start").prop("checked") && (footnotes_ot_change || $("#mdl_ot_start").attr("data-complete") == "1")) || ($("#mdl_nt_start").prop("checked") && (footnotes_nt_change || $("#mdl_nt_start").attr("data-complete") == "1"))) {
+      if ((footnotes_ot_change && footnotes_nt_change) || ($("#mdl_ot_start").attr("data-complete") == "1" && $("#mdl_nt_start").attr("data-complete") == "1")) {
         and = " и";
       }
       if (confirm("Вы начинаете заново? Удалить предыдущую историю чтения по " + footnotes_ot_change + and + footnotes_nt_change + "?")) {
@@ -607,10 +608,16 @@ $(document).ready(function(){
 
       if (ot_was_read) {
         show_msg_all_is_read(ot_was_read_notes, "o");
+        $("#mdl_ot_start").attr("data-complete", 1);
+      } else {
+        $("#mdl_ot_start").attr("data-complete", "");
       }
 
       if (nt_was_read) {
         show_msg_all_is_read(nt_was_read_notes, "n");
+        $("#mdl_nt_start").attr("data-complete", 1);
+      } else {
+        $("#mdl_nt_start").attr("data-complete", "");
       }
       // $("#mdl_book_ot_start").html(html_ot);
       // $("#mdl_book_nt_start").html(html_nt);
@@ -789,6 +796,12 @@ OLD VERSION
 
   // сохраняем чтение
 $("#save_book_read").click(function () {
+  let member_key_trainee;
+  if (trainee_access === "1") {
+    member_key_trainee = window.adminId;
+  } else {
+    member_key_trainee = $("#mdl_edit_read").attr("data-member_key");
+  }
   if ($("#bible_book_ot").attr("disabled") && $("#bible_book_nt").attr("disabled")) {
     showError("Нельзя сохранить.");
     return;
@@ -799,28 +812,46 @@ $("#save_book_read").click(function () {
 
   if ($("#bible_book_ot").val() && $("#bible_book_ot").val() != 0 && $("#bible_book_ot").val() !== "_none_" && !$("#bible_book_ot").attr("disabled")) {
     let data_ot = split_book($("#bible_book_ot").val());
-    save_field_read($("#bible_book_ot").attr("data-field"), $("#date_read").val(), data_ot[0], data_ot[1], $("#bible_book_ot").attr("data-notes"), $("#bible_book_nt").attr("data-notes"), $("#bible_book_ot").attr("data-id"));
-    set_read_books($("#bible_book_ot"));
+    if ($("#bible_book_ot").find('option:selected').attr('class') !== 'option_stop') {
+      save_field_read($("#bible_book_ot").attr("data-field"), $("#date_read").val(), data_ot[0], data_ot[1], $("#bible_book_ot").attr("data-notes"), $("#bible_book_nt").attr("data-notes"), $("#bible_book_ot").attr("data-id"));
+    }
+    set_read_books($("#bible_book_ot"), member_key_trainee);
     if (trainee_access !== "1") {
       $("#bible_book_ot").attr("data-book", data_ot[0]);
-      $("#bible_book_ot").attr("data-chapter", data_ot[1] );
+      $("#bible_book_ot").attr("data-chapter", data_ot[1]);
     }
   }
 
   if ($("#bible_book_nt").val() && $("#bible_book_nt").val() != 0 && $("#bible_book_nt").val() !== "_none_" && !$("#bible_book_nt").attr("disabled")) {
     let data_nt = split_book($("#bible_book_nt").val());
     setTimeout(function () {
-      save_field_read($("#bible_book_nt").attr("data-field"), $("#date_read").val(), data_nt[0], data_nt[1], $("#bible_book_ot").attr("data-notes"), $("#bible_book_nt").attr("data-notes"), $("#bible_book_nt").attr("data-id"));
+      if ($("#bible_book_nt").find('option:selected').attr('class') !== 'option_stop') {
+        save_field_read($("#bible_book_nt").attr("data-field"), $("#date_read").val(), data_nt[0], data_nt[1], $("#bible_book_ot").attr("data-notes"), $("#bible_book_nt").attr("data-notes"), $("#bible_book_nt").attr("data-id"));
+      }
     }, 50);
     setTimeout(function () {
-      set_read_books($("#bible_book_nt"));
+      set_read_books($("#bible_book_nt"), member_key_trainee);
     }, 100);
     if (trainee_access !== "1") {
       $("#bible_book_nt").attr("data-book", data_nt[0]);
       $("#bible_book_nt").attr("data-chapter", data_nt[1] );
     }
   }
+  if ($("#bible_book_ot").find('option:selected').attr('class') === 'option_stop') {
+    $("#bible_book_ot").attr("disabled", true);
+    $("#bible_book_ot").attr("data-book", "");
+    $("#bible_book_ot").attr("data-chapter", "");
+    $("#bible_book_ot").attr("data-notes", "");
+    $("#bible_book_ot").attr("data-id", "");
+  }
 
+  if ($("#bible_book_nt").find('option:selected').attr('class') === 'option_stop') {
+    $("#bible_book_nt").attr("disabled", true);
+    $("#bible_book_nt").attr("data-book", "");
+    $("#bible_book_nt").attr("data-chapter", "");
+    $("#bible_book_nt").attr("data-notes", "");
+    $("#bible_book_nt").attr("data-id", "");
+  }
   showHint("Сохранено.");
 
   if (trainee_access === "1") {
@@ -851,7 +882,6 @@ $("#date_read").change(function () {
       $("#bible_book_ot").attr("data-chapter", data["last_reading"]["ot"]["chapter"]);
       // в прежней версии нет
       $("#bible_book_ot").attr("data-notes", data["last_reading"]["ot"]["footnotes"]);
-
       if (data["reading"]["ot"] !== null) {
         $("#bible_book_ot").val(data["reading"]["ot"]["book"] + " " + data["reading"]["ot"]["chapter"]);
         $("#bible_book_ot").attr("data-id", data["reading"]["ot"]["id"]);
@@ -860,7 +890,7 @@ $("#date_read").change(function () {
       }
       $("#bible_book_ot").attr("disabled", false);
     } else {
-      $("#bible_book_ot").val("");
+      $("#bible_book_ot").val("_none_");
       $("#bible_book_ot").attr("disabled", true);
     }
     if (data["start"]["nt"]) {
@@ -878,7 +908,7 @@ $("#date_read").change(function () {
       }
       $("#bible_book_nt").attr("disabled", false);
     } else {
-      $("#bible_book_nt").val("");
+      $("#bible_book_nt").val("_none_");
       $("#bible_book_nt").attr("disabled", true);
     }
 /*

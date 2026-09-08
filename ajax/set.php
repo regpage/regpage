@@ -293,7 +293,7 @@ if (isset ($_POST ['message']) && isset ($_POST ['event']) && isset ($_POST ['na
     }
 }
 
-if (isset ($_POST ['message']) && isset($_POST ['event']) && isset ($_POST ['name']) && isset ($_POST ['email']) && isset ($_POST['admins']))
+if (isset ($_POST ['message']) && isset($_POST ['event']) && isset ($_POST ['name']) && isset ($_POST ['email']) && isset($_POST['admins']))
 {
     $email = db_getTeamAdmins();
     if($_POST ['event']!="") $infoEvent = db_getEventInfoForAdmins($_POST ['event']);
@@ -319,7 +319,12 @@ if (isset ($_POST ['message']) && isset($_POST ['event']) && isset ($_POST ['nam
             // старая версия
             // EMAILS::sendEmail (stripslashes ($value), "Сообщение с сайта reg-page.ru - ".($from_name), (stripslashes ($_POST ['message'])).$locality."\n".$infoEvent."\n"."Страница: ".($_POST["admins"]), $from_email);
             // новая версия
-            $res = emailing::send(stripslashes ($value), "Сообщение с сайта reg-page.ru - {$from_name}", stripslashes($_POST ['message']).$locality."\n".$infoEvent."\n"."Страница: {$_POST["admins"]}");
+            $res = emailing::send(stripslashes($value),
+              "Сообщение с сайта reg-page.ru ({$from_name})",
+              stripslashes($_POST ['message']) . "{$locality}\n{$infoEvent}<br><br>Страница: {$_POST['admins']}<br><br>Отправитель: {$from_name} - {$from_email}",
+              $from_email,
+              $from_name
+            );
             // тестовая версия
             //$res = emailing::send('zhicha@rambler.ru', "Сообщение с сайта reg-page.ru - {$from_name}", stripslashes($_POST ['message']).$locality."\n".$infoEvent."\n"."Страница: {$_POST["admins"]}");
         }

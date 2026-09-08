@@ -1008,7 +1008,14 @@ else if (isset ($_SESSION["logged-in"])){
 $(document).ready(function(){
     window.regAdmins = [];
     window.eventZones = [];
-    loadEvents();
+    if (window.adminId !== "000004893") {
+      loadEvents();
+    } else {
+      $(".desctopVisible h4").css("margin-left", "0px");
+      $(".block-hidden-events").remove();
+      $(".handle-hidden-events").remove();
+      $("#send_request_for_pvom_modal").parent().remove();
+    }
     var isEventAdminArc = '<?php echo $isEventAdmin; ?>';
     var hasEventAdmin = '<?php echo $adminEvents; ?>';
     var isAuthorSomeEvents = '<?php echo $isAuthorEvents; ?>';
@@ -1220,7 +1227,7 @@ $(document).ready(function(){
                 border_top = 'style="border-top: 1px solid #DDD"';
               }
                 var event = events[i], archiveAccess = -1, isEventActive = parseInt(event.is_active);
-                    if (event.id === '20260006' && member_locality_name.includes("Москва")) {
+                    if (event.id === '20260014' && member_locality_name.includes("Москва")) {
                       continue;
                     }
                     var evArr = '<?php echo $adminEvents; ?>';

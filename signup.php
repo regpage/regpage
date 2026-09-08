@@ -419,9 +419,6 @@ $("#loginFormBtn").click(function (e) {
 });
 
 
-/*
-
-
 $("#btnDoSendEventMsgAdmins").click (function (){
     if ($(this).hasClass('disabled')) return;
     var message = $("#sendMsgTextAdmin").val(), name = $("#sendMsgNameAdmin").val(), email = $("#sendMsgEmailAdmin").val();
@@ -430,7 +427,7 @@ $("#btnDoSendEventMsgAdmins").click (function (){
     $.ajax({type: "POST", url: "/ajax/set.php", data: {event:"", message: message, name: name, email:email, admins:"События admin"}})
      .done (function() {messageBox ('Ваше сообщение было отправлено', $('#messageAdmins'));});
 });
-*/
+
 </script>
 
 <?php

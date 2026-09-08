@@ -10,10 +10,15 @@ function noSpace(book_name)
 
   return booksNoSpace;
 }
+/*
 
-function set_read_books(elem) {
+ОШИБКА В ПЕРЕДАЧЕ МЕМБЕР КИ!!!
+
+
+*/
+function set_read_books(elem, member_key_trainee_arg) {
   let book = split_book(elem.val());
-  let prev_book, part, notes, set, id_prev_book;
+  let prev_book, part, notes, set, id_prev_book, query, books;
   let found = bible_arr.find(e => e[0] === book[0]);
   prev_book = elem.attr("data-book");
   notes = elem.attr("data-notes");
@@ -22,6 +27,7 @@ function set_read_books(elem) {
   } else {
     part = "nt";
   }
+
   if (prev_book !== book[0]) {
     id_prev_book = get_id_book(prev_book);
     id_curr_book = get_id_book(book[0]);
@@ -32,11 +38,52 @@ function set_read_books(elem) {
       set = 0;
     }
     books = books.join();
-    let query = "member_key=" + window.adminId
+    query = "member_key=" + member_key_trainee_arg
     + "&part=" + part
     + "&books=" + books
     + "&notes=" + notes
     + "&set=" + set;
+  }
+  if ((elem.find('option:selected').attr('class') === 'option_stop') || (book[0] === "Отк." && book[1] == "22") || (book[0] === "Мал." && book[1] == "4")) {
+    // Предусмотреть проверку прочтения всего завета (все книги проверены)
+    // ЗАРЕРШЕНИЕ НЕПОНЯТНО РАБОТАЕТ В ЛИСТАХ посещаемости
+    // ПРОБЛЕМА ДОБАВЛЯТЬ СТОП ТОЛЬКО ДЛЯ КНИГИ ВЫБРАННОГО ЗАВЕТА что бы учёт чтения другой книги на сегодня не пострадал
+    // Добавить добавления книг откравения и малахии по последним главам
+    // запись последних книг
+
+    let final_book = "65";
+    if (part === "ot") {
+      final_book = "38"
+    }
+    if (books) {
+      books += "," + final_book;
+    } else {
+      books = final_book;
+    }
+
+    query = "member_key=" + member_key_trainee_arg
+    + "&part=" + part
+    + "&books=" + books
+    + "&notes=" + notes
+    + "&set=1";
+    if (elem.find('option:selected').attr('class') === 'option_stop') {
+      let param = "member_key=" + member_key_trainee_arg
+      + "&testament=" + part
+      + "&book="
+      + "&chapter=0"
+      + "&footnotes=" + notes
+      + "&date=" + new Date().toLocaleDateString('sv-SE');
+      setTimeout(function () {
+        fetch("internal_api.php?category=ftt_reading&type=set_start_reading&" + param)
+        .then(response => response.json())
+        .then(commits => {
+          //console.log(commits.result);
+        });
+      }, 50);
+    }
+  }
+
+  if (query) {
     // ajax/ftt_reading_ajax.php?
     fetch("internal_api.php?category=ftt_reading&type=set_read_book_automatic&" + query)
     .then(response => response.text())
@@ -131,7 +178,7 @@ function render_bible_chapters(book, chapter, selector) {
   }
   if (book === "Мал.") {
     options += "<option class='option_stop' value='"+book+"'>Завершить";
-  } else if (book === "Отк." || chapter > 12) {
+  } else if (book === "Отк." && chapter > 12) {
     options += "<option class='option_stop' value='"+book+"'>Завершить";
   }
   $(selector).html(options);
@@ -232,9 +279,32 @@ function calendar(records) {
         let date_record = chkY + '-' + (m < 9 ? '0' + String(m+1) : m+1)  + '-' + i;
         let books_read = "";
         // проверка, добавление класса
-        found = records.find(e => e["date"] === date_record);
+        //found = records.find(e => e["date"] === date_record);
+        found = records.filter(e => e["date"] === date_record);
+        if (Array.isArray(found) && found.length > 0) {
+          let simDataReading = false;
+          for (const dataReading of found) {
+            if (dataReading["date"] === date_record) {
+              if (dataReading["chapter"] > 0) {
+                simDataReading = true;
+                record_available = "record_available";
+                if (dataReading["book"] && dataReading["chapter"] > 0) {
+                  books_read += dataReading["book"] + " " + dataReading["chapter"] + "; ";
+                } else if(dataReading["book"]) {
+                  books_read += dataReading["book"] + " нет;";
+                }
+              } else {
+                if (!simDataReading) {
+                  record_available = "record_not_available";
+                }
+                books_read = "Нет";
+              }
+            }
+          }
+        }
 
-        if (found !== undefined) {
+
+        /*if (found !== undefined) {
           if (found["date"] === date_record) {
             if (found["chapter"] > 0) {
               record_available = "record_available";
@@ -246,7 +316,7 @@ function calendar(records) {
               books_read = "Нет";
             }
           }
-        }
+        }*/
 
         html += '<td class="today ' + record_available + '" data-date="' + date_record + '">' + i + '</td>';
       } else {
@@ -254,20 +324,26 @@ function calendar(records) {
         let record_available = "", day_date = i;
         let date_record = y + '-' + (m < 9 ? '0' + String(m+1) : m+1)  + '-' + (i < 10 ? '0' + String(day_date) : day_date);
         let books_read = "";
-        found = records.find(e => e["date"] === date_record);
+        found = records.filter(e => e["date"] === date_record);
 
-        if (found !== undefined) {
-          if (found["date"] === date_record) {
-            if (found["chapter"] > 0) {
-              record_available = "record_available";
-              if (found["book"] && found["chapter"] > 0) {
-                books_read = found["book"] + " " + found["chapter"] + "; ";
-              } else if(found["book"]) {
-                books_read = found["book"] + " нет;";
+        if (Array.isArray(found) && found.length > 0) {
+          let simDataReading = false;
+          for (const dataReading of found) {
+            if (dataReading["date"] === date_record) {
+              if (dataReading["chapter"] > 0) {
+                simDataReading = true;
+                record_available = "record_available";
+                if (dataReading["book"] && dataReading["chapter"] > 0) {
+                  books_read += dataReading["book"] + " " + dataReading["chapter"] + "; ";
+                } else if(dataReading["book"]) {
+                  books_read += dataReading["book"] + " нет;";
+                }
+              } else {
+                if (!simDataReading) {
+                  record_available = "record_not_available";
+                }
+                books_read = "Нет";
               }
-            } else {
-              record_available = "record_not_available";
-              books_read = "Нет";
             }
           }
         }
@@ -331,21 +407,27 @@ function render_reading_statistic_semester(data, elem) {
     if (data.hasOwnProperty(string)) {
       // Ветхий Завет (с примечаниями или без)
       let notes_ot_text = "без примечаний";
-      if (data[string]["reading"]["notes_ot"] == 1) {
+      const footnotes_ot_check = data?.[string]?.reading?.notes_ot;
+      if (footnotes_ot_check == 1) {
         notes_ot_text = "с примечаниями";
       }
 
       let notes_nt_text = "без примечаний";
-      if (data[string]["reading"]["notes_nt"] == 1) {
+      const footnotes_nt_check = data?.[string]?.reading?.notes_nt;
+      if (footnotes_nt_check == 1) {
         notes_nt_text = "с примечаниями";
       }
       // start
       let start_ot = "";
       let start_nt = "";
-      if (!data[string]["start"]['book_ot']) {
+
+      const book_ot_check = data?.[string]?.start?.ot?.book;
+      if (book_ot_check === null || book_ot_check === undefined || (typeof book_ot_check === 'string' && book_ot_check.trim() === '')) {
         start_ot = "(сейчас не читает)";
       }
-      if (!data[string]["start"]['book_nt']) {
+
+      const book_nt_check = data?.[string]?.start?.nt?.book;
+      if (book_nt_check === null || book_nt_check === undefined || typeof book_nt_check === 'string' && book_nt_check.trim() === '') {
         start_nt = "(сейчас не читает)";
       }
 

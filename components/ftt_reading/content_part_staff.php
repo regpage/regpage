@@ -52,12 +52,14 @@ if (!empty($_COOKIE['flt_semester_read'])) {
     <?php
     $readingProgressService = new FttReadingProgressService(new FttReadingReadRepository($dbConnect), new FttReadingWriteRepository($dbConnect), $memberId);
     $reading_data = $readingProgressService->getDataReadingForStaff($flt_sevice_one_read, $fltSemesterRead, $rosterService->trainee());
-    foreach ($reading_data as $key => $value) {
+
+    foreach ($reading_data as $key => $valuesDays) {
       if (!isset($trainee_list[$key])) {
         continue;
       }
+
       $counter = 0;
-      foreach ($value as $key_2 => $value_2) {
+      foreach ($valuesDays as $key_2 => $value_2) {
         if ($counter == 0) {
           echo "</div><div class='row border-bottom pb-1 pt-1'><div class='col-3 read_name'><button class='btn btn-link' data-member_key='{$key}'>{$trainee_list[$key]} ({$trainee_list_list[$key]['semester']})</button></div>";
         }
@@ -67,28 +69,34 @@ if (!empty($_COOKIE['flt_semester_read'])) {
         if (!empty($key_2)) {
           $date_record = date_convert::yyyymmdd_to_ddmm($key_2);
         }
-
-
+        // Всплывающий текст с прочитанными в этот день книгами и главами
         $title = '';
-        if (!empty($value_2['testament']) && $value_2['testament'] === 'ot') {
-          $title = $value_2['book'];
-          if ($value_2['chapter'] > 0) {
-            $title .= ' ' . $value_2['chapter'];
-          } else {
-            $title .= ' нет';
+        $simGreenString = false;
+        foreach ($value_2 as $valueTitles) {
+          if (!empty($valueTitles['testament']) && $valueTitles['testament'] === 'ot') {
+            $title = $valueTitles['book'];
+            if ($valueTitles['chapter'] > 0) {
+              $simGreenString = true;
+              $title .= ' ' . $valueTitles['chapter'];
+            } else {
+              $title .= ' нет';
+            }
+            $title .= '; ';
           }
-          $title .= '; ';
+
+          if (!empty($valueTitles['testament']) && $valueTitles['testament'] === 'nt') {
+            $title .= $valueTitles['book'];
+            if ($valueTitles['chapter'] > 0) {
+              $simGreenString = true;
+              $title .= ' ' . $valueTitles['chapter'];
+            } else {
+              $title .= ' нет';
+            }
+            $title .= ';';
+          }
         }
 
-        if (!empty($value_2['nt']) && $value_2['testament'] === 'nt') {
-          $title .= $value_2['book'];
-          if ($value_2['chapter'] > 0) {
-            $title .= ' ' . $value_2['chapter'];
-          }
-          $title .= ';';
-        }  
-
-        if ((isset($value_2['chapter']) && $value_2['chapter'] > 0) || (isset($value_2['chapter']) && $value_2['chapter'] > 0)) {
+        if ($simGreenString) {
           $bg_success = 'green_string';
         }
         echo "<div class='col-1 read_day mr-2 {$bg_success}' title='{$title}' data-toggle='tooltip'>{$date_record}</div>";

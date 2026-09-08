@@ -53,7 +53,7 @@
 
     $events = db_getEventsByAdmin($memberId);
     // убмираем мероприятие от админов из Москвы
-    $targetId = '20260006';
+    $targetId = '20260014';
     if (!db_isAdminRespForReg($memberId, $targetId) && !empty($events) && mb_strpos(db_getMemberLocality($memberId), 'Москва') !== false) {
       $arrayTemp = array_filter($events, function ($item) use ($targetId) {
         return $item->id !== $targetId;
@@ -390,7 +390,7 @@
                 </div>
             </div>
             <div style="clear: both; margin-bottom: 10px">
-              <a onclick="var t = $('#sendLetterText'); t.textrange('replace', '{СсылкаНаБланк}');t.textrange('setcursor', t.textrange('get', 'end'));">Ссылка на бланк</a>  | 
+              <a onclick="var t = $('#sendLetterText'); t.textrange('replace', '{СсылкаНаБланк}');t.textrange('setcursor', t.textrange('get', 'end'));">Ссылка на бланк</a>  |
               <a onclick="let t = $('#sendLetterText'); t.textrange('replace', '{СсылкаНаСтраницу}');t.textrange('setcursor', t.textrange('get', 'end'));">Ссылка на страницу</a>
             </div>
             <textarea class="span5 text-field" rows="10" id="sendLetterText"></textarea>
@@ -2379,7 +2379,7 @@ function checkStopEventRegistration(eventId){
                 text = "<span class='registration-closed'><a style='color:red; font-weight: bold; padding-right: 8px;' data-toggle='modal'>Регистрация закрыта.</a></span>";
             } else {
               /* ОГРАНИЧЕНИЕ С РАЗМЕЩЕНИЕМ НА МКС */
-              if (eventId === '20260006') {
+              if (eventId === '20260014') {
                 fetch('/ajax/event.php?check_stop_reg_hospitality&event_id=' + eventId)
                 .then(response => response.json())
                 .then(commits => {

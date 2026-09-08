@@ -85,6 +85,9 @@ require_once 'components/ftt_reading/content_part_cntrl.php';
                           $selected = 'selected';
                         }
                         echo "<option value='{$value[0]} {$i}' data-book='{$value[0]}' data-chapter='{$i}' {$selected}>{$value[0]} {$i}";
+                        if ($value[0] === "Мал." && $i === 4) {
+                          echo "<option class='option_stop' value='{$value[0]}'>Завершить";
+                        }
                         if (!empty($book_current['ot']['book'])) {
                           $counter++;
                           if ($counter === 10) {
@@ -118,6 +121,9 @@ require_once 'components/ftt_reading/content_part_cntrl.php';
                           $selected = 'selected';
                         }
                         echo "<option value='{$value[0]} {$i}' data-book='{$value[0]}' data-chapter='{$i}' {$selected}>{$value[0]} {$i}";
+                        if ($value[0] === "Отк." && $i == 22) {
+                         echo "<option class='option_stop' value='{$value[0]}'>Завершить";
+                        }
                         if (!empty($book_current['nt']['book'])) {
                           $counter++;
                           if ($counter === 10) {
