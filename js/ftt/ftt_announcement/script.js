@@ -1,6 +1,8 @@
 /* ==== ANNOUNCEMENT START ==== */
 $(document).ready(function(){
   /* ==== DOCUMENT READY START ==== */
+  // Полностью ломаем встроенный механизм блокировки фокуса в Bootstrap
+  $.fn.modal.Constructor.prototype._enforceFocus = function() {};
   // text editor nicEditor style
   $(".nicEdit-main").css("padding", "1px 5px");
   // UNIVERSAL

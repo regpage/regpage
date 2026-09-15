@@ -31,7 +31,7 @@ recipients_group["coordinators"] = [];
   // text editor nicEditor
   if ($(window).width()<=769) {
     $("#mdl_niceditor_field").css("width", "335px");
-  }
+  }  
   bkLib.onDomLoaded(function() {
     new nicEditor().panelInstance("mdl_niceditor_field");
   });
