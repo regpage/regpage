@@ -1,6 +1,5 @@
 <?php
 require_once 'db/classes/ftt_info.php';
-include_once 'db/classes/statistic/biblecounter.php';
 
 //define('ROOT_PATH', dirname(__DIR__, 3));
 require_once  '../private/vendor/autoload.php'; //ROOT_PATH .
