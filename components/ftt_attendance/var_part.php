@@ -28,7 +28,7 @@ if ($ftt_access['group'] === 'trainee') {
 }
 
 $serving_trainee = '';
-$read_book_arr = [];
+
 // служащие из обучающихся
 if (isset($ftt_access['ftt_service']) && $ftt_access['ftt_service'] === '06') {
   $serving_trainee = 1;
@@ -52,9 +52,6 @@ if ($ftt_access['group'] === 'staff' || $serving_trainee) {
   $serving_ones_list_full = ftt_lists::serving_ones_full();
   $trainee_list_full = ftt_lists::trainee_full();
   // ОБУЧАЮЩИЕСЯ
-  //bible books
-  $read_book_arr = BookRead::get_all($memberId);
-  $read_book_arr = $read_book_arr['books'];
 }
 
 $serving_trainee_disabled = '';

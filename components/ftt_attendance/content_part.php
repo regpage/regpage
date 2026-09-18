@@ -120,10 +120,10 @@
           $bible_reading_text = '';
 
           if (isset($chaptersRead['ot'][$date])) {
-            if ($chaptersRead['ot'][$date]['chapter_ot'] == 0) {
-              $bible_reading_text = $chaptersRead['ot'][$date]['book_ot'] . ' нет';
+            if ($chaptersRead['ot'][$date]['chapter'] == 0) {
+              $bible_reading_text = $chaptersRead['ot'][$date]['book'] . ' нет';
             } else {
-              $bible_reading_text = $chaptersRead['ot'][$date]['book_ot'] . ' ' . $chaptersRead['ot'][$date]['chapter_ot'];
+              $bible_reading_text = $chaptersRead['ot'][$date]['book'] . ' ' . $chaptersRead['ot'][$date]['chapter'];
             }
 
           }
@@ -131,10 +131,10 @@
             if (!empty($bible_reading_text)) {
               $bible_reading_text .= '; ';
             }
-            if ($chaptersRead['nt'][$date]['chapter_nt'] == 0) {
-              $bible_reading_text .= $chaptersRead['nt'][$date]['book_nt'] . ' нет';
+            if ($chaptersRead['nt'][$date]['chapter'] == 0) {
+              $bible_reading_text .= $chaptersRead['nt'][$date]['book'] . ' нет';
             } else {
-              $bible_reading_text .= $chaptersRead['nt'][$date]['book_nt'] . ' ' . $chaptersRead['nt'][$date]['chapter_nt'];
+              $bible_reading_text .= $chaptersRead['nt'][$date]['book'] . ' ' . $chaptersRead['nt'][$date]['chapter'];
             }
           }
 
