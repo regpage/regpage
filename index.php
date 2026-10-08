@@ -1227,9 +1227,9 @@ $(document).ready(function(){
                 border_top = 'style="border-top: 1px solid #DDD"';
               }
                 var event = events[i], archiveAccess = -1, isEventActive = parseInt(event.is_active);
-                    if (event.id === '20260014' && member_locality_name.includes("Москва")) {
-                      continue;
-                    }
+                    /*if (event.id === '20260014' && member_locality_name.includes("Москва")) {
+                       continue;
+                    }*/
                     var evArr = '<?php echo $adminEvents; ?>';
                     if (evArr) {
                         evArr = evArr.split(',');

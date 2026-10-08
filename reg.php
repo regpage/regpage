@@ -53,7 +53,7 @@
 
     $events = db_getEventsByAdmin($memberId);
     // убмираем мероприятие от админов из Москвы
-    $targetId = '20260014';
+    $targetId = '99999999';
     if (!db_isAdminRespForReg($memberId, $targetId) && !empty($events) && mb_strpos(db_getMemberLocality($memberId), 'Москва') !== false) {
       $arrayTemp = array_filter($events, function ($item) use ($targetId) {
         return $item->id !== $targetId;
@@ -2290,7 +2290,9 @@ var globalSingleCity = "<?php echo $singleCity; ?>";
     });
 
     $("#events-list").change(function(){
-
+      arriveDepart('data-start','.emArrDate');
+      arriveDepart('data-end','.emDepDate');
+      arriveDepartBulk();
         var eventId = $(this).val(), eventIdCurrent = $('.tab-pane.active').attr('id').replace(/^eventTab-/,'');
         if(eventId !== eventIdCurrent){
             $('.tab-pane.active').removeClass('active');
@@ -3208,12 +3210,12 @@ function checkStopEventRegistration(eventId){
   // задаём минимальное и максимальное значение выбора дат при пакетной установке
   arriveDepartBulk();
   // смена мероприятия
-  $("#events-list").change(function () {
+  /*$("#events-list").change(function () {
     arriveDepart('data-start','.emArrDate');
     arriveDepart('data-end','.emDepDate');
     arriveDepartBulk();
   });
-
+*/
     // END Romans Code
 </script>
 <script src="/js/reg.js?v109"></script>

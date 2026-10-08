@@ -4,7 +4,7 @@ require_once 'cronkey.php';
 
 // Ежедневная рассылка статистики для служащих.
 header('Content-Type: text/html; charset=utf-8');
-session_start ();
+session_start();
 
 $CRON_ROOT_PATH = __DIR__;
 // config
@@ -131,8 +131,8 @@ function getServiceOnesWithTrainees ()
         $missingClass = '<br><b>Пропущенные занятия:</b><br>';
       }
       foreach ($missingClassData as $key_5 => $value_5) {
-        if ($value_5) {
-          $missingClass .= "<span>" . short_name::no_middle(Member::get_name($key_5)) . " — " . $value_5 . "</span><br>";
+        if ($value_5['status_0'] || $value_5['status_1']) {
+          $missingClass .= "<span>" . short_name::no_middle(Member::get_name($key_5)) . " — " . ($value_5['status_0'] + $value_5['status_1']) . " (на рассмотрении — {$value_5['status_1']})" . "</span><br>";
         }
       }
       $missingClass .= "<a href='https://reg-page.ru/ftt_attendance.php?mc'>Перейти в раздел «Пропущенные занятия»</a><br>";
@@ -204,64 +204,75 @@ function getServiceOnesWithTrainees ()
       $fellowship_text .= "<a href='https://reg-page.ru/ftt_fellowship.php'>Перейти в раздел «Общение»</a><br>";
     }
 
-    // ==== Пророчествование отчёт
-    $prophecy_text = '';
-    if (date('w') != 0) {
-      if (empty($announcements) && empty($absence) && empty($attendance) && empty($extraHelp) && empty($missingClass) && empty($fellowship_text) && empty($fellowship_cancel_text_name)) {
-        $prophecy_text = '<b>Пророчествование в прошедшее воскресенье:<br></b>';
-      } else {
-        $prophecy_text = '<br><b>Пророчествование в прошедшее воскресенье:<br></b>';
-      }
-      // вычитаем
-      $lTMeeting_date = date_plus::sub_d(date('Y-m-d'), date('w'));
-      // получаем список перерыва
-      // получаем список листов отсутствия
-      $prophecy_data = Prophecy::by_serving_one($traine_list, $lTMeeting_date);
-      $lTMeeting_date_format = date_convert::yyyymmdd_to_ddmm($lTMeeting_date);
-      foreach ($prophecy_data as $keyProph => $valueProph) {
-        if ($valueProph['done'] === '2') {
-          $prophecy_text .= short_name::no_middle(Member::get_name($keyProph)) . " — ";
-        } else {
-          $prophecy_text .= short_name::no_middle($valueProph['name']) . " — ";
-        }
-        if ($valueProph['done'] === '2') {
-          if (array_key_exists($keyProph, $listForprophecy['pause'])) {
-            $reasonText = " был перерыв<br>";
-          } elseif (array_key_exists($keyProph, $listForprophecy['permissions'])) {
-            $reasonText = " было разрешение на отсутствие<br>";
-          } else {
-            $reasonText = " информация о пророчествовании нет (отсутствует бланк)<br>";
-          }
-          $prophecy_text .= "{$lTMeeting_date_format} {$reasonText}";
-        } elseif ($valueProph['done'] === "0") {
-          $prophecy_text .= $lTMeeting_date_format . " не пророчествовал(а)";
-          if ($valueProph['send'] === '0') {
-            $prophecy_text .= " (бланк не отправлен)";
-          }
-          $prophecy_text .= "<br>";
-        } elseif ($valueProph['done'] === "1"){
-          $prophecy_text .= $lTMeeting_date_format . " пророчествовал(а) ";
-          if ($valueProph['send'] === '0') {
-            $prophecy_text .= " (бланк не отправлен)";
-          }
-          $prophecy_text .= "<br>";
-        } else {
-          $reasonText = " Ошибка<br>";
-        }
-      }
-      $prophecy_text .= "<a href='https://reg-page.ru/ftt_attendance.php'>Перейти в раздел «Листы посещаемости»</a><br>";
+    // ==== Листы пророчествование
+    $prophecyStatusUnderReviewText = '<b>Листы пророчествования:</b><br>';
+    if (!empty($announcements) || !empty($absence) || !empty($attendance) || !empty($extraHelp) || !empty($missingClass) || !empty($fellowship_text) || !empty($fellowship_cancel_text_name)) {
+      $prophecyStatusUnderReviewText = '<br>' . $prophecyStatusUnderReviewText;
     }
+    $prophecyStatusUnderReview = Prophecy::byServingOneStatusUnderReview($traine_list);
+    foreach ($prophecyStatusUnderReview as $keyStatusUnderReview => $valueProphUnderReview) {
+      $prophecyStatusUnderReviewText .= short_name::no_middle($valueProphUnderReview['name']) . " — {$valueProphUnderReview['count']} на рассмотрении<br>";
+    }
+
+    $prophecyStatusUnderReviewText .= "<a href='https://reg-page.ru/ftt_prophecy.php'>Перейти в раздел «Пророчество»</a><br>";
+
+
+    // ==== Пророчествование отчёт
+    $prophecy_text = '<b>Пророчествование в прошедшее воскресенье:</b><br>';
+    if (!empty($announcements) || !empty($absence) || !empty($attendance) || !empty($extraHelp) || !empty($missingClass) || !empty($fellowship_text) || !empty($fellowship_cancel_text_name) || !empty($prophecyStatusUnderReviewText)) {
+      $prophecy_text = '<br>' . $prophecy_text;
+    }
+    // вычитаем
+    $lTMeeting_date = date_plus::sub_d(date('Y-m-d'), date('w'));
+    // получаем список перерыва
+    // получаем список листов отсутствия
+    $prophecy_data = Prophecy::by_serving_one($traine_list, $lTMeeting_date);
+
+    $lTMeeting_date_format = date_convert::yyyymmdd_to_ddmm($lTMeeting_date);
+    foreach ($prophecy_data as $keyProph => $valueProph) {
+      if ($valueProph['done'] === '2') {
+        $prophecy_text .= short_name::no_middle(Member::get_name($keyProph)) . " — ";
+      } else {
+        $prophecy_text .= short_name::no_middle($valueProph['name']) . " — ";
+      }
+      if ($valueProph['done'] === '2') {
+        if (array_key_exists($keyProph, $listForprophecy['pause'])) {
+          $reasonText = " был перерыв<br>";
+        } elseif (array_key_exists($keyProph, $listForprophecy['permissions'])) {
+          $reasonText = " было разрешение на отсутствие<br>";
+        } else {
+          $reasonText = " информация о пророчествовании нет (отсутствует бланк)<br>";
+        }
+        $prophecy_text .= "{$lTMeeting_date_format} {$reasonText}";
+      } elseif ($valueProph['done'] === "0") {
+        $prophecy_text .= $lTMeeting_date_format . " не пророчествовал(а)";
+        if ($valueProph['send'] === '0') {
+          $prophecy_text .= " (бланк не отправлен)";
+        }
+        $prophecy_text .= "<br>";
+      } elseif ($valueProph['done'] === "1"){
+        $prophecy_text .= $lTMeeting_date_format . " пророчествовал(а) ";
+        if ($valueProph['send'] === '0') {
+          $prophecy_text .= " (бланк не отправлен)";
+        }
+        $prophecy_text .= "<br>";
+      } else {
+        $reasonText = " Ошибка<br>";
+      }
+    }
+    $prophecy_text .= "<a href='https://reg-page.ru/ftt_attendance.php'>Перейти в раздел «Листы посещаемости»</a><br>";
 
     /***  ОТПРАВКА ПИСЬМА  **/
     //a.rudanok@gmail.com
     //info@zhichkinroman.ru '000005716'
     //
-    if ($announcements || $absence || $attendance || $extraHelp || $missingClass || $fellowship_text || $prophecy_text) {
-      $body = $announcements . $absence . $attendance . $extraHelp . $missingClass . $fellowship_text . $prophecy_text;
+    if ($announcements || $absence || $attendance || $extraHelp || $missingClass || $fellowship_text || $prophecyStatusUnderReviewText || $prophecy_text) {
+      $body = $announcements . $absence . $attendance . $extraHelp . $missingClass . $fellowship_text . $prophecyStatusUnderReviewText . $prophecy_text;
       if (!empty($value)) {
         Emailing::send_by_key($value, $topic, $body);
+
         // отладка
-        // echo "{$topic}<br>$body<br><hr>";
+        // echo "{$topic}<br>{$body}<br><hr>";
         //Emailing::send_by_key('000005716', $topic, 'Тестирование '.$body);
       } else {
         echo "Не получен емайл служащего, возможно не указан служащий для какого то обучающегося \r\n";
@@ -278,6 +289,7 @@ function getServiceOnesWithTrainees ()
 }
 
 getServiceOnesWithTrainees ();
+emailToBBDBrothers();
 
 function emailToBBDBrothers() {
     foreach (ftt_lists::kbk_brothers() as $key => $value) {
@@ -344,7 +356,7 @@ function emailToBBDBrothers() {
     }
 }
 
-emailToBBDBrothers();
+
 
 function listForprophecy($ltmDate='CURDATE()')
 {
@@ -362,6 +374,7 @@ function listForprophecy($ltmDate='CURDATE()')
   $result = ['permissions'=>[],'pause'=>[]];
   $traineeKeysWhoIsOK = [];
   $traineeKeysWhoIsOKText = '';
+
   $res5 = db_query("SELECT DISTINCT `member_key` FROM `ftt_prophecy` WHERE DATE_FORMAT(`send_date`, '%Y-%m-%d') = {$ltmDate}");
     while ($row = $res5->fetch_assoc()) $traineeKeysWhoIsOK[]= "'{$row['member_key']}'";
 

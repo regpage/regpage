@@ -36,6 +36,9 @@ $scripts = array(
 foreach ($scripts as $key => $value) {
   // добавить не ежедневные скрипты $value
   if (parsing_date($value)) {
+    if (date('w') == 0 && $key === 'ftt_emailing_list.php') {
+      continue;
+    }
     $answers .= checkCron($key, $currentDate);
   }
 }

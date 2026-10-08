@@ -45,4 +45,35 @@ class Prophecy
 
     return $listTrainees;
   }
+
+  static function byServingOneStatusUnderReview($trainees)
+  {
+    global $db;
+    $listTrainees = [];
+    $condition = '';
+    foreach ($trainees as $key => $value) {
+      $value = $db->real_escape_string($value);      
+      if (empty($condition)) {
+        $condition .= "(p.member_key = '{$key}' ";
+      } else {
+        $condition .= " OR p.member_key = '{$key}' ";
+      }
+    }
+    if (!empty($condition)) {
+      $condition .= ')';
+        $res = db_query("SELECT m.name, p.member_key
+          FROM ftt_prophecy AS p
+          LEFT JOIN member m ON m.key = p.member_key
+          WHERE {$condition} AND p.checked = 0
+          ORDER BY m.name");
+      while ($row = $res->fetch_assoc()) {
+        if (!isset($listTrainees[$row['member_key']])) {
+          $listTrainees[$row['member_key']] = ['name'=>$row['name'], 'count'=> 0];
+        }
+        $listTrainees[$row['member_key']]['count']++;
+      }
+    }
+
+    return $listTrainees;
+  }
 }

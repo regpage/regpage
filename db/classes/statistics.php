@@ -327,13 +327,16 @@ class statistics {
     $condition = '';
     if (is_array($memberId)) {
       if (count($memberId) > 0) {
+        $memberKeys = '';
         foreach ($memberId as $key => $value) {
           $key = $db->real_escape_string($key);
-          if (!empty($condition)) {
-            $condition .= " OR ";
+          if (!empty($memberKeys)) {
+            $memberKeys .= ", {$key}";
+          } else {
+            $memberKeys .= $key;
           }
-          $condition .= " (fas.member_key = '$key' AND (fs.status = 0 OR fs.status = 1)) ";
         }
+        $condition .= " fas.member_key IN ({$memberKeys}) AND fs.status IN (0, 1) ";
       } else {
         $condition=0;
       }
@@ -344,20 +347,24 @@ class statistics {
     if ($trainee) {
       $res = db_query("SELECT fs.*, fas.*
       FROM ftt_skip AS fs
-      LEFT JOIN ftt_attendance_sheet fas ON fas.id = fs.id_attendance_sheet
+      JOIN ftt_attendance_sheet fas ON fas.id = fs.id_attendance_sheet
       WHERE fas.member_key = '$memberId' AND fs.status = 0");
       while ($row = $res->fetch_assoc()) $result[] = $row;
     } else {
-      $res = db_query("SELECT fs.*, fas.*
-      FROM ftt_skip AS fs
-      LEFT JOIN ftt_attendance_sheet fas ON fas.id = fs.id_attendance_sheet
-      WHERE {$condition}");
+      $res = db_query("SELECT fas.member_key,
+        SUM(CASE WHEN fs.status = 0 THEN 1 ELSE 0 END) AS cnt_status_0,
+        SUM(CASE WHEN fs.status = 1 THEN 1 ELSE 0 END) AS cnt_status_1
+        FROM ftt_skip AS fs
+        JOIN ftt_attendance_sheet fas ON fas.id = fs.id_attendance_sheet
+        WHERE {$condition}
+        GROUP BY fas.member_key");
       while ($row = $res->fetch_assoc()) {
-        if (isset($result[$row['member_key']])) {
-          $result[$row['member_key']]++;
-        } else {
-          $result[$row['member_key']] = 1;
-        }
+        $result[$row['member_key']] = ['status_0' => $row['cnt_status_0'], 'status_1' => $row['cnt_status_1']];
+        //if (isset($result[$row['member_key']])) {
+          // $result[$row['member_key']]++;
+        //} else {
+          // $result[$row['member_key']] = 1;
+        //}
         //$result['count']++;
       }
     }

@@ -520,6 +520,7 @@ function set_permission($sessions, $adminId)
       WHERE `date` = '$absence_date' AND `member_key`='$member_key'");
     while ($row = $attendance_sheet->fetch_assoc()) $result_attendance_sheet = $row['id'];
   }
+
   foreach ($sessions as $key => $value) {
     if ($key !== 'sheet') {
       if (empty($value->sheet_id)) {
@@ -536,21 +537,20 @@ function set_permission($sessions, $adminId)
 
       $res2 = db_query("INSERT INTO `ftt_permission` (`sheet_id`, `session_id`, `session_correction_id`, `session_name`, `session_time`, `duration`, `checked`, `changed`)
       VALUES ('$sheet_id_sub', '$session_id', '$session_correction_id', '$session_name', '$session_time', '$duration', '$checked', 1)");
-
       // Если бланк передан сегодня
       if (($today || $past_date) && $status === '2') {
         // обновляем соответствующие строки attendance задавая в permission_sheet_id    id $sheet_id_sub
-        if ($value->checked) {
+        if ($checked === 1) {
           $res = db_query("UPDATE `ftt_attendance` SET
             `permission_sheet_id` = '$sheet_id_sub', `reason` = 'Р', `changed` = 1
-            WHERE `sheet_id`='$result_attendance_sheet' AND (`session_id` = '$session_id' OR `session_time` = '$session_time')");
+            WHERE `sheet_id`='$result_attendance_sheet' AND ((`session_id` = '$session_id' AND `session_id` <> '') OR `session_time` = '$session_time')");
         }
       } elseif (($today || $past_date) && $status === '3') {
         // обновляем соответствующие строки attendance удаля из permission_sheet_id    id $sheet_id_sub
-        if ($value->checked) {
+        if ($checked === 1) {          
           $res = db_query("UPDATE `ftt_attendance` SET
             `permission_sheet_id` = '', `reason` = '', `changed` = 1
-            WHERE `sheet_id`='$result_attendance_sheet' AND (`session_id` = '$session_id' OR `session_time` = '$session_time')");
+            WHERE `sheet_id`='$result_attendance_sheet' AND ((`session_id` = '$session_id' AND `session_id` <> '') OR `session_time` = '$session_time')");
         }
       }
     }
