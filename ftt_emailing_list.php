@@ -150,34 +150,29 @@ function getServiceOnesWithTrainees ()
       }
     }*/
     if (count($fellowship_today) > 0) { //  && $hasFelowshipToday
-      if (empty($announcements) && empty($absence) && empty($attendance) && empty($extraHelp) && empty($missingClass)) {
-        $fellowship_text = '<b>Общение сегодня: </b>';
-      } else {
-        $fellowship_text = '<br><b>Общение сегодня: </b>';
-      }
-
       foreach ($fellowship_today as $key_5 => $value_5) {
         if ($value_5) {
           $name_f = short_name::no_middle($value_5['name']);
+          if (!empty($name_f) && empty($fellowship_text)) {
+            if (empty($announcements) && empty($absence) && empty($attendance) && empty($extraHelp) && empty($missingClass)) {
+              $fellowship_text = '<b>Общение сегодня: </b>';
+            } else {
+              $fellowship_text = '<br><b>Общение сегодня: </b>';
+            }
+          }
           if (empty($fellowship_text_name)) {
             $fellowship_text_name .= $name_f;
           } else {
-            if (!empty($name_f)) {
+            if (!empty($fellowship_text_name)) {
               $fellowship_text_name .= ', ' . $name_f;
             }
           }
         }
       }
-      if (count($fellowship_today) > 0) {
+      if (!empty($fellowship_text)) {
         $fellowship_text .= "<span> {$fellowship_text_name} </span><br>";
       }
-    } /* else {
-      if (empty($announcements) && empty($absence) && empty($attendance) && empty($extraHelp) && empty($missingClass)) {
-        $fellowship_text = '<b>Сегодня у вас нет общения.</b>';
-      } else {
-        $fellowship_text = '<br><b>Сегодня у вас нет общения.</b>';
-      }
-    } */
+    }
 
     $fellowship_cancel_today = Fellowship::canceled_serving_one($value);
     $fellowship_cancel_text_name = '';
@@ -205,16 +200,21 @@ function getServiceOnesWithTrainees ()
     }
 
     // ==== Листы пророчествование
-    $prophecyStatusUnderReviewText = '<b>Листы пророчествования:</b><br>';
-    if (!empty($announcements) || !empty($absence) || !empty($attendance) || !empty($extraHelp) || !empty($missingClass) || !empty($fellowship_text) || !empty($fellowship_cancel_text_name)) {
-      $prophecyStatusUnderReviewText = '<br>' . $prophecyStatusUnderReviewText;
-    }
+    $prophecyStatusUnderReviewText = '';
     $prophecyStatusUnderReview = Prophecy::byServingOneStatusUnderReview($traine_list);
-    foreach ($prophecyStatusUnderReview as $keyStatusUnderReview => $valueProphUnderReview) {
-      $prophecyStatusUnderReviewText .= short_name::no_middle($valueProphUnderReview['name']) . " — {$valueProphUnderReview['count']} на рассмотрении<br>";
+    if (count($prophecyStatusUnderReview) > 0) {
+      $prophecyStatusUnderReviewText = '<b>Листы пророчествования:</b><br>';
+      if (!empty($announcements) || !empty($absence) || !empty($attendance) || !empty($extraHelp) || !empty($missingClass) || !empty($fellowship_text) || !empty($fellowship_cancel_text_name)) {
+        $prophecyStatusUnderReviewText = '<br>' . $prophecyStatusUnderReviewText;
+      }
+
+      foreach ($prophecyStatusUnderReview as $keyStatusUnderReview => $valueProphUnderReview) {
+        $prophecyStatusUnderReviewText .= short_name::no_middle($valueProphUnderReview['name']) . " — {$valueProphUnderReview['count']} на рассмотрении<br>";
+      }
+
+      $prophecyStatusUnderReviewText .= "<a href='https://reg-page.ru/ftt_prophecy.php'>Перейти в раздел «Пророчество»</a><br>";
     }
 
-    $prophecyStatusUnderReviewText .= "<a href='https://reg-page.ru/ftt_prophecy.php'>Перейти в раздел «Пророчество»</a><br>";
 
 
     // ==== Пророчествование отчёт
@@ -269,10 +269,10 @@ function getServiceOnesWithTrainees ()
     if ($announcements || $absence || $attendance || $extraHelp || $missingClass || $fellowship_text || $prophecyStatusUnderReviewText || $prophecy_text) {
       $body = $announcements . $absence . $attendance . $extraHelp . $missingClass . $fellowship_text . $prophecyStatusUnderReviewText . $prophecy_text;
       if (!empty($value)) {
-        Emailing::send_by_key($value, $topic, $body);
+       Emailing::send_by_key($value, $topic, $body);
 
         // отладка
-        // echo "{$topic}<br>{$body}<br><hr>";
+        //echo "{$value}<br><hr>{$topic}<br>{$body}<br><hr>";
         //Emailing::send_by_key('000005716', $topic, 'Тестирование '.$body);
       } else {
         echo "Не получен емайл служащего, возможно не указан служащий для какого то обучающегося \r\n";

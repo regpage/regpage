@@ -8,11 +8,10 @@ function getGospelTeam() {
 }
 
 // get gospel reports
-function getGospel($condition, $memberId, $sorting, $from = "", $to = "", $team = '_all_') {
+function getGospel($condition, $traineeId, $sorting, $from = "", $to = "", $team = '_all_') {
 
   global $db;
   $condition = $db->real_escape_string($condition);
-  $memberId = $db->real_escape_string($memberId);
   $sorting = $db->real_escape_string($sorting);
   $from = $db->real_escape_string($from);
   $to = $db->real_escape_string($to);
@@ -27,8 +26,14 @@ function getGospel($condition, $memberId, $sorting, $from = "", $to = "", $team 
   } else {
     $condition = '1';
   }
-
-  if ($team && $team !== '_all_') {
+  if ($traineeId) {
+    $traineeId = $db->real_escape_string($traineeId);
+    if ($condition === '1') {
+      $condition = "FIND_IN_SET('{$traineeId}', fg.group_members) > 0";
+    } else {
+      $condition = "FIND_IN_SET('{$traineeId}', fg.group_members) > 0 AND  {$condition}";
+    }
+  } elseif ($team && $team !== '_all_') {
     if ($condition === '1') {
       $condition = "fg.gospel_team=" . "'$team'";
     } else {
@@ -83,7 +88,7 @@ function getGospel($condition, $memberId, $sorting, $from = "", $to = "", $team 
       $result[] = array_merge($row, array('number' => 0, 'first_contacts' => 0, 'further_contacts' => 0));
     }
   }
-
+  
   return $result;
 }
 

@@ -75,4 +75,3 @@ if (isset($_COOKIE['period_to'])) {
 }
 
 // GOSPEL СТОП
-?>

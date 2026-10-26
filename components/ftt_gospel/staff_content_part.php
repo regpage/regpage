@@ -298,11 +298,11 @@
           $col_n_4_disabled = '';
           $checked_string = '';
 
-          if (isset($trainee_data['gospel_group'])) {
+          /*if (isset($trainee_data['gospel_group'])) {
             if ($trainee_data['gospel_group'] !== $str_gospel_group || $trainee_data['gospel_team'] !== $str_gospel_team) {
               $show_string = "style='display: none;'";
             }
-          }
+          }*/
 
           if (isset($serving_ones_list_full[$memberId])) {
             if ((!isset($_COOKIE['filter_team']) && !$fltr_team_cookie && $serving_ones_list_full[$memberId][2] !== $str_gospel_team)

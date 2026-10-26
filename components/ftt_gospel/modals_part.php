@@ -139,7 +139,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
         </div>
         <div class="row mb-3 group_block">
           <div class="col-10">
-            <label class="label-google" for="homes_field">Сколько домов святых вы посетили?</label>
+            <label class="label-google" for="homes_field">Для 5-6 семестров: Сколько домов святых вы посетили?</label>
           </div>
           <div class="col-2">
             <input id="homes_field" type="number" class="input-google short_number_field text-right" min="0" max="1000000">
