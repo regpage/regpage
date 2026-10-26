@@ -1477,7 +1477,7 @@ function fillEditMember (memberId, info, localities, newMemberBlank) {
       var emMateHtml = "<option value='_none_'>&nbsp;</option>"; //, mateArr = []
       //Разместить с новая версия или служащий
       let type = "be_mate";
-      if ($('.tab-pane.active').attr('data-event_type') === 'SCC' || $('.tab-pane.active').attr('data-event_type') === 'RYC' || $('.tab-pane.active').attr('data-event_type') === 'TSC' || $('.tab-pane.active').attr('data-event_type') === 'RTS') {
+      if (($('.tab-pane.active').attr('data-access') === '0' && $('.tab-pane.active').attr('data-event_type') === 'SCC') || $('.tab-pane.active').attr('data-event_type') === 'RYC' || $('.tab-pane.active').attr('data-event_type') === 'TSC' || $('.tab-pane.active').attr('data-event_type') === 'RTS') {
         type = "em_mate";
       }
       fetch("/ajax/get.php?type="+type+"&event_id=" + $("#events-list").val())
@@ -1490,6 +1490,7 @@ function fillEditMember (memberId, info, localities, newMemberBlank) {
             }
           }
         }
+        
         $(".emMate").html (emMateHtml).val (info["mate_key"] ? info["mate_key"] : "_none_");
       });
 

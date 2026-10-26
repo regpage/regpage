@@ -1248,11 +1248,13 @@ function db_getEventsByAdmin($adminId){
         FROM event e
         LEFT JOIN event_zones z ON z.event_key=e.key
         LEFT JOIN country c ON c.key = z.country_key
-        LEFT JOIN region r ON r.key = z.region_key or c.key=r.country_key
+        LEFT JOIN region r ON r.key = z.region_key OR c.key=r.country_key OR (CHAR_LENGTH(z.region_key) = 2 AND r.key LIKE CONCAT(z.region_key, '%'))
         INNER JOIN locality lo ON lo.key = z.locality_key or lo.region_key = r.key
         INNER JOIN access a ON a.country_key=c.key or a.region_key=r.key or a.locality_key = lo.key
         WHERE a.member_key='$adminId' AND e.is_active=1 $request
+
         UNION
+
         SELECT e.key as id, e.name, e.start_date, e.end_date, e.regend_date, e.min_age, e.max_age,
         e.info, e.need_passport, e.event_type, e.web, e.need_flight, e.need_visa, e.need_info, e.head_info, e.info_items, e.list_name, e.need_status, e.online,
         IF((SELECT COUNT(*) FROM reg rg WHERE rg.event_key=e.key AND (rg.regstate_key = '01' OR rg.regstate_key = '02' OR rg.regstate_key = '04' OR rg.regstate_key is NULL )) >= e.participants_count AND e.participants_count > 0, 1, 0) as stop_registration,
@@ -1262,11 +1264,13 @@ function db_getEventsByAdmin($adminId){
         FROM event e
         INNER JOIN access a ON a.member_key='$adminId'
         INNER JOIN country c ON c.key = a.country_key
-        INNER JOIN region r ON r.key = a.region_key or c.key=r.country_key
+        INNER JOIN region r ON r.key = a.region_key OR c.key=r.country_key OR (CHAR_LENGTH(a.region_key) = 2 AND r.key LIKE CONCAT(a.region_key, '%'))
         INNER JOIN locality lo ON lo.key = a.locality_key or lo.region_key = r.key
         INNER JOIN event_zones z ON z.event_key=e.key AND (z.country_key=c.key or z.region_key=r.key or z.locality_key=lo.key)
         WHERE e.is_active=1 $request
+
         UNION
+
         SELECT e.key as id, e.name, e.start_date, e.end_date, e.regend_date, e.min_age, e.max_age,
         e.info, e.need_passport, e.event_type, e.web, e.need_flight, e.need_visa, e.need_info, e.head_info, e.info_items, e.list_name, e.need_status, e.online,
         IF((SELECT COUNT(*) FROM reg rg WHERE rg.event_key=e.key AND (rg.regstate_key = '01' OR rg.regstate_key = '02' OR rg.regstate_key = '04' OR rg.regstate_key is NULL )) >= e.participants_count AND e.participants_count > 0, 1, 0) as stop_registration,
@@ -1278,8 +1282,7 @@ function db_getEventsByAdmin($adminId){
         ) q ORDER BY start_date ");
 
         while ($row = $res->fetch_object()) $events[]=$row;
-    }
-    else{
+    } else {
         $res = db_query("SELECT e.key as id, e.name, e.start_date, e.end_date, e.regend_date, e.min_age, e.max_age,
         e.info, e.need_passport, e.event_type, e.web, e.need_flight, e.need_visa, e.need_info, e.head_info, e.info_items, e.list_name,
         e.need_transport, e.need_prepayment, e.private, e.need_tp, e.need_status, e.currency,  e.online, e.contrib,
@@ -3213,7 +3216,7 @@ function db_getEventsForEventsPage($adminId, $sort_type, $sort_field){
                     LEFT JOIN locality l ON l.key=e.locality_key
                     LEFT JOIN event_zones z ON z.event_key=e.key
                     LEFT JOIN country c ON c.key = z.country_key
-                    LEFT JOIN region r ON r.key = z.region_key or c.key=r.country_key
+                    LEFT JOIN region r ON r.key = z.region_key OR c.key=r.country_key OR (CHAR_LENGTH(z.region_key) = 2 AND r.key LIKE CONCAT(z.region_key, '%'))
                     INNER JOIN locality lo ON lo.key = z.locality_key or lo.region_key = r.key
                     INNER JOIN member m ON m.locality_key = lo.key
                     WHERE m.key='$adminId' $request
@@ -3229,7 +3232,7 @@ function db_getEventsForEventsPage($adminId, $sort_type, $sort_field){
                     LEFT JOIN locality l ON l.key=e.locality_key
                     LEFT JOIN event_zones z ON z.event_key=e.key
                     LEFT JOIN country c ON c.key = z.country_key
-                    LEFT JOIN region r ON r.key = z.region_key or c.key=r.country_key
+                    LEFT JOIN region r ON r.key = z.region_key OR c.key=r.country_key OR (CHAR_LENGTH(z.region_key) = 2 AND r.key LIKE CONCAT(z.region_key, '%'))
                     INNER JOIN locality lo ON lo.key = z.locality_key or lo.region_key = r.key
                     INNER JOIN access a ON a.country_key=c.key or a.region_key=r.key or a.locality_key = lo.key
                     WHERE a.member_key='$adminId' $request
@@ -3245,7 +3248,7 @@ function db_getEventsForEventsPage($adminId, $sort_type, $sort_field){
                     LEFT JOIN locality l ON l.key=e.locality_key
                     INNER JOIN access a ON a.member_key='$adminId'
                     INNER JOIN country c ON c.key = a.country_key
-                    INNER JOIN region r ON r.key = a.region_key or c.key=r.country_key
+                    INNER JOIN region r ON r.key = a.region_key OR c.key=r.country_key OR (CHAR_LENGTH(a.region_key) = 2 AND r.key LIKE CONCAT(a.region_key, '%'))
                     INNER JOIN locality lo ON lo.key = a.locality_key or lo.region_key = r.key
                     INNER JOIN event_zones z ON z.event_key=e.key AND (z.country_key=c.key or z.region_key=r.key or z.locality_key=lo.key)
                     WHERE 1 $request
