@@ -88,7 +88,7 @@ function getGospel($condition, $traineeId, $sorting, $from = "", $to = "", $team
       $result[] = array_merge($row, array('number' => 0, 'first_contacts' => 0, 'further_contacts' => 0));
     }
   }
-  
+
   return $result;
 }
 

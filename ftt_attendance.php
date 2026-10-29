@@ -1,5 +1,4 @@
-<?php
-    require_once '../private/vendor/autoload.php';  
+<?php    
     // Посещаемость
     require_once "preheader.php";
     // БД

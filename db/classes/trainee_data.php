@@ -39,5 +39,3 @@ class trainee_data {
      return $result;
   }
 }
-
- ?>

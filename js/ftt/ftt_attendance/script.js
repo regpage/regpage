@@ -2264,6 +2264,12 @@ function open_blank(el_this) {
     let footnotes_ot_change = "";
     let footnotes_nt_change = "";
     let and = "";
+    let member_key_trainee = "";
+    if (trainee_access) {
+      member_key_trainee = window.adminId;
+    } else {
+      member_key_trainee = $("#modalAddEdit").attr("data-member_key");
+    }
     if (($(".reading_bible_title").attr("data-notes_ot") != footnotes_ot) && $(".reading_bible_title").attr("data-book_ot")) {
       footnotes_ot_change = " Ветхому Завету";
     }
@@ -2275,7 +2281,7 @@ function open_blank(el_this) {
         and = " и";
       }
       if (confirm("Вы начинаете заново? Удалить предыдущую историю чтения по" + footnotes_ot_change + and + footnotes_nt_change + "?")) {
-        fetch("internal_api.php?category=ftt_reading&type=dlt_history_reading_bible&member_key=" + window.adminId + "&ot=" + footnotes_ot_change + "&nt=" + footnotes_nt_change) // ajax/ftt_reading_ajax.php?type=dlt_history_reading_bible
+        fetch("internal_api.php?category=ftt_reading&type=dlt_history_reading_bible&member_key=" + member_key_trainee + "&ot=" + footnotes_ot_change + "&nt=" + footnotes_nt_change) // ajax/ftt_reading_ajax.php?type=dlt_history_reading_bible
         .then(response => response.json())
         .then(commits => {
 

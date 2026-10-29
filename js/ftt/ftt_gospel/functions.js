@@ -1,3 +1,4 @@
+let data_strings = ['id', 'date', 'author', 'gospel_team', 'gospel_group', 'place', 'group_members', 'flyers', 'people', 'prayers', 'baptism', 'meets_last', 'meets_current', 'meetings_last', 'meetings_current', 'first_contacts', 'further_contacts', 'homes', 'place_name', 'fgt_place', 'comment'];
 // Очистить форму
 function clear_blank() {
   if ($("#gospel_tab").is(":visible")) {

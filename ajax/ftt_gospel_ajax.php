@@ -15,7 +15,7 @@ if (!$adminId) {
 
 // Получаем список
 if(isset($_GET['type']) && $_GET['type'] === 'get_gospel_str') {
-    echo json_encode(["result"=>getGospel($_GET['period'], $adminId, 'sort_date-desc', $_GET['from'], $_GET['to'], $_GET['team'])]);
+    echo json_encode(["result"=>getGospel($_GET['period'], '', 'sort_date-desc', $_GET['from'], $_GET['to'], $_GET['team'])]);
     exit();
 }
 
