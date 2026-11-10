@@ -1,5 +1,5 @@
 <?php
-require_once  '../private/vendor/autoload.php'; //ROOT_PATH .
+require_once  '../../private/vendor/autoload.php'; //ROOT_PATH .
 use App\Infrastructure\Database\DbQuery;
 $dbConnect = new DbQuery($db);
 use App\Repositories\Ftt\Reading\FttReadingReadRepository;

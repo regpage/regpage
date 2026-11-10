@@ -89,8 +89,7 @@ class date_convert {
     }
   }
 
-  static function week_days($date='', $short=false) {
-		$day;
+  static function week_days($date='', $short=false) {		
 		if ($date) {
 			$day = date('w', strtotime($date));
 		} else {
@@ -118,14 +117,36 @@ class date_convert {
 	  return $weekday[$day];
 	}
 
-  static function get_age($birthDate){
-      $date = strtotime ($birthDate);
-      $age =  (int)date("Y") - (int)strftime("%Y",$date);
-      $m = (int)date("m") - (int)strftime("%m",$date);
+  static function get_age($birthDate) {
+    // УДАЛИТЬ ПОСЛЕ ТЕСТИРОВАНИЯ
+    /*$date = strtotime ($birthDate);
+    $age =  (int)date("Y") - (int)strftime("%Y",$date);
+    $m = (int)date("m") - (int)strftime("%m",$date);
 
-      if ($m < 0 || ($m === 0 && (int)date("e") - (int)strftime("%e",$date))) {
-          $age--;
-      }
-      return $age;
+    if ($m < 0 || ($m === 0 && (int)date("e") - (int)strftime("%e",$date))) {
+        $age--;
+    }
+    return $age;*/
+
+    if ($birthDate === null || $birthDate === '') {
+      return null;
+    }
+
+    $birth = DateTimeImmutable::createFromFormat('!Y-m-d', $birthDate);
+    $errors = DateTimeImmutable::getLastErrors();
+
+    if ($birth === false
+       || ($errors !== false && ($errors['warning_count'] > 0 || $errors['error_count'] > 0))
+       || $birth->format('Y-m-d') !== $birthDate) {
+       return null;
+    }
+
+    $today = new DateTimeImmutable('today');
+
+    if ($birth > $today) {
+      return null;
+    }
+
+    return $birth->diff($today)->y;
   }
 }

@@ -110,7 +110,11 @@
       </div>
       <div id="list_content">
         <?php
-          foreach (getExtraHelp($memberId, $serving_trainee, $_COOKIE['sorting']) as $key => $value):
+          $cookieSorting = '';
+          if (isset($_COOKIE['sorting'])) {
+            $cookieSorting = $_COOKIE['sorting'];
+          }
+          foreach (getExtraHelp($memberId, $serving_trainee, $cookieSorting) as $key => $value):
           $short_name_trainee = short_name::no_middle($trainee_list[$value['feh_member_key']]);
           if (isset($serving_ones_list[$value['serving_one']])) {
             $short_name_service_one = short_name::no_middle($serving_ones_list[$value['serving_one']]);

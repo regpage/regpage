@@ -301,9 +301,10 @@ $(document).ready(function(){
     })
     .then(response => response.text())
     .then(commits => {
-      $("#announcement_modal_edit").modal("hide");
-      //console.log(commits.result);
-      location.reload();
+      $("#announcement_modal_edit").modal("hide");      
+      setTimeout(function () {
+        location.reload();
+      }, 30);
     });
   }
 

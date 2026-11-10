@@ -63,10 +63,18 @@ foreach (getMissedClasses($skip_curent_sorting, $memberId) as $key => $value) {
     $session_during = '';
   } else {
     $session_name_echo = explode(',', $value['session_name']);
-    $session_time_and_during = $session_name_echo[1];
+    if (isset($session_name_echo[1])) {
+      $session_time_and_during = $session_name_echo[1];
+    } else {
+      $session_time_and_during = '';
+    }
     $session_name_echo = $session_name_echo[0];
     $session_time_echo = explode('мин.', $session_time_and_during);
-    $session_during = trim($session_time_echo[0]);
+    if (isset($session_time_echo[0])) {
+      $session_during = trim($session_time_echo[0]);
+    } else {
+      $session_during = '';
+    }
   }
 
   if (isset($value['session_name']) && mb_substr(trim($value['session_name']), -1) === ')' && mb_substr($value['session_name'], -7, -6) === '(') {
@@ -76,7 +84,13 @@ foreach (getMissedClasses($skip_curent_sorting, $memberId) as $key => $value) {
   }
   // time rendering
   $all_seconds=0;
-  list($hour, $minute) = explode(':', $session_time_echo);
+  if (empty($session_time_echo)) {
+    $hour = '';
+    $minute = '';
+  } else {
+    list($hour, $minute) = explode(':', $session_time_echo);
+  }
+
   $second = 0;
   $all_seconds += intval($hour) * 3600;
   $all_seconds += (intval($minute) + intval($session_during)) * 60;
@@ -85,6 +99,7 @@ foreach (getMissedClasses($skip_curent_sorting, $memberId) as $key => $value) {
   $seconds = $all_seconds % 60;
   $hours = floor($total_minutes / 60);
   $minutes = $total_minutes % 60;
+
   // если не было получено название занятия (бланк не привязан с позиции в бланке посещаемости)
   if (!empty($value['session_name'])) {
     $session_name_echo = $session_name_echo . ' ('. $session_time_echo . ' – ' . sprintf('%02d:%02d', $hours, $minutes). ')';

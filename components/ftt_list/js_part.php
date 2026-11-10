@@ -1,5 +1,5 @@
 <script>
-let ftt_access_trainee = "<?php echo strval($ftt_access['ftt_service']) ?>";
+let ftt_access_trainee = "<?php if (!empty($ftt_access['ftt_service'])) echo strval($ftt_access['ftt_service']); ?>";
 ftt_access_trainee === 6 ? ftt_access_trainee = true : ftt_access_trainee = false;
 let coordinator = "<?php echo $serving_trainee; ?>";
 if (!ftt_access_trainee && coordinator) {
@@ -17,7 +17,7 @@ for (let i = 0; i < serving_ones_list_tmp.length; i = i + 2) {
 }
 /*
 // full
-serving_ones_list_full_tmp = "<?php foreach ($serving_ones_list_full as $id => $values) echo $id.'_'.$values[0].'_'.$values[1].'_'; ?>";
+serving_ones_list_full_tmp = "<?php // foreach ($serving_ones_list_full as $id => $values) echo $id.'_'.$values[0].'_'.$values[1].'_'; ?>";
 serving_ones_list_full_tmp = serving_ones_list_full_tmp ? serving_ones_list_full_tmp.split('_') : [];
 let serving_ones_list_full = [];
 for (let i = 0; i < serving_ones_list_full_tmp.length; i = i + 3) {

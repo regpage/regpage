@@ -226,6 +226,18 @@ data-id="" data-date="" data-author="" data-date_send="" data-comment="">
   </div>
 </div>
 
-<?php include 'components/ftt_reading/modals_part_start.php'; ?>
+<?php
+global $db;
+require_once  '../../private/vendor/autoload.php'; //ROOT_PATH .
+use App\Infrastructure\Database\DbQuery;
+$dbConnect = new DbQuery($db);
+use App\Repositories\Ftt\Reading\FttReadingReadRepository;
+$read_book_arr = [];
+if ($ftt_access['group'] === 'trainee') {
+  //bible books
+  $read_book_arr = (new FttReadingReadRepository($dbConnect))->getAccordingLastStart($memberId);
+  $read_book_arr = $read_book_arr['books'];
+}
+include 'components/ftt_reading/modals_part_start.php'; ?>
 <?php include 'components/ftt_attendance/modal_permission.php'; ?>
 <?php include 'components/ftt_attendance/modal_skip.php'; ?>

@@ -121,12 +121,12 @@ function getAnnouncementsForRecipient($admin_id)
   return $result;
 }
 // set noticed
-function setAnnouncementNotice($id='', $memberId)
+function setAnnouncementNotice($id, $adminId)
 {
   global $db;
   $id = $db->real_escape_string($id);
-  $memberId = $db->real_escape_string($memberId);
+  $adminId = $db->real_escape_string($adminId);
 
-  $res = db_query("UPDATE `ftt_announcement_recipients` SET `date`=NOW() WHERE `id_announcement` = '$id' AND `member_key` = '$memberId'");
+  $res = db_query("UPDATE `ftt_announcement_recipients` SET `date`=NOW() WHERE `id_announcement` = '{$id}' AND `member_key` = '{$adminId}'");
   return $res;
 }

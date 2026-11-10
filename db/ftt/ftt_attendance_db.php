@@ -216,7 +216,7 @@ function set_attendance_archive ($id, $archive) {
   return $result;
 }
 
-function set_late_automatic($member_key, $date, $delay, $session_name, $end_time=0, $id_attendance) {
+function set_late_automatic($member_key, $date, $delay, $session_name, $end_time, $id_attendance) {
   global $db;
   $member_key = $db->real_escape_string($member_key);
   $date = $db->real_escape_string($date);
@@ -547,7 +547,7 @@ function set_permission($sessions, $adminId)
         }
       } elseif (($today || $past_date) && $status === '3') {
         // обновляем соответствующие строки attendance удаля из permission_sheet_id    id $sheet_id_sub
-        if ($checked === 1) {          
+        if ($checked === 1) {
           $res = db_query("UPDATE `ftt_attendance` SET
             `permission_sheet_id` = '', `reason` = '', `changed` = 1
             WHERE `sheet_id`='$result_attendance_sheet' AND ((`session_id` = '$session_id' AND `session_id` <> '') OR `session_time` = '$session_time')");

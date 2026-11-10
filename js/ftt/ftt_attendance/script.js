@@ -3432,6 +3432,10 @@ function open_blank(el_this) {
   // pic
   $("#skip_modal_file").change(function () {
     let id = $("#edit_skip_blank").attr("data-id");
+    if (!id) {
+      showError("Что бы добавить изображения сначала сохраните бланк.");
+      return;
+    }
     let skip_data_blank = new FormData();
     $("#send_skip_blank").attr("disabled", true);
     $("#save_skip_blank").attr("disabled", true);

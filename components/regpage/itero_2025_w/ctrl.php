@@ -1,6 +1,6 @@
 <?php
 // БД
-require_once "db/regpage/itero_db.php";
+// require_once "db/regpage/itero_db.php";
 /**
  * готовим данные
  *

@@ -17,7 +17,7 @@ class Settings
       return $settings;
   }
 
-  function getUserSettings($admin_key){
+  static function getUserSettings($admin_key){
       global $db;
       $_admin_key = $db->real_escape_string($admin_key);
 

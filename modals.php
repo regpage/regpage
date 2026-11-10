@@ -300,7 +300,7 @@
                 <input type="text" placeholder="Введите название местности" valid="required" class="controls span12 search-locality-to-add-college">
                 <!-- <i class="icon-remove"></i> -->
                 <ul class="locality-list span12">
-                    <?php if (isset($allLocalities) && $allLocalities) {
+                    <?php if (!empty($allLocalities)) {
                       foreach ($allLocalities as $id => $name) echo "<li data-value='$id' title='Выбрать ".htmlspecialchars ($name)."'>".htmlspecialchars ($name)."</li>";
                     } ?>
                 </ul>

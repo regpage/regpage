@@ -3,19 +3,19 @@ include_once "header.php";
 include_once "db/ftt/ftt_db.php";
 include_once "db/classes/ftt_applications/ftt_candidates.php";
 include_once 'db/classes/short_name.php';
-include_once 'db/regpage/itero_db.php';
-include_once 'components/regpage/itero_2025_w/ctrl.php';
+// include_once 'db/regpage/itero_db.php';
+// include_once 'components/regpage/itero_2025_w/ctrl.php';
 ?>
 <script>
 let member_locality_name = '<?php echo db_getMemberLocality($memberId); ?>';
 let itero_online = "";
 let itero_online_desk = "";
-let itero_online_key = '<?php echo $iteroCtrl->getKey(); ?>';
+let itero_online_key = ''; //<?php // echo $iteroCtrl->getKey(); ?>
 </script>
 <?php
 //  || $memberId === '000001679'
 
-    if (in_array($memberId, $Members->getMembersKeys())) { // участник есть в списке itero
+    /* if (in_array($memberId, $Members->getMembersKeys())) { // участник есть в списке itero
       if ($iteroCtrl->isAvailableNow()) { // мероприятие доступно
         ?>
         <script>
@@ -42,7 +42,7 @@ let itero_online_key = '<?php echo $iteroCtrl->getKey(); ?>';
       // убрать сброс кэша для раздела
       // положить текст и даты в переменную JS, преобразовать даты в классе в том случае если брат участвует и регистрация подтверждена иначе ничего
       // положить кнопку в переменную JS
-    }
+    }*/
 
     $application_data = db_getApplications($memberId);
     $application_data_interview = db_getApplications($memberId, true);

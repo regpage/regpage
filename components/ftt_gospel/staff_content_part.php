@@ -262,7 +262,9 @@
           if ($str_group_members) {
             $str_pieces = explode(',', $str_group_members);
             for ($i=0; $i < count($str_pieces); $i++) {
-              $group_members_text .= short_name::short($trainee_list[trim($str_pieces[$i])]);
+              if (isset($trainee_list[$str_pieces[$i]])) {
+                $group_members_text .= short_name::short($trainee_list[trim($str_pieces[$i])]);
+              }
             }
             //$group_members_text .= $str_pieces[$i]."&#8239;".$str_pieces[$i+1];
           }

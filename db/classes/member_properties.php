@@ -14,7 +14,7 @@ class MemberProperties
       return $array;
   }
 
-  function get_documents ()
+  static function get_documents ()
   {
       $res=db_query ("SELECT `key` as id, name FROM document ORDER BY name");
       $array = array ();

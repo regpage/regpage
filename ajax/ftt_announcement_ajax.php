@@ -46,5 +46,3 @@ if (isset($_GET['type']) && $_GET['type'] === 'noticed_announcement') {
     echo json_encode(["result"=>setAnnouncementNotice($_GET['id'], $adminId)]);
     exit();
 }
-
-?>

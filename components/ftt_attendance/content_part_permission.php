@@ -22,7 +22,10 @@
     $permission_date = $value['date'];
     $permission_date_send = $value['date_send'];
     $permission_status = $value['status'];
-    $permission_serving_one = $value['serving_one'];
+    $permission_serving_one = '';
+    if (isset($value['serving_one'])) {
+      $permission_serving_one = $value['serving_one'];
+    }
     $permission_date_decision = $value['decision_date'];
     $permission_notice = $value['notice'];
     $permission_comment = $value['comment'];

@@ -57,7 +57,7 @@
             $phone_staff = $value['cell_phone'];
             $email_staff = $value['email'];
             $attend_meeting_staff = $value['attend_meeting'];
-            $comment_staff = $value['comment'];
+            $comment_staff = $value['comment'] ?? '';
             $changed_staff = $value['changed'];
             $change_pencil_staff = '';
             if ($changed_staff === '1') {
