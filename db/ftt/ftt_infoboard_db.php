@@ -7,7 +7,7 @@ require_once 'db/classes/common/db_query.php';
 class fttInfoboard extends DBQuery
 {
 
-  function getToday() {
+  static function getToday() {
     $result = [];
     $res = db_query("SELECT * FROM `ftt_infoboard` WHERE `active` = 1 ORDER BY `position`"); // `date`=CURDATE()
     while ($row = $res->fetch_assoc()) $result[] = $row;

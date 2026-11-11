@@ -541,9 +541,16 @@ function get_meet_by_date($date, $serving_ones = '_all_')
     }
   }
   uasort($result, function($a, $b){
+    if (!isset($a[0]['name'], $b[0]['name'])) {
+        return 0;
+    }
+
+    return $a[0]['name'] <=> $b[0]['name'];
+
+    /* Старая версия
     if (isset($a[0]['name']) && isset($b[0]['name'])) {
       return ($a[0]['name'] > $b[0]['name']);
-    }
+    }*/
   });
   return $result;
 }

@@ -2660,6 +2660,8 @@ function db_addNewMember ($name, $locality_key, $gender, $birth_date, $category_
 }
 
 function getAge($birthDate){
+  // удалить после тестирования
+  /*
     $date = strtotime ($birthDate);
     $age =  (int)date("Y") - (int)strftime("%Y",$date);
     $m = (int)date("m") - (int)strftime("%m",$date);
@@ -2668,6 +2670,32 @@ function getAge($birthDate){
         $age--;
     }
     return $age;
+    */
+    if ($birthDate === null || $birthDate === '') {
+      return null;
+    }
+
+    $birth = DateTimeImmutable::createFromFormat('!Y-m-d', $birthDate);
+    $errors = DateTimeImmutable::getLastErrors();
+
+    if (
+       $birth === false
+       || ($errors !== false && (
+           $errors['warning_count'] > 0
+           || $errors['error_count'] > 0
+       ))
+       || $birth->format('Y-m-d') !== $birthDate
+    ) {
+       return null;
+    }
+
+    $today = new DateTimeImmutable('today');
+
+    if ($birth > $today) {
+      return null;
+    }
+
+    return $birth->diff($today)->y;
 }
 
 function db_getLocalityKeyByName($locality_name){

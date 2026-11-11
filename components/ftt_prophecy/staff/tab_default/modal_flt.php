@@ -1,3 +1,10 @@
+<?php
+global $listTraneesByStaffForFlt;
+global $cookieFltListTrainee;
+global $serving_ones_list;
+global $cookieFltListServingone;
+global $cookieFltListCurrents;
+?>
 <select id="modal_flt_list_trainees" class="form-control form-control-sm mb-2">
   <?php FTT_Select_fields::rendering($listTraneesByStaffForFlt, $cookieFltListTrainee, 'Все обучающиеся'); ?>
 </select>

@@ -34,22 +34,22 @@ $(document).ready (function (){
 // START DASHBOARD
   function loadDashboard (reload){
     if (reload) {
-      var startDate = formatDateDotToDash($('.start-date').val(), false),
-      stopDate = formatDateDotToDash($('.end-date').val(), true),
+      let startDate = formatDateDotToDash($('.start-date').val(), false);
+      stopDate = formatDateDotToDash($('.end-date').val(), true);
       localityFilter = $("#selMemberLocality").val(),
       pageFilter = $("#selMemberCategory").val(),
       listAdminsFilter = $("#listAdmins").val();
-          startDate+='%';
-          stopDate +='%';
+      startDate+='%';
+      stopDate +='%';
         $.getJSON('/ajax/activity_log.php?get_activity', {start:startDate,stop:stopDate, locality: localityFilter, page: pageFilter, admins: listAdminsFilter})
             .done (function(data) {
                 refreshActivity (data.members);
               });
     } else {
-      var startDate = formatDateDotToDash($('.start-date').val(), false),
+      let startDate = formatDateDotToDash($('.start-date').val(), false);
       stopDate = formatDateDotToDash($('.end-date').val(), true);
-      startDate+='%';
-      stopDate +='%';
+      //startDate+='%';
+      //stopDate +='%';
       $.getJSON('/ajax/activity_log.php?get_activity', {start:startDate,stop:stopDate, locality: '_all_', page: '_all_', admins: '_all_'})
           .done (function(data) {
               refreshActivity (data.members);
@@ -620,12 +620,31 @@ if (sortType == 12) {
   });
 
   function formatDateDotToDash (date, plusOne) {
-    var dateParts = date.split(".");
+    const [day, month, year] = date.split(".").map(Number);
+
+    if ([day, month, year].some(Number.isNaN)) {
+      console.log(`Некорректный формат даты: ${date}`);
+    }
+
+    const result = new Date(year, month - 1, day);
+    result.setDate(result.getDate() + (plusOne ? 1 : -1));
+
+    const newMonth = String(result.getMonth() + 1).padStart(2, "0");
+    const newDay = String(result.getDate()).padStart(2, "0");
+
+    return `${result.getFullYear()}-${newMonth}-${newDay}`;
+
+    /*
+    const [day, month, year] = date.split(".");
+    return `${year}-${month}-${day}`;
+*/
+    /*var dateParts = date.split(".");
     var day = plusOne === true ?  dateParts[0]+1 : dateParts[0]-1;
     var getNewDate = dateParts[2] + '-' + dateParts[1] + '-' + day;
-	   return getNewDate;
-   }
-   renewComboLists('.meeting-lists-combo');
+    return getNewDate;*/
+  }
+
+  renewComboLists('.meeting-lists-combo');
 
 // STOP DOCUMENT READY
 });

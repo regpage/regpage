@@ -1,5 +1,5 @@
 <?php
-require_once '../private/vendor/autoload.php';
+require_once '../../private/vendor/autoload.php';
 
 use App\Controllers\Ftt\Trainee\TraineeCtrl;
 use App\Services\Ftt\Param\FttParamService;

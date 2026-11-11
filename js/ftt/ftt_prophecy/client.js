@@ -54,6 +54,7 @@ $(document).ready(function(){
     $("#modal_info_blank").hide();
     $("#modal_info_blank").html("");
     reset_modal_file_block();
+    hide_show_element_loading(false, $("#link_add_dlt_announcement"), $("#related_announcement_text"), ["Создать объявление", "Удалить объявление"]);
     module_blank_clear($("#modal_edit_add_md"));
     if ($(this).attr("id") !== "addProphecy") {
       get_data_for_blank($(this).attr("data-id"), "#modal_edit_add_md");
@@ -124,6 +125,20 @@ $(document).ready(function(){
       location.reload();
     }, 30);
   });
+
+  $("#link_add_dlt_announcement").click(function () {
+    if ($("#related_announcement_text").is(":visible")) {
+      if (confirm("Удалить объявление?")) {
+        if ($("#related_announcement_text").attr("data-announcement_id") > 0) {
+          dlt_related_announcement_text(("#modal_edit_add_md$").val() && $("#related_announcement_text").attr("data-announcement_id"));
+        }
+        $("#related_announcement_text").val("");
+        $("#related_announcement_text").attr("data-announcement_id", "0");
+      }
+    }
+    hide_show_element_by_click($("#link_add_dlt_announcement"), $("#related_announcement_text"), ["Создать объявление", "Удалить объявление"]);
+  });
+
 
 // DOCUMENT READY END
 });

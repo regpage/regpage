@@ -1,5 +1,6 @@
 <?php
 require_once 'db/classes/common/db_query.php';
+require_once 'db/classes/trainee_data.php';
 /**
  * запросы для раздела пророчество
  * ProphecyDB::getListByMember($memberKey)
@@ -75,16 +76,18 @@ class ProphecyDB extends DBQuery
   {
     return DBQuery::dlt('ftt_prophecy', 'id', $id);
   }
+
   // записываем новую / обновляем существующую строку
-  static function setLine($data)
+  static function setLine($data, $adminId = '')
   {
+    global $db;
     $keysTextQuery = '';
     $valuesTextQuery = '';
     $new = empty($data->id);
     foreach ($data as $key => $value) {
       $data->$key = db_real_escape_string($value);
       if ($new) { // вставка новой строки
-        if ($key === 'id') {
+        if ($key === 'id' || $key === 'related_announcement_content') {
           continue;
         }
         if (empty($keysTextQuery)) {
@@ -95,7 +98,7 @@ class ProphecyDB extends DBQuery
           $valuesTextQuery .= ",'{$data->$key}'";
         }
       } else { //  обновление существующей строки
-        if ($key !== 'id') {
+        if ($key !== 'id' && $key !== 'related_announcement_content') {
           if (empty($valuesTextQuery)) {
             $valuesTextQuery .=  "`" . db_real_escape_string($key) . "` = '{$data->$key}'";
           } else {
@@ -105,14 +108,75 @@ class ProphecyDB extends DBQuery
       }
     }
 
-    /*$data->id = db_real_escape_string($data->id);
-    $data->member_key = db_real_escape_string($data->member_key);
-    $data->date = db_real_escape_string($data->date);
-    $data->prophecy = db_real_escape_string($data->prophecy);*/
     if (empty($data->id)) {
-      return db_query("INSERT INTO `ftt_prophecy` ({$keysTextQuery}) VALUES ({$valuesTextQuery})");
+      $resultQuery = db_query("INSERT INTO `ftt_prophecy` ({$keysTextQuery}) VALUES ({$valuesTextQuery})");
+      $newId = $db->insert_id;
     } else {
-      return db_query("UPDATE `ftt_prophecy` SET {$valuesTextQuery} WHERE  `id` = '{$data->id}'");
+      $resultQuery = db_query("UPDATE `ftt_prophecy` SET {$valuesTextQuery} WHERE `id` = '{$data->id}'");
+    }
+
+    if ($resultQuery === false) {
+      return 'Ошибка: ' . $db->error;
+    } elseif (empty($data->id) && empty($data->related_announcement_content)) {
+
+    } elseif (empty($data->id) && !empty($data->related_announcement_content)) {
+      self::setAnnouncement($newId, $data, $adminId);
+    } else {
+      self::setAnnouncement($data->id, $data, $adminId);
+    }
+    return $resultQuery;
+  }
+
+  static function setAnnouncement($newId, $data, $adminId)
+  {
+    // Создать бланк
+// Сохранить бланк
+// На отсутствие объявления указывает 2 факта
+// если (ID объявления === 0 И ткст объявления пуст)
+// тогда создание объявления игнорируется
+    // новый бланк / существующий бланк
+    // установить есть объявление или нет, было или нет.
+    // добавить объявление или нет
+    // Новый бланк, без объявлеия / с объявлением
+    // Существующий бланк, без объявлеия / с объявлением
+    // Существующий бланк, добавленрие объявления / удаление объявления
+    // удаление объявления выполняестся оотдельно.
+    // стирание текста объявления === удалению?
+    // announcement
+
+    /*
+    условие 1 есть текст нет id НОВОЕ ОБЪЯВЛЕНИЕ
+    условие 2 есть текст есть id существующее объявление (можно проверить изменение запросив по id и тексту на 100% соответствие)
+    условие 3 нет текст есть id обновление, тоже можно с проверкой
+    удаляем отдельно
+    обновляем всегда
+    если объявления нет и поля не заполнены ничего не делаем
+    $data->announcement_id = db_real_escape_string($data->announcement_id);
+    $data->related_announcement_content = db_real_escape_string($data->related_announcement_content);
+    if (empty($data->announcement_id) && !empty($data->related_announcement_content)) {
+      db_query("INSERT INTO `ftt_prophecy` ({$keysTextQuery}) VALUES ({$valuesTextQuery})");
+    } else {
+      db_query("UPDATE `ftt_prophecy` SET {$valuesTextQuery} WHERE  `id` = '{$data->id}'");
+    }
+     */
+    // добавляем новое объявление при создании бланка, если объявление заполнено
+    $traineeData = trainee_data::get_data($data->member_key);
+    if (!empty($newId) && !empty($data->related_announcement_content)) {
+      $topic = "О пророчестве {$data->date}";
+      db_query("INSERT INTO `ftt_announcement`
+        (`date`, `time`, `publication`, `header`, `content`, `member_key`, `by_list`, `list`, `time_zone`, `archive_date`)
+        VALUES
+        (CURDATE(), CURTIME(), 1, '{$topic}','{$data->related_announcement_content}','{$adminId}','1','{$data->member_key}', '{$traineeData->ft_time_zone}', CURDATE() + INTERVAL 1 DAY)");
+
+      db_query("UPDATE `ftt_prophecy` SET `announcement_id`= {$newId}");
+    } elseif (empty($newId)) { // && !empty($data->related_announcement_content)
+      $topic = "О пророчестве {$data->date}";
+      db_query("INSERT INTO `ftt_announcement`
+        (`date`, `time`, `publication`, `header`, `content`, `member_key`, `by_list`, `list`, `time_zone`, `archive_date`)
+        VALUES
+        (CURDATE(), CURTIME(), 1, '{$topic}','{$data->related_announcement_content}','{$adminId}','1','{$data->member_key->ft_time_zone}', '{$data->ft_time_zone}', CURDATE() + INTERVAL 1 DAY)");
+
+      // db_query("UPDATE `ftt_prophecy` SET `announcement_id`= {$data->id}");
     }
   }
   /*

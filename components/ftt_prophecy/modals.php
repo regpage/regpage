@@ -83,7 +83,13 @@
     </div>
   </div>
 </div>
-<div class="row mb-2">
+<div class="row">
+  <div class="col">
+    <span id="link_add_dlt_announcement" class="link_custom display-inline-block">Создать объявление</span>
+    <textarea id="related_announcement_text" class="form-control form-control-sm mt-2" rows="8" placeholder="Текст объявления." name="related_announcement_content" data-announcement_id=""></textarea>
+  </div>
+</div>
+<div class="row my-2">
   <div class="col">
     <input type="checkbox" id="mdl_prophecy_done" class="form-check-input ml-0 f_use" name="done"><label for="mdl_prophecy_done" class="form-check-label ml-4"> я пророчествовал(а) на собрании</label>
   </div>
