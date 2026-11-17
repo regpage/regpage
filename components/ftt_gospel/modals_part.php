@@ -294,6 +294,7 @@ data-meetings_current="" data-first_contacts="" data-further_contacts="" data-ho
               <option value="_all_" selected>Все команды</option>
               <?php
               $my_team = '';
+              $selected = '';
                foreach (getGospelTeam() as $key => $value):
               if (isset($serving_ones_list_full[$memberId])) {
                 $selected = '';

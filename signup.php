@@ -8,7 +8,9 @@
 
     $login = null;
     $password = null;
-
+    $redirect = '';
+    $log_log = '';
+    $pas_pas = '';
     if (isset($_GET["redirect"]) && $_COOKIE["log_log"]) {
       $redirect = true;
       $log_log = $_COOKIE["log_log"];

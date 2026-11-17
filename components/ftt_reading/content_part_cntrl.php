@@ -2,7 +2,7 @@
 require_once 'db/classes/ftt_info.php';
 
 //define('ROOT_PATH', dirname(__DIR__, 3));
-require_once  '../private/vendor/autoload.php'; //ROOT_PATH .
+require_once  '../../private/vendor/autoload.php'; //ROOT_PATH .
 use App\Infrastructure\Database\DbQuery;
 $dbConnect = new DbQuery($db);
 use App\Repositories\Ftt\Reading\FttReadingReadRepository;

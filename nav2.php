@@ -288,10 +288,14 @@ switch ($h) {
                 list($name, $email) = db_getMemberNameEmail($memberId);
 
                 $_name = '';
+                $_nameTreePart = '';
+                if (isset($nameArr[2])) {
+                  $_nameTreePart = $nameArr[2];
+                }
 
                 if($name){
                     $nameArr = explode(' ', $name);
-                    $_name  = $nameArr[0].' '.( $nameArr[1] ? strtoupper(mb_substr($nameArr[1], 0, 1, 'utf-8')).'. ' : '' ).' '.($nameArr[2] ? strtoupper(mb_substr($nameArr[2], 0, 1, 'utf-8')).'. ' : '');
+                    $_name  = $nameArr[0].' '.( $nameArr[1] ? strtoupper(mb_substr($nameArr[1], 0, 1, 'utf-8')).'. ' : '' ).' '.($_nameTreePart ? strtoupper(mb_substr($_nameTreePart, 0, 1, 'utf-8')).'. ' : '');
                 }
                 else{
                     $_name = $email;

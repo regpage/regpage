@@ -1,6 +1,6 @@
 <?php
 include_once "ajax.php";
-
+require_once '../db/classes/emailing.php';
 header('Content-type: text/plain');
 
 if(isset($_GET["logout"])){
@@ -43,15 +43,15 @@ else if (isset($_GET["login"]) && isset($_GET["password"])) {
     }
 
     print $memberId ? "success" : "error" ;
-}
-else if (isset($_GET["signupLogin"])) {
+} else if (isset($_GET["signupLogin"])) {
     $email = ($_GET["signupLogin"]);
     $memberId = db_isAdminExist ($email);
 
     if(isset($_GET["password"])){
-        if(!$memberId){
-            UTILS::sendConfirmationEmailToCreateAccount($email, $_GET);
-        }
+      if(!$memberId){
+          $arguments = UTILS::sendConfirmationEmailToCreateAccount($email, $_GET);
+          emailing::send($arguments['email'],$arguments['subject'],$arguments['htmlText'],$arguments['reply'],$arguments['sender']);
+      }
     } else {
         print !$memberId ? "success" : "error";
     }
@@ -61,4 +61,3 @@ else if(isset($_GET['checklogin'])){
     print !$memberId ? "new" : "existing";
     exit();
 }
-?>

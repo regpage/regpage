@@ -1,6 +1,6 @@
 <script>
 let data_page = {"applicant":""};
-data_page.applicant = "<?php echo $applicant;?>";
+data_page.applicant = "<?php if (!empty($applicant)) {echo $applicant;}?>";
 data_page.role = "<?php echo $serviceone_role;?>";
 //data_page.viewer = "<?php //echo $serviceones_pvom;?>";
 data_page.recommendator = "<?php echo $is_recommendator;?>";

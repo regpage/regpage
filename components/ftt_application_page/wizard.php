@@ -25,6 +25,7 @@
   <?php if ($application_prepare === '1' || $request_data['stage'] > 0) {
     $points_head =[];
     $notForRecommendHeader = [];
+    global $is_recommendator;
     for ($i=0; $i <count($points); $i++) {
       if ($points[$i]['display_type'] === 'header' && $points[$i]['group_position'] !== '0') {
         if ($points[$i]['not_for_recommend'] == 1 && $is_recommendator == 1 && $serviceone_role != 3) {
@@ -54,6 +55,7 @@
     }
     echo '</div>';
   } else {
+    $pagination = '';
     $points_head =[];
     for ($i=0; $i <count($points); $i++) {
       if ($points[$i]['display_type'] === 'header' && $points[$i]['group_position'] !== '0') {

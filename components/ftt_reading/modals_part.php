@@ -198,7 +198,7 @@
                 if ($key === $ftr_trainee_skip) {
                   $selected = 'selected';
                 }*/
-                echo "<option value='{$key}' {$selected}>{$value}</option>";
+                echo "<option value='{$key}'>{$value}</option>"; // {$selected}
               endforeach; ?>
             </select>
           </div>

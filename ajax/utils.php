@@ -137,7 +137,8 @@ class UTILS
 
         $subject = "Создание учётной записи на сайте регистрации reg-page.ru";
 
-        EMAILS::sendEmail($email, $subject, $htmlText, 'info@reg-page.ru', 'Сайт регистрации');
+        // EMAILS::sendEmail($email, $subject, $htmlText, 'info@reg-page.ru', 'Сайт регистрации');
+        return ['email' => $email, 'subject' => $subject, 'htmlText' => $htmlText, 'reply' => 'info@reg-page.ru', 'sender' => 'Сайт регистрации'];
     }
 
     static function sendConfirmationEmailToChangeLogin($email, $memberId){

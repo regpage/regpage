@@ -2880,9 +2880,9 @@ function db_handleEvent ($name, $locality, $author, $start_date, $end_date, $reg
     $tp = $db->real_escape_string($tp);
     $flight = $db->real_escape_string($flight);
     $info = $db->real_escape_string($info);
-    $reg_members = $reg_members == '' ? null: $db->real_escape_string($reg_members);
+    $reg_members = $reg_members == '' ? null : $db->real_escape_string($reg_members);
     $reg_members_email = $reg_members_email == '' ? null : $db->real_escape_string($reg_members_email);
-    $event_id = $db->real_escape_string($event_id);
+    $event_id = $event_id ? $db->real_escape_string($event_id) : '';
     $team_key = $team_key ? $db->real_escape_string($team_key) : '';
     $event_type = $event_type ? $db->real_escape_string($event_type) : '';
     $close_registration = (int)$close_registration;
@@ -2901,7 +2901,9 @@ function db_handleEvent ($name, $locality, $author, $start_date, $end_date, $reg
     $min_age = $db->real_escape_string($min_age);
     $max_age = $db->real_escape_string($max_age);
     $status = $db->real_escape_string($status);
-
+    if (!isset($reg_members_email)) {
+        throw new InvalidArgumentException('Нет емайл у ответственного за мероприятие');
+    }
     $adminsFromForm = explode (',', $reg_members);
     $adminsEmailFromForm = explode (',', $reg_members_email);
 

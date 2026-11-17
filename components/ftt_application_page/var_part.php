@@ -26,7 +26,7 @@ $applicant;
 // Рекомендатор, служащий ПВОМ, собеседующий.
 $serviceone_role = -1;
 $is_recommendator;
-$is_interviewer;
+$is_interviewer=null;
 // Списки служащих ПВОМ
 $serviceones_pvom = ftt_lists::serving_ones();
 $brothers_in_church = db_getChurchLifeBrothers();
@@ -269,33 +269,33 @@ $img_scan_1;
 $img_scan_2;
 $img_scan_3;
 
-if (isset($request_data['spouse_consent'])) {
+if (!empty($request_data['spouse_consent'])) {
   $img_temp = explode('.', $request_data['spouse_consent']);
-  if ($img_temp[1] === 'pdf' || $img_temp[1] === 'Pdf' || $img_temp[1] === 'PDF') {
+  if (isset($img_temp[1]) && ($img_temp[1] === 'pdf' || $img_temp[1] === 'Pdf' || $img_temp[1] === 'PDF')) {
     $img_link_spouse_consent = 'img/pdf.jpeg';
   } else {
     $img_link_spouse_consent = $request_data['spouse_consent'];
   }
 }
-if (isset($request_data['passport_scan'])) {
+if (!empty($request_data['passport_scan'])) {
   $img_temp = explode('.', $request_data['passport_scan']);
-  if ($img_temp[1] === 'pdf' || $img_temp[1] === 'Pdf' || $img_temp[1] === 'PDF') {
+  if (isset($img_temp[1]) && ($img_temp[1] === 'pdf' || $img_temp[1] === 'Pdf' || $img_temp[1] === 'PDF')) {
     $img_scan_1 = 'img/pdf.jpeg';
   } else {
     $img_scan_1 = $request_data['passport_scan'];
   }
 }
-if (isset($request_data['passport_scan_2'])) {
+if (!empty($request_data['passport_scan_2'])) {
   $img_temp = explode('.', $request_data['passport_scan_2']);
-  if ($img_temp[1] === 'pdf' || $img_temp[1] === 'Pdf' || $img_temp[1] === 'PDF') {
+  if (isset($img_temp[1]) && ($img_temp[1] === 'pdf' || $img_temp[1] === 'Pdf' || $img_temp[1] === 'PDF')) {
     $img_scan_2 = 'img/pdf.jpeg';
   } else {
     $img_scan_2 = $request_data['passport_scan_2'];
   }
 }
-if (isset($request_data['passport_scan_3'])) {
+if (!empty($request_data['passport_scan_3'])) {
   $img_temp = explode('.', $request_data['passport_scan_3']);
-  if ($img_temp[1] === 'pdf' || $img_temp[1] === 'Pdf' || $img_temp[1] === 'PDF') {
+  if (isset($img_temp[1]) && ($img_temp[1] === 'pdf' || $img_temp[1] === 'Pdf' || $img_temp[1] === 'PDF')) {
     $img_scan_3 = 'img/pdf.jpeg';
   } else {
     $img_scan_3 = $request_data['passport_scan_3'];

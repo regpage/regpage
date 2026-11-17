@@ -803,6 +803,10 @@ $(".ftt_extra_help_string").click(function () {
 // pic
 $("#extrahelp_modal_file").change(function () {
   let id = $("#modalAddEditExtraHelp").attr("data-id");
+  if (!id) {
+    showError("Что бы добавить изображения сначала сохраните бланк.");
+    return;
+  }
   let extrahelp_data_blank = new FormData();
 
   if ($("#extrahelp_modal_file")[0].files[0]) {
@@ -1557,7 +1561,7 @@ function dinamic_add_string_late(data, update) {
     }
     setTimeout(function () {
       location.reload();
-    }, 100);    
+    }, 100);
   }
   if (update) {
     let element_upd = $('.ftt_late_string[data-id='+data.feh_id+']');

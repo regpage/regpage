@@ -135,8 +135,8 @@ class UTILS
                     "<p>Команда сайта регистрации</p>";
 
         $subject = "Создание учётной записи на сайте регистрации reg-page.ru";
-
-        EMAILS::sendEmail($email, $subject, $htmlText, 'info@reg-page.ru', 'Сайт регистрации');
+        return ['email' => $email, 'subject' => $subject, 'htmlText' => $htmlText, 'reply' => 'info@reg-page.ru', 'sender' => 'Сайт регистрации'];
+        // EMAILS::sendEmail($email, $subject, $htmlText, 'info@reg-page.ru', 'Сайт регистрации');
     }
 
     static function sendConfirmationEmailToChangeLogin($email, $memberId){
@@ -191,8 +191,11 @@ class EMAILS
         $mail->SMTPAuth = true;                               // Enable SMTP authentication
         */
 
+        $mail->isHTML(true);
+        $mail->ContentType = 'text/html';
         $mail->CharSet = "UTF-8";
         $mail->Encoding = "base64";
+
         /* MailGun */
         /*
         $mail->Port = 587;                                     // TCP port to connect to
@@ -207,7 +210,7 @@ class EMAILS
         $_replyTo = $replyTo ? $replyTo : 'info@reg-page.ru'; // 'info@reg-page.ru'
         $mail->setFrom('info@reg-page.ru', $fromName ? $fromName: 'Regpage');
         $mail->addReplyTo($_replyTo, $fromName ? $fromName : 'Regpage');
-        $mail->isHTML(true);                                  // Set email format to HTML
+
 
         $mail->SMTPOptions = array(
             'ssl' => array(

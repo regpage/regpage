@@ -250,7 +250,7 @@
           $str_author = $value['author'];
           $str_gospel_team = $value['gospel_team'];
           $fltr_team_cookie;
-          if (!$serving_ones_list_full[$memberId][2]) {
+          if (isset($serving_ones_list_full[$memberId]) && !$serving_ones_list_full[$memberId][2]) {
             if (!isset($_COOKIE['filter_team'])) {
               $fltr_team_cookie = '_all_';
             }

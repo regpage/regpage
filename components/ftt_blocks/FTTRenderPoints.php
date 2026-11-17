@@ -12,9 +12,9 @@ class FttRenderpoints {
   static function rendering ($points, $section, $data, $lists = [], $notForRecommendHeader=[]) {
     global $is_recommendator;
     global $serviceone_role;
-    $localities = $lists['localities'];
-    $countries1 = $lists['countries1'];
-    $countries2 = $lists['countries2'];
+    $localities = $lists['localities'] ?? [];
+    $countries1 = $lists['countries1'] ?? [];
+    $countries2 = $lists['countries2'] ?? [];
     $except = [];
     $notForRecommendHeaderClass = '';
     if (in_array($section, $notForRecommendHeader)) {
@@ -58,9 +58,9 @@ class FttRenderpoints {
         }
 
         $other = [];
-        if ($db_field[1] === 'locality_key') {
-          $other['list'] = $lists['localities'];
-        } elseif ($db_field[1] === 'country_key' || $db_field[1] === 'citizenship_key') {
+        if (isset($db_field[1]) && $db_field[1] === 'locality_key') {
+          $other['list'] = $lists['localities'] ?? [];
+        } elseif ((isset($db_field[1]) && $db_field[1] === 'country_key') || (isset($db_field[1]) && $db_field[1] === 'citizenship_key')) {
           $other['list'] = [$countries1, $countries2];
         }
 
@@ -90,7 +90,11 @@ class FttRenderpoints {
         if (count($fields_values) > 0) {
           $data_value = $fields_values;
         } else {
-          $data_value = $data[$db_field[1]];
+          $data_value = '';
+          if (!empty($db_field[1]) && isset($data[$db_field[1]])) {
+            $data_value = $data[$db_field[1]];
+          }
+
         }
         $other['display_condition'] = $points[$i]['display_condition'];
         $other['maxlength'] = $points[$i]['value_type'];
@@ -107,7 +111,7 @@ class FttRenderpoints {
       }
     }
     echo "</div>";
-    return $string_data;
+    //return $string_data;
   }
 
   static function field($type, $id, $value, $db_field, $required, $other=[]) {
@@ -126,21 +130,32 @@ class FttRenderpoints {
       $maxlength = trim($maxlength);
     }
     $no_button_elem = '';
+    $db_field_zero = '';
     if (isset($db_field[0]) && !is_array($db_field[0])) {
       $db_field[0] = trim($db_field[0]);
+      $db_field_zero = $db_field[0];
     }
 
     if (isset($db_field[1]) && !is_array($db_field[1])) {
       $db_field[1] = trim($db_field[1]);
     }
-    if (!is_array($db_field[1])) {
+    if (isset($db_field[1]) && !is_array($db_field[1])) {
       $id .= $db_field[1];
-    } else {
+    } elseif(isset($db_field[1])) {
       $id .= $db_field[1][1];
     }
 
-
-    $data_attr = "id='{$id}' class='input-request i-width-370-px {$required_class}' value='{$value}' data-value='{$value}' data-table='{$db_field[0]}' data-field='{$db_field[1]}' data-display_condition='{$other['display_condition']}' {$required}";
+    $db_field_one = '';
+    if (isset($db_field[1]) && !is_array($db_field[1])) {
+      $db_field_one = $db_field[1];
+    } elseif(isset($db_field[1])) {
+      $db_field_one = $db_field[1][1];
+    }
+    $valueString = '';
+    if (!is_array($value)) {
+      $valueString = $value;
+    }
+    $data_attr = "id='{$id}' class='input-request i-width-370-px {$required_class}' value='{$valueString}' data-value='{$valueString}' data-table='{$db_field_zero}' data-field='{$db_field_one}' data-display_condition='{$other['display_condition']}' {$required}";
     echo "<div class='col-5'>";
     if ($type === 'string field') { //$type === 'input'
       if ($other['no_button'] == 1 && empty($value)) {
@@ -202,7 +217,7 @@ class FttRenderpoints {
         if (mb_substr(trim($value_str), -1) === 'f' || mb_substr(trim($value_str), -1) === 'F') {
           echo "<span><a href='{$value_str}' target='_blank'><img class='mr-3' src='img/pdf.jpeg' alt='' width='50'></a><i class='fa fa-trash pic-delete' aria-hidden='true'></i></span>";
         } else {
-          echo "<span $check_meck><a href='{$value_str}' target='_blank'><img src='{$value_str}' alt='' width='100'></a><i class='fa fa-trash pic-delete' aria-hidden='true'></i></span>";
+          echo "<span><a href='{$value_str}' target='_blank'><img src='{$value_str}' alt='' width='100'></a><i class='fa fa-trash pic-delete' aria-hidden='true'></i></span>";
         }
       }
     } elseif ($type === 'textarea') { // TEXTAREA

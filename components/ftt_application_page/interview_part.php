@@ -60,7 +60,9 @@
       <?php if ($request_data['stage'] == 1 || $request_data['stage'] == 3 || $request_data['stage'] == 4): ?>
       <button id="send_to_interview" type="button" class="btn btn-primary btn-sm mr-3 mb-4" data-toggle="modal" data-target="">Передать</button>
       <?php endif; ?>
-      <?php if ($is_interviewer == 1 && $request_data['stage'] == 4): ?>
+      <?php
+      global $is_interviewer;
+       if ($is_interviewer == 1 && $request_data['stage'] == 4): ?>
       <button id="send_interview_to" type="button" class="btn btn-success btn-sm mr-3 mb-4" data-toggle="modal" data-target="">Отправить</button>
       <?php endif; ?>
     </div>
@@ -69,6 +71,8 @@
     <div class="col-12">
       <?php
       $text_interw = '';
+      $text_interw_send = '';
+      $text_interw_get = '';
       $text_date_interw = date_convert::yyyymmdd_to_ddmmyyyy($request_data['interview_date']);
       if ($request_data['stage'] == 4) {
         $text_interw_send = $serviceones_pvom[$request_data['responsible_int']].' передал заявление ответственному за собеседование — '.$brothers_in_church[$request_data['interview_name']].' '.$text_date_interw;

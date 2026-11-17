@@ -1,6 +1,7 @@
 <?php
     include_once "header.php";
     include_once "nav.php";
+    require_once 'db/classes/emailing.php';
 
     if (isset($_POST["code"]) && isset($_POST["password"])){
         $login = UTILS::getMemberKeyByRecoveryCode($_POST["code"]);
@@ -34,14 +35,15 @@
             $code = UTILS::getRecoveryCodeByUserInfo($user);
             $body = "Здравствуйте!".
                     "<p>Получен запрос на восстановление вашего пароля для сайта reg-page.ru.</p>".
-                    "<p>Чтобы установить новый пароль перейдите по ссылке: <a href='https://$host/passrec?code=$code'>https://$host/passrec?code=$code</a> (ссылка действительна в течение 10 минут)</p>" .
+                    "<p>Чтобы установить новый пароль перейдите по ссылке: <a href='https://{$host}/passrec?code={$code}'>https://{$host}/passrec?code={$code}</a> (ссылка действительна в течение 10 минут)</p>" .
                     "<p>Если вы не запрашивали восстановление пароля, просто проигнорируйте это письмо или напишите нам.</p>" .
                     "<p>Команда сайта регистрации</p>";
 
             $title = "Восстановление пароля для сайта reg-page.ru";
-            $headers = "MIME-Version: 1.0\r\nContent-type: text/html; charset=utf-8\r\nFrom: Сайт регистрации<info@reg-page.ru>\r\nReply-To: Сайт регистрации<info@reg-page.ru>\r\n";
+            //$headers = "MIME-Version: 1.0\r\nContent-type: text/html; charset=utf-8\r\nFrom: Сайт регистрации<info@reg-page.ru>\r\nReply-To: Сайт регистрации<info@reg-page.ru>\r\n";
 
-            EMAILS::sendEmail(htmlspecialchars($email), $title, $body);
+            Emailing::send(htmlspecialchars($email), $title, $body, 'info@reg-page.ru', 'Сайт регистрации');
+            //EMAILS::sendEmail(htmlspecialchars($email), $title, $body);
             //mail(htmlspecialchars($email), $title, $body, $headers);
         }
     }
