@@ -19,9 +19,9 @@ class schedule_class {
   // Расписание по дням
   static function get_data($semester_range, $day, $time_zone) {
     global $db;
-    $semester_range = $db->real_escape_string($semester_range);
-    $day = $db->real_escape_string($day);
-    $time_zone = $db->real_escape_string($time_zone);
+    $semester_range = db_real_escape_string($semester_range);
+    $day = db_real_escape_string($day);
+    $time_zone = db_real_escape_string($time_zone);
     if ($time_zone === 'all') {
       $time_zone = '';
     } else {

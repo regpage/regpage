@@ -43,7 +43,7 @@ function logFileWriter2($logMemberId, $customText)
 function db_getMemberIdBySessionIdLOG ($sessionId)
 {
     global $db;
-    $sessionId = $db->real_escape_string($sessionId);
+    $sessionId = db_real_escape_string($sessionId);
 
     $res=db_query ("SELECT admin_key from admin_session where id_session='$sessionId'");
     if ($row = $res->fetch_assoc()) return $row['admin_key'];

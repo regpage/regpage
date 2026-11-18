@@ -116,9 +116,9 @@ else if ($_POST['page'] == 'reg' && isset($_POST ['parking'])) {
     echo $filename;
 } // reg_aid
 else if (isset($_POST ['members']) && isset ($_POST ['memberslength']) && isset($_POST['adminId']) && ($_POST['page'] == 'reg_aid')) {
-    $memberslength = $db->real_escape_string($_POST ['memberslength']);
+    $memberslength = db_real_escape_string($_POST ['memberslength']);
     $membersAll = json_decode($_POST ['members'], TRUE);
-    $fields = isset($_POST['fields']) ? explode(',', $db->real_escape_string($_POST['fields'])) : [];
+    $fields = isset($_POST['fields']) ? explode(',', db_real_escape_string($_POST['fields'])) : [];
     $fieldsCount = count($fields);
     $suplemValues = isset($_POST['general_values']) ? json_decode($_POST['general_values'], TRUE) : NULL;
 
@@ -253,9 +253,9 @@ else if (isset($_POST ['members']) && isset ($_POST ['memberslength']) && isset(
     echo $filename;
 } // members
 else if (isset($_POST ['members']) && isset ($_POST ['memberslength']) && isset($_POST['adminId']) && ($_POST['page'] == 'members')) {
-    $memberslength = $db->real_escape_string($_POST ['memberslength']);
+    $memberslength = db_real_escape_string($_POST ['memberslength']);
     $membersAll = json_decode($_POST ['members'], TRUE);
-    $fields = isset($_POST['document']) ? explode(',', $db->real_escape_string($_POST['document'])) : [];
+    $fields = isset($_POST['document']) ? explode(',', db_real_escape_string($_POST['document'])) : [];
     $fieldsCount = count($fields);
 
     $title = 'Список';

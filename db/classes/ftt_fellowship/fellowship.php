@@ -12,7 +12,7 @@ class Fellowship
   {
     $result=[];
     global $db;
-    $trainee_id = $db->real_escape_string($trainee_id);
+    $trainee_id = db_real_escape_string($trainee_id);
     $res = db_query("SELECT ff.time, m.name
       FROM ftt_fellowship ff
       LEFT JOIN member m ON m.key = ff.serving_one
@@ -27,7 +27,7 @@ class Fellowship
   {
     $result=[];
     global $db;
-    $trainee_id = $db->real_escape_string($trainee_id);
+    $trainee_id = db_real_escape_string($trainee_id);
     $res = db_query("SELECT ff.time, m.name
       FROM ftt_fellowship ff
       LEFT JOIN member m ON m.key = ff.serving_one
@@ -41,7 +41,7 @@ class Fellowship
   static function now_serving_one($serving_one_id)
   {
     global $db;
-    $serving_one_id = $db->real_escape_string($serving_one_id);
+    $serving_one_id = db_real_escape_string($serving_one_id);
     $result=[];
     $res = db_query("SELECT ff.time, m.name, ff.comment_train
       FROM ftt_fellowship ff
@@ -56,7 +56,7 @@ class Fellowship
   static function get_all_fellowship_today_future($serving_one_id)
   {
     global $db;
-    $serving_one_id = $db->real_escape_string($serving_one_id);
+    $serving_one_id = db_real_escape_string($serving_one_id);
     $result=0;
     $res = db_query("SELECT COUNT(`id`) AS count FROM `ftt_fellowship`
     WHERE `serving_one` = '$serving_one_id' AND `date` >= CURDATE() AND `trainee` !=''  AND `cancel` != 1");
@@ -68,7 +68,7 @@ class Fellowship
   static function get_all_fellowship_today_future_trainee($trainee_id)
   {
     global $db;
-    $trainee_id = $db->real_escape_string($trainee_id);
+    $trainee_id = db_real_escape_string($trainee_id);
     $result=0;
     $res = db_query("SELECT COUNT(`id`) AS count FROM `ftt_fellowship`
     WHERE `trainee` = '$trainee_id' AND `date` >= CURDATE() AND `cancel` != 1");
@@ -80,7 +80,7 @@ class Fellowship
   static function canceled_serving_one($serving_one_id)
   {
     global $db;
-    $serving_one_id = $db->real_escape_string($serving_one_id);
+    $serving_one_id = db_real_escape_string($serving_one_id);
     $result=[];
     $res = db_query("SELECT ff.time, m.name
       FROM ftt_fellowship ff

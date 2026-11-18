@@ -5,10 +5,10 @@
 
 function db_setEventArchive($eventId, $adminId, $isAdmin, $isSysAdmin){
     global $db;
-    $eventId = $db->real_escape_string($eventId);
-    $adminId = $db->real_escape_string($adminId);
-    $isAdmin = $db->real_escape_string($isAdmin);
-    $isSysAdmin = $db->real_escape_string($isSysAdmin);
+    $eventId = db_real_escape_string($eventId);
+    $adminId = db_real_escape_string($adminId);
+    $isAdmin = db_real_escape_string($isAdmin);
+    $isSysAdmin = db_real_escape_string($isSysAdmin);
 
     $res = db_query("SELECT COUNT(*) as count FROM reg WHERE member_key LIKE '990%' and event_key='$eventId' ");
     $row = $res->fetch_assoc();
@@ -48,36 +48,36 @@ function db_setEventArchive($eventId, $adminId, $isAdmin, $isSysAdmin){
 
 function db_addEventArchive($adminId, $data){
     global $db;
-    $adminId = $db->real_escape_string($adminId);
+    $adminId = db_real_escape_string($adminId);
 
-    $mode = $db->real_escape_string($data['mode']);
-    $name = $db->real_escape_string($data['name']);
-    $eventType = $db->real_escape_string($data['eventType']);
-    $eventLocality = $db->real_escape_string($data['eventLocality']);
-    $eventStartDate = $db->real_escape_string($data['eventStartDate']);
-    $eventEndDate = $db->real_escape_string($data['eventEndDate']);
-    $eventInfo = $db->real_escape_string($data['eventInfo']);
+    $mode = db_real_escape_string($data['mode']);
+    $name = db_real_escape_string($data['name']);
+    $eventType = db_real_escape_string($data['eventType']);
+    $eventLocality = db_real_escape_string($data['eventLocality']);
+    $eventStartDate = db_real_escape_string($data['eventStartDate']);
+    $eventEndDate = db_real_escape_string($data['eventEndDate']);
+    $eventInfo = db_real_escape_string($data['eventInfo']);
     $participants = $data['participants'];
     $eventAdmins = $data['eventAdmins'];
-    $eventAdminsEmail = $db->real_escape_string($data['eventAdminsEmail']);
-    $zones = $db->real_escape_string($data['zones']);
-    $regEndDate = $db->real_escape_string($data['regEndDate']);
-    $passport = $db->real_escape_string($data['passport']);
-    $prepayment = $db->real_escape_string($data['prepayment']);
-    $private = $db->real_escape_string($data['private']);
-    $transport = $db->real_escape_string($data['transport']);
-    $tp = $db->real_escape_string($data['tp']);
-    $flight = $db->real_escape_string($data['flight']);
-    $parking = $db->real_escape_string($data['parking']);
-    $service = $db->real_escape_string($data['service']);
-    $accom = $db->real_escape_string($data['accom']);
-    $registration = $db->real_escape_string($data['registration']);
-    $attendance = $db->real_escape_string($data['attendance']);
-    $countMeetings = $db->real_escape_string($data['countMeetings']);
-    $reg_members = $db->real_escape_string($data['regMembers']);
-    $team_key = $db->real_escape_string($data['teamKey']);
-    $eventContrib = $db->real_escape_string($data['contrib']);
-    $eventCurrency = $db->real_escape_string($data['currency']);
+    $eventAdminsEmail = db_real_escape_string($data['eventAdminsEmail']);
+    $zones = db_real_escape_string($data['zones']);
+    $regEndDate = db_real_escape_string($data['regEndDate']);
+    $passport = db_real_escape_string($data['passport']);
+    $prepayment = db_real_escape_string($data['prepayment']);
+    $private = db_real_escape_string($data['private']);
+    $transport = db_real_escape_string($data['transport']);
+    $tp = db_real_escape_string($data['tp']);
+    $flight = db_real_escape_string($data['flight']);
+    $parking = db_real_escape_string($data['parking']);
+    $service = db_real_escape_string($data['service']);
+    $accom = db_real_escape_string($data['accom']);
+    $registration = db_real_escape_string($data['registration']);
+    $attendance = db_real_escape_string($data['attendance']);
+    $countMeetings = db_real_escape_string($data['countMeetings']);
+    $reg_members = db_real_escape_string($data['regMembers']);
+    $team_key = db_real_escape_string($data['teamKey']);
+    $eventContrib = db_real_escape_string($data['contrib']);
+    $eventCurrency = db_real_escape_string($data['currency']);
     if($name == '' || $eventType == '_none_' || $eventLocality == '_none_' || $eventStartDate == '' || $eventEndDate == ''){
         throw new Exception("Необходимо заполнить все поля выделенные розовым цветом.", 1);
     }
@@ -151,10 +151,10 @@ function db_addEventArchive($adminId, $data){
 
 function db_getArchiveEvents($sort_type, $sort_field, $startDate, $endDate){
     global $db;
-    $startDate = $db->real_escape_string($startDate);
-    $endDate = $db->real_escape_string($endDate);
-    $sort_type = $db->real_escape_string($sort_type);
-    $sort_field = $sort_field != 'locality_key' ? $db->real_escape_string($sort_field)."" : " locality_name ";
+    $startDate = db_real_escape_string($startDate);
+    $endDate = db_real_escape_string($endDate);
+    $sort_type = db_real_escape_string($sort_type);
+    $sort_field = $sort_field != 'locality_key' ? db_real_escape_string($sort_field)."" : " locality_name ";
 
     $res = db_query("SELECT ea.id, ea.name, l.key as locality_key, l.name as locality_name,
                 ea.event_type as event_type, ea.members_count, ea.start_date, ea.created as date_created, ea.service_ones, ea.service_key as services, ea.coordinators, ea.event_id
@@ -168,13 +168,13 @@ function db_getArchiveEvents($sort_type, $sort_field, $startDate, $endDate){
 }
 function db_getArchiveGeneralEvents($adminId, $sort_type, $sort_field, $localityFilter, $meetingTypeFilter, $startDate, $endDate){
     global $db;
-    $adminId = $db->real_escape_string($adminId);
-    $localityFilter = $db->real_escape_string($localityFilter);
-    $meetingTypeFilter = $db->real_escape_string($meetingTypeFilter);
-    $startDate = $db->real_escape_string($startDate);
-    $endDate = $db->real_escape_string($endDate);
-    $sort_type = $db->real_escape_string($sort_type);
-    $sort_field = $sort_field != 'locality_key' ? $db->real_escape_string($sort_field)."" : " locality_name ";
+    $adminId = db_real_escape_string($adminId);
+    $localityFilter = db_real_escape_string($localityFilter);
+    $meetingTypeFilter = db_real_escape_string($meetingTypeFilter);
+    $startDate = db_real_escape_string($startDate);
+    $endDate = db_real_escape_string($endDate);
+    $sort_type = db_real_escape_string($sort_type);
+    $sort_field = $sort_field != 'locality_key' ? db_real_escape_string($sort_field)."" : " locality_name ";
 
     $events = array ();
 
@@ -205,8 +205,8 @@ function db_getArchivedEventLocalities(){
 
 function db_getArchiveEventList($adminId, $eventId){
     global $db;
-    $adminId = $db->real_escape_string($adminId);
-    $eventId = $db->real_escape_string($eventId);
+    $adminId = db_real_escape_string($adminId);
+    $eventId = db_real_escape_string($eventId);
     db_query('SET Session group_concat_max_len=100000');
 
     // CASE WHEN FIND_IN_SET(m.key, ea.coordinators)<>0 THEN 1 ELSE 0 END as coord,
@@ -225,12 +225,12 @@ function db_getArchiveEventList($adminId, $eventId){
 
 function getEventArchiveMembersStatistic($adminId, $eventType, $startDate, $endDate, $text){
     global $db;
-    $adminId = $db->real_escape_string($adminId);
-    $eventRequest = $eventType == '_all_' ? '' : " AND ea.event_type='".$db->real_escape_string($eventType)."'";
-    $startDate = $db->real_escape_string($startDate);
-    $endDate = $db->real_escape_string($endDate);
+    $adminId = db_real_escape_string($adminId);
+    $eventRequest = $eventType == '_all_' ? '' : " AND ea.event_type='".db_real_escape_string($eventType)."'";
+    $startDate = db_real_escape_string($startDate);
+    $endDate = db_real_escape_string($endDate);
     $requestDates = " AND (ea.start_date BETWEEN '$startDate' AND '$endDate')";
-    $searchText = $text !='' ? "AND ( m.name LIKE '%".$db->real_escape_string($text)."%' OR l.name LIKE '%".$db->real_escape_string($text)."%' ) " : '';
+    $searchText = $text !='' ? "AND ( m.name LIKE '%".db_real_escape_string($text)."%' OR l.name LIKE '%".db_real_escape_string($text)."%' ) " : '';
     db_query('SET Session group_concat_max_len=100000');
 
     //COALESCE( GROUP_CONCAT(CONCAT_WS(':', ea.event_type, ea.start_date) ORDER BY ea.start_date ASC SEPARATOR  ','), '') as event,
@@ -268,7 +268,7 @@ function getEventArchiveMembersStatistic($adminId, $eventType, $startDate, $endD
 
 function db_checkEventStopRegistrationHospitality($eventId){
     global $db;
-    $_eventId = $db->real_escape_string($eventId);
+    $_eventId = db_real_escape_string($eventId);
 
     $res=db_query ("SELECT
       (SELECT COUNT(*) FROM reg rg WHERE rg.event_key=e.key AND rg.accom=1 AND (rg.regstate_key = '01' OR rg.regstate_key = '02' OR rg.regstate_key = '04' OR rg.regstate_key is NULL)) as count_members,

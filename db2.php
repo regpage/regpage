@@ -3,7 +3,7 @@
 // Для получения всех местностей использовать существующий код используемый для комбобокса
 function db_getAdminLocalitiesOnly ($adminId) {
     global $db;
-    $adminId = $db->real_escape_string($adminId);
+    $adminId = db_real_escape_string($adminId);
 
     $res=db_query ("SELECT DISTINCT * FROM (
                     SELECT l.key as id, l.name as name
@@ -34,7 +34,7 @@ function db_getAdminLocalitiesOnly ($adminId) {
 // get admins by region key
 function db_getAdminRegionOnly($adminId){
     global $db;
-    $adminId = $db->real_escape_string($adminId);
+    $adminId = db_real_escape_string($adminId);
 
     $res=db_query ("SELECT region_key as region
                     FROM access
@@ -46,7 +46,7 @@ function db_getAdminRegionOnly($adminId){
 
 function db_getAdminCountryOnly($adminId){
     global $db;
-    $adminId = $db->real_escape_string($adminId);
+    $adminId = db_real_escape_string($adminId);
 
     $res=db_query ("SELECT country_key as country
                     FROM access
@@ -60,7 +60,7 @@ function db_getAdminsByRegion ($regions)
 {
     global $db;
     $regions = implode( "','", $regions);
-    //$regions = $db->real_escape_string($regions);
+    //$regions = db_real_escape_string($regions);
     $res=db_query ("SELECT member_key as id, region_key as region FROM access
     WHERE region_key IN ('".$regions."') ORDER BY region");
 
@@ -73,7 +73,7 @@ function db_getAdminsByCountry ($regions)
 {
     global $db;
     $regions = implode( "','", $regions);
-    //$regions = $db->real_escape_string($regions);
+    //$regions = db_real_escape_string($regions);
     $res=db_query ("SELECT member_key as id, country_key as country FROM access
     WHERE country_key IN ('".$regions."') ORDER BY country");
 
@@ -86,7 +86,7 @@ function db_getAdminsByLocalitiesNew ($regions)
 {
     global $db;
     $regions = implode( "','", $regions);
-    //$regions = $db->real_escape_string($regions);
+    //$regions = db_real_escape_string($regions);
     $res=db_query ("SELECT member_key as id, locality_key as locality FROM access
     WHERE locality_key IN ('".$regions."') ORDER BY locality");
 
@@ -140,7 +140,7 @@ function db_getAdminsNameByMembersKeys ($memberKeys)
 // START access to Archive for admins
 function  db_isAuthorEvents($memberId){
     global $db;
-    $memberId = $db->real_escape_string($memberId);
+    $memberId = db_real_escape_string($memberId);
 
     $res = db_query("SELECT `key` FROM event WHERE `author`='$memberId'");
 
@@ -152,7 +152,7 @@ function  db_isAuthorEvents($memberId){
 }
 function  db_isAuthorArciveEvents($memberId){
     global $db;
-    $memberId = $db->real_escape_string($memberId);
+    $memberId = db_real_escape_string($memberId);
 
     $res = db_query("SELECT `id` FROM event_archive WHERE `author`='$memberId'");
 
@@ -164,7 +164,7 @@ function  db_isAuthorArciveEvents($memberId){
 }
 function  db_isAdminArciveEvents($memberId){
     global $db;
-    $memberId = $db->real_escape_string($memberId);
+    $memberId = db_real_escape_string($memberId);
 
     $res = db_query("SELECT `id` FROM event_archive_access WHERE `member_key`='$memberId'");
 
@@ -192,14 +192,14 @@ function db_getServiceonesPvom(){
   $memberId = db_getMemberIdBySessionId (session_id());
   $localities = db_getAdminMeetingLocalities($memberId);
 
-  $sqlLoc;
+  $sqlLoc = '';
   if (!$localities) {
     return [];
   }
   foreach ($localities as $key4 => $value4) {
     if ($sqlLoc) {
       $sqlLoc = $sqlLoc." OR locality_key = '$key4'";
-    }else {
+    } else {
       $sqlLoc = " locality_key = '$key4'";
     }
 
@@ -275,7 +275,7 @@ function db_getResponsiblesLocality(){
 }
 function getValueParamByName($name) {
     global $db;
-    $name = $db->real_escape_string($name);
+    $name = db_real_escape_string($name);
     $result = '';
     $res = db_query("SELECT `value` FROM param WHERE `name` = '$name'");
     while ($row = $res->fetch_assoc()) $result=$row['value'];
@@ -286,7 +286,7 @@ function getValueParamByName($name) {
 function db_checkNotice ($adminId)
 {
     global $db;
-    $adminId = $db->real_escape_string($adminId);
+    $adminId = db_real_escape_string($adminId);
     $check;
     $notices = array();
     $res2=db_query ("SELECT `id`, `responsible` FROM contacts WHERE `responsible` = '$adminId' AND `notice` = 1");
@@ -304,7 +304,7 @@ function db_checkNotice ($adminId)
 function isExistrRequest($adminId) {
 
   global $db;
-  $adminId = $db->real_escape_string($adminId);
+  $adminId = db_real_escape_string($adminId);
 
   $request;
   $res=db_query("SELECT `id`, `member_key`, `guest`, `stage`, `notice` FROM ftt_request WHERE `member_key` = '$adminId' AND `notice` <> 2 ORDER BY `id`");
@@ -320,7 +320,7 @@ function isExistrRequest($adminId) {
 // FTT PARAM GET
 function getValueFttParamByName($name) {
     global $db;
-    $name = $db->real_escape_string($name);
+    $name = db_real_escape_string($name);
     $result = '';
     $res = db_query("SELECT `value` FROM ftt_param WHERE `name` = '$name'");
     while ($row = $res->fetch_assoc()) $result=$row['value'];
@@ -331,8 +331,8 @@ function getValueFttParamByName($name) {
 // FTT PARAM SET
 function setValueFttParamByName($name, $value) {
     global $db;
-    $name = $db->real_escape_string($name);
-    $value = $db->real_escape_string($value);
+    $name = db_real_escape_string($name);
+    $value = db_real_escape_string($value);
     $res = db_query("UPDATE `ftt_param` SET `value`='$value' WHERE `name` = '$name'");
 
     return $res;
@@ -341,8 +341,8 @@ function setValueFttParamByName($name, $value) {
 // получаем служения для мероприятия
 function db_getServicesEvent($eventId, $adminId) {
     global $db;
-    $eventId = $db->real_escape_string($eventId);
-    $adminId = $db->real_escape_string($adminId);
+    $eventId = db_real_escape_string($eventId);
+    $adminId = db_real_escape_string($adminId);
     $result = array('admin' => "", 'list' => []);
 
     $res = db_query("SELECT es.*, s.name
@@ -361,8 +361,8 @@ function db_getServicesEvent($eventId, $adminId) {
 // получаем служащих для КШ
 function db_getEventMembersStatusServ($adminId, $eventId){
     global $db;
-    $adminId = $db->real_escape_string($adminId);
-    $eventId = $db->real_escape_string($eventId);
+    $adminId = db_real_escape_string($adminId);
+    $eventId = db_real_escape_string($eventId);
 
         $res=db_query ("SELECT DISTINCT m.key as id, m.name as name
             FROM access as a

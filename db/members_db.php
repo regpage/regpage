@@ -3,7 +3,7 @@
 // получаем данные для комбобоксов
 function getFttCombo ($table_name) {
   global $db;
-  $table_name = $db->real_escape_string($table_name);
+  $table_name = db_real_escape_string($table_name);
   $result;
   $res = db_query ("SELECT * FROM {$table_name}");
   while ($row = $res->fetch_assoc()) $result[$row['id']]=$row['name'];
@@ -27,7 +27,7 @@ function getFttApartments () {
 
 function db_getTraineeData($id) {
   global $db;
-  $id = $db->real_escape_string($id);
+  $id = db_real_escape_string($id);
   $result = [];
   $res = db_query("SELECT * FROM ftt_trainee WHERE `member_key`= '$id'");
   while ($row = $res->fetch_assoc()) $result[] = $row;

@@ -54,7 +54,7 @@
     }
     else if (isset ($_GET["email"])){
         global $db;
-        $isEmail = $db->real_escape_string($_GET["email"]);
+        $isEmail = db_real_escape_string($_GET["email"]);
     }
 ?>
 

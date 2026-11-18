@@ -86,7 +86,7 @@
         <span class="handle-new-locality">Населённого пункта нет в списке?</span>
     </div>
     <div class="control-group row-fluid block-new-locality">
-        <input class="span12 locality-autocomplete emNewLocality" placeholder="Введите название населённого пункта в этом поле" value="<?php echo $member['new_locality']; ?>" type="text" maxlength="50">
+        <input class="span12 locality-autocomplete emNewLocality" placeholder="Введите название населённого пункта в этом поле" value="<?php if(isset($member)) echo $member['new_locality']; ?>" type="text" maxlength="50">
         <i class="icon-pencil unblock-input" style="display: none"></i>
     </div>
     <?php } ?>
@@ -256,7 +256,7 @@
     <div class="control-group row-fluid">
         <label class="span12"></label>
         <select class="span12 emAddInfo">
-            
+
         </select>
     </div>
 </div>

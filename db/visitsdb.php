@@ -5,13 +5,13 @@
 
 function db_getVisits($adminId, $sort_type, $sort_field, $localityFilter, $meetingTypeFilter, $startDate, $endDate){
     global $db;
-    $adminId = $db->real_escape_string($adminId);
-    $localityFilter = $db->real_escape_string($localityFilter);
-    $meetingTypeFilter = $db->real_escape_string($meetingTypeFilter);
-    $startDate = $db->real_escape_string($startDate);
-    $endDate = $db->real_escape_string($endDate);
-    $sort_type = $db->real_escape_string($sort_type);
-    $sort_field = $sort_field != 'locality_key' ? $db->real_escape_string($sort_field)."" : " locality_key ";
+    $adminId = db_real_escape_string($adminId);
+    $localityFilter = db_real_escape_string($localityFilter);
+    $meetingTypeFilter = db_real_escape_string($meetingTypeFilter);
+    $startDate = db_real_escape_string($startDate);
+    $endDate = db_real_escape_string($endDate);
+    $sort_type = db_real_escape_string($sort_type);
+    $sort_field = $sort_field != 'locality_key' ? db_real_escape_string($sort_field)."" : " locality_key ";
 
     $meetings = array ();
 
@@ -38,25 +38,25 @@ function db_getVisits($adminId, $sort_type, $sort_field, $localityFilter, $meeti
 
 function db_setVisit($data){
     global $db;
-    $date = $db->real_escape_string($data['date']);
-    $locality = $db->real_escape_string($data['locality']);
-    $note = $db->real_escape_string($data['note']);
-    $actionType = $db->real_escape_string($data['actionType']);
-    $responsible = $db->real_escape_string($data['responsible']);
-    $adminIdIs= $db->real_escape_string($data['admin']);
+    $date = db_real_escape_string($data['date']);
+    $locality = db_real_escape_string($data['locality']);
+    $note = db_real_escape_string($data['note']);
+    $actionType = db_real_escape_string($data['actionType']);
+    $responsible = db_real_escape_string($data['responsible']);
+    $adminIdIs= db_real_escape_string($data['admin']);
     $countMembers = (int)($data['countMembers']);
     $performed = (int)($data['performed']);
-    $visitId = isset($data['visitId']) ? $db->real_escape_string($data['visitId']) : null;
+    $visitId = isset($data['visitId']) ? db_real_escape_string($data['visitId']) : null;
     $members = $data['members'];
 
-    //$oldDate = isset($data['oldDate'] ) ? $db->real_escape_string($data['oldDate']) : null;
-    //$oldLocality = isset($data['oldLocality'] ) ? $db->real_escape_string($data['oldLocality']) : null;
-    //$oldMeetingType = isset($data['oldMeetingType'] ) ? $db->real_escape_string($data['oldMeetingType']) : null;
-    //$meetingType = $db->real_escape_string($data['meetingType']);
-    //$listCount = $db->real_escape_string($data['listCount']);
-    //$traineesCount = isset($data['traineesCount']) ? $db->real_escape_string($data['traineesCount']) : null;
+    //$oldDate = isset($data['oldDate'] ) ? db_real_escape_string($data['oldDate']) : null;
+    //$oldLocality = isset($data['oldLocality'] ) ? db_real_escape_string($data['oldLocality']) : null;
+    //$oldMeetingType = isset($data['oldMeetingType'] ) ? db_real_escape_string($data['oldMeetingType']) : null;
+    //$meetingType = db_real_escape_string($data['meetingType']);
+    //$listCount = db_real_escape_string($data['listCount']);
+    //$traineesCount = isset($data['traineesCount']) ? db_real_escape_string($data['traineesCount']) : null;
     //$fulltimersCount = (int)($data['fulltimersCount']);
-    //$attendMembers = $db->real_escape_string( $data['attendMembers']);
+    //$attendMembers = db_real_escape_string( $data['attendMembers']);
     //$listCount = $responsible + $performed;
     //$listCount = $members ? count(explode(',', $data['members'])) : db_getCountMembersByLocality($locality);
 
@@ -77,15 +77,15 @@ function db_setVisit($data){
 
 function db_removeVisit($meetingId){
     global $db;
-    $_meetingId = $db->real_escape_string($meetingId);
+    $_meetingId = db_real_escape_string($meetingId);
 
     db_query("DELETE FROM visits WHERE id = '$_meetingId' ");
 }
 
 function db_setDateVisit($value, $visitId){
     global $db;
-    $_value = $db->real_escape_string($value);
-    $_visitId = $db->real_escape_string($visitId);
+    $_value = db_real_escape_string($value);
+    $_visitId = db_real_escape_string($visitId);
 
     db_query("UPDATE visits SET date_visit = '$_value' WHERE id ='$_visitId' ");
 
@@ -100,8 +100,8 @@ function db_setDateVisit($value, $visitId){
 
 function db_setPerformedVisit($value, $visitId){
     global $db;
-    $_value = $db->real_escape_string($value);
-    $_visitId = $db->real_escape_string($visitId);
+    $_value = db_real_escape_string($value);
+    $_visitId = db_real_escape_string($visitId);
 
     db_query("UPDATE visits SET performed = '$_value' WHERE id ='$_visitId' ");
 

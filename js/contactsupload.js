@@ -36,47 +36,7 @@ function getUpdaterEditor(array) {
   console.log(array);
   uploadTableBuilder (array);
 }
-// STOP ???
-/*
-function getUpdaterEditorForRegTbl(array) {
-  var female, ii = 0;
-  for (var i = 0; i < array.length; i++) {
-    var item = array[i];
-    if (i!=0) {
-      ii = 0;
-    for (var key in item) {
-        //var ii = 0; ii < array[i].length; ii++
-        if ((ii > 0) && (ii < 14)) {
-          if (ii === 1) {
-            var a = $('.tab-pane.active').attr('id');
-            a ? a = a.slice(9,17) : '';
-            item[key] = a;
-          } else if (ii === 2) {
-            item[key] = $('.tab-pane.active').attr('data-start');
-          } else if (ii === 3) {
-            item[key] = $('.tab-pane.active').attr('data-end');
-          } else if (ii === 4) {
-            item[key] = '01';
-          } else if (ii === 5) {
-            item[key] = window.adminId;
-          } else if (ii === 6) {
-            item[key] = $('.tab-pane.active').attr('data-currency');
-          } else if (ii === 8) {
-            var m = item[key-1];
-            var n = item[key];
-            var v = m + ' ' + n;
-            item[key-1] = v;
-            item[key] = $('#uploadAccom').val();
-          } else if ((ii === 9) || (ii === 10)) {
-            item[key] = null;
-          }
-        }
-        ii++;
-      }
-    }
-  }
-}
-*/
+
 function uploadTableBuilder (array) {
 var htmlValueCol = '<h4>Колонки</h4>', htmlValueStr = '<h4>Строки</h4>';
   for (var i = 0; i < array.length; i++) {
@@ -111,19 +71,19 @@ $('.saveUploadItemsNew').click(function () {
   if (!$('#upload_file').val()) {
     showError('Выберите файл для загрузки');
     $('#upload_file').css('border-color', 'red');
-    return
+    return;
   } else if ($('#nameGlobalUploadVal').val() === '_none_' || $('#nameGlobalUploadVal').val() === '') {
     showError('Заполните поле ФИО');
     $('#nameGlobalUploadVal').css('border-color', 'red');
-    return
+    return;
   } else if (($('#uploadCountry').val() === '_none_' && $('#citizenshipGlobalUploadVal').val() === '_none_') || $('#citizenshipGlobalUploadVal').val() === '') {
     showError('Выберите страну из списка или соответствующее поле из файла.');
     $('#citizenshipGlobalUploadVal').css('border-color', 'red');
     $('#uploadCountry').css('border-color', 'red');
-    return
+    return;
   } else if (!$('#periodOfContacts').val()) {
     showError('Заполните поле ГРУППА');
-    return
+    return;
   }
   $('#saveSpinner').show();
 
@@ -190,7 +150,7 @@ console.log(columnsNo);
     var t = fieldsSelected['other4'] !== '_none_' ? fieldsSelected['other4'] : ''; // ???
     var mainPeriod = $('#periodOfContacts').val(); // project
 
-var fildsNamesAre = {aa:aa,b:b,c:c,bb:bb,d:d,e:e,f:f,g:g,h:h,j:j,k:k,l:l,m:m,n:n,o:o,p:p,q:q,r:r,s:s,t:t}
+    var fildsNamesAre = {aa:aa,b:b,c:c,bb:bb,d:d,e:e,f:f,g:g,h:h,j:j,k:k,l:l,m:m,n:n,o:o,p:p,q:q,r:r,s:s,t:t}
 // START Custom stream
     var arrStr01 = [0];
     if ($('#uploadStringsChkbx').prop('checked')) {
@@ -203,12 +163,20 @@ var fildsNamesAre = {aa:aa,b:b,c:c,bb:bb,d:d,e:e,f:f,g:g,h:h,j:j,k:k,l:l,m:m,n:n
       });
     }
 
-// STOP Custom stream
+    // STOP Custom stream
     for (var i = 0; i < xlsxDataGlobal.length; i++) {
+      if (xlsxDataGlobal[i].length < 16) {
+        let difference = 16 - xlsxDataGlobal[i].length;
+        for (let iij = 0; iij < difference; iij++) {
+          xlsxDataGlobal[i].push("");
+        }
+      }
       var tmpArr = [], female, tmpArrReg = [];
         var y;
+        console.log(bb);
+        console.log(xlsxDataGlobal[i]);
          if (xlsxDataGlobal[i][bb] === null || xlsxDataGlobal[i][bb] === undefined || xlsxDataGlobal[i][bb] === 'undefined') {
-            break
+            break;
          }
         if (fieldsSelected['name1'] !== '_none_') {
           y = xlsxDataGlobal[i][bb1];
@@ -219,7 +187,7 @@ var fildsNamesAre = {aa:aa,b:b,c:c,bb:bb,d:d,e:e,f:f,g:g,h:h,j:j,k:k,l:l,m:m,n:n
         } else {
           y = xlsxDataGlobal[i][bb];
         }
-// Доделать auto genger
+        // Доделать auto genger
       if (fieldsSelected['genger'] === '_none_') {
         y ? toTrimAndToLower(y) : '';
          //var x = xlsxDataGlobal[i][bb];
@@ -234,22 +202,22 @@ var fildsNamesAre = {aa:aa,b:b,c:c,bb:bb,d:d,e:e,f:f,g:g,h:h,j:j,k:k,l:l,m:m,n:n
          }
        }
 
-// Здесь порядок соответствует порядку запроса на сервере
-// заменить пеменные объекты
+       // Здесь порядок соответствует порядку запроса на сервере
+       // заменить пеменные объекты
       var otherCollect = '';
-// type of appeal
+      // type of appeal
         if (xlsxDataGlobal[i][q]) {
           otherCollect = otherCollect + 'Тип обращения: ' + xlsxDataGlobal[i][q] + '\n';
         }
-//  category
+        //  category
         if (xlsxDataGlobal[i][j]) {
           otherCollect = otherCollect + 'Категория: ' + xlsxDataGlobal[i][j] + '\n';
         }
-// comment
+        // comment
         if (xlsxDataGlobal[i][aa]) {
           otherCollect = otherCollect + '' + xlsxDataGlobal[i][aa] + '\n';
         }
-// comment 2
+        // comment 2
         if (xlsxDataGlobal[i][r]) {
           otherCollect = otherCollect + '' + String(xlsxDataGlobal[0][fildsNamesAre.r])+ ': ' + xlsxDataGlobal[i][r] + '\n';
         }
@@ -267,7 +235,7 @@ var fildsNamesAre = {aa:aa,b:b,c:c,bb:bb,d:d,e:e,f:f,g:g,h:h,j:j,k:k,l:l,m:m,n:n
       if (!bb || bb === ' ') {
         showError('ФИО должно быть заполненно.');
         errorUpload = 1;
-        return
+        return;
       }
       if (e) {
         var itemGender;
@@ -280,20 +248,18 @@ var fildsNamesAre = {aa:aa,b:b,c:c,bb:bb,d:d,e:e,f:f,g:g,h:h,j:j,k:k,l:l,m:m,n:n
            } else {
                showError('Пол не определён в строке с значением '+itemGender+' . Используйте для обозначений слова: брат/сестра, муж/жен, м/ж, мужской/женский и т.п.');
                errorUpload = 1;
-               return
+               return;
            }
          } else if (i === 0) {
             tmpArr.push('');
          } else {
             showError('В колонке Пол все строки должны быть заполненны.');
             errorUpload = 1;
-            return
+            return;
          }
       } else {
         tmpArr.push(female);
       }
-
-
 
       if (first[0] !== '_none_') {
         tmpArr.push(first[0]);
@@ -331,54 +297,9 @@ var fildsNamesAre = {aa:aa,b:b,c:c,bb:bb,d:d,e:e,f:f,g:g,h:h,j:j,k:k,l:l,m:m,n:n
         tmpArr.push(xlsxDataGlobal[i][h]);
       }
 
-    /*  if (first[2] !== '_none_') {
-        tmpArr.push(first[2]);
-      } else {
-        var itemsCategory = usefulData.categoryInvert, itemCategory = '', itemCategoryTemp='';
-         itemCategoryTemp = toTrimAndToLower(xlsxDataGlobal[i][j]);
-        for (var key in itemsCategory) {
-          itemOurCategory = itemsCategory[key] && isNaN(itemsCategory[key]) ? itemsCategory[key].toLowerCase(): itemsCategory[key];
-          if (key === itemCategoryTemp || itemOurCategory === itemCategoryTemp) {
-            itemCategory = itemsCategory[key];
-          } else if (itemCategoryTemp === 'студент' || itemCategoryTemp === 'студенты') {
-            itemCategory = 'ST';
-          } else if (itemCategoryTemp === 'школьник' || itemCategoryTemp === 'школьники') {
-            itemCategory = 'SC';
-          } else if (itemCategoryTemp === 'верующий' || itemCategoryTemp === 'верующие') {
-            itemCategory = 'BL';
-          } else if (itemCategoryTemp === 'святые' || itemCategoryTemp === 'святые') {
-            itemCategory = 'SN';
-          }
-        }
-        if (itemCategory) {
-          tmpArr.push(itemCategory); // category_key
-        } else if (i !== 0) {
-          showError('В базе отсутствует категория: \"'+itemCategoryTemp+'\".');
-          newArrForServer.splice(0,newArrForServer.length);
-          errorUpload = 1;
-          return
-        } else {
-          tmpArr.push('');
-        }
-      }
-
-      */
       tmpArr.push(xlsxDataGlobal[i][b]); // email
       tmpArr.push(xlsxDataGlobal[i][f]); // cell_phone
-// START date parsing
 
-    /*  dateOrd = xlsxDataGlobal[i][c];
-
-      if (dateOrd) {
-        var yyyy = dateOrd.slice(6,10),
-        mm = dateOrd.slice(5,7),
-        dd = dateOrd.slice(0,4);
-        dateOrd = yyyy + '-' + mm + '-' + dd;
-
-        //dateOrdReady = dateOrd.substr(0, 0) + xlsxDataGlobal[i][c][3] + xlsxDataGlobal[i][c][4] + '.' + xlsxDataGlobal[i][c][0] + xlsxDataGlobal[i][c][1] + dateOrd.substr(5);
-        //dateOrd = new Date(dateOrdReady);
-      }
-*/
       if (xlsxDataGlobal[i][c] && xlsxDataGlobal[i][c][2] === '.') {
         //var rplsDate = xlsxDataGlobal[i][c].replace(/\./g,'-');
         tmpArr.push(dateStrToddmmyyyyToyyyymmdd(xlsxDataGlobal[i][c])); // order date
@@ -386,42 +307,42 @@ var fildsNamesAre = {aa:aa,b:b,c:c,bb:bb,d:d,e:e,f:f,g:g,h:h,j:j,k:k,l:l,m:m,n:n
         tmpArr.push(xlsxDataGlobal[i][c]); // order date
       }
 
-// STOP date parsing
+      // STOP date parsing
 
-// START Status
-var stt = '';
-switch (toTrimAndToLower(xlsxDataGlobal[i][d])) {
-  case 'недозвон':
-  stt = 1;
-  break;
-  case 'ошибка':
-  stt = 2;
-  break;
-  case 'отказ':
-  stt = 3;
-  break;
-  case 'заказ':
-  stt = 4;
-  break;
-  case 'продолжение':
-  stt = 5;
-  break;
-  case 'завершение':
-  stt = 6;
-  break;
-  case 'бланк':
-  stt = 7;
-  break;
+      // START Status
+      var stt = '';
+      switch (toTrimAndToLower(xlsxDataGlobal[i][d])) {
+        case 'недозвон':
+          stt = 1;
+          break;
+        case 'ошибка':
+          stt = 2;
+          break;
+        case 'отказ':
+          stt = 3;
+          break;
+        case 'заказ':
+          stt = 4;
+          break;
+        case 'продолжение':
+          stt = 5;
+          break;
+        case 'завершение':
+          stt = 6;
+          break;
+        case 'бланк':
+          stt = 7;
+          break;
 
-  default: '_none_'
-}
+        default: '_none_'
+      }
 
       tmpArr.push(stt); // status toTrimAndToLower();
-// STOP Status
+      // STOP Status
       tmpArr.push(xlsxDataGlobal[i][k]); // Index Mail Post
       tmpArr.push(window.adminId); // adminId
 
-// START date parsing
+      // START date parsing
       dateSnd = xlsxDataGlobal[i][l];
       if (dateSnd) {
         dateSndReady = dateSnd.substr(0, 0) + xlsxDataGlobal[i][l][3] + xlsxDataGlobal[i][l][4] + '.' + xlsxDataGlobal[i][l][0] + xlsxDataGlobal[i][l][1] + dateSnd.substr(5);
@@ -429,7 +350,7 @@ switch (toTrimAndToLower(xlsxDataGlobal[i][d])) {
       }
       tmpArr.push(dateSnd); // date sending
 
-// STOP date parsing
+      // STOP date parsing
       tmpArr.push(xlsxDataGlobal[i][m]); // address
       tmpArr.push(xlsxDataGlobal[i][n]); // area
       tmpArr.push(xlsxDataGlobal[i][o]); // region of the work
@@ -437,33 +358,13 @@ switch (toTrimAndToLower(xlsxDataGlobal[i][d])) {
       tmpArr.push(mainPeriod); // project
 
 
-// Доделать добавление строк только отмеченных строк
+      // Доделать добавление строк только отмеченных строк
       if (arrStr01.indexOf(i) !== -1 && $('#uploadStringsChkbx').prop('checked') || (!$('#uploadStringsChkbx').prop('checked'))) {
           newArrForServer.push(tmpArr);
       }
 
-/*
-// REG TABLE START
-      tmpArrReg.push(xlsxDataGlobal[i][aa]); // other
-
-      var aReg = $('.tab-pane.active').attr('id');
-      aReg ? aReg = aReg.slice(9,17) : '';
-      tmpArrReg.push(aReg); // id event
-
-      tmpArrReg.push('01');
-      tmpArrReg.push(window.adminId);
-      tmpArrReg.push($('.tab-pane.active').attr('data-currency'));
-      otherCollect ? tmpArrReg.push(otherCollect) : tmpArrReg.push(' ');
-
-      tmpArrReg.push(null);
-      tmpArrReg.push(null);
-
-      if ((arrStr01.indexOf(i) !== -1 && $('#uploadStringsChkbx').prop('checked')) || (!$('#uploadStringsChkbx').prop('checked'))) {
-          newArrForServerReg.push(tmpArrReg);
-      }
-*/
-// REG TABLE STOP
-// LOOOOOOOOP
+      // REG TABLE STOP
+      // LOOOOOOOOP
       aa = aa !== '' ? Number(aa) + 16 : '';
       b = b !== '' ? Number(b) + 16 : '';
       bb = bb !== '' ? Number(bb) + 16 : '';
@@ -488,9 +389,8 @@ switch (toTrimAndToLower(xlsxDataGlobal[i][d])) {
       t = t !== '' ? Number(t) + 16 : '';
     }
 
-// FOR REG TABLE
+    // FOR REG TABLE
 
-    console.log(newArrForServer);
     if (errorUpload === 0) {
       //var y = JSON.stringify(newArrForServerReg);
       var x = JSON.stringify(newArrForServer);
@@ -513,7 +413,7 @@ switch (toTrimAndToLower(xlsxDataGlobal[i][d])) {
   }
   setTimeout(function () {
     $('#saveSpinner').show();
-    window.location = '/contacts';
+    //window.location = '/contacts';
   }, 3000);
 });
 // STOP SAFE FUNCTION NEW UPLOAD BUTTON
@@ -878,7 +778,6 @@ $('#uploadStringsChkbx').change(function () {
 });
 
 function stringPrepareForShow(xlsxData) {
-
     var uploadedStrings = [];
     for (var i = 0; i < xlsxData.length; i++) {
       if (i != 0) {
@@ -886,7 +785,7 @@ function stringPrepareForShow(xlsxData) {
         var uuu = [];
         var counter = 0;
         for (var varvar in itemStr) {
-          if (counter === 0 || counter === 3 || counter === 7) {
+          if (counter === 0 || counter === 1 || counter === 2) {
             uuu.push(itemStr[varvar]);
           }
           counter++;

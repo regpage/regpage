@@ -4,7 +4,7 @@ include_once "db.php";
 // получаем количество ответов
 function checkLimits($id) {
     global $db;
-    $id = $db->real_escape_string($id);
+    $id = db_real_escape_string($id);
     $result = '';
     $res = db_query("SELECT COUNT(`id_list`) AS count_id FROM questionnaire_data WHERE `id_list`='$id'");
     while ($row = $res->fetch_assoc()) $result = $row['count_id'];
@@ -26,7 +26,7 @@ function getQuestionnaire() {
 // получаем ответы из текстовых полей
 function getIdTextField($id) {
   global $db;
-  $id = $db->real_escape_string($id);
+  $id = db_real_escape_string($id);
   $result = [];
   $res = db_query("SELECT `id`, `id_blank`, `name` FROM questionnaire_list WHERE `id_blank` = '$id' AND `type` = 'in' ORDER BY `id`");
   while ($row = $res->fetch_assoc()) $result[$row['id']] = $row['name'];

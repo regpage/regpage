@@ -3,7 +3,7 @@
 function checkMissedSessions($sheet_id)
 {
   global $db;
-  $sheet_id = $db->real_escape_string($sheet_id);
+  $sheet_id = db_real_escape_string($sheet_id);
   $result = [];
   // если установлена причина или опоздание >= 20 мин
   // если причина "Р" и опоздания нет или оно < 20 мин то проп. занятие не создаётся
@@ -21,7 +21,7 @@ function checkMissedSessions($sheet_id)
 function setMissedClasses($sheet_id='')
 {
   global $db;
-  $sheet_id = $db->real_escape_string($sheet_id);
+  $sheet_id = db_real_escape_string($sheet_id);
   $check = checkMissedSessions($sheet_id);
 
   if ($sheet_id === '') {
@@ -41,8 +41,8 @@ function getMissedClasses($sort='', $member='_all_')
 {
 
   global $db;
-  $sort = $db->real_escape_string($sort);
-  $member = $db->real_escape_string($member);
+  $sort = db_real_escape_string($sort);
+  $member = db_real_escape_string($member);
   $result = [];
   $condition = ' 1 ';
   $order = ' fas.date, m.name ';
@@ -76,7 +76,7 @@ function getMissedClasses($sort='', $member='_all_')
 function dltMissedClass($id)
 {
   global $db;
-  $id = $db->real_escape_string($id);
+  $id = db_real_escape_string($id);
 
   $res = db_query("DELETE FROM `ftt_skip` WHERE `id_attendance_sheet` = '$id' AND `status` <> 1 AND `status` <> 2");
 
@@ -87,13 +87,13 @@ function setSkipBlank($data)
 {
   global $db;
   $data = json_decode($data);
-  $sheet_id = $db->real_escape_string($data->sheet_id);
-  $id = $db->real_escape_string($data->id);
-  $topic = $db->real_escape_string($data->topic);
-  $status = $db->real_escape_string($data->status);
-  $comment = $db->real_escape_string($data->comment);
-  $id_attendance = $db->real_escape_string($data->id_attendance);
-  $custom_session = $db->real_escape_string($data->custom_session);
+  $sheet_id = db_real_escape_string($data->sheet_id);
+  $id = db_real_escape_string($data->id);
+  $topic = db_real_escape_string($data->topic);
+  $status = db_real_escape_string($data->status);
+  $comment = db_real_escape_string($data->comment);
+  $id_attendance = db_real_escape_string($data->id_attendance);
+  $custom_session = db_real_escape_string($data->custom_session);
 
   if (!empty($id)) {
     $res = db_query("UPDATE `ftt_skip` SET `topic` = '{$topic}', `status` = '{$status}', `comment` = '{$comment}', `changed` = 1  WHERE `id` = '$id'");
@@ -118,8 +118,8 @@ function setSkipBlank($data)
 function setPics($id, $file)
 {
   global $db;
-  $file = $db->real_escape_string($file);
-  $id = $db->real_escape_string($id);
+  $file = db_real_escape_string($file);
+  $id = db_real_escape_string($id);
   $result = '';
 
   $res = db_query("SELECT `file` FROM `ftt_skip` WHERE `id` = '$id'");

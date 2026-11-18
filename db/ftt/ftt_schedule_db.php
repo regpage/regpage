@@ -2,7 +2,7 @@
 // Расписание
 function getSchedule($semestr){
   global $db;
-  $semestr = $db->real_escape_string($semestr);
+  $semestr = db_real_escape_string($semestr);
   $result = [];
   $res = db_query("SELECT * FROM ftt_session WHERE `semester_range`= 0 OR `semester_range`= '$semestr'");
   while ($row = $res->fetch_assoc()) $result[] = $row;
@@ -11,9 +11,9 @@ function getSchedule($semestr){
 // Расписание по дням
 function getScheduleByDay($semester_range, $day, $time_zone){
   global $db;
-  $semester_range = $db->real_escape_string($semester_range);
-  $day = $db->real_escape_string($day);
-  $time_zone = $db->real_escape_string($time_zone);
+  $semester_range = db_real_escape_string($semester_range);
+  $day = db_real_escape_string($day);
+  $time_zone = db_real_escape_string($time_zone);
 
   $result = [];
   $res = db_query("SELECT `id`, `$day`, `session_name`, `attendance`, `duration`, `semester_range`, `comment`, `time_zone`

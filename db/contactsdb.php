@@ -14,25 +14,25 @@ function db_getNewContactId ()
 // Create or update a contact
 function db_newOrUpdateContactString($memberId, $data){
   global $db;
-  $memberId = $db->real_escape_string($memberId);
-  $data['id'] ? $Id = $db->real_escape_string($data['id']) : $Id='';
-  $data['name'] ? $name = $db->real_escape_string($data['name']) : $name='';
-  $data['phone'] ? $phone = $db->real_escape_string($data['phone']) : $phone='';
-  $data['locality'] ? $locality = $db->real_escape_string($data['locality']) : $locality='';
-  $data['male'] ? $male = $db->real_escape_string($data['male']) : $male='';
-  $data['status'] ? $status = $db->real_escape_string($data['status']) : $status='';
-  $data['email'] ? $email = $db->real_escape_string($data['email']) : $email='';
-  $data['responsible'] ? $responsible = $db->real_escape_string($data['responsible']) : $responsible='';
-  $data['responsible_prev'] ? $responsiblePrev = $db->real_escape_string($data['responsible_prev']) : $responsiblePrev='';
-  $data['area'] ? $area = $db->real_escape_string($data['area']) : $area='';
-  $data['address'] ? $address = $db->real_escape_string($data['address']) :  $address = '';
-  $data['comment'] ? $comment = $db->real_escape_string($data['comment']) : $comment='';
-  $data['index'] ? $index =  $db->real_escape_string($data['index']) : $index ='';
-  $data['region'] ? $region =  $db->real_escape_string($data['region']) : $region ='';
-  $data['region_work'] ? $regionWork =  $db->real_escape_string($data['region_work']) : $regionWork ='';
-  $data['country'] ? $countryKey =  $db->real_escape_string($data['country']) : $countryKey ='';
-  $data['order_date'] ? $orderDate =  $db->real_escape_string($data['order_date']) : $orderDate = NULL;
-  $data['project'] ? $project = $db->real_escape_string($data['project']) : $project='';
+  $memberId = db_real_escape_string($memberId);
+  $data['id'] ? $Id = db_real_escape_string($data['id']) : $Id='';
+  $data['name'] ? $name = db_real_escape_string($data['name']) : $name='';
+  $data['phone'] ? $phone = db_real_escape_string($data['phone']) : $phone='';
+  $data['locality'] ? $locality = db_real_escape_string($data['locality']) : $locality='';
+  $data['male'] ? $male = db_real_escape_string($data['male']) : $male='';
+  $data['status'] ? $status = db_real_escape_string($data['status']) : $status='';
+  $data['email'] ? $email = db_real_escape_string($data['email']) : $email='';
+  $data['responsible'] ? $responsible = db_real_escape_string($data['responsible']) : $responsible='';
+  $data['responsible_prev'] ? $responsiblePrev = db_real_escape_string($data['responsible_prev']) : $responsiblePrev='';
+  $data['area'] ? $area = db_real_escape_string($data['area']) : $area='';
+  $data['address'] ? $address = db_real_escape_string($data['address']) :  $address = '';
+  $data['comment'] ? $comment = db_real_escape_string($data['comment']) : $comment='';
+  $data['index'] ? $index =  db_real_escape_string($data['index']) : $index ='';
+  $data['region'] ? $region =  db_real_escape_string($data['region']) : $region ='';
+  $data['region_work'] ? $regionWork =  db_real_escape_string($data['region_work']) : $regionWork ='';
+  $data['country'] ? $countryKey =  db_real_escape_string($data['country']) : $countryKey ='';
+  $data['order_date'] ? $orderDate =  db_real_escape_string($data['order_date']) : $orderDate = NULL;
+  $data['project'] ? $project = db_real_escape_string($data['project']) : $project='';
   $newId = db_getNewContactId ();
   if ($Id) {
     db_query("UPDATE contacts SET `name`='$name', `phone`='$phone', `locality`='$locality', `male`='$male', `status`='$status', `email`='$email', `responsible`='$responsible', `responsible_previous`='$responsiblePrev', `area`='$area', `address`= '$address', `comment`= '$comment', `index_post` = '$index', `region` = '$region', `region_work` = '$regionWork', `country_key`='$countryKey', `order_date`='$orderDate', `project` = '$project' WHERE `id` = '$Id'");
@@ -50,7 +50,7 @@ function db_newOrUpdateContactString($memberId, $data){
 // get contact
 function db_getContactString ($id){
   global $db;
-  $id = $db->real_escape_string($id);
+  $id = db_real_escape_string($id);
   $result = [];
 
     $res=db_query ("SELECT c.id,c.time_stamp,c.name,c.phone,c.locality,c.male,c.status,c.email,c.responsible, c.responsible_previous,c.area,c.address,c.comment,c.index_post,c.region,c.region_work,c.country_key,c.order_date,
@@ -85,9 +85,9 @@ function db_deleteContactStringTotal($id, $adminId){
 // responsible set
 function db_responsibleSet($id, $responsibleNew, $adminId){
   global $db;
-  //$id = $db->real_escape_string($id);
-  $responsibleKey = $db->real_escape_string($responsibleNew[0]);
-  $responsibleName = $db->real_escape_string($responsibleNew[1]);
+  //$id = db_real_escape_string($id);
+  $responsibleKey = db_real_escape_string($responsibleNew[0]);
+  $responsibleName = db_real_escape_string($responsibleNew[1]);
   $text = 'Назначен ответственный: '.$responsibleName;
   foreach ($id as $value) {
     db_query ("UPDATE contacts SET `responsible` = '$responsibleKey', `responsible_previous` = '$value[1]' WHERE `id`='$value[0]'");
@@ -101,7 +101,7 @@ function db_responsibleSet($id, $responsibleNew, $adminId){
 // responsible set for admin 0
 function db_responsibleSetZero($data, $adminId){
   global $db;
-  $adminId = $db->real_escape_string($adminId);
+  $adminId = db_real_escape_string($adminId);
   $text;
   $responsibleKey;
   foreach ($data as $value) {
@@ -119,8 +119,8 @@ function db_responsibleSetZero($data, $adminId){
 // get the contact
 function db_getContactsStrings($memberId, $role){
   global $db;
-  $role = $db->real_escape_string($role);
-  $memberId = $db->real_escape_string($memberId);
+  $role = db_real_escape_string($role);
+  $memberId = db_real_escape_string($memberId);
   $result = [];
   if ($role > 0 && $role < 2) {
     $res=db_query ("SELECT c.id,c.time_stamp,c.name,c.phone,c.locality,c.male,c.status,c.email,c.responsible, c.responsible_previous,c.area,c.address,c.comment,c.index_post,c.region,c.region_work,c.country_key,c.order_date,
@@ -150,8 +150,8 @@ function db_getContactsStrings($memberId, $role){
 function db_getContactsStringsPrev($memberId, $contRole){
 //WHERE c.responsible_previous = '$memberId'  AND c.notice <> 2 ORDER BY c.responsible");
   global $db;
-  $memberId = $db->real_escape_string($memberId);
-  $contRole = $db->real_escape_string($contRole);
+  $memberId = db_real_escape_string($memberId);
+  $contRole = db_real_escape_string($contRole);
   $previousAdmin = " c.responsible_previous = '$memberId' ";
   /* Код ниже был для админов 2 что бы им видеть больше ответственных (responsible_previous)
   Этот код позволяет управлять контактами других админов = 1 которые
@@ -205,15 +205,15 @@ function db_getContactsStringsPrev($memberId, $contRole){
 // set CRM ID
 function  db_crmIdSet($idCRM, $id, $memberId, $text, $comment, $notes){
   global $db;
-  $id = $db->real_escape_string($id);
-  $idCRM = $db->real_escape_string($idCRM);
-  $memberId = $db->real_escape_string($memberId);
-  $text = $db->real_escape_string($text);
-  $comment = $db->real_escape_string($comment);
+  $id = db_real_escape_string($id);
+  $idCRM = db_real_escape_string($idCRM);
+  $memberId = db_real_escape_string($memberId);
+  $text = db_real_escape_string($text);
+  $comment = db_real_escape_string($comment);
   db_query("UPDATE contacts SET `crm_id` = '$idCRM', `order_date` = CURDATE(), `comment` = '$comment' WHERE `id` = '$id'");
   db_query("INSERT INTO chat (`group_id`, `member_key`, `message`) VALUES ('$id', '$memberId', '$text')");
   if ($notes) {
-    $notes = $db->real_escape_string($notes);
+    $notes = db_real_escape_string($notes);
     db_query("INSERT INTO chat (`group_id`, `member_key`, `message`) VALUES ('$id', '$memberId', '$notes')");
   }
 }
@@ -222,9 +222,9 @@ function  db_crmIdSet($idCRM, $id, $memberId, $text, $comment, $notes){
 // new message
 function db_newChatMsg($memberId, $data, $list=false){
   global $db;
-  $id = $db->real_escape_string($data['id']);
-  $text = $db->real_escape_string($data['text']);
-  $memberId = $db->real_escape_string($memberId);
+  $id = db_real_escape_string($data['id']);
+  $text = db_real_escape_string($data['text']);
+  $memberId = db_real_escape_string($memberId);
   db_query("INSERT INTO chat (`group_id`, `member_key`, `message`) VALUES ('$id', '$memberId', '$text')");
   if ($list) {
     $result = [];
@@ -238,22 +238,22 @@ function db_newChatMsg($memberId, $data, $list=false){
 // update message
 function db_updateChatMsg($id, $text){
   global $db;
-  $id = $db->real_escape_string($id);
-  $text = $db->real_escape_string($text);
+  $id = db_real_escape_string($id);
+  $text = db_real_escape_string($text);
   db_query("UPDATE chat SET `message` = '$text' WHERE `id` = '$id'");
 }
 // delete message
 function db_deleteChatMsg($id){
   global $db;
-  $id = $db->real_escape_string($id);
+  $id = db_real_escape_string($id);
   $res = db_query("DELETE FROM chat WHERE `id`='$id'");
 }
 
 // get the messages
 function db_getChatMessages($memberId, $idContacts){
   global $db;
-  $memberId = $db->real_escape_string($memberId);
-  $idContacts = $db->real_escape_string($idContacts);
+  $memberId = db_real_escape_string($memberId);
+  $idContacts = db_real_escape_string($idContacts);
   $result = [];
   $res=db_query ("SELECT * FROM chat WHERE `group_id` = '$idContacts' ORDER BY `time_stamp`");
   while ($row = $res->fetch_assoc()) $result[]=$row;
@@ -263,7 +263,7 @@ function db_getChatMessages($memberId, $idContacts){
 // get admin
 function db_getAdminByLocalityCnt($locality_key){
     global $db;
-    $locality = $db->real_escape_string($locality_key);
+    $locality = db_real_escape_string($locality_key);
 
     $res = db_query ("
         SELECT DISTINCT m.key, m.name, a.login as email FROM member as m
@@ -307,7 +307,7 @@ function db_getregionOfWork ()
 function db_getAdminMembersAdmins ($adminId)
 {
     global $db;
-    $adminId = $db->real_escape_string($adminId);
+    $adminId = db_real_escape_string($adminId);
 
     $res=db_query ("SELECT DISTINCT * FROM (
                         SELECT m.key as id, m.name as name, l.name as locality, l.key as locId, m.category_key as catId
@@ -359,8 +359,8 @@ function db_getAdminMembersAdmins ($adminId)
 function db_addStatusHistoryStr($status, $idContact)
 {
   global $db;
-  $status = $db->real_escape_string($status);
-  $idContact = $db->real_escape_string($idContact);
+  $status = db_real_escape_string($status);
+  $idContact = db_real_escape_string($idContact);
   $check = '';
 
   $res=db_query ("SELECT * FROM contacts_statistic WHERE `status` = '$status' AND `id_contact` = '$idContact'");
@@ -389,8 +389,8 @@ function db_getMemberListAdminsForContacts ()
 // new notification
 function db_newNotification($adminId, $contactId){
   global $db;
-  $contactId = $db->real_escape_string($contactId);
-  $adminId = $db->real_escape_string($adminId);
+  $contactId = db_real_escape_string($contactId);
+  $adminId = db_real_escape_string($adminId);
 
   db_query("UPDATE contacts SET `notice` = 1 WHERE `id` = '$contactId'");
 
@@ -400,7 +400,7 @@ function db_newNotification($adminId, $contactId){
 function db_deleteNotification($id)
 {
   global $db;
-  $id = $db->real_escape_string($id);
+  $id = db_real_escape_string($id);
 
   db_query("UPDATE contacts SET `notice` = 0 WHERE `id` = '$id'");
 }
@@ -408,7 +408,7 @@ function db_deleteNotification($id)
 // responsible set
 function db_statusMultipleSet($id, $statusNew){
   global $db;
-  $statusNew = $db->real_escape_string($statusNew);
+  $statusNew = db_real_escape_string($statusNew);
   foreach ($id as $value) {
     db_query ("UPDATE contacts SET `status` = '$statusNew' WHERE `id`='$value'");
     db_addStatusHistoryStr($statusNew, $value);
@@ -427,7 +427,7 @@ function db_getUniqueProjects ()
 function db_getRespCombobox ($memberId)
 {
   global $db;
-  $memberId = $db->real_escape_string($memberId);
+  $memberId = db_real_escape_string($memberId);
   $res=db_query ("SELECT `group_of_admin` FROM contacts_resp WHERE `member_key` = '$memberId'");
 
   $resp='1';
@@ -480,9 +480,9 @@ function db_getAdminResponsiblesGroup ($adminId) {
 
 function db_setRespForAdmin($adminId, $keys, $role){
   global $db;
-  $adminId = $db->real_escape_string($adminId);
-  $keys = $db->real_escape_string($keys);
-  $role = $db->real_escape_string($role);
+  $adminId = db_real_escape_string($adminId);
+  $keys = db_real_escape_string($keys);
+  $role = db_real_escape_string($role);
   $check = '0';
   $msg = '';
   $res=db_query ("SELECT `member_key` FROM contacts_resp WHERE `member_key` = '$adminId'");
@@ -502,7 +502,7 @@ function db_setRespForAdmin($adminId, $keys, $role){
 
 function db_getContactsRoleAdmin($adminId){
   global $db;
-  $adminId = $db->real_escape_string($adminId);
+  $adminId = db_real_escape_string($adminId);
   $role = [];
 
   $res=db_query ("SELECT `role`, `group_of_admin` FROM contacts_resp WHERE `member_key` = '$adminId'");
@@ -538,8 +538,8 @@ function db_getContactsRoleAdmin($adminId){
 
 function db_setUpdadteContactsRoleAdmin($adminId, $role){
   global $db;
-  $adminId = $db->real_escape_string($adminId);
-  $role = $db->real_escape_string($role);
+  $adminId = db_real_escape_string($adminId);
+  $role = db_real_escape_string($role);
   $check = '0';
   $msg = 'Администору ';
 
@@ -561,7 +561,7 @@ if ($role === 'none' && $check !== '0') {
 
 function db_checkRemoveAccount($adminId) {
   global $db;
-  $adminId = $db->real_escape_string($adminId);
+  $adminId = db_real_escape_string($adminId);
   $counter = 0;
 
   $res=db_query ("SELECT id FROM contacts WHERE (notice <> 2) AND (responsible = '$adminId')");
@@ -585,8 +585,8 @@ function db_getArchivedStrings() {
 
 function db_setRecoverArchivedStrings($id, $adminId){
   global $db;
-  $id = $db->real_escape_string($id);
-  $adminId = $db->real_escape_string($adminId);
+  $id = db_real_escape_string($id);
+  $adminId = db_real_escape_string($adminId);
   $result;
   $text = 'Контакт востановлен из архива.';
 
@@ -617,8 +617,8 @@ function db_getTrashStrings($memberId) {
 
 function db_setRecoverStrings($id, $adminId) {
   global $db;
-  $id = $db->real_escape_string($id);
-  $adminId = $db->real_escape_string($adminId);
+  $id = db_real_escape_string($id);
+  $adminId = db_real_escape_string($adminId);
   $result;
   $text = 'Контакт востановлен из корзины.';
 
@@ -637,7 +637,7 @@ function db_setRecoverStrings($id, $adminId) {
 // Archived contacts strings
 function db_setContactsToArchive($id, $adminId){
   global $db;
-  $adminId = $db->real_escape_string($adminId);
+  $adminId = db_real_escape_string($adminId);
   $text = 'Контакт перемещён в архив';
   foreach ($id as $value) {
     db_query ("UPDATE contacts SET `notice` = 3 WHERE `id`='$value'");
@@ -649,8 +649,8 @@ function db_setContactsToArchive($id, $adminId){
 
 function db_deleteOneContact($id, $adminId){
   global $db;
-  $id = $db->real_escape_string($id);
-  $adminId = $db->real_escape_string($adminId);
+  $id = db_real_escape_string($id);
+  $adminId = db_real_escape_string($adminId);
   $datatime = date("Y-m-d H:i:s");
   $text = 'Контакт перемещён в корзину';
 
@@ -663,8 +663,8 @@ function db_deleteOneContact($id, $adminId){
 
 function db_archiveOneContact($id, $adminId){
   global $db;
-  $id = $db->real_escape_string($id);
-  $adminId = $db->real_escape_string($adminId);
+  $id = db_real_escape_string($id);
+  $adminId = db_real_escape_string($adminId);
   $text = 'Контакт перемещён в архив';
 
   db_query ("UPDATE contacts SET `notice` = 3 WHERE `id`='$id'");
@@ -676,11 +676,11 @@ function db_archiveOneContact($id, $adminId){
 
 function setNewNameForGroup($adminId, $newName, $oldName = '') {
   global $db;
-  $adminId = $db->real_escape_string($adminId);
-  $newName = $db->real_escape_string($newName);
+  $adminId = db_real_escape_string($adminId);
+  $newName = db_real_escape_string($newName);
   $count = 0;
   if (!empty($oldName)) {
-    $oldName = $db->real_escape_string($oldName);
+    $oldName = db_real_escape_string($oldName);
     $res = db_query ("SELECT COUNT(*) count FROM contacts WHERE `project`='$oldName'");
     $row = $res->fetch_assoc();
     if($row['count']>0){
@@ -699,7 +699,7 @@ function setNewNameForGroup($adminId, $newName, $oldName = '') {
 
 function getShortStatResp($adminId) {
   global $db;
-  $adminId = $db->real_escape_string($adminId);
+  $adminId = db_real_escape_string($adminId);
   $resp;
   $res=db_query ("SELECT `group_of_admin` FROM contacts_resp WHERE `member_key` = '$adminId'");
   while ($row = $res->fetch_assoc()) $resp=$row['group_of_admin'];

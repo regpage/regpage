@@ -25,8 +25,8 @@ class FttCandidates
   static function add($member_key, $is_guest = 0)
   {
       global $db;
-      $member_key = $db->real_escape_string($member_key);
-      $is_guest = $db->real_escape_string($is_guest);
+      $member_key = db_real_escape_string($member_key);
+      $is_guest = db_real_escape_string($is_guest);
       $list = self::get();
       if (!in_array($member_key, $list)) {
         $res = db_query("INSERT INTO `ftt_request` (`member_key`, `guest`) VALUES ('$member_key', '$is_guest')");
@@ -38,7 +38,7 @@ class FttCandidates
   static function dlt($member_key)
   {
       global $db;
-      $member_key = $db->real_escape_string($member_key);
+      $member_key = db_real_escape_string($member_key);
       $list = self::get();
       if (($key = array_search($member_key, $list)) !== false) {
         $res = db_query("DELETE FROM `ftt_request` WHERE `member_key` = '$member_key'");

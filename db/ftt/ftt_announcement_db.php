@@ -22,23 +22,23 @@ function saveAnnouncement($data)
 {
   global $db;
   $data = json_decode($data);
-  $id = $db->real_escape_string($data->id);
-  $author = $db->real_escape_string($data->author);
-  $to_14 = $db->real_escape_string($data->to_14);
-  $to_56 = $db->real_escape_string($data->to_56);
-  $to_coordinators = $db->real_escape_string($data->to_coordinators);
-  $to_servingones = $db->real_escape_string($data->to_servingones);
-  $by_list = $db->real_escape_string($data->by_list);
-  $time_zone = $db->real_escape_string($data->time_zone);
-  $header = $db->real_escape_string($data->header);
-  $content = $db->real_escape_string($data->content);
-  $recipients = $db->real_escape_string($data->recipients);
-  $groups = $db->real_escape_string($data->groups);
-  $publication_date = $db->real_escape_string($data->publication_date);
-  $publication_time = $db->real_escape_string($data->publication_time);
-  $archivation_date = $db->real_escape_string($data->archivation_date);
-  $publication = $db->real_escape_string($data->publication);
-  $comment = $db->real_escape_string($data->comment);
+  $id = db_real_escape_string($data->id);
+  $author = db_real_escape_string($data->author);
+  $to_14 = db_real_escape_string($data->to_14);
+  $to_56 = db_real_escape_string($data->to_56);
+  $to_coordinators = db_real_escape_string($data->to_coordinators);
+  $to_servingones = db_real_escape_string($data->to_servingones);
+  $by_list = db_real_escape_string($data->by_list);
+  $time_zone = db_real_escape_string($data->time_zone);
+  $header = db_real_escape_string($data->header);
+  $content = db_real_escape_string($data->content);
+  $recipients = db_real_escape_string($data->recipients);
+  $groups = db_real_escape_string($data->groups);
+  $publication_date = db_real_escape_string($data->publication_date);
+  $publication_time = db_real_escape_string($data->publication_time);
+  $archivation_date = db_real_escape_string($data->archivation_date);
+  $publication = db_real_escape_string($data->publication);
+  $comment = db_real_escape_string($data->comment);
 
   if ($publication === '1' && !empty($id)) {
     if ($by_list === '1' && $recipients) {
@@ -98,7 +98,7 @@ function saveAnnouncement($data)
 function undoPublicationAnnouncement($id)
 {
   global $db;
-  $id = $db->real_escape_string($id);
+  $id = db_real_escape_string($id);
   $res = db_query("UPDATE `ftt_announcement` SET `publication`= 0 WHERE `id` = '$id'");
   db_query("DELETE FROM `ftt_announcement_recipients` WHERE `id_announcement` = '$id'");
   return $res;
@@ -109,7 +109,7 @@ function undoPublicationAnnouncement($id)
 function getAnnouncementsForRecipient($admin_id)
 {
   global $db;
-  $admin_id = $db->real_escape_string($admin_id);
+  $admin_id = db_real_escape_string($admin_id);
   $result = [];
   $res = db_query("SELECT far.id_announcement, far.member_key, far.date AS notice, fa.id, fa.date, fa.time,
     fa.publication, fa.header, fa.member_key AS author, fa.comment, fa.to_14, fa.to_56, fa.to_coordinators,
@@ -124,8 +124,8 @@ function getAnnouncementsForRecipient($admin_id)
 function setAnnouncementNotice($id, $adminId)
 {
   global $db;
-  $id = $db->real_escape_string($id);
-  $adminId = $db->real_escape_string($adminId);
+  $id = db_real_escape_string($id);
+  $adminId = db_real_escape_string($adminId);
 
   $res = db_query("UPDATE `ftt_announcement_recipients` SET `date`=NOW() WHERE `id_announcement` = '{$id}' AND `member_key` = '{$adminId}'");
   return $res;

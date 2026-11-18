@@ -4,9 +4,9 @@
 // Youth
 function OLDdb_getYouthList($adminId, $sort_field, $sort_type){
     global $db;
-    $adminId = $db->real_escape_string($adminId);
-    $sort_field = $db->real_escape_string($sort_field);
-    $sort_type = $db->real_escape_string($sort_type);
+    $adminId = db_real_escape_string($adminId);
+    $sort_field = db_real_escape_string($sort_field);
+    $sort_type = db_real_escape_string($sort_type);
 
     $res=db_query ("SELECT DISTINCT * FROM
         (SELECT DISTINCT m.key as id, m.name as name, IF (COALESCE(l.name,'')='', m.new_locality, l.name) as locality,
@@ -60,9 +60,9 @@ function OLDdb_getYouthList($adminId, $sort_field, $sort_type){
 
 function db_getYouthList($adminId, $sort_field, $sort_type){
     global $db;
-    $adminId = $db->real_escape_string($adminId);
-    $sort_field = $db->real_escape_string($sort_field);
-    $sort_type = $db->real_escape_string($sort_type);
+    $adminId = db_real_escape_string($adminId);
+    $sort_field = db_real_escape_string($sort_field);
+    $sort_type = db_real_escape_string($sort_type);
 
     $res=db_query ("SELECT DISTINCT * FROM
       (SELECT DISTINCT m.key as id, m.name as name, IF (COALESCE(l.name,'')='', m.new_locality, l.name) as locality,

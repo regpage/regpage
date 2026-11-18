@@ -5,7 +5,7 @@
 // Получаем вопросы
 function db_getRequestPoints() { // управлять зависимо от роли можно при рендеренге
   /*global $db;
-  $admin = $db->real_escape_string($admin);*/
+  $admin = db_real_escape_string($admin);*/
   $result = [];
   $res=db_query("SELECT * FROM `ftt_request_points` ORDER BY `group`, `position`");
     while ($row = $res->fetch_assoc()) $result[] = $row;
@@ -16,7 +16,7 @@ function db_getRequestPoints() { // управлять зависимо от р�
 // заполнить поля заявление данными
 function getMemberData($adminId) {
   global $db;
-  $adminId = $db->real_escape_string($adminId);
+  $adminId = db_real_escape_string($adminId);
   // LOG
   //write_to_log::debug('000005716', 'Запрошены данные пользователя '.$adminId);//$adminId
 
@@ -53,7 +53,7 @@ function getMemberData($adminId) {
 // предварительное заполнение заявления данными из базы рег пэйдж
 function getStartMemberData($adminId) {
   global $db;
-  $adminId = $db->real_escape_string($adminId);
+  $adminId = db_real_escape_string($adminId);
   $res=db_query ("SELECT m.key AS m_key , m.name, m.male, m.locality_key, m.citizenship_key, m.baptized, m.birth_date,
     DATEDIFF(CURRENT_DATE, STR_TO_DATE(m.birth_date, '%Y-%m-%d'))/365 as age, m.document_num, m.document_auth, m.new_locality,
     m.document_date, m.document_dep_code, m.tp_num, m.tp_date, m.tp_auth, m.email, m.address, m.cell_phone,
@@ -71,17 +71,17 @@ function getStartMemberData($adminId) {
 // обновить данные переданного поля в заявлении переданными данными
 function setRequestField($adminId, $field, $data, $id, $table, $isGuest, $blob=false, $data_post=false) {
   global $db;
-  $adminId = $db->real_escape_string($adminId);
-  $field = $db->real_escape_string($field);
+  $adminId = db_real_escape_string($adminId);
+  $field = db_real_escape_string($field);
   if ($data_post) {
-    $data = $db->real_escape_string($data_post);
+    $data = db_real_escape_string($data_post);
   } else {
-    $data = $db->real_escape_string($data);
+    $data = db_real_escape_string($data);
   }
-  $id = $db->real_escape_string($id);
-  $table = $db->real_escape_string($table);
-  $isGuest = $db->real_escape_string($isGuest);
-  $blob = $db->real_escape_string($blob);
+  $id = db_real_escape_string($id);
+  $table = db_real_escape_string($table);
+  $isGuest = db_real_escape_string($isGuest);
+  $blob = db_real_escape_string($blob);
 
   if ($table === 'member') {
     $id_field = 'key';
@@ -137,8 +137,8 @@ function db_setTrashForRequest($id) {
 
 function db_deletePicFromRequest($id, $field) {
   global $db;
-  $field = $db->real_escape_string($field);
-  $id = $db->real_escape_string($id);
+  $field = db_real_escape_string($field);
+  $id = db_real_escape_string($id);
   $res;
   $res = db_query("UPDATE ftt_request SET `$field` = '' WHERE `id` = '$id'");
 
@@ -147,8 +147,8 @@ function db_deletePicFromRequest($id, $field) {
 
 function db_getPicForRequest($id, $field) {
   global $db;
-  $id = $db->real_escape_string($id);
-  $field = $db->real_escape_string($field);
+  $id = db_real_escape_string($id);
+  $field = db_real_escape_string($field);
   $pics;
   if ($field === 'passport_scan') {
     $res=db_query("SELECT `passport_scan`, `passport_scan_2`, `passport_scan_3` FROM ftt_request WHERE `id` = '$id'");
@@ -164,8 +164,8 @@ function db_getPicForRequest($id, $field) {
 // Задаём статус ОТПРАВЛЕНО
 function db_setStatusRequestToSent($id, $status = 1, $adminId='') {
   global $db;
-  $id = $db->real_escape_string($id);
-  $status = $db->real_escape_string($status);
+  $id = db_real_escape_string($id);
+  $status = db_real_escape_string($status);
   $date = 'send_date';
   $responsible = '';
   if ($status == 2 || $status == 3) {
@@ -262,7 +262,7 @@ function db_setStatusRequestToSent($id, $status = 1, $adminId='') {
 // Получаем вопросы
 function db_getChurchLifeBrothers() { // управлять зависимо от роли можно при рендеренге
   /*global $db;
-  $admin = $db->real_escape_string($admin);*/
+  $admin = db_real_escape_string($admin);*/
   $result = [];
   $res=db_query("SELECT m.key, m.name, m.locality_key, l.name AS locality
     FROM member m

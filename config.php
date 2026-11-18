@@ -83,9 +83,9 @@ function prepareQuery($sql, $params = [], $types = "") {
 
     // Обезвреживание содержимого переданного аргумента.
     function db_real_escape_string($data) {
-      /*if ($data === null) {
-        $data = '';
-      }*/
+      if (empty($data)) {
+        return $data;
+      }
       global $db;
       return $db->real_escape_string($data);
     }

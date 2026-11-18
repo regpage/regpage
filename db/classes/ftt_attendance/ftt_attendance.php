@@ -8,8 +8,8 @@ class FttAttendance
   static function getIdByDate ($memberKey, $date)
   {
     global $db;
-    $memberKey = $db->real_escape_string($memberKey);
-    $date = $db->real_escape_string($date);
+    $memberKey = db_real_escape_string($memberKey);
+    $date = db_real_escape_string($date);
 
     $result = '';
     $res = db_query("SELECT `id` FROM `ftt_attendance_sheet` WHERE `member_key` = '{$memberKey}' AND `date` = '{$date}'");
@@ -21,8 +21,8 @@ class FttAttendance
   static function getAttendanceIdBySheetId ($sheetId, $class=1)
   {
     global $db;
-    $sheetId = $db->real_escape_string($sheetId);
-    $class = $db->real_escape_string($class);
+    $sheetId = db_real_escape_string($sheetId);
+    $class = db_real_escape_string($class);
 
     $result = [];
     $res = db_query("SELECT `id`, `session_name` FROM `ftt_attendance` WHERE `sheet_id` = '{$sheetId}' AND `class` = '{$class}'");

@@ -7,7 +7,7 @@ class FttPermissions
   static function get_by_trainee($member_id)
   {
     global $db;
-    $member_id = $db->real_escape_string($member_id);
+    $member_id = db_real_escape_string($member_id);
     $result = [];
 
     $res = db_query("SELECT fps.id, fps.member_key, fps.absence_date, fps.date,
@@ -23,7 +23,7 @@ class FttPermissions
   static function get_by_trainee_data($member_id)
   {
     global $db;
-    $member_id = $db->real_escape_string($member_id);
+    $member_id = db_real_escape_string($member_id);
     $result = [];
 
     $res = db_query("SELECT fps.id, fps.member_key, fps.absence_date, fps.date, fps.comment,
@@ -62,7 +62,7 @@ class FttPermissions
     $result=[];
     if (count($trainee_list) > 0) {
       foreach ($trainee_list as $key => $value) {
-        $key = $db->real_escape_string($key);
+        $key = db_real_escape_string($key);
         if (!empty($condition)) {
           $condition .= " OR ";
         }
@@ -87,7 +87,7 @@ class FttPermissions
   static function get_by_date($date)
   {
     global $db;
-    $date = $db->real_escape_string($date);
+    $date = db_real_escape_string($date);
     $sheets = [];
     $result = [];
 

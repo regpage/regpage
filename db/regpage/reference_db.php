@@ -3,32 +3,32 @@
 function db_addReference($data){
     global $db;
 
-    $_name = $db->real_escape_string($data['name']);
-    $_page = $db->real_escape_string($data['page']);
-    $_link_article = $db->real_escape_string($data['link_article']);
-    $_block = $db->real_escape_string($data['block']);
-    $_published = $db->real_escape_string($data['published']);
-    $_priority = $db->real_escape_string($data['priority']);
+    $_name = db_real_escape_string($data['name']);
+    $_page = db_real_escape_string($data['page']);
+    $_link_article = db_real_escape_string($data['link_article']);
+    $_block = db_real_escape_string($data['block']);
+    $_published = db_real_escape_string($data['published']);
+    $_priority = db_real_escape_string($data['priority']);
 
     db_query("INSERT INTO reference_system (name, link_article, page, block_num, published, priority) VALUES ('$_name', '$_link_article', '$_page', '$_block', '$_published', $_priority)");
 }
 
 function db_setReference($data){
     global $db;
-    $_name = $db->real_escape_string($data['name']);
-    $_page = $db->real_escape_string($data['page']);
-    $_link_article = $db->real_escape_string($data['link_article']);
+    $_name = db_real_escape_string($data['name']);
+    $_page = db_real_escape_string($data['page']);
+    $_link_article = db_real_escape_string($data['link_article']);
     $_block = (int)$data['block'];
     $_id = (int)$data['id'];
-    $_published = $db->real_escape_string($data['published']);
-    $_priority = $db->real_escape_string($data['priority']);
+    $_published = db_real_escape_string($data['published']);
+    $_priority = db_real_escape_string($data['priority']);
 
     db_query("UPDATE reference_system SET name='$_name', link_article = '$_link_article', page = '$_page', block_num = '$_block', published = '$_published', priority='$_priority' WHERE id=$_id");
 }
 
 function db_setReferenceFieldValue($field, $value, $id){
     global $db;
-    $_field = $db->real_escape_string($field);
+    $_field = db_real_escape_string($field);
     $_value = (int)$value;
     $_id = (int)$id;
 

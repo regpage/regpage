@@ -78,8 +78,8 @@ class GospelStatistic
   static function personalReport($memberId, $period=7, $from='CURDATE()')
   {
     global $db;
-    $period = $db->real_escape_string($period);
-    $from = $db->real_escape_string($from);
+    $period = db_real_escape_string($period);
+    $from = db_real_escape_string($from);
     $result = [];
     $and = '';
     $conditionBlanks = '';
@@ -142,7 +142,7 @@ class GospelStatistic
   static function check($strOrNumer)
   {
     global $db;
-    return $db->real_escape_string($strOrNumer);
+    return db_real_escape_string($strOrNumer);
   }
 
 }

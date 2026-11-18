@@ -16,7 +16,7 @@ class Colleges
 
   function db_getColleges($member_id){
       global $db;
-      $member_id = $db->real_escape_string($member_id);
+      $member_id = db_real_escape_string($member_id);
 
       //$search = $text ? " AND (c.name LIKE '%$text%' OR c.short_name LIKE '%$text%' OR l.name LIKE '%$text%') " : "";
 
@@ -40,11 +40,11 @@ class Colleges
 
   function db_setCollege($collegeId, $name, $shortName, $locality, $adminId){
       global $db;
-      $collegeId = $db->real_escape_string($collegeId);
-      $name = $db->real_escape_string($name);
-      $shortName = $db->real_escape_string($shortName);
-      $locality = $db->real_escape_string($locality);
-      $adminId = $db->real_escape_string($adminId);
+      $collegeId = db_real_escape_string($collegeId);
+      $name = db_real_escape_string($name);
+      $shortName = db_real_escape_string($shortName);
+      $locality = db_real_escape_string($locality);
+      $adminId = db_real_escape_string($adminId);
 
       if($collegeId){
           db_query("UPDATE college SET locality_key='$locality', name='$name', short_name='$shortName', changed=1 WHERE `key`='$collegeId'");
@@ -69,7 +69,7 @@ class Colleges
 
   function db_deleteCollege($collegeId){
       global $db;
-      $collegeId = $db->real_escape_string($collegeId);
+      $collegeId = db_real_escape_string($collegeId);
       db_query ("DELETE FROM college WHERE `key`='$collegeId'");
   }
 }

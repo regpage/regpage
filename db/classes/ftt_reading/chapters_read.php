@@ -8,8 +8,8 @@ class ChaptersRead
   static function get($member_key, $condition)
   {
     global $db;
-    $member_key = $db->real_escape_string($member_key);
-    $condition = $db->real_escape_string($condition);
+    $member_key = db_real_escape_string($member_key);
+    $condition = db_real_escape_string($condition);
     $result = array('ot' => [], 'nt' => []);
 
     // задаём условие период для запроса

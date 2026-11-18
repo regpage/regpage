@@ -3,9 +3,9 @@
 // Доб. задания
 function getExtraHelp($adminId, $serving_trainee, $sorting=''){
   global $db;
-  $adminId = $db->real_escape_string($adminId);
-  $serving_trainee = $db->real_escape_string($serving_trainee);
-  $sorting = $db->real_escape_string($sorting);
+  $adminId = db_real_escape_string($adminId);
+  $serving_trainee = db_real_escape_string($serving_trainee);
+  $sorting = db_real_escape_string($sorting);
   if ($serving_trainee === 2) {
     $condition = "feh.author='{$adminId}'";
   } else {
@@ -50,14 +50,14 @@ function setAddExtraHelp($data){
   global $db;
   $result;
   $result2;
-  $date = $db->real_escape_string($data['date']);
-  $member_key = $db->real_escape_string($data['member_key']);
-  $reason = $db->real_escape_string($data['reason']);
-  $archive = $db->real_escape_string($data['archive']);
-  $author = $db->real_escape_string($data['author']);
-  $serving_one = $db->real_escape_string($data['serving_one']);
-  $comment = $db->real_escape_string($data['comment']);
-  $archive_date = $db->real_escape_string($data['archive_date']);
+  $date = db_real_escape_string($data['date']);
+  $member_key = db_real_escape_string($data['member_key']);
+  $reason = db_real_escape_string($data['reason']);
+  $archive = db_real_escape_string($data['archive']);
+  $author = db_real_escape_string($data['author']);
+  $serving_one = db_real_escape_string($data['serving_one']);
+  $comment = db_real_escape_string($data['comment']);
+  $archive_date = db_real_escape_string($data['archive_date']);
   db_query("LOCK TABLES ftt_extra_help WRITE");
   $res = db_query("INSERT INTO `ftt_extra_help`(`date`, `member_key`, `reason`, `archive`, `author`, `comment`, `archive_date`, `serving_one`, `changed`)
   VALUES ('$date','$member_key','$reason','$archive','$author','$comment','$archive_date', '$serving_one', 1)");
@@ -80,15 +80,15 @@ function setAddExtraHelp($data){
 
 function updateAddExtraHelp($data){
   global $db;
-  $id = $db->real_escape_string($data['id']);
-  $date = $db->real_escape_string($data['date']);
-  $member_key = $db->real_escape_string($data['member_key']);
-  $reason = $db->real_escape_string($data['reason']);
-  $archive = $db->real_escape_string($data['archive']);
-  $author = $db->real_escape_string($data['author']);
-  $serving_one = $db->real_escape_string($data['serving_one']);
-  $comment = $db->real_escape_string($data['comment']);
-  $archive_date = $db->real_escape_string($data['archive_date']);
+  $id = db_real_escape_string($data['id']);
+  $date = db_real_escape_string($data['date']);
+  $member_key = db_real_escape_string($data['member_key']);
+  $reason = db_real_escape_string($data['reason']);
+  $archive = db_real_escape_string($data['archive']);
+  $author = db_real_escape_string($data['author']);
+  $serving_one = db_real_escape_string($data['serving_one']);
+  $comment = db_real_escape_string($data['comment']);
+  $archive_date = db_real_escape_string($data['archive_date']);
 
   $res = db_query("UPDATE `ftt_extra_help` SET `date`='$date', `member_key`='$member_key',
      `reason`='$reason',`archive`='$archive', `author`='$author', `comment`='$comment', `archive_date`='$archive_date', `serving_one` = '$serving_one', `changed`= 1
@@ -113,9 +113,9 @@ function updateAddExtraHelp($data){
 // Доп. задания
 function setExtraHelpDone($id, $archive, $adminId) {
   global $db;
-  $id = $db->real_escape_string($id);
-  $archive = $db->real_escape_string($archive);
-  $adminId = $db->real_escape_string($adminId);
+  $id = db_real_escape_string($id);
+  $archive = db_real_escape_string($archive);
+  $adminId = db_real_escape_string($adminId);
   if ($archive == 1) {
     $res = db_query("UPDATE `ftt_extra_help` SET `archive`='$archive', `serving_one`= '$adminId', `archive_date`=CURDATE(), `changed`= 1 WHERE `id` = $id");
   } else {
@@ -128,7 +128,7 @@ function setExtraHelpDone($id, $archive, $adminId) {
 // удалить доп. задания
 function deleteExtraHelpString($id){
   global $db;
-  $id = $db->real_escape_string($id);
+  $id = db_real_escape_string($id);
   $res = db_query("DELETE FROM `ftt_extra_help` WHERE `id` = $id");
 
   return $res;
@@ -137,7 +137,7 @@ function deleteExtraHelpString($id){
 function getStatisticsExtraHelp($sorting)
 {
   global $db;
-  $sorting = $db->real_escape_string($sorting);
+  $sorting = db_real_escape_string($sorting);
   $result = [];
   //ORDER BY feh.date
   $res = db_query("SELECT feh.id AS feh_id, feh.date, feh.member_key AS feh_member_key, feh.reason, feh.archive, feh.author, feh.serving_one AS feh_serving_one, feh.comment, feh.archive_date, ft.semester, ft.serving_one, m.name
@@ -168,8 +168,8 @@ function getLateStrings() {
 // Отметить как выполненное
 function setLateDone($id, $done){
   global $db;
-  $id = $db->real_escape_string($id);
-  $done = $db->real_escape_string($done);
+  $id = db_real_escape_string($id);
+  $done = db_real_escape_string($done);
 
   $res = db_query("UPDATE `ftt_late` SET `done`='$done', `changed`= 1 WHERE `id` = $id");
 
@@ -181,12 +181,12 @@ function setAddLate($data){
   global $db;
   $result;
   $result2;
-  $date = $db->real_escape_string($data['date']);
-  $member_key = $db->real_escape_string($data['member_key']);
-  $session_name = $db->real_escape_string($data['session_name']);
-  $done = $db->real_escape_string($data['done']);
-  $author = $db->real_escape_string($data['author']);
-  $delay = $db->real_escape_string($data['delay']);
+  $date = db_real_escape_string($data['date']);
+  $member_key = db_real_escape_string($data['member_key']);
+  $session_name = db_real_escape_string($data['session_name']);
+  $done = db_real_escape_string($data['done']);
+  $author = db_real_escape_string($data['author']);
+  $delay = db_real_escape_string($data['delay']);
 
   db_query("LOCK TABLES ftt_late WRITE");
   $res = db_query("INSERT INTO `ftt_late`(`date`, `member_key`, `session_name`, `done`, `author`, `delay`, `changed`)
@@ -238,13 +238,13 @@ function latesToExtraHelp($member_key)
 // update late
 function updateAddLate($data){
   global $db;
-  $id = $db->real_escape_string($data['id']);
-  $date = $db->real_escape_string($data['date']);
-  $member_key = $db->real_escape_string($data['member_key']);
-  $session_name = $db->real_escape_string($data['session_name']);
-  $done = $db->real_escape_string($data['done']);
-  $author = $db->real_escape_string($data['author']);
-  $delay = $db->real_escape_string($data['delay']);
+  $id = db_real_escape_string($data['id']);
+  $date = db_real_escape_string($data['date']);
+  $member_key = db_real_escape_string($data['member_key']);
+  $session_name = db_real_escape_string($data['session_name']);
+  $done = db_real_escape_string($data['done']);
+  $author = db_real_escape_string($data['author']);
+  $delay = db_real_escape_string($data['delay']);
 
   $res = db_query("UPDATE `ftt_late` SET `date`='$date', `member_key`='$member_key',
      `session_name`='$session_name',`done`='$done', `author`='$author', `delay`='$delay', `changed`= 1
@@ -273,7 +273,7 @@ function updateAddLate($data){
 // удалить доб. задания
 function deleteLateString($id){
   global $db;
-  $id = $db->real_escape_string($id);
+  $id = db_real_escape_string($id);
   $res = db_query("DELETE FROM `ftt_late` WHERE `id` = $id");
 
   return $res;

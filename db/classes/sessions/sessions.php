@@ -8,9 +8,9 @@ class Sessions
   static function get_classes($timeZone, $semester, $day)
   {
     global $db;
-    $timeZone = $db->real_escape_string($timeZone);
-    $semester = $db->real_escape_string($semester);
-    $day = $db->real_escape_string($day);
+    $timeZone = db_real_escape_string($timeZone);
+    $semester = db_real_escape_string($semester);
+    $day = db_real_escape_string($day);
     $semesterRange = 0;
     $result = [];
 

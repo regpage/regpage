@@ -72,8 +72,8 @@ function db_setRedBackground($memberKeys, $eventId)
     return false;
   }
   global $db;
-  $memberKeys = $db->real_escape_string($memberKeys);
-  $eventId = $db->real_escape_string($eventId);
+  $memberKeys = db_real_escape_string($memberKeys);
+  $eventId = db_real_escape_string($eventId);
   $memberKeys = explode(',', $memberKeys);
   $condition = '';
   foreach ($memberKeys as $key => $value) {
@@ -102,7 +102,7 @@ function db_brothersDotationList()
 function db_brothersDotationCheck($memberKey=false)
 {
   global $db;
-  $memberKey = $db->real_escape_string($memberKey);
+  $memberKey = db_real_escape_string($memberKey);
   $isExist = '';
   if ($memberKey) {
     $isExist = db_brothersDotationExist($memberKey);
@@ -122,7 +122,7 @@ function db_brothersDotationCheck($memberKey=false)
 function db_brothersHaveTicketsCount($eventKey = '20250013')
 {
   global $db;
-  $eventKey = $db->real_escape_string($eventKey);
+  $eventKey = db_real_escape_string($eventKey);
   $brothersHaveTickets = 0;
   $res = db_query("SELECT COUNT(r.member_key) AS total
     FROM reg r
@@ -136,7 +136,7 @@ function db_brothersHaveTicketsCount($eventKey = '20250013')
 
 function db_brothersHaveTickets($eventKey = '20250013') {
   global $db;
-  $eventKey = $db->real_escape_string($eventKey);
+  $eventKey = db_real_escape_string($eventKey);
   $result = [];
   $res = db_query("SELECT `member_key` FROM `reg` WHERE `flight_num_arr` != ''  AND `flight_num_dep` != '' AND `event_key` = '{$eventKey}'");
   while ($row = $res->fetch_assoc()) $result[$row['member_key']] = $row['member_key'];
@@ -146,8 +146,8 @@ function db_brothersHaveTickets($eventKey = '20250013') {
 
 function db_brotherHaveTickets($memberKey, $eventKey = '20250013') {
   global $db;
-  $memberKey = $db->real_escape_string($memberKey);
-  $eventKey = $db->real_escape_string($eventKey);
+  $memberKey = db_real_escape_string($memberKey);
+  $eventKey = db_real_escape_string($eventKey);
 
   $result = '';
   $res = db_query("SELECT `member_key` FROM `reg` WHERE `member_key` = '{$memberKey}' AND `flight_num_arr` != '' AND `flight_num_dep` != '' AND `event_key` = '{$eventKey}'");
@@ -159,7 +159,7 @@ function db_brotherHaveTickets($memberKey, $eventKey = '20250013') {
 // проверка существующей записи
 function db_brothersDotationExist($memberKey) {
   global $db;
-  $memberKey = $db->real_escape_string($memberKey);
+  $memberKey = db_real_escape_string($memberKey);
   $isExist='';
 
   $res = db_query("SELECT `member_key` FROM `brothers_dotation` WHERE member_key = '$memberKey'");
@@ -171,7 +171,7 @@ function db_brothersDotationExist($memberKey) {
 // проверка существующей записи
 function db_isBrother($memberKey) {
   global $db;
-  $memberKey = $db->real_escape_string($memberKey);
+  $memberKey = db_real_escape_string($memberKey);
   $isBrother='';
 
   $res = db_query("SELECT `male` FROM `member` WHERE `key` = '{$memberKey}'");
@@ -184,9 +184,9 @@ function db_isBrother($memberKey) {
 function db_brothersDotation($memberKey, $ticket, $eventId)
 {
   global $db;
-  $memberKey = $db->real_escape_string($memberKey);
-  $ticket = $db->real_escape_string($ticket);
-  $eventId = $db->real_escape_string($eventId);
+  $memberKey = db_real_escape_string($memberKey);
+  $ticket = db_real_escape_string($ticket);
+  $eventId = db_real_escape_string($eventId);
   $isFilled = '';
   $isExist = db_brothersDotationExist($memberKey);
 
@@ -210,8 +210,8 @@ function db_brothersDotation($memberKey, $ticket, $eventId)
 function db_brothersDotationGroup($membersKeys, $eventId)
 {
   global $db;
-  $membersKeys = $db->real_escape_string($membersKeys);
-  $eventId = $db->real_escape_string($eventId);
+  $membersKeys = db_real_escape_string($membersKeys);
+  $eventId = db_real_escape_string($eventId);
   $membersKeys = explode(',', $membersKeys);
   foreach ($membersKeys as $value) {
     $isExist = db_brothersDotationExist($value);

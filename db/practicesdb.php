@@ -4,7 +4,7 @@
 // Create the new string
 function db_newDayPractices($memberId){
   global $db;
-  $memberId = $db->real_escape_string($memberId);
+  $memberId = db_real_escape_string($memberId);
   $currentDate = date("Y-m-d");
   $result = 0;
   $res=db_query ("SELECT `id` FROM practices WHERE `member_id` = '$memberId' AND `date_practic` = '$currentDate'");
@@ -16,19 +16,19 @@ function db_newDayPractices($memberId){
 // Update the string
 function db_updateTodayPractices($memberId, $userData){
   global $db;
-  $mr = $db->real_escape_string($userData['mr']);
-  $pp = $db->real_escape_string($userData['pp']);
-  $pc = $db->real_escape_string($userData['pc']);
-  $rb = $db->real_escape_string($userData['rb']);
-  $rm = $db->real_escape_string($userData['rm']);
-  $gspl = $db->real_escape_string($userData['gspl']);
-  $fl = $db->real_escape_string($userData['fl']);
-  $cnt = $db->real_escape_string($userData['cnt']);
-  $svd = $db->real_escape_string($userData['svd']);
-  $meet = $db->real_escape_string($userData['meet']);
-  $wake = $db->real_escape_string($userData['wake']);
-  $hang = $db->real_escape_string($userData['hang']);
-  $oth = $db->real_escape_string($userData['oth']);
+  $mr = db_real_escape_string($userData['mr']);
+  $pp = db_real_escape_string($userData['pp']);
+  $pc = db_real_escape_string($userData['pc']);
+  $rb = db_real_escape_string($userData['rb']);
+  $rm = db_real_escape_string($userData['rm']);
+  $gspl = db_real_escape_string($userData['gspl']);
+  $fl = db_real_escape_string($userData['fl']);
+  $cnt = db_real_escape_string($userData['cnt']);
+  $svd = db_real_escape_string($userData['svd']);
+  $meet = db_real_escape_string($userData['meet']);
+  $wake = db_real_escape_string($userData['wake']);
+  $hang = db_real_escape_string($userData['hang']);
+  $oth = db_real_escape_string($userData['oth']);
   $currentDate = date("Y-m-d");
 
   db_query ("UPDATE practices SET `m_revival` = '$mr', `p_pray` = '$pp', `co_pray` = '$pc', `r_bible` = '$rb', `r_ministry` = '$rm', `evangel` = '$gspl', `flyers` = '$fl', `contacts` = '$cnt', `saved` = '$svd', `meetings` = '$meet', `wakeup` = '$wake', `hangup` = '$hang', `other` = '$oth' WHERE `member_id` = '$memberId' AND `date_practic` = '$currentDate'");
@@ -38,20 +38,20 @@ function db_updateTodayPractices($memberId, $userData){
 
 function db_updatePracticesByAdmin($stringId, $userData){
   global $db;
-  $stringId = $db->real_escape_string($stringId);
-  $mr = $db->real_escape_string($userData['mr']);
-  $pp = $db->real_escape_string($userData['pp']);
-  $pc = $db->real_escape_string($userData['pc']);
-  $rb = $db->real_escape_string($userData['rb']);
-  $rm = $db->real_escape_string($userData['rm']);
-  $gspl = $db->real_escape_string($userData['gspl']);
-  $fl = $db->real_escape_string($userData['fl']);
-  $cnt = $db->real_escape_string($userData['cnt']);
-  $svd = $db->real_escape_string($userData['svd']);
-  $meet = $db->real_escape_string($userData['meet']);
-  $wake = $db->real_escape_string($userData['wake']);
-  $hang = $db->real_escape_string($userData['hang']);
-  $oth = $db->real_escape_string($userData['oth']);
+  $stringId = db_real_escape_string($stringId);
+  $mr = db_real_escape_string($userData['mr']);
+  $pp = db_real_escape_string($userData['pp']);
+  $pc = db_real_escape_string($userData['pc']);
+  $rb = db_real_escape_string($userData['rb']);
+  $rm = db_real_escape_string($userData['rm']);
+  $gspl = db_real_escape_string($userData['gspl']);
+  $fl = db_real_escape_string($userData['fl']);
+  $cnt = db_real_escape_string($userData['cnt']);
+  $svd = db_real_escape_string($userData['svd']);
+  $meet = db_real_escape_string($userData['meet']);
+  $wake = db_real_escape_string($userData['wake']);
+  $hang = db_real_escape_string($userData['hang']);
+  $oth = db_real_escape_string($userData['oth']);
   $currentDate = date("Y-m-d");
 
   db_query ("UPDATE practices SET `m_revival` = '$mr', `p_pray` = '$pp', `co_pray` = '$pc', `r_bible` = '$rb', `r_ministry` = '$rm', `evangel` = '$gspl', `flyers` = '$fl', `contacts` = '$cnt', `saved` = '$svd', `meetings` = '$meet', `wakeup` = '$wake', `hangup` = '$hang', `other` = '$oth' WHERE `id` = '$stringId'");
@@ -63,7 +63,7 @@ function db_updatePracticesByAdmin($stringId, $userData){
 function db_getPractices($memberId){
     global $db;
     $currentDate = date("Y-m-d", strtotime("-7 days"));
-    $memberId = $db->real_escape_string($memberId);
+    $memberId = db_real_escape_string($memberId);
     $res=db_query ("SELECT * FROM practices WHERE `member_id` = '$memberId' AND `date_practic` > '$currentDate' ORDER BY `date_practic` DESC");
     $practices = array ();
     while ($row = $res->fetch_assoc()) $practices[]=$row;
@@ -74,7 +74,7 @@ function db_getPractices($memberId){
 function  db_getPracticesAll (){
   global $db;
   $currentDate = date("Y-m-d", strtotime("-7 days"));
-  //$memberId = $db->real_escape_string($memberId);
+  //$memberId = db_real_escape_string($memberId);
   $res=db_query ("SELECT * FROM practices WHERE `date_practic` > '$currentDate' ORDER BY `date_practic` DESC");
   $practices = array ();
   while ($row = $res->fetch_assoc()) $practices[]=$row;
@@ -84,7 +84,7 @@ function  db_getPracticesAll (){
 // Get Practices for user today
 function db_getPracticesToday($memberId){
     global $db;
-    $memberId = $db->real_escape_string($memberId);
+    $memberId = db_real_escape_string($memberId);
     $currentDate = date("Y-m-d");
     $res=db_query ("SELECT * FROM practices WHERE `member_id` = '$memberId' AND `date_practic` = '$currentDate'");
     $practices = array ();
@@ -96,11 +96,11 @@ function db_getPracticesForAdmin($userData, $periods = false){
 
   global $db;
 
-  $localities = $db->real_escape_string($userData['localities']);
-  $sortType = $db->real_escape_string($userData['sort']);
+  $localities = db_real_escape_string($userData['localities']);
+  $sortType = db_real_escape_string($userData['sort']);
 
   if (!$periods) {
-    $period = $db->real_escape_string($userData['period']);
+    $period = db_real_escape_string($userData['period']);
     if ($period === '7' ) {
       $currentDate = date("Y-m-d", strtotime("-7 days"));
     } else {
@@ -113,7 +113,7 @@ function db_getPracticesForAdmin($userData, $periods = false){
     //$periodTo = $userData['periodTo'];
   }
 
-  //$memberId = $db->real_escape_string($memberId);
+  //$memberId = db_real_escape_string($memberId);
   $practices = array ();
   if ($sortType == 'name_down' && !$periods) {
     $res=db_query ("SELECT p.id, p.date_practic, p.member_id, p.m_revival, p.p_pray, p.co_pray, p.r_bible,

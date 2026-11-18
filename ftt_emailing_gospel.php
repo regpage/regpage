@@ -42,7 +42,7 @@ function getServiceOnesWithTrainees ()
   $res = db_query("SELECT `member_key` FROM `ftt_serving_one`");
   while ($row = $res->fetch_assoc()) $result[] = $row['member_key'];
   foreach ($result as $key => $value) {
-    $value = $db->real_escape_string($value);
+    $value = db_real_escape_string($value);
     // команды служащего
     $sOteam = '';
     $sOteamPreparing = db_query("SELECT `gospel_team` FROM `ftt_serving_one` WHERE `member_key` = '$value'");

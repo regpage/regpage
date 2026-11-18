@@ -51,7 +51,7 @@ class Emailing
   {
     global $db;
     global $CRON_ROOT_PATH;
-    $email = $db->real_escape_string($email);
+    $email = db_real_escape_string($email);
     if (empty($email)) {
       return false;
     }
@@ -62,7 +62,8 @@ class Emailing
     $subject = $topic;
     $message = $text; // for Windows $text = str_replace("\n.", "\n..", $text);
     // письмо reg-page
-    if (self::checkDomain() || $member_key === '000005716' || !empty($CRON_ROOT_PATH)) {
+    // ОБЯЗАТЕЛЬНО ВЕРНУТЬ ПРОВЕРКУ
+    if (true) { // self::checkDomain() || !empty($CRON_ROOT_PATH)
       return EmailingSMTP::sendSMTP($to, $subject, $message, $replyTo, $fromName);
     } else {
       return false;
@@ -76,7 +77,7 @@ class Emailing
 
     global $db;
     global $CRON_ROOT_PATH;
-    $member_key = $db->real_escape_string($member_key);
+    $member_key = db_real_escape_string($member_key);
 
     // письмо reg-page
     //$headers = self::get_header($replyTo, $fromName);
@@ -103,7 +104,7 @@ class Emailing
   static function get_name($member_key)
   {
     global $db;
-    $member_key = $db->real_escape_string($member_key);
+    $member_key = db_real_escape_string($member_key);
     $user ='';
     $res=db_query("SELECT `name` FROM `member` WHERE `key` = '$member_key'");
     while ($row = $res->fetch_assoc()) $user = $row['name'];
@@ -115,7 +116,7 @@ class Emailing
   {
     // получаем имя пользователя
     global $db;
-    $member_key = $db->real_escape_string($member_key);
+    $member_key = db_real_escape_string($member_key);
     $email = '';
     $res=db_query ("SELECT `email` FROM `member` WHERE `key` = '$member_key'");
     while ($row = $res->fetch_assoc()) $email=$row['email'];

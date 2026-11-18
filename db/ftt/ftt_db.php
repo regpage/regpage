@@ -3,10 +3,10 @@
 // get requests
 function db_getAllRequests ($adminId, $role, $guest, $sorting){
   global $db;
-  $adminId = $db->real_escape_string($adminId);
-  $role = $db->real_escape_string($role);
-  $guest = $db->real_escape_string($guest);
-  $sorting = $db->real_escape_string($sorting);
+  $adminId = db_real_escape_string($adminId);
+  $role = db_real_escape_string($role);
+  $guest = db_real_escape_string($guest);
+  $sorting = db_real_escape_string($sorting);
   $result = [];
   $condition = '';
   if ($guest == 2) {
@@ -46,8 +46,8 @@ function db_getAllRequests ($adminId, $role, $guest, $sorting){
 // get requests
 function db_getApplications ($adminId, $interview=false){
   global $db;
-  $adminId = $db->real_escape_string($adminId);
-  $interview = $db->real_escape_string($interview);
+  $adminId = db_real_escape_string($adminId);
+  $interview = db_real_escape_string($interview);
   $result = [];
   if ($interview) {
     $condition = " fr.interview_name = '{$adminId}'";
@@ -79,8 +79,8 @@ function db_getRecommender($adminId) {
 function sentRequestToPVOM($adminId, $guest)
 {
   global $db;
-  $adminId = $db->real_escape_string($adminId);
-  $guest = $db->real_escape_string($guest);
+  $adminId = db_real_escape_string($adminId);
+  $guest = db_real_escape_string($guest);
   $check = checkRequestToPVOM($adminId);
   if (!$check) {
     $res = db_query("INSERT INTO `ftt_request` (`member_key`, `notice`, `guest`) VALUES ('$adminId', 2, '$guest')");
@@ -108,7 +108,7 @@ function sentRequestToPVOM($adminId, $guest)
 function checkRequestToPVOM($adminId)
 {
   global $db;
-  $adminId = $db->real_escape_string($adminId);
+  $adminId = db_real_escape_string($adminId);
 
   $res=db_query("SELECT `id` FROM `ftt_request` WHERE `member_key` = '$adminId' AND `notice` = 2");
   while ($row = $res->fetch_assoc()) return $row['id'];
@@ -118,8 +118,8 @@ function checkRequestToPVOM($adminId)
 // get requests
 function db_getRequestForApplication ($adminId, $trash=''){
   global $db;
-  $adminId = $db->real_escape_string($adminId);
-  $trash = $db->real_escape_string($trash);
+  $adminId = db_real_escape_string($adminId);
+  $trash = db_real_escape_string($trash);
   $result = [];
   if ($trash) {
     $condition = " fr.notice = 2 ";
@@ -148,9 +148,9 @@ function db_getRequestForApplication ($adminId, $trash=''){
 function createApplicationByRequest($id, $member_key, $guest=0)
 {
   global $db;
-  $id = $db->real_escape_string($id);
-  $guest = $db->real_escape_string($guest);
-  $member_key = $db->real_escape_string($member_key);
+  $id = db_real_escape_string($id);
+  $guest = db_real_escape_string($guest);
+  $member_key = db_real_escape_string($member_key);
 
   $res = db_query("UPDATE `ftt_request` SET `notice` = 0, `guest` = '$guest' WHERE  `id` = '$id'");
 
@@ -170,7 +170,7 @@ function createApplicationByRequest($id, $member_key, $guest=0)
 function dltRequestFor($id)
 {
   global $db;
-  $id = $db->real_escape_string($id);
+  $id = db_real_escape_string($id);
 
   $res = db_query("DELETE FROM `ftt_request` WHERE  `id` = '$id'");
 
@@ -180,8 +180,8 @@ function dltRequestFor($id)
 // архив заявлений перемещение из архива и в архив
 function setRequestToArchive($id, $to) {
   global $db;
-  $id = $db->real_escape_string($id);
-  $to = $db->real_escape_string($to);
+  $id = db_real_escape_string($id);
+  $to = db_real_escape_string($to);
 
   $res = db_query("UPDATE `ftt_request` SET `notice` = '{$to}' WHERE  `id` = '{$id}'"); //`notice` = 0,
 

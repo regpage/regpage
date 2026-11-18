@@ -12,13 +12,13 @@ function db_getNewContactIdApi ()
 function db_newContactByApi($data){
   // проверка
   if (empty($data['email']) && empty($data['phone']) && empty($data['name'])) {
-    return 'error_001';    
+    return 'error_001';
   }
   global $db;
   $newId = db_getNewContactIdApi();
-  $name = $db->real_escape_string($data['name']);
-  $email = $db->real_escape_string($data['email']);
-  $phone = $db->real_escape_string($data['phone']);
+  $name = db_real_escape_string($data['name']);
+  $email = db_real_escape_string($data['email']);
+  $phone = db_real_escape_string($data['phone']);
 
   $project = '24 урока';
   $status='';
@@ -32,10 +32,10 @@ function db_newContactByApi($data){
     $svaz .= 'Тел.: '.$phone . '<br>';
   }
   // добавить всю инфу в комментарий + дата и время обращения
-  $byMsgr = $db->real_escape_string($data['by_messanger']);
-  $byPhone = $db->real_escape_string($data['by_phone']);
-  $byEmail = $db->real_escape_string($data['by_email']);
-  $comment = $db->real_escape_string($data['comment']);
+  $byMsgr = db_real_escape_string($data['by_messanger']);
+  $byPhone = db_real_escape_string($data['by_phone']);
+  $byEmail = db_real_escape_string($data['by_email']);
+  $comment = db_real_escape_string($data['comment']);
   if (empty($comment)) {
     $comment = 'Дата и время подписки — ' . date('d.m.Y H:i') . "\r\n";
     $comment_mail = 'Дата и время подписки — ' . date('d.m.Y H:i') . "<br>";

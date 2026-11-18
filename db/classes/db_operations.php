@@ -13,19 +13,19 @@ class DbOperation {
   // Добавить второе условие
   static function operation($data)  {
     global $db;
-    $operation = $db->real_escape_string(trim($data['operation']));
-    $table = $db->real_escape_string(trim($data['table']));
-    $field = $db->real_escape_string(trim($data['field']));
-    $value = $db->real_escape_string(trim($data['value']));
-    $condition_field = $db->real_escape_string(trim($data['condition_field']));
-    $condition_value = $db->real_escape_string(trim($data['condition_value']));
-    $order_by = $db->real_escape_string(trim($data['order_by']));
+    $operation = db_real_escape_string(trim($data['operation']));
+    $table = db_real_escape_string(trim($data['table']));
+    $field = db_real_escape_string(trim($data['field']));
+    $value = db_real_escape_string(trim($data['value']));
+    $condition_field = db_real_escape_string(trim($data['condition_field']));
+    $condition_value = db_real_escape_string(trim($data['condition_value']));
+    $order_by = db_real_escape_string(trim($data['order_by']));
     if ($order_by) {
       $order_by = " ORDER BY ".$order_by;
     } else {
       $order_by = '';
     }
-    $changed = $db->real_escape_string(trim($data['changed']));
+    $changed = db_real_escape_string(trim($data['changed']));
     $changed_field = '';
     $equal ='';
     if ($changed === '1') {
@@ -62,9 +62,9 @@ class DbOperation {
   {
     global $db;
     $data = json_decode($data);
-    $table = $db->real_escape_string($data->table);
-    $condition_field = $db->real_escape_string($data->condition->field);
-    $condition_value = $db->real_escape_string($data->condition->value);
+    $table = db_real_escape_string($data->table);
+    $condition_field = db_real_escape_string($data->condition->field);
+    $condition_value = db_real_escape_string($data->condition->value);
     $result;
     $query_set = '';
     foreach ($data as $key => $value) {
@@ -72,8 +72,8 @@ class DbOperation {
         if ($query_set) {
           $query_set .= ', ';
         }
-        $key = $db->real_escape_string($key);
-        $value = $db->real_escape_string($value);
+        $key = db_real_escape_string($key);
+        $value = db_real_escape_string($value);
         $query_set .= ' `'.$key."`='$value'";
       }
     }
@@ -87,9 +87,9 @@ class DbOperation {
   {
     global $db;
     $data = json_decode($data);
-    $table = $db->real_escape_string($data->table);
-    $condition_field = $db->real_escape_string($data->condition->field);
-    $condition_value = $db->real_escape_string($data->condition->value);
+    $table = db_real_escape_string($data->table);
+    $condition_field = db_real_escape_string($data->condition->field);
+    $condition_value = db_real_escape_string($data->condition->value);
     $fields = '';
     $values = '';
 
@@ -104,8 +104,8 @@ class DbOperation {
           $fields .= ', ';
           $values .= ', ';
         }
-        $key = $db->real_escape_string($key);
-        $value = $db->real_escape_string($value);
+        $key = db_real_escape_string($key);
+        $value = db_real_escape_string($value);
         $fields .= "`{$key}`";
         $values .= "'{$value}'";
       }

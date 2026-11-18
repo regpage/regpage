@@ -28,7 +28,7 @@
         <a class="btn btn-primary disabled chk-dep chk-register role-admin" type="button"><i class="fa fa-check icon-white" title="Отправить данные команде регистрации."></i> <span class="hide-name">Отправить</span></a>
         <a class="btn btn-primary disabled chk-dep chk-bulkedit role-edit" type="button"><i class="fa fa-list icon-white" title="Изменить"></i> <span class="hide-name">Изменить</span></a>
         <a class="btn btn-danger disabled chk-dep chk-remove role-edit" type="button"><i class="fa fa-ban icon-white" title="Отменить"></i> <span class="hide-name">Отменить</span></a>
-        <?php if($event->web == 1){ ?>
+        <?php if(isset($event) && $event->web == 1){ ?>
         <a class="btn btn-warning disabled chk-dep filter-icons bulkedit-prove" type="button"><i class="fa fa-asterisk" aria-hidden="true" title="Подтвердить"></i> <span class="hide-name">Подтвердить</span></a>
         <!--<a class="btn btn-danger disabled chk-dep filter-icons bulkedit-prove" type="button"><i class="fa fa-asterisk" aria-hidden="true" title="Отметить прибытие"></i> <span class="hide-name">Отметить прибытие</span></a>-->
         <?php } ?>

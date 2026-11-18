@@ -47,7 +47,7 @@ function db_getSpecPages () {
 
 function db_getEventInfo ($eventId) {
     global $db;
-    $eventId = $db->real_escape_string($eventId);
+    $eventId = db_real_escape_string($eventId);
     $res=db_query ("SELECT info FROM event WHERE `key`='$eventId'");
     $row = $res->fetch_assoc();
     return $row ? $row['info'] : "";
@@ -56,7 +56,7 @@ function db_getEventInfo ($eventId) {
 function db_getEventInfoForAdmins ($eventId)
 {
     global $db;
-    $eventId = $db->real_escape_string($eventId);
+    $eventId = db_real_escape_string($eventId);
     $res=db_query ("SELECT name FROM event WHERE `key`='$eventId'");
     $row = $res->fetch_assoc();
     return $row ? $row['name'] : "";
@@ -65,7 +65,7 @@ function db_getEventInfoForAdmins ($eventId)
 function db_getEventInvitation ($eventId)
 {
     global $db;
-    $eventId = $db->real_escape_string($eventId);
+    $eventId = db_real_escape_string($eventId);
     $res=db_query ("SELECT invitation FROM event WHERE `key`='$eventId'");
     $row = $res->fetch_assoc();
     return $row ? $row['invitation'] : "";
@@ -74,7 +74,7 @@ function db_getEventInvitation ($eventId)
 function db_getEv ($eventId){
     global $db;
 
-    $eventId = $db->real_escape_string($eventId);
+    $eventId = db_real_escape_string($eventId);
     $res = db_query("SELECT `key` as id, name, start_date, end_date, regend_date, info, need_passport, need_transport, need_prepayment, private FROM event WHERE `key` = '$eventId' ORDER BY start_date");
     $events = array();
     while ($row = $res->fetch_object())$events[]=$row;
@@ -84,7 +84,7 @@ function db_getEv ($eventId){
 function db_getEventMessages ($eventId)
 {
     global $db;
-    $eventId = $db->real_escape_string($eventId);
+    $eventId = db_real_escape_string($eventId);
     $res=db_query ("SELECT reg_message, save_message FROM event WHERE `key`='$eventId'");
     return $res->fetch_assoc();
 }
@@ -92,7 +92,7 @@ function db_getEventMessages ($eventId)
 function db_getMemberNameEmail ($memberId)
 {
     global $db;
-    $memberId = $db->real_escape_string($memberId);
+    $memberId = db_real_escape_string($memberId);
     $res=db_query ("SELECT name, email FROM member WHERE `key`='$memberId'");
     $row = $res->fetch_assoc();
     return $row ? array ($row['name'], $row['email']) : array ('','');
@@ -102,7 +102,7 @@ function db_getMemberNameEmail ($memberId)
 function db_getMemberNameEmailShort ($memberId)
 {
     global $db;
-    $memberId = $db->real_escape_string($memberId);
+    $memberId = db_real_escape_string($memberId);
     $res=db_query ("SELECT name, email FROM member WHERE `key`='$memberId'");
     $row = $res->fetch_assoc();
     $pieces = explode(" ", $row['name']);
@@ -117,7 +117,7 @@ function db_getMemberNameEmailShort ($memberId)
 function db_getMemberLocality ($memberId)
 {
     global $db;
-    $memberId = $db->real_escape_string($memberId);
+    $memberId = db_real_escape_string($memberId);
     $res=db_query ("SELECT l.name FROM member m INNER JOIN locality l ON l.key=m.locality_key WHERE m.key='$memberId'");
     $row = $res->fetch_assoc();
     return $row ? $row['name'] : '';
@@ -126,8 +126,8 @@ function db_getMemberLocality ($memberId)
 function db_getPermalink ($memberId, $eventId)
 {
     global $db;
-    $memberId = $db->real_escape_string($memberId);
-    $eventId = $db->real_escape_string($eventId);
+    $memberId = db_real_escape_string($memberId);
+    $eventId = db_real_escape_string($eventId);
     $res=db_query ("SELECT permalink FROM reg WHERE member_key='$memberId' and event_key='$eventId'");
     $row = $res->fetch_assoc();
     return $row ? $row['permalink'] : '';
@@ -136,7 +136,7 @@ function db_getPermalink ($memberId, $eventId)
 function db_getTeamEmail ($eventId)
 {
     global $db;
-    $eventId = $db->real_escape_string($eventId);
+    $eventId = db_real_escape_string($eventId);
     $res=db_query ("SELECT team_email FROM event WHERE `key`='$eventId'");
     $row = $res->fetch_assoc();
     return $row ? $row['team_email'] : null;
@@ -170,7 +170,7 @@ function db_getServices ()
 function db_getProfile ($memberId)
 {
     global $db;
-    $memberId = $db->real_escape_string($memberId);
+    $memberId = db_real_escape_string($memberId);
     $res=db_query ("SELECT m.key as member_key, m.name,
                     CASE WHEN m.male=1 THEN 'male' WHEN m.male=0 THEN 'female' ELSE '' END as gender, m.male,
                     m.birth_date, m.locality_key, m.address, m.home_phone, m.cell_phone, a.login as email,
@@ -194,7 +194,7 @@ function db_getProfile ($memberId)
 function db_getMember ($memberId)
 {
     global $db;
-    $memberId = $db->real_escape_string($memberId);
+    $memberId = db_real_escape_string($memberId);
     $res=db_query ("SELECT m.key as member_key, m.name,
                     CASE WHEN m.male=1 THEN 'male' WHEN m.male=0 THEN 'female' ELSE '' END as gender, m.male,
                     m.birth_date, m.locality_key, m.address, m.home_phone, m.cell_phone, m.email,
@@ -218,7 +218,7 @@ function db_getMember ($memberId)
 function db_getAdminAsMember ($memberId)
 {
     global $db;
-    $memberId = $db->real_escape_string($memberId);
+    $memberId = db_real_escape_string($memberId);
     $res=db_query ("SELECT a.notice_info, a.notice_reg FROM admin as a WHERE a.member_key='$memberId'");
     if ($row = $res->fetch_assoc()) return $row;
     return NULL;
@@ -253,8 +253,8 @@ $selectEventMember = "SELECT m.key as member_key, m.name, CASE WHEN m.male=1 THE
 function db_getEventMember ($memberId, $eventId)
 {
     global $db, $selectEventMember;
-    $memberId = $db->real_escape_string($memberId);
-    $eventId = $db->real_escape_string($eventId);
+    $memberId = db_real_escape_string($memberId);
+    $eventId = db_real_escape_string($eventId);
 
     $res=db_query ("$selectEventMember WHERE m.key='$memberId' AND r.event_key='$eventId' ");
 
@@ -265,7 +265,7 @@ function db_getEventMember ($memberId, $eventId)
 function db_getEventMembers ($eventId)
 {
     global $db;
-    $eventId = $db->real_escape_string($eventId);
+    $eventId = db_real_escape_string($eventId);
     $result = [];
 
     $res=db_query ("SELECT r.member_key, m.name
@@ -281,7 +281,7 @@ function db_getEventMembers ($eventId)
 function db_getEventMemberByLink ($link)
 {
     global $db, $selectEventMember;
-    $link = $db->real_escape_string($link);
+    $link = db_real_escape_string($link);
     $res=db_query ("$selectEventMember WHERE r.permalink='$link'");
     if ($row = $res->fetch_assoc()) return $row;
     return NULL;
@@ -289,7 +289,7 @@ function db_getEventMemberByLink ($link)
 
 function db_getAdminCountry($adminId){
     global $db;
-    $adminId = $db->real_escape_string($adminId);
+    $adminId = db_real_escape_string($adminId);
 
     $res=db_query ("SELECT c.key as country
                     FROM member m
@@ -304,7 +304,7 @@ function db_getAdminCountry($adminId){
 
 function db_getAdminLocalitiesWithFilters($adminId){
     global $db;
-    $adminId = $db->real_escape_string($adminId);
+    $adminId = db_real_escape_string($adminId);
 
     $res=db_query ("SELECT DISTINCT * FROM (
                     SELECT l.key as id, l.name as name
@@ -328,7 +328,7 @@ function db_getAdminLocalitiesWithFilters($adminId){
 /*function db_getAdminLocalitiesOLD ($adminId)
 {
     global $db;
-    $adminId = $db->real_escape_string($adminId);
+    $adminId = db_real_escape_string($adminId);
 
     $res=db_query ("SELECT DISTINCT * FROM (
                     SELECT l.key as id, l.name as name
@@ -359,7 +359,7 @@ function db_getAdminLocalitiesWithFilters($adminId){
 function db_getAdminLocalities ($adminId)
 {
     global $db;
-    $adminId = $db->real_escape_string($adminId);
+    $adminId = db_real_escape_string($adminId);
 
     $res=db_query ("SELECT DISTINCT * FROM (
                                     SELECT l.key as id, l.name as name
@@ -408,7 +408,7 @@ function db_getAdminLocalities ($adminId)
 function db_getAdminLocalitiesNotRegTbl ($adminId)
 {
     global $db;
-    $adminId = $db->real_escape_string($adminId);
+    $adminId = db_real_escape_string($adminId);
 
     $res=db_query ("SELECT DISTINCT * FROM (
                                     SELECT l.key as id, l.name as name
@@ -455,8 +455,8 @@ function db_getAdminLocalitiesNotRegTbl ($adminId)
 }
 function db_getAdminLocalitiesAdmin($query, $adminId){
     global $db;
-    $adminId = $db->real_escape_string($adminId);
-    $query = $db->real_escape_string($query);
+    $adminId = db_real_escape_string($adminId);
+    $query = db_real_escape_string($query);
 
     $res=db_query ("SELECT l.key as data, l.name as value
                     FROM access a
@@ -473,7 +473,7 @@ function db_getAdminLocalitiesAdmin($query, $adminId){
 }
 function db_getAllAdminsLocalitiesAutocomplete($query){
     global $db;
-    $query = $db->real_escape_string($query);
+    $query = db_real_escape_string($query);
 
     $res=db_query ("SELECT l.key as data, l.name as value
                     FROM locality as l
@@ -489,7 +489,7 @@ function db_getAllAdminsLocalitiesAutocomplete($query){
 function db_findLocalitiesAdmin ($query)
 {
     global $db;
-    $query = $db->real_escape_string($query);
+    $query = db_real_escape_string($query);
 
     $res=db_query ("SELECT l.key as data, IF (r.name='--',l.name,CONCAT (l.name,', ',r.name)) as value
                     FROM locality as l
@@ -515,7 +515,7 @@ function db_getCountries ($sorted_ones)
 function db_getTextBlock ($name)
 {
     global $db;
-    $name = $db->real_escape_string($name);
+    $name = db_real_escape_string($name);
 
     $res=db_query ("SELECT value FROM textblock WHERE name='$name'");
 
@@ -528,7 +528,7 @@ function db_getTextBlock ($name)
 function db_getCustomPage ($name)
 {
     global $db;
-    $name = $db->real_escape_string($name);
+    $name = db_real_escape_string($name);
 
     $res=db_query ("SELECT value FROM custom_page WHERE name='$name'");
 
@@ -541,7 +541,7 @@ function db_getCustomPage ($name)
 function db_isSingleCityAdmin ($adminId)
 {
     global $db;
-    $adminId = $db->real_escape_string($adminId);
+    $adminId = db_real_escape_string($adminId);
 
     $res=db_query ("SELECT IF ((SELECT COUNT(DISTINCT c.key) FROM access as a LEFT JOIN country c ON c.key = a.country_key WHERE a.member_key='$adminId')=0
                            AND (SELECT COUNT(DISTINCT r.key) FROM access as a LEFT JOIN region r ON r.key = a.region_key WHERE a.member_key='$adminId')=0
@@ -556,7 +556,7 @@ function db_isSingleCityAdmin ($adminId)
 function db_getAdminAccess ($adminId)
 {
     global $db;
-    $adminId = $db->real_escape_string($adminId);
+    $adminId = db_real_escape_string($adminId);
 
     $res=db_query ("SELECT DISTINCT c.name as name FROM access as a LEFT JOIN country c ON c.key = a.country_key WHERE a.member_key='$adminId' AND c.name IS NOT NULL
                     UNION SELECT DISTINCT r.name as name FROM access as a LEFT JOIN region r ON r.key = a.region_key WHERE a.member_key='$adminId' AND r.name IS NOT NULL
@@ -570,7 +570,7 @@ function db_getAdminAccess ($adminId)
 function db_getAdminAccessAreas ($adminId)
 {
     global $db;
-    $adminId = $db->real_escape_string($adminId);
+    $adminId = db_real_escape_string($adminId);
 
     $res=db_query ("SELECT DISTINCT c.key as access_key, c.name as name FROM access as a LEFT JOIN country c ON c.key = a.country_key
                         WHERE a.member_key='$adminId' AND c.name IS NOT NULL
@@ -587,7 +587,7 @@ function db_getAdminAccessAreas ($adminId)
 function db_getAdminMembers ($adminId)
 {
     global $db;
-    $adminId = $db->real_escape_string($adminId);
+    $adminId = db_real_escape_string($adminId);
 
     $res=db_query ("SELECT DISTINCT * FROM (
                         SELECT m.key as id, m.name as name, l.name as locality, l.key as locId, m.category_key as catId
@@ -625,12 +625,12 @@ function db_getAdminMembers ($adminId)
 
 function db_getAdminActiveMembers ($adminId, $locId, $catId, $text, $eventId){
     global $db;
-    $adminId = $adminId ? $db->real_escape_string($adminId) : null;
-    $locId = $locId ? " AND m.locality_key='".$db->real_escape_string($locId)."' " : '';
-    $catId = $catId ? " AND m.category_key='".$db->real_escape_string($catId)."' " : '';
-    $text = $db->real_escape_string($text);
+    $adminId = $adminId ? db_real_escape_string($adminId) : null;
+    $locId = $locId ? " AND m.locality_key='".db_real_escape_string($locId)."' " : '';
+    $catId = $catId ? " AND m.category_key='".db_real_escape_string($catId)."' " : '';
+    $text = db_real_escape_string($text);
     $_text = $text ? " AND ( m.name LIKE '%".$text."%' OR l.name LIKE '%".$text."%' OR m.new_locality LIKE '%$text%')" : '';
-    $eventId = $db->real_escape_string($eventId);
+    $eventId = db_real_escape_string($eventId);
     $res = null;
 
     if($adminId){
@@ -670,14 +670,14 @@ function db_getAdminActiveMembers ($adminId, $locId, $catId, $text, $eventId){
 function db_unregisterMembers ($adminId, $eventId, $memberIds)
 {
     global $db;
-    $adminId = $db->real_escape_string($adminId);
-    $eventId = $db->real_escape_string($eventId);
-    //$_reason = $reason ? ", admin_comment='".$db->real_escape_string($reason)."' " : '';
+    $adminId = db_real_escape_string($adminId);
+    $eventId = db_real_escape_string($eventId);
+    //$_reason = $reason ? ", admin_comment='".db_real_escape_string($reason)."' " : '';
 
     db_checkSync ();
 
     $ids='';
-    foreach ($memberIds as $memberId) $ids.="'".$db->real_escape_string($memberId)."',";
+    foreach ($memberIds as $memberId) $ids.="'".db_real_escape_string($memberId)."',";
     $ids = rtrim($ids,',');
 
     db_query ("DELETE message FROM message INNER JOIN reg ON reg.event_key=message.event_key AND reg.member_key=message.receiver
@@ -716,7 +716,7 @@ function db_unregisterMembers ($adminId, $eventId, $memberIds)
 // нужна виза для мероприятия?
 function db_getWeb($eventId) {
   global $db;
-  $eventId = $db->real_escape_string($eventId);
+  $eventId = db_real_escape_string($eventId);
   $res=db_query ("SELECT `web` FROM `event` WHERE `key`= '{$eventId}'");
   $row = $res->fetch_object();
   return $row && $row->web;
@@ -725,10 +725,10 @@ function db_getWeb($eventId) {
 function db_registerMembersSetDates ($adminId, $eventId, $memberIds, $dateArrived, $dateDepart){
 
     global $db;
-    $adminId = $db->real_escape_string($adminId);
-    $eventId = $db->real_escape_string($eventId);
-    $dateArrived = $db->real_escape_string($dateArrived);
-    $dateDepart = $db->real_escape_string($dateDepart);
+    $adminId = db_real_escape_string($adminId);
+    $eventId = db_real_escape_string($eventId);
+    $dateArrived = db_real_escape_string($dateArrived);
+    $dateDepart = db_real_escape_string($dateDepart);
 
     foreach ($memberIds as $memberId){
       db_query ("UPDATE reg SET arr_date ='$dateArrived', dep_date ='$dateDepart', admin_key='$adminId' WHERE member_key='$memberId' AND event_key='$eventId'");
@@ -738,8 +738,8 @@ function db_registerMembersSetDates ($adminId, $eventId, $memberIds, $dateArrive
 function db_registerMembers ($adminId, $eventId, $memberIds)
 {
     global $db;
-    $adminId = $db->real_escape_string($adminId);
-    $eventId = $db->real_escape_string($eventId);
+    $adminId = db_real_escape_string($adminId);
+    $eventId = db_real_escape_string($eventId);
 
     $hasAccessToAllLocalities = db_isAdminRespForReg($adminId, $eventId);
 
@@ -747,7 +747,7 @@ function db_registerMembers ($adminId, $eventId, $memberIds)
     $invalid = array ();
 
     foreach ($memberIds as $memberId){
-        $memberId = $db->real_escape_string($memberId);
+        $memberId = db_real_escape_string($memberId);
         $res=db_query ("SELECT regstate_key FROM reg WHERE member_key='$memberId' AND event_key='$eventId'");
         $row=$res->fetch_array();
 
@@ -802,14 +802,14 @@ function db_registerMembers ($adminId, $eventId, $memberIds)
 function db_registerNewMembers ($adminId, $eventId, $memberIds)
 {
     global $db;
-    $adminId = $db->real_escape_string($adminId);
-    $eventId = $db->real_escape_string($eventId);
+    $adminId = db_real_escape_string($adminId);
+    $eventId = db_real_escape_string($eventId);
 
     db_checkSync ();
 
     foreach ($memberIds as $memberId)
     {
-        $memberId = $db->real_escape_string($memberId);
+        $memberId = db_real_escape_string($memberId);
         $res=db_query ("SELECT m.name as member_name, e.name as event_name FROM reg r INNER JOIN member m ON m.key =r.member_key INNER JOIN event e ON e.key=r.event_key WHERE r.member_key='$memberId' AND r.event_key='$eventId'");
         $row = $res->fetch_assoc();
 
@@ -837,8 +837,8 @@ function db_getTeamAdmins(){
 function db_enqueueLetter ($memberId, $eventId, $subject, $body, $to, $from_email, $from_name)
 {
     global $db;
-    $memberId=$db->real_escape_string($memberId);
-    $eventId=$db->real_escape_string($eventId);
+    $memberId=db_real_escape_string($memberId);
+    $eventId=db_real_escape_string($eventId);
     $_from_email = $from_email;
     $_from_name = $from_name;
     $_to = $to;
@@ -889,7 +889,7 @@ function db_dequeueLetter ($id, $result)
 {
     global $db;
     $id = (int)$id;
-    $result = $db->real_escape_string($result);
+    $result = db_real_escape_string($result);
 
     db_multiQuery ("UPDATE reg SET send_result='$result'
                     WHERE member_key=(SELECT member_key FROM send_queue WHERE id=$id)
@@ -900,9 +900,10 @@ function db_dequeueLetter ($id, $result)
 function db_getDashboardMembers ($adminId, $eventId, $sortField='name', $sortType='asc', $searchText, $regstate, $locality, $letter = 'Все')
 {
     global $db;
-    $adminId = $db->real_escape_string($adminId);
-    $searchText = $db->real_escape_string($searchText);
+    $adminId = db_real_escape_string($adminId);
+    $searchText = db_real_escape_string($searchText);
     $letter = db_real_escape_string($letter);
+
     $sortField = str_replace(' ', '', $sortField);
     $sortType = str_replace(' ', '', $sortType);
     $sortAdd = $sortField!='name' ? ', name' : '';
@@ -938,7 +939,7 @@ function db_getDashboardMembers ($adminId, $eventId, $sortField='name', $sortTyp
     }
 
 
-    $regstate = $db->real_escape_string($regstate);
+    $regstate = db_real_escape_string($regstate);
     $regstateArr = [];
 
     if($regstate){
@@ -955,7 +956,7 @@ function db_getDashboardMembers ($adminId, $eventId, $sortField='name', $sortTyp
         }
     }
     $_regstate = $regstate && $regstate != '_all_' ? $regstate=='01' ? " AND ( reg.regstate_key IS NULL ) " : " AND ( reg.regstate_key IN (".implode(',', $regstateArr).") ) " : "";
-    $_locality = $locality ? $locality == 'without' ? " AND (m.locality_key IS NULL OR m.locality_key ='') " : " AND m.locality_key ='".$db->real_escape_string($locality)."' " : '';
+    $_locality = $locality ? $locality == 'without' ? " AND (m.locality_key IS NULL OR m.locality_key ='') " : " AND m.locality_key ='".db_real_escape_string($locality)."' " : '';
 
     $res=db_query ("SELECT DISTINCT * FROM
   (
@@ -1025,14 +1026,14 @@ function db_getDashboardMembers ($adminId, $eventId, $sortField='name', $sortTyp
 function db_getDashboardMembersService ($eventId, $attended, $regstate, $sortField='name', $sortType='asc', $searchText, $coord, $service, $locality, $letter='Все'){
     global $db;
     $eventId = (int)$eventId;
-    $searchText = $db->real_escape_string($searchText);
+    $searchText = db_real_escape_string($searchText);
     $letter = db_real_escape_string(trim($letter));
     $sortField = str_replace(' ', '', $sortField);
     $sortType = str_replace(' ', '', $sortType);
     $sortAdd = $sortField!='name' ? ', name' : '';
     $sortField = $sortField === 'arr_date' ? "{$sortField} {$sortType}, q.arr_time " : $sortField;
     $searchText = !$searchText ? '' : ' AND (m.name LIKE "%'.$searchText.'%")';
-    $regstate = $db->real_escape_string($regstate);
+    $regstate = db_real_escape_string($regstate);
     $regstateArr = [];
 
     // отбор по первой букве фамилии
@@ -1078,7 +1079,7 @@ function db_getDashboardMembersService ($eventId, $attended, $regstate, $sortFie
         }
     }
 
-    $_attended = $attended ? " AND reg.attended".($db->real_escape_string($attended) == 1 ? "=1 " : "<>1 ")."" : "";
+    $_attended = $attended ? " AND reg.attended".(db_real_escape_string($attended) == 1 ? "=1 " : "<>1 ")."" : "";
     $_regstate = $regstate && $regstate != '_all_' ? $regstate=='01' ? " AND ( reg.regstate_key IS NULL ) " : " AND ( reg.regstate_key IN (".implode(',', $regstateArr).") ) " : "";
 
     $_coord = $coord ? " AND reg.coord='1' " : '';
@@ -1087,7 +1088,7 @@ function db_getDashboardMembersService ($eventId, $attended, $regstate, $sortFie
     if (count($localityTmp) > 1) {
       $_locality = ' AND ' . '(';
       foreach ($localityTmp as $key => $value) {
-        $value = $db->real_escape_string($value);
+        $value = db_real_escape_string($value);
         if ($key > 0) {
           $_locality .= ' OR ';
         }
@@ -1096,7 +1097,7 @@ function db_getDashboardMembersService ($eventId, $attended, $regstate, $sortFie
       $_locality .= ')';
     }
     if (count($localityTmp) < 2) {
-      $_locality = $locality ? $locality == 'without' ? " AND (m.locality_key IS NULL OR m.locality_key ='') " : " AND m.locality_key ='".$db->real_escape_string($locality)."' " : '';
+      $_locality = $locality ? $locality == 'without' ? " AND (m.locality_key IS NULL OR m.locality_key ='') " : " AND m.locality_key ='".db_real_escape_string($locality)."' " : '';
     }
 
     $res=db_query ("SELECT DISTINCT * FROM (
@@ -1167,7 +1168,7 @@ function db_getDashboardMembersService ($eventId, $attended, $regstate, $sortFie
 function db_getMemberListCopy ($adminId, $sortField, $sortType)
 {
     global $db;
-    $adminId = $db->real_escape_string($adminId);
+    $adminId = db_real_escape_string($adminId);
     $sortField = str_replace(' ', '', $sortField);
     $sortType = str_replace(' ', '', $sortType);
     $sortAdd = $sortField!=' name ' ? ' , name' : ' ';
@@ -1232,7 +1233,7 @@ function db_getEvents()
 
 function db_getEventsByAdmin($adminId){
     global $db;
-    $admin = $db->real_escape_string($adminId);
+    $admin = db_real_escape_string($adminId);
     $isMemberAdmin = db_isAdmin($adminId);
     $events = array ();
 
@@ -1317,7 +1318,7 @@ function db_getNewMemberKey ()
 function db_getNeedPassport ($eventId)
 {
     global $db;
-    $eventId = $db->real_escape_string($eventId);
+    $eventId = db_real_escape_string($eventId);
     $res=db_query ("SELECT need_passport FROM event WHERE `key`= '$eventId'");
     $row = $res->fetch_object();
     return $row && $row->need_passport;
@@ -1326,7 +1327,7 @@ function db_getNeedPassport ($eventId)
 function db_getNeedPassportTp ($eventId)
 {
     global $db;
-    $eventId = $db->real_escape_string($eventId);
+    $eventId = db_real_escape_string($eventId);
     $res=db_query ("SELECT need_tp FROM event WHERE `key`= '$eventId'");
     $row = $res->fetch_object();
     return $row && $row->need_tp;
@@ -1335,7 +1336,7 @@ function db_getNeedPassportTp ($eventId)
 function db_getNeedFlight ($eventId)
 {
     global $db;
-    $eventId = $db->real_escape_string($eventId);
+    $eventId = db_real_escape_string($eventId);
     $res=db_query ("SELECT need_flight FROM event WHERE `key`= '$eventId'");
     $row = $res->fetch_object();
     return $row && $row->need_flight;
@@ -1343,7 +1344,7 @@ function db_getNeedFlight ($eventId)
 
 function db_getNeedParking($eventId){
     global $db;
-    $eventId = $db->real_escape_string($eventId);
+    $eventId = db_real_escape_string($eventId);
     $res=db_query ("SELECT need_parking FROM event WHERE `key`= '$eventId'");
     $row = $res->fetch_object();
     return $row && $row->need_parking > 0;
@@ -1351,7 +1352,7 @@ function db_getNeedParking($eventId){
 
 function db_getNeedTransport($eventId){
     global $db;
-    $eventId = $db->real_escape_string($eventId);
+    $eventId = db_real_escape_string($eventId);
     $res=db_query ("SELECT need_transport FROM event WHERE `key`= '$eventId'");
     $row = $res->fetch_object();
     return $row && $row->need_transport;
@@ -1359,52 +1360,52 @@ function db_getNeedTransport($eventId){
 
 function db_setEventMember ($adminId, $get, $post){
     global $db;
-    $_page = $db->real_escape_string($post['page']);
+    $_page = db_real_escape_string($post['page']);
 
-    $isUserAuth = $db->real_escape_string($adminId) !== '';
-    $_adminId = $_page != '/index' ? $db->real_escape_string($adminId) : (isset($post['member']) && strlen($post ['member']) ? $db->real_escape_string($post['member']) : null);
-    $_memberId = $_page == '/index' || $_page == '/invites' ? (isset($post['member']) && strlen($post ['member']) ? $db->real_escape_string($post['member']) : null) : ($_page == '/members' ? isset($get ['create']) ? "dont_register" : $db->real_escape_string($get ['update_member'] ) : $db->real_escape_string($get['member']));
-    $_eventId = $_page == '/index' || $_page == '/invites' ? $db->real_escape_string($post['event']) : ($_page == '/members' ? null : $db->real_escape_string($get['event']));
+    $isUserAuth = db_real_escape_string($adminId) !== '';
+    $_adminId = $_page != '/index' ? db_real_escape_string($adminId) : (isset($post['member']) && strlen($post ['member']) ? db_real_escape_string($post['member']) : null);
+    $_memberId = $_page == '/index' || $_page == '/invites' ? (isset($post['member']) && strlen($post ['member']) ? db_real_escape_string($post['member']) : null) : ($_page == '/members' ? isset($get ['create']) ? "dont_register" : db_real_escape_string($get ['update_member'] ) : db_real_escape_string($get['member']));
+    $_eventId = $_page == '/index' || $_page == '/invites' ? db_real_escape_string($post['event']) : ($_page == '/members' ? null : db_real_escape_string($get['event']));
     $doRegister = $_page == '/index' || $_page == '/invites' ? true : ( $_page == '/reg' || $_page == '/admin' ? isset ($get ['register']) : false );
-    $_name = preg_replace("/#/", " ", $db->real_escape_string($post['name']));
-    $_address = isset($post['address']) && strlen($post ['address']) ? $db->real_escape_string($post['address']) : '';
-    $_arr_date = $_page == '/members' ? (DONT_CHANGE) : (isset($post['arr_date']) ? $db->real_escape_string($post['arr_date']) : null);
-    $_arr_time = $_page == '/members' ? (DONT_CHANGE) : (isset($post['arr_time']) && $post['arr_time'] ? $db->real_escape_string($post['arr_time']) : null);
-    $_birth_date = isset($post['birth_date']) ? $db->real_escape_string($post['birth_date']) : null;
-    $_cell_phone = $db->real_escape_string($post['cell_phone']);
-    $_comment = ($_page != '/reg' || $_page != '/admin') && isset($post['comment']) ? ($db->real_escape_string($post['comment']) ): ($post['comment'] ? $db->real_escape_string($post['comment']) : "");
-    $_dep_date = $_page == '/members' ? (DONT_CHANGE) : (isset($post['dep_date']) ? $db->real_escape_string($post['dep_date']) : null);
-    $_dep_time = $_page == '/members' ? (DONT_CHANGE) : (isset($post['dep_time']) && $post['dep_time'] ? $db->real_escape_string($post['dep_time']) : null);
-    $_email = $db->real_escape_string($post['email']);
-    $_locality_key = isset($post['locality_key']) && strlen($post ['locality_key']) ? $db->real_escape_string($post['locality_key']) : null;
-    $_new_locality = isset($post['new_locality']) && strlen($post ['new_locality']) ? $db->real_escape_string($post['new_locality']) : null;
-    $_document_num = isset($post['document_num']) && strlen($post ['document_num']) ? $db->real_escape_string($post['document_num']) : null;
-    $_document_date = isset($post['document_date']) && strlen($post ['document_date']) ? $db->real_escape_string($post['document_date']) : null;
-    $_document_auth = isset($post['document_auth']) && strlen($post ['document_auth']) ? $db->real_escape_string($post['document_auth']) : null;
-    $_category_key = $_page =='/index' || $_page == '/invites' ? (DONT_CHANGE) : (isset($post['category_key']) && strlen($post ['category_key']) ? $db->real_escape_string($post['category_key']) : null);
-    $_document_key = isset($post['document_key']) && strlen($post ['document_key']) ? $db->real_escape_string($post['document_key']) : null;
-    $_tp_num = isset($post['tp_num']) && strlen($post ['tp_num']) ? $db->real_escape_string($post['tp_num']) : null;
-    $_tp_date = isset($post['tp_date']) && strlen($post ['tp_date']) ? $db->real_escape_string($post['tp_date']) : null;
-    $_tp_auth = isset($post['tp_auth']) && strlen($post ['tp_auth']) ? $db->real_escape_string($post['tp_auth']) : null;
-    $_tp_name = isset($post['tp_name']) && strlen($post ['tp_name']) ? $db->real_escape_string($post['tp_name']) : null;
-    $_english_level = $_page =='/members' ? (DONT_CHANGE) : (isset($post['english_level']) ? $db->real_escape_string($post['english_level']) : null);
-    $_flight_num_arr = $_page =='/members' ? (DONT_CHANGE) : (isset($post['flight_num_arr']) ? $db->real_escape_string($post['flight_num_arr']) : null);
-    $_flight_num_dep = $_page =='/members' ? (DONT_CHANGE) : (isset($post['flight_num_dep']) ? $db->real_escape_string($post['flight_num_dep']) : null);
-    $_note = $_page =='/members' ? (DONT_CHANGE) : (isset($post['note']) ? $db->real_escape_string($post['note']) : null);
-    $_status_key = $_page == '/members' || $_page == '/index' ? (DONT_CHANGE) : (isset($post['status_key']) ? $db->real_escape_string($post['status_key']) : null);
+    $_name = preg_replace("/#/", " ", db_real_escape_string($post['name']));
+    $_address = isset($post['address']) && strlen($post ['address']) ? db_real_escape_string($post['address']) : '';
+    $_arr_date = $_page == '/members' ? (DONT_CHANGE) : (isset($post['arr_date']) ? db_real_escape_string($post['arr_date']) : null);
+    $_arr_time = $_page == '/members' ? (DONT_CHANGE) : (isset($post['arr_time']) && $post['arr_time'] ? db_real_escape_string($post['arr_time']) : null);
+    $_birth_date = isset($post['birth_date']) ? db_real_escape_string($post['birth_date']) : null;
+    $_cell_phone = db_real_escape_string($post['cell_phone']);
+    $_comment = ($_page != '/reg' || $_page != '/admin') && isset($post['comment']) ? (db_real_escape_string($post['comment']) ): ($post['comment'] ? db_real_escape_string($post['comment']) : "");
+    $_dep_date = $_page == '/members' ? (DONT_CHANGE) : (isset($post['dep_date']) ? db_real_escape_string($post['dep_date']) : null);
+    $_dep_time = $_page == '/members' ? (DONT_CHANGE) : (isset($post['dep_time']) && $post['dep_time'] ? db_real_escape_string($post['dep_time']) : null);
+    $_email = db_real_escape_string($post['email']);
+    $_locality_key = isset($post['locality_key']) && strlen($post ['locality_key']) ? db_real_escape_string($post['locality_key']) : null;
+    $_new_locality = isset($post['new_locality']) && strlen($post ['new_locality']) ? db_real_escape_string($post['new_locality']) : null;
+    $_document_num = isset($post['document_num']) && strlen($post ['document_num']) ? db_real_escape_string($post['document_num']) : null;
+    $_document_date = isset($post['document_date']) && strlen($post ['document_date']) ? db_real_escape_string($post['document_date']) : null;
+    $_document_auth = isset($post['document_auth']) && strlen($post ['document_auth']) ? db_real_escape_string($post['document_auth']) : null;
+    $_category_key = $_page =='/index' || $_page == '/invites' ? (DONT_CHANGE) : (isset($post['category_key']) && strlen($post ['category_key']) ? db_real_escape_string($post['category_key']) : null);
+    $_document_key = isset($post['document_key']) && strlen($post ['document_key']) ? db_real_escape_string($post['document_key']) : null;
+    $_tp_num = isset($post['tp_num']) && strlen($post ['tp_num']) ? db_real_escape_string($post['tp_num']) : null;
+    $_tp_date = isset($post['tp_date']) && strlen($post ['tp_date']) ? db_real_escape_string($post['tp_date']) : null;
+    $_tp_auth = isset($post['tp_auth']) && strlen($post ['tp_auth']) ? db_real_escape_string($post['tp_auth']) : null;
+    $_tp_name = isset($post['tp_name']) && strlen($post ['tp_name']) ? db_real_escape_string($post['tp_name']) : null;
+    $_english_level = $_page =='/members' ? (DONT_CHANGE) : (isset($post['english_level']) ? db_real_escape_string($post['english_level']) : null);
+    $_flight_num_arr = $_page =='/members' ? (DONT_CHANGE) : (isset($post['flight_num_arr']) ? db_real_escape_string($post['flight_num_arr']) : null);
+    $_flight_num_dep = $_page =='/members' ? (DONT_CHANGE) : (isset($post['flight_num_dep']) ? db_real_escape_string($post['flight_num_dep']) : null);
+    $_note = $_page =='/members' ? (DONT_CHANGE) : (isset($post['note']) ? db_real_escape_string($post['note']) : null);
+    $_status_key = $_page == '/members' || $_page == '/index' ? (DONT_CHANGE) : (isset($post['status_key']) ? db_real_escape_string($post['status_key']) : null);
     $_male = $post["gender"]=="male" ? 1 : ($post["gender"]=="female" ? 0 : null);
-    $_mate_key = $_page == '/members' || $_page == '/index' ? (DONT_CHANGE) : (isset($post['mate_key']) ? $db->real_escape_string($post['mate_key']) : '');
-    $_accom = $_page =='/members' ? (DONT_CHANGE) : (isset($post['accom']) && $post['accom']!='' ? $db->real_escape_string($post['accom']) : null);
-    $_coord = $_page == '/members' || $_page == '/index' ? (DONT_CHANGE) : $db->real_escape_string($post['coord']);
-    $_transport = $_page =='/members' ? (DONT_CHANGE) : (isset($post['transport']) && $post['transport']!='' ? $db->real_escape_string($post['transport']) : null);
-    $_citizenship_key = $db->real_escape_string($post['citizenship_key']);
-    $_parking = $_page =='/members' ? (DONT_CHANGE) : (isset($post['parking']) && $post['parking']!='' ? $db->real_escape_string($post['parking']) : null);
-    $_avtomobile = $_page =='/members' ? (DONT_CHANGE) : (isset($post['avtomobile']) && $post['avtomobile']!='' ? $db->real_escape_string($post['avtomobile']) : '');
-    $_avtomobile_number = $_page =='/members' ? (DONT_CHANGE) : (isset($post['avtomobile_number']) && $post['avtomobile_number']!='' ? $db->real_escape_string($post['avtomobile_number']) : '');
+    $_mate_key = $_page == '/members' || $_page == '/index' ? (DONT_CHANGE) : (isset($post['mate_key']) ? db_real_escape_string($post['mate_key']) : '');
+    $_accom = $_page =='/members' ? (DONT_CHANGE) : (isset($post['accom']) && $post['accom']!='' ? db_real_escape_string($post['accom']) : null);
+    $_coord = $_page == '/members' || $_page == '/index' ? (DONT_CHANGE) : db_real_escape_string($post['coord']);
+    $_transport = $_page =='/members' ? (DONT_CHANGE) : (isset($post['transport']) && $post['transport']!='' ? db_real_escape_string($post['transport']) : null);
+    $_citizenship_key = db_real_escape_string($post['citizenship_key']);
+    $_parking = $_page =='/members' ? (DONT_CHANGE) : (isset($post['parking']) && $post['parking']!='' ? db_real_escape_string($post['parking']) : null);
+    $_avtomobile = $_page =='/members' ? (DONT_CHANGE) : (isset($post['avtomobile']) && $post['avtomobile']!='' ? db_real_escape_string($post['avtomobile']) : '');
+    $_avtomobile_number = $_page =='/members' ? (DONT_CHANGE) : (isset($post['avtomobile_number']) && $post['avtomobile_number']!='' ? db_real_escape_string($post['avtomobile_number']) : '');
     $_prepaid = $_page == '/members' || $_page == '/index' ? (DONT_CHANGE) : (int)$post['prepaid'];
-    $_currency = $_page == '/members' || $_page == '/index' ? (DONT_CHANGE) : (isset($post['currency']) ? $db->real_escape_string($post['currency']) : null);
-    $_service_key = $_page == '/members' ? (DONT_CHANGE) : (isset($post['service_key']) ? $db->real_escape_string($post['service_key']) : null);
-    $_service_info = $_page == '/members' ? (DONT_CHANGE) : (isset($post['service_info']) ? $db->real_escape_string($post['service_info']) : null);
+    $_currency = $_page == '/members' || $_page == '/index' ? (DONT_CHANGE) : (isset($post['currency']) ? db_real_escape_string($post['currency']) : null);
+    $_service_key = $_page == '/members' ? (DONT_CHANGE) : (isset($post['service_key']) ? db_real_escape_string($post['service_key']) : null);
+    $_service_info = $_page == '/members' ? (DONT_CHANGE) : (isset($post['service_info']) ? db_real_escape_string($post['service_info']) : null);
     $is_guest = $_page == '/index';
     $_aid = $_page == '/members' || $_page == '/index' ? (DONT_CHANGE) : (isset($post['aid']) ? (int)$post['aid'] : 0);
     $_contr_amount = $_page == '/members' || $_page == '/index' ? (DONT_CHANGE) : (isset($post['contr_amount']) ? (int)$post['contr_amount'] : 0);
@@ -1414,20 +1415,20 @@ function db_setEventMember ($adminId, $get, $post){
     $_schoolEnd = $_page != '/members' ? (DONT_CHANGE) : (isset($post['schoolEnd']) ? (int)$post['schoolEnd'] : 0);
     $_collegeStart = $_page != '/members' ? (DONT_CHANGE) : (isset($post['collegeStart']) ? (int)$post['collegeStart'] : 0);
     $_collegeEnd = $_page !== '/members' ? (DONT_CHANGE) : (isset($post['collegeEnd']) ? (int)$post['collegeEnd'] : 0);
-    $_college = $_page != '/members' ? (DONT_CHANGE) : $db->real_escape_string($post['college']);
-    $_collegeComment = $_page != '/members' ? (DONT_CHANGE) : $db->real_escape_string($post['collegeComment']);
-    $_russian_lg = $db->real_escape_string($post['russian_lg']);
-    $_schoolComment = $_page !='/members' ? (DONT_CHANGE) : (isset($post['school_comment']) ? $db->real_escape_string($post['school_comment']) : '');
-    $_visa = $_page =='/members' ? (DONT_CHANGE ): $db->real_escape_string($post['visa']);
-    $_addInfo = $_page =='/members' ? (DONT_CHANGE ): $db->real_escape_string($post['add_info']);
+    $_college = $_page != '/members' ? (DONT_CHANGE) : db_real_escape_string($post['college']);
+    $_collegeComment = $_page != '/members' ? (DONT_CHANGE) : db_real_escape_string($post['collegeComment']);
+    $_russian_lg = db_real_escape_string($post['russian_lg']);
+    $_schoolComment = $_page !='/members' ? (DONT_CHANGE) : (isset($post['school_comment']) ? db_real_escape_string($post['school_comment']) : '');
+    $_visa = $_page =='/members' ? (DONT_CHANGE ): db_real_escape_string($post['visa']);
+    $_addInfo = $_page =='/members' ? (DONT_CHANGE ): db_real_escape_string($post['add_info']);
     $_baptized = $_page !='/members' ? (DONT_CHANGE) : (isset($post['baptized']) ? $post['baptized'] : null);
     $_termsUse = $_page === '/index' ? $post['termsUse'] : DONT_CHANGE;
     $isInvitation = isset($post['isInvitation']) && $post['isInvitation'] == true ? !!$post['isInvitation'] : false;
-    $regListName = $_page == '/members' ? (DONT_CHANGE) : (isset($post['regListName']) ? $db->real_escape_string($post['regListName']) : null);
-    $private_event = $_page === '/index' || $_page === '/reg' ? $db->real_escape_string($post['private']) : DONT_CHANGE;
+    $regListName = $_page == '/members' ? (DONT_CHANGE) : (isset($post['regListName']) ? db_real_escape_string($post['regListName']) : null);
+    $private_event = $_page === '/index' || $_page === '/reg' ? db_real_escape_string($post['private']) : DONT_CHANGE;
     $adminRole = $adminId ? db_getAdminRole($adminId) : '';
-    $_serving = $_page === '/members' ? (isset($post['serving']) ? $db->real_escape_string($post['serving']) : '') : DONT_CHANGE;
-    $_semester = $_page === '/members' ? (isset($post['home_phone']) ? $db->real_escape_string($post['home_phone']) : '') : DONT_CHANGE;
+    $_serving = $_page === '/members' ? (isset($post['serving']) ? db_real_escape_string($post['serving']) : '') : DONT_CHANGE;
+    $_semester = $_page === '/members' ? (isset($post['home_phone']) ? db_real_escape_string($post['home_phone']) : '') : DONT_CHANGE;
 
     db_checkSync ();
 
@@ -1645,23 +1646,23 @@ function db_setEventMembers ($adminId, $eventId, $memberIds, $arr_date, $arr_tim
     db_checkSync ();
 
     $ids='';
-    foreach ($memberIds as $memberId) $ids.="'".$db->real_escape_string($memberId)."',";
+    foreach ($memberIds as $memberId) $ids.="'".db_real_escape_string($memberId)."',";
     $ids = rtrim($ids,',');
 
-    $eventId = $db->real_escape_string($eventId);
-    $adminId = $db->real_escape_string($adminId);
+    $eventId = db_real_escape_string($eventId);
+    $adminId = db_real_escape_string($adminId);
     $ending = "', changed=1, admin_key='$adminId' WHERE event_key='$eventId' AND member_key IN ($ids)";
-    if ($arr_date) db_query ("UPDATE reg SET arr_date='".$db->real_escape_string($arr_date).$ending);
-    if ($arr_time) db_query ("UPDATE reg SET arr_time='".$db->real_escape_string($arr_time).$ending);
-    if ($dep_date) db_query ("UPDATE reg SET dep_date='".$db->real_escape_string($dep_date).$ending);
-    if ($dep_time) db_query ("UPDATE reg SET dep_time='".$db->real_escape_string($dep_time).$ending);
-    if (is_numeric($accom)) db_query ("UPDATE reg SET accom='".$db->real_escape_string($accom).$ending);
-    if (is_numeric($transport)) db_query ("UPDATE reg SET transport='".$db->real_escape_string($transport).$ending);
-    if (is_numeric($status)) db_query ("UPDATE reg SET status_key='".$db->real_escape_string($status).$ending);
-    if (is_numeric($coord)) db_query ("UPDATE reg SET coord='".$db->real_escape_string($coord).$ending);
-    if (is_numeric($service)) db_query ("UPDATE reg SET service_key='".$db->real_escape_string($service).$ending);
-    if (is_numeric($mate)) db_query ("UPDATE reg SET mate_key='".$db->real_escape_string($mate).$ending);
-    if (is_numeric($parking)) db_query ("UPDATE reg SET parking='".$db->real_escape_string($parking).$ending);
+    if ($arr_date) db_query ("UPDATE reg SET arr_date='".db_real_escape_string($arr_date).$ending);
+    if ($arr_time) db_query ("UPDATE reg SET arr_time='".db_real_escape_string($arr_time).$ending);
+    if ($dep_date) db_query ("UPDATE reg SET dep_date='".db_real_escape_string($dep_date).$ending);
+    if ($dep_time) db_query ("UPDATE reg SET dep_time='".db_real_escape_string($dep_time).$ending);
+    if (is_numeric($accom)) db_query ("UPDATE reg SET accom='".db_real_escape_string($accom).$ending);
+    if (is_numeric($transport)) db_query ("UPDATE reg SET transport='".db_real_escape_string($transport).$ending);
+    if (is_numeric($status)) db_query ("UPDATE reg SET status_key='".db_real_escape_string($status).$ending);
+    if (is_numeric($coord)) db_query ("UPDATE reg SET coord='".db_real_escape_string($coord).$ending);
+    if (is_numeric($service)) db_query ("UPDATE reg SET service_key='".db_real_escape_string($service).$ending);
+    if (is_numeric($mate)) db_query ("UPDATE reg SET mate_key='".db_real_escape_string($mate).$ending);
+    if (is_numeric($parking)) db_query ("UPDATE reg SET parking='".db_real_escape_string($parking).$ending);
 }
 
 function db_setEventMembersService ($adminId, $eventId, $memberIds, $paid, $place, $attended)
@@ -1670,13 +1671,13 @@ function db_setEventMembersService ($adminId, $eventId, $memberIds, $paid, $plac
     db_checkSync ();
 
     $ids='';
-    foreach ($memberIds as $memberId) $ids.="'".$db->real_escape_string($memberId)."',";
+    foreach ($memberIds as $memberId) $ids.="'".db_real_escape_string($memberId)."',";
     $ids = rtrim($ids,',');
 
-    $eventId = $db->real_escape_string($eventId);
-    $paid = $db->real_escape_string($paid);
-    $place = $db->real_escape_string($place);
-    $attended = $attended ? $db->real_escape_string($attended) : null;
+    $eventId = db_real_escape_string($eventId);
+    $paid = db_real_escape_string($paid);
+    $place = db_real_escape_string($place);
+    $attended = $attended ? db_real_escape_string($attended) : null;
 
     $ending = ", changed=1 WHERE event_key='$eventId' AND member_key IN ($ids)";
     db_query ("UPDATE reg SET paid='$paid', place='$place', attended='$attended' $ending");
@@ -1686,9 +1687,9 @@ function db_setMemberActive ($adminId, $memberId, $active, $reason)
 {
     global $db;
     $active = (int)$active;
-    $memberId = $db->real_escape_string($memberId);
-    $adminId = $db->real_escape_string($adminId);
-    $reason = $reason ? $db->real_escape_string($reason) : '';
+    $memberId = db_real_escape_string($memberId);
+    $adminId = db_real_escape_string($adminId);
+    $reason = $reason ? db_real_escape_string($reason) : '';
     db_checkSync ();
     $res=db_query ("SELECT active, comment FROM member WHERE `key`='$memberId'");
     if ($row = $res->fetch_object())
@@ -1699,7 +1700,7 @@ function db_setMemberActive ($adminId, $memberId, $active, $reason)
 function db_findLocality ($query)
 {
     global $db;
-    $query = $db->real_escape_string($query);
+    $query = db_real_escape_string($query);
 
     $res=db_query ("SELECT l.key as data, IF (r.name='--',l.name,CONCAT (l.name,', ',r.name)) as value
                     FROM locality as l
@@ -1716,7 +1717,7 @@ function db_findLocality ($query)
 function db_getMemberList ($adminId, $sortField, $sortType, $selCountry, $selRegion, $selCity)
 {
     global $db;
-    $adminId = $db->real_escape_string($adminId);
+    $adminId = db_real_escape_string($adminId);
 
     $sortField = str_replace(' ', '', $sortField);
     $sortType = str_replace(' ', '', $sortType);
@@ -1731,9 +1732,9 @@ function db_getMemberList ($adminId, $sortField, $sortType, $selCountry, $selReg
         INNER JOIN locality l ON l.region_key = r.key OR l.key=a.locality_key
         INNER JOIN member m ON m.locality_key = l.key
         WHERE a.member_key='$adminId'".
-        ($selCountry ? "AND l.key='".$db->real_escape_string($selCountry)."'" : "").
-        ($selRegion ? "AND m.category_key='".$db->real_escape_string($selRegion)."'" : "").
-        ($selCity ? "AND m.category_key='".$db->real_escape_string($selCity)."'" : "").
+        ($selCountry ? "AND l.key='".db_real_escape_string($selCountry)."'" : "").
+        ($selRegion ? "AND m.category_key='".db_real_escape_string($selRegion)."'" : "").
+        ($selCity ? "AND m.category_key='".db_real_escape_string($selCity)."'" : "").
         ") q ORDER BY q."."{$sortField} {$sortType} {$sortAdd}");
 
     $members = array ();
@@ -1850,7 +1851,7 @@ function db_getAdminsList ()
 
 function db_getAdminRole ($adminId){
     global $db;
-    $adminId = $db->real_escape_string($adminId);
+    $adminId = db_real_escape_string($adminId);
 
     $res = db_query("SELECT role FROM admin WHERE member_key='$adminId' ");
     if ($row = $res->fetch_assoc()) return (int)$row['role'];
@@ -1859,7 +1860,7 @@ function db_getAdminRole ($adminId){
 
 function db_isEventPrivate($event){
     global $db;
-    $event = $db->real_escape_string($event);
+    $event = db_real_escape_string($event);
     $res = db_query("SELECT private FROM event WHERE `key`=$event ");
 
     if($res->num_rows > 0){
@@ -1895,7 +1896,7 @@ function db_checkRegState($memberId, $event){
 
 function db_checkName($name){
     global $db;
-    $name = $db->real_escape_string($name);
+    $name = db_real_escape_string($name);
 
     $res=db_query ("SELECT m.key as member_key, m.name, m.birth_date, l.name as locality_name
                       FROM member as m
@@ -1915,8 +1916,8 @@ function db_checkName($name){
 function db_getEventMemberCheck ($memberId, $event)
 {
     global $db;
-    $memberId = $db->real_escape_string($memberId);
-    $event = $db->real_escape_string($event);
+    $memberId = db_real_escape_string($memberId);
+    $event = db_real_escape_string($event);
 
     $res=db_query ("SELECT m.key as member_key, m.name,
                     CASE WHEN m.male=1 THEN 'male' WHEN m.male=0 THEN 'female' ELSE '' END as gender,
@@ -1941,9 +1942,9 @@ function db_getEventMemberCheck ($memberId, $event)
 
 function db_getAidStatistic ($eventId, $scope, $adminId){
     global $db;
-    $eventId = $db->real_escape_string($eventId);
-    $adminId = $db->real_escape_string($adminId);
-    $scope = $scope ? $db->real_escape_string($scope) : NULL;
+    $eventId = db_real_escape_string($eventId);
+    $adminId = db_real_escape_string($adminId);
+    $scope = $scope ? db_real_escape_string($scope) : NULL;
 
     switch($scope){
         case 'rejected':
@@ -1986,16 +1987,16 @@ function db_getAidStatistic ($eventId, $scope, $adminId){
 
 function db_setUserAid($member_id, $amount, $eventId){
     global $db;
-    $member_id = $db->real_escape_string($member_id);
-    $amount = $db->real_escape_string($amount);
-    $eventId = $db->real_escape_string($eventId);
+    $member_id = db_real_escape_string($member_id);
+    $amount = db_real_escape_string($amount);
+    $eventId = db_real_escape_string($eventId);
 
     db_query ("UPDATE reg SET aid_paid='$amount' WHERE member_key='$member_id' AND event_key='$eventId'");
 }
 
 function db_getColleges($member_id){
     global $db;
-    $member_id = $db->real_escape_string($member_id);
+    $member_id = db_real_escape_string($member_id);
 
     //$search = $text ? " AND (c.name LIKE '%$text%' OR c.short_name LIKE '%$text%' OR l.name LIKE '%$text%') " : "";
 
@@ -2019,11 +2020,11 @@ function db_getCollegesLocality(){
 
 function db_setCollege($collegeId, $name, $shortName, $locality, $adminId){
     global $db;
-    $collegeId = $db->real_escape_string($collegeId);
-    $name = $db->real_escape_string($name);
-    $shortName = $db->real_escape_string($shortName);
-    $locality = $db->real_escape_string($locality);
-    $adminId = $db->real_escape_string($adminId);
+    $collegeId = db_real_escape_string($collegeId);
+    $name = db_real_escape_string($name);
+    $shortName = db_real_escape_string($shortName);
+    $locality = db_real_escape_string($locality);
+    $adminId = db_real_escape_string($adminId);
 
     if($collegeId){
         db_query("UPDATE college SET locality_key='$locality', name='$name', short_name='$shortName', changed=1 WHERE `key`='$collegeId'");
@@ -2048,14 +2049,14 @@ function db_getNewCollegeKey (){
 
 function db_deleteCollege($collegeId){
     global $db;
-    $collegeId = $db->real_escape_string($collegeId);
+    $collegeId = db_real_escape_string($collegeId);
     db_query ("DELETE FROM college WHERE `key`='$collegeId'");
 }
 
 
 function db_isMemberRegistrated($memberId){
     global $db;
-    $memberId = $db->real_escape_string($memberId);
+    $memberId = db_real_escape_string($memberId);
 
     $res = db_query("SELECT * FROM reg WHERE member_key='$memberId'");
 
@@ -2068,7 +2069,7 @@ function db_isMemberRegistrated($memberId){
 
 function db_removeMember($memberId){
     global $db;
-    $memberId = $db->real_escape_string($memberId);
+    $memberId = db_real_escape_string($memberId);
 
     db_query("DELETE FROM member WHERE `key`='$memberId'");
     db_query("DELETE FROM admin WHERE member_key='$memberId'");
@@ -2076,8 +2077,8 @@ function db_removeMember($memberId){
 
 function db_removeAccount($memberId, $reason){
     global $db;
-    $memberId = $db->real_escape_string($memberId);
-    $reason = $db->real_escape_string($reason);
+    $memberId = db_real_escape_string($memberId);
+    $reason = db_real_escape_string($reason);
 
     db_query("UPDATE member SET active=0, comment='$reason', changed=1 WHERE `key`='$memberId' ");
     db_logoutAdminTotal($memberId);
@@ -2093,8 +2094,8 @@ function db_getCurrencies(){
 function db_isAdminRespForReg($adminId, $eventId){
     global $db;
 
-    $adminId = $db->real_escape_string($adminId);
-    $eventId = $db->real_escape_string($eventId);
+    $adminId = db_real_escape_string($adminId);
+    $eventId = db_real_escape_string($eventId);
     $res = db_query("SELECT * FROM event_access WHERE member_key='$adminId' AND `key`='$eventId'");
 
     return $res->num_rows > 0;
@@ -2103,7 +2104,7 @@ function db_isAdminRespForReg($adminId, $eventId){
 function db_getAdminEventsRespForReg($adminId){
     global $db;
 
-    $adminId = $db->real_escape_string($adminId);
+    $adminId = db_real_escape_string($adminId);
     $res = db_query("SELECT `key` as event_id FROM event_access WHERE member_key='$adminId'");
 
     $events = [];
@@ -2114,7 +2115,7 @@ function db_getAdminEventsRespForReg($adminId){
 function db_hasAdminFullAccess($adminId){
     global $db;
 
-    $adminId = $db->real_escape_string($adminId);
+    $adminId = db_real_escape_string($adminId);
     $res = db_query("SELECT * FROM event_access WHERE member_key='$adminId'");
 
     return $res->num_rows > 0;
@@ -2122,8 +2123,8 @@ function db_hasAdminFullAccess($adminId){
 
 function db_searchMembersToAdd($text, $eventId){
     global $db;
-    $text = $db->real_escape_string($text);
-    $eventId = $db->real_escape_string($eventId);
+    $text = db_real_escape_string($text);
+    $eventId = db_real_escape_string($eventId);
 
     $res = db_query("SELECT DISTINCT m.name, m.key, l.name as locality_name
             FROM member m
@@ -2142,14 +2143,14 @@ function db_searchMembersToAdd($text, $eventId){
 
 function db_unregisterMembersService($adminId, $eventId, $memberIds, $reason){
     global $db;
-    $adminId = $db->real_escape_string($adminId);
-    $eventId = $db->real_escape_string($eventId);
-    $_reason = $reason ? ", admin_comment='".$db->real_escape_string($reason)."' " : '';
+    $adminId = db_real_escape_string($adminId);
+    $eventId = db_real_escape_string($eventId);
+    $_reason = $reason ? ", admin_comment='".db_real_escape_string($reason)."' " : '';
 
     db_checkSync ();
 
     $ids='';
-    foreach ($memberIds as $memberId) $ids.="'".$db->real_escape_string($memberId)."',";
+    foreach ($memberIds as $memberId) $ids.="'".db_real_escape_string($memberId)."',";
     $ids = rtrim($ids,',');
 
     db_query ("DELETE FROM member WHERE `key` IN ({$ids}) AND `key` LIKE '99%' AND (SELECT COUNT(*) FROM reg WHERE member_key=member.key)<2");
@@ -2163,7 +2164,7 @@ function db_unregisterMembersService($adminId, $eventId, $memberIds, $reason){
 
 function db_getEventLocalities($eventId){
     global $db;
-    $eventId = $db->real_escape_string($eventId);
+    $eventId = db_real_escape_string($eventId);
 
     $res = db_query("SELECT DISTINCT l.key as `key`, l.name as name FROM locality l
             INNER JOIN member m ON m.locality_key = l.key
@@ -2178,8 +2179,8 @@ function db_getEventLocalities($eventId){
 function db_getAdminEventLocalities ($eventId, $adminId)
 {
     global $db;
-    $adminId = $db->real_escape_string($adminId);
-    $eventId = $db->real_escape_string($eventId);
+    $adminId = db_real_escape_string($adminId);
+    $eventId = db_real_escape_string($eventId);
 
     $res=db_query ("SELECT DISTINCT * FROM
   (
@@ -2212,7 +2213,7 @@ function db_getAdminEventLocalities ($eventId, $adminId)
 
 function db_getAdminLocality($adminId){
     global $db;
-    $adminId = $db->real_escape_string($adminId);
+    $adminId = db_real_escape_string($adminId);
 
     $res = db_query("SELECT locality_key FROM member WHERE `key`='$adminId'");
 
@@ -2224,10 +2225,10 @@ function db_getAdminLocality($adminId){
 
 function db_setAttendedDismissMembersEvent($adminId, $event, $setAttendedMembers, $dismissAttendedMembers){
     global $db;
-    $adminId = $db->real_escape_string($adminId);
-    $event = $db->real_escape_string($event);
-    $setAttendedMembers = $db->real_escape_string($setAttendedMembers);
-    $dismissAttendedMembers = $db->real_escape_string($dismissAttendedMembers);
+    $adminId = db_real_escape_string($adminId);
+    $event = db_real_escape_string($event);
+    $setAttendedMembers = db_real_escape_string($setAttendedMembers);
+    $dismissAttendedMembers = db_real_escape_string($dismissAttendedMembers);
 
     if($dismissAttendedMembers){
         db_query("UPDATE reg SET attended=0, admin_key='$adminId' WHERE event_key='$event' AND member_key IN ($dismissAttendedMembers)");
@@ -2240,10 +2241,10 @@ function db_setAttendedDismissMembersEvent($adminId, $event, $setAttendedMembers
 
 function db_setMembersRegstateEvent($adminId, $event, $memberId, $state){
     global $db;
-    $adminId = $db->real_escape_string($adminId);
-    $event = $db->real_escape_string($event);
-    $memberId = $db->real_escape_string($memberId);
-    $state = $db->real_escape_string($state);
+    $adminId = db_real_escape_string($adminId);
+    $event = db_real_escape_string($event);
+    $memberId = db_real_escape_string($memberId);
+    $state = db_real_escape_string($state);
 
     if($state == '03'){
         db_query ("DELETE FROM member WHERE `key`='$memberId' AND `key` LIKE '99%' AND (SELECT COUNT(*) FROM reg WHERE member_key=member.key)<2");
@@ -2298,7 +2299,7 @@ function checkMemberEventReadyToRegistrate($memberId, $event){
 function db_getNeedAccom($eventId)
 {
   global $db;
-  $eventId = $db->real_escape_string($eventId);
+  $eventId = db_real_escape_string($eventId);
   $res=db_query ("SELECT `need_accom` FROM `event` WHERE `key`= '{$eventId}'");
   $row = $res->fetch_object();
   return $row && $row->need_accom;
@@ -2307,7 +2308,7 @@ function db_getNeedAccom($eventId)
 function db_getNeedAddress($eventId)
 {
   global $db;
-  $eventId = $db->real_escape_string($eventId);
+  $eventId = db_real_escape_string($eventId);
   $res=db_query ("SELECT `need_address` FROM `event` WHERE `key`= '{$eventId}'");
   $row = $res->fetch_object();
   return $row && $row->need_address;
@@ -2316,7 +2317,7 @@ function db_getNeedAddress($eventId)
 function db_getNeedVisa($eventId)
 {
   global $db;
-  $eventId = $db->real_escape_string($eventId);
+  $eventId = db_real_escape_string($eventId);
   $res=db_query ("SELECT `need_visa` FROM `event` WHERE `key`= '{$eventId}'");
   $row = $res->fetch_object();
   return $row && $row->need_visa;
@@ -2324,10 +2325,10 @@ function db_getNeedVisa($eventId)
 
 function db_setMembersStateEvent($adminId, $event, $memberId, $state){
     global $db;
-    $adminId = $db->real_escape_string($adminId);
-    $event = $db->real_escape_string($event);
-     $memberId = $db->real_escape_string($memberId);
-     $state = $db->real_escape_string($state);
+    $adminId = db_real_escape_string($adminId);
+    $event = db_real_escape_string($event);
+     $memberId = db_real_escape_string($memberId);
+     $state = db_real_escape_string($state);
 
      if($state == '03'){
          db_query ("DELETE FROM member WHERE `key`='$memberId' AND `key` LIKE '99%' AND (SELECT COUNT(*) FROM reg WHERE member_key=member.key)<2");
@@ -2359,14 +2360,14 @@ function db_setMembersStateEvent($adminId, $event, $memberId, $state){
 
 function db_confirmRegistrationBulkMembersEvent($admin, $event, $members){
     global $db;
-    $admin = $db->real_escape_string($admin);
-    $event = $db->real_escape_string($event);
+    $admin = db_real_escape_string($admin);
+    $event = db_real_escape_string($event);
     $membersWithNotFilledRequiredField = [];
     $membersWithWrongRegstate= [];
 
     if($members){
         foreach ($members as $memberId){
-            $memberId = $db->real_escape_string($memberId);
+            $memberId = db_real_escape_string($memberId);
 
             $res = db_query("SELECT m.name, r.regstate_key FROM member m INNER JOIN reg r ON r.member_key=m.key WHERE r.event_key='$event' AND m.key ='$memberId'");
             $row = $res->fetch_assoc();
@@ -2395,7 +2396,7 @@ function db_confirmRegistrationBulkMembersEvent($admin, $event, $members){
 // THIS function is used here
 function db_getAdminMeetingLocalities($adminId){
     global $db;
-    $adminId = $db->real_escape_string($adminId);
+    $adminId = db_real_escape_string($adminId);
     db_query('SET Session group_concat_max_len=100000');
 
     $res=db_query ("SELECT DISTINCT * FROM (
@@ -2442,7 +2443,7 @@ function set_questionable($memberId, $event, $value)
 
 function db_getLocalityMembers($localityId){
     global $db;
-    $_localityId = $db->real_escape_string($localityId);
+    $_localityId = db_real_escape_string($localityId);
 
     $res = db_query("SELECT CONCAT_WS(':', m.key, m.name, lo.name, m.attend_meeting, m.category_key, m.birth_date) as member
         FROM member m
@@ -2459,7 +2460,7 @@ function db_getLocalityMembers($localityId){
 
 function db_getCountMembersByLocality($locality){
     global $db;
-    $locality = $db->real_escape_string($locality);
+    $locality = db_real_escape_string($locality);
 
     $res=db_query ("SELECT COUNT(DISTINCT m.key) as count
                     FROM access a
@@ -2480,7 +2481,7 @@ function db_getCountMembersByLocality($locality){
 
 function checkIfLocationHasFulltimers($locality){
     global $db;
-    $locality = $db->real_escape_string($locality);
+    $locality = db_real_escape_string($locality);
 
     $res = db_query("SELECT COUNT(*) count FROM member m WHERE m.locality_key='$locality' AND m.category_key='FS'");
 
@@ -2493,7 +2494,7 @@ function checkIfLocationHasFulltimers($locality){
 function db_getSingleAdminLocality ($adminId)
 {
     global $db;
-    $adminId = $db->real_escape_string($adminId);
+    $adminId = db_real_escape_string($adminId);
 
     $res=db_query ("SELECT a.locality_key as id FROM access a WHERE a.member_key='$adminId'");
 
@@ -2503,8 +2504,8 @@ function db_getSingleAdminLocality ($adminId)
 
 function getCountMembersAdminsLocalities($adminId, $locality){
     global $db;
-    $adminId = $db->real_escape_string($adminId);
-    $locality = $locality === '_all_' ? '' : " AND l.key='".$db->real_escape_string($locality)."'";
+    $adminId = db_real_escape_string($adminId);
+    $locality = $locality === '_all_' ? '' : " AND l.key='".db_real_escape_string($locality)."'";
 
     $res=db_query ("SELECT DISTINCT m.key as count
         FROM access a
@@ -2526,7 +2527,7 @@ function getCountMembersAdminsLocalities($adminId, $locality){
 // This use in preheader
 function db_isAvailableMeetingPage($memberId){
     global $db;
-    $_memberId = $db->real_escape_string($memberId);
+    $_memberId = db_real_escape_string($memberId);
     db_query('SET Session group_concat_max_len=100000');
 
     $res = db_query("SELECT COUNT(*) as count FROM meeting_template WHERE FIND_IN_SET('$_memberId', admin)<>0 ");
@@ -2540,8 +2541,8 @@ function db_isAvailableMeetingPage($memberId){
 // Stop
 function db_checkIfEventCreatedFromSite($adminId, $event){
     global $db;
-    $adminId = $db->real_escape_string($adminId);
-    $event = $db->real_escape_string($event);
+    $adminId = db_real_escape_string($adminId);
+    $event = db_real_escape_string($event);
 
     $res = db_query("SELECT COUNT(*) as count FROM event e INNER JOIN event_access ea ON ea.key=e.key WHERE e.key='$event' AND e.web = 1 AND ea.member_key='$adminId' AND ea.key='$event' ");
     $row = $res->fetch_assoc();
@@ -2554,8 +2555,8 @@ function db_checkIfEventCreatedFromSite($adminId, $event){
 
 function db_checkIfAdminHasServiceRightEvent($adminId, $event){
     global $db;
-    $adminId = $db->real_escape_string($adminId);
-    $event = $db->real_escape_string($event);
+    $adminId = db_real_escape_string($adminId);
+    $event = db_real_escape_string($event);
 
     $res = db_query("SELECT COUNT(*) as count FROM event_access ea WHERE ea.member_key='$adminId' AND ea.key='$event' ");
     $row = $res->fetch_assoc();
@@ -2569,7 +2570,7 @@ function db_checkIfAdminHasServiceRightEvent($adminId, $event){
 /* EVENTS */
 function db_isAdmin($adminId){
     global $db;
-    $adminId = $db->real_escape_string($adminId);
+    $adminId = db_real_escape_string($adminId);
     $res=db_query ("SELECT DISTINCT l.key as id, l.name as name FROM access a
                     LEFT JOIN country c ON c.key = a.country_key
                     LEFT JOIN region r ON r.key = a.region_key or c.key=r.country_key
@@ -2581,15 +2582,15 @@ function db_isAdmin($adminId){
 
 function db_signUpMember($session_id, $login, $password, $name, $birthDate, $gender, $citizenship, $locality, $newLocality){
     global $db;
-    $_session_id = $db->real_escape_string($session_id);
-    $_login = $db->real_escape_string($login);
-    $_password = $db->real_escape_string($password);
-    $_name = $db->real_escape_string($name);
-    $_birthDate = $db->real_escape_string($birthDate);
-    $_gender = $db->real_escape_string($gender);
-    $_citizenship = $db->real_escape_string($citizenship);
-    $_locality = $db->real_escape_string($locality);
-    $_newLocality = $db->real_escape_string($newLocality);
+    $_session_id = db_real_escape_string($session_id);
+    $_login = db_real_escape_string($login);
+    $_password = db_real_escape_string($password);
+    $_name = db_real_escape_string($name);
+    $_birthDate = db_real_escape_string($birthDate);
+    $_gender = db_real_escape_string($gender);
+    $_citizenship = db_real_escape_string($citizenship);
+    $_locality = db_real_escape_string($locality);
+    $_newLocality = db_real_escape_string($newLocality);
 
     db_checkSync ();
 
@@ -2621,10 +2622,10 @@ function db_signUpMember($session_id, $login, $password, $name, $birthDate, $gen
 
 function db_addMember ($session_id, $login, $password, $name){
     global $db;
-    $_session_id = $db->real_escape_string($session_id);
-    $_login = $db->real_escape_string($login);
-    $_password = $db->real_escape_string($password);
-    $_name = $db->real_escape_string($name);
+    $_session_id = db_real_escape_string($session_id);
+    $_login = db_real_escape_string($login);
+    $_password = db_real_escape_string($password);
+    $_name = db_real_escape_string($name);
     db_checkSync ();
     $newMemberId = db_getNewMemberKey();
     db_query ("INSERT INTO member (`key`, email, name, changed) VALUES ('$newMemberId', '$_login', '$_name', 1)");
@@ -2640,16 +2641,16 @@ function db_addMember ($session_id, $login, $password, $name){
 function db_addNewMember ($name, $locality_key, $gender, $birth_date, $category_key, $attend_meeting, $locality_name, $citizenship,
     $baptize_date, $adminId){
     global $db;
-    $_name = $db->real_escape_string($name);
-    $_locality_key = $db->real_escape_string($locality_key);
-    $_gender = $db->real_escape_string($gender);
-    $_birth_date = $db->real_escape_string($birth_date);
-    $_category_key = $db->real_escape_string($category_key);
-    $_attend_meeting = $db->real_escape_string($attend_meeting);
-    $_locality_name = $db->real_escape_string($locality_name);
-    $_citizenship = $db->real_escape_string($citizenship);
-    $_baptize_date = $db->real_escape_string($baptize_date);
-    $_adminId = $db->real_escape_string($adminId);
+    $_name = db_real_escape_string($name);
+    $_locality_key = db_real_escape_string($locality_key);
+    $_gender = db_real_escape_string($gender);
+    $_birth_date = db_real_escape_string($birth_date);
+    $_category_key = db_real_escape_string($category_key);
+    $_attend_meeting = db_real_escape_string($attend_meeting);
+    $_locality_name = db_real_escape_string($locality_name);
+    $_citizenship = db_real_escape_string($citizenship);
+    $_baptize_date = db_real_escape_string($baptize_date);
+    $_adminId = db_real_escape_string($adminId);
 
     db_checkSync ();
     $newMemberId = db_getNewMemberKey();
@@ -2700,7 +2701,7 @@ function getAge($birthDate){
 
 function db_getLocalityKeyByName($locality_name){
     global $db;
-    $_locality_name = $db->real_escape_string($locality_name);
+    $_locality_name = db_real_escape_string($locality_name);
     $res = db_query("SELECT `key` FROM locality WHERE name = '$locality_name' LIMIT 1");
 
     if ($row = $res->fetch_assoc())
@@ -2710,16 +2711,16 @@ function db_getLocalityKeyByName($locality_name){
 
 function db_setProfile ($adminId, $name, $birth_date, $cell_phone, $locality_key, $new_locality, $gender, $citizenship_key, $dispatch, $notice){
     global $db;
-    $_adminId = $db->real_escape_string($adminId);
-    $_name = $db->real_escape_string($name);
-    $_birth_date = $db->real_escape_string($birth_date);
-    $_cell_phone = $db->real_escape_string($cell_phone);
-    $_locality_key = $db->real_escape_string($locality_key);
-    $_new_locality = $db->real_escape_string($new_locality);
-    $_gender = $db->real_escape_string($gender);
-    $_citizenship_key = $db->real_escape_string($citizenship_key);
-    $_dispatch = $db->real_escape_string($dispatch);
-    $_notice = $db->real_escape_string($notice);
+    $_adminId = db_real_escape_string($adminId);
+    $_name = db_real_escape_string($name);
+    $_birth_date = db_real_escape_string($birth_date);
+    $_cell_phone = db_real_escape_string($cell_phone);
+    $_locality_key = db_real_escape_string($locality_key);
+    $_new_locality = db_real_escape_string($new_locality);
+    $_gender = db_real_escape_string($gender);
+    $_citizenship_key = db_real_escape_string($citizenship_key);
+    $_dispatch = db_real_escape_string($dispatch);
+    $_notice = db_real_escape_string($notice);
 
     $member = db_getMember($_adminId);
     $adminMember = db_getAdminAsMember($_adminId);
@@ -2742,7 +2743,7 @@ function db_setProfile ($adminId, $name, $birth_date, $cell_phone, $locality_key
 
 function db_isMemberIdChangedByAdmins($memberId){
     global $db;
-    $_memberId = $db->real_escape_string($memberId);
+    $_memberId = db_real_escape_string($memberId);
 
     if (strpos($_memberId, '99000') !== false) {
         return false;
@@ -2752,8 +2753,8 @@ function db_isMemberIdChangedByAdmins($memberId){
 
 function db_getMemberMain ($memberId, $eventId){
     global $db;
-    $memberId = $db->real_escape_string($memberId);
-    $eventId = $db->real_escape_string($eventId);
+    $memberId = db_real_escape_string($memberId);
+    $eventId = db_real_escape_string($eventId);
 
     $res=db_query ("SELECT m.key as member_key, m.name,
                 CASE WHEN m.male=1 THEN 'male' WHEN m.male=0 THEN 'female' ELSE '' END as gender,
@@ -2783,15 +2784,15 @@ function db_getMemberMain ($memberId, $eventId){
 
 function db_rejectMemberRegistration ($adminId, $eventId){
     global $db;
-    $adminId = $db->real_escape_string($adminId);
-    $eventId = $db->real_escape_string($eventId);
+    $adminId = db_real_escape_string($adminId);
+    $eventId = db_real_escape_string($eventId);
 
     db_query ("UPDATE reg SET regstate_key='03' WHERE member_key='$adminId' AND event_key='$eventId'");
 }
 
 function db_getMembersForRegistration($search){
     global $db;
-    $search = $db->real_escape_string($search);
+    $search = db_real_escape_string($search);
 
     if($search == ''){
         return false;
@@ -2808,8 +2809,8 @@ function db_getMembersForRegistration($search){
 
 function db_removeEvent($eventId, $admin){
     global $db;
-    $eventId = $db->real_escape_string($eventId);
-    $admin = $db->real_escape_string($admin);
+    $eventId = db_real_escape_string($eventId);
+    $admin = db_real_escape_string($admin);
 
     $res = db_query("SELECT team_key FROM event WHERE `key`='$eventId'");
     $row = $res->fetch_object();
@@ -2826,7 +2827,7 @@ function db_removeEvent($eventId, $admin){
 
 function db_getEventToCreateNewMember ($eventId){
     global $db;
-    $eventId = $db->real_escape_string($eventId);
+    $eventId = db_real_escape_string($eventId);
     $res=db_query ("SELECT e.key as event_id,  e.name as event_name,
         e.archived,e.author,e.changed,e.close_registration,e.contrib,e.currency,e.end_date,e.event_type,
         e.info,e.invitation,e.is_active,e.locality_key,e.need_accom,e.need_address,e.need_flight,e.need_parking,
@@ -2841,7 +2842,7 @@ function db_getEventToCreateNewMember ($eventId){
 
 function db_getEvent ($eventId){
     global $db;
-    $eventId = $db->real_escape_string($eventId);
+    $eventId = db_real_escape_string($eventId);
     $res=db_query ("SELECT e.key as event_id, e.name as event_name, e.*, e.close_registration, e.participants_count,
                     GROUP_CONCAT(DISTINCT CONCAT_WS(',', m.key, m.name, m.email, l.name) ORDER BY m.key ASC SEPARATOR ';') as admins,
                     GROUP_CONCAT(DISTINCT CONCAT_WS(':', z.locality_key, z.region_key, z.country_key, lo.name, r.name, c.name) SEPARATOR ';') as zones
@@ -2867,40 +2868,40 @@ function db_handleEvent ($name, $locality, $author, $start_date, $end_date, $reg
 
     $_table = 'event';
 
-    $author = $db->real_escape_string($author);
-    $name = $db->real_escape_string($name);
-    $locality = $db->real_escape_string($locality);
-    $start_date = $db->real_escape_string($start_date);
-    $end_date = $db->real_escape_string($end_date);
-    $reg_end_date = $db->real_escape_string($reg_end_date);
-    $passport = $db->real_escape_string($passport);
-    $prepayment = $db->real_escape_string($prepayment);
-    $private = $db->real_escape_string($private);
-    $transport = $db->real_escape_string($transport);
-    $tp = $db->real_escape_string($tp);
-    $flight = $db->real_escape_string($flight);
-    $info = $db->real_escape_string($info);
-    $reg_members = $reg_members == '' ? null : $db->real_escape_string($reg_members);
-    $reg_members_email = $reg_members_email == '' ? null : $db->real_escape_string($reg_members_email);
-    $event_id = $event_id ? $db->real_escape_string($event_id) : '';
-    $team_key = $team_key ? $db->real_escape_string($team_key) : '';
-    $event_type = $event_type ? $db->real_escape_string($event_type) : '';
+    $author = db_real_escape_string($author);
+    $name = db_real_escape_string($name);
+    $locality = db_real_escape_string($locality);
+    $start_date = db_real_escape_string($start_date);
+    $end_date = db_real_escape_string($end_date);
+    $reg_end_date = db_real_escape_string($reg_end_date);
+    $passport = db_real_escape_string($passport);
+    $prepayment = db_real_escape_string($prepayment);
+    $private = db_real_escape_string($private);
+    $transport = db_real_escape_string($transport);
+    $tp = db_real_escape_string($tp);
+    $flight = db_real_escape_string($flight);
+    $info = db_real_escape_string($info);
+    $reg_members = $reg_members == '' ? null : db_real_escape_string($reg_members);
+    $reg_members_email = $reg_members_email == '' ? null : db_real_escape_string($reg_members_email);
+    $event_id = $event_id ? db_real_escape_string($event_id) : '';
+    $team_key = $team_key ? db_real_escape_string($team_key) : '';
+    $event_type = $event_type ? db_real_escape_string($event_type) : '';
     $close_registration = (int)$close_registration;
     $participants_count = (int)$participants_count;
 
-    $zones = $zones == '' ? null: $db->real_escape_string($zones);
+    $zones = $zones == '' ? null: db_real_escape_string($zones);
 
-    $parking = $db->real_escape_string($parking);
-    $service = $db->real_escape_string($service);
-    $accom = $db->real_escape_string($accom);
+    $parking = db_real_escape_string($parking);
+    $service = db_real_escape_string($service);
+    $accom = db_real_escape_string($accom);
 
-    $currency = $db->real_escape_string($currency);
-    $contrib = $db->real_escape_string($contrib);
-    $team_email = $db->real_escape_string($team_email);
-    $organizer = $db->real_escape_string($organizer);
-    $min_age = $db->real_escape_string($min_age);
-    $max_age = $db->real_escape_string($max_age);
-    $status = $db->real_escape_string($status);
+    $currency = db_real_escape_string($currency);
+    $contrib = db_real_escape_string($contrib);
+    $team_email = db_real_escape_string($team_email);
+    $organizer = db_real_escape_string($organizer);
+    $min_age = db_real_escape_string($min_age);
+    $max_age = db_real_escape_string($max_age);
+    $status = db_real_escape_string($status);
     if (!isset($reg_members_email)) {
         throw new InvalidArgumentException('Нет емайл у ответственного за мероприятие');
     }
@@ -2997,7 +2998,7 @@ function addZonesForEvent($event_id, $zones, $table){
 
 function db_getAdminNameById($adminId){
     global $db;
-    $adminId = $db->real_escape_string($adminId);
+    $adminId = db_real_escape_string($adminId);
 
     $res = db_query("SELECT name FROM member WHERE `key`='$adminId'");
     if($row = $res->fetch_object()){
@@ -3010,7 +3011,7 @@ function db_sendMessageNewMember($userEmail, $name){
     global $db;
     global $appRootPath;
 
-    $_name = $db->real_escape_string($name);
+    $_name = db_real_escape_string($name);
 
     $domain = $_SERVER['HTTP_HOST'];
     $title = 'Создание учётной записи на сайте регистрации reg-page.ru';
@@ -3068,9 +3069,9 @@ function db_sendMessageToOrganizer($event, $user, $localityKey = ''){
     $localityName = ' ';
     $countryOrRegionName = ' ';
 
-    $event = $db->real_escape_string($event);
+    $event = db_real_escape_string($event);
     if (!is_array($user)) {
-      $user = $db->real_escape_string($user);
+      $user = db_real_escape_string($user);
 
       if (!empty($localityKey)) {
         $localityName = db_getLocalityByKey($localityKey);
@@ -3224,9 +3225,9 @@ function handleAdminsInTeamTable($team_key, $admins){
 function db_getEventsForEventsPage($adminId, $sort_type, $sort_field){
     global $db;
     //$active_event = (int)$active_event == 1 ? ' AND e.is_active=1 ' : '';
-    $sort_field = str_replace(' ', '', $db->real_escape_string($sort_field));
-    $sort_type = str_replace(' ', '', $db->real_escape_string($sort_type));
-    $adminId = str_replace(' ', '',$db->real_escape_string($adminId));
+    $sort_field = str_replace(' ', '', db_real_escape_string($sort_field));
+    $sort_type = str_replace(' ', '', db_real_escape_string($sort_type));
+    $adminId = str_replace(' ', '',db_real_escape_string($adminId));
 
     $request= $adminId == "" ? "  AND e.is_active=1 " : "";
 
@@ -3335,7 +3336,7 @@ function db_getEventsAuthors(){
 
 function  db_hasRightToHandleEvents($memberId){
     global $db;
-    $memberId = $db->real_escape_string($memberId);
+    $memberId = db_real_escape_string($memberId);
 
     $res = db_query("SELECT event FROM admin WHERE member_key='$memberId'");
 
@@ -3349,9 +3350,9 @@ function  db_hasRightToHandleEvents($memberId){
 
 function db_setEventActivity($eventId, $isActive, $adminId){
     global $db;
-    $eventId = $db->real_escape_string($eventId);
+    $eventId = db_real_escape_string($eventId);
 
-    db_query("UPDATE event SET is_active=".($db->real_escape_string($isActive) == 'true' ? 1 : 0)." WHERE `key`='$eventId' AND author='$adminId'");
+    db_query("UPDATE event SET is_active=".(db_real_escape_string($isActive) == 'true' ? 1 : 0)." WHERE `key`='$eventId' AND author='$adminId'");
 }
 
 function getEventTypes(){
@@ -3364,8 +3365,8 @@ function getEventTypes(){
 
 function db_getZonesForEvent($text, $field){
     global $db;
-    $text = $db->real_escape_string($text);
-    $field = $db->real_escape_string($field);
+    $text = db_real_escape_string($text);
+    $field = db_real_escape_string($field);
 
     if($text == ''){
         return false;
@@ -3383,7 +3384,7 @@ function db_getZonesForEvent($text, $field){
 
 function db_getUserByLogin($login){
     global $db;
-    $login = $db->real_escape_string($login);
+    $login = db_real_escape_string($login);
     $res=db_query ("SELECT password, member_key, login FROM admin WHERE login='$login'");
 
     if ($row = $res->fetch_assoc()) return $row;
@@ -3392,17 +3393,17 @@ function db_getUserByLogin($login){
 
 function db_setUserPassword($adminId, $password, $sessionId){
     global $db;
-    $password = $db->real_escape_string($password);
-    $adminId = $db->real_escape_string($adminId);
-    $sessionId = $db->real_escape_string($sessionId);
+    $password = db_real_escape_string($password);
+    $adminId = db_real_escape_string($adminId);
+    $sessionId = db_real_escape_string($sessionId);
     db_query("UPDATE admin SET password='$password', changed=1 WHERE member_key='$adminId'");
     db_logoutAdminExcActive($adminId, $sessionId);
 }
 
 function db_setUserPasswordByLogin($login, $password){
     global $db;
-    $password = $db->real_escape_string($password);
-    $login = $db->real_escape_string($login);
+    $password = db_real_escape_string($password);
+    $login = db_real_escape_string($login);
     $memberId = db_getAdminIdByLogin($login);
     db_query("UPDATE admin SET password='$password', changed=1 WHERE login='$login'");
     db_logoutAdminTotal($memberId);
@@ -3410,22 +3411,22 @@ function db_setUserPasswordByLogin($login, $password){
 
 function db_loginUserByLogin($sessionId, $login){
     global $db;
-    $sessionId = $db->real_escape_string($sessionId);
-    $login = $db->real_escape_string($login);
+    $sessionId = db_real_escape_string($sessionId);
+    $login = db_real_escape_string($login);
     db_query ("UPDATE admin_session SET id_session='$sessionId' WHERE id_session='$sessionId'");
 }
 
 function db_isAdminExist ($login)
 {
     global $db;
-    $login = $db->real_escape_string($login);
+    $login = db_real_escape_string($login);
     $res=db_query ("SELECT * FROM `admin` WHERE `login`='$login'");
     return $res->num_rows>0 ? true : false;
 }
 
 function db_isAuthorizedMember($memberId){
     global $db;
-    $memberId = $db->real_escape_string($memberId);
+    $memberId = db_real_escape_string($memberId);
 
     $res=db_query ("SELECT * FROM admin WHERE member_key='$memberId'");
     return $res->num_rows>0 ? true : false;
@@ -3433,7 +3434,7 @@ function db_isAuthorizedMember($memberId){
 
 function db_getGuestEvent ($eventId){
     global $db;
-    $eventId = $db->real_escape_string($eventId);
+    $eventId = db_real_escape_string($eventId);
     $res=db_query ("SELECT e.key as event_id, e.name as event_name, e.need_passport, e.need_transport,
         IF((SELECT COUNT(*) FROM reg rg WHERE rg.event_key=e.key AND (rg.regstate_key = '01' OR rg.regstate_key = '02' OR rg.regstate_key = '04' OR rg.regstate_key is NULL ) ) >= e.participants_count AND e.participants_count > 0, 1, 0) as stop_registration,
         e.close_registration, e.need_prepayment, e.start_date, e.end_date, e.min_age, e.max_age, e.need_flight, e.need_tp, e.regend_date, e.info, e.private,
@@ -3464,7 +3465,7 @@ $selectEventMemberInfo = "SELECT m.key as member_key, m.name, CASE WHEN m.male=1
 function db_getEventMemberInfo ($memberId)
 {
     global $db, $selectEventMemberInfo;
-    $memberId = $db->real_escape_string($memberId);
+    $memberId = db_real_escape_string($memberId);
 
     $res=db_query ("$selectEventMemberInfo WHERE m.key='$memberId' ");
 
@@ -3474,7 +3475,7 @@ function db_getEventMemberInfo ($memberId)
 
 function db_getLocalityByKey($locality_key){
     global $db;
-    $locality = $db->real_escape_string($locality_key);
+    $locality = db_real_escape_string($locality_key);
     $res = db_query("SELECT name FROM locality WHERE `key`='$locality'");
 
     if ($row = $res->fetch_object()){
@@ -3485,7 +3486,7 @@ function db_getLocalityByKey($locality_key){
 
 function db_getAdminByLocality($locality_key){
     global $db;
-    $locality = $db->real_escape_string($locality_key);
+    $locality = db_real_escape_string($locality_key);
 
     $res = db_query ("
         SELECT DISTINCT m.name, a.login as email FROM member as m
@@ -3543,8 +3544,8 @@ if ($admins) {
 
 function db_checkIfUserAddedToReg($eventId, $memberId){
     global $db;
-    $_eventId = $db->real_escape_string($eventId);
-    $_memberId = $db->real_escape_string($memberId);
+    $_eventId = db_real_escape_string($eventId);
+    $_memberId = db_real_escape_string($memberId);
 
     $res = db_query("SELECT * FROM reg WHERE member_key='$_memberId' AND event_key='$_eventId'");
 
@@ -3553,7 +3554,7 @@ function db_checkIfUserAddedToReg($eventId, $memberId){
 
 function db_getEventName($eventId){
     global $db;
-    $eventId = $db->real_escape_string($eventId);
+    $eventId = db_real_escape_string($eventId);
     $res=db_query ("SELECT name FROM event WHERE `key`='$eventId'");
     $row = $res->fetch_assoc();
     return $row ? $row['name'] : "";
@@ -3563,11 +3564,11 @@ function db_getEventName($eventId){
 
 function db_saveMessageInfo($subject, $eventId, $receiver, $sender, $body){
     global $db;
-    $_subject = $db->real_escape_string($subject);
-    $_eventId = $db->real_escape_string($eventId);
-    $_receiver = $db->real_escape_string($receiver);
-    $_sender = $db->real_escape_string($sender);
-    $_body = $db->real_escape_string($body);
+    $_subject = db_real_escape_string($subject);
+    $_eventId = db_real_escape_string($eventId);
+    $_receiver = db_real_escape_string($receiver);
+    $_sender = db_real_escape_string($sender);
+    $_body = db_real_escape_string($body);
 
     $memberId = db_getMemberByEmail($_receiver);
     if($memberId){
@@ -3577,7 +3578,7 @@ function db_saveMessageInfo($subject, $eventId, $receiver, $sender, $body){
 
 function db_getMemberByEmail($email){
     global $db;
-    $_email = $db->real_escape_string($email);
+    $_email = db_real_escape_string($email);
 
     $res = db_query("SELECT m.key as id FROM member m WHERE m.email='$_email'");
 
@@ -3593,8 +3594,8 @@ function db_getMemberByEmail($email){
 
 function db_getUserEventEmails($memberId, $eventId){
     global $db;
-    $_memberId = $db->real_escape_string($memberId);
-    $_eventId = $db->real_escape_string($eventId);
+    $_memberId = db_real_escape_string($memberId);
+    $_eventId = db_real_escape_string($eventId);
 
     $res = db_query("SELECT * FROM message WHERE event_key='$_eventId' AND receiver='$_memberId'");
 
@@ -3610,7 +3611,7 @@ function db_getUserEventEmails($memberId, $eventId){
 
 function checkIfEventHasParticipants($eventId){
     global $db;
-    $_eventId = $db->real_escape_string($eventId);
+    $_eventId = db_real_escape_string($eventId);
 
     $res = db_query("SELECT * FROM reg WHERE event_key='$_eventId' ");
 
@@ -3622,8 +3623,8 @@ function checkIfEventHasParticipants($eventId){
 
 function db_isPasswordValid($adminId, $pass){
     global $db;
-    $_adminId = $db->real_escape_string($adminId);
-    $_pass = $db->real_escape_string($pass);
+    $_adminId = db_real_escape_string($adminId);
+    $_pass = db_real_escape_string($pass);
 
     $res = db_query("SELECT * FROM admin WHERE member_key='$_adminId' AND password='$_pass' ");
 
@@ -3635,8 +3636,8 @@ function db_isPasswordValid($adminId, $pass){
 
 function db_setMemberLogin($adminId, $login){
     global $db;
-    $_adminId = $db->real_escape_string($adminId);
-    $_login = $db->real_escape_string($login);
+    $_adminId = db_real_escape_string($adminId);
+    $_login = db_real_escape_string($login);
 
     db_query("UPDATE admin SET login='$_login', changed=1 WHERE member_key='$_adminId' ");
     db_query("UPDATE member SET email='$_login', changed=1 WHERE `key`='$_adminId' ");
@@ -3644,7 +3645,7 @@ function db_setMemberLogin($adminId, $login){
 
 function db_getMemberById($memberId){
     global $db;
-    $_memberId = $db->real_escape_string($memberId);
+    $_memberId = db_real_escape_string($memberId);
 
     $res = db_query("SELECT password, login FROM admin WHERE member_key='$_memberId' ");
 
@@ -3657,7 +3658,7 @@ function db_getMemberById($memberId){
 
 function db_getEventNeedAddress($eventId){
     global $db;
-    $_eventId = $db->real_escape_string($eventId);
+    $_eventId = db_real_escape_string($eventId);
 
     $res = db_query("SELECT need_address FROM event WHERE `key`='$_eventId' ");
 
@@ -3670,10 +3671,10 @@ function db_getEventNeedAddress($eventId){
 
 function db_checkIfEventMemberFieldsHasDifference($adminId, $_dataFields, $memberId, $eventId){
     global $db;
-    $_adminId = $db->real_escape_string($adminId);
-    //$_dataFields = $db->real_escape_string($dataFields);
-    $_memberId = $db->real_escape_string($memberId);
-    $_eventId = $db->real_escape_string($eventId);
+    $_adminId = db_real_escape_string($adminId);
+    //$_dataFields = db_real_escape_string($dataFields);
+    $_memberId = db_real_escape_string($memberId);
+    $_eventId = db_real_escape_string($eventId);
 
     $eventMember = db_getEventMember($_memberId, $_eventId);
     $regChanged = false;
@@ -3751,7 +3752,7 @@ function db_checkIfEventMemberFieldsHasDifference($adminId, $_dataFields, $membe
 
 function db_getMembersToInvite($search){
     global $db;
-    $search = $db->real_escape_string($search);
+    $search = db_real_escape_string($search);
 
     if($search == ''){
         return false;
@@ -3768,10 +3769,10 @@ function db_getMembersToInvite($search){
 
 function db_inviteUsersToEvent($showAdminName, $adminId, $members, $eventId){
     global $db;
-    $_members = $db->real_escape_string($members);
-    $_eventId = $db->real_escape_string($eventId);
-    $_adminId = $db->real_escape_string($adminId);
-    $_showAdminName = $db->real_escape_string($showAdminName);
+    $_members = db_real_escape_string($members);
+    $_eventId = db_real_escape_string($eventId);
+    $_adminId = db_real_escape_string($adminId);
+    $_showAdminName = db_real_escape_string($showAdminName);
 
     $alreadyAddedArr = array();
     $emptyEmailArr = array();
@@ -3824,8 +3825,8 @@ function db_inviteUsersToEvent($showAdminName, $adminId, $members, $eventId){
 
 function db_getEventMemberInvited($eventId, $memberId){
     global $db;
-    $_memberId = $db->real_escape_string($memberId);
-    $_eventId = $db->real_escape_string($eventId);
+    $_memberId = db_real_escape_string($memberId);
+    $_eventId = db_real_escape_string($eventId);
 
     $res=db_query ("SELECT m.key as member_key, m.name,
                     CASE WHEN m.male=1 THEN 'male' WHEN m.male=0 THEN 'female' ELSE '' END as gender, m.male,
@@ -3854,8 +3855,8 @@ function db_getEventMemberInvited($eventId, $memberId){
 // BEGIN References
 function db_getReferences($sortField, $sortType){
     global $db;
-    $_sortField = $db->real_escape_string($sortField);
-    $_sortType = $db->real_escape_string($sortType);
+    $_sortField = db_real_escape_string($sortField);
+    $_sortType = db_real_escape_string($sortType);
 
     $res = db_query("SELECT r.name, r.link_article, p.name as page_name,
             r.block_num, r.published, r.id, r.page, b.name as block_name, r.priority
@@ -3920,8 +3921,8 @@ function db_getEventTemplates($adminId){
 
 function db_getParticipantsForEvent($text, $field){
     global $db;
-    $text = $db->real_escape_string($text);
-    $field = $db->real_escape_string($field);
+    $text = db_real_escape_string($text);
+    $field = db_real_escape_string($field);
 
     if($text == ''){
         return false;
@@ -3940,7 +3941,7 @@ function db_getParticipantsForEvent($text, $field){
 
 function db_getMembersByLocality($localityId){
     global $db;
-    $_localityId = $db->real_escape_string($localityId);
+    $_localityId = db_real_escape_string($localityId);
 
     $resLocality = db_query("SELECT m.key as id, m.attend_meeting, l.name as locality, m.name FROM locality l INNER JOIN member m ON l.key=m.locality_key WHERE l.key='$_localityId' ");
 
@@ -3954,8 +3955,8 @@ function db_getMembersByLocality($localityId){
 
 function db_setAttendMeeting($value, $memberId){
     global $db;
-    $_value = $db->real_escape_string($value);
-    $_memberId = $db->real_escape_string($memberId);
+    $_value = db_real_escape_string($value);
+    $_memberId = db_real_escape_string($memberId);
 
     db_query("UPDATE member SET attend_meeting = '$_value' WHERE `key`='$_memberId' ");
 
@@ -3978,7 +3979,7 @@ function db_setAttendMeeting($value, $memberId){
 
 function db_checkEventStopRegistration($eventId){
     global $db;
-    $_eventId = $db->real_escape_string($eventId);
+    $_eventId = db_real_escape_string($eventId);
 
     /*
     $res=db_query ("SELECT IF((SELECT COUNT(*) FROM reg rg WHERE rg.event_key=e.key AND (rg.regstate_key = '01' OR rg.regstate_key = '02' OR rg.regstate_key = '04' OR rg.regstate_key is NULL )) >= e.participants_count AND e.participants_count > 0, 1, 0) as stop_registration, e.close_registration FROM event e WHERE e.key='$_eventId' ");
@@ -3993,7 +3994,7 @@ function db_checkEventStopRegistration($eventId){
 
 function db_getEventListName($eventId){
     global $db;
-    $_eventId = $db->real_escape_string($eventId);
+    $_eventId = db_real_escape_string($eventId);
 
     $res=db_query ("SELECT list_name FROM event WHERE `key`='". $_eventId ."' ");
 
@@ -4004,7 +4005,7 @@ function db_getEventListName($eventId){
 
 function db_getEventListItems($eventId){
     global $db;
-    $_eventId = $db->real_escape_string($eventId);
+    $_eventId = db_real_escape_string($eventId);
 
     $res = db_query("SELECT list FROM event WHERE `key`='$_eventId' ");
 
@@ -4037,15 +4038,15 @@ function db_downloadExcelData($members){
 
 function db_addFilter($filter_name, $admin_key){
     global $db;
-    $_filter_name = $db->real_escape_string($filter_name);
-    $_admin_key = $db->real_escape_string($admin_key);
+    $_filter_name = db_real_escape_string($filter_name);
+    $_admin_key = db_real_escape_string($admin_key);
 
     db_query("INSERT INTO filter (name, admin_key) VALUES ('$_filter_name', '$_admin_key') ");
 }
 
 function db_getAdminFilters($admin_key){
     global $db;
-    $_admin_key = $db->real_escape_string($admin_key);
+    $_admin_key = db_real_escape_string($admin_key);
 
     $res = db_query("SELECT * FROM filter WHERE admin_key='$_admin_key' ");
 
@@ -4059,23 +4060,23 @@ function db_getAdminFilters($admin_key){
 
 function db_saveFilterLocalities($filter_id, $filter_localities){
     global $db;
-    $_filter_localities = $db->real_escape_string($filter_localities);
-    $_filter_id = $db->real_escape_string($filter_id);
+    $_filter_localities = db_real_escape_string($filter_localities);
+    $_filter_id = db_real_escape_string($filter_id);
 
     db_query("UPDATE filter SET value = '".($_filter_localities == '' ? NULL : $_filter_localities)."' WHERE id='$_filter_id' ");
 }
 
 function db_saveFilter($filter_id, $filter_name){
     global $db;
-    $_filter_name = $db->real_escape_string($filter_name);
-    $_filter_id = $db->real_escape_string($filter_id);
+    $_filter_name = db_real_escape_string($filter_name);
+    $_filter_id = db_real_escape_string($filter_id);
 
     db_query("UPDATE filter SET name = '".$_filter_name."' WHERE id='$_filter_id' ");
 }
 
 function db_removeFilter($filter_id){
     global $db;
-    $_filter_id = $db->real_escape_string($filter_id);
+    $_filter_id = db_real_escape_string($filter_id);
 
     db_query("DELETE FROM filter WHERE id='$_filter_id' ");
 }
@@ -4095,7 +4096,7 @@ function db_getSettings(){
 
 function db_getUserSettings($admin_key){
     global $db;
-    $_admin_key = $db->real_escape_string($admin_key);
+    $_admin_key = db_real_escape_string($admin_key);
 
     $res = db_query("SELECT setting_key FROM user_setting WHERE member_key='$_admin_key' ");
 
@@ -4110,7 +4111,7 @@ function db_getUserSettings($admin_key){
 function db_getAnyActiveContactStr ($activeAdmin)
 {
     global $db;
-    $activeAdmin = $db->real_escape_string($activeAdmin);
+    $activeAdmin = db_real_escape_string($activeAdmin);
     $key='';
     $res=db_query ("SELECT `id` FROM contacts WHERE `responsible` = '$activeAdmin' LIMIT 1");
     while ($row = $res->fetch_assoc()) $key=$row['id'];
@@ -4120,7 +4121,7 @@ function db_getAnyActiveContactStr ($activeAdmin)
 
 function db_getUserAccessAreaSettings($admin_key){
     global $db;
-    $_admin_key = $db->real_escape_string($admin_key);
+    $_admin_key = db_real_escape_string($admin_key);
 
     $res = db_query("SELECT setting_key FROM user_access_area_setting WHERE member_key='$_admin_key' ");
 
@@ -4134,9 +4135,9 @@ function db_getUserAccessAreaSettings($admin_key){
 
 function db_updateUserSetting($admin_key, $setting_key, $is_checked){
     global $db;
-    $_admin_key = $db->real_escape_string($admin_key);
-    $_setting_key = $db->real_escape_string($setting_key);
-    $_is_checked = $db->real_escape_string($is_checked);
+    $_admin_key = db_real_escape_string($admin_key);
+    $_setting_key = db_real_escape_string($setting_key);
+    $_is_checked = db_real_escape_string($is_checked);
 
     if($_is_checked === 'true'){
         db_query("INSERT INTO user_setting (member_key, setting_key) VALUES ('$_admin_key', '$_setting_key') ");
@@ -4148,9 +4149,9 @@ function db_updateUserSetting($admin_key, $setting_key, $is_checked){
 
 function db_updateUserAccessAreaSetting($admin_key, $setting_key, $is_checked){
     global $db;
-    $_admin_key = $db->real_escape_string($admin_key);
-    $_setting_key = $db->real_escape_string($setting_key);
-    $_is_checked = $db->real_escape_string($is_checked);
+    $_admin_key = db_real_escape_string($admin_key);
+    $_setting_key = db_real_escape_string($setting_key);
+    $_is_checked = db_real_escape_string($is_checked);
 
     if($_is_checked === 'true'){
         db_query("INSERT INTO user_access_area_setting (member_key, setting_key) VALUES ('$_admin_key', '$_setting_key') ");
@@ -4178,7 +4179,7 @@ function db_getAdminsListByLocalities ()
 function db_getAdminsListByLocalitiesCombobox ($locality)
 {
     global $db;
-    $locality = $db->real_escape_string($locality);
+    $locality = db_real_escape_string($locality);
     $res=db_query ("SELECT DISTINCT m.key as id, m.name as name, m.email as email, m.cell_phone as cell_phone, lo.name as locality_name, ad.comment as note, lo.key as locality_key
     FROM access as a
     INNER JOIN admin ad ON ad.member_key=a.member_key
@@ -4195,7 +4196,7 @@ function db_getAdminsListByLocalitiesCombobox ($locality)
 function db_getMemberIdBySessionId ($sessionId)
 {
     global $db;
-    $sessionId = $db->real_escape_string($sessionId);
+    $sessionId = db_real_escape_string($sessionId);
 
     $res=db_query ("SELECT admin_key from admin_session where id_session='$sessionId'");
     if ($row = $res->fetch_assoc()) return $row['admin_key'];
@@ -4205,9 +4206,9 @@ function db_getMemberIdBySessionId ($sessionId)
 function db_loginAdmin ($sessionId, $login, $password)
 {
     global $db;
-    $sessionId = $db->real_escape_string($sessionId);
-    $login = $db->real_escape_string($login);
-    $password = $db->real_escape_string($password);
+    $sessionId = db_real_escape_string($sessionId);
+    $login = db_real_escape_string($login);
+    $password = db_real_escape_string($password);
 /*$res=db_query ("SELECT member_key FROM admin a inner join member m ON m.key=a.member_key WHERE a.login='$login' and a.password='$password' and m.active=1");
 if ($row = $res->fetch_assoc())
 {
@@ -4231,33 +4232,33 @@ if ($row = $res->fetch_assoc())
 function db_logoutAdmin ($adminId,$sessionIdLogout)
 {
     global $db;
-    $adminId = $db->real_escape_string($adminId);
-    $sessionIdLogout = $db->real_escape_string($sessionIdLogout);
+    $adminId = db_real_escape_string($adminId);
+    $sessionIdLogout = db_real_escape_string($sessionIdLogout);
     db_query ("DELETE FROM admin_session WHERE admin_key='$adminId' AND id_session='$sessionIdLogout'");
 }
 function db_logoutAdminTotal ($adminId)
 {
     global $db;
-    $adminId = $db->real_escape_string($adminId);
+    $adminId = db_real_escape_string($adminId);
     db_query ("DELETE FROM admin_session WHERE admin_key='$adminId'");
 }
 function db_logoutAdminExcActive ($adminId,$sessionIdLogout)
 {
     global $db;
-    $adminId = $db->real_escape_string($adminId);
-    $sessionIdLogout = $db->real_escape_string($sessionIdLogout);
+    $adminId = db_real_escape_string($adminId);
+    $sessionIdLogout = db_real_escape_string($sessionIdLogout);
     db_query ("DELETE FROM admin_session WHERE admin_key='$adminId' AND id_session<>'$sessionIdLogout'");
 }
 function db_lastVisitTimeUpdate ($sessionId)
 {
     global $db;
     $datatime = date("Y-m-d H:i:s");
-    $sessionId = $db->real_escape_string($sessionId);
+    $sessionId = db_real_escape_string($sessionId);
     db_query ("UPDATE admin_session SET time_last_visit = '$datatime' WHERE id_session='$sessionId'");
 }
 function db_getAdminIdByLogin($login){
     global $db;
-    $login = $db->real_escape_string($login);
+    $login = db_real_escape_string($login);
     $res=db_query ("SELECT member_key FROM admin WHERE login='$login'");
 
     if ($row = $res->fetch_assoc()) return $row['member_key'];
@@ -4267,7 +4268,7 @@ function db_getAdminIdByLogin($login){
 function db_getMemberNameMate ($memberId)
 {
     global $db;
-    $memberId = $db->real_escape_string($memberId);
+    $memberId = db_real_escape_string($memberId);
     $res=db_query ("SELECT name FROM member WHERE `key`='$memberId'");
     $row = $res->fetch_assoc();
     return $row ? $row['name'] : '';
@@ -4276,7 +4277,7 @@ function db_getMemberNameMate ($memberId)
 function db_getStatus ($status_key)
 {
     global $db;
-    $status_key == $db->real_escape_string($status_key);
+    $status_key == db_real_escape_string($status_key);
     $res=db_query ("SELECT name FROM status WHERE `key`='$status_key'");
     $row = $res->fetch_assoc();
     return $row ? $row['name'] : '';
@@ -4285,8 +4286,8 @@ function db_getStatus ($status_key)
 function db_activityLogInsert ($adminId, $page)
 {
   global $db;
-  $adminId = $db->real_escape_string($adminId);
-  $page = $db->real_escape_string($page);
+  $adminId = db_real_escape_string($adminId);
+  $page = db_real_escape_string($page);
 
   db_query ("INSERT INTO activity_log (admin_key, page) VALUES ('$adminId', '$page')");
 }

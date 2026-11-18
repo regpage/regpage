@@ -9,7 +9,7 @@ class AttendanceStatistic
   {
     global $db;
     // убрать экран с используемых ковычек или разбить и собрать строку заново (тогда удалить добавление кавычек в js)
-    //$condition = $db->real_escape_string($membersKeys);
+    //$condition = db_real_escape_string($membersKeys);
 
     $statistic = array('12_17' => 0, '18_25' => 0, '26_60' => 0, 'older_60' => 0, 'average_age' => 0);
 
@@ -53,7 +53,7 @@ class AttendanceStatistic
   {
     global $db;
     // убрать экран с используемых ковычек или разбить и собрать строку заново (тогда удалить добавление кавычек в js)
-    //$condition = $db->real_escape_string($membersKeys);
+    //$condition = db_real_escape_string($membersKeys);
 
     $statistic = array('12_17' => 0, '18_25' => 0, '26_60' => 0, 'older_60' => 0, 'average_age' => 0);
 
@@ -97,7 +97,7 @@ class AttendanceStatistic
   {
     global $db;
     // убрать экран с используемых ковычек или разбить и собрать строку заново (тогда удалить добавление кавычек в js)
-    //$condition = $db->real_escape_string($membersKeys);
+    //$condition = db_real_escape_string($membersKeys);
 
     $statistic = array('12_17' => 0, '18_25' => 0, '26_60' => 0, 'older_60' => 0, 'average_age' => 0); // 'younger_12' => 0
 

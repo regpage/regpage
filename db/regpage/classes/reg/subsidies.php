@@ -14,7 +14,7 @@ class Subsidies
 
   function __construct($eventId) {
     global $db;
-    $eventId = $db->real_escape_string($eventId);
+    $eventId = db_real_escape_string($eventId);
     // если дотации не предусмотрены
     $this->eventId = $eventId;
     $this->limit = $this->eventLimit();
@@ -63,8 +63,8 @@ class Subsidies
     }
 
     global $db;
-    $memberKey = $db->real_escape_string($memberKey);
-    $ticket = $db->real_escape_string($ticket);
+    $memberKey = db_real_escape_string($memberKey);
+    $ticket = db_real_escape_string($ticket);
     $isExist = $this->memberExist($memberKey);
 
     if (empty($isExist)) {
@@ -125,7 +125,7 @@ class Subsidies
       return 'error_001';
     }
     global $db;
-    $memberKey = $db->real_escape_string($memberKey);
+    $memberKey = db_real_escape_string($memberKey);
     $membersKeys = $this->sanitizeAndPrepareStrWithComma($membersKeys);
 
     $condition='';
@@ -176,7 +176,7 @@ class Subsidies
       if (empty($membersKeys)) {
         $comma = '';
       }
-      $membersKeys .= $comma . "'" . $db->real_escape_string($value) . "'";
+      $membersKeys .= $comma . "'" . db_real_escape_string($value) . "'";
     }
     return $membersKeys;
   }

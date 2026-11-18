@@ -44,7 +44,7 @@ function db_checkweeklyAttendance () {
 function checkMissedSessions($sheet_id)
 {
   global $db;
-  $sheet_id = $db->real_escape_string($sheet_id);
+  $sheet_id = db_real_escape_string($sheet_id);
   $result = [];
 
   $res = db_query("SELECT * FROM `ftt_attendance` WHERE `sheet_id` = '$sheet_id' AND `class` = '1' AND (
@@ -60,7 +60,7 @@ function checkMissedSessions($sheet_id)
 function setMissedClasses($sheet_id='')
 {
   global $db;
-  $sheet_id = $db->real_escape_string($sheet_id);
+  $sheet_id = db_real_escape_string($sheet_id);
   $check = checkMissedSessions($sheet_id);
 
   if ($sheet_id === '') {

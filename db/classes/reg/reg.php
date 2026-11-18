@@ -7,10 +7,10 @@ class RegPage
   // получаем участников мероприятия по ответственному за регистрацию (по зонам) и id мероприятия
   function getEventMembers($adminId, $eventId, $category = '_all_', $status = '_all_') {
       global $db;
-      $adminId = $db->real_escape_string($adminId);
-      $eventId = $db->real_escape_string($eventId);
-      $category = $db->real_escape_string($category);
-      // можно сделать условие в родительском классе что то вроде этого $category = parent::getCondition($db->real_escape_string($category), 'AND m.category_key');
+      $adminId = db_real_escape_string($adminId);
+      $eventId = db_real_escape_string($eventId);
+      $category = db_real_escape_string($category);
+      // можно сделать условие в родительском классе что то вроде этого $category = parent::getCondition(db_real_escape_string($category), 'AND m.category_key');
       // выбрать с категорией
       // для проверки на существование статуса или категории можно получать их списки
       if ($category === '_all_') {
@@ -41,7 +41,7 @@ class RegPage
   // получаем участников из списка участников по ответственному за регистрацию (по зонам)
   function getMembersByAdmin($adminId) {
       global $db;
-      $adminId = $db->real_escape_string($adminId);
+      $adminId = db_real_escape_string($adminId);
 
           $res=db_query ("SELECT DISTINCT m.key as id, m.name as name
               FROM access as a

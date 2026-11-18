@@ -334,8 +334,8 @@ function addMissingTrainees($arr1, $arr2)
 function periodDateConvert($period, $separator=' — ')
 {
   global $db;
-  $period = $db->real_escape_string($period);
-  $separator = $db->real_escape_string($separator);
+  $period = db_real_escape_string($period);
+  $separator = db_real_escape_string($separator);
   $keyTemp = explode(' — ', $period);
   $keyTemp = date_convert::yyyymmdd_to_ddmm($keyTemp[0]) . $separator . date_convert::yyyymmdd_to_ddmm($keyTemp[1]);
 
@@ -345,7 +345,7 @@ function periodDateConvert($period, $separator=' — ')
 function getDatePeriodText($remainder=7)
 {
   global $db;
-  $remainder = $db->real_escape_string($remainder);
+  $remainder = db_real_escape_string($remainder);
 
   $datePeriodWeek = date_create(date('Y-m-d'));
   date_sub($datePeriodWeek,date_interval_create_from_date_string("{$remainder} days"));

@@ -4,9 +4,9 @@ function save_blank($data)
 {
   global $db;
   $data = json_decode($data);
-  $member_key = $db->real_escape_string($data->member_key);
+  $member_key = db_real_escape_string($data->member_key);
   // убрано из запроса
-  //$semester = $db->real_escape_string($data->semester);
+  //$semester = db_real_escape_string($data->semester);
   $query_set = '';
   $result;
 
@@ -15,8 +15,8 @@ function save_blank($data)
       *//*if ($query_set) {
         $query_set .= ', ';
       }*//*
-      $key = $db->real_escape_string($key);
-      $value = $db->real_escape_string($value);
+      $key = db_real_escape_string($key);
+      $value = db_real_escape_string($value);
       $query_set .= ' `'.$key."`='$value', ";
     }
   }

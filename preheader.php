@@ -2,10 +2,11 @@
 /* настройки */
 header('Content-Type: text/html; charset=utf-8');
 // отображение ошибок и предупреждений в браузере
-/*ini_set('display_errors', 1);
+/*
+ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);*/
-
+error_reporting(E_ALL);
+*/
 /* переадресации */
 // Redirect на сервисную страницу типа САЙТ ВРЕМЕННО НЕ ДОСТУПЕН
 // header("Location: /attention.html"); // redirect to service page

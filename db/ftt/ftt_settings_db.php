@@ -26,8 +26,8 @@ function checkOtherDataSemester() {
 
 function resetSemester($adminId, $all){
   global $db;
-  $adminId = $db->real_escape_string($adminId);
-  $all = $db->real_escape_string($all);
+  $adminId = db_real_escape_string($adminId);
+  $all = db_real_escape_string($all);
   $exception = 'ftt_bible_new';
   global $tables;
   if ($all) {
@@ -83,7 +83,7 @@ function checkApplicationData() {
 // не удаляет фотографии с диска
 function resetApplications($adminId) {
   global $db;
-  $adminId = $db->real_escape_string($adminId);
+  $adminId = db_real_escape_string($adminId);
   $tables = array('ftt_request');
   $result;
 
@@ -97,7 +97,7 @@ function resetApplications($adminId) {
 // сброс доб. заданий, кроме долгов
 function resetExtraHelp($adminId) {
   global $db;
-  $adminId = $db->real_escape_string($adminId);
+  $adminId = db_real_escape_string($adminId);
   $result='';
   $result = db_query ("DELETE FROM `ftt_extra_help` WHERE `archive` = 1");
 
@@ -108,7 +108,7 @@ function resetExtraHelp($adminId) {
 // сброс пропущеных занятий, кроме долгов
 function resetSkip($adminId) {
   global $db;
-  $adminId = $db->real_escape_string($adminId);
+  $adminId = db_real_escape_string($adminId);
   $result='';
   // ftt_skip prepare
   $pathsToFiles = [];
@@ -138,7 +138,7 @@ function resetSkip($adminId) {
 // сброс долгов и зависимых данных для закончивших обучение
 function resetGraduate($adminId) {
   global $db;
-  $adminId = $db->real_escape_string($adminId);
+  $adminId = db_real_escape_string($adminId);
   // получаем список обучающихся
   $trainee = get_trainees_key();
   $result = 0;
@@ -222,7 +222,7 @@ function resetGraduate($adminId) {
 // сброс чтения Библии у тех, кто закончил обучаться
 function resetBible($adminId) {
   global $db;
-  $adminId = $db->real_escape_string($adminId);
+  $adminId = db_real_escape_string($adminId);
   $result='';
   // получаем список обучающихся
   $trainee = get_trainees_key();

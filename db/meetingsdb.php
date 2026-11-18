@@ -3,13 +3,13 @@
 // MEETINGS
 function db_getMeetingsForStatistics($adminId, $localityFilter, $meetingTypeFilter, $startDate, $endDate){
     global $db;
-    $adminId = $db->real_escape_string($adminId);
-    $localityFilter = $db->real_escape_string($localityFilter);
-    $meetingTypeFilter = $db->real_escape_string($meetingTypeFilter);
-    $startDate = $db->real_escape_string($startDate);
-    $endDate = $db->real_escape_string($endDate);
-    /* $sort_type = $db->real_escape_string($sort_type);
-    $sort_field = $sort_field != 'locality_key' ? $db->real_escape_string($sort_field)."" : " locality_key ";
+    $adminId = db_real_escape_string($adminId);
+    $localityFilter = db_real_escape_string($localityFilter);
+    $meetingTypeFilter = db_real_escape_string($meetingTypeFilter);
+    $startDate = db_real_escape_string($startDate);
+    $endDate = db_real_escape_string($endDate);
+    /* $sort_type = db_real_escape_string($sort_type);
+    $sort_field = $sort_field != 'locality_key' ? db_real_escape_string($sort_field)."" : " locality_key ";
 */
     $meetings = array ();
 
@@ -55,13 +55,13 @@ function db_getMeetingsForStatistics($adminId, $localityFilter, $meetingTypeFilt
 
 function db_getMeetings($adminId, $sort_type, $sort_field, $localityFilter, $meetingTypeFilter, $startDate, $endDate){
     global $db;
-    $adminId = $db->real_escape_string($adminId);
-    $localityFilter = $db->real_escape_string($localityFilter);
-    $meetingTypeFilter = $db->real_escape_string($meetingTypeFilter);
-    $startDate = $db->real_escape_string($startDate);
-    $endDate = $db->real_escape_string($endDate);
-    $sort_type = $db->real_escape_string($sort_type);
-    $sort_field = $sort_field != 'locality_key' ? $db->real_escape_string($sort_field)."" : " locality_key ";
+    $adminId = db_real_escape_string($adminId);
+    $localityFilter = db_real_escape_string($localityFilter);
+    $meetingTypeFilter = db_real_escape_string($meetingTypeFilter);
+    $startDate = db_real_escape_string($startDate);
+    $endDate = db_real_escape_string($endDate);
+    $sort_type = db_real_escape_string($sort_type);
+    $sort_field = $sort_field != 'locality_key' ? db_real_escape_string($sort_field)."" : " locality_key ";
 
     $meetings = array ();
 
@@ -104,12 +104,12 @@ function db_getMeetings($adminId, $sort_type, $sort_field, $localityFilter, $mee
 
 function db_getMeetingMembersList($adminId, $meetingId, $locality, $date, $is_summary_meeting, $meeting_type){
     global $db;
-    $meetingId = $db->real_escape_string($meetingId);
-    $adminId = $db->real_escape_string($adminId);
-    $locality = $db->real_escape_string($locality);
-    $date = $db->real_escape_string($date);
-    $is_summary_meeting = $db->real_escape_string($is_summary_meeting);
-    $meeting_type = $db->real_escape_string($meeting_type);
+    $meetingId = db_real_escape_string($meetingId);
+    $adminId = db_real_escape_string($adminId);
+    $locality = db_real_escape_string($locality);
+    $date = db_real_escape_string($date);
+    $is_summary_meeting = db_real_escape_string($is_summary_meeting);
+    $meeting_type = db_real_escape_string($meeting_type);
     db_query('SET Session group_concat_max_len=100000');
 
     $req = $is_summary_meeting == 'true' ? "FIND_IN_SET(m.key, me.participants)<>0 AND me.date='$date' AND me.meeting_type='$meeting_type' " : " me.id='$meetingId' ";
@@ -156,8 +156,8 @@ function db_getMeetingsTypes(){
 
 function db_setMeetingMembersList($list, $meetingId, $childrenCount){
     global $db;
-    $list = $db->real_escape_string($list);
-    $meetingId = $db->real_escape_string($meetingId);
+    $list = db_real_escape_string($list);
+    $meetingId = db_real_escape_string($meetingId);
     $childrenCount = (int)$childrenCount;
 
     $saintsCount = count(explode(',', $list));
@@ -171,7 +171,7 @@ function db_setMeetingMembersList($list, $meetingId, $childrenCount){
 
 function getCountTrainees($list){
     global $db;
-    $list = $db->real_escape_string($list);
+    $list = db_real_escape_string($list);
 
     $res = db_query("SELECT COUNT(*) as count FROM member m WHERE m.key IN($list) AND m.category_key='FT'");
 
@@ -184,7 +184,7 @@ function getCountTrainees($list){
 
 function getCountFullTimers($list){
     global $db;
-    $list = $db->real_escape_string($list);
+    $list = db_real_escape_string($list);
 
     $res = db_query("SELECT COUNT(*) as count FROM member m WHERE m.key IN($list) AND m.category_key='FS'");
 
@@ -198,15 +198,15 @@ function getCountFullTimers($list){
 function db_setMeeting($data){
     global $db;
 
-    $date = $db->real_escape_string($data['date']);
-    $locality = $db->real_escape_string($data['locality']);
-    $meetingType = $db->real_escape_string($data['meetingType']);
-    $note = $db->real_escape_string($data['note']);
-    $name = $db->real_escape_string($data['meetingName']);
+    $date = db_real_escape_string($data['date']);
+    $locality = db_real_escape_string($data['locality']);
+    $meetingType = db_real_escape_string($data['meetingType']);
+    $note = db_real_escape_string($data['note']);
+    $name = db_real_escape_string($data['meetingName']);
 
-    $oldDate = isset($data['oldDate'] ) ? $db->real_escape_string($data['oldDate']) : null;
-    $oldLocality = isset($data['oldLocality'] ) ? $db->real_escape_string($data['oldLocality']) : null;
-    $oldMeetingType = isset($data['oldMeetingType'] ) ? $db->real_escape_string($data['oldMeetingType']) : null;
+    $oldDate = isset($data['oldDate'] ) ? db_real_escape_string($data['oldDate']) : null;
+    $oldLocality = isset($data['oldLocality'] ) ? db_real_escape_string($data['oldLocality']) : null;
+    $oldMeetingType = isset($data['oldMeetingType'] ) ? db_real_escape_string($data['oldMeetingType']) : null;
 
     //$listCount = (int)($data['listCount']);
     $guestsCount = (int)($data['countGuest']);
@@ -217,10 +217,10 @@ function db_setMeeting($data){
     $fulltimersCount = (int)($data['fulltimersCount']);
     $func_count = ($data['func_count']);
 
-    $meetingId = isset($data['meetingId']) ? $db->real_escape_string($data['meetingId']) : null;
+    $meetingId = isset($data['meetingId']) ? db_real_escape_string($data['meetingId']) : null;
 
     $members = $data['members'];
-    $attendMembers = $db->real_escape_string( $data['attendMembers']);
+    $attendMembers = db_real_escape_string( $data['attendMembers']);
     $listCount = $guestsCount + $saintsCount;
     //$listCount = $members ? count(explode(',', $data['members'])) : db_getCountMembersByLocality($locality);
 
@@ -256,11 +256,11 @@ function checkDoubleMeeting($date, $locality, $meetingType, $name){
 
 function getMeetingMembersStatistic($adminId, $meetingType, $locality, $startDate, $endDate){
     global $db;
-    $adminId = $db->real_escape_string($adminId);
-    $meetingType = $meetingType == '_all_' ? '' : " AND me.meeting_type='".$db->real_escape_string($meetingType)."'";
-    $locality = $db->real_escape_string($locality);
-    $startDate = $db->real_escape_string($startDate);
-    $endDate = $db->real_escape_string($endDate);
+    $adminId = db_real_escape_string($adminId);
+    $meetingType = $meetingType == '_all_' ? '' : " AND me.meeting_type='".db_real_escape_string($meetingType)."'";
+    $locality = db_real_escape_string($locality);
+    $startDate = db_real_escape_string($startDate);
+    $endDate = db_real_escape_string($endDate);
     $requestDates = " AND (me.date BETWEEN '$startDate' AND '$endDate')";
     db_query('SET Session group_concat_max_len=100000');
 
@@ -296,7 +296,7 @@ function getMeetingMembersStatistic($adminId, $meetingType, $locality, $startDat
 
 function db_removeMeeting($meetingId){
     global $db;
-    $_meetingId = $db->real_escape_string($meetingId);
+    $_meetingId = db_real_escape_string($meetingId);
 
     db_query("DELETE FROM meetings WHERE id='$_meetingId' ");
 }
@@ -304,7 +304,7 @@ function db_removeMeeting($meetingId){
 
 function db_getMeetingTemplates($memberId){
     global $db;
-    $_memberId = $db->real_escape_string($memberId);
+    $_memberId = db_real_escape_string($memberId);
     db_query('SET Session group_concat_max_len=100000');
 
     $templates = [];
@@ -325,7 +325,7 @@ function db_getMeetingTemplates($memberId){
 
 function db_getMeetingTemplate($templateId){
     global $db;
-    $_templateId = $db->real_escape_string($templateId);
+    $_templateId = db_real_escape_string($templateId);
     db_query('SET Session group_concat_max_len=100000');
 
     $res = db_query(
@@ -346,13 +346,13 @@ function db_getMeetingTemplate($templateId){
 
 function db_handleTemplate($adminId, $data){
     global $db;
-    $_adminId = $db->real_escape_string($adminId);
-    $type = isset($data['type']) ? $db->real_escape_string($data['type']) : '';
-    $name = isset($data['name']) ? $db->real_escape_string($data['name']) : '';
-    $locality = isset($data['locality']) ? $db->real_escape_string($data['locality']) : '';
-    $participants = isset($data['participants']) ? $db->real_escape_string($data['participants']) : '';
-    $admins = isset($data['admins']) ? $db->real_escape_string($data['admins']) : '';
-    $id = isset($data['id']) ? $db->real_escape_string($data['id']) : '';
+    $_adminId = db_real_escape_string($adminId);
+    $type = isset($data['type']) ? db_real_escape_string($data['type']) : '';
+    $name = isset($data['name']) ? db_real_escape_string($data['name']) : '';
+    $locality = isset($data['locality']) ? db_real_escape_string($data['locality']) : '';
+    $participants = isset($data['participants']) ? db_real_escape_string($data['participants']) : '';
+    $admins = isset($data['admins']) ? db_real_escape_string($data['admins']) : '';
+    $id = isset($data['id']) ? db_real_escape_string($data['id']) : '';
 
     $_participants = [];
     if($participants){
@@ -400,9 +400,9 @@ function db_handleTemplate($adminId, $data){
 
 function db_deleteTemplateParticipant($memberId, $mode, $templateId){
     global $db;
-    $_memberId = $db->real_escape_string($memberId);
-    $_mode = $db->real_escape_string($mode);
-    $_templateId = $db->real_escape_string($templateId);
+    $_memberId = db_real_escape_string($memberId);
+    $_mode = db_real_escape_string($mode);
+    $_templateId = db_real_escape_string($templateId);
     $items = [];
 
     $res = db_query("SELECT * FROM meeting_template WHERE id='$_templateId'");
@@ -427,7 +427,7 @@ function db_deleteTemplateParticipant($memberId, $mode, $templateId){
 
 function db_getMeetingTemplateParticipantList($templateId, $mode){
     global $db;
-    $_templateId = $db->real_escape_string($templateId);
+    $_templateId = db_real_escape_string($templateId);
     db_query('SET Session group_concat_max_len=100000');
 
     $participants = [];
@@ -446,8 +446,8 @@ function db_getMeetingTemplateParticipantList($templateId, $mode){
 
 function db_deleteMeetingTemplate($adminId, $templateId){
     global $db;
-    $_adminId = $db->real_escape_string($adminId);
-    $_templateId = $db->real_escape_string($templateId);
+    $_adminId = db_real_escape_string($adminId);
+    $_templateId = db_real_escape_string($templateId);
 
     $res = db_query("SELECT admin FROM meeting_template WHERE id = '$_templateId' ");
     $row = $res->fetch_assoc();
@@ -473,7 +473,7 @@ function db_deleteMeetingTemplate($adminId, $templateId){
 
 function db_addTemplateMeeting($templateId){
     global $db;
-    $_templateId = $db->real_escape_string($templateId);
+    $_templateId = db_real_escape_string($templateId);
     db_query('SET Session group_concat_max_len=100000');
 
     $res = db_query("SELECT mt.name, mt.meeting_type_key, mt.locality_key, mt.participant,
@@ -546,9 +546,9 @@ function setMeetingByTemplate($data){
 
 function db_addTemplateParticipant($mode, $participantId, $templateId){
     global $db;
-    $_mode = $db->real_escape_string($mode);
-    $_participantId = $db->real_escape_string($participantId);
-    $_templateId = $db->real_escape_string($templateId);
+    $_mode = db_real_escape_string($mode);
+    $_participantId = db_real_escape_string($participantId);
+    $_templateId = db_real_escape_string($templateId);
 
     $field = $_mode == 'participants' ? 'participant' : 'admin';
     $res = db_query("SELECT $field FROM meeting_template WHERE id = '$_templateId' ");
@@ -566,7 +566,7 @@ function db_addTemplateParticipant($mode, $participantId, $templateId){
 
 function db_getParticipantsForMeetingByMember($text){
     global $db;
-    $text = $db->real_escape_string($text);
+    $text = db_real_escape_string($text);
 
     if($text == ''){
         return false;
@@ -585,7 +585,7 @@ function db_getParticipantsForMeetingByMember($text){
 
 function db_getParticipantsForMeetingByLocality($text){
     global $db;
-    $text = $db->real_escape_string($text);
+    $text = db_real_escape_string($text);
 
     if($text == ''){
         return false;
@@ -606,7 +606,7 @@ function db_getParticipantsForMeetingByLocality($text){
 // get details of members
 function db_getDetailsOfMembers($meetingId){
   global $db;
-  $meetingId = $db->real_escape_string($meetingId);
+  $meetingId = db_real_escape_string($meetingId);
   $members = array ();
   db_query('SET Session group_concat_max_len=100000');
 
@@ -624,8 +624,8 @@ function db_getDetailsOfMembers($meetingId){
 
 function db_setAdminsToTemplate($templateId, $admins){
   global $db;
-  $templateId = $db->real_escape_string($templateId);
-  $admins = $db->real_escape_string($admins);
+  $templateId = db_real_escape_string($templateId);
+  $admins = db_real_escape_string($admins);
 
   db_query("UPDATE meeting_template SET admin = '$admins' WHERE id = '$templateId'");
   return 1;
@@ -634,7 +634,7 @@ function db_setAdminsToTemplate($templateId, $admins){
 
 function db_getAvailableMembersForMeeting($text){
     global $db;
-    $text = $db->real_escape_string($text);
+    $text = db_real_escape_string($text);
 
     if($text == ''){
         return false;
@@ -653,7 +653,7 @@ function db_getAvailableMembersForMeeting($text){
 function db_getDetailsOfAllMembersAdmin ($adminId)
 {
     global $db;
-    $adminId = $db->real_escape_string($adminId);
+    $adminId = db_real_escape_string($adminId);
     $active = 'name DESC, ';
 
     $res=db_query ("SELECT DISTINCT * FROM (SELECT m.key as id, m.name as name, IF (COALESCE(l.name,'')='', m.new_locality, l.name) as locality, m.email as email, m.locality_key, m.birth_date,

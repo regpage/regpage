@@ -20,7 +20,7 @@ function getFttAttendanceSheet() {
 // получаем строки по id_sheet
 function getFttStringsByIdSheet($sheet_id) {
   global $db;
-  $sheet_id = $db->real_escape_string($sheet_id);
+  $sheet_id = db_real_escape_string($sheet_id);
   $result = [];
 
   $res = db_query("SELECT `id`, `sheet_id`, `session_name`, `session_time`, `attend_time`, `reason`, `late` FROM `ftt_attendance` WHERE `sheet_id` = '$sheet_id' ORDER BY `session_time`");
@@ -37,9 +37,9 @@ function getFttAttendanceSheetAndStrings($list_access, $condition, $admin_id = '
   // AS fas
 
   global $db;
-  $list_access = $db->real_escape_string($list_access);
-  $condition = $db->real_escape_string($condition);
-  $admin_id = $db->real_escape_string($admin_id);
+  $list_access = db_real_escape_string($list_access);
+  $condition = db_real_escape_string($condition);
+  $admin_id = db_real_escape_string($admin_id);
   $list_access_condition;
   $order_by = '';
   $last_date = '';
@@ -126,7 +126,7 @@ function getFttAttendanceSheetAndStrings($list_access, $condition, $admin_id = '
 // Получаем строки для бланка
 function get_sessions($id) {
   global $db;
-  $id = $db->real_escape_string($id);
+  $id = db_real_escape_string($id);
   $strings = [];
   $res = db_query("SELECT `id`, `sheet_id`, `session_name`, `session_time`, `attend_time`, `reason`, `permission_sheet_id`, `late`, `absence`, `visit`, `end_time`, `duration`
     FROM `ftt_attendance`
@@ -139,12 +139,12 @@ function get_sessions($id) {
 // обновляем строки по id ???
 function setFttStringsById($data) {
   global $db;
-  $id = $db->real_escape_string($data['id']);
-  $session_name = $db->real_escape_string($data['session_name']);
-  $session_time = $db->real_escape_string($data['session_time']);
-  $attend_time = $db->real_escape_string($data['attend_time']);
-  $reason = $db->real_escape_string($data['reason']);
-  $late = $db->real_escape_string($data['late']);
+  $id = db_real_escape_string($data['id']);
+  $session_name = db_real_escape_string($data['session_name']);
+  $session_time = db_real_escape_string($data['session_time']);
+  $attend_time = db_real_escape_string($data['attend_time']);
+  $reason = db_real_escape_string($data['reason']);
+  $late = db_real_escape_string($data['late']);
 
   $res = db_query("INSERT INTO `ftt_attendance` (`session_name`, `session_time`, `attend_time`, `reason`, `late`, `changed`) VALUES ('$session_name', '$session_time','$attend_time', '$reason','$late', 1)");
 
@@ -154,15 +154,15 @@ function setFttStringsById($data) {
 // Добавляем header (?) НЕИСПОЛЬЗУЕТСЯ
 /*function setFttSheetById($data) {
   global $db;
-  $id = $db->real_escape_string($data['id']);
-  $comment = $db->real_escape_string($data['comment']);
-  $status = $db->real_escape_string($data['status']);
-  $date_send = $db->real_escape_string($data['date_send']);
-  $morning_revival = $db->real_escape_string($data['morning_revival']);
-  $personal_prayer = $db->real_escape_string($data['personal_prayer']);
-  $common_prayer = $db->real_escape_string($data['common_prayer']);
-  $bible_reading = $db->real_escape_string($data['bible_reading']);
-  $ministry_reading = $db->real_escape_string($data['ministry_reading']);
+  $id = db_real_escape_string($data['id']);
+  $comment = db_real_escape_string($data['comment']);
+  $status = db_real_escape_string($data['status']);
+  $date_send = db_real_escape_string($data['date_send']);
+  $morning_revival = db_real_escape_string($data['morning_revival']);
+  $personal_prayer = db_real_escape_string($data['personal_prayer']);
+  $common_prayer = db_real_escape_string($data['common_prayer']);
+  $bible_reading = db_real_escape_string($data['bible_reading']);
+  $ministry_reading = db_real_escape_string($data['ministry_reading']);
 
   $res = db_query("INSERT INTO `ftt_attendance_sheet` (`comment`, `status`, `date_send`, `morning_revival`, `personal_prayer`, `common_prayer`, `bible_reading`, `ministry_reading`, `changed`)
     VALUES ('$comment', '$status','$date_send', '$morning_revival', '$personal_prayer', '$common_prayer', '$bible_reading', '$ministry_reading', 1) WHERE `id` = '$id'");
@@ -172,10 +172,10 @@ function setFttStringsById($data) {
 
 function set_attendance($id, $field, $value, $header) {
   global $db;
-  $id = $db->real_escape_string($id);
-  $field = $db->real_escape_string($field);
-  $value = $db->real_escape_string($value);
-  $header = $db->real_escape_string($header);
+  $id = db_real_escape_string($id);
+  $field = db_real_escape_string($field);
+  $value = db_real_escape_string($value);
+  $header = db_real_escape_string($header);
   $table = 'ftt_attendance';
   if ($header == 1) {
     $table = 'ftt_attendance_sheet';
@@ -191,11 +191,11 @@ function set_attendance($id, $field, $value, $header) {
 
 function set_attendance_time($id, $field, $time, $late, $absence) {
   global $db;
-  $id = $db->real_escape_string($id);
-  $time = $db->real_escape_string($time);
-  $late = $db->real_escape_string($late);
-  $absence = $db->real_escape_string($absence);
-  $field = $db->real_escape_string($field);
+  $id = db_real_escape_string($id);
+  $time = db_real_escape_string($time);
+  $late = db_real_escape_string($late);
+  $absence = db_real_escape_string($absence);
+  $field = db_real_escape_string($field);
 
   $res = db_query("UPDATE `ftt_attendance` SET `$field` = '$time', `late` = '$late', `absence` = '$absence', `changed` = 1  WHERE `id` = '$id'");
   return $res;
@@ -203,8 +203,8 @@ function set_attendance_time($id, $field, $time, $late, $absence) {
 
 function set_attendance_archive ($id, $archive) {
   global $db;
-  $id = $db->real_escape_string($id);
-  $archive = $db->real_escape_string($archive);
+  $id = db_real_escape_string($id);
+  $archive = db_real_escape_string($archive);
   $result = '';
   $res = db_query("UPDATE `ftt_attendance_sheet` SET `status` = '$archive', `date_send` = NOW(), `changed`=1  WHERE `id` = '$id'");
   if ($res) {
@@ -218,12 +218,12 @@ function set_attendance_archive ($id, $archive) {
 
 function set_late_automatic($member_key, $date, $delay, $session_name, $end_time, $id_attendance) {
   global $db;
-  $member_key = $db->real_escape_string($member_key);
-  $date = $db->real_escape_string($date);
-  $delay = $db->real_escape_string($delay);
-  $session_name = $db->real_escape_string($session_name);
-  $end_time = $db->real_escape_string($end_time);
-  $id_attendance = $db->real_escape_string($id_attendance);
+  $member_key = db_real_escape_string($member_key);
+  $date = db_real_escape_string($date);
+  $delay = db_real_escape_string($delay);
+  $session_name = db_real_escape_string($session_name);
+  $end_time = db_real_escape_string($end_time);
+  $id_attendance = db_real_escape_string($id_attendance);
   $result = [];
   $count_lates=0;
 
@@ -272,10 +272,10 @@ function set_late_automatic($member_key, $date, $delay, $session_name, $end_time
 
 function set_extrahelp_automatic($member_key, $date, $reason, $attendance_id, $end_time=0) {
   global $db;
-  $member_key = $db->real_escape_string($member_key);
-  $date = $db->real_escape_string($date);
-  $reason = $db->real_escape_string($reason);
-  $attendance_id = $db->real_escape_string($attendance_id);
+  $member_key = db_real_escape_string($member_key);
+  $date = db_real_escape_string($date);
+  $reason = db_real_escape_string($reason);
+  $attendance_id = db_real_escape_string($attendance_id);
 
   $res = db_query("INSERT INTO `ftt_extra_help` (`member_key`, `date`, `reason`, `attendance_and_late`, `changed`)
   VALUES ('$member_key', '$date', '$reason', '$attendance_id', 1)");
@@ -285,20 +285,20 @@ function set_extrahelp_automatic($member_key, $date, $reason, $attendance_id, $e
 // STAFF FUNCTIONS
 function dlt_sessions_in_blank($sheet_id) {
   global $db;
-  $sheet_id = $db->real_escape_string($sheet_id);
+  $sheet_id = db_real_escape_string($sheet_id);
   $res = db_query("DELETE FROM `ftt_attendance` WHERE `sheet_id` = $sheet_id");
 }
 
 // add/delete string session in blank
 function add_sessions_staff($session) {
   global $db;
-  $sheet_id = $db->real_escape_string(trim($session->id_sheet));
-  $session_id = $db->real_escape_string(trim($session->session_id));
-  $session_name = $db->real_escape_string(trim($session->session_name));
-  $session_time = $db->real_escape_string(trim($session->session_time));
-  $duration = $db->real_escape_string(trim($session->duration));
-  $visit = $db->real_escape_string(trim($session->visit));
-  $end_time = $db->real_escape_string(trim($session->end_time));
+  $sheet_id = db_real_escape_string(trim($session->id_sheet));
+  $session_id = db_real_escape_string(trim($session->session_id));
+  $session_name = db_real_escape_string(trim($session->session_name));
+  $session_time = db_real_escape_string(trim($session->session_time));
+  $duration = db_real_escape_string(trim($session->duration));
+  $visit = db_real_escape_string(trim($session->visit));
+  $end_time = db_real_escape_string(trim($session->end_time));
 
   $res = db_query("INSERT INTO `ftt_attendance` (`sheet_id`, `session_id`, `session_name`, `session_time`, `visit`, `end_time`, `duration`, `changed`)
   VALUES ('$sheet_id', '$session_id', '$session_name','$session_time', '$visit', '$end_time', '$duration', 1)");
@@ -318,9 +318,9 @@ function dlt_session_staff($sessions)
 {
   global $db;
   $session = json_decode($sessions);
-  $sheet_id = $db->real_escape_string(trim($session->id_sheet));
-  $session_id = $db->real_escape_string(trim($session->session_id));
-  $session_time = $db->real_escape_string(trim($session->session_time));
+  $sheet_id = db_real_escape_string(trim($session->id_sheet));
+  $session_id = db_real_escape_string(trim($session->session_id));
+  $session_time = db_real_escape_string(trim($session->session_time));
   if ($session_id) {
     $res = db_query("DELETE FROM `ftt_attendance` WHERE `sheet_id` = '$sheet_id' AND `session_id`='$session_id'");
   } else {
@@ -332,9 +332,9 @@ function add_session_staff($sessions)
 {
   global $db;
   $session = json_decode($sessions);
-  $sheet_id = $db->real_escape_string(trim($session->id_sheet));
-  $session_id = $db->real_escape_string(trim($session->session_id));
-  $session_time = $db->real_escape_string(trim($session->session_time));
+  $sheet_id = db_real_escape_string(trim($session->id_sheet));
+  $session_id = db_real_escape_string(trim($session->session_id));
+  $session_time = db_real_escape_string(trim($session->session_time));
   if ($session_id) {
     $res = db_query("SELECT `id` FROM ftt_attendance WHERE `sheet_id` = '$sheet_id' AND `session_id` = '$session_id'");
   } else {
@@ -363,7 +363,7 @@ function getSessionStaff($value='') {
 function undo_extrahelp_lates($id)
 {
   global $db;
-  $id = $db->real_escape_string($id);
+  $id = db_real_escape_string($id);
   $id_search = $id.':';
   $result=[];
   $res = db_query("SELECT `id`, `attendance_and_late` FROM ftt_extra_help WHERE `attendance_and_late` LIKE '%$id_search%'");
@@ -388,8 +388,8 @@ function undo_extrahelp_lates($id)
 function db_overnight($member_key, $date)
 {
   global $db;
-  $member_key = $db->real_escape_string($member_key);
-  $date = $db->real_escape_string($date);
+  $member_key = db_real_escape_string($member_key);
+  $date = db_real_escape_string($date);
   if (!empty($date)) {
     $date = explode('-', $date);
     if (isset($date[1]) && !empty($date)) {
@@ -410,8 +410,8 @@ function db_overnight($member_key, $date)
 // получаем бланк недельной давности
 function getPrevWeekBlank($memberKey, $date) {
   global $db;
-  $memberKey = $db->real_escape_string($memberKey);
-  $date = $db->real_escape_string($date);
+  $memberKey = db_real_escape_string($memberKey);
+  $date = db_real_escape_string($date);
   $done = '';
 
   $res = db_query ("SELECT DISTINCT `done` FROM `ftt_prophecy` WHERE DATE(send_date) = '{$date}' AND `member_key` = {$memberKey}");
@@ -425,23 +425,23 @@ function set_permission($sessions, $adminId)
 {
   global $db;
   $sessions = json_decode($sessions);
-  $sheet_id = $db->real_escape_string($sessions->sheet->id);
-  $member_key = $db->real_escape_string($sessions->sheet->member_key);
-  $absence_date = $db->real_escape_string($sessions->sheet->absence_date);
-  $date = $db->real_escape_string($sessions->sheet->date);
-  $status = $db->real_escape_string($sessions->sheet->status);
+  $sheet_id = db_real_escape_string($sessions->sheet->id);
+  $member_key = db_real_escape_string($sessions->sheet->member_key);
+  $absence_date = db_real_escape_string($sessions->sheet->absence_date);
+  $date = db_real_escape_string($sessions->sheet->date);
+  $status = db_real_escape_string($sessions->sheet->status);
   // непонятный баг если передаёт данные из пустого атрибута то свойство как бы отсутствует
   if (isset($sessions->sheet->date_send)) {
-    $date_send = $db->real_escape_string(isset($sessions->sheet->date_send));
+    $date_send = db_real_escape_string(isset($sessions->sheet->date_send));
   } else {
     $date_send = '';
   }
 
-  $comment = $db->real_escape_string($sessions->sheet->comment);
-  $serving_one = $db->real_escape_string($sessions->sheet->serving_one);
-  $archive_sessions = $db->real_escape_string($sessions->sheet->archive_sessions);
-  $comment_extra = $db->real_escape_string($sessions->sheet->comment_extra);
-  $is_trainee = $db->real_escape_string($sessions->sheet->trainee);
+  $comment = db_real_escape_string($sessions->sheet->comment);
+  $serving_one = db_real_escape_string($sessions->sheet->serving_one);
+  $archive_sessions = db_real_escape_string($sessions->sheet->archive_sessions);
+  $comment_extra = db_real_escape_string($sessions->sheet->comment_extra);
+  $is_trainee = db_real_escape_string($sessions->sheet->trainee);
   $notice = 0;
   $comment_extra_condition = '';
   $comment_extra_field = '';
@@ -571,7 +571,7 @@ function get_permission($sheet_id)
 function get_permission_archive($sheet_id)
 {
   global $db;
-  $sheet_id = $db->real_escape_string($sheet_id);
+  $sheet_id = db_real_escape_string($sheet_id);
   $result = "";
   $res = db_query("SELECT `archive_sessions` FROM `ftt_permission_sheet` WHERE `id` = '$sheet_id'");
   while ($row = $res->fetch_assoc()) $result = $row['archive_sessions'];

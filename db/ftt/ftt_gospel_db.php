@@ -11,11 +11,11 @@ function getGospelTeam() {
 function getGospel($condition, $traineeId, $sorting, $from = "", $to = "", $team = '_all_') {
 
   global $db;
-  $condition = $db->real_escape_string($condition);
-  $sorting = $db->real_escape_string($sorting);
-  $from = $db->real_escape_string($from);
-  $to = $db->real_escape_string($to);
-  $team = $db->real_escape_string($team);
+  $condition = db_real_escape_string($condition);
+  $sorting = db_real_escape_string($sorting);
+  $from = db_real_escape_string($from);
+  $to = db_real_escape_string($to);
+  $team = db_real_escape_string($team);
   $membersStat = gospelPersonalStatByDates($team, $condition, $from, $to);
 
   $order_by = '';
@@ -27,7 +27,7 @@ function getGospel($condition, $traineeId, $sorting, $from = "", $to = "", $team
     $condition = '1';
   }
   if ($traineeId) {
-    $traineeId = $db->real_escape_string($traineeId);
+    $traineeId = db_real_escape_string($traineeId);
     if ($condition === '1') {
       $condition = "FIND_IN_SET('{$traineeId}', fg.group_members) > 0";
     } else {
@@ -106,7 +106,7 @@ function getGospelGoals(){
 // get gospel groups
 function getGospelGroups($team){
   global $db;
-  $team = $db->real_escape_string($team);
+  $team = db_real_escape_string($team);
   $result = [];
   $res = db_query("SELECT DISTINCT `gospel_group` FROM ftt_trainee WHERE `gospel_team`='$team' ORDER BY `gospel_group`");
   while ($row = $res->fetch_assoc()) $result[] = $row;
@@ -116,8 +116,8 @@ function getGospelGroups($team){
 // get group gospel goals
 function get_group_gospel_goals($team, $group) {
   global $db;
-  $team = $db->real_escape_string($team);
-  $group = $db->real_escape_string($group);
+  $team = db_real_escape_string($team);
+  $group = db_real_escape_string($group);
   $result = [];
   if ($group !== '_none_') {
     $res = db_query("SELECT fgg.gospel_team, fgg.gospel_group, fgg.group_members, fgg.flyers, fgg.people,
@@ -141,13 +141,13 @@ function get_group_gospel_goals($team, $group) {
 // set gospel goals
 function set_ftt_gospel_goals($team, $group, $flyers, $people, $prayers, $baptism, $fruit){
   global $db;
-  $team = $db->real_escape_string($team);
-  $group = $db->real_escape_string($group);
-  $flyers = $db->real_escape_string($flyers);
-  $people = $db->real_escape_string($people);
-  $prayers = $db->real_escape_string($prayers);
-  $baptism = $db->real_escape_string($baptism);
-  $fruit = $db->real_escape_string($fruit);
+  $team = db_real_escape_string($team);
+  $group = db_real_escape_string($group);
+  $flyers = db_real_escape_string($flyers);
+  $people = db_real_escape_string($people);
+  $prayers = db_real_escape_string($prayers);
+  $baptism = db_real_escape_string($baptism);
+  $fruit = db_real_escape_string($fruit);
   $result = [];
   $res=db_query("SELECT * FROM `ftt_gospel_goals` WHERE `gospel_team`='$team' AND `gospel_group`='$group'");
   while ($row = $res->fetch_assoc()) $result[] = $row;
@@ -177,25 +177,25 @@ function addDataBlank($data){
   $result;
   $result2;
 
-  $gospel_team = $db->real_escape_string($data['fio_field']);
-  $date = $db->real_escape_string($data['date_field']);
-  //$number = $db->real_escape_string($data['number_field']);
-  $flyers = $db->real_escape_string($data['flyers_field']);
-  $people = $db->real_escape_string($data['people_field']);
-  $prayers = $db->real_escape_string($data['prayers_field']);
-  $baptism = $db->real_escape_string($data['baptism_field']);
-  $meets_last = $db->real_escape_string($data['meets_last_field']);
-  $meets_current = $db->real_escape_string($data['meets_current_field']);
-  $meetings_last = $db->real_escape_string($data['meetings_last_field']);
-  $meetings_current = $db->real_escape_string($data['meetings_current_field']);
-  $gospel_group = $db->real_escape_string($data['gospel_group_field']);
-  //$place = $db->real_escape_string($data['place_field']);
-  $group_members = $db->real_escape_string($data['group_members_field']);
-  $homes = $db->real_escape_string($data['homes_field']);
-  //$place_name = $db->real_escape_string($data['place_name_field']);
-  //$fgt_place = $db->real_escape_string($data['fgt_place']);
-  $author = $db->real_escape_string($data['author']);
-  $comment = $db->real_escape_string($data['comment_field']);
+  $gospel_team = db_real_escape_string($data['fio_field']);
+  $date = db_real_escape_string($data['date_field']);
+  //$number = db_real_escape_string($data['number_field']);
+  $flyers = db_real_escape_string($data['flyers_field']);
+  $people = db_real_escape_string($data['people_field']);
+  $prayers = db_real_escape_string($data['prayers_field']);
+  $baptism = db_real_escape_string($data['baptism_field']);
+  $meets_last = db_real_escape_string($data['meets_last_field']);
+  $meets_current = db_real_escape_string($data['meets_current_field']);
+  $meetings_last = db_real_escape_string($data['meetings_last_field']);
+  $meetings_current = db_real_escape_string($data['meetings_current_field']);
+  $gospel_group = db_real_escape_string($data['gospel_group_field']);
+  //$place = db_real_escape_string($data['place_field']);
+  $group_members = db_real_escape_string($data['group_members_field']);
+  $homes = db_real_escape_string($data['homes_field']);
+  //$place_name = db_real_escape_string($data['place_name_field']);
+  //$fgt_place = db_real_escape_string($data['fgt_place']);
+  $author = db_real_escape_string($data['author']);
+  $comment = db_real_escape_string($data['comment_field']);
 //`place`, '$place',
   db_query("LOCK TABLES ftt_gospel WRITE");
   $res = db_query("INSERT INTO `ftt_gospel`(`date`, `gospel_team`, `gospel_group`, `group_members`,
@@ -211,9 +211,9 @@ function addDataBlank($data){
 
     if (!empty($group_members) && count((array)$group_members_data)) {
       foreach ($group_members_data as $key => $value) {
-        $first_contacts_resonal = $db->real_escape_string($value->first_contacts);
-        $further_contacts_resonal = $db->real_escape_string($value->further_contacts);
-        $number = $db->real_escape_string($value->number);
+        $first_contacts_resonal = db_real_escape_string($value->first_contacts);
+        $further_contacts_resonal = db_real_escape_string($value->further_contacts);
+        $number = db_real_escape_string($value->number);
         db_query("INSERT INTO `ftt_gospel_members` (`blank_id`, `member_key`, `number`, `first_contacts`, `further_contacts`, `date`)
         VALUES ('$result','$key', '$number', '$first_contacts_resonal', '$further_contacts_resonal', NOW())");
       }
@@ -241,26 +241,26 @@ function addDataBlank($data){
 function updateDataBlank($data){
   global $db;
 
-  $gospel_team = $db->real_escape_string($data['fio_field']);
-  $id = $db->real_escape_string($data['id']);
-  $date = $db->real_escape_string($data['date_field']);
-  $gospel_group = $db->real_escape_string($data['gospel_group_field']);
-  //$place = $db->real_escape_string($data['place_field']);
-  $group_members = $db->real_escape_string($data['group_members_field']);
-  //$number = $db->real_escape_string($data['number_field']);
-  $flyers = $db->real_escape_string($data['flyers_field']);
-  $people = $db->real_escape_string($data['people_field']);
-  $prayers = $db->real_escape_string($data['prayers_field']);
-  $baptism = $db->real_escape_string($data['baptism_field']);
-  $meets_last = $db->real_escape_string($data['meets_last_field']);
-  $meets_current = $db->real_escape_string($data['meets_current_field']);
-  $meetings_last = $db->real_escape_string($data['meetings_last_field']);
-  $meetings_current = $db->real_escape_string($data['meetings_current_field']);
-  $homes = $db->real_escape_string($data['homes_field']);
-  //$place_name = $db->real_escape_string($data['place_name_field']);
-  //$fgt_place = $db->real_escape_string($data['fgt_place']);
-  $author = $db->real_escape_string($data['author']);
-  $comment = $db->real_escape_string($data['comment_field']);
+  $gospel_team = db_real_escape_string($data['fio_field']);
+  $id = db_real_escape_string($data['id']);
+  $date = db_real_escape_string($data['date_field']);
+  $gospel_group = db_real_escape_string($data['gospel_group_field']);
+  //$place = db_real_escape_string($data['place_field']);
+  $group_members = db_real_escape_string($data['group_members_field']);
+  //$number = db_real_escape_string($data['number_field']);
+  $flyers = db_real_escape_string($data['flyers_field']);
+  $people = db_real_escape_string($data['people_field']);
+  $prayers = db_real_escape_string($data['prayers_field']);
+  $baptism = db_real_escape_string($data['baptism_field']);
+  $meets_last = db_real_escape_string($data['meets_last_field']);
+  $meets_current = db_real_escape_string($data['meets_current_field']);
+  $meetings_last = db_real_escape_string($data['meetings_last_field']);
+  $meetings_current = db_real_escape_string($data['meetings_current_field']);
+  $homes = db_real_escape_string($data['homes_field']);
+  //$place_name = db_real_escape_string($data['place_name_field']);
+  //$fgt_place = db_real_escape_string($data['fgt_place']);
+  $author = db_real_escape_string($data['author']);
+  $comment = db_real_escape_string($data['comment_field']);
   $statusString = '';
   if (isset($data['status'])) {
     $statusString = " `status` = 1, ";
@@ -287,9 +287,9 @@ function updateDataBlank($data){
     }
     db_query("DELETE FROM `ftt_gospel_members` WHERE `blank_id`='$id' AND $condition_dlt ");
     foreach ($group_members_data as $key => $value) {
-      $first_contacts_resonal = $db->real_escape_string($value->first_contacts);
-      $further_contacts_resonal = $db->real_escape_string($value->further_contacts);
-      $number = $db->real_escape_string($value->number);
+      $first_contacts_resonal = db_real_escape_string($value->first_contacts);
+      $further_contacts_resonal = db_real_escape_string($value->further_contacts);
+      $number = db_real_escape_string($value->number);
       $result_check = '';
       $res_check = db_query("SELECT DISTINCT `id` FROM `ftt_gospel_members` WHERE `blank_id`='$id' AND `member_key`='$key'");
       while ($row = $res_check->fetch_assoc()) $result_check = $row['id'];
@@ -329,9 +329,9 @@ function updateDataBlank($data){
 /*
 function setBlankToArchive($id, $archive, $adminId) {
   global $db;
-  $id = $db->real_escape_string($id);
-  $archive = $db->real_escape_string($archive);
-  $adminId = $db->real_escape_string($adminId);
+  $id = db_real_escape_string($id);
+  $archive = db_real_escape_string($archive);
+  $adminId = db_real_escape_string($adminId);
   if ($archive == 1) {
     $res = db_query("UPDATE `ftt_gospel` SET ``='$archive', `changed`= 1 WHERE `id` = $id");
   } else {
@@ -344,7 +344,7 @@ function setBlankToArchive($id, $archive, $adminId) {
 // удалить Бланк
 function deleteBlank($id){
   global $db;
-  $id = $db->real_escape_string($id);
+  $id = db_real_escape_string($id);
   $res = db_query("DELETE FROM `ftt_gospel` WHERE `id` = $id");
 
   return $res;
@@ -371,7 +371,7 @@ function getGospelGroupNumber() {
 /*
 function getGospelGroupsNumber($team_id) {
   global $db;
-  $team_id = $db->real_escape_string($team_id);
+  $team_id = db_real_escape_string($team_id);
   $result;
   $res = db_query("SELECT DISTINCT `gospel_group` FROM `ftt_trainee` WHERE `gospel_group` <> 0 AND `gospel_team` = '$team_id' ORDER BY `gospel_group`");
   while ($row = $res->fetch_assoc()) $result[] = $row['gospel_group'];
@@ -381,8 +381,8 @@ function getGospelGroupsNumber($team_id) {
 function get_ftt_group_members($team_id, $goup_id = '_none_')
 {
   global $db;
-  $team_id = $db->real_escape_string($team_id);
-  $goup_id = $db->real_escape_string($goup_id);
+  $team_id = db_real_escape_string($team_id);
+  $goup_id = db_real_escape_string($goup_id);
   $result = [];
   $condition_extra = '';
 
@@ -409,7 +409,7 @@ function get_ftt_group_members($team_id, $goup_id = '_none_')
 // get gospel team members
 function get_gospel_members($blankId) {
   global $db;
-  $blankId = $db->real_escape_string($blankId);
+  $blankId = db_real_escape_string($blankId);
   $result = [];
   $res = db_query("SELECT * FROM `ftt_gospel_members` WHERE `blank_id` = '$blankId'");
   while ($row = $res->fetch_assoc()) $result[] = $row;
@@ -427,10 +427,10 @@ function get_all_gospel_members() {
 function gospelPersonalStatByDates($team, $period, $from, $to)
 {
   global $db;
-  $team = $db->real_escape_string($team);
-  $period = $db->real_escape_string($period);
-  $from = $db->real_escape_string($from);
-  $to = $db->real_escape_string($to);
+  $team = db_real_escape_string($team);
+  $period = db_real_escape_string($period);
+  $from = db_real_escape_string($from);
+  $to = db_real_escape_string($to);
   $result = [];
   $statistic = [];
 
@@ -472,8 +472,8 @@ function gospelPersonalStatByDates($team, $period, $from, $to)
 function totalGroupData($team, $group)
 {
   global $db;
-  $team = $db->real_escape_string($team);
-  $group = $db->real_escape_string($group);
+  $team = db_real_escape_string($team);
+  $group = db_real_escape_string($group);
   $result = [];
   $res = db_query("SELECT `flyers`, `people`, `prayers`, `baptism`, `meets_last`, `meets_current`, `meetings_last`, `meetings_current`, `homes`
      FROM `ftt_gospel`

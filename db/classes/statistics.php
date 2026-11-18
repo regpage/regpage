@@ -23,7 +23,7 @@ class statistics {
     if (is_array($memberId)) {
       if (count($memberId) > 0) {
         foreach ($memberId as $key => $value) {
-          $key = $db->real_escape_string($key);
+          $key = db_real_escape_string($key);
           if (!empty($condition)) {
             $condition .= " OR ";
           }
@@ -38,7 +38,7 @@ class statistics {
       }
     } else {
       $trainee = true;
-      $memberId = $db->real_escape_string($memberId);
+      $memberId = db_real_escape_string($memberId);
     }
 
     if ($trainee) {
@@ -70,13 +70,13 @@ class statistics {
   static function extra_help_data ($memberId)
   {
     global $db;
-    //$memberId = $db->real_escape_string($memberId);
+    //$memberId = db_real_escape_string($memberId);
     $result = [];
     $condition = '';
     if (is_array($memberId)) {
       if (count($memberId) > 0) {
         foreach ($memberId as $key => $value) {
-          $key = $db->real_escape_string($key);
+          $key = db_real_escape_string($key);
           $res = db_query("SELECT COUNT(`id`) AS total FROM `ftt_extra_help` WHERE `member_key`='$key' AND `archive`=0");
           while ($row = $res->fetch_assoc()) $row['total'] ? $result[$key] = $row['total'] : '';
         }
@@ -98,7 +98,7 @@ class statistics {
     if (is_array($memberId)) {
       if (count($memberId) > 0) {
         foreach ($memberId as $key => $value) {
-          $key = $db->real_escape_string($key);
+          $key = db_real_escape_string($key);
           if (!empty($condition)) {
             $condition .= " OR ";
           }
@@ -109,7 +109,7 @@ class statistics {
       }
     } else {
       $trainee = true;
-      $memberId = $db->real_escape_string($memberId);
+      $memberId = db_real_escape_string($memberId);
     }
 
     $result = '';
@@ -133,7 +133,7 @@ class statistics {
     if (is_array($memberId)) {
       if (count($memberId) > 0) {
         foreach ($memberId as $key => $value) {
-          $key = $db->real_escape_string($key);
+          $key = db_real_escape_string($key);
           if (!empty($condition)) {
             $condition .= " OR ";
           }
@@ -144,7 +144,7 @@ class statistics {
       }
     } else {
       $trainee = true;
-      $memberId = $db->real_escape_string($memberId);
+      $memberId = db_real_escape_string($memberId);
     }
 
     $result = [];
@@ -164,7 +164,7 @@ class statistics {
   static function announcement_unread($memberId)
   {
     global $db;
-    $memberId = $db->real_escape_string($memberId);
+    $memberId = db_real_escape_string($memberId);
     $result = 0;
     $res = db_query("SELECT far.id_announcement, far.date AS far_date, fa.date, fa.time
     FROM ftt_announcement_recipients AS far
@@ -181,7 +181,7 @@ class statistics {
   static function announcement_unread_data($memberId)
   {
     global $db;
-    $memberId = $db->real_escape_string($memberId);
+    $memberId = db_real_escape_string($memberId);
     $result = [];
     $res = db_query("SELECT far.id_announcement, far.date AS far_date, far.member_key AS far_member_key, fa.*
     FROM ftt_announcement_recipients AS far
@@ -203,7 +203,7 @@ class statistics {
     if (is_array($memberId)) {
       if (count($memberId) > 0) {
         foreach ($memberId as $key => $value) {
-          $key = $db->real_escape_string($key);
+          $key = db_real_escape_string($key);
           //`date` >= CURDATE() - INTERVAL 4 DAY `date` != CURDATE() AND DATE_ADD(CURDATE(), INTERVAL -4 DAY)
           $condition = " `member_key`='$key' AND `status`= 0 AND `date` <= CURDATE() - INTERVAL 4 DAY AND `date` >= CURDATE() - INTERVAL 14 DAY ";
           $res = db_query("SELECT DISTINCT `date` FROM ftt_attendance_sheet WHERE {$condition} ORDER BY `date` DESC");
@@ -222,8 +222,8 @@ class statistics {
   static function gospelTeamReport($memberId, $period=7)
   {
     global $db;
-    $memberId = $db->real_escape_string($memberId);
-    $period = $db->real_escape_string($period);
+    $memberId = db_real_escape_string($memberId);
+    $period = db_real_escape_string($period);
     $team = '';
     $blanks = [];
     if ($period === '_all_') {
@@ -245,7 +245,7 @@ class statistics {
   static function gospelPersonalSeven($memberId, $period=7)
   {
     global $db;
-    $period = $db->real_escape_string($period);
+    $period = db_real_escape_string($period);
     $result = [];
     $and = '';
     $conditionBlanks = '';
@@ -290,7 +290,7 @@ class statistics {
     if (is_array($memberId)) {
       if (count($memberId) > 0) {
         foreach ($memberId as $key => $value) {
-          $key = $db->real_escape_string($key);
+          $key = db_real_escape_string($key);
           if (!empty($condition)) {
             $condition .= " OR ";
           }
@@ -301,7 +301,7 @@ class statistics {
       }
     } else {
       $trainee = true;
-      $memberId = $db->real_escape_string($memberId);
+      $memberId = db_real_escape_string($memberId);
     }
     if ($trainee) {
       $res = db_query("SELECT COUNT(fs.id) AS total
@@ -329,7 +329,7 @@ class statistics {
       if (count($memberId) > 0) {
         $memberKeys = '';
         foreach ($memberId as $key => $value) {
-          $key = $db->real_escape_string($key);
+          $key = db_real_escape_string($key);
           if (!empty($memberKeys)) {
             $memberKeys .= ", {$key}";
           } else {
@@ -342,7 +342,7 @@ class statistics {
       }
     } else {
       $trainee = true;
-      $memberId = $db->real_escape_string($memberId);
+      $memberId = db_real_escape_string($memberId);
     }
     if ($trainee) {
       $res = db_query("SELECT fs.*, fas.*

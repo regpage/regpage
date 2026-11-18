@@ -6,7 +6,7 @@
 class extra_lists {
 
   //global $db;
-  //$memberId = $db->real_escape_string($memberId);
+  //$memberId = db_real_escape_string($memberId);
 
   // Часовые пояса / time zones
   static function get_time_zones () {

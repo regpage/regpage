@@ -7,9 +7,9 @@ function db_getActivityList ($start, $stop, $locality, $page, $admins, $availabl
 {
     global $db;
     $availableAdmins = implode( "','", $availableAdmins);
-    $locality = $db->real_escape_string($locality);
-    $page = $db->real_escape_string($page);
-    $admins = $db->real_escape_string($admins);
+    $locality = db_real_escape_string($locality);
+    $page = db_real_escape_string($page);
+    $admins = db_real_escape_string($admins);
     $requestLocality = $locality=="_all_" ? "" : " AND lo.key='$locality' ";
     $requestPage = $page == "_all_" ? "" : " AND act.page='$page' ";
     $requestAdmins = $admins == "_all_" ? " AND ad.member_key IN ('".$availableAdmins."') " : " AND ad.member_key='$admins' ";
@@ -27,9 +27,9 @@ function db_getActivityList ($start, $stop, $locality, $page, $admins, $availabl
 function db_getActivityListLog ($start, $stop, $locality, $page, $admins)
 {
     global $db;
-    $locality = $db->real_escape_string($locality);
-    $page = $db->real_escape_string($page);
-    $admins = $db->real_escape_string($admins);
+    $locality = db_real_escape_string($locality);
+    $page = db_real_escape_string($page);
+    $admins = db_real_escape_string($admins);
     $requestLocality = $locality=="_all_" ? "" : " AND lo.key='$locality' ";
     $requestPage = $page == "_all_" ? "" : " AND act.page='$page' ";
     $requestAdmins = $admins == "_all_" ? "" : " AND ad.member_key='$admins' ";

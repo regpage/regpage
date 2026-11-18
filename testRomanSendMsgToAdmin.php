@@ -26,7 +26,7 @@ function checkParamAndLog($param, $msg)
 // get admin id & location
 function db_getsendMsgToRegionalAdmin($memberId){
     global $db;
-    // $text = $db->real_escape_string();
+    // $text = db_real_escape_string();
 
     if($memberId == '' || $memberId == undefined || $memberId == NULL){
       mySysLog('ERROR Id of admin is missing. SECTION: Email to the admin about the user from his location. MESSAGE: The system cannot send Email to admin about the registration of new user at the event. FAILED');
@@ -130,7 +130,7 @@ mySysLog('SUCCESS First line ID of the admins is '.$membersAdmin[0][member_key].
 /*
 function db_getRegionalAdminId($memberId){
     global $db;
-    $text = $db->real_escape_string();
+    $text = db_real_escape_string();
 
     if($text == ''){
         return false;

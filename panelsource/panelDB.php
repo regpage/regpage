@@ -12,8 +12,8 @@ function db_getSessionsAdmins(){
 function db_copySessions($adminId, $sessionId)
 {
 	global $db;
-	$adminId = $db->real_escape_string($adminId);
-	$sessionId = $db->real_escape_string($sessionId);
+	$adminId = db_real_escape_string($adminId);
+	$sessionId = db_real_escape_string($sessionId);
 	db_query ("INSERT INTO admin_session (id_session, admin_key) VALUES ('$sessionId','$adminId')");
 }
 */
@@ -202,8 +202,8 @@ function dltStrLogDvlp() {
 // get requests
 function db_getApplicationsPanel ($adminId, $trash=''){
   global $db;
-  $adminId = $db->real_escape_string($adminId);
-  $trash = $db->real_escape_string($trash);
+  $adminId = db_real_escape_string($adminId);
+  $trash = db_real_escape_string($trash);
   $result = [];
   if ($trash) {
     $condition = " fr.notice = 2 ";

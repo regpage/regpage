@@ -8,7 +8,7 @@ class BookRead
   static function get_all($member_key)
   {
     global $db;
-    $member_key = $db->real_escape_string($member_key);
+    $member_key = db_real_escape_string($member_key);
     $result = array('books' => [], 'notes_ot' => "", 'notes_nt' => "");
 
     $res = db_query("SELECT `book_ot`, `read_footnotes_ot` FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `date` = '0000-00-00' AND `book_ot` != ''");
@@ -32,7 +32,7 @@ class BookRead
   static function get_according_last_start($memberKey)
   {
     global $db;
-    $memberKey = $db->real_escape_string($memberKey);
+    $memberKey = db_real_escape_string($memberKey);
     $result = array('books' => [], 'notes_ot' => "", 'notes_nt' => "");
     $lastStartOT = '_none_';
     $lastStartNT = '_none_';
@@ -67,9 +67,9 @@ class BookRead
   static function get_percent($books, $memberKey, $testament)
   {
     global $db;
-    // $books = $db->real_escape_string($books); // МАССИВ
-    $memberKey = $db->real_escape_string($memberKey);
-    $testament = $db->real_escape_string($testament);
+    // $books = db_real_escape_string($books); // МАССИВ
+    $memberKey = db_real_escape_string($memberKey);
+    $testament = db_real_escape_string($testament);
     $read = [];
     $lastStart = '_none_';
     $percent = 0;

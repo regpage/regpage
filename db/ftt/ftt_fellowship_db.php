@@ -13,8 +13,8 @@ function get_communication_list($serving_ones = '_all_', $sort='meet_sort_servin
   // # 6. прибавить 28 дней (использовать >= при сравнении).
 
   global $db;
-  $serving_ones = $db->real_escape_string($serving_ones);
-  $sort = $db->real_escape_string($sort);
+  $serving_ones = db_real_escape_string($serving_ones);
+  $sort = db_real_escape_string($sort);
 
   // Сортировка
   // сортировка по name бывает по обучающимся и по служащим
@@ -90,10 +90,10 @@ function get_communication_list($serving_ones = '_all_', $sort='meet_sort_servin
 function get_communication_records_staff($serving_one, $trainee, $active, $sort='meet_sort_servingone-asc')
 {
   global $db;
-  $serving_one = $db->real_escape_string($serving_one);
-  $trainee = $db->real_escape_string($trainee);
-  $active = $db->real_escape_string($active);
-  $sort = $db->real_escape_string($sort);
+  $serving_one = db_real_escape_string($serving_one);
+  $trainee = db_real_escape_string($trainee);
+  $active = db_real_escape_string($active);
+  $sort = db_real_escape_string($sort);
 
   // Условия
   if ($active === '1') {
@@ -170,9 +170,9 @@ function get_communication_records_staff($serving_one, $trainee, $active, $sort=
 function get_communication_records($trainee, $active, $sort='meet_sort_servingone-asc')
 {
   global $db;
-  $trainee = $db->real_escape_string($trainee);
-  $active = $db->real_escape_string($active);
-  $sort = $db->real_escape_string($sort);
+  $trainee = db_real_escape_string($trainee);
+  $active = db_real_escape_string($active);
+  $sort = db_real_escape_string($sort);
   // Сортировка
 
   // Условия
@@ -205,13 +205,13 @@ function get_communication_records($trainee, $active, $sort='meet_sort_servingon
 function set_communication_record($trainee, $id, $checked=0, $date='', $time_from='', $time_to='', $comment='')
 {
   global $db;
-  $trainee = $db->real_escape_string($trainee);
-  $id = $db->real_escape_string($id);
-  $checked = $db->real_escape_string($checked);
-  $date = $db->real_escape_string($date);
-  $time_from = $db->real_escape_string($time_from);
-  $time_to = $db->real_escape_string($time_to);
-  $comment = $db->real_escape_string($comment);
+  $trainee = db_real_escape_string($trainee);
+  $id = db_real_escape_string($id);
+  $checked = db_real_escape_string($checked);
+  $date = db_real_escape_string($date);
+  $time_from = db_real_escape_string($time_from);
+  $time_to = db_real_escape_string($time_to);
+  $comment = db_real_escape_string($comment);
   $check_exist = '';
   $serving_one = '';
   $result = [];
@@ -279,7 +279,7 @@ function set_communication_record($trainee, $id, $checked=0, $date='', $time_fro
 function send_email_to_staff($id)
 {
   global $db;
-  $id = $db->real_escape_string($id);
+  $id = db_real_escape_string($id);
   $result = [];
   $res;
   $res_extra = db_query("SELECT `trainee`, `serving_one`, `date`, `time`, `duration`, `comment_train` FROM `ftt_fellowship` WHERE `id` = '$id'");
@@ -313,14 +313,14 @@ function set_meet_staff_blank($data)
 {
   global $db;
   $data = json_decode($data);
-  $id = $db->real_escape_string($data->id);
-  $serving_one = $db->real_escape_string($data->serving_one);
-  $trainee = $db->real_escape_string($data->trainee);
-  $date = $db->real_escape_string($data->date);
-  $time = $db->real_escape_string($data->time);
-  $duration = $db->real_escape_string($data->duration);
-  $comment_train = $db->real_escape_string($data->comment_train);
-  $comment_serv = $db->real_escape_string($data->comment_serv);
+  $id = db_real_escape_string($data->id);
+  $serving_one = db_real_escape_string($data->serving_one);
+  $trainee = db_real_escape_string($data->trainee);
+  $date = db_real_escape_string($data->date);
+  $time = db_real_escape_string($data->time);
+  $duration = db_real_escape_string($data->duration);
+  $comment_train = db_real_escape_string($data->comment_train);
+  $comment_serv = db_real_escape_string($data->comment_serv);
   $adminId = db_getMemberIdBySessionId (session_id());
   $prevFellowshipData = false;
   // сравнить полученные данные с имеющимися Дата Время Продолжительность Служащий Обучающийся, комментарии ??? и отправить письмо при наличии изменений
@@ -384,13 +384,13 @@ function add_meet_staff_blank($data)
 {
   global $db;
   $data = json_decode($data);
-  $serving_one = $db->real_escape_string($data->serving_one);
-  $trainee = $db->real_escape_string($data->trainee);
-  $date = $db->real_escape_string($data->date);
-  $time = $db->real_escape_string($data->time);
-  $duration = $db->real_escape_string($data->duration);
-  $comment_train = $db->real_escape_string($data->comment_train);
-  $comment_serv = $db->real_escape_string($data->comment_serv);
+  $serving_one = db_real_escape_string($data->serving_one);
+  $trainee = db_real_escape_string($data->trainee);
+  $date = db_real_escape_string($data->date);
+  $time = db_real_escape_string($data->time);
+  $duration = db_real_escape_string($data->duration);
+  $comment_train = db_real_escape_string($data->comment_train);
+  $comment_serv = db_real_escape_string($data->comment_serv);
 
   $res = db_query("INSERT INTO `ftt_fellowship` (`serving_one`, `trainee`, `date`, `time`, `duration`, `comment_train`, `comment_serv`, `changed`)
     VALUES ('{$serving_one}', '{$trainee}', '{$date}', '{$time}', '{$duration}', '{$comment_train}', '{$comment_serv}', 1)");
@@ -405,8 +405,8 @@ function add_meet_staff_blank($data)
 function cancel_communication_record($id, $comment='')
 {
   global $db;
-  $id = $db->real_escape_string($id);
-  $comment = $db->real_escape_string($comment);
+  $id = db_real_escape_string($id);
+  $comment = db_real_escape_string($comment);
 
   $res_extra = db_query("SELECT `trainee`, `serving_one`, `date`, `time`, `duration`, `comment_train` FROM `ftt_fellowship` WHERE `id` = '$id'");
   while ($row = $res_extra->fetch_assoc()) {
@@ -491,8 +491,8 @@ function get_meet_by_date($date, $serving_ones = '_all_')
   // # Уточнить список КБК !!! служащие пвом и братья из КБК (как определить братьев из КБК.)
 
   global $db;
-  $serving_ones = $db->real_escape_string($serving_ones);
-  $date = $db->real_escape_string($date);
+  $serving_ones = db_real_escape_string($serving_ones);
+  $date = db_real_escape_string($date);
 
   // Сортировка
   $order_by = ' ff.date ';

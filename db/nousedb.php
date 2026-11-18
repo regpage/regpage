@@ -7,7 +7,7 @@
 function db_getService($memberId){
     global $db;
 
-    $memberId = $db->real_escape_string($memberId);
+    $memberId = db_real_escape_string($memberId);
     $res = db_query("SELECT `key` FROM event_access WHERE `member_key` = '$memberId' ORDER BY `key`");
     $events = array();
     while($row = $res->fetch_object()) $events[]=$row;
@@ -18,7 +18,7 @@ function db_getService($memberId){
 function db_getMemberIdBySessionId ($sessionId)
 {
     global $db;
-    $sessionId = $db->real_escape_string($sessionId);
+    $sessionId = db_real_escape_string($sessionId);
 
     $res=db_query ("SELECT member_key from admin where session='$sessionId'");
     if ($row = $res->fetch_assoc()) return $row['member_key'];
@@ -41,7 +41,7 @@ class ValidationException extends Exception
 function db_getTeamEmailOld ($eventId)
 {
     global $db;
-    $eventId = $db->real_escape_string($eventId);
+    $eventId = db_real_escape_string($eventId);
     $res=db_query ("SELECT t.email FROM team t INNER JOIN event e ON e.team_key=t.key WHERE e.key='$eventId'");
     $row = $res->fetch_assoc();
     return $row ? $row['email'] : null;
@@ -51,13 +51,13 @@ function db_getTeamEmailOld ($eventId)
 function db_unregisterMembers ($adminId, $eventId, $memberIds)
 {
     global $db;
-    $adminId = $db->real_escape_string($adminId);
-    $eventId = $db->real_escape_string($eventId);
+    $adminId = db_real_escape_string($adminId);
+    $eventId = db_real_escape_string($eventId);
 
     db_checkSync ();
 
     $ids='';
-    foreach ($memberIds as $memberId) $ids.="'".$db->real_escape_string($memberId)."',";
+    foreach ($memberIds as $memberId) $ids.="'".db_real_escape_string($memberId)."',";
     $ids = rtrim($ids,',');
 
     db_query ("DELETE FROM member WHERE `key` IN ({$ids}) AND `key` LIKE '99%' AND (SELECT COUNT(*) FROM reg WHERE member_key=member.key)<2");
@@ -77,8 +77,8 @@ function db_unregisterMembers ($adminId, $eventId, $memberIds)
 function db_enqueueLetter ($memberId, $eventId, $subject, $body, $headers, $from)
 {
     global $db;
-    $memberId=$db->real_escape_string($memberId);
-    $eventId=$db->real_escape_string($eventId);
+    $memberId=db_real_escape_string($memberId);
+    $eventId=db_real_escape_string($eventId);
     $_from = $from;
     $_subject=$subject;
     $_body=$body;
@@ -99,7 +99,7 @@ function db_dequeueLetter ($id, $result)
 {
     global $db;
     $id = (int)$id;
-    $result = $db->real_escape_string($result);
+    $result = db_real_escape_string($result);
 
     db_multiQuery ("UPDATE reg SET send_result='$result'
                     WHERE member_key=(SELECT member_key FROM send_queue WHERE id=$id)

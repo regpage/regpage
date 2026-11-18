@@ -14,7 +14,7 @@ class Prophecy
     $listTrainees = [];
     $condition = '';
     foreach ($trainees as $key => $value) {
-      $value = $db->real_escape_string($value);
+      $value = db_real_escape_string($value);
       $listTrainees[$key] = ['done'=>'2'];
       if (empty($condition)) {
         $condition .= "(p.member_key = '{$key}' ";
@@ -52,7 +52,7 @@ class Prophecy
     $listTrainees = [];
     $condition = '';
     foreach ($trainees as $key => $value) {
-      $value = $db->real_escape_string($value);      
+      $value = db_real_escape_string($value);      
       if (empty($condition)) {
         $condition .= "(p.member_key = '{$key}' ";
       } else {

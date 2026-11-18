@@ -9,7 +9,7 @@ class Members
   static function db_get_members_by_admin ($adminId)
   {
       global $db;
-      $adminId = $db->real_escape_string($adminId);
+      $adminId = db_real_escape_string($adminId);
 
       $res=db_query ("SELECT DISTINCT * FROM (
                           SELECT m.key as id, m.name as name, l.name as locality, l.key as locId, m.category_key as catId
@@ -49,9 +49,9 @@ class Members
   static function getListAttend ($adminId, $sortField, $sortType)
   {
       global $db;
-      $adminId = $db->real_escape_string($adminId);
-      $sortField = $db->real_escape_string($sortField);
-      $sortType = $db->real_escape_string($sortType);
+      $adminId = db_real_escape_string($adminId);
+      $sortField = db_real_escape_string($sortField);
+      $sortType = db_real_escape_string($sortType);
       $sortAdd = $sortField!=' name ' ? ' , name' : ' ';
       $active = 'active DESC, ';
       $sort = "{$active} {$sortField} {$sortType} {$sortAdd}";
@@ -141,9 +141,9 @@ class Members
   static function getListAttendByLocality ($localityKeys, $sortField, $sortType)
   {
       global $db;
-      $localityKeys = $db->real_escape_string($localityKeys);
-      $sortField = $db->real_escape_string($sortField);
-      $sortType = $db->real_escape_string($sortType);
+      $localityKeys = db_real_escape_string($localityKeys);
+      $sortField = db_real_escape_string($sortField);
+      $sortType = db_real_escape_string($sortType);
       $sortAdd = $sortField!=' name ' ? ' , name' : ' ';
       $active = 'active DESC, ';
       $sort = "{$active} {$sortField} {$sortType} {$sortAdd}";
@@ -184,9 +184,9 @@ class Members
   /*function OLDgetListAttend ($adminId, $sortField, $sortType)
   {
       global $db;
-      $adminId = $db->real_escape_string($adminId);
-      $sortField = $db->real_escape_string($sortField);
-      $sortType = $db->real_escape_string($sortType);
+      $adminId = db_real_escape_string($adminId);
+      $sortField = db_real_escape_string($sortField);
+      $sortType = db_real_escape_string($sortType);
       $sortAdd = $sortField!=' name ' ? ' , name' : ' ';
       $active = 'active DESC, ';
       //(SELECT at.attend_pm FROM attendance at WHERE at.member_key=m.key) as attend_pm_n

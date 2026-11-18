@@ -266,8 +266,16 @@
         <hr/>
         <div id="membersTable">
             <table class="table table-hover table-condensed">
-                <thead><tr><th style="width: 60%">Учебное заведение</th><th class="sort_college_locality" title="Сортировать">Местность <span class="sort-direction fa fa-chevron-down"></span></th><th> </th></tr></thead>
-                <tbody><td colspan="8"><h3 style="text-align: center">Загрузка...</h3></td></tr></tbody>
+                <thead>
+                  <tr>
+                    <th style="width: 60%">Учебное заведение</th>
+                    <th class="sort_college_locality" title="Сортировать">Местность <span class="sort-direction fa fa-chevron-down"></span></th>
+                    <th> </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <td colspan="8"><h3 style="text-align: center">Загрузка...</h3></td>
+                </tbody>
             </table>
         </div>
     </div>
