@@ -3,7 +3,6 @@
 include_once "ajax.php";
 include_once "../db/contactsdb.php";
 include_once '../logWriter.php';
-require_once '../db/classes/emailing.php';
 $adminId = db_getMemberIdBySessionId (session_id());
 
 if (!$adminId)
@@ -96,8 +95,9 @@ if (isset($_POST['type']) && $_POST['type'] === 'message_ua') {
     $error = null;
     $message = stripslashes($_POST['text_message']);
     if ($email){
-            $res = EMAILS::sendEmail ($email, "Новый заказ с сайта регистрации", $message);
-            if($res != null){
+            // $res = EMAILS::sendEmail ($email, "Новый заказ с сайта регистрации", $message);
+            $res = Emailing::send($email, "Новый заказ с сайта регистрации", $message);
+            if($res != true){
                 $error = $res;
             }
     } else {
@@ -118,8 +118,9 @@ if (isset($_POST['type']) && $_POST['type'] === 'message_lv') {
     $error = null;
     $message = stripslashes($_POST['text_message']);
     if ($email){
-            $res = EMAILS::sendEmail ($email, "Новый заказ с сайта регистрации", $message);
-            if($res != null){
+            // $res = EMAILS::sendEmail ($email, "Новый заказ с сайта регистрации", $message);
+            $res = Emailing::send($email, "Новый заказ с сайта регистрации", $message);
+            if($res != true){
                 $error = $res;
             }
     } else {

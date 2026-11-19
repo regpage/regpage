@@ -74,8 +74,6 @@ class Emailing
   // send email by key
   static function send_by_key($member_key, $topic, $text, $replyTo = 'noreply@reg-page.ru', $fromName = 'Уведомление с сайта регистрации')
   {
-
-    
     global $CRON_ROOT_PATH;
     $member_key = db_real_escape_string($member_key);
 
@@ -192,10 +190,11 @@ class EmailingSMTP
             'allow_self_signed' => true   // Разрешает самоподписанные сертификаты
           )
         );
-        $mail->send();
+        return $mail->send();
 
     } catch (Exception $e) {
         echo "Ошибка. Письмо не отправлено. PHPMailer Error: {$mail->ErrorInfo}";
+        error_log('Ошибка отправки email: ' . $mail->ErrorInfo);        
     }
   }
 }

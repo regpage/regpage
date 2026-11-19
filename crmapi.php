@@ -94,8 +94,8 @@ if ($answer['message'] === 'success') {
   $email = 'zhichkinroman@gmail.com';
   $error = null;
   $message = 'Админ: '.$memberId.' Не удалось получить ответ от CRM при отправке заказа на имя '.$name.' с сайта reg-page.ru. Ответ с сервера: '.$textAnswer;
-  $res = EMAILS::sendEmail ($email, "Новый заказ с сайта регистрации", $message);
-  if($res != null){
+  $res = Emailing::send($email, "Новый заказ с сайта регистрации", $message);
+  if($res != true){
     $error = $res;
   }
   if($error == null){

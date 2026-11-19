@@ -11,7 +11,10 @@ error_reporting(E_ALL);
 // Redirect на сервисную страницу типа САЙТ ВРЕМЕННО НЕ ДОСТУПЕН
 // header("Location: /attention.html"); // redirect to service page
 // нет необходимости подключать библиотеки майлера и некоторые утилиты подключаемые в db.php в новых разделах
-
+// logs
+include_once 'extensions/write_to_log/write_to_log.php';
+// отправка почты
+require_once 'db/classes/emailing.php';
 /* API */
 // BFA подписка --> контакты.
 if (isset($_GET['method']) && $_GET['method'] === 'contacts.add_member' && $_GET['api_key'] === 'f3db58b7cb4baa82ea5321d08b6f0ff9') {
@@ -29,9 +32,6 @@ if (isset($_GET['bbd_key']) && $_GET['bbd_key'] === 'forbbdbrothers' && !empty($
   exit;
 }
 
-
-// logs
-include_once 'extensions/write_to_log/write_to_log.php';
 // подключение необходимых функций и конфигов
 include_once "db.php";
 // данные админа

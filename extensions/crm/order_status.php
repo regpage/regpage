@@ -2,6 +2,7 @@
 //extensions/crm/order_status.php?lead_id=70589375
 include_once '../../db.php';
 include_once '../../logWriter.php';
+require_once '../../db/classes/emailing.php';
 $memberId = db_getMemberIdBySessionId (session_id());
 $memberId ? '' : $memberId = false;
 
@@ -108,8 +109,9 @@ if ($answer['message'] === 'success') {
   $email = 'zhichkinroman@gmail.com';
   $error = null;
   $message = 'Админ: '.$memberId.' Не удалось получить ответ от CRM при запросе лида с сайта reg-page.ru. Ответ с сервера: '.$textAnswer;
-  $res = EMAILS::sendEmail ($email, "Проверка лида с сайта регистрации", $message);
-  if($res != null){
+  // $res = EMAILS::sendEmail ($email, "Проверка лида с сайта регистрации", $message);
+  $res = Emailing::send($email, "Проверка лида с сайта регистрации", $message);
+  if($res !== true){
     $error = $res;
   }
   if($error == null){

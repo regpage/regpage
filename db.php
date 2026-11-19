@@ -2850,8 +2850,8 @@ function db_sendMessageNewMember($userEmail, $name) {
 
     $body = "<p>$_name, ваша учётная запись на сайте reg-page.ru успешно создана. Чтобы войти в учётную запись, перейдите <a href='{$appRootPath}'login?email=$userEmail'>по этой ссылке</a>.</p>".
     "<br/>Команда сайта регистрации.";
-
-    EMAILS::sendEmail($userEmail, $title, $body);
+    // EMAILS::sendEmail($userEmail, $title, $body);
+    Emailing::send($userEmail, $title, $body);
 }
 
 function db_sendMsgToRespOneSync($type='', $data){
@@ -2881,7 +2881,8 @@ function db_sendMsgToRespOneSync($type='', $data){
         if($email){
             $emailArr = explode(',', $email);
             foreach ($emailArr as $value) {
-                EMAILS::sendEmail($value, $title, $body, 'info@reg-page.ru');
+                // EMAILS::sendEmail($value, $title, $body, 'info@reg-page.ru');
+                Emailing::send($value, $title, $body, 'info@reg-page.ru', 'Сайт регистрации');
             }
         }
     }
@@ -2986,7 +2987,8 @@ function db_sendMessageToOrganizer($event, $user, $localityKey = ''){
       }
 
       foreach ($emails as $email) {
-        EMAILS::sendEmail($email, $title, $body);
+        // EMAILS::sendEmail($email, $title, $body);
+        Emailing::send($email, $title, $body);
       }
       return 'success';
     } else {

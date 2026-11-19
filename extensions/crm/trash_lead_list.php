@@ -1,5 +1,5 @@
 <?php
-
+require_once '../db/classes/emailing.php';
 
 if (empty($_GET['lead_id'])) {
   logFileWriter($memberId, 'КОНТАКТЫ. Проверка заявки не прошла, отсутствует ID лида.', 'FATAL');
@@ -42,8 +42,9 @@ if ($answer['message'] === 'success') {
   $email = 'zhichkinroman@gmail.com';
   $error = null;
   $message = 'Админ: '.$memberId.' Не удалось получить ответ от CRM при запросе лида сайта reg-page.ru. Ответ с сервера: '.$textAnswer;
-  $res = EMAILS::sendEmail ($email, "Проверка лида с сайта регистрации", $message);
-  if($res != null){
+  // $res = EMAILS::sendEmail ($email, "Проверка лида с сайта регистрации", $message);
+  $res = Emailing::send($email, "Проверка лида с сайта регистрации", $message);
+  if($res !== true){
     $error = $res;
   }
   if($error == null){

@@ -3,6 +3,7 @@
 require_once ("class.smtp.php");
 require_once ("class.phpmailer.php");
 require_once ("config.php");
+require_once '../db/classes/emailing.php';
 
 class UTILS
 {
@@ -155,7 +156,8 @@ class UTILS
 
             $subject = "Изменение логина на сайте регистрации reg-page.ru";
 
-            EMAILS::sendEmail($email, $subject, $htmlText, 'info@reg-page.ru', 'Сайт регистрации');
+            // EMAILS::sendEmail($email, $subject, $htmlText, 'info@reg-page.ru', 'Сайт регистрации');
+            Emailing::send($email, $subject, $htmlText, 'info@reg-page.ru', 'Сайт регистрации');
             return true;
         }
         else{
@@ -175,7 +177,8 @@ class UTILS
 
         $subject = "Приглашение для регистрации на сайте reg-page.ru";
 
-        EMAILS::sendEmail($email, $subject, $htmlText, $from_email, 'Сайт регистрации');
+        // EMAILS::sendEmail($email, $subject, $htmlText, $from_email, 'Сайт регистрации');
+        Emailing::send($email, $subject, $htmlText, $from_email, 'Сайт регистрации');
         return true;
     }
 }

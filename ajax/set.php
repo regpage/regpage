@@ -1,6 +1,5 @@
 <?php
 include_once "ajax.php";
-include_once '../db/classes/emailing.php';
 
 if (isset($_GET['type']) && $_GET['type'] === 'set_subsidies') {
   include_once '../db/regpage/classes/reg/subsidies.php';
@@ -121,7 +120,7 @@ function db_brothersDotationCheck($memberKey=false)
 // братья с билетами
 function db_brothersHaveTicketsCount($eventKey = '20250013')
 {
-  
+
   $eventKey = db_real_escape_string($eventKey);
   $brothersHaveTickets = 0;
   $res = db_query("SELECT COUNT(r.member_key) AS total
@@ -279,7 +278,7 @@ if (isset ($_POST ['message']) && isset ($_POST ['event']) && isset ($_POST ['na
           $res = emailing::send($value, "Сообщение с сайта reg-page.ru: {$from_name}", "{$message }<br>{$from_email}");
           // тестовая версия
           //$res = emailing::send('thegraceofchrist@gmail.com', "Сообщение с сайта reg-page.ru: {$from_name}", "{$message }<br>{$from_email}");
-          if($res != 1){
+          if($res !== true){
               $error = $res;
           }
         }
