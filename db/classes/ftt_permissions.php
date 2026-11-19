@@ -6,7 +6,7 @@ class FttPermissions
 {
   static function get_by_trainee($member_id)
   {
-    global $db;
+
     $member_id = db_real_escape_string($member_id);
     $result = [];
 
@@ -22,7 +22,7 @@ class FttPermissions
 
   static function get_by_trainee_data($member_id)
   {
-    global $db;
+
     $member_id = db_real_escape_string($member_id);
     $result = [];
 
@@ -41,7 +41,7 @@ class FttPermissions
   // получаем разрешения по списку обучающихся
   static function get_by_staff($trainee_list, $sorting)
   {
-    global $db;
+
     $condition='';
     if ($sorting) {
       if ($sorting === 'sort_date-asc') {
@@ -86,7 +86,7 @@ class FttPermissions
 
   static function get_by_date($date)
   {
-    global $db;
+
     $date = db_real_escape_string($date);
     $sheets = [];
     $result = [];

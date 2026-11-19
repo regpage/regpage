@@ -5,7 +5,7 @@
 class CustomFilters
 {
   static function addFilter($filter_name, $admin_key){
-      global $db;
+
       $_filter_name = db_real_escape_string($filter_name);
       $_admin_key = db_real_escape_string($admin_key);
 
@@ -13,7 +13,7 @@ class CustomFilters
   }
 
   static function getFilters($admin_key){
-      global $db;
+
       $_admin_key = db_real_escape_string($admin_key);
 
       $res = db_query("SELECT * FROM filter WHERE admin_key='$_admin_key' ");
@@ -27,7 +27,7 @@ class CustomFilters
   }
 
   static function saveFilterLocalities($filter_id, $filter_localities){
-      global $db;
+      
       $_filter_localities = db_real_escape_string($filter_localities);
       $_filter_id = db_real_escape_string($filter_id);
 
@@ -35,7 +35,7 @@ class CustomFilters
   }
 
   static function saveFilter($filter_id, $filter_name){
-      global $db;
+
       $_filter_name = db_real_escape_string($filter_name);
       $_filter_id = db_real_escape_string($filter_id);
 
@@ -43,7 +43,7 @@ class CustomFilters
   }
 
   static function removeFilter($filter_id){
-      global $db;
+
       $_filter_id = db_real_escape_string($filter_id);
 
       db_query("DELETE FROM filter WHERE id='$_filter_id' ");

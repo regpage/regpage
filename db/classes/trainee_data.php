@@ -9,7 +9,7 @@ class trainee_data {
 
   // Данные обучающегося
   static function get_data($member_key){
-    global $db;
+
     $member_key = db_real_escape_string($member_key);
     $result = [];
     $res = db_query("SELECT ft.member_key, ft.semester,	ft.gospel_team,	ft.gospel_group, ft.apartment, ft.coordinator,
@@ -30,7 +30,7 @@ class trainee_data {
   }
 
    static function get_serving_one ($member_key) {
-     global $db;
+
      $member_key = db_real_escape_string($member_key);
      $result = '';
      $res = db_query("SELECT `serving_one` FROM ftt_trainee WHERE `member_key`= '$member_key'");

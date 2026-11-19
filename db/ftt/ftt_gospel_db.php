@@ -10,7 +10,7 @@ function getGospelTeam() {
 // get gospel reports
 function getGospel($condition, $traineeId, $sorting, $from = "", $to = "", $team = '_all_') {
 
-  global $db;
+
   $condition = db_real_escape_string($condition);
   $sorting = db_real_escape_string($sorting);
   $from = db_real_escape_string($from);
@@ -105,7 +105,7 @@ function getGospelGoals(){
 
 // get gospel groups
 function getGospelGroups($team){
-  global $db;
+
   $team = db_real_escape_string($team);
   $result = [];
   $res = db_query("SELECT DISTINCT `gospel_group` FROM ftt_trainee WHERE `gospel_team`='$team' ORDER BY `gospel_group`");
@@ -115,7 +115,7 @@ function getGospelGroups($team){
 
 // get group gospel goals
 function get_group_gospel_goals($team, $group) {
-  global $db;
+
   $team = db_real_escape_string($team);
   $group = db_real_escape_string($group);
   $result = [];
@@ -140,7 +140,7 @@ function get_group_gospel_goals($team, $group) {
 
 // set gospel goals
 function set_ftt_gospel_goals($team, $group, $flyers, $people, $prayers, $baptism, $fruit){
-  global $db;
+
   $team = db_real_escape_string($team);
   $group = db_real_escape_string($group);
   $flyers = db_real_escape_string($flyers);
@@ -172,7 +172,7 @@ function set_ftt_gospel_goals($team, $group, $flyers, $people, $prayers, $baptis
 }
 
 // save blank
-function addDataBlank($data){
+function addDataBlank($data) {
   global $db;
   $result;
   $result2;
@@ -239,7 +239,7 @@ function addDataBlank($data){
 }
 // update blank
 function updateDataBlank($data){
-  global $db;
+
 
   $gospel_team = db_real_escape_string($data['fio_field']);
   $id = db_real_escape_string($data['id']);
@@ -328,7 +328,7 @@ function updateDataBlank($data){
 // Бланк в архив
 /*
 function setBlankToArchive($id, $archive, $adminId) {
-  global $db;
+
   $id = db_real_escape_string($id);
   $archive = db_real_escape_string($archive);
   $adminId = db_real_escape_string($adminId);
@@ -343,7 +343,7 @@ function setBlankToArchive($id, $archive, $adminId) {
 */
 // удалить Бланк
 function deleteBlank($id){
-  global $db;
+
   $id = db_real_escape_string($id);
   $res = db_query("DELETE FROM `ftt_gospel` WHERE `id` = $id");
 
@@ -370,7 +370,7 @@ function getGospelGroupNumber() {
 }
 /*
 function getGospelGroupsNumber($team_id) {
-  global $db;
+
   $team_id = db_real_escape_string($team_id);
   $result;
   $res = db_query("SELECT DISTINCT `gospel_group` FROM `ftt_trainee` WHERE `gospel_group` <> 0 AND `gospel_team` = '$team_id' ORDER BY `gospel_group`");
@@ -380,7 +380,7 @@ function getGospelGroupsNumber($team_id) {
 */
 function get_ftt_group_members($team_id, $goup_id = '_none_')
 {
-  global $db;
+
   $team_id = db_real_escape_string($team_id);
   $goup_id = db_real_escape_string($goup_id);
   $result = [];
@@ -408,7 +408,7 @@ function get_ftt_group_members($team_id, $goup_id = '_none_')
 
 // get gospel team members
 function get_gospel_members($blankId) {
-  global $db;
+
   $blankId = db_real_escape_string($blankId);
   $result = [];
   $res = db_query("SELECT * FROM `ftt_gospel_members` WHERE `blank_id` = '$blankId'");
@@ -426,7 +426,7 @@ function get_all_gospel_members() {
 // личная статистика по благовестию
 function gospelPersonalStatByDates($team, $period, $from, $to)
 {
-  global $db;
+
   $team = db_real_escape_string($team);
   $period = db_real_escape_string($period);
   $from = db_real_escape_string($from);
@@ -471,7 +471,7 @@ function gospelPersonalStatByDates($team, $period, $from, $to)
 
 function totalGroupData($team, $group)
 {
-  global $db;
+
   $team = db_real_escape_string($team);
   $group = db_real_escape_string($group);
   $result = [];

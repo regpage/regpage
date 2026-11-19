@@ -97,7 +97,7 @@ function saveAnnouncement($data)
 // Откат публикации
 function undoPublicationAnnouncement($id)
 {
-  global $db;
+
   $id = db_real_escape_string($id);
   $res = db_query("UPDATE `ftt_announcement` SET `publication`= 0 WHERE `id` = '$id'");
   db_query("DELETE FROM `ftt_announcement_recipients` WHERE `id_announcement` = '$id'");
@@ -108,7 +108,7 @@ function undoPublicationAnnouncement($id)
 // get announcements
 function getAnnouncementsForRecipient($admin_id)
 {
-  global $db;
+
   $admin_id = db_real_escape_string($admin_id);
   $result = [];
   $res = db_query("SELECT far.id_announcement, far.member_key, far.date AS notice, fa.id, fa.date, fa.time,
@@ -123,7 +123,7 @@ function getAnnouncementsForRecipient($admin_id)
 // set noticed
 function setAnnouncementNotice($id, $adminId)
 {
-  global $db;
+
   $id = db_real_escape_string($id);
   $adminId = db_real_escape_string($adminId);
 

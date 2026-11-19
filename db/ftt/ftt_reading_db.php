@@ -2,7 +2,7 @@
 // reading bible page
 function set_start_reading_bible($member_key, $date, $chosen_book='', $book_ot='', $chapter_ot='', $footnotes_ot='', $book_nt='', $chapter_nt='', $footnotes_nt='')
 {
-  global $db;
+
   $member_key = db_real_escape_string($member_key);
   $date = db_real_escape_string($date);
   $chosen_book = db_real_escape_string($chosen_book);
@@ -51,7 +51,7 @@ function set_start_reading_bible($member_key, $date, $chosen_book='', $book_ot='
 
 function set_reading_bible($member_key, $date, $book_field, $book, $chapter, $notes_ot, $notes_nt)
 {
-  global $db;
+
   $member_key = db_real_escape_string($member_key);
   $date = db_real_escape_string($date);
   $book_field = db_real_escape_string($book_field);
@@ -91,7 +91,7 @@ function set_reading_bible($member_key, $date, $book_field, $book, $chapter, $no
 /*** bible reading GET ***/
 function get_reading_data($member_key, $date)
 {
-  global $db;
+
   $member_key = db_real_escape_string($member_key);
   $date = db_real_escape_string($date);
   $result = [];
@@ -249,7 +249,7 @@ function get_reading_data($member_key, $date)
 function get_read_book($member_key)
 {
   $bible_obj = new Bible;
-  global $db;
+
   $member_key = db_real_escape_string($member_key);
 
   $result = [];
@@ -306,7 +306,7 @@ function get_read_book($member_key)
 
 function set_read_book($member_key, $part, $book, $chapter, $checked)
 {
-  global $db;
+
   $member_key = db_real_escape_string($member_key);
   $part = db_real_escape_string($part);
   $book = db_real_escape_string($book);
@@ -355,7 +355,7 @@ function set_read_book($member_key, $part, $book, $chapter, $checked)
 
 function set_read_book_by_book($member_key, $part, $books, $notes, $set)
 {
-  global $db;
+  
   $bible_obj = new Bible;
   $member_key = db_real_escape_string($member_key);
   $part = db_real_escape_string($part);
@@ -405,7 +405,7 @@ function set_read_book_by_book($member_key, $part, $books, $notes, $set)
 // получаем старт чтения
 function get_start_position($member_key, $both=false)
 {
-  global $db;
+
   $member_key = db_real_escape_string($member_key);
   $both = db_real_escape_string($both);
   $result = [];
@@ -436,7 +436,7 @@ function get_start_position($member_key, $both=false)
 
 function get_start_position_by_date($member_key, $date)
 {
-  global $db;
+
   $member_key = db_real_escape_string($member_key);
   $date = db_real_escape_string($date);
   $result = [];
@@ -447,7 +447,7 @@ function get_start_position_by_date($member_key, $date)
 
 function dlt_history_reading_bible($member_key, $ot, $nt)
 {
-  global $db;
+
   $member_key = db_real_escape_string($member_key);
   $ot = db_real_escape_string($ot);
   $nt = db_real_escape_string($nt);
@@ -471,7 +471,7 @@ function dlt_history_reading_bible($member_key, $ot, $nt)
 /**** СЛУЖАЩИЕ ****/
 function getDataReadingForStaff($member_key, $semester)
 {
-  global $db;
+
   $member_key = db_real_escape_string($member_key);
   $semester = db_real_escape_string($semester);
   $result = [];
@@ -544,7 +544,7 @@ function getDataReadingForStaff($member_key, $semester)
 
 function getHistoryReadingTrainee($member_key)
 {
-  global $db;
+
   $member_key = db_real_escape_string($member_key);
   $result = [];
   $res = db_query("SELECT * FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `start` != 1 AND `date` != '0000-00-00' ORDER BY `date`");
@@ -555,7 +555,7 @@ function getHistoryReadingTrainee($member_key)
 
 function checkReadBook($memberKey, $book, $footnotes, $ot)
 {
-  global $db;
+
   $memberKey = db_real_escape_string($memberKey);
   $book = db_real_escape_string($book);
   $footnotes = db_real_escape_string($footnotes);

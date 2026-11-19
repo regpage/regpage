@@ -6,7 +6,7 @@ class RegPage
 {
   // получаем участников мероприятия по ответственному за регистрацию (по зонам) и id мероприятия
   function getEventMembers($adminId, $eventId, $category = '_all_', $status = '_all_') {
-      global $db;
+      
       $adminId = db_real_escape_string($adminId);
       $eventId = db_real_escape_string($eventId);
       $category = db_real_escape_string($category);
@@ -40,7 +40,7 @@ class RegPage
   }
   // получаем участников из списка участников по ответственному за регистрацию (по зонам)
   function getMembersByAdmin($adminId) {
-      global $db;
+
       $adminId = db_real_escape_string($adminId);
 
           $res=db_query ("SELECT DISTINCT m.key as id, m.name as name

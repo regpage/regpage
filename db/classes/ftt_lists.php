@@ -140,7 +140,7 @@ class ftt_lists {
   }
   static function trainee_full_by_staff($serving_one_id='_all_')  {
 
-    global $db;
+
     $serving_one_id = db_real_escape_string($serving_one_id);
     $result = [];
     $condition = '';
@@ -197,7 +197,7 @@ class ftt_lists {
       return $result;
     }
 
-    global $db;
+    
     $serving_one_id = db_real_escape_string($serving_one_id);
     $condition;
     if ($serving_one_id === "_all_") {

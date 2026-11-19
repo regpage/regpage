@@ -24,7 +24,7 @@ class FttCandidates
   }
   static function add($member_key, $is_guest = 0)
   {
-      global $db;
+
       $member_key = db_real_escape_string($member_key);
       $is_guest = db_real_escape_string($is_guest);
       $list = self::get();
@@ -37,7 +37,7 @@ class FttCandidates
   }
   static function dlt($member_key)
   {
-      global $db;
+      
       $member_key = db_real_escape_string($member_key);
       $list = self::get();
       if (($key = array_search($member_key, $list)) !== false) {

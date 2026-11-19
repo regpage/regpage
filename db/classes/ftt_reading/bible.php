@@ -30,7 +30,7 @@ class Bible
 
   function getBooks($book='')
   {
-    global $db;
+    
     $book = db_real_escape_string($book);
     $condition = '';
     if (!empty($book)) {

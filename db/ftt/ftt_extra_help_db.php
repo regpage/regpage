@@ -2,7 +2,7 @@
 
 // Доб. задания
 function getExtraHelp($adminId, $serving_trainee, $sorting=''){
-  global $db;
+
   $adminId = db_real_escape_string($adminId);
   $serving_trainee = db_real_escape_string($serving_trainee);
   $sorting = db_real_escape_string($sorting);
@@ -46,7 +46,7 @@ function getExtraHelpTrainee($adminId){
   return $result;
 }
 
-function setAddExtraHelp($data){
+function setAddExtraHelp($data) {
   global $db;
   $result;
   $result2;
@@ -79,7 +79,7 @@ function setAddExtraHelp($data){
 }
 
 function updateAddExtraHelp($data){
-  global $db;
+
   $id = db_real_escape_string($data['id']);
   $date = db_real_escape_string($data['date']);
   $member_key = db_real_escape_string($data['member_key']);
@@ -112,7 +112,7 @@ function updateAddExtraHelp($data){
 
 // Доп. задания
 function setExtraHelpDone($id, $archive, $adminId) {
-  global $db;
+
   $id = db_real_escape_string($id);
   $archive = db_real_escape_string($archive);
   $adminId = db_real_escape_string($adminId);
@@ -127,7 +127,7 @@ function setExtraHelpDone($id, $archive, $adminId) {
 
 // удалить доп. задания
 function deleteExtraHelpString($id){
-  global $db;
+
   $id = db_real_escape_string($id);
   $res = db_query("DELETE FROM `ftt_extra_help` WHERE `id` = $id");
 
@@ -136,7 +136,7 @@ function deleteExtraHelpString($id){
 
 function getStatisticsExtraHelp($sorting)
 {
-  global $db;
+
   $sorting = db_real_escape_string($sorting);
   $result = [];
   //ORDER BY feh.date
@@ -167,7 +167,7 @@ function getLateStrings() {
 
 // Отметить как выполненное
 function setLateDone($id, $done){
-  global $db;
+
   $id = db_real_escape_string($id);
   $done = db_real_escape_string($done);
 
@@ -177,7 +177,7 @@ function setLateDone($id, $done){
 }
 
 // set late
-function setAddLate($data){
+function setAddLate($data) {
   global $db;
   $result;
   $result2;
@@ -237,7 +237,7 @@ function latesToExtraHelp($member_key)
 
 // update late
 function updateAddLate($data){
-  global $db;
+
   $id = db_real_escape_string($data['id']);
   $date = db_real_escape_string($data['date']);
   $member_key = db_real_escape_string($data['member_key']);
@@ -272,7 +272,7 @@ function updateAddLate($data){
 
 // удалить доб. задания
 function deleteLateString($id){
-  global $db;
+
   $id = db_real_escape_string($id);
   $res = db_query("DELETE FROM `ftt_late` WHERE `id` = $id");
 

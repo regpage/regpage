@@ -2,7 +2,7 @@
 // Файл не подключен, копия функции в БД2. ПОДКЛЮЧАТЬ только в мембер для formTab.php
 // получаем данные для комбобоксов
 function getFttCombo ($table_name) {
-  global $db;
+
   $table_name = db_real_escape_string($table_name);
   $result;
   $res = db_query ("SELECT * FROM {$table_name}");
@@ -26,12 +26,10 @@ function getFttApartments () {
 }
 
 function db_getTraineeData($id) {
-  global $db;
+
   $id = db_real_escape_string($id);
   $result = [];
   $res = db_query("SELECT * FROM ftt_trainee WHERE `member_key`= '$id'");
   while ($row = $res->fetch_assoc()) $result[] = $row;
   return $result;
 }
-
-?>

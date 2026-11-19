@@ -3,7 +3,7 @@
 // Statistic page
 function db_getStatisticStrings ($memberId, $localities)
 {
-    global $db;
+
     $memberId = db_real_escape_string($memberId);
     $localities = implode( "','", $localities);
     $statistic = array ();
@@ -22,7 +22,7 @@ function db_getStatisticStrings ($memberId, $localities)
 
 function db_setNewStatistic ($memberId, $locality, $localityStatusId, $statisticCardId, $bptzYounger17, $bptz_count, $attendedYounger17, $attended17_25, $attendedOlder25, $attended60, $attendedCount, $ltMeetingAverage, $archive, $comment, $statusCompleted)
 {
-    global $db;
+
     $memberId = db_real_escape_string($memberId);
     $locality = db_real_escape_string($locality);
     $localityStatusId = db_real_escape_string($localityStatusId);
@@ -56,7 +56,7 @@ function db_getLocalitiesStatus(){
 }
 function db_updateStatistic ($memberId, $locality, $localityStatusId, $statisticCardId, $bptzYounger17, $bptz_count, $attendedYounger17, $attended17_25, $attendedOlder25, $attended60, $attendedCount, $ltMeetingAverage, $archive, $comment, $statusCompleted, $idStatistic)
 {
-    global $db;
+    
 
     $memberId = db_real_escape_string($memberId);
     $locality = db_real_escape_string($locality);
@@ -114,7 +114,7 @@ function getMembersStatistic($locality) {
 }
 
 function getCheckDublicateStatistic($statisticId, $locality) {
-  global $db;
+
   $statisticId = db_real_escape_string($statisticId);
   $locality = db_real_escape_string($locality);
 
@@ -129,7 +129,7 @@ function getCheckDublicateStatistic($statisticId, $locality) {
 
 function db_deleteMembersStatistic()
 {
-  global $db;
+
   $statisticId = db_real_escape_string($statisticId);
   $res = db_query ("DELETE FROM statistic_item
     WHERE id = '$statisticId'");

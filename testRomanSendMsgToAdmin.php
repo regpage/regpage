@@ -25,7 +25,7 @@ function checkParamAndLog($param, $msg)
 }
 // get admin id & location
 function db_getsendMsgToRegionalAdmin($memberId){
-    global $db;
+    
     // $text = db_real_escape_string();
 
     if($memberId == '' || $memberId == undefined || $memberId == NULL){
@@ -129,7 +129,7 @@ mySysLog('SUCCESS First line ID of the admins is '.$membersAdmin[0][member_key].
 
 /*
 function db_getRegionalAdminId($memberId){
-    global $db;
+
     $text = db_real_escape_string();
 
     if($text == ''){

@@ -3,7 +3,7 @@
 // PRACTICES
 // Create the new string
 function db_newDayPractices($memberId){
-  global $db;
+
   $memberId = db_real_escape_string($memberId);
   $currentDate = date("Y-m-d");
   $result = 0;
@@ -15,7 +15,7 @@ function db_newDayPractices($memberId){
 }
 // Update the string
 function db_updateTodayPractices($memberId, $userData){
-  global $db;
+
   $mr = db_real_escape_string($userData['mr']);
   $pp = db_real_escape_string($userData['pp']);
   $pc = db_real_escape_string($userData['pc']);
@@ -37,7 +37,7 @@ function db_updateTodayPractices($memberId, $userData){
 }
 
 function db_updatePracticesByAdmin($stringId, $userData){
-  global $db;
+
   $stringId = db_real_escape_string($stringId);
   $mr = db_real_escape_string($userData['mr']);
   $pp = db_real_escape_string($userData['pp']);
@@ -61,7 +61,7 @@ function db_updatePracticesByAdmin($stringId, $userData){
 
 // Get Practices for user
 function db_getPractices($memberId){
-    global $db;
+
     $currentDate = date("Y-m-d", strtotime("-7 days"));
     $memberId = db_real_escape_string($memberId);
     $res=db_query ("SELECT * FROM practices WHERE `member_id` = '$memberId' AND `date_practic` > '$currentDate' ORDER BY `date_practic` DESC");
@@ -72,7 +72,7 @@ function db_getPractices($memberId){
 
 // Get all Practices
 function  db_getPracticesAll (){
-  global $db;
+
   $currentDate = date("Y-m-d", strtotime("-7 days"));
   //$memberId = db_real_escape_string($memberId);
   $res=db_query ("SELECT * FROM practices WHERE `date_practic` > '$currentDate' ORDER BY `date_practic` DESC");
@@ -83,7 +83,7 @@ function  db_getPracticesAll (){
 
 // Get Practices for user today
 function db_getPracticesToday($memberId){
-    global $db;
+
     $memberId = db_real_escape_string($memberId);
     $currentDate = date("Y-m-d");
     $res=db_query ("SELECT * FROM practices WHERE `member_id` = '$memberId' AND `date_practic` = '$currentDate'");
@@ -94,7 +94,7 @@ function db_getPracticesToday($memberId){
 
 function db_getPracticesForAdmin($userData, $periods = false){
 
-  global $db;
+
 
   $localities = db_real_escape_string($userData['localities']);
   $sortType = db_real_escape_string($userData['sort']);

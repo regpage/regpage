@@ -11,7 +11,7 @@ class Fellowship
   static function now_trainee($trainee_id)
   {
     $result=[];
-    global $db;
+    
     $trainee_id = db_real_escape_string($trainee_id);
     $res = db_query("SELECT ff.time, m.name
       FROM ftt_fellowship ff
@@ -26,7 +26,7 @@ class Fellowship
   static function canceled_trainee($trainee_id)
   {
     $result=[];
-    global $db;
+
     $trainee_id = db_real_escape_string($trainee_id);
     $res = db_query("SELECT ff.time, m.name
       FROM ftt_fellowship ff
@@ -40,7 +40,7 @@ class Fellowship
 
   static function now_serving_one($serving_one_id)
   {
-    global $db;
+
     $serving_one_id = db_real_escape_string($serving_one_id);
     $result=[];
     $res = db_query("SELECT ff.time, m.name, ff.comment_train
@@ -55,7 +55,7 @@ class Fellowship
 
   static function get_all_fellowship_today_future($serving_one_id)
   {
-    global $db;
+
     $serving_one_id = db_real_escape_string($serving_one_id);
     $result=0;
     $res = db_query("SELECT COUNT(`id`) AS count FROM `ftt_fellowship`
@@ -67,7 +67,7 @@ class Fellowship
 
   static function get_all_fellowship_today_future_trainee($trainee_id)
   {
-    global $db;
+
     $trainee_id = db_real_escape_string($trainee_id);
     $result=0;
     $res = db_query("SELECT COUNT(`id`) AS count FROM `ftt_fellowship`
@@ -79,7 +79,7 @@ class Fellowship
 
   static function canceled_serving_one($serving_one_id)
   {
-    global $db;
+
     $serving_one_id = db_real_escape_string($serving_one_id);
     $result=[];
     $res = db_query("SELECT ff.time, m.name

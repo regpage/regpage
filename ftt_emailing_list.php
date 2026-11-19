@@ -37,7 +37,7 @@ function getServiceOnesWithTrainees ()
 {
   // список тех кто был освобождён и кто был на перерыве в прошедшее воскресенье
   $listForprophecy = listForprophecy("'" . date_plus::sub_d(date('Y-m-d'), date('w')) . "'");
-  //global $db;
+  //
   //$member_key = db_real_escape_string($member_key);
   $result = [];
   $res = db_query("SELECT DISTINCT `serving_one` FROM ftt_trainee");

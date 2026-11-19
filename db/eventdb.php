@@ -4,7 +4,7 @@
 // Event $ ARCHIVE
 
 function db_setEventArchive($eventId, $adminId, $isAdmin, $isSysAdmin){
-    global $db;
+
     $eventId = db_real_escape_string($eventId);
     $adminId = db_real_escape_string($adminId);
     $isAdmin = db_real_escape_string($isAdmin);
@@ -150,7 +150,7 @@ function db_addEventArchive($adminId, $data){
 }
 
 function db_getArchiveEvents($sort_type, $sort_field, $startDate, $endDate){
-    global $db;
+
     $startDate = db_real_escape_string($startDate);
     $endDate = db_real_escape_string($endDate);
     $sort_type = db_real_escape_string($sort_type);
@@ -167,7 +167,7 @@ function db_getArchiveEvents($sort_type, $sort_field, $startDate, $endDate){
     return $events;
 }
 function db_getArchiveGeneralEvents($adminId, $sort_type, $sort_field, $localityFilter, $meetingTypeFilter, $startDate, $endDate){
-    global $db;
+
     $adminId = db_real_escape_string($adminId);
     $localityFilter = db_real_escape_string($localityFilter);
     $meetingTypeFilter = db_real_escape_string($meetingTypeFilter);
@@ -204,7 +204,7 @@ function db_getArchivedEventLocalities(){
 }
 
 function db_getArchiveEventList($adminId, $eventId){
-    global $db;
+
     $adminId = db_real_escape_string($adminId);
     $eventId = db_real_escape_string($eventId);
     db_query('SET Session group_concat_max_len=100000');
@@ -224,7 +224,7 @@ function db_getArchiveEventList($adminId, $eventId){
 }
 
 function getEventArchiveMembersStatistic($adminId, $eventType, $startDate, $endDate, $text){
-    global $db;
+
     $adminId = db_real_escape_string($adminId);
     $eventRequest = $eventType == '_all_' ? '' : " AND ea.event_type='".db_real_escape_string($eventType)."'";
     $startDate = db_real_escape_string($startDate);
@@ -267,7 +267,7 @@ function getEventArchiveMembersStatistic($adminId, $eventType, $startDate, $endD
 }
 
 function db_checkEventStopRegistrationHospitality($eventId){
-    global $db;
+
     $_eventId = db_real_escape_string($eventId);
 
     $res=db_query ("SELECT

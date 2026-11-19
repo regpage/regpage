@@ -8,7 +8,7 @@ class fttParam
 {
   //
   static function get($field_name) {
-    global $db;
+
     $field_name = db_real_escape_string($field_name);
     $field_value = '';
     $res = db_query("SELECT `value` FROM `ftt_param` WHERE `name` = '$field_name'");
@@ -18,7 +18,7 @@ class fttParam
   }
 
   static function set($field_name, $value) {
-    global $db;
+    
     $field_name = db_real_escape_string($field_name);
     $res = db_query("UPDATE `ftt_param` SET `value`='$value'  WHERE `name` = '$field_name'");
 

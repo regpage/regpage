@@ -15,7 +15,7 @@ class localities
   }
 
   static function db_getMemberLocality ($memberId) {
-      global $db;
+      
       $memberId = db_real_escape_string($memberId);
       $res=db_query ("SELECT l.name FROM member m INNER JOIN locality l ON l.key=m.locality_key WHERE m.key='$memberId'");
       $row = $res->fetch_assoc();
@@ -23,7 +23,7 @@ class localities
   }
 
   static function db_getAdminLocality($adminId){
-      global $db;
+
       $adminId = db_real_escape_string($adminId);
 
       $res = db_query("SELECT locality_key FROM member WHERE `key`='$adminId'");
@@ -35,7 +35,7 @@ class localities
   }
 
   static function db_getLocalityKeyByName($locality_name){
-      global $db;
+
       $_locality_name = db_real_escape_string($locality_name);
       $res = db_query("SELECT `key` FROM locality WHERE name = '$locality_name' LIMIT 1");
 
@@ -45,7 +45,7 @@ class localities
   }
 
   function db_getLocalityByKey($locality_key){
-      global $db;
+
       $locality = db_real_escape_string($locality_key);
       $res = db_query("SELECT name FROM locality WHERE `key`='$locality'");
 
@@ -56,7 +56,7 @@ class localities
   }
 
   static function db_getAdminCountry($adminId) {
-      global $db;
+
       $adminId = db_real_escape_string($adminId);
 
       $res=db_query ("SELECT c.key as country
@@ -82,7 +82,7 @@ class localities
 
   // Получаем страну по местности
   static function db_getCountryByLocality($localityKey){
-      global $db;
+
       $localityKey = db_real_escape_string($localityKey);
       $country;
 
@@ -113,7 +113,7 @@ class localities
   }
 
   function db_getAdminLocalitiesWithFilters($adminId){
-      global $db;
+
       $adminId = db_real_escape_string($adminId);
 
       $res=db_query ("SELECT DISTINCT * FROM (
@@ -138,7 +138,7 @@ class localities
 
   static function getAdminLocalities ($adminId)
   {
-      global $db;
+
       $adminId = db_real_escape_string($adminId);
 
       $res = db_query ("SELECT DISTINCT * FROM (
@@ -186,7 +186,7 @@ class localities
 
   static function getAdminLocalitiesWithRegMemberFilters ($adminId)
   {
-      global $db;
+
       $adminId = db_real_escape_string($adminId);
 
       $res = db_query ("SELECT DISTINCT * FROM (
@@ -240,7 +240,7 @@ class localities
 
   function db_getAdminLocalitiesNotRegTbl ($adminId)
   {
-      global $db;
+
       $adminId = db_real_escape_string($adminId);
 
       $res=db_query ("SELECT DISTINCT * FROM (
@@ -258,7 +258,7 @@ class localities
       return $localities;
   }
   function db_getAdminLocalitiesAdmin($query, $adminId){
-      global $db;
+
       $adminId = db_real_escape_string($adminId);
       $query = db_real_escape_string($query);
 
@@ -278,7 +278,7 @@ class localities
 
   static function isSingleCityAdmin ($adminId)
   {
-      global $db;
+
       $adminId = db_real_escape_string($adminId);
 
       $res=db_query ("SELECT IF ((SELECT COUNT(DISTINCT c.key) FROM access as a LEFT JOIN country c ON c.key = a.country_key WHERE a.member_key='$adminId')=0

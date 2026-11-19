@@ -4,7 +4,7 @@
 // VISITS
 
 function db_getVisits($adminId, $sort_type, $sort_field, $localityFilter, $meetingTypeFilter, $startDate, $endDate){
-    global $db;
+
     $adminId = db_real_escape_string($adminId);
     $localityFilter = db_real_escape_string($localityFilter);
     $meetingTypeFilter = db_real_escape_string($meetingTypeFilter);
@@ -37,7 +37,7 @@ function db_getVisits($adminId, $sort_type, $sort_field, $localityFilter, $meeti
 }
 
 function db_setVisit($data){
-    global $db;
+
     $date = db_real_escape_string($data['date']);
     $locality = db_real_escape_string($data['locality']);
     $note = db_real_escape_string($data['note']);
@@ -76,14 +76,14 @@ function db_setVisit($data){
 }
 
 function db_removeVisit($meetingId){
-    global $db;
+
     $_meetingId = db_real_escape_string($meetingId);
 
     db_query("DELETE FROM visits WHERE id = '$_meetingId' ");
 }
 
 function db_setDateVisit($value, $visitId){
-    global $db;
+
     $_value = db_real_escape_string($value);
     $_visitId = db_real_escape_string($visitId);
 
@@ -99,7 +99,7 @@ function db_setDateVisit($value, $visitId){
 }
 
 function db_setPerformedVisit($value, $visitId){
-    global $db;
+
     $_value = db_real_escape_string($value);
     $_visitId = db_real_escape_string($visitId);
 

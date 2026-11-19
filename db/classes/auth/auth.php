@@ -33,7 +33,7 @@ class Auth
 
   function last_visit_time_update ($sessionId)
   {
-      global $db;
+      
       $datatime = date("Y-m-d H:i:s");
       $sessionId = db_real_escape_string($sessionId);
       db_query ("UPDATE admin_session SET time_last_visit = '{$datatime}' WHERE id_session='{$sessionId}'");

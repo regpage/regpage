@@ -49,7 +49,7 @@ class Emailing
   // send email
   static function send($email, $topic, $text, $replyTo = 'noreply@reg-page.ru', $fromName = 'Уведомление с сайта регистрации')
   {
-    global $db;
+
     global $CRON_ROOT_PATH;
     $email = db_real_escape_string($email);
     if (empty($email)) {
@@ -75,7 +75,7 @@ class Emailing
   static function send_by_key($member_key, $topic, $text, $replyTo = 'noreply@reg-page.ru', $fromName = 'Уведомление с сайта регистрации')
   {
 
-    global $db;
+    
     global $CRON_ROOT_PATH;
     $member_key = db_real_escape_string($member_key);
 
@@ -103,7 +103,7 @@ class Emailing
   // получаем имя пользователя
   static function get_name($member_key)
   {
-    global $db;
+
     $member_key = db_real_escape_string($member_key);
     $user ='';
     $res=db_query("SELECT `name` FROM `member` WHERE `key` = '$member_key'");
@@ -115,7 +115,7 @@ class Emailing
   static function get_email ($member_key)
   {
     // получаем имя пользователя
-    global $db;
+
     $member_key = db_real_escape_string($member_key);
     $email = '';
     $res=db_query ("SELECT `email` FROM `member` WHERE `key` = '$member_key'");

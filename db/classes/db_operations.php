@@ -12,7 +12,7 @@ class DbOperation {
   // Добавить свойство $fields, указывать поля для вывода через заппятую
   // Добавить второе условие
   static function operation($data)  {
-    global $db;
+    
     $operation = db_real_escape_string(trim($data['operation']));
     $table = db_real_escape_string(trim($data['table']));
     $field = db_real_escape_string(trim($data['field']));
@@ -60,7 +60,7 @@ class DbOperation {
 
   static function update_multi($data)
   {
-    global $db;
+
     $data = json_decode($data);
     $table = db_real_escape_string($data->table);
     $condition_field = db_real_escape_string($data->condition->field);
@@ -85,7 +85,7 @@ class DbOperation {
 
   static function add_multi($data)
   {
-    global $db;
+
     $data = json_decode($data);
     $table = db_real_escape_string($data->table);
     $condition_field = db_real_escape_string($data->condition->field);

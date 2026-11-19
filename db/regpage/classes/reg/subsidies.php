@@ -13,7 +13,7 @@ class Subsidies
   private $eventId;
 
   function __construct($eventId) {
-    global $db;
+
     $eventId = db_real_escape_string($eventId);
     // если дотации не предусмотрены
     $this->eventId = $eventId;
@@ -62,7 +62,7 @@ class Subsidies
       return false;
     }
 
-    global $db;
+
     $memberKey = db_real_escape_string($memberKey);
     $ticket = db_real_escape_string($ticket);
     $isExist = $this->memberExist($memberKey);
@@ -124,7 +124,7 @@ class Subsidies
     if (empty($memberKey)) {
       return 'error_001';
     }
-    global $db;
+    
     $memberKey = db_real_escape_string($memberKey);
     $membersKeys = $this->sanitizeAndPrepareStrWithComma($membersKeys);
 
@@ -168,7 +168,7 @@ class Subsidies
     if (empty($membersKeys)) {
       return $membersKeys;
     }
-    global $db;
+
     $membersKeysArr = explode(',', $membersKeys);
     $membersKeys = '';
     foreach ($membersKeysArr as $value) {

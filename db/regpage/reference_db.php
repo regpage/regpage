@@ -1,7 +1,6 @@
 <?php
 // References
-function db_addReference($data){
-    global $db;
+function db_addReference($data){   
 
     $_name = db_real_escape_string($data['name']);
     $_page = db_real_escape_string($data['page']);
@@ -14,7 +13,7 @@ function db_addReference($data){
 }
 
 function db_setReference($data){
-    global $db;
+
     $_name = db_real_escape_string($data['name']);
     $_page = db_real_escape_string($data['page']);
     $_link_article = db_real_escape_string($data['link_article']);
@@ -27,7 +26,7 @@ function db_setReference($data){
 }
 
 function db_setReferenceFieldValue($field, $value, $id){
-    global $db;
+
     $_field = db_real_escape_string($field);
     $_value = (int)$value;
     $_id = (int)$id;

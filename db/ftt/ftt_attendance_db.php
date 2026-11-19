@@ -19,7 +19,7 @@ function getFttAttendanceSheet() {
 }
 // получаем строки по id_sheet
 function getFttStringsByIdSheet($sheet_id) {
-  global $db;
+
   $sheet_id = db_real_escape_string($sheet_id);
   $result = [];
 
@@ -36,7 +36,7 @@ function getFttAttendanceSheetAndStrings($list_access, $condition, $admin_id = '
   //INNER JOIN ftt_attendance fa ON fa.sheet_id = fas.id
   // AS fas
 
-  global $db;
+
   $list_access = db_real_escape_string($list_access);
   $condition = db_real_escape_string($condition);
   $admin_id = db_real_escape_string($admin_id);
@@ -125,7 +125,7 @@ function getFttAttendanceSheetAndStrings($list_access, $condition, $admin_id = '
 
 // Получаем строки для бланка
 function get_sessions($id) {
-  global $db;
+
   $id = db_real_escape_string($id);
   $strings = [];
   $res = db_query("SELECT `id`, `sheet_id`, `session_name`, `session_time`, `attend_time`, `reason`, `permission_sheet_id`, `late`, `absence`, `visit`, `end_time`, `duration`
@@ -138,7 +138,7 @@ function get_sessions($id) {
 
 // обновляем строки по id ???
 function setFttStringsById($data) {
-  global $db;
+
   $id = db_real_escape_string($data['id']);
   $session_name = db_real_escape_string($data['session_name']);
   $session_time = db_real_escape_string($data['session_time']);
@@ -153,7 +153,7 @@ function setFttStringsById($data) {
 
 // Добавляем header (?) НЕИСПОЛЬЗУЕТСЯ
 /*function setFttSheetById($data) {
-  global $db;
+
   $id = db_real_escape_string($data['id']);
   $comment = db_real_escape_string($data['comment']);
   $status = db_real_escape_string($data['status']);
@@ -171,7 +171,7 @@ function setFttStringsById($data) {
 }*/
 
 function set_attendance($id, $field, $value, $header) {
-  global $db;
+
   $id = db_real_escape_string($id);
   $field = db_real_escape_string($field);
   $value = db_real_escape_string($value);
@@ -190,7 +190,7 @@ function set_attendance($id, $field, $value, $header) {
 }
 
 function set_attendance_time($id, $field, $time, $late, $absence) {
-  global $db;
+
   $id = db_real_escape_string($id);
   $time = db_real_escape_string($time);
   $late = db_real_escape_string($late);
@@ -202,7 +202,7 @@ function set_attendance_time($id, $field, $time, $late, $absence) {
 }
 
 function set_attendance_archive ($id, $archive) {
-  global $db;
+
   $id = db_real_escape_string($id);
   $archive = db_real_escape_string($archive);
   $result = '';
@@ -217,7 +217,7 @@ function set_attendance_archive ($id, $archive) {
 }
 
 function set_late_automatic($member_key, $date, $delay, $session_name, $end_time, $id_attendance) {
-  global $db;
+
   $member_key = db_real_escape_string($member_key);
   $date = db_real_escape_string($date);
   $delay = db_real_escape_string($delay);
@@ -271,7 +271,7 @@ function set_late_automatic($member_key, $date, $delay, $session_name, $end_time
 }
 
 function set_extrahelp_automatic($member_key, $date, $reason, $attendance_id, $end_time=0) {
-  global $db;
+
   $member_key = db_real_escape_string($member_key);
   $date = db_real_escape_string($date);
   $reason = db_real_escape_string($reason);
@@ -284,14 +284,14 @@ function set_extrahelp_automatic($member_key, $date, $reason, $attendance_id, $e
 
 // STAFF FUNCTIONS
 function dlt_sessions_in_blank($sheet_id) {
-  global $db;
+
   $sheet_id = db_real_escape_string($sheet_id);
   $res = db_query("DELETE FROM `ftt_attendance` WHERE `sheet_id` = $sheet_id");
 }
 
 // add/delete string session in blank
 function add_sessions_staff($session) {
-  global $db;
+
   $sheet_id = db_real_escape_string(trim($session->id_sheet));
   $session_id = db_real_escape_string(trim($session->session_id));
   $session_name = db_real_escape_string(trim($session->session_name));
@@ -316,7 +316,7 @@ function add_sessions_staff_all($sessions) {
 
 function dlt_session_staff($sessions)
 {
-  global $db;
+
   $session = json_decode($sessions);
   $sheet_id = db_real_escape_string(trim($session->id_sheet));
   $session_id = db_real_escape_string(trim($session->session_id));
@@ -330,7 +330,7 @@ function dlt_session_staff($sessions)
 
 function add_session_staff($sessions)
 {
-  global $db;
+
   $session = json_decode($sessions);
   $sheet_id = db_real_escape_string(trim($session->id_sheet));
   $session_id = db_real_escape_string(trim($session->session_id));
@@ -362,7 +362,7 @@ function getSessionStaff($value='') {
 
 function undo_extrahelp_lates($id)
 {
-  global $db;
+
   $id = db_real_escape_string($id);
   $id_search = $id.':';
   $result=[];
@@ -387,7 +387,7 @@ function undo_extrahelp_lates($id)
 // Ночёвка у святых
 function db_overnight($member_key, $date)
 {
-  global $db;
+
   $member_key = db_real_escape_string($member_key);
   $date = db_real_escape_string($date);
   if (!empty($date)) {
@@ -409,7 +409,7 @@ function db_overnight($member_key, $date)
 
 // получаем бланк недельной давности
 function getPrevWeekBlank($memberKey, $date) {
-  global $db;
+
   $memberKey = db_real_escape_string($memberKey);
   $date = db_real_escape_string($date);
   $done = '';
@@ -560,7 +560,7 @@ function set_permission($sessions, $adminId)
 
 function get_permission($sheet_id)
 {
-  global $db;
+
   $sheet_id = json_decode($sheet_id);
   $result = [];
   $res = db_query("SELECT * FROM `ftt_permission` WHERE `sheet_id` = '$sheet_id'");
@@ -570,7 +570,7 @@ function get_permission($sheet_id)
 
 function get_permission_archive($sheet_id)
 {
-  global $db;
+
   $sheet_id = db_real_escape_string($sheet_id);
   $result = "";
   $res = db_query("SELECT `archive_sessions` FROM `ftt_permission_sheet` WHERE `id` = '$sheet_id'");

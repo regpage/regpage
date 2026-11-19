@@ -40,7 +40,7 @@ class BibleCounter
   // рассчёт
   static function calculateTheDifference($member_key, $semester)
   {
-    global $db;
+    
     $member_key = db_real_escape_string($member_key);
     $sumChapters = self::sumChapters();
     $readBook = self::getRead($member_key);
@@ -103,7 +103,7 @@ class BibleCounter
   // start position
   static function get_start_position($member_key)
   {
-    global $db;
+
     $member_key = db_real_escape_string($member_key);
     $result = [];
     $res = db_query("SELECT DISTINCT `book_ot`, `read_footnotes_nt`, `book_nt`, `read_footnotes_ot` FROM `ftt_bible` WHERE `member_key` = '{$member_key}' AND `start` = 1 ORDER BY `date` ASC");

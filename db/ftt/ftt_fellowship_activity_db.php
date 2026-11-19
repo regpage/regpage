@@ -3,7 +3,7 @@ require_once 'db/classes/date_plus.php';
 // Список записей за 4 недели
 function get_fellowship_activity_list($serving_ones = '_all_',  $sort='meet_sort_servingone-asc') // $trainee_flt = '_all_',
 {
-  global $db;
+  
   $serving_ones = db_real_escape_string($serving_ones);
   $sort = db_real_escape_string($sort);
   $result = [];

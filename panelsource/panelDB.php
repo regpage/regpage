@@ -11,7 +11,7 @@ function db_getSessionsAdmins(){
 /*
 function db_copySessions($adminId, $sessionId)
 {
-	global $db;
+
 	$adminId = db_real_escape_string($adminId);
 	$sessionId = db_real_escape_string($sessionId);
 	db_query ("INSERT INTO admin_session (id_session, admin_key) VALUES ('$sessionId','$adminId')");
@@ -19,7 +19,7 @@ function db_copySessions($adminId, $sessionId)
 */
 function db_delete_old_sessions()
 {
-	global $db;
+	
   $datatime = date("Y-m-d H:i:s");
   db_query ("DELETE FROM admin_session WHERE ($datatime - `time_last_visit`)>356");
 }

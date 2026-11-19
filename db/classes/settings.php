@@ -18,7 +18,7 @@ class Settings
   }
 
   static function getUserSettings($admin_key){
-      global $db;
+
       $_admin_key = db_real_escape_string($admin_key);
 
       $res = db_query("SELECT setting_key FROM user_setting WHERE member_key='$_admin_key' ");
@@ -31,4 +31,3 @@ class Settings
       return $settings;
   }
 }
- ?>

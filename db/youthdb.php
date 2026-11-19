@@ -3,7 +3,7 @@
 
 // Youth
 function OLDdb_getYouthList($adminId, $sort_field, $sort_type){
-    global $db;
+    
     $adminId = db_real_escape_string($adminId);
     $sort_field = db_real_escape_string($sort_field);
     $sort_type = db_real_escape_string($sort_type);
@@ -59,7 +59,7 @@ function OLDdb_getYouthList($adminId, $sort_field, $sort_type){
 }
 
 function db_getYouthList($adminId, $sort_field, $sort_type){
-    global $db;
+
     $adminId = db_real_escape_string($adminId);
     $sort_field = db_real_escape_string($sort_field);
     $sort_type = db_real_escape_string($sort_type);

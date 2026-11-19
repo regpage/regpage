@@ -77,7 +77,7 @@ class GospelStatistic
   // личная статистика по благовестию
   static function personalReport($memberId, $period=7, $from='CURDATE()')
   {
-    global $db;
+    
     $period = db_real_escape_string($period);
     $from = db_real_escape_string($from);
     $result = [];
@@ -141,7 +141,7 @@ class GospelStatistic
   // check
   static function check($strOrNumer)
   {
-    global $db;
+
     return db_real_escape_string($strOrNumer);
   }
 

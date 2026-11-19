@@ -10,7 +10,7 @@ class BibleReading
 
   static function get($traineeId)
   {
-    global $db;
+    
     $traineeId = db_real_escape_string($traineeId);
     $result = [];
     $res2 = db_query("SELECT `date`, `bible_book`, `bible_chapter`
@@ -23,7 +23,7 @@ class BibleReading
 
   static function get_books($traineeId)
   {
-    global $db;
+
     $traineeId = db_real_escape_string($traineeId);
     $result = [];
     $res2 = db_query("SELECT DISTINCT `bible_book`
@@ -36,7 +36,7 @@ class BibleReading
 
   static function get_readed($traineeId)
   {
-    global $db;
+
     $traineeId = db_real_escape_string($traineeId);
     $readed = self::get($traineeId);
     global $bible_obj;
@@ -62,7 +62,7 @@ class BibleReading
 
   static function get_by_dates($traineeId)
   {
-    global $db;
+
     $traineeId = db_real_escape_string($traineeId);
     $readed = self::get($traineeId);
     global $bible_obj;

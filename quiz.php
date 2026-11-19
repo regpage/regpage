@@ -3,7 +3,7 @@ include_once "db.php";
 
 // получаем количество ответов
 function checkLimits($id) {
-    global $db;
+    
     $id = db_real_escape_string($id);
     $result = '';
     $res = db_query("SELECT COUNT(`id_list`) AS count_id FROM questionnaire_data WHERE `id_list`='$id'");
@@ -14,7 +14,7 @@ if (isset($_POST['sent'])) {
   // Добавляем ответы
   function setQuestionnaireAnswer($answers='') {
     // попробовать через filter_input_array
-    global $db;
+
     //$id = db_real_escape_string($_POST['']);
     foreach ($_POST as $key => $value) {
       if ($value) {

@@ -10,7 +10,7 @@ class Prophecy
 {
   static function by_serving_one($trainees, $date)
   {
-    global $db;
+    
     $listTrainees = [];
     $condition = '';
     foreach ($trainees as $key => $value) {
@@ -48,11 +48,11 @@ class Prophecy
 
   static function byServingOneStatusUnderReview($trainees)
   {
-    global $db;
+
     $listTrainees = [];
     $condition = '';
     foreach ($trainees as $key => $value) {
-      $value = db_real_escape_string($value);      
+      $value = db_real_escape_string($value);
       if (empty($condition)) {
         $condition .= "(p.member_key = '{$key}' ";
       } else {

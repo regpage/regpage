@@ -12,7 +12,7 @@ function get_communication_list($serving_ones = '_all_', $sort='meet_sort_servin
   // # 5. получить дату следующего понедельника
   // # 6. прибавить 28 дней (использовать >= при сравнении).
 
-  global $db;
+
   $serving_ones = db_real_escape_string($serving_ones);
   $sort = db_real_escape_string($sort);
 
@@ -89,7 +89,7 @@ function get_communication_list($serving_ones = '_all_', $sort='meet_sort_servin
 // список записей обучающегося
 function get_communication_records_staff($serving_one, $trainee, $active, $sort='meet_sort_servingone-asc')
 {
-  global $db;
+
   $serving_one = db_real_escape_string($serving_one);
   $trainee = db_real_escape_string($trainee);
   $active = db_real_escape_string($active);
@@ -169,7 +169,7 @@ function get_communication_records_staff($serving_one, $trainee, $active, $sort=
 // список записей на общение обучающегося
 function get_communication_records($trainee, $active, $sort='meet_sort_servingone-asc')
 {
-  global $db;
+
   $trainee = db_real_escape_string($trainee);
   $active = db_real_escape_string($active);
   $sort = db_real_escape_string($sort);
@@ -204,7 +204,7 @@ function get_communication_records($trainee, $active, $sort='meet_sort_servingon
 
 function set_communication_record($trainee, $id, $checked=0, $date='', $time_from='', $time_to='', $comment='')
 {
-  global $db;
+
   $trainee = db_real_escape_string($trainee);
   $id = db_real_escape_string($id);
   $checked = db_real_escape_string($checked);
@@ -278,7 +278,7 @@ function set_communication_record($trainee, $id, $checked=0, $date='', $time_fro
 
 function send_email_to_staff($id)
 {
-  global $db;
+
   $id = db_real_escape_string($id);
   $result = [];
   $res;
@@ -311,7 +311,7 @@ function send_email_to_staff($id)
 
 function set_meet_staff_blank($data)
 {
-  global $db;
+
   $data = json_decode($data);
   $id = db_real_escape_string($data->id);
   $serving_one = db_real_escape_string($data->serving_one);
@@ -382,7 +382,7 @@ function set_meet_staff_blank($data)
 // добавить новую запись
 function add_meet_staff_blank($data)
 {
-  global $db;
+
   $data = json_decode($data);
   $serving_one = db_real_escape_string($data->serving_one);
   $trainee = db_real_escape_string($data->trainee);
@@ -404,7 +404,7 @@ function add_meet_staff_blank($data)
 // Отменить запись на общение
 function cancel_communication_record($id, $comment='')
 {
-  global $db;
+
   $id = db_real_escape_string($id);
   $comment = db_real_escape_string($comment);
 
@@ -490,7 +490,7 @@ function get_meet_by_date($date, $serving_ones = '_all_')
   // # для братьев не выводятся служащие сёстры
   // # Уточнить список КБК !!! служащие пвом и братья из КБК (как определить братьев из КБК.)
 
-  global $db;
+
   $serving_ones = db_real_escape_string($serving_ones);
   $date = db_real_escape_string($date);
 

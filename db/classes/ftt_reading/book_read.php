@@ -7,7 +7,7 @@ class BookRead
 {
   static function get_all($member_key)
   {
-    global $db;
+
     $member_key = db_real_escape_string($member_key);
     $result = array('books' => [], 'notes_ot' => "", 'notes_nt' => "");
 
@@ -31,7 +31,7 @@ class BookRead
   }
   static function get_according_last_start($memberKey)
   {
-    global $db;
+    
     $memberKey = db_real_escape_string($memberKey);
     $result = array('books' => [], 'notes_ot' => "", 'notes_nt' => "");
     $lastStartOT = '_none_';
@@ -66,7 +66,7 @@ class BookRead
   }
   static function get_percent($books, $memberKey, $testament)
   {
-    global $db;
+
     // $books = db_real_escape_string($books); // МАССИВ
     $memberKey = db_real_escape_string($memberKey);
     $testament = db_real_escape_string($testament);

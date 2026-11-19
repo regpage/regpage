@@ -71,7 +71,7 @@ function db_setRedBackground($memberKeys, $eventId)
   if (empty($memberKeys)) {
     return false;
   }
-  global $db;
+
   $memberKeys = db_real_escape_string($memberKeys);
   $eventId = db_real_escape_string($eventId);
   $memberKeys = explode(',', $memberKeys);
@@ -101,7 +101,7 @@ function db_brothersDotationList()
 // количество записей
 function db_brothersDotationCheck($memberKey=false)
 {
-  global $db;
+
   $memberKey = db_real_escape_string($memberKey);
   $isExist = '';
   if ($memberKey) {
@@ -121,7 +121,7 @@ function db_brothersDotationCheck($memberKey=false)
 // братья с билетами
 function db_brothersHaveTicketsCount($eventKey = '20250013')
 {
-  global $db;
+  
   $eventKey = db_real_escape_string($eventKey);
   $brothersHaveTickets = 0;
   $res = db_query("SELECT COUNT(r.member_key) AS total
@@ -135,7 +135,7 @@ function db_brothersHaveTicketsCount($eventKey = '20250013')
 }
 
 function db_brothersHaveTickets($eventKey = '20250013') {
-  global $db;
+
   $eventKey = db_real_escape_string($eventKey);
   $result = [];
   $res = db_query("SELECT `member_key` FROM `reg` WHERE `flight_num_arr` != ''  AND `flight_num_dep` != '' AND `event_key` = '{$eventKey}'");
@@ -145,7 +145,7 @@ function db_brothersHaveTickets($eventKey = '20250013') {
 }
 
 function db_brotherHaveTickets($memberKey, $eventKey = '20250013') {
-  global $db;
+
   $memberKey = db_real_escape_string($memberKey);
   $eventKey = db_real_escape_string($eventKey);
 
@@ -158,7 +158,7 @@ function db_brotherHaveTickets($memberKey, $eventKey = '20250013') {
 
 // проверка существующей записи
 function db_brothersDotationExist($memberKey) {
-  global $db;
+
   $memberKey = db_real_escape_string($memberKey);
   $isExist='';
 
@@ -170,7 +170,7 @@ function db_brothersDotationExist($memberKey) {
 
 // проверка существующей записи
 function db_isBrother($memberKey) {
-  global $db;
+
   $memberKey = db_real_escape_string($memberKey);
   $isBrother='';
 
@@ -183,7 +183,7 @@ function db_isBrother($memberKey) {
 // добавление / удаление дотации
 function db_brothersDotation($memberKey, $ticket, $eventId)
 {
-  global $db;
+
   $memberKey = db_real_escape_string($memberKey);
   $ticket = db_real_escape_string($ticket);
   $eventId = db_real_escape_string($eventId);
@@ -209,7 +209,7 @@ function db_brothersDotation($memberKey, $ticket, $eventId)
 // пакетное добавление в таблицу дотаций
 function db_brothersDotationGroup($membersKeys, $eventId)
 {
-  global $db;
+
   $membersKeys = db_real_escape_string($membersKeys);
   $eventId = db_real_escape_string($eventId);
   $membersKeys = explode(',', $membersKeys);

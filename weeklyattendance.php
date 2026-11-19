@@ -43,7 +43,7 @@ function db_checkweeklyAttendance () {
 /* MISSED CLASS */
 function checkMissedSessions($sheet_id)
 {
-  global $db;
+  
   $sheet_id = db_real_escape_string($sheet_id);
   $result = [];
 
@@ -59,7 +59,7 @@ function checkMissedSessions($sheet_id)
 
 function setMissedClasses($sheet_id='')
 {
-  global $db;
+
   $sheet_id = db_real_escape_string($sheet_id);
   $check = checkMissedSessions($sheet_id);
 

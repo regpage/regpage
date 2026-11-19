@@ -2,7 +2,7 @@
 /* Заменено универсальным классом DbOperation
 function save_blank($data)
 {
-  global $db;
+
   $data = json_decode($data);
   $member_key = db_real_escape_string($data->member_key);
   // убрано из запроса
@@ -30,4 +30,3 @@ function save_blank($data)
   $result;
 }
 */
-?>

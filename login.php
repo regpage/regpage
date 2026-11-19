@@ -52,8 +52,7 @@
             echo '<div class="container signup-container"><div class="alert alert-danger" role="alert">Эта ссылка недействительна или просрочена. Для изменения логина пройдите процедуру повторно.</div></div>';
         }
     }
-    else if (isset ($_GET["email"])){
-        global $db;
+    else if (isset ($_GET["email"])){        
         $isEmail = db_real_escape_string($_GET["email"]);
     }
 ?>

@@ -2,7 +2,6 @@
 // START get admins by L R C key
 // Для получения всех местностей использовать существующий код используемый для комбобокса
 function db_getAdminLocalitiesOnly ($adminId) {
-    global $db;
     $adminId = db_real_escape_string($adminId);
 
     $res=db_query ("SELECT DISTINCT * FROM (
@@ -32,8 +31,7 @@ function db_getAdminLocalitiesOnly ($adminId) {
 }
 
 // get admins by region key
-function db_getAdminRegionOnly($adminId){
-    global $db;
+function db_getAdminRegionOnly($adminId) {
     $adminId = db_real_escape_string($adminId);
 
     $res=db_query ("SELECT region_key as region
@@ -44,8 +42,7 @@ function db_getAdminRegionOnly($adminId){
     return $regions;
 }
 
-function db_getAdminCountryOnly($adminId){
-    global $db;
+function db_getAdminCountryOnly($adminId) {
     $adminId = db_real_escape_string($adminId);
 
     $res=db_query ("SELECT country_key as country
@@ -56,9 +53,7 @@ function db_getAdminCountryOnly($adminId){
     return $countries;
 }
 
-function db_getAdminsByRegion ($regions)
-{
-    global $db;
+function db_getAdminsByRegion ($regions) {
     $regions = implode( "','", $regions);
     //$regions = db_real_escape_string($regions);
     $res=db_query ("SELECT member_key as id, region_key as region FROM access
@@ -69,9 +64,8 @@ function db_getAdminsByRegion ($regions)
     return ($admins) ? $admins : null;
 }
 // get admins by country key
-function db_getAdminsByCountry ($regions)
-{
-    global $db;
+function db_getAdminsByCountry ($regions) {
+
     $regions = implode( "','", $regions);
     //$regions = db_real_escape_string($regions);
     $res=db_query ("SELECT member_key as id, country_key as country FROM access
@@ -82,9 +76,7 @@ function db_getAdminsByCountry ($regions)
     return ($admins) ? $admins : null;
 }
 // get admins by locality key
-function db_getAdminsByLocalitiesNew ($regions)
-{
-    global $db;
+function db_getAdminsByLocalitiesNew ($regions) {
     $regions = implode( "','", $regions);
     //$regions = db_real_escape_string($regions);
     $res=db_query ("SELECT member_key as id, locality_key as locality FROM access
@@ -95,8 +87,7 @@ function db_getAdminsByLocalitiesNew ($regions)
     return ($admins) ? $admins : null;
 }
 
-function db_getAdminsByLRC($memberId)
-{
+function db_getAdminsByLRC($memberId) {
   $countriesArr = db_getAdminCountryOnly($memberId);
   $regionsArr = db_getAdminRegionOnly($memberId);
   $localitiesArr = db_getAdminLocalitiesOnly($memberId);
@@ -124,9 +115,7 @@ function db_getAdminsByLRC($memberId)
 };
 
 // get admins name by member key
-function db_getAdminsNameByMembersKeys ($memberKeys)
-{
-    global $db;
+function db_getAdminsNameByMembersKeys ($memberKeys) {
     $memberKeys = implode( "','", $memberKeys);
     $res=db_query ("SELECT m.key as id, m.name as name FROM member m
     WHERE m.key IN ('".$memberKeys."') ORDER BY id");
@@ -138,8 +127,7 @@ function db_getAdminsNameByMembersKeys ($memberKeys)
 
 // STOP get admins by L R C key
 // START access to Archive for admins
-function  db_isAuthorEvents($memberId){
-    global $db;
+function  db_isAuthorEvents($memberId) {
     $memberId = db_real_escape_string($memberId);
 
     $res = db_query("SELECT `key` FROM event WHERE `author`='$memberId'");
@@ -150,8 +138,8 @@ function  db_isAuthorEvents($memberId){
     }
     return false;
 }
-function  db_isAuthorArciveEvents($memberId){
-    global $db;
+
+function  db_isAuthorArciveEvents($memberId) {
     $memberId = db_real_escape_string($memberId);
 
     $res = db_query("SELECT `id` FROM event_archive WHERE `author`='$memberId'");
@@ -162,8 +150,8 @@ function  db_isAuthorArciveEvents($memberId){
     }
     return false;
 }
-function  db_isAdminArciveEvents($memberId){
-    global $db;
+
+function  db_isAdminArciveEvents($memberId) {
     $memberId = db_real_escape_string($memberId);
 
     $res = db_query("SELECT `id` FROM event_archive_access WHERE `member_key`='$memberId'");
@@ -177,7 +165,6 @@ function  db_isAdminArciveEvents($memberId){
 // STOP access to Archive for admins
 
 function db_getMsgParamPrivate() {
-  global $db;
   $msg = 'msg_private_event';
 
   $res=db_query ("SELECT `value` FROM param WHERE `name` = '$msg'");
@@ -187,8 +174,7 @@ function db_getMsgParamPrivate() {
 }
 
 // servisone This use in Contacts, Practices & formtab
-function db_getServiceonesPvom(){
-
+function db_getServiceonesPvom() {
   $memberId = db_getMemberIdBySessionId (session_id());
   $localities = db_getAdminMeetingLocalities($memberId);
 
@@ -239,8 +225,7 @@ return $admins;
 
 }
 
-function db_getResponsiblesLocality(){
-
+function db_getResponsiblesLocality() {
   $memberId = db_getMemberIdBySessionId (session_id());
   $localities = db_getAdminMeetingLocalities($memberId);
   $sqlLoc;
@@ -274,7 +259,6 @@ function db_getResponsiblesLocality(){
 
 }
 function getValueParamByName($name) {
-    global $db;
     $name = db_real_escape_string($name);
     $result = '';
     $res = db_query("SELECT `value` FROM param WHERE `name` = '$name'");
@@ -283,9 +267,7 @@ function getValueParamByName($name) {
     return $result;
 }
 // check of a notice
-function db_checkNotice ($adminId)
-{
-    global $db;
+function db_checkNotice ($adminId) {
     $adminId = db_real_escape_string($adminId);
     $check;
     $notices = array();
@@ -302,8 +284,6 @@ function db_checkNotice ($adminId)
 // РАЗДЕЛ СОБЫТИЯ
 
 function isExistrRequest($adminId) {
-
-  global $db;
   $adminId = db_real_escape_string($adminId);
 
   $request;
@@ -319,7 +299,6 @@ function isExistrRequest($adminId) {
 
 // FTT PARAM GET
 function getValueFttParamByName($name) {
-    global $db;
     $name = db_real_escape_string($name);
     $result = '';
     $res = db_query("SELECT `value` FROM ftt_param WHERE `name` = '$name'");
@@ -329,8 +308,7 @@ function getValueFttParamByName($name) {
 }
 
 // FTT PARAM SET
-function setValueFttParamByName($name, $value) {
-    global $db;
+function setValueFttParamByName($name, $value) {    
     $name = db_real_escape_string($name);
     $value = db_real_escape_string($value);
     $res = db_query("UPDATE `ftt_param` SET `value`='$value' WHERE `name` = '$name'");
@@ -340,7 +318,6 @@ function setValueFttParamByName($name, $value) {
 
 // получаем служения для мероприятия
 function db_getServicesEvent($eventId, $adminId) {
-    global $db;
     $eventId = db_real_escape_string($eventId);
     $adminId = db_real_escape_string($adminId);
     $result = array('admin' => "", 'list' => []);
@@ -359,8 +336,7 @@ function db_getServicesEvent($eventId, $adminId) {
 }
 
 // получаем служащих для КШ
-function db_getEventMembersStatusServ($adminId, $eventId){
-    global $db;
+function db_getEventMembersStatusServ($adminId, $eventId) {
     $adminId = db_real_escape_string($adminId);
     $eventId = db_real_escape_string($eventId);
 

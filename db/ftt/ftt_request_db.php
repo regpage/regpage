@@ -4,7 +4,7 @@
 
 // Получаем вопросы
 function db_getRequestPoints() { // управлять зависимо от роли можно при рендеренге
-  /*global $db;
+  /*
   $admin = db_real_escape_string($admin);*/
   $result = [];
   $res=db_query("SELECT * FROM `ftt_request_points` ORDER BY `group`, `position`");
@@ -15,7 +15,7 @@ function db_getRequestPoints() { // управлять зависимо от р�
 
 // заполнить поля заявление данными
 function getMemberData($adminId) {
-  global $db;
+
   $adminId = db_real_escape_string($adminId);
   // LOG
   //write_to_log::debug('000005716', 'Запрошены данные пользователя '.$adminId);//$adminId
@@ -52,7 +52,7 @@ function getMemberData($adminId) {
 
 // предварительное заполнение заявления данными из базы рег пэйдж
 function getStartMemberData($adminId) {
-  global $db;
+
   $adminId = db_real_escape_string($adminId);
   $res=db_query ("SELECT m.key AS m_key , m.name, m.male, m.locality_key, m.citizenship_key, m.baptized, m.birth_date,
     DATEDIFF(CURRENT_DATE, STR_TO_DATE(m.birth_date, '%Y-%m-%d'))/365 as age, m.document_num, m.document_auth, m.new_locality,
@@ -70,7 +70,7 @@ function getStartMemberData($adminId) {
 
 // обновить данные переданного поля в заявлении переданными данными
 function setRequestField($adminId, $field, $data, $id, $table, $isGuest, $blob=false, $data_post=false) {
-  global $db;
+  // global $db;
   $adminId = db_real_escape_string($adminId);
   $field = db_real_escape_string($field);
   if ($data_post) {
@@ -136,7 +136,7 @@ function db_setTrashForRequest($id) {
 }
 
 function db_deletePicFromRequest($id, $field) {
-  global $db;
+
   $field = db_real_escape_string($field);
   $id = db_real_escape_string($id);
   $res;
@@ -146,7 +146,7 @@ function db_deletePicFromRequest($id, $field) {
 }
 
 function db_getPicForRequest($id, $field) {
-  global $db;
+
   $id = db_real_escape_string($id);
   $field = db_real_escape_string($field);
   $pics;
@@ -163,7 +163,7 @@ function db_getPicForRequest($id, $field) {
 
 // Задаём статус ОТПРАВЛЕНО
 function db_setStatusRequestToSent($id, $status = 1, $adminId='') {
-  global $db;
+
   $id = db_real_escape_string($id);
   $status = db_real_escape_string($status);
   $date = 'send_date';
@@ -261,7 +261,7 @@ function db_setStatusRequestToSent($id, $status = 1, $adminId='') {
 
 // Получаем вопросы
 function db_getChurchLifeBrothers() { // управлять зависимо от роли можно при рендеренге
-  /*global $db;
+  /*
   $admin = db_real_escape_string($admin);*/
   $result = [];
   $res=db_query("SELECT m.key, m.name, m.locality_key, l.name AS locality

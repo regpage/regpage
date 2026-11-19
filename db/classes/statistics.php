@@ -16,7 +16,7 @@ class statistics {
   // Количество активных допзаданий
   static function extra_help_count ($memberId, $statistic = false)
   {
-    global $db;
+
     $result = '';
     $trainee = false;
     $condition = '';
@@ -69,7 +69,7 @@ class statistics {
 
   static function extra_help_data ($memberId)
   {
-    global $db;
+
     //$memberId = db_real_escape_string($memberId);
     $result = [];
     $condition = '';
@@ -92,7 +92,7 @@ class statistics {
   // Разрешения
   static function permission_count ($memberId)
   {
-    global $db;
+
     $condition = '';
     $trainee = false;
     if (is_array($memberId)) {
@@ -127,7 +127,7 @@ class statistics {
 
   static function permissions_data ($memberId)
   {
-    global $db;
+    
     $condition = '';
     $trainee = false;
     if (is_array($memberId)) {
@@ -163,7 +163,7 @@ class statistics {
   // Объявления
   static function announcement_unread($memberId)
   {
-    global $db;
+
     $memberId = db_real_escape_string($memberId);
     $result = 0;
     $res = db_query("SELECT far.id_announcement, far.date AS far_date, fa.date, fa.time
@@ -180,7 +180,7 @@ class statistics {
 
   static function announcement_unread_data($memberId)
   {
-    global $db;
+
     $memberId = db_real_escape_string($memberId);
     $result = [];
     $res = db_query("SELECT far.id_announcement, far.date AS far_date, far.member_key AS far_member_key, fa.*
@@ -198,7 +198,7 @@ class statistics {
   // посещаемость не сданные листы за 10 дней начиная с текучая дата - 4 дня
   static function attendanceFour($memberId)
   {
-    global $db;
+
     $result = [];
     if (is_array($memberId)) {
       if (count($memberId) > 0) {
@@ -221,7 +221,7 @@ class statistics {
   // статистика по благовестию, команда.
   static function gospelTeamReport($memberId, $period=7)
   {
-    global $db;
+
     $memberId = db_real_escape_string($memberId);
     $period = db_real_escape_string($period);
     $team = '';
@@ -244,7 +244,7 @@ class statistics {
   // личная статистика по благовестию
   static function gospelPersonalSeven($memberId, $period=7)
   {
-    global $db;
+
     $period = db_real_escape_string($period);
     $result = [];
     $and = '';
@@ -283,7 +283,7 @@ class statistics {
   // Количество занятий на проверке
   static function missed_class_count ($memberId)
   {
-    global $db;
+
     $result = '';
     $trainee = false;
     $condition = '';
@@ -321,7 +321,7 @@ class statistics {
   // Количество занятий поимённо
   static function missed_class_count_name ($memberId)
   {
-    global $db;
+
     $result = [];
     $trainee = false;
     $condition = '';

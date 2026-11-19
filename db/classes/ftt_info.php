@@ -18,7 +18,7 @@ class ftt_info {
 
   // данные из таблицы парам для ПВОМ
   static function param($field_name) {
-    global $db;
+    
     $name = db_real_escape_string($field_name);
     $field_value = '';
     $res = db_query("SELECT `value` FROM ftt_param WHERE `name` = '$field_name'");

@@ -32,7 +32,7 @@ function db_getAdminIdBySessionId ($sessionId){
 }
 
 function db_getAdminNameById($adminId){
-    global $db;
+    
     $adminId = db_real_escape_string($adminId);
 
     $res = db_query("SELECT name FROM member WHERE `key`='$adminId'");
@@ -43,7 +43,7 @@ function db_getAdminNameById($adminId){
 }
 
 function db_getLocalityByKey($locality_key){
-    global $db;
+
     $locality = db_real_escape_string($locality_key);
     $res = db_query("SELECT name FROM locality WHERE `key`='$locality'");
 
@@ -54,7 +54,7 @@ function db_getLocalityByKey($locality_key){
 }
 
 function db_getAdminLocality($adminId){
-    global $db;
+
     $adminId = db_real_escape_string($adminId);
 
     $res = db_query("SELECT locality_key FROM member WHERE `key`='$adminId'");
@@ -66,7 +66,7 @@ function db_getAdminLocality($adminId){
 }
 
 function db_getAdminCountry($adminId){
-    global $db;
+
     $adminId = db_real_escape_string($adminId);
 
     $res=db_query ("SELECT c.key as country
@@ -81,7 +81,7 @@ function db_getAdminCountry($adminId){
 }
 
 function db_getAdminRole ($adminId){
-    global $db;
+
     $adminId = db_real_escape_string($adminId);
 
     $res = db_query("SELECT role FROM admin WHERE member_key='$adminId' ");

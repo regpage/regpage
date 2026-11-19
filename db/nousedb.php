@@ -5,7 +5,7 @@
 
 /*
 function db_getService($memberId){
-    global $db;
+    
 
     $memberId = db_real_escape_string($memberId);
     $res = db_query("SELECT `key` FROM event_access WHERE `member_key` = '$memberId' ORDER BY `key`");
@@ -17,7 +17,7 @@ function db_getService($memberId){
 /*
 function db_getMemberIdBySessionId ($sessionId)
 {
-    global $db;
+
     $sessionId = db_real_escape_string($sessionId);
 
     $res=db_query ("SELECT member_key from admin where session='$sessionId'");
@@ -40,7 +40,7 @@ class ValidationException extends Exception
 /*
 function db_getTeamEmailOld ($eventId)
 {
-    global $db;
+
     $eventId = db_real_escape_string($eventId);
     $res=db_query ("SELECT t.email FROM team t INNER JOIN event e ON e.team_key=t.key WHERE e.key='$eventId'");
     $row = $res->fetch_assoc();
@@ -50,7 +50,7 @@ function db_getTeamEmailOld ($eventId)
 /*
 function db_unregisterMembers ($adminId, $eventId, $memberIds)
 {
-    global $db;
+
     $adminId = db_real_escape_string($adminId);
     $eventId = db_real_escape_string($eventId);
 
@@ -76,7 +76,7 @@ function db_unregisterMembers ($adminId, $eventId, $memberIds)
 /*
 function db_enqueueLetter ($memberId, $eventId, $subject, $body, $headers, $from)
 {
-    global $db;
+
     $memberId=db_real_escape_string($memberId);
     $eventId=db_real_escape_string($eventId);
     $_from = $from;
@@ -97,7 +97,7 @@ function db_enqueueLetter ($memberId, $eventId, $subject, $body, $headers, $from
 /*
 function db_dequeueLetter ($id, $result)
 {
-    global $db;
+
     $id = (int)$id;
     $result = db_real_escape_string($result);
 

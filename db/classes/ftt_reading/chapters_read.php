@@ -7,7 +7,7 @@ class ChaptersRead
 {
   static function get($member_key, $condition)
   {
-    global $db;
+    
     $member_key = db_real_escape_string($member_key);
     $condition = db_real_escape_string($condition);
     $result = array('ot' => [], 'nt' => []);

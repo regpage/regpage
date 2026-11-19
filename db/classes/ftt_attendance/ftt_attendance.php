@@ -7,7 +7,7 @@ class FttAttendance
   // получаем номер листа
   static function getIdByDate ($memberKey, $date)
   {
-    global $db;
+    
     $memberKey = db_real_escape_string($memberKey);
     $date = db_real_escape_string($date);
 
@@ -20,7 +20,7 @@ class FttAttendance
   // получаем номер позиции в листе
   static function getAttendanceIdBySheetId ($sheetId, $class=1)
   {
-    global $db;
+
     $sheetId = db_real_escape_string($sheetId);
     $class = db_real_escape_string($class);
 

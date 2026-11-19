@@ -2,7 +2,7 @@
 /* Пропущенные занятия */
 function checkMissedSessions($sheet_id)
 {
-  global $db;
+
   $sheet_id = db_real_escape_string($sheet_id);
   $result = [];
   // если установлена причина или опоздание >= 20 мин
@@ -20,7 +20,7 @@ function checkMissedSessions($sheet_id)
 
 function setMissedClasses($sheet_id='')
 {
-  global $db;
+
   $sheet_id = db_real_escape_string($sheet_id);
   $check = checkMissedSessions($sheet_id);
 
@@ -40,7 +40,7 @@ function setMissedClasses($sheet_id='')
 function getMissedClasses($sort='', $member='_all_')
 {
 
-  global $db;
+
   $sort = db_real_escape_string($sort);
   $member = db_real_escape_string($member);
   $result = [];
@@ -75,7 +75,7 @@ function getMissedClasses($sort='', $member='_all_')
 
 function dltMissedClass($id)
 {
-  global $db;
+
   $id = db_real_escape_string($id);
 
   $res = db_query("DELETE FROM `ftt_skip` WHERE `id_attendance_sheet` = '$id' AND `status` <> 1 AND `status` <> 2");
@@ -85,7 +85,7 @@ function dltMissedClass($id)
 
 function setSkipBlank($data)
 {
-  global $db;
+
   $data = json_decode($data);
   $sheet_id = db_real_escape_string($data->sheet_id);
   $id = db_real_escape_string($data->id);
@@ -109,7 +109,7 @@ function setSkipBlank($data)
 
     $nameTrainee = short_name::no_middle(Member::get_name($attendanceSheet['member_key']));
     $emailText = "{$nameTrainee} изучил(а) пропущенное занятие от " . date_convert::yyyymmdd_to_ddmmyyyy($attendanceSheet['date']) . "<br><br>https://reg-page.ru/ftt_attendance.php?mc";
-    emailing::send_by_key(trainee_data::get_serving_one($attendanceSheet['member_key']), "Изучено пропущенное занятие ({$nameTrainee})", $emailText);    
+    emailing::send_by_key(trainee_data::get_serving_one($attendanceSheet['member_key']), "Изучено пропущенное занятие ({$nameTrainee})", $emailText);
   }
 
   return $res;
@@ -117,7 +117,7 @@ function setSkipBlank($data)
 
 function setPics($id, $file)
 {
-  global $db;
+
   $file = db_real_escape_string($file);
   $id = db_real_escape_string($id);
   $result = '';

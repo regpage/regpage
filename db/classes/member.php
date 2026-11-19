@@ -7,7 +7,7 @@ class Member
 
   static function get_name ($memberId)
   {
-      global $db;
+
       $memberId = db_real_escape_string($memberId);
       $res=db_query ("SELECT name FROM member WHERE `key`='$memberId'");
       $row = $res->fetch_assoc();
@@ -15,7 +15,7 @@ class Member
   }
   static function get_data($member_key)
   {
-    global $db;
+    
     $member_key = db_real_escape_string($member_key);
     $result=[];
     //  left & right join LOCALITY NAME ect
@@ -34,7 +34,7 @@ class Member
 
   static function get_data_staff($member_key)
   {
-    global $db;
+
     $member_key = db_real_escape_string($member_key);
     $result=[];
     //  left & right join LOCALITY NAME ect
@@ -59,7 +59,7 @@ class Member
       while ($row = $res->fetch_assoc()) $result=$row;
 
       return $result;
-  }  
+  }
 
   static function get_fullMemberLocalityInfo($member_key)
   {

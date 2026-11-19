@@ -5,7 +5,7 @@
 
 function db_getActivityList ($start, $stop, $locality, $page, $admins, $availableAdmins)
 {
-    global $db;
+
     $availableAdmins = implode( "','", $availableAdmins);
     $locality = db_real_escape_string($locality);
     $page = db_real_escape_string($page);
@@ -26,7 +26,7 @@ function db_getActivityList ($start, $stop, $locality, $page, $admins, $availabl
 }
 function db_getActivityListLog ($start, $stop, $locality, $page, $admins)
 {
-    global $db;
+
     $locality = db_real_escape_string($locality);
     $page = db_real_escape_string($page);
     $admins = db_real_escape_string($admins);

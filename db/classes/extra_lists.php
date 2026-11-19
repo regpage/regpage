@@ -3,9 +3,7 @@
 *  Часовые пояса
 *  Часовые пояса для которых существует расписанием пвом
 **/
-class extra_lists {
-
-  //global $db;
+class extra_lists {  
   //$memberId = db_real_escape_string($memberId);
 
   // Часовые пояса / time zones

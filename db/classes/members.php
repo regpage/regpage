@@ -8,7 +8,7 @@ class Members
   // предварительная версия
   static function db_get_members_by_admin ($adminId)
   {
-      global $db;
+
       $adminId = db_real_escape_string($adminId);
 
       $res=db_query ("SELECT DISTINCT * FROM (
@@ -48,7 +48,7 @@ class Members
   // участники для раздела "Список посещаемости"
   static function getListAttend ($adminId, $sortField, $sortType)
   {
-      global $db;
+      
       $adminId = db_real_escape_string($adminId);
       $sortField = db_real_escape_string($sortField);
       $sortType = db_real_escape_string($sortType);
@@ -140,7 +140,7 @@ class Members
 
   static function getListAttendByLocality ($localityKeys, $sortField, $sortType)
   {
-      global $db;
+
       $localityKeys = db_real_escape_string($localityKeys);
       $sortField = db_real_escape_string($sortField);
       $sortType = db_real_escape_string($sortType);
@@ -183,7 +183,7 @@ class Members
   // участники для раздела "Список посещаемости"
   /*function OLDgetListAttend ($adminId, $sortField, $sortType)
   {
-      global $db;
+
       $adminId = db_real_escape_string($adminId);
       $sortField = db_real_escape_string($sortField);
       $sortType = db_real_escape_string($sortType);

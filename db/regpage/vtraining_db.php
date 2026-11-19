@@ -2,7 +2,7 @@
 /* VIDEO TRAINING */
 function vTApplication($id)
 {
-  global $db;
+  
   $id = db_real_escape_string($id);
   $result = '';
 

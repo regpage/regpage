@@ -14,7 +14,7 @@ function db_newContactByApi($data){
   if (empty($data['email']) && empty($data['phone']) && empty($data['name'])) {
     return 'error_001';
   }
-  global $db;
+
   $newId = db_getNewContactIdApi();
   $name = db_real_escape_string($data['name']);
   $email = db_real_escape_string($data['email']);

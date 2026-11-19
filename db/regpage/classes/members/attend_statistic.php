@@ -7,7 +7,7 @@ class AttendanceStatistic
   // кроме тех, что посещают только видеообучение
   /*static function getMemberAtMeetingsOLD($membersKeys)
   {
-    global $db;
+
     // убрать экран с используемых ковычек или разбить и собрать строку заново (тогда удалить добавление кавычек в js)
     //$condition = db_real_escape_string($membersKeys);
 
@@ -51,7 +51,7 @@ class AttendanceStatistic
   // LT statistics
   static function getMemberAtLT($membersKeys)
   {
-    global $db;
+    
     // убрать экран с используемых ковычек или разбить и собрать строку заново (тогда удалить добавление кавычек в js)
     //$condition = db_real_escape_string($membersKeys);
 
@@ -95,7 +95,7 @@ class AttendanceStatistic
   // Статистика посещаемости
   static function getMemberAtMeetings($membersKeys)
   {
-    global $db;
+
     // убрать экран с используемых ковычек или разбить и собрать строку заново (тогда удалить добавление кавычек в js)
     //$condition = db_real_escape_string($membersKeys);
 

@@ -14,7 +14,7 @@ if (isset($GLOBALS['global_root_path'])) {
 class get_admin_data {
 
   static public function data($admin_id) {
-    global $db;
+
     $admin_id = db_real_escape_string($admin_id);
     $result = [];
     $res = db_query("SELECT m.key, m.name AS admin_name, m.locality_key, m.email, l.name AS locality_name, m.category_key, m.male
@@ -31,7 +31,7 @@ class get_admin_data {
   }
 
   static public function ftt($admin_id) {
-    global $db;
+    
     $admin_id = db_real_escape_string($admin_id);
     $result = [];
     $result_2 = [];
@@ -63,7 +63,7 @@ class get_admin_data {
   }
   static public function vt($admin_id)
   {
-    global $db;
+
     $admin_id = db_real_escape_string($admin_id);
     $result = '';
 
