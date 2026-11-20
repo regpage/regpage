@@ -308,7 +308,7 @@ function getValueFttParamByName($name) {
 }
 
 // FTT PARAM SET
-function setValueFttParamByName($name, $value) {    
+function setValueFttParamByName($name, $value) {
     $name = db_real_escape_string($name);
     $value = db_real_escape_string($value);
     $res = db_query("UPDATE `ftt_param` SET `value`='$value' WHERE `name` = '$name'");
@@ -352,4 +352,24 @@ function db_getEventMembersStatusServ($adminId, $eventId) {
     $members = array();
     while ($row = $res->fetch_assoc()) $members[$row['id']]=$row['name'];
     return $members;
+}
+
+function dbSetEventMemberSite($memberId, $adminId, $get, $post) {
+
+    $sql = "INSERT INTO `member_site`(`key`, `name`, `male`, `birth_date`, `locality_key`, `category_key`, `address`, `cell_phone`, `email`, `citizenship_key`, `changed`, `new_locality`, `comment`, `admin_key`, `russian_lg`, `event_key`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+    if ($post["gender"] == "male" || $post["gender"] == "female") {
+      $male = $post["gender"] == "male" ? 1 : 0;
+    } else {
+      $male = null;
+    }
+    $birth_date = empty($post['birth_date']) ? null : $post['birth_date'];
+    $localityKey = empty($post['locality_key']) ? null : $post['locality_key'];
+    $newLocality = empty($post['new_locality']) ? null : $post['new_locality'];
+    $address = empty($post['address']) ? '' : $post['address'];
+    $categoryKey = isset($post['category_key']) ? $post['category_key'] : null;
+    $comment = isset($post['comment']) ? $post['comment'] : '';
+
+    $params = [$memberId, $post['name'], $male, $birth_date, $localityKey, $categoryKey, $address, $post['cell_phone'], $post['email'], $post['citizenship_key'], 1, $newLocality, $comment, $adminId, $post['russian_lg'], $get['event']];
+    prepareQuery($sql, $params);
 }

@@ -69,26 +69,41 @@ function prepareQuery($sql, $params = [], $types = "") {
 	global $db;
 	$stmt = $db->prepare($sql);
 
+  if (empty($types)) {
+    foreach ($params as $param) {
+      if (is_int($param) || is_bool($param)) {
+        $types .= 'i';
+      } elseif (is_float($param)) {
+        $types .= 'd';
+      } else {
+        $types .= 's';
+      }
+    }
+  }
 	if (!empty($params)) {
   	$stmt->bind_param($types, ...$params);
 	}
 
-	$stmt->execute();
-  $result = $stmt->get_result();
-  $stmt->close();
+  $result = $stmt->execute();
+    if ($stmt->field_count > 0 && $result !== false) {
+      $resultTemp = $stmt->get_result();
+      if ($resultTemp !== false) {
+        $result = $resultTemp->fetch_all(MYSQLI_ASSOC);
+      }
+  }
 
-  return $result->fetch_all(MYSQLI_ASSOC);
+  $stmt->close();
+  return $result;
 }
 
-
-    // Обезвреживание содержимого переданного аргумента.
-    function db_real_escape_string($data) {
-      if (empty($data)) {
-        return $data;
-      }
-      global $db;
-      return $db->real_escape_string($data);
-    }
+// Обезвреживание содержимого переданного аргумента.
+function db_real_escape_string($data) {
+  if (empty($data)) {
+    return $data;
+  }
+  global $db;
+  return $db->real_escape_string($data);
+}
 
 // mail
 $mailCnfg = [

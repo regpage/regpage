@@ -407,7 +407,7 @@ else if(isset($_GET['confirm_registration'])){
 else if (isset ($_GET ['member']) && isset ($_GET ['event']))
 {
     $getMemberId = db_setEventMember ($adminId, $_GET, $_POST);
-    if (isset ($_GET ['create'])) {
+    if (isset($_GET ['create'])) {
       $dataForCreate['key'] = $getMemberId;
       $dataForCreate['name'] = $_POST['name'];
       $dataForCreate['author'] = db_getAdminNameById($adminId);
@@ -416,7 +416,10 @@ else if (isset ($_GET ['member']) && isset ($_GET ['event']))
       }
     }
     if (isset($_GET ['register'])) {
-      $msgToOrganizer = db_sendMessageToOrganizer ($_GET['event'], $getMemberId, $_POST['locality_key']);
+      $msgToOrganizer = db_sendMessageToOrganizer($_GET['event'], $getMemberId, $_POST['locality_key']);
+      if (isset($_GET['create']) && substr($getMemberId, 0, 1) == 9 && !empty($_GET['event']) && substr($_GET['event'], 0, 1) == 9) {
+        dbSetEventMemberSite($getMemberId, $adminId, $_GET, $_POST);
+      }
     }
 }
 else if (isset ($_GET ['members']) && isset ($_GET ['event']) && !isset($_GET['checkServ']))
